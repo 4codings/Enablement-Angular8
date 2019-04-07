@@ -32,6 +32,19 @@ export class UserComponent implements OnInit {
     this.error$ = this.store.pipe(select(userSelectors.getErrors));
     this.didLoading$ = this.store.pipe(select(userSelectors.getLoading));
     this.didLoaded$ = this.store.pipe(select(userSelectors.getLoaded));
+    
+    this.users$.subscribe(data => {
+      if(data.length) {
+        console.log("users", data);
+      }
+    });
+
+    this.userGroups$.subscribe(data => {
+      if(data.length) {
+        console.log("userGroups-roles", data);
+      }
+    });
+
   }
 
 }

@@ -11,9 +11,7 @@ export class getUserGroup implements Action {
 
 export class getUserGroupSuccess implements Action {
     readonly type = GET_USER_GROUP_SUCCESS
-    constructor(public payload: userGroup[]) {
-        console.log(payload);
-    }
+    constructor(public payload: userGroup[]) {}
 }
 
 export class getUserGroupFail implements Action {

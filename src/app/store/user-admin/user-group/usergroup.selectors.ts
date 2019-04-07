@@ -5,7 +5,7 @@ import {
   } from '@ngrx/store';
   import * as fromUserGroup from './usergroup.reducer';
    
-  export const selectUserGroupState = createFeatureSelector<fromUserGroup.UserGroupState>('usergroup');
+  export const selectUserGroupState = createFeatureSelector<fromUserGroup.UserGroupState>('userGroup');
    
   export const selectUserIds = createSelector(
     selectUserGroupState,
@@ -20,7 +20,7 @@ import {
     selectUserGroupState,
     fromUserGroup.selectAllUserGroups
   );
-  export const selectUserTotal = createSelector(
+  export const selectUserGroupTotal = createSelector(
     selectUserGroupState,
     fromUserGroup.selectUserGroupTotal
   );
