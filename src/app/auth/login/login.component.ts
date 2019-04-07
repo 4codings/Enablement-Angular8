@@ -5,6 +5,10 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 // import {LoggerService} from "../../core/logger.service";
 import {ToastrService} from "ngx-toastr";
+import { Store, select } from '@ngrx/store';
+import { AppState } from 'src/app/app.state';
+import * as usreLoginActions from "../../store/auth/userlogin.action";
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -15,20 +19,25 @@ import {ToastrService} from "ngx-toastr";
 export class LoginComponent implements OnInit {
     form: FormGroup;
     ui: any;
+    didLoading$:Observable<boolean>;
+    didLoaded$:Observable<boolean>;
 
     constructor(
       // private api: ApiSdkService,
-      //           private user: UserService,
-                private fb: FormBuilder,
-                private router: Router,
-                // private l: LoggerService,
-                private t: ToastrService
-                ) {
+      // private user: UserService,
+        private fb: FormBuilder,
+        private router: Router,
+        // private l: LoggerService,
+        private t: ToastrService,
+        private store: Store<AppState>
+    ) {
     }
 
     ngOnInit() {
         this.initForm();
-        this.ui = {laddaLogin: false}
+        this.ui = {laddaLogin: false};
+        this.didLoading$ = this.store.pipe(select(state => state.userInfo.loading));
+        this.didLoaded$ = this.store.pipe(select(state => state.userInfo.loaded));
     }
 
     login() {
@@ -36,9 +45,12 @@ export class LoginComponent implements OnInit {
 
         this.ui.laddaLogin = true;
         console.log(this.form.value)
-debugger
-                            this.t.error('Hemant');
-
+        let body = {
+            "V_USR_NM": this.form.value.email,
+            "V_PSWRD": this.form.value.password,
+            "V_ACTN_NM": "LOGIN"
+        }
+        this.store.dispatch(new usreLoginActions.userLogin(body));
         // this.api.auth.login(this.form.value)
         //     .subscribe(
         //         resp => {
