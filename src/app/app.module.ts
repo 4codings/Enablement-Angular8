@@ -14,6 +14,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { reducers } from './root.reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { environment } from '../environments/environment';
     AppRoutingModule,
     AuthModule,
     HomeModule,
+    HttpClientModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
@@ -40,3 +42,4 @@ import { environment } from '../environments/environment';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+  
