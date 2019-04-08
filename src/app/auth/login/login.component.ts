@@ -50,9 +50,9 @@ export class LoginComponent implements OnInit {
             "V_PSWRD": this.form.value.password,
             "V_ACTN_NM": "LOGIN"
         }
-        this.router.navigate(['/user']);
+        //this.router.navigate(['/user']);
 
-        // this.store.dispatch(new usreLoginActions.userLogin(body));
+        this.store.dispatch(new usreLoginActions.userLogin(body));
         // this.store.subscribe(
         //             resp => {
         //                 console.log(resp)
