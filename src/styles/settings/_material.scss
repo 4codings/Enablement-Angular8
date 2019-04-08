@@ -1,25 +1,25 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
-
-.mat-card:not([class*=mat-elevation-z]) {
-    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+.mat-card:not([class*="mat-elevation-z"]) {
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+    0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
 
 .mat-card {
-    transition: box-shadow 280ms cubic-bezier(.4,0,.2,1);
-    display: block;
-    position: relative;
-    padding: 24px;
-    border-radius: 2px;
+  transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+  display: block;
+  position: relative;
+  padding: 24px;
+  border-radius: 2px;
 }
-
 
 .mat-card {
-    background: #fff;
-    color: rgba(0,0,0,.87);
+  background: #fff;
+  color: rgba(0, 0, 0, 0.87);
 }
-.mat-button-toggle, .mat-card {
-    font-family: Roboto,"Helvetica Neue",sans-serif;
+.mat-button-toggle,
+.mat-card {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 #mat_card {
@@ -32,20 +32,18 @@
   border-radius: 6px;
 }
 
-
-
-
 mat-list {
-	border: 1px solid #ccc;
-	border-radius: .25rem;
-	width: 100%;
-	padding-top: 0;
-	font-size: 1rem;
-	line-height: 1.5;
-	height: auto;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  width: 100%;
+  padding-top: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  height: auto;
 }
 
-.mat-list .mat-list-item, .mat-selection-list .mat-list-option {
+.mat-list .mat-list-item,
+.mat-selection-list .mat-list-option {
   display: block;
   height: auto;
 }
@@ -106,78 +104,75 @@ mat-list-item:hover {
   transition: all 0.5s ease;
 }
 
-
-
-
-mat-list{
-  border:1px solid #ccc;
-  border-radius: .25rem;
+mat-list {
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
   padding-top: 0;
   width: 100%;
-  
+
   font-size: 1rem;
   line-height: 1.5;
   height: 200px;
 }
-.scroll *{
+.scroll * {
   height: auto;
-  text-align:center;
+  text-align: center;
 }
 
-.active{
-background-color:rgba(0,0,0,0.7) !important;
-color: white;
+.active {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+  color: white;
 }
-mat-header-row{
+mat-header-row {
   background-color: #ccc;
 }
-mat-header-row::after{
-  content:none;
+mat-header-row::after {
+  content: none;
 }
-#dboard>mat-header-row{
+#dboard > mat-header-row {
   background-color: #ccc;
-  width: fit-content !important; 
+  width: fit-content !important;
 }
-#dboard>mat-row{
-  width: fit-content !important; 
+#dboard > mat-row {
+  width: fit-content !important;
 }
-mat-table{
+mat-table {
   max-height: 300px !important;
 }
-@media only screen and (max-width: 767px){
-.mat-header-row::after {
-  content: none;
-}
-.mat-row::after{
-  content: none;
-}
-// .mat-row{
-  
-// }
-.mat-table {
-  /*width: fit-content;*/
-  min-width: 300px;
-}
-mat-cell{
-  border:1px solid lightgray;
-}
-mat-header-cell{
-  border:1px solid black;
-}
+@media only screen and (max-width: 767px) {
+  .mat-header-row::after {
+    content: none;
+  }
+  .mat-row::after {
+    content: none;
+  }
+  // .mat-row{
+
+  // }
+  .mat-table {
+    /*width: fit-content;*/
+    min-width: 300px;
+  }
+  mat-cell {
+    border: 1px solid lightgray;
+  }
+  mat-header-cell {
+    border: 1px solid black;
+  }
 }
 
-.mat-list-base .mat-list-item, .mat-list-base .mat-list-option {
+.mat-list-base .mat-list-item,
+.mat-list-base .mat-list-option {
   display: block;
-  height: unset!important;
+  height: unset !important;
   -webkit-tap-highlight-color: transparent;
   width: 100%;
   padding: 0;
 }
 
-
 mat-list {
   border: 1px solid #ccc;
-  border-radius: .25rem;
+  border-radius: 0.25rem;
   width: 100%;
   padding-top: 0;
   font-size: 1rem;
@@ -191,8 +186,6 @@ mat-radio-group {
   flex-direction: column;
 }
 
-
-
 .mat-form-field-flex {
   display: inline-flex;
   align-items: baseline;
@@ -205,14 +198,14 @@ mat-radio-group {
   min-width: 300px;
   width: 300px;
 }
-mat-list-item div{
-  text-align:center;
-  width:100%;    
+mat-list-item div {
+  text-align: center;
+  width: 100%;
 }
-mat-list{
-  border:1px solid #ccc;
-  border-radius: .25rem;
-  
+mat-list {
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+
   width: 100%;
   padding-top: 0;
   font-size: 1rem;

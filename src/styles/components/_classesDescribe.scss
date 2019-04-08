@@ -1,33 +1,33 @@
 .example-radio-group {
-	display: inline-flex;
-	flex-direction: row;
+  display: inline-flex;
+  flex-direction: row;
 }
 .example-radio-button {
-	margin: 5px;
+  margin: 5px;
 }
 .matspin {
-	vertical-align: middle;
+  vertical-align: middle;
 }
 
 .scroll {
-	* {
-		height: auto;
-		text-align: center;
-	}
+  * {
+    height: auto;
+    text-align: center;
+  }
 }
 .active {
-	background-color: rgba(0,0,0,0.7) !important;
-	color: white;
+  background-color: rgba(0, 0, 0, 0.7) !important;
+  color: white;
 }
 .iconmod {
-	margin-right: 10px;
+  margin-right: 10px;
 }
 ::ng-deep {
-	.mat-input-infix {
-		background: white;
-		border: 1px solid rgb(200,200,200);
-		border-radius: 3px;
-		padding-bottom: 5px;
-		text-align: center;
-	}
+  .mat-input-infix {
+    background: white;
+    border: 1px solid rgb(200, 200, 200);
+    border-radius: 3px;
+    padding-bottom: 5px;
+    text-align: center;
+  }
 }

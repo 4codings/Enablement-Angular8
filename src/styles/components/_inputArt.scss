@@ -1,32 +1,32 @@
-mat-checkbox{
-    display: list-item;
-    list-style: none;
-    font-size: 13px;
+mat-checkbox {
+  display: list-item;
+  list-style: none;
+  font-size: 13px;
 }
-*{
-    font-size: 14px;
+* {
+  font-size: 14px;
 }
-#cancel{
-    background-color: lightcoral;
-  }
-  #submit{
-    background-color: lightgreen;
-  }
-  #add{
-    background-color: lightblue;
-  }
-
-
-.addButton{
-    font-size: 26px;
-    cursor: pointer;
+#cancel {
+  background-color: lightcoral;
+}
+#submit {
+  background-color: lightgreen;
+}
+#add {
+  background-color: lightblue;
 }
 
+.addButton {
+  font-size: 26px;
+  cursor: pointer;
+}
 
 .table {
   width: 100%;
 }
-.table,.table th ,.table td {
+.table,
+.table th,
+.table td {
   border: 1px solid grey;
   border-collapse: collapse;
   padding: 5px;

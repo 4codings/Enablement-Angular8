@@ -1,56 +1,56 @@
-import * as UserLoginActions from './userlogin.action';
-import { userInfo } from './userinfo.model';
+import * as UserLoginActions from "./userlogin.action";
+import { userInfo } from "./userinfo.model";
 
-
-let userinfoData:userInfo = {
-    "USR_ID":null,
-    "SRC_ID":null,
-    "SRC_CD":'',
-    "TOKEN":'',
-    "USR_NM":''
-}
+let userinfoData: userInfo = {
+  USR_ID: null,
+  SRC_ID: null,
+  SRC_CD: "",
+  TOKEN: "",
+  USR_NM: ""
+};
 
 export interface UserLoginState {
-    userInfo:userInfo
-    loading:boolean,
-    loaded:boolean,
-    error:string
+  userInfo: userInfo;
+  loading: boolean;
+  loaded: boolean;
+  error: string;
 }
 
 export const initialState: UserLoginState = {
-    userInfo:userinfoData,
-    loading:false,
-    loaded:false,
-    error:''
+  userInfo: userinfoData,
+  loading: false,
+  loaded: false,
+  error: ""
 };
 
-export function userLoginReducer(state = initialState, action: UserLoginActions.Actions):UserLoginState {
+export function userLoginReducer(
+  state = initialState,
+  action: UserLoginActions.Actions
+): UserLoginState {
+  switch (action.type) {
+    case UserLoginActions.USER_LOGIN:
+      return {
+        ...state,
+        loading: true,
+        loaded: false
+      };
 
-    switch(action.type) {
+    case UserLoginActions.USER_LOGIN_SUCCESS:
+      return {
+        ...state,
+        userInfo: action.payload,
+        loading: false,
+        loaded: true
+      };
 
-        case UserLoginActions.USER_LOGIN:
-        return {
-            ...state,
-            loading:true,
-            loaded:false
-        }
+    case UserLoginActions.USER_LOGIN_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload
+      };
 
-        case UserLoginActions.USER_LOGIN_SUCCESS:
-        return {
-            ...state,
-            userInfo:action.payload,
-            loading:false,
-            loaded:true
-        }
-
-        case UserLoginActions.USER_LOGIN_FAIL:
-        return {
-            ...state,
-            loading:false,
-            error:action.payload
-        }
-        
-        default:
-            return state;
-    }
+    default:
+      return state;
+  }
 }

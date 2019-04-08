@@ -1,42 +1,42 @@
-.email , .pass {
-    width: 100%;
-  }
+.email,
+.pass {
+  width: 100%;
+}
 
-  .logo-img{
-    margin-top: 5px;
-    height: 60px;
-  }
-  .marginn{
-    margin-top: -5px;
-  }
-.header_text{
-  font-size:14px;
-  float:right; 
+.logo-img {
+  margin-top: 5px;
+  height: 60px;
+}
+.marginn {
+  margin-top: -5px;
+}
+.header_text {
+  font-size: 14px;
+  float: right;
   display: block;
   white-space: nowrap; /* forces text to single line */
   overflow: hidden;
   text-overflow: ellipsis;
- 
+
   text-align: right;
 }
-.myicon2{
+.myicon2 {
   vertical-align: middle;
   margin-right: 3px;
 }
-.myicon{
-  float:right; 
+.myicon {
+  float: right;
   white-space: nowrap; /* forces text to single line */
   overflow: hidden;
   text-overflow: ellipsis;
   margin-top: -5px;
   text-align: right;
   cursor: pointer;
-  
 }
-.myicon:hover{
+.myicon:hover {
   color: blueviolet;
-  transform: scale3d(1.1,1.1,1.1);
+  transform: scale3d(1.1, 1.1, 1.1);
 }
-  .mat-icon:active{
-    transform: scale3d(0.9,0.9,0.9);
+.mat-icon:active {
+  transform: scale3d(0.9, 0.9, 0.9);
 }
