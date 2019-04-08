@@ -50,7 +50,34 @@ export class LoginComponent implements OnInit {
             "V_PSWRD": this.form.value.password,
             "V_ACTN_NM": "LOGIN"
         }
-        this.store.dispatch(new usreLoginActions.userLogin(body));
+        this.router.navigate(['/user']);
+
+        // this.store.dispatch(new usreLoginActions.userLogin(body));
+        // this.store.subscribe(
+        //             resp => {
+        //                 console.log(resp)
+                        // this.l.debug('LoginResponse', resp.body);
+                        // this.t.error(resp.body+'');
+                        // this.user.setUser(resp.body, !this.form.get('rememberMe').value);
+                        // debugger
+                        // this.router.navigate(['/user']);
+
+                        // this.ui.laddaLogin = false;
+                        // let key = 'id';
+                        // localStorage.setItem(key, JSON.stringify(resp));
+                        // resp.body
+                        // debugger
+                        // let keyt = 'token';
+                        // localStorage.setItem(key, JSON.stringify(resp.body.result.token));
+    
+                        // localStorage.setItem(key, JSON.stringify(resp.body.result.token));
+                    // },
+                    // e => {
+                    //     // this.l.debug('LoginError', e);
+                    //     this.t.error(e.error.error.detail);
+                    //     this.ui.laddaLogin = false;
+                    // }
+                // )
         // this.api.auth.login(this.form.value)
         //     .subscribe(
         //         resp => {

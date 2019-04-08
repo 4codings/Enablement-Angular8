@@ -1,0 +1,36 @@
+.numberlist {
+    ol {
+      list-style: none;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+    margin-left: 20px;
+    li {
+      width: 70%;
+      margin: 10px;
+      padding-left: 10px;
+      padding-right: 10px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      padding-right: 10px;
+      color: white;
+      background-color: #737373;
+    }
+    a {
+      color: white;
+      width: 100%;
+      left: 0px;
+      right: 0px;
+    }
+  }
+
+  
+
+//   mat list scroll class
+  .scroll {
+    height: 230px;
+    overflow-y: auto;
+    background-color: #fff;
+    border: 1px solid #add8e6;
+}

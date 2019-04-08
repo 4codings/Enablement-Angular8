@@ -4,13 +4,18 @@ import {FormErrorMsgComponent} from "./components/form-error-msg/form-error-msg.
 import {NoDataMsgComponent} from "./components/no-data-msg/no-data-msg.component";
 // import {CoreModule} from "../core/core.module";
 import {RouterModule} from "@angular/router";
+import { MatIconModule, MatCardModule } from '@angular/material';
 
 
 @NgModule({
     imports:      [
         CommonModule,
         // CoreModule,
-        RouterModule
+        RouterModule,
+
+
+        MatCardModule,
+        MatIconModule
     ],
     declarations: [
         FormErrorMsgComponent,

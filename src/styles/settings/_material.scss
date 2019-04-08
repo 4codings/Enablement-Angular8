@@ -1,0 +1,221 @@
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+
+.mat-card:not([class*=mat-elevation-z]) {
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+}
+
+.mat-card {
+    transition: box-shadow 280ms cubic-bezier(.4,0,.2,1);
+    display: block;
+    position: relative;
+    padding: 24px;
+    border-radius: 2px;
+}
+
+
+.mat-card {
+    background: #fff;
+    color: rgba(0,0,0,.87);
+}
+.mat-button-toggle, .mat-card {
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+}
+
+#mat_card {
+  margin: auto;
+  display: block;
+  background-color: rgb(242, 242, 242);
+  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgb(117, 117, 117);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+}
+
+
+
+
+mat-list {
+	border: 1px solid #ccc;
+	border-radius: .25rem;
+	width: 100%;
+	padding-top: 0;
+	font-size: 1rem;
+	line-height: 1.5;
+	height: auto;
+}
+
+.mat-list .mat-list-item, .mat-selection-list .mat-list-option {
+  display: block;
+  height: auto;
+}
+
+.mat-header-cell {
+  position: relative;
+  height: 34px;
+}
+
+button.mat-raised-button {
+  border-radius: 5px;
+  padding: 0 6px;
+}
+
+.mat-card-content {
+  font-size: 16px;
+}
+
+mat-option {
+  &.mat-option.ng-star-inserted {
+    height: 25px;
+    padding: 0 5px;
+    &:nth-child(odd):hover {
+      font-weight: bolder;
+      background-color: lightgray;
+      color: black;
+    }
+    &:nth-child(even):hover {
+      font-weight: bolder;
+      background-color: white;
+      color: black;
+    }
+    &.mat-selected.mat-active {
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+    }
+  }
+  &:nth-child(odd) {
+    background-color: lightgray;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  mat-list.scroll.mat-list {
+    height: auto;
+    margin-top: 1px;
+  }
+}
+
+.input_control {
+  width: 100%;
+  text-align: center !important;
+}
+
+mat-list-item:hover {
+  font-weight: bolder;
+  cursor: pointer;
+  transition: all 0.5s ease;
+}
+
+
+
+
+mat-list{
+  border:1px solid #ccc;
+  border-radius: .25rem;
+  padding-top: 0;
+  width: 100%;
+  
+  font-size: 1rem;
+  line-height: 1.5;
+  height: 200px;
+}
+.scroll *{
+  height: auto;
+  text-align:center;
+}
+
+.active{
+background-color:rgba(0,0,0,0.7) !important;
+color: white;
+}
+mat-header-row{
+  background-color: #ccc;
+}
+mat-header-row::after{
+  content:none;
+}
+#dboard>mat-header-row{
+  background-color: #ccc;
+  width: fit-content !important; 
+}
+#dboard>mat-row{
+  width: fit-content !important; 
+}
+mat-table{
+  max-height: 300px !important;
+}
+@media only screen and (max-width: 767px){
+.mat-header-row::after {
+  content: none;
+}
+.mat-row::after{
+  content: none;
+}
+// .mat-row{
+  
+// }
+.mat-table {
+  /*width: fit-content;*/
+  min-width: 300px;
+}
+mat-cell{
+  border:1px solid lightgray;
+}
+mat-header-cell{
+  border:1px solid black;
+}
+}
+
+.mat-list-base .mat-list-item, .mat-list-base .mat-list-option {
+  display: block;
+  height: unset!important;
+  -webkit-tap-highlight-color: transparent;
+  width: 100%;
+  padding: 0;
+}
+
+
+mat-list {
+  border: 1px solid #ccc;
+  border-radius: .25rem;
+  width: 100%;
+  padding-top: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  height: 200px;
+}
+
+mat-radio-group {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+.mat-form-field-flex {
+  display: inline-flex;
+  align-items: baseline;
+  width: 100%;
+}
+.mat-form-field-infix {
+  display: block;
+  position: relative;
+  flex: auto;
+  min-width: 300px;
+  width: 300px;
+}
+mat-list-item div{
+  text-align:center;
+  width:100%;    
+}
+mat-list{
+  border:1px solid #ccc;
+  border-radius: .25rem;
+  
+  width: 100%;
+  padding-top: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  height: 200px;
+}

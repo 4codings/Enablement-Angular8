@@ -5,12 +5,18 @@ import { UserRoutingModule } from './user-routing.module';
 import { EffectsModule } from '@ngrx/effects';
 import { UserEffects } from 'src/app/store/user-admin/user/user.effects';
 import { UserGroupEffects } from 'src/app/store/user-admin/user-group/usergroup.effects';
+import { ProfileComponent } from './profile/profile.component';
+import { MatIconModule, MatCardModule } from '@angular/material';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
-  declarations: [UserComponent],
+  declarations: [UserComponent, ProfileComponent],
   imports: [
+    MatCardModule,
+    MatIconModule,
     CommonModule,
     UserRoutingModule,
+    HttpClientModule,
     EffectsModule.forFeature([UserEffects, UserGroupEffects]),
   ]
 })
