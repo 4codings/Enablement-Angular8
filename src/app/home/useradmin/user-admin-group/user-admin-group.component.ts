@@ -23,6 +23,7 @@ export class UserAdminGroupComponent implements OnInit {
   didLoading$: Observable<boolean>;
   didLoaded$: Observable<boolean>;
   userGroup:any[]= [];
+  updateBtn:boolean = false;
   selectedgroup:number;
 
   constructor(

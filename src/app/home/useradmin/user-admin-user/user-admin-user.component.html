@@ -1,5 +1,3 @@
-
-
 <div class="container-fluid">
   <div class="row">
     <div class="col">
@@ -22,13 +20,13 @@
       <strong>{{Label['user_description']}}</strong>
           <mat-form-field style="width:100%;">
             <!-- (keyup)="changinUserInfo($event)" matInput [(ngModel)]="USR_DSC_R" (keyup)="descChange()" -->
-              <textarea matInput [(ngModel)]="user.USR_DSC_R"></textarea>
+              <textarea matInput [(ngModel)]="user.USR_DSC_R" (change)="statusChange()"></textarea>
           </mat-form-field>
           <br />
 
           <strong>{{Label['current_status']}}</strong>
           <!-- [(value)]="USRC_STATUS_R" [(ngModel)]="USRC_STATUS_R" (change)="statusChange()" -->
-          <select class="glo_input" [(value)]="user.STS_R" [(ngModel)]="user.STS_R">
+          <select class="glo_input" [(value)]="user.STS_R" [(ngModel)]="user.STS_R" (change)="statusChange()">
               <option value="ACTIVE">Active</option>
               <option value="TERMINATED">Terminated</option>
               <option value="VACATION">Vacation</option>
@@ -39,4 +37,38 @@
   </div>
 
 </div>
+
+<div fxLayout="row">
+	<div fxFlex="38"></div>
+	<div fxFlex="60">
+		<div class="CustomeButtonFloat">
+			<button mat-raised-button color="primary" [disabled]="addBtn" (click)="addUSer()">
+				<mat-icon style="vertical-align: middle;margin-right: 5px">add</mat-icon>{{Label['add_btn']}}</button>
+			<button mat-raised-button color="primary" [hidden]="!updateBtn" (click)="updateUser()">
+				<mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['UpdateBtn']}}</button>
+		</div>
+		<div class="CustomeButtonFloat">
+			<button title="Upload file" mat-raised-button color="primary" (click)="uploadData()">
+				<i class="fas fa-upload"></i> Upload
+			</button>
+			<button mat-raised-button color="primary" (click)="downloadFile()">
+				<i class="fas fa-download"></i> Download
+			</button>
+		</div>
+		<br />
+		<div class="alertSuccess" *ngIf="emailMessage!=undefined && emailMessage!=''">
+			{{emailMessage}}
+		</div>
+	</div>
+	<div fxFlex="0"></div>
+</div>
+
+
+
+<input type="file" (change)="fileChangeEvent($event ,files)" #files name="Document_File" id="Document_File" style="display:none"
+/>
+<!-- Code by Dharmraj End -->
+<!-- End my code -->
+
+<!-- <button mat-raised-button color="primary"><mat-icon style="vertical-align: middle;margin-right: 5px">play_for_work</mat-icon>{{Label['data_load']}}</button> -->
 

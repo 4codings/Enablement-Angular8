@@ -24,7 +24,8 @@ export class UserAdminUserComponent implements OnInit {
   user: any[] = [];
   public users$: Observable<User[]>;
   form: FormGroup;
-  addBtn: boolean = false;
+  addBtn: boolean = true;
+  updateBtn: boolean = false;
   // public userGroups$:Observable<userGroup[]>;
   error$: Observable<string>;
   didLoading$: Observable<boolean>;
@@ -57,7 +58,7 @@ export class UserAdminUserComponent implements OnInit {
     this.user["USR_NM_R"] = user["USR_NM"];
     this.user["USR_DSC_R"] = user["USR_DSC"];
     this.user["STS_R"] = user["STS"];
-    this.addBtn = true;
+    // this.addBtn = true;
   }
   availableGroupValueChange(usr) {
     // debugger
@@ -80,4 +81,17 @@ export class UserAdminUserComponent implements OnInit {
   uploadData() {
     alert("Upload Clicked !!!!");
   }
+
+  addUser() {
+    alert("adduser Clicked !!!!");
+  }
+
+  updateUser() {
+    alert("update Clicked !!!!");
+  }
+
+  statusChange() {
+    this.updateBtn = true;
+  }
+
 }
