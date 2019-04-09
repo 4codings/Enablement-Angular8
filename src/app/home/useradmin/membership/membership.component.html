@@ -1,3 +1,42 @@
-<p>
-  membership works!
-</p>
+
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <strong>{{Label['available_user']}}</strong>
+      <mat-list  class="scroll">
+      <mat-list-item  class="sd list_item" (click)="getUserDetails(u);fooo(u);onpselect(i);"  *ngFor="let u of USR_NM  ; let i = index;"  [class.active]="i == selecteduser">
+      <div>{{u}}</div>
+      </mat-list-item>
+      </mat-list>
+      <strong>{{Label['user_description']}}</strong>
+
+      <mat-form-field style="width:100%;">
+        <textarea matInput [(ngModel)]="USR_DSC_R" >
+
+        </textarea>
+  </mat-form-field>
+    </div>
+    <div class="col">
+   
+  <strong>{{Label['Group']}}</strong>
+  <mat-list  class="scroll">
+  <mat-list-item  class="list_item"  (click)="getAvailableGroup(g);selected(g);onqselect(j);"  *ngFor="let g of USR_GRP_CD  ; let j = index;"  [class.active]="j == selectedgroup">
+  <div>{{g}}</div>
+  </mat-list-item>
+  </mat-list>
+
+  <strong>{{Label['Grp_dscr']}}</strong>
+  <mat-form-field style="width:100%;">
+        <textarea matInput [(ngModel)]="USR_GRP_DSCR" >
+
+        </textarea>
+  </mat-form-field>  
+    </div>
+  </div>
+
+</div>
+
+
+
+
