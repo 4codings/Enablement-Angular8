@@ -3,7 +3,7 @@ import { CommonModule } from "@angular/common";
 import { UseradminComponent } from "./useradmin.component";
 import { UserAdminUserComponent } from "./user-admin-user/user-admin-user.component";
 import { UseradminRoutingModule } from "./useradmin-routing.module";
-import { MatIconModule, MatListModule, MatCardModule, MatInputModule, MatFormFieldControl, MatFormFieldModule } from "@angular/material";
+import { MatIconModule, MatListModule, MatCardModule, MatInputModule, MatFormFieldControl, MatFormFieldModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule } from "@angular/material";
 import { AssignroleComponent } from "./assignrole/assignrole.component";
 import { AuthorizeroleComponent } from "./authorizerole/authorizerole.component";
 import { MembershipComponent } from "./membership/membership.component";
@@ -34,6 +34,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatCardModule,
     MatInputModule,
     MatFormFieldModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     ReactiveFormsModule,
     FormsModule,
     CommonModule,

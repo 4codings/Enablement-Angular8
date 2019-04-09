@@ -1,3 +1,83 @@
-<p>
-  user-admin-group works!
-</p>
+<div fxLayout="row" fxLayout.lt-sm="column">
+	<div fxFlex="30" style="text-align: center;">
+		<br />
+		<strong>{{Label['Av_group']}}</strong>
+		<mat-list  class="scroll" style="text-align: center;" [(ngModel)]="USR_GRP_CD_SELC">
+			<mat-list-item class="list_item" (click)="getAvailableGroup(g);selected(g);onpselect(i)" *ngFor="let usrGroup of userGroups$ | async ;let i=index"
+			 [class.active]="i == selectedgroup">
+				<div>{{usrGroup.ROLE_CD}}</div>
+			</mat-list-item>
+		</mat-list>
+
+	</div>
+	<div fxFlex="3"></div>
+	<div fxFlex="30" style="text-align: center;">
+		<br />
+		<strong>{{Label['Group']}}</strong>
+		<mat-form-field style="width:100%;">
+			<input [(ngModel)]="USR_GRP_CDR" matInput (keyup)="putInDescription($event)" name="" />
+		</mat-form-field>
+		<br />
+		<br />
+		<strong>{{Label['st_date']}}</strong>
+		<mat-form-field style="width:100%;">
+
+			<input [(ngModel)]="start_date" matInput [matDatepicker]="picker">
+			<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+			<mat-datepicker #picker></mat-datepicker>
+		</mat-form-field>
+	</div>
+	<div fxFlex="3"></div>
+	<div fxFlex="30" style="text-align: center;">
+		<strong>{{Label['Grp_dscr']}}</strong>
+		<mat-form-field style="width:100%;margin-top:5px;">
+			<textarea [(ngModel)]="USR_GRP_DSCR" matInput>
+				</textarea>
+
+		</mat-form-field>
+		<br />
+		<br />
+		<strong>{{Label['en_date']}}</strong>
+		<mat-form-field style="width:100%;">
+
+			<input [(ngModel)]="end_date" matInput [matDatepicker]="picker1">
+			<mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+			<mat-datepicker #picker1></mat-datepicker>
+		</mat-form-field>
+	</div>
+</div>
+
+<div fxLayout="row">
+	<div fxFlex="38" style="text-align: center;">
+
+	</div>
+	<div fxFlex="60">
+		
+		<div class="CustomeButtonFloat">
+			<button mat-raised-button color="primary" [disabled]="addBtn" (click)="AddGroup()">
+				<mat-icon style="vertical-align: middle;margin-right: 5px">add</mat-icon>{{Label['add_btn']}}</button>
+			<button mat-raised-button color="warn" [disabled]="deleteBtn" (click)="Delete()">
+				<mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['dlt_btn']}}</button>
+
+		</div>
+
+		<div class="CustomeButtonFloat">
+			<button title="Upload file" mat-raised-button color="primary" (click)="uploadBtnClick()">
+				<i class="fas fa-upload"></i> Upload
+			</button>
+			<button mat-raised-button color="primary" (click)="downloadFile()">
+				<i class="fas fa-download"></i> Download
+			</button>
+		</div>
+
+
+	</div>
+	<div fxFlex="0">
+
+	</div>
+</div>
+
+<input type="file" (change)="fileChangeEvent($event ,files)" #files name="Document_File" id="Document_File" style="display:none"
+/>
+<!-- Code by Dharmraj End -->
+<!-- End my code -->
