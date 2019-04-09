@@ -29,6 +29,7 @@ export class UserAdminUserComponent implements OnInit {
   error$: Observable<string>;
   didLoading$: Observable<boolean>;
   didLoaded$: Observable<boolean>;
+  selecteduser:string;
 
   constructor(
     public noAuthData: NoAuthDataService,
@@ -50,17 +51,6 @@ export class UserAdminUserComponent implements OnInit {
     this.didLoading$ = this.store.pipe(select(userSelectors.getLoading));
     this.didLoaded$ = this.store.pipe(select(userSelectors.getLoaded));
 
-    this.users$.subscribe(data => {
-      if (data.length) {
-        console.log("users", data);
-      }
-    });
-
-    // this.userGroups$.subscribe(data => {
-    //   if(data.length) {
-    //     console.log("userGroups-roles", data);
-    //   }
-    // });
   }
 
   getUserDetails(user) {
@@ -79,6 +69,11 @@ export class UserAdminUserComponent implements OnInit {
       }
     });
   }
+
+  selected(index) {
+    this.selecteduser = index;
+  }
+  
   downloadFile() {
     alert("Download Clicked !!!!");
   }

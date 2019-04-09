@@ -4,8 +4,8 @@
   <div class="row">
     <div class="col">
       <strong>{{Label['Av_group']}}</strong>
-      <mat-list  class="scroll" style="text-align: center;" [(ngModel)]="USR_GRP_CD_SELC">
-        <mat-list-item class="list_item" (click)="getAvailableGroup(g);selected(g);onpselect(i)" *ngFor="let usrGroup of userGroups$ | async ;let i=index"
+      <mat-list  class="scroll" style="text-align: center;">
+        <mat-list-item class="list_item" (click)="getAvailableGroup(usrGroup);selected(i);onpselect(i)" *ngFor="let usrGroup of userGroups$ | async ;let i=index"
          [class.active]="i == selectedgroup">
           <div>{{usrGroup.ROLE_CD}}</div>
         </mat-list-item>
@@ -15,21 +15,21 @@
       <br />
       <strong>{{Label['Group']}}</strong>
       <mat-form-field style="width:100%;">
-        <input [(ngModel)]="USR_GRP_CDR" matInput (keyup)="putInDescription($event)" name="" />
+        <input [(ngModel)]="userGroup.USR_GRP_CD_R" matInput (keyup)="putInDescription($event)" name="" />
       </mat-form-field>
       <br />
       <br />
       <strong>{{Label['st_date']}}</strong>
       <mat-form-field style="width:100%;">
   
-        <input [(ngModel)]="start_date" matInput [matDatepicker]="picker">
+        <input [(ngModel)]="userGroup.start_date" matInput [matDatepicker]="picker">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
 
       <strong>{{Label['Grp_dscr']}}</strong>
 		<mat-form-field style="width:100%;margin-top:5px;">
-			<textarea [(ngModel)]="USR_GRP_DSCR" matInput>
+			<textarea [(ngModel)]="userGroup.USR_GRP_DSC_R" matInput>
 				</textarea>
 
 		</mat-form-field>
@@ -38,7 +38,7 @@
 		<strong>{{Label['en_date']}}</strong>
 		<mat-form-field style="width:100%;">
 
-			<input [(ngModel)]="end_date" matInput [matDatepicker]="picker1">
+			<input [(ngModel)]="userGroup.end_date" matInput [matDatepicker]="picker1">
 			<mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
 			<mat-datepicker #picker1></mat-datepicker>
 		</mat-form-field>

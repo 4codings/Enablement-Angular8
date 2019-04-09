@@ -18,19 +18,17 @@ import { userGroup } from 'src/app/store/user-admin/user-group/usergroup.model';
 })
 export class UserAdminGroupComponent implements OnInit {
   Label: any[] = [];
+  userGroups$:Observable<userGroup[]>;
+  error$: Observable<string>;
+  didLoading$: Observable<boolean>;
+  didLoaded$: Observable<boolean>;
+  userGroup:any[]= [];
+  selectedgroup:number;
 
   constructor(
     public noAuthData: NoAuthDataService,
     private store:Store<AppState>
   ) { }
-
-   
-  // public users$:Observable<User[]>;
-  public userGroups$:Observable<userGroup[]>;
-  error$: Observable<string>;
-  didLoading$: Observable<boolean>;
-  didLoaded$: Observable<boolean>;
-
 
   ngOnInit() {
     this.store.dispatch(new usreActions.getUser());
@@ -40,23 +38,25 @@ export class UserAdminGroupComponent implements OnInit {
     this.error$ = this.store.pipe(select(userSelectors.getErrors));
     this.didLoading$ = this.store.pipe(select(userSelectors.getLoading));
     this.didLoaded$ = this.store.pipe(select(userSelectors.getLoaded));
-    
-    // this.users$.subscribe(data => {
-    //   if(data.length) {
-    //     console.log("users", data);
-    //   }
-    // });
-
-    this.userGroups$.subscribe(data => {
-      if(data.length) {
-        console.log("userGroups-roles", data);
-      }
-    });
-
+  
     this.noAuthData.getJSON().subscribe(data => {
       console.log(data);
       this.Label = data;
     });
+    
+  }
+
+  getAvailableGroup(userGroup) {
+    this.userGroup["USR_GRP_CD_R"] = userGroup["ROLE_CD"];
+    this.userGroup["USR_GRP_DSC_R"] = userGroup["ROLE_DSC"];
+  }
+
+  selected(index) {
+    console.log(index);
+    this.selectedgroup = index;
+  }
+
+  onpselect(i) {
 
   }
 

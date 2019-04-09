@@ -6,8 +6,7 @@
       <strong>{{Label['available_user']}}</strong>
       <mat-list  class="scroll">
           <!-- (click)="getUserDetails(u);fooo(u);onpselect(i);" -->
-          <mat-list-item class="list_item"  *ngFor="let user of users$ | async; let i = index;" (click)="getUserDetails(user)">
-              <!-- [class.active]="i == selecteduser" -->
+          <mat-list-item class="list_item"  *ngFor="let user of users$ | async; let i = index;" [class.active]="i == selecteduser" (click)="getUserDetails(user); selected(i)">
               <div>{{user.USR_NM}}</div>
           </mat-list-item>
       </mat-list>
