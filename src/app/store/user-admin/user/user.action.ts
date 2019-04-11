@@ -21,4 +21,6 @@ export class getUserFail implements Action {
   constructor(public payload: string) {}
 }
 
-export type Actions = getUser | getUserSuccess | getUserFail;
+export type Actions = getUser 
+| getUserSuccess 
+| getUserFail;

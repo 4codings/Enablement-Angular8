@@ -7,7 +7,7 @@ import {
    
   export const selectUserGroupState = createFeatureSelector<fromUserGroup.UserGroupState>('userGroup');
    
-  export const selectUserIds = createSelector(
+  export const selectUserGroupIds = createSelector(
     selectUserGroupState,
     fromUserGroup.selectUserGroupIds
   );
@@ -46,7 +46,6 @@ import {
   );
   
   export const getLoaded = createSelector(
-    selectUserGroupState,
     selectUserGroupState,
     state => state.loaded
   );

@@ -8,6 +8,8 @@ import { UserGroupEffects } from 'src/app/store/user-admin/user-group/usergroup.
 import { ProfileComponent } from './profile/profile.component';
 import { MatIconModule, MatCardModule } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
+import { UserRoleEffects } from 'src/app/store/user-admin/user-role/userrole.effects';
+import { UserMembershipEffects } from 'src/app/store/user-admin/user-membership/usermembership.effects';
 
 @NgModule({
   declarations: [UserComponent, ProfileComponent],
@@ -17,7 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
     CommonModule,
     UserRoutingModule,
     HttpClientModule,
-    EffectsModule.forFeature([UserEffects, UserGroupEffects]),
+    EffectsModule.forFeature([UserEffects, UserGroupEffects, UserRoleEffects, UserMembershipEffects]),
   ]
 })
 export class UserModule { }

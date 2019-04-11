@@ -5,9 +5,9 @@
     <div class="col">
       <strong>{{Label['available_role']}}</strong>
       <mat-list *ngIf="desktopView" class="scroll">
-        <mat-list-item class="list_item" (click)="getRollDSCR(r);dogo(r);onpselect(i);" *ngFor="let r of Roll_CD ; let i = index;"
+        <mat-list-item class="list_item" (click)="getRollDSCR(r);dogo(r);onpselect(i);" *ngFor="let role of userRoles$ | async; let i = index;"
           [class.active]="i == selectedrole">
-          <div>{{r}}</div>
+          <div>{{role}}</div>
         </mat-list-item>
       </mat-list>
     </div>
