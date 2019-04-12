@@ -12,6 +12,7 @@ import * as userGroupSelectors from "../../../store/user-admin/user-group/usergr
 import * as userGroupActions from "../../../store/user-admin/user-group/usergroup.action";
 import { userGroup } from "src/app/store/user-admin/user-group/usergroup.model";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { flattenStyles } from '@angular/platform-browser/src/dom/dom_renderer';
 
 @Component({
   selector: 'app-membership',
@@ -50,7 +51,28 @@ export class MembershipComponent implements OnInit {
     this.didLoading$ = this.store.pipe(select(userSelectors.getLoading));
     this.didLoaded$ = this.store.pipe(select(userSelectors.getLoaded));
   }
+  selected(user,index) {
+    this.groups$.subscribe(group=>{
+      group.forEach(groupArray=>{
+        groupArray['is_selected_user'] = false
 
+      })
+    })
+    this.selecteduser = index;
+    if(user['USR_GRP_ID'].length > 0){
+     this.groups$.subscribe(data=>{
+       data.forEach(ele=>{
+         user['USR_GRP_ID'].forEach(element => {
+          if(ele['USR_GRP_ID'] == element){
+            console.log(ele)
+            ele['is_selected_user'] = true
+          }
+         });
+      
+       })
+     }) 
+    }
+  }
 }
 
 
