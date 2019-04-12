@@ -4,15 +4,25 @@
   <div class="row">
     <div class="col">
       <strong>{{Label['available_role']}}</strong>
-      <mat-list *ngIf="desktopView" class="scroll">
+      <mat-list  class="scroll">
         <mat-list-item class="list_item" (click)="getRollDSCR(r);dogo(r);onpselect(i);" *ngFor="let role of userRoles$ | async; let i = index;"
-          [class.active]="i == selectedrole">
-          <div>{{role}}</div>
+          >
+          <div>{{role.ROLE_CD}}</div>
         </mat-list-item>
       </mat-list>
     </div>
     <div class="col">
-      2 of 2
+      <strong>{{Label['role']}}</strong>
+    <mat-form-field style="width:100%;">
+      <input matInput [(ngModel)]="RollR" (keyup)="addBothfield();" />
+    </mat-form-field>
+    <br />
+    <strong>{{Label['role_descripton']}}</strong>
+    <mat-form-field style="width:100%;">
+      <textarea matInput [(ngModel)]="ROll_DSC_R">
+
+    </textarea>
+    </mat-form-field>
     </div>
   </div>
 

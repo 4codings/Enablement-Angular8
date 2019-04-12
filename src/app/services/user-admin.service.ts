@@ -13,19 +13,21 @@ export class UserAdminService {
 
   constructor(private http:HttpClient) { }
 
-  getUsers(): Observable<User[]> {
-		return this.http.get<User[]>('https://enablement.us/Enablement/rest/E_DB/SPJSON?V_CD_TYP=USER&V_SRC_CD=AB&REST_Service=Masters&Verb=GET');
+    getUsers(): Observable<User[]> {
+		return this.http.get<User[]>('https://enablement.us/Enablement/rest/E_DB/SPJSON?V_CD_TYP=USER&V_SRC_CD=uttra.24&REST_Service=Masters&Verb=GET');
 	}
 
 	getUserGroups(): Observable<userGroup[]> {
-		return this.http.get<userGroup[]>('https://enablement.us/Enablement/rest/E_DB/SPJSON?V_SRC_CD=null&V_CD_TYP=USR_GRP&REST_Service=Masters&Verb=GET');
+		return this.http.get<userGroup[]>('https://enablement.us/Enablement/rest/E_DB/SPJSON?V_SRC_CD=uttra.24&V_CD_TYP=USR_GRP&REST_Service=Masters&Verb=GET');
 	}
 
 	getUserRoles(): Observable<userRole[]> {
 		return this.http.get<userRole[]>('https://enablement.us/Enablement/rest/E_DB/SPJSON?V_CD_TYP=ROLE&V_SRC_CD=AB&REST_Service=Masters&Verb=GET');
 	}
 
+	//membership-> user/group
 	getUserMemberShip(): Observable<userMemberShip[]> {
-		return this.http.get<userMemberShip[]>('https://enablement.us/Enablement/rest/E_DB/SPJSON?V_CD_TYP=ROLE&V_SRC_CD=AB&REST_Service=Masters&Verb=GET');
+		return this.http.get<userRole[]>('https://enablement.us/Enablement/rest/E_DB/SPJSON?V_CD_TYP=ROLE&V_SRC_CD=AB&REST_Service=Masters&Verb=GET');
+		// return this.http.get<userMemberShip[]>('https://enablement.us/Enablement/rest/E_DB/SPJSON?V_SRC_CD=uttra.24&V_CD_TYP=USR_GRP&REST_Service=Masters&Verb=GET');
 	}
 }

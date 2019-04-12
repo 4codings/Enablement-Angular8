@@ -7,7 +7,7 @@
       <mat-list  class="scroll" style="text-align: center;">
         <mat-list-item class="list_item" (click)="getAvailableGroup(usrGroup);selected(i);onpselect(i)" *ngFor="let usrGroup of userGroups$ | async ;let i=index"
          [class.active]="i == selectedgroup">
-          <div>{{usrGroup.ROLE_CD}}</div>
+          <div>{{usrGroup.USR_GRP_CD}}</div>
         </mat-list-item>
       </mat-list>
     </div>

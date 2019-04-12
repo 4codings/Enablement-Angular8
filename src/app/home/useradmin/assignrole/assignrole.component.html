@@ -3,10 +3,10 @@
     <div class="col">
       <strong>{{Label['Group']}}</strong>
 
-      <mat-selection-list *ngIf="desktopView" class="scroll" #gp [(ngModel)]="selectedOptions">
-          <mat-list-option class="sd list_item" (click)="getgroupdesc(g.name);onpselect(i);getroleofgroup(g.name);" *ngFor="let g of grp ;let i = index;"
+      <mat-selection-list  class="scroll" #gp [(ngModel)]="selectedOptions">
+          <mat-list-option class="sd list_item" (click)="getgroupdesc(g.name);onpselect(i);getroleofgroup(g.name);" *ngFor="let g of groups | async;let i = index;"
               [value]="g.name" [class.active]="i == selectedgroup">
-              {{g.name}}
+              {{g.USR_GRP_CD}}
           </mat-list-option>
       </mat-selection-list>
 
@@ -21,76 +21,25 @@
 
     </div>
     <div class="col">
-      2 of 2
-    </div>
+        <strong>{{Label['role']}}</strong>
+                     
+        <mat-selection-list class="scroll" #rl>
+            <mat-list-option class="sd list_item" (click)="getroledesc(r.name);onqselect(j);getgroupofrole(r.name);checkroles(rl)" *ngFor=" let r of rol ;let j = index;"
+                [(selected)]="r.selected" [value]="r.name" [class.active]="j == selectedrole">
+                {{r.name}}
+            </mat-list-option>
+        </mat-selection-list>
+        <br/>
+        <!-- <strong>{{Label['user_description']}}</strong> -->
+        <strong>{{Label['role_descripton']}}</strong>
+        <mat-form-field style="width:100%;">
+            <textarea matInput [(ngModel)]="roledesc">
+
+</textarea>
+        </mat-form-field>
+       </div>
   </div>
 
 </div>
 
-
-
-
-                 
-<div fxLayout="row" fxLayout.lt-sm="column">
-  <div fxFlex="10">
-
-
-  </div>
-
-  <div fxFlex="30" style="text-align: center;">
-      <strong>{{Label['Group']}}</strong>
-
-      <mat-selection-list *ngIf="desktopView" class="scroll" #gp [(ngModel)]="selectedOptions">
-          <mat-list-option class="sd list_item" (click)="getgroupdesc(g.name);onpselect(i);getroleofgroup(g.name);" *ngFor="let g of grp ;let i = index;"
-              [value]="g.name" [class.active]="i == selectedgroup">
-              {{g.name}}
-          </mat-list-option>
-      </mat-selection-list>
-      <mat-form-field *ngIf="mobileView" style="width:100%;text-align: center;" [floatLabel]="'never'">
-          <mat-select multiple="true" style="margin-top:10px;" placeholder="--Select--">
-              <mat-option style="text-align:center;"  (click)="getgroupdesc(g.name);onpselect(i);getroleofgroup(g.name);"
-                  *ngFor="let g of grp ;let i = index;" [value]="g.name">{{g.name}}</mat-option>
-          </mat-select>
-      </mat-form-field>
-      <br />
-      <strong>{{Label['Grp_dscr']}}</strong>
-      <mat-form-field style="width:100%;">
-          <textarea matInput [(ngModel)]="groupdesc">
-
-</textarea>
-      </mat-form-field>
-
-  </div>
-  <div fxFlex="3"></div>
-  <div fxFlex="30" style="text-align: center;">
-      <!-- <strong>{{Label['Role']}}</strong> -->
-      <strong>Role</strong>
-
-      <mat-selection-list class="scroll" #rl>
-          <mat-list-option class="sd list_item" (click)="getroledesc(r.name);onqselect(j);getgroupofrole(r.name);checkroles(rl)" *ngFor=" let r of rol ;let j = index;"
-              [(selected)]="r.selected" [value]="r.name" [class.active]="j == selectedrole">
-              {{r.name}}
-          </mat-list-option>
-      </mat-selection-list>
-      <br/>
-      <!-- <strong>{{Label['user_description']}}</strong> -->
-      <strong>Role Description</strong>
-      <mat-form-field style="width:100%;">
-          <textarea matInput [(ngModel)]="roledesc">
-
-</textarea>
-      </mat-form-field>
-  </div>
-
-  <div fxFlex="3"></div>
-  <div fxFlex="30">
-      <br />
-      <br />
-      <br />
-      <button mat-raised-button color="primary" (click)="deleterole()">
-          <mat-icon>play_arrow</mat-icon> {{Label['execute_btn']}}</button>
-      <button mat-raised-button color="primary" (click)="addrole()">
-          <mat-icon>move_to_inbox</mat-icon> {{Label['include_btn']}}</button>
-  </div>
-</div>
 
