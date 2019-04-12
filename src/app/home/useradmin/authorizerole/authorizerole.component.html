@@ -3,17 +3,72 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col">
-      <strong>{{Label['available_role']}}</strong>
-      <mat-list *ngIf="desktopView" class="scroll">
-        <mat-list-item class="list_item" (click)="getRollDSCR(r);dogo(r);onpselect(i);" *ngFor="let r of Roll_CD ; let i = index;"
-          [class.active]="i == selectedrole">
-          <div>{{r}}</div>
-        </mat-list-item>
+      <strong>Role</strong>
+      <mat-list  class="scroll">
+      <mat-list-item class="list_item" (click)="onqselect(i);getroledecs(g.name, i)"  *ngFor="let g of rol;let i = index;" [class.active]="g.selected == true"  >
+        <!-- {{g}} -->
+      <div>{{g.name}}</div>
+      </mat-list-item>
       </mat-list>
+      <br />
+<!-- <strong>{{Label['Grp_dscr']}}</strong> -->
+<strong>Role Description</strong>
+<mat-form-field style="width:100%;">
+      <textarea matInput [(ngModel)]="roledesc" >
+
+      </textarea>
+</mat-form-field>
     </div>
     <div class="col">
-      2 of 2
+      <strong>Authorization Type</strong>
+      <mat-list class="scroll">
+      <mat-list-item  class="list_item" (click)="getauth(a.name, i);onpselect(i);"  *ngFor="let a of authtype;let i = index;"  [class.active]="a.selected == true">
+        <!-- {{g}} -->
+      <div>{{a.name}}</div>
+      </mat-list-item>
+      </mat-list>
+      <br/>
+      <strong>Application</strong>
+<mat-form-field style="width:100%;">
+      <textarea matInput [(ngModel)]="application" >
+
+      </textarea>
+</mat-form-field>
+    </div>
+    <div class="col">
+      <strong>Authorization</strong>
+      <mat-list  class="scroll">
+      <mat-list-item class="list_item" (click)="showauth(authorize, i);onpselect(i)"  *ngFor="let authorize of authoriztion;let i = index;"  [class.active]="authorize.selected == true">
+        <!-- {{g}} -->
+      <div>{{authorize.auth_cd}}</div>
+      </mat-list-item>
+      </mat-list>
+     
+      <br />
+      <!-- <strong>{{Label['Grp_dscr']}}</strong> -->
+      <strong>Authorization Description</strong>
+      <mat-form-field style="width:100%;">
+            <textarea matInput [(ngModel)]="authdesc" >
+      
+            </textarea>
+      </mat-form-field>
     </div>
   </div>
 
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

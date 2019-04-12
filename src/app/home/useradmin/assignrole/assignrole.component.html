@@ -11,14 +11,39 @@
       </mat-selection-list>
 
 
-      <br />
-      <strong>{{Label['Grp_dscr']}}</strong>
+<div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <strong>{{Label['available_role']}}</strong>
+        <mat-list  class="scroll">
+          <mat-list-item class="list_item" (click)="getRollDSCR(r);dogo(r);onpselect(i);" *ngFor="let role of userRoles$ | async; let i = index;"
+            >
+            <div>{{role.ROLE_CD}}</div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+      <div class="col">
+        <strong>{{Label['available_role']}}</strong>
+        <mat-list  class="scroll">
+          <mat-list-item class="list_item" (click)="getRollDSCR(r);dogo(r);onpselect(i);" *ngFor="let role of userRoles$ | async; let i = index;"
+            >
+            <div>{{role.ROLE_CD}}</div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+      <div class="col">
+        <strong>{{Label['role']}}</strong>
       <mat-form-field style="width:100%;">
-          <textarea matInput [(ngModel)]="groupdesc">
-
-</textarea>
+        <input matInput [(ngModel)]="RollR" (keyup)="addBothfield();" />
       </mat-form-field>
-
+      <br />
+      <strong>{{Label['role_descripton']}}</strong>
+      <mat-form-field style="width:100%;">
+        <textarea matInput [(ngModel)]="ROll_DSC_R">
+  
+      </textarea>
+      </mat-form-field>
+      </div>
     </div>
     <div class="col">
         <strong>{{Label['role']}}</strong>
@@ -43,3 +68,5 @@
 </div>
 
 
+  
+  </div>
