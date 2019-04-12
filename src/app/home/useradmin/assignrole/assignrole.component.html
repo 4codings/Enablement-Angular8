@@ -1,45 +1,38 @@
+
+
 <div class="container-fluid">
-  <div class="row">
-    <div class="col">
-      <strong>{{Label['Group']}}</strong>
-
-      <mat-selection-list  class="scroll" #gp [(ngModel)]="selectedOptions">
-          <mat-list-option class="sd list_item" (click)="getgroupdesc(g.name);onpselect(i);getroleofgroup(g.name);" *ngFor="let g of groups | async;let i = index;"
-              [value]="g.name" [class.active]="i == selectedgroup">
-              {{g.USR_GRP_CD}}
-          </mat-list-option>
-      </mat-selection-list>
-
-
-      <br />
-      <strong>{{Label['Grp_dscr']}}</strong>
-      <mat-form-field style="width:100%;">
-          <textarea matInput [(ngModel)]="groupdesc">
-
-</textarea>
-      </mat-form-field>
-
-    </div>
-    <div class="col">
+    <div class="row">
+      <div class="col">
+        <strong>{{Label['available_role']}}</strong>
+        <mat-list  class="scroll">
+          <mat-list-item class="list_item" (click)="getRollDSCR(r);dogo(r);onpselect(i);" *ngFor="let role of userRoles$ | async; let i = index;"
+            >
+            <div>{{role.ROLE_CD}}</div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+      <div class="col">
+        <strong>{{Label['available_role']}}</strong>
+        <mat-list  class="scroll">
+          <mat-list-item class="list_item" (click)="getRollDSCR(r);dogo(r);onpselect(i);" *ngFor="let role of userRoles$ | async; let i = index;"
+            >
+            <div>{{role.ROLE_CD}}</div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+      <div class="col">
         <strong>{{Label['role']}}</strong>
-                     
-        <mat-selection-list class="scroll" #rl>
-            <mat-list-option class="sd list_item" (click)="getroledesc(r.name);onqselect(j);getgroupofrole(r.name);checkroles(rl)" *ngFor=" let r of rol ;let j = index;"
-                [(selected)]="r.selected" [value]="r.name" [class.active]="j == selectedrole">
-                {{r.name}}
-            </mat-list-option>
-        </mat-selection-list>
-        <br/>
-        <!-- <strong>{{Label['user_description']}}</strong> -->
-        <strong>{{Label['role_descripton']}}</strong>
-        <mat-form-field style="width:100%;">
-            <textarea matInput [(ngModel)]="roledesc">
-
-</textarea>
-        </mat-form-field>
-       </div>
+      <mat-form-field style="width:100%;">
+        <input matInput [(ngModel)]="RollR" (keyup)="addBothfield();" />
+      </mat-form-field>
+      <br />
+      <strong>{{Label['role_descripton']}}</strong>
+      <mat-form-field style="width:100%;">
+        <textarea matInput [(ngModel)]="ROll_DSC_R">
+  
+      </textarea>
+      </mat-form-field>
+      </div>
+    </div>
+  
   </div>
-
-</div>
-
-
