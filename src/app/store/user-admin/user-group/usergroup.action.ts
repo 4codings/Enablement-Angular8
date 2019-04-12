@@ -12,7 +12,7 @@ export class getUserGroup implements Action {
 export class getUserGroupSuccess implements Action {
   readonly type = GET_USER_GROUP_SUCCESS;
   constructor(public payload: userGroup[]) {
-    console.log("userGroup",payload);
+    //console.log("userGroup",payload);
   }
 }
 

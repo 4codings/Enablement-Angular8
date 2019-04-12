@@ -4,7 +4,7 @@
       <strong>{{Label['Group']}}</strong>
 
       <mat-selection-list  class="scroll" #gp [(ngModel)]="selectedOptions">
-          <mat-list-option class="sd list_item" (click)="getgroupdesc(g.name);onpselect(i);getroleofgroup(g.name);" *ngFor="let g of groups | async;let i = index;"
+          <mat-list-option class="sd list_item" (click)="getgroupdesc(g.name);onpselect(i);getroleofgroup(g.name);" *ngFor="let g of userGroup$ | async;let i = index;"
               [value]="g.name" [class.active]="i == selectedgroup">
               {{g.USR_GRP_CD}}
           </mat-list-option>
@@ -24,9 +24,9 @@
         <strong>{{Label['role']}}</strong>
                      
         <mat-selection-list class="scroll" #rl>
-            <mat-list-option class="sd list_item" (click)="getroledesc(r.name);onqselect(j);getgroupofrole(r.name);checkroles(rl)" *ngFor=" let r of rol ;let j = index;"
+            <mat-list-option class="sd list_item" (click)="getroledesc(r.name);onqselect(j);getgroupofrole(r.name);checkroles(rl)" *ngFor=" let r of roles$ | async;let j = index;"
                 [(selected)]="r.selected" [value]="r.name" [class.active]="j == selectedrole">
-                {{r.name}}
+                {{r.ROLE_CD}}
             </mat-list-option>
         </mat-selection-list>
         <br/>

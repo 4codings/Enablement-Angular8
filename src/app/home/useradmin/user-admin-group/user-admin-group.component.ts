@@ -36,9 +36,9 @@ export class UserAdminGroupComponent implements OnInit {
     this.store.dispatch(new userGroupActions.getUserGroup());
     // this.users$ = this.store.pipe(select(userSelectors.selectAllUsers));
     this.userGroups$ = this.store.pipe(select(userGroupSelectors.selectAllUserGroups));
-    this.error$ = this.store.pipe(select(userSelectors.getErrors));
-    this.didLoading$ = this.store.pipe(select(userSelectors.getLoading));
-    this.didLoaded$ = this.store.pipe(select(userSelectors.getLoaded));
+    this.error$ = this.store.pipe(select(userGroupSelectors.getErrors));
+    this.didLoading$ = this.store.pipe(select(userGroupSelectors.getLoading));
+    this.didLoaded$ = this.store.pipe(select(userGroupSelectors.getLoaded));
   
     this.noAuthData.getJSON().subscribe(data => {
       console.log(data);

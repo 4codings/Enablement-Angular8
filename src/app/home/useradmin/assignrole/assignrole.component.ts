@@ -25,7 +25,7 @@ import * as userRoleActions from "../../../store/user-admin/user-role/userrole.a
 export class AssignroleComponent implements OnInit {
   Label: any[] = [];
   user: any[] = [];
-  public users$: Observable<User[]>;
+  public userGroup$: Observable<userGroup[]>;
   public roles$: Observable<userRole[]>;
 
   addBtn: boolean = true;
@@ -45,33 +45,16 @@ export class AssignroleComponent implements OnInit {
       console.log(data);
       this.Label = data;
     });
-    this.store.dispatch(new usreActions.getUser());
+    //this.store.dispatch(new usreActions.getUser());
     this.store.dispatch(new userGroupActions.getUserGroup());
-    this.users$ = this.store.pipe(select(userSelectors.selectAllUsers));
+    this.store.dispatch(new userRoleActions.getUserRole());
+    this.userGroup$ = this.store.pipe(select(userGroupSelectors.selectAllUserGroups));
     this.roles$ = this.store.pipe(select(userRoleSelectors.selectAllUserRoles));
-    this.error$ = this.store.pipe(select(userSelectors.getErrors));
-    this.didLoading$ = this.store.pipe(select(userSelectors.getLoading));
-    this.didLoaded$ = this.store.pipe(select(userSelectors.getLoaded));
-    // this.store.dispatch(new userRoleActions.getUserRole());
-    // this.userRoles$ = this.store.pipe(select(userRoleSelectors.selectAllUserRoles));
-    // this.error$ = this.store.pipe(select(userRoleSelectors.getErrors));
-    // this.didLoading$ = this.store.pipe(select(userRoleSelectors.getLoading));
-    // this.didLoaded$ = this.store.pipe(select(userRoleSelectors.getLoaded));
-    this.users$.subscribe(users=>{
-      console.log(users)
-    })
-    this.roles$.subscribe(groups=>{
-      console.log('Group',groups)
-    })
+    
+    this.error$ = this.store.pipe(select(userRoleSelectors.getErrors));
+    this.didLoading$ = this.store.pipe(select(userRoleSelectors.getLoading));
+    this.didLoaded$ = this.store.pipe(select(userRoleSelectors.getLoaded));
+    
   }
 
 }
-
-
-// this.store.dispatch(new usreActions.getUser());
-//     // this.store.dispatch(new userGroupActions.getUserGroup());
-//     this.users$ = this.store.pipe(select(userSelectors.selectAllUsers));
-//     // this.userGroups$ = this.store.pipe(select(userGroupSelectors.selectAllUserGroups));
-//     this.error$ = this.store.pipe(select(userSelectors.getErrors));
-//     this.didLoading$ = this.store.pipe(select(userSelectors.getLoading));
-//     this.didLoaded$ = this.store.pipe(select(userSelectors.getLoaded));

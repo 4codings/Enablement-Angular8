@@ -12,7 +12,7 @@ export class getUserRole implements Action {
 export class getUserRoleSuccess implements Action {
   readonly type = GET_USER_ROLE_SUCCESS;
   constructor(public payload: userRole[]) {
-    console.log("roles", payload);
+    //console.log("roles", payload);
   }
 }
 

@@ -12,7 +12,8 @@ export class getUser implements Action {
 
 export class getUserSuccess implements Action {
   readonly type = GET_USER_SUCCESS;
-  constructor(public payload: User[]) {}
+  constructor(public payload: User[]) {
+  }
 }
 
 export class getUserFail implements Action {

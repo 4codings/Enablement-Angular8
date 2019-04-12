@@ -49,13 +49,6 @@ export class MembershipComponent implements OnInit {
     this.error$ = this.store.pipe(select(userSelectors.getErrors));
     this.didLoading$ = this.store.pipe(select(userSelectors.getLoading));
     this.didLoaded$ = this.store.pipe(select(userSelectors.getLoaded));
-
-    this.users$.subscribe(users=>{
-      console.log(users)
-    })
-    this.groups$.subscribe(groups=>{
-      console.log(groups)
-    })
   }
 
 }
