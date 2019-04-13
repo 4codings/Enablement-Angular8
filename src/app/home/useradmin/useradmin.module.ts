@@ -17,6 +17,7 @@ import { UserGroupEffects } from 'src/app/store/user-admin/user-group/usergroup.
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserRoleEffects } from 'src/app/store/user-admin/user-role/userrole.effects';
 import { UserMembershipEffects } from 'src/app/store/user-admin/user-membership/usermembership.effects';
+import { AuthEffects } from 'src/app/store/user-admin/user-authorization/authorization.effects';
 
 @NgModule({
   declarations: [
@@ -44,8 +45,7 @@ import { UserMembershipEffects } from 'src/app/store/user-admin/user-membership/
     FormsModule,
     CommonModule,
     UseradminRoutingModule,
-    EffectsModule.forFeature([UserEffects, UserGroupEffects, UserRoleEffects, UserMembershipEffects]),
-
+    EffectsModule.forFeature([UserEffects, UserGroupEffects, UserRoleEffects, UserMembershipEffects, AuthEffects]),
   ]
 })
 export class UseradminModule {}
