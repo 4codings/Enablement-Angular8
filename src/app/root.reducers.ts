@@ -5,6 +5,7 @@ import { userReducer } from "./store/user-admin/user/user.reducer";
 import { userGroupReducer } from "./store/user-admin/user-group/usergroup.reducer";
 import { userRoleReducer } from './store/user-admin/user-role/userrole.reducer';
 import { userMemberShipReducer } from './store/user-admin/user-membership/usermembership.reducer';
+import { authReducer } from './store/user-admin/user-authorization/authorization.reducers';
 
 // ------------------------------------------------------------------------------
 
@@ -15,5 +16,6 @@ export const reducers: ActionReducerMap<AppState> = {
   user: userReducer,
   userGroup: userGroupReducer,
   userRole: userRoleReducer,
-  userMemberShip:userMemberShipReducer
+  userMemberShip:userMemberShipReducer,
+  userAuthorization:authReducer
 };
