@@ -14,7 +14,7 @@ import { UserLoginState } from '../store/auth/userlogin.reducer';
 })
 export class AuthService {
   userDetail:Observable<UserLoginState>;
-  constructor(private http:HttpClient, private store:Store<AppState>, private userService:UserService) { 
+  constructor(private http:HttpClient, private store:Store<AppState>, public userService:UserService) { 
 		this.userDetail = this.store.pipe(select('userInfo'));
         this.userDetail.subscribe(data => {
             //this.userServicve.clear();

@@ -19,22 +19,7 @@
       </textarea>
 </mat-form-field>
     </div>
-    <div class="col">
-      <strong>Authorization Type</strong>
-      <mat-list class="scroll">
-      <mat-list-item  class="list_item" (click)="getauth(a.name, i);onpselect(i);"  *ngFor="let a of authtype;let i = index;"  [class.active]="a.selected == true">
-        <!-- {{g}} -->
-      <div>{{a.name}}</div>
-      </mat-list-item>
-      </mat-list>
-      <br/>
-      <strong>Application</strong>
-<mat-form-field style="width:100%;">
-      <textarea matInput [(ngModel)]="application" >
 
-      </textarea>
-</mat-form-field>
-    </div>
     <div class="col">
       <strong>Authorization</strong>
       <mat-list  class="scroll">

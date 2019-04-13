@@ -34,6 +34,7 @@ export class AssignroleComponent implements OnInit {
   didLoading$: Observable<boolean>;
   didLoaded$: Observable<boolean>;
   selecteduser:string;
+  selectedgroup:string;
 
   constructor(
     public noAuthData: NoAuthDataService,
@@ -56,5 +57,51 @@ export class AssignroleComponent implements OnInit {
     this.didLoaded$ = this.store.pipe(select(userRoleSelectors.getLoaded));
     
   }
+  selectedRole(role,index) {
+    console.log(role)
+    this.roles$.subscribe(roles=>{
+      roles.forEach(rolesArray=>{
+        rolesArray['is_selected_usr_grp'] = false
 
+      })
+    })
+    this.selecteduser = index;
+    if(role['USR_GRP_ID'].length > 0){
+     this.userGroup$.subscribe(data=>{
+       data.forEach(ele=>{
+         role['USR_GRP_ID'].forEach(element => {
+          if(ele['USR_GRP_ID'] == element){
+            console.log(ele)
+            ele['is_selected_usr_grp'] = true
+          }
+         });
+      
+       })
+     }) 
+    }
+  }
+
+  selectedGroup(group,index){
+    this.selectedgroup = index;
+console.log(group)
+  //  this.roles$.subscribe(groups=>{
+  //   groups.forEach(groupsArray=>{
+  //     groupsArray['is_selected_role'] = false
+  //   })
+  // })
+  // if(group['ROLE_ID'].length > 0){
+  //  this.roles$.subscribe(data=>{
+  //    data.forEach(ele=>{
+  //     group['ROLE_ID'].forEach(element => {
+  //       // console.log(group)
+  //       if(ele['ROLE_ID'] == element){
+  //         console.log(ele)
+  //         ele['is_selected_role'] = true
+  //       }
+  //      });
+    
+  //    })
+  //  }) 
+  // }
+  }
 }

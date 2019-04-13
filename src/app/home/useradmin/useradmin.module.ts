@@ -18,6 +18,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserRoleEffects } from 'src/app/store/user-admin/user-role/userrole.effects';
 import { UserMembershipEffects } from 'src/app/store/user-admin/user-membership/usermembership.effects';
 import { AuthEffects } from 'src/app/store/user-admin/user-authorization/authorization.effects';
+import { AuthorizeComponent } from './authorize/authorize.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { AuthEffects } from 'src/app/store/user-admin/user-authorization/authori
     OrganizationComponent,
     RoleComponent,
     UserAdminNavComponent,
-    UserAdminGroupComponent
+    UserAdminGroupComponent,
+    AuthorizeComponent
   ],
   imports: [
     MatIconModule,
