@@ -10,5 +10,7 @@ export interface AuthorizationData {
     "AUTH_DSC":string,
     "UPDATE":string,
     "id":number,
-    "AUTH_FLD":number
+    "AUTH_FLD":number,
+    "is_selected": boolean,
+    "is_selected_role": boolean,
 }
