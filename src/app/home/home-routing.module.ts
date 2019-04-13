@@ -2,7 +2,6 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { HomeComponent } from "./home.component";
 import { IsAuthenticatedGuard } from "../core/guards/is-authenticated.guard";
-// import {IsAuthenticatedGuard} from "../core/guards/is-authenticated.guard";
 
 const routes: Routes = [
   {
@@ -21,8 +20,8 @@ const routes: Routes = [
         path: "User_Admin",
         loadChildren: "./useradmin/useradmin.module#UseradminModule"
       }
-    ]
-    // canActivate: [IsAuthenticatedGuard]
+    ],
+    canActivate: [IsAuthenticatedGuard]
   }
 ];
 

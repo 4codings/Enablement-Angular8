@@ -11,7 +11,7 @@ const routes: Routes = [
         children:    [
             {path: 'login', loadChildren: './login/login.module#LoginModule'}
         ],
-        // canActivate: [AnonymousOnlyGuard]
+        canActivate: [AnonymousOnlyGuard]
     },
 ];
 

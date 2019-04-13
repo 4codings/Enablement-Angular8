@@ -39,7 +39,7 @@ export class UserService {
         this.detail.next(this.getDetailFromStorage());
     }
 
-    private getDetailFromStorage(): userInfo {
+    public getDetailFromStorage(): userInfo {
         let u = sessionStorage.getItem('u');
         u = _.isEmpty(u) ? localStorage.getItem('u') : u;
 
