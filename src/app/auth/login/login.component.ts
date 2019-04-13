@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 // import {ApiSdkService} from "../../core/api-sdk/api-sdk.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 // import {UserService} from "../../core/user.service";
@@ -16,11 +16,12 @@ import { Observable } from 'rxjs';
     templateUrl: './login.component.html',
     styleUrls:   ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
     form: FormGroup;
     ui: any;
     didLoading$:Observable<boolean>;
     didLoaded$:Observable<boolean>;
+    sub;
 
     constructor(
       // private api: ApiSdkService,
@@ -37,7 +38,13 @@ export class LoginComponent implements OnInit {
         this.initForm();
         this.ui = {laddaLogin: false};
         this.didLoading$ = this.store.pipe(select(state => state.userInfo.loading));
-        this.didLoaded$ = this.store.pipe(select(state => state.userInfo.loaded));
+
+        this.didLoaded$ = this.store.pipe(select(state => state.userInfo && state.userInfo.loaded));
+        this.sub = this.didLoaded$.subscribe(loaded => {
+        if(loaded == true) {
+            this.router.navigate(['/user']);
+        }
+        });
     }
 
     login() {
@@ -110,6 +117,10 @@ export class LoginComponent implements OnInit {
             password:   ['', Validators.required],
             rememberMe: [false]
         })
+    }
+
+    ngOnDestroy() {
+        this.sub.unsubscribe();
     }
 
 }
