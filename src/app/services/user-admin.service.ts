@@ -44,6 +44,7 @@ export class UserAdminService {
 	}
 
 	getAuthorizationData(): Observable<AuthorizationData[]>{
+<<<<<<< HEAD
     return this.http.get<AuthorizationData[]>('https://enablement.us/Enablement/rest/E_DB/SPJSON?V_CD_TYP=AUTH&V_SRC_CD=uttra.24&REST_Service=Masters&Verb=GET');
 	}
 	
@@ -58,5 +59,8 @@ export class UserAdminService {
 			'Authorization': 'Bearer' +data.token
 		});
 		return getHeaders;
+=======
+    return this.http.get<AuthorizationData[]>('https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=AUTH&V_SRC_CD=cbp%207&REST_Service=Masters&Verb=GET');
+>>>>>>> 3b81aad9b11bcf0f9ea948e254ce059f5a007363
 	}
 }
