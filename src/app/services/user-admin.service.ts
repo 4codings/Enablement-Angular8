@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { User } from '../store/user-admin/user/user.model';
 import { userGroup } from '../store/user-admin/user-group/usergroup.model';
 import { userRole } from '../store/user-admin/user-role/userrole.model';
@@ -11,11 +11,22 @@ import { AuthorizationData } from '../store/user-admin/user-authorization/author
   providedIn: 'root'
 })
 export class UserAdminService {
+  sessionData: any[] = []
+	constructor(private http:HttpClient,
+		private authHeader: HttpHeaders
+		) {
+			this.authHeader = new HttpHeaders({ 'Authorization': `Bearer`+ this.sessionData['TOKEN'] })
 
-  constructor(private http:HttpClient) { }
+  if(sessionStorage.getItem('u') != undefined || sessionStorage.getItem('u') != null){
+	const data = JSON.parse(sessionStorage.getItem('u'))
+  this.sessionData = data
+  console.log(this.sessionData['SRC_CD'])
+	}
+}
 
+	
     getUsers(): Observable<User[]> {
-		return this.http.get<User[]>('https://enablement.us/Enablement/rest/E_DB/SPJSON?V_CD_TYP=USER&V_SRC_CD=uttra.24&REST_Service=Masters&Verb=GET');
+		return this.http.get<User[]>('https://enablement.us/Enablement/rest/v1/SPJSON?V_CD_TYP=USER&V_SRC_CD='+this.sessionData['SRC_CD']+'&REST_Service=Masters&Verb=GET',{ headers: this.authHeader });
 	}
 
 	getUserGroups(): Observable<userGroup[]> {
@@ -33,6 +44,19 @@ export class UserAdminService {
 	}
 
 	getAuthorizationData(): Observable<AuthorizationData[]>{
-    return this.http.get<AuthorizationData[]>('https://enablement.us/Enablement/rest/E_DB/SPJSON?V_CD_TYP=USER&V_SRC_CD=uttra.24&REST_Service=Masters&Verb=GET');
+    return this.http.get<AuthorizationData[]>('https://enablement.us/Enablement/rest/E_DB/SPJSON?V_CD_TYP=AUTH&V_SRC_CD=uttra.24&REST_Service=Masters&Verb=GET');
+	}
+	
+
+	getHeader(){
+		if(sessionStorage.getItem('u') != undefined || sessionStorage.getItem('u') != null){
+			var data = JSON.parse(sessionStorage.getItem('u'))
+			console.log(data)
+		}
+		let getHeaders: HttpHeaders = new HttpHeaders({
+			'Content-Type': 'application/json',
+			'Authorization': 'Bearer' +data.token
+		});
+		return getHeaders;
 	}
 }

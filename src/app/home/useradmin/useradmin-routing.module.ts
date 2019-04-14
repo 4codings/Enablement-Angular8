@@ -8,6 +8,8 @@ import { OrganizationComponent } from './organization/organization.component';
 import { MembershipComponent } from './membership/membership.component';
 import { AssignroleComponent } from './assignrole/assignrole.component';
 import { AuthorizeroleComponent } from './authorizerole/authorizerole.component';
+import { AuthComponent } from 'src/app/auth/auth.component';
+import { AuthorizeComponent } from './authorize/authorize.component';
 
 
 const routes: Routes = [
@@ -19,6 +21,7 @@ const routes: Routes = [
             {path: 'Adminuser', component: UserAdminUserComponent},
             {path: 'UserGroup', component: UserAdminGroupComponent},
             {path: 'UserRole', component: RoleComponent},
+            {path: 'UserAuthorize', component: AuthorizeComponent},
             {path: 'Organization', component: OrganizationComponent},
             {path: 'Membership', component: MembershipComponent},
             {path: 'Assignrole', component: AssignroleComponent},

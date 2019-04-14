@@ -5,7 +5,7 @@
     <div class="col">
       <strong>{{Label['Av_group']}}</strong>
       <mat-list  class="scroll" style="text-align: center;">
-        <mat-list-item class="list_item" (click)="getAvailableGroup(usrGroup);selected(i);onpselect(i)" *ngFor="let usrGroup of userGroups$ | async ;let i=index"
+        <mat-list-item class="list_item" (click)="getDataGroup(usrGroup);selected(i)" *ngFor="let usrGroup of userGroups$ | async ;let i=index"
          [class.active]="i == selectedgroup">
           <div>{{usrGroup.USR_GRP_CD}}</div>
         </mat-list-item>
@@ -15,21 +15,21 @@
       <br />
       <strong>{{Label['Group']}}</strong>
       <mat-form-field style="width:100%;">
-        <input [(ngModel)]="userGroup.USR_GRP_CD_R" matInput (keyup)="putInDescription($event)" name="" />
+        <input [(ngModel)]="grpData.USR_GRP_CD" matInput (keyup)="putInDescription($event)" name="" />
       </mat-form-field>
       <br />
       <br />
       <strong>{{Label['st_date']}}</strong>
       <mat-form-field style="width:100%;">
   
-        <input [(ngModel)]="userGroup.start_date" matInput [matDatepicker]="picker">
+        <input [(ngModel)]="grpData.EFF_STRT_DT_TM" matInput [matDatepicker]="picker">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
+      </mat-form-field> 
 
       <strong>{{Label['Grp_dscr']}}</strong>
 		<mat-form-field style="width:100%;margin-top:5px;">
-			<textarea [(ngModel)]="userGroup.USR_GRP_DSC_R" matInput>
+			<textarea [(ngModel)]="grpData.USR_GRP_DSC" matInput>
 				</textarea>
 
 		</mat-form-field>

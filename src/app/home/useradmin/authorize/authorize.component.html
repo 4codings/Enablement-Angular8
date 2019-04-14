@@ -1,3 +1,31 @@
-<p>
-  authorize works!
-</p>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <strong>Authorization</strong>
+  <mat-list  class="scroll">
+  <mat-list-item class="list_item" (click)="authData(authorize);showAuthData(authorize);selected(i)"  *ngFor="let authorize of authValues$ | async;let i = index;"  [class.active]="authorize.selected == true">
+  <div>{{authorize.AUTH_CD}}</div>
+  </mat-list-item>
+  </mat-list>
+    </div>
+    <div class="col">
+      <strong>{{updateBtn}}Authorization Description</strong>
+  <mat-form-field style="width:100%;">
+        <textarea matInput [(ngModel)]="authD.AUTH_DSC" (keyup)="authData(authD.AUTH_DSC)">
+
+        </textarea>
+  </mat-form-field>
+
+  <br/>
+   <input type="checkbox"  [checked]="authD.read_select" (click)="checkUncheck('Read')"/>Read
+      <div fxFlex="3" ></div>
+      <input type="checkbox"  [checked]="authD.delete_select" (click)="checkUncheck('Delete')"/>Delete
+      <div fxFlex="3" ></div>
+      <input type="checkbox"  [checked]="authD.create_select" (click)="checkUncheck('Create')"/>Create
+      <div fxFlex="3" ></div>
+      <input type="checkbox"  [checked]="authD.update_select" (click)="checkUncheck('Update')"/>Update
+      <div fxFlex="3" ></div>
+    </div>
+  </div>
+
+</div>

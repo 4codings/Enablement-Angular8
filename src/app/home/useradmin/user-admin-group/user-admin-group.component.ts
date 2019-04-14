@@ -25,7 +25,7 @@ export class UserAdminGroupComponent implements OnInit {
   userGroup:any[]= [];
   updateBtn:boolean = false;
   selectedgroup:number;
-
+  grpData = new varData;
   constructor(
     public noAuthData: NoAuthDataService,
     private store:Store<AppState>
@@ -47,9 +47,10 @@ export class UserAdminGroupComponent implements OnInit {
     
   }
 
-  getAvailableGroup(userGroup) {
-    this.userGroup["USR_GRP_CD_R"] = userGroup["ROLE_CD"];
-    this.userGroup["USR_GRP_DSC_R"] = userGroup["ROLE_DSC"];
+  getDataGroup(dataGroup) {
+    this.grpData = dataGroup
+    // this.grpData.USR_GRP_CD = dataGroup["USR_GRP_CD"];
+    // this.grpData.USR_GRP_DSC = dataGroup["USR_GRP_DSC"];
   }
 
   selected(index) {
@@ -60,5 +61,20 @@ export class UserAdminGroupComponent implements OnInit {
   onpselect(i) {
 
   }
+  
 
+}
+export class varData {
+  EFF_END_DT_TM: string
+  EFF_STRT_DT_TM: string
+  GRP_TYP: string
+  ROLE_ID: any
+  USR_GRP_CD: string
+  USR_GRP_DSC: string
+  USR_GRP_ID: number
+  USR_ID: any
+  id: number
+  is_selected: boolean
+  is_selected_role: boolean
+  is_selected_user: boolean
 }

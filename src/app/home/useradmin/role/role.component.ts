@@ -18,7 +18,8 @@ export class RoleComponent implements OnInit {
   error$: Observable<string>;
   didLoading$: Observable<boolean>;
   didLoaded$: Observable<boolean>;
-
+  roleData = new roleData;
+  selecteduser:string
   constructor(
     public noAuthData: NoAuthDataService,
     private store:Store<AppState>
@@ -35,5 +36,30 @@ export class RoleComponent implements OnInit {
     this.didLoading$ = this.store.pipe(select(userRoleSelectors.getLoading));
     this.didLoaded$ = this.store.pipe(select(userRoleSelectors.getLoaded));
   }
+  getRollData(roleSelectData){
+    this.roleData = roleSelectData
+  }
+  selected(index) {
+    this.selecteduser = index;
+  }
+  changeRole(){
+    const x = roleData['ROLE_CD']
+    if(this.roleData != null){
+      this.userRoles$.subscribe(data=>{
+        const result = data.filter(s => s['ROLE_CD'] == x);
+        console.log(result)
+      })
+    }
+  }
+  
+}
 
+export class roleData {
+  ROLE_CD: string
+ROLE_DSC: string
+ROLE_ID: number
+USR_GRP_ID: any
+id: number
+is_selected:boolean
+is_selected_usr_grp: boolean
 }
