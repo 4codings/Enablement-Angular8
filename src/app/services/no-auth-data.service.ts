@@ -13,12 +13,12 @@ export interface data {
 })
 export class NoAuthDataService {
 
-  
+
   constructor(private http: HttpClient) {}
 
 public getJSON(): Observable<any> {
-    return this.http.get("./assets/Lables/label.json");
+    return this.http.get('./assets/Lables/label.json');
 }
-  
+
 }
 

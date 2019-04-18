@@ -1,11 +1,11 @@
-import { Injectable } from "@angular/core";
-import { Effect, ofType, Actions } from "@ngrx/effects";
-import { Observable, of } from "rxjs";
-import { Action } from "@ngrx/store";
-import * as userGroupActions from "./usergroup.action";
-import { mergeMap, map, catchError } from "rxjs/operators";
-import { userGroup } from "./usergroup.model";
-import { UserAdminService } from "src/app/services/user-admin.service";
+import { Injectable } from '@angular/core';
+import { Effect, ofType, Actions } from '@ngrx/effects';
+import { Observable, of } from 'rxjs';
+import { Action } from '@ngrx/store';
+import * as userGroupActions from './usergroup.action';
+import { mergeMap, map, catchError } from 'rxjs/operators';
+import { userGroup } from './usergroup.model';
+import { UserAdminService } from 'src/app/services/user-admin.service';
 
 @Injectable()
 export class UserGroupEffects {

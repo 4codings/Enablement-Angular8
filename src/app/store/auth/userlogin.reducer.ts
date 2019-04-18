@@ -1,12 +1,12 @@
-import * as UserLoginActions from "./userlogin.action";
-import { userInfo } from "./userinfo.model";
+import * as UserLoginActions from './userlogin.action';
+import { userInfo } from './userinfo.model';
 
-let userinfoData: userInfo = {
+const userinfoData: userInfo = {
   USR_ID: null,
   SRC_ID: null,
-  SRC_CD: "",
-  TOKEN: "",
-  USR_NM: ""
+  SRC_CD: '',
+  TOKEN: '',
+  USR_NM: ''
 };
 
 export interface UserLoginState {
@@ -20,7 +20,7 @@ export const initialState: UserLoginState = {
   userInfo: userinfoData,
   loading: false,
   loaded: false,
-  error: ""
+  error: ''
 };
 
 export function userLoginReducer(

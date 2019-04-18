@@ -1,11 +1,11 @@
-import { Injectable } from "@angular/core";
-import { Effect, ofType, Actions } from "@ngrx/effects";
-import { Observable, of } from "rxjs";
-import { Action } from "@ngrx/store";
-import * as userRoleActions from "./userrole.action";
-import { mergeMap, map, catchError } from "rxjs/operators";
-import { userRole } from "./userrole.model";
-import { UserAdminService } from "src/app/services/user-admin.service";
+import { Injectable } from '@angular/core';
+import { Effect, ofType, Actions } from '@ngrx/effects';
+import { Observable, of } from 'rxjs';
+import { Action } from '@ngrx/store';
+import * as userRoleActions from './userrole.action';
+import { mergeMap, map, catchError } from 'rxjs/operators';
+import { userRole } from './userrole.model';
+import { UserAdminService } from 'src/app/services/user-admin.service';
 
 @Injectable()
 export class UserRoleEffects {
@@ -17,7 +17,7 @@ export class UserRoleEffects {
     mergeMap((action: userRoleActions.getUserRole) =>
       this.useradmin.getUserRoles().pipe(
         map(
-          (userRole: userRole[]) => new userRoleActions.getUserRoleSuccess(userRole)
+          (userrole: userRole[]) => new userRoleActions.getUserRoleSuccess(userrole)
         ),
         catchError(err => of(new userRoleActions.getUserRoleFail(err.error)))
       )

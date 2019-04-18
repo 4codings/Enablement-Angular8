@@ -1,12 +1,12 @@
-import { Injectable } from "@angular/core";
-import { Effect, ofType, Actions } from "@ngrx/effects";
-import { Observable, of } from "rxjs";
-import { Action } from "@ngrx/store";
-import * as userActions from "./user.action";
-import { mergeMap, map, catchError } from "rxjs/operators";
-import { User } from "./user.model";
-import { AuthService } from "src/app/services/auth.service";
-import { UserAdminService } from "src/app/services/user-admin.service";
+import { Injectable } from '@angular/core';
+import { Effect, ofType, Actions } from '@ngrx/effects';
+import { Observable, of } from 'rxjs';
+import { Action } from '@ngrx/store';
+import * as userActions from './user.action';
+import { mergeMap, map, catchError } from 'rxjs/operators';
+import { User } from './user.model';
+import { AuthService } from 'src/app/services/auth.service';
+import { UserAdminService } from 'src/app/services/user-admin.service';
 
 @Injectable()
 export class UserEffects {

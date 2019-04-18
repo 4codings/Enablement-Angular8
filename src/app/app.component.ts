@@ -1,14 +1,14 @@
-import { Component, OnInit } from "@angular/core";
-import { filter } from "rxjs/operators";
-import { NavigationEnd, Router } from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { filter } from 'rxjs/operators';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
-  selector: "app-root",
-  templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.scss"]
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = "enablement";
+  title = 'enablement';
 
   constructor(
     // private /api: ApiSdkService,
@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
-        if (event.url == "/") this.router.navigate(["/user"]);
+        if (event.url == '/') { this.router.navigate(['/user']); }
       });
   }
 }

@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NoAuthDataService } from 'src/app/services/no-auth-data.service';
 import { Observable } from 'rxjs';
 import { userRole } from 'src/app/store/user-admin/user-role/userrole.model';
-import * as userRoleSelectors from "../../../store/user-admin/user-role/userrole.selectors";
-import * as userRoleActions from "../../../store/user-admin/user-role/userrole.action";
+import * as userRoleSelectors from '../../../store/user-admin/user-role/userrole.selectors';
+import * as userRoleActions from '../../../store/user-admin/user-role/userrole.action';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/app.state';
 
@@ -14,15 +14,15 @@ import { AppState } from 'src/app/app.state';
 })
 export class RoleComponent implements OnInit {
   Label: any[] = [];
-  userRoles$:Observable<userRole[]>;
+  userRoles$: Observable<userRole[]>;
   error$: Observable<string>;
   didLoading$: Observable<boolean>;
   didLoaded$: Observable<boolean>;
   roleData = new roleData;
-  selecteduser:string
+  selecteduser: string;
   constructor(
     public noAuthData: NoAuthDataService,
-    private store:Store<AppState>
+    private store: Store<AppState>
   ) { }
 
   ngOnInit() {
@@ -36,30 +36,30 @@ export class RoleComponent implements OnInit {
     this.didLoading$ = this.store.pipe(select(userRoleSelectors.getLoading));
     this.didLoaded$ = this.store.pipe(select(userRoleSelectors.getLoaded));
   }
-  getRollData(roleSelectData){
-    this.roleData = roleSelectData
+  getRollData(roleSelectData) {
+    this.roleData = roleSelectData;
   }
   selected(index) {
     this.selecteduser = index;
   }
-  changeRole(){
-    const x = roleData['ROLE_CD']
-    if(this.roleData != null){
-      this.userRoles$.subscribe(data=>{
-        const result = data.filter(s => s['ROLE_CD'] == x);
-        console.log(result)
-      })
-    }
+  changeRole() {
+    // const x = roleData.ROLE_CD;
+    // if (this.roleData != null) {
+    //   this.userRoles$.subscribe(data => {
+    //     const result = data.filter(s => s.ROLE_CD == x);
+    //     console.log(result);
+    //   });
+    // }
   }
-  
+
 }
 
 export class roleData {
-  ROLE_CD: string
-ROLE_DSC: string
-ROLE_ID: number
-USR_GRP_ID: any
-id: number
-is_selected:boolean
-is_selected_usr_grp: boolean
+  ROLE_CD: string;
+ROLE_DSC: string;
+ROLE_ID: number;
+USR_GRP_ID: any;
+id: number;
+is_selected: boolean;
+is_selected_usr_grp: boolean;
 }

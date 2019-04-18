@@ -1,13 +1,13 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 // import {ApiSdkService} from "../../core/api-sdk/api-sdk.service";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 // import {UserService} from "../../core/user.service";
-import {Router} from "@angular/router";
+import {Router} from '@angular/router';
 // import {LoggerService} from "../../core/logger.service";
-import {ToastrService} from "ngx-toastr";
+import {ToastrService} from 'ngx-toastr';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/app.state';
-import * as usreLoginActions from "../../store/auth/userlogin.action";
+import * as usreLoginActions from '../../store/auth/userlogin.action';
 import { Observable } from 'rxjs';
 
 
@@ -19,8 +19,8 @@ import { Observable } from 'rxjs';
 export class LoginComponent implements OnInit, OnDestroy {
     form: FormGroup;
     ui: any;
-    didLoading$:Observable<boolean>;
-    didLoaded$:Observable<boolean>;
+    didLoading$: Observable<boolean>;
+    didLoaded$: Observable<boolean>;
     sub;
 
     constructor(
@@ -41,23 +41,23 @@ export class LoginComponent implements OnInit, OnDestroy {
 
         this.didLoaded$ = this.store.pipe(select(state => state.userInfo && state.userInfo.loaded));
         this.sub = this.didLoaded$.subscribe(loaded => {
-        if(loaded == true) {
+        if (loaded == true) {
             this.router.navigate(['/user']);
         }
         });
     }
 
     login() {
-        if (this.form.invalid) return;
+        if (this.form.invalid) { return; }
 
         this.ui.laddaLogin = true;
-        console.log(this.form.value)
-        let body = {
-            "V_USR_NM": this.form.value.email,
-            "V_PSWRD": this.form.value.password,
-            "V_ACTN_NM": "LOGIN"
-        }
-        //this.router.navigate(['/user']);
+        console.log(this.form.value);
+        const body = {
+            V_USR_NM: this.form.value.email,
+            V_PSWRD: this.form.value.password,
+            V_ACTN_NM: 'LOGIN'
+        };
+        // this.router.navigate(['/user']);
 
         this.store.dispatch(new usreLoginActions.userLogin(body));
         // this.store.subscribe(
@@ -76,7 +76,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                         // debugger
                         // let keyt = 'token';
                         // localStorage.setItem(key, JSON.stringify(resp.body.result.token));
-    
+
                         // localStorage.setItem(key, JSON.stringify(resp.body.result.token));
                     // },
                     // e => {
@@ -116,7 +116,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             email:   ['', Validators.required],
             password:   ['', Validators.required],
             rememberMe: [false]
-        })
+        });
     }
 
     ngOnDestroy() {

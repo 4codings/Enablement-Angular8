@@ -13,19 +13,19 @@ import { UserLoginState } from '../store/auth/userlogin.reducer';
   providedIn: 'root'
 })
 export class AuthService {
-  userDetail:Observable<UserLoginState>;
-  constructor(private http:HttpClient, private store:Store<AppState>, public userService:UserService) { 
+  userDetail: Observable<UserLoginState>;
+  constructor(private http: HttpClient, private store: Store<AppState>, public userService: UserService) {
 		this.userDetail = this.store.pipe(select('userInfo'));
-        this.userDetail.subscribe(data => {
-            //this.userServicve.clear();
-            if(data.userInfo.TOKEN != "") {
-              if(this.userService.getDetailFromStorage() == null) {
+  this.userDetail.subscribe(data => {
+            // this.userServicve.clear();
+            if (data.userInfo.TOKEN != '') {
+              if (this.userService.getDetailFromStorage() == null) {
                 console.log(data.userInfo.TOKEN);
                 this.userService.setUser(data.userInfo);
               }
             }
-            
-            
+
+
         });
 	}
 

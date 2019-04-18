@@ -1,6 +1,6 @@
-import * as UserActions from "./user.action";
-import { EntityState, EntityAdapter, createEntityAdapter } from "@ngrx/entity";
-import { User } from "./user.model";
+import * as UserActions from './user.action';
+import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
+import { User } from './user.model';
 
 export interface UserState extends EntityState<User> {
   // additional entity state properties
@@ -17,7 +17,7 @@ export const initialState: UserState = adapter.getInitialState({
   selectedUserId: null,
   loading: false,
   loaded: false,
-  error: ""
+  error: ''
 });
 
 export function userReducer(

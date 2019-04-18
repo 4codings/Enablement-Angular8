@@ -7,9 +7,9 @@ import {
     OnDestroy,
     OnInit
 } from '@angular/core';
-import {AbstractControl, FormGroupDirective} from "@angular/forms";
+import {AbstractControl, FormGroupDirective} from '@angular/forms';
 import * as _ from 'lodash';
-import {combineLatest, Subject, Subscription} from "rxjs";
+import {combineLatest, Subject, Subscription} from 'rxjs';
 import {distinctUntilChanged} from 'rxjs/operators';
 
 
@@ -74,7 +74,7 @@ export class FormErrorMsgComponent implements OnInit, OnChanges, DoCheck, OnDest
 
     ngAfterViewInit() {
         setTimeout(() => {
-            if (!this.control) return;
+            if (!this.control) { return; }
 
             this.checkErrors();
             this.control.statusChanges.subscribe(this.checkErrors.bind(this));
@@ -86,9 +86,10 @@ export class FormErrorMsgComponent implements OnInit, OnChanges, DoCheck, OnDest
         const errors = control.errors;
         let errProp = null;
 
-        for (let e in errors) {
-            if (!this.defaultMsg.hasOwnProperty(e))
+        for (const e in errors) {
+            if (!this.defaultMsg.hasOwnProperty(e)) {
                 continue;
+            }
 
             errProp = e;
             break;
@@ -101,9 +102,9 @@ export class FormErrorMsgComponent implements OnInit, OnChanges, DoCheck, OnDest
         this.defaultMsg = {
             required:        `${_.startCase(this.controlName)} is required`,
             email:           'Enter a valid email',
-            invalidPassword: `Use at least 8 characters. 
+            invalidPassword: `Use at least 8 characters.
             Mix with digits, uppercase and special character`,
-        }
+        };
     }
 
 }

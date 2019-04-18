@@ -7,10 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserAdminNavComponent implements OnInit {
 
-  isCollapsed:boolean;
+  isCollapsed: boolean;
   isNavbarCollapsed = true;
-  constructor() { 
-    this.isCollapsed=true;
+  constructor() {
+    this.isCollapsed = true;
   }
 
   ngOnInit() {

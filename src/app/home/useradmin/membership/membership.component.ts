@@ -3,15 +3,15 @@ import { NoAuthDataService } from 'src/app/services/no-auth-data.service';
 import { userMemberShip } from 'src/app/store/user-admin/user-membership/usermembership.model';
 import { Observable } from 'rxjs';
 
-import * as usreActions from "../../../store/user-admin/user/user.action";
-import { Store, select } from "@ngrx/store";
-import { AppState } from "src/app/app.state";
-import { User } from "../../../store/user-admin/user/user.model";
-import * as userSelectors from "../../../store/user-admin/user/user.selectors";
-import * as userGroupSelectors from "../../../store/user-admin/user-group/usergroup.selectors";
-import * as userGroupActions from "../../../store/user-admin/user-group/usergroup.action";
-import { userGroup } from "src/app/store/user-admin/user-group/usergroup.model";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
+import * as usreActions from '../../../store/user-admin/user/user.action';
+import { Store, select } from '@ngrx/store';
+import { AppState } from 'src/app/app.state';
+import { User } from '../../../store/user-admin/user/user.model';
+import * as userSelectors from '../../../store/user-admin/user/user.selectors';
+import * as userGroupSelectors from '../../../store/user-admin/user-group/usergroup.selectors';
+import * as userGroupActions from '../../../store/user-admin/user-group/usergroup.action';
+import { userGroup } from 'src/app/store/user-admin/user-group/usergroup.model';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { flattenStyles } from '@angular/platform-browser/src/dom/dom_renderer';
 
 @Component({
@@ -26,16 +26,16 @@ export class MembershipComponent implements OnInit {
   public users$: Observable<User[]>;
   public groups$: Observable<userGroup[]>;
 
-  addBtn: boolean = true;
-  updateBtn: boolean = false;
+  addBtn = true;
+  updateBtn = false;
   error$: Observable<string>;
   didLoading$: Observable<boolean>;
   didLoaded$: Observable<boolean>;
-  selecteduser:string;
+  selecteduser: string;
 
   constructor(
     public noAuthData: NoAuthDataService,
-    private store:Store<AppState>
+    private store: Store<AppState>
   ) { }
 
   ngOnInit() {
@@ -51,26 +51,26 @@ export class MembershipComponent implements OnInit {
     this.didLoading$ = this.store.pipe(select(userSelectors.getLoading));
     this.didLoaded$ = this.store.pipe(select(userSelectors.getLoaded));
   }
-  selected(user,index) {
-    this.groups$.subscribe(group=>{
-      group.forEach(groupArray=>{
-        groupArray['is_selected_user'] = false
+  selected(user, index) {
+    this.groups$.subscribe(group => {
+      group.forEach(groupArray => {
+        //groupArray.is_selected_user = false;
 
-      })
-    })
+      });
+    });
     this.selecteduser = index;
-    if(user['USR_GRP_ID'].length > 0){
-     this.groups$.subscribe(data=>{
-       data.forEach(ele=>{
-         user['USR_GRP_ID'].forEach(element => {
-          if(ele['USR_GRP_ID'] == element){
-            console.log(ele)
-            ele['is_selected_user'] = true
+    if (user.USR_GRP_ID.length > 0) {
+     this.groups$.subscribe(data => {
+       data.forEach(ele => {
+         user.USR_GRP_ID.forEach(element => {
+          if (ele.USR_GRP_ID == element) {
+            console.log(ele);
+            //ele.is_selected_user = true;
           }
          });
-      
-       })
-     }) 
+
+       });
+     });
     }
   }
 }
