@@ -35,6 +35,12 @@ export class UserAdminUserComponent implements OnInit {
   didLoaded$: Observable<boolean>;
   selecteduser: any;
 
+  public nameChanged = false;
+  private clonedName = '';
+
+  public descChanged = false;
+  private clonedDesc = '';
+
   constructor(
     public noAuthData: NoAuthDataService,
     private store: Store<AppState>
@@ -78,6 +84,8 @@ export class UserAdminUserComponent implements OnInit {
 
   selected(index) {
     this.selecteduser = index;
+    this.clonedName = this.user.V_USR_NM;
+    this.clonedDesc = this.user.V_USR_NM;
     this.setButtonLabel();
   }
 
@@ -121,6 +129,22 @@ export class UserAdminUserComponent implements OnInit {
       this.updateBtn = true;
     } else {
       this.updateBtn = !!this.selecteduser;
+    }
+  }
+
+  public nameModelChanged() {
+    if (this.clonedName !== this.user.V_USR_NM) {
+      this.nameChanged = true;
+    } else {
+      this.nameChanged = false;
+    }
+  }
+
+  public descModelChanged() {
+    if (this.clonedDesc !== this.user.V_USR_DSC) {
+      this.descChanged = true;
+    } else {
+      this.descChanged = false;
     }
   }
 

@@ -14,7 +14,7 @@
       <strong>{{Label['user_name']}}</strong>
       <mat-form-field style="width:100%;margin-top:12px;">
         <!-- [(ngModel)]="USR_NM_R" (keyup)="doBothField();onKey()" -->
-          <input matInput  [(ngModel)]="user.V_USR_NM" (ngModelChange)="updateBtn = false" (keyup)="availableGroupValueChange(user.V_USR_NM)"/>
+          <input matInput name="userName" [(ngModel)]="user.V_USR_NM" (ngModelChange)="nameModelChanged(); updateBtn = false" (keyup)="availableGroupValueChange(user.V_USR_NM)"/>
       </mat-form-field>
     </div>
 
@@ -22,7 +22,7 @@
       <strong>{{Label['user_description']}}</strong>
       <mat-form-field style="width:100%;">
         <!-- (keyup)="changinUserInfo($event)" matInput [(ngModel)]="USR_DSC_R" (keyup)="descChange()" -->
-        <textarea matInput [(ngModel)]="user.V_USR_DSC" (change)="statusChange()"></textarea>
+        <textarea matInput [(ngModel)]="user.V_USR_DSC" (ngModelChange)="updateBtn = false; statusChange(); descModelChanged()"></textarea>
       </mat-form-field>
 
       <strong>{{Label['current_status']}}</strong>
@@ -42,9 +42,9 @@
 <div class="row d-flex justify-content-center">
   <div>
     <div class="CustomeButtonFloat">
-      <button mat-raised-button color="primary" *ngIf = "!updateBtn" (click)="addUser()">
+      <button mat-raised-button color="primary" [disabled]="!nameChanged && !descChanged" *ngIf = "!updateBtn" (click)="addUser()">
         <mat-icon style="vertical-align: middle;margin-right: 5px">add</mat-icon>{{Label['add_btn']}}</button>
-      <button mat-raised-button color="primary" [hidden]="!updateBtn" (click)="updateUser()">
+      <button mat-raised-button color="primary" [disabled]="!descChanged && !nameChanged" [hidden]="!updateBtn" (click)="updateUser()">
         <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['UpdateBtn']}}</button>
       <button title="Upload file" mat-raised-button color="primary" (click)="uploadData()">
         <i class="fas fa-upload"></i> Upload
