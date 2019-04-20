@@ -53,9 +53,9 @@
   <div class="row d-flex justify-content-center">
     <div>
       <div class="CustomeButtonFloat">
-        <button mat-raised-button color="primary" [disabled]="!dateChanged && !nameChanged && !descChanged" *ngIf = "!updateBtn" (click)="addGroup()">
+        <button mat-raised-button color="primary" [disabled]="(duplicated && !selectedgroup) || !dateChanged && !nameChanged && !descChanged" *ngIf = "!updateBtn" (click)="addGroup()">
           <mat-icon style="vertical-align: middle;margin-right: 5px">add</mat-icon>{{Label['add_btn']}}</button>
-        <button mat-raised-button color="primary" [disabled]="!dateChanged && !nameChanged && !descChanged" [hidden]="!updateBtn" (click)="updateGroup()">
+        <button mat-raised-button color="primary" [disabled]="(duplicated && !selectedgroup) || !dateChanged && !nameChanged && !descChanged" [hidden]="!updateBtn" (click)="updateGroup()">
           <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['UpdateBtn']}}</button>
         <button mat-raised-button color="warn" [disabled]="!updateBtn" (click)="deleteGroup()">
           <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['dlt_btn']}}</button>

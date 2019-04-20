@@ -74,7 +74,6 @@ export class UserAdminUserComponent implements OnInit {
     this.users$
       .subscribe((val) => {
         this.usersList = val;
-        console.log(val);
       });
 
     this.setButtonLabel();

@@ -31,6 +31,9 @@ export class RoleComponent implements OnInit {
   public descChanged = false;
   private clonedDesc = '';
 
+  public duplicated = false;
+  private roleList = [];
+
   constructor(
     public noAuthData: NoAuthDataService,
     private store: Store<AppState>
@@ -46,6 +49,11 @@ export class RoleComponent implements OnInit {
     this.error$ = this.store.pipe(select(userRoleSelectors.getErrors));
     this.didLoading$ = this.store.pipe(select(userRoleSelectors.getLoading));
     this.didLoaded$ = this.store.pipe(select(userRoleSelectors.getLoaded));
+
+    this.userRoles$
+      .subscribe((val) => {
+        this.roleList = val;
+      });
 
     this.setButtonLabel();
   }
@@ -122,6 +130,7 @@ export class RoleComponent implements OnInit {
       this.nameChanged = false;
       this.updateBtn = true;
     }
+    this.checkDuplications();
   }
 
   public descModelChanged() {
@@ -130,6 +139,17 @@ export class RoleComponent implements OnInit {
       this.updateBtn = !this.nameChanged;
     } else {
       this.descChanged = false;
+    }
+  }
+
+  public checkDuplications() {
+    for (let i = 0; i < this.roleList.length; i++) {
+      if (this.roleList[i].V_ROLE_CD === this.roleData.V_ROLE_CD) {
+        this.duplicated = true;
+        return;
+      } else {
+        this.duplicated = false;
+      }
     }
   }
 

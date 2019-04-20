@@ -41,6 +41,8 @@ export class UserAdminGroupComponent implements OnInit {
   private clonedEndDate = '';
   private clonedStartDate = '';
 
+  public duplicated = false;
+
   constructor(
     public noAuthData: NoAuthDataService,
     private store: Store<AppState>,
@@ -166,6 +168,7 @@ export class UserAdminGroupComponent implements OnInit {
     } else {
       this.nameChanged = false;
     }
+    this.checkDuplications();
   }
 
   public descModelChanged() {
@@ -181,6 +184,17 @@ export class UserAdminGroupComponent implements OnInit {
       this.dateChanged = true;
     } else {
       this.dateChanged = false;
+    }
+  }
+
+  public checkDuplications() {
+    for (let i = 0; i < this.groupList.length; i++) {
+      if (this.groupList[i].V_USR_GRP_CD === this.grpData.V_USR_GRP_CD) {
+        this.duplicated = true;
+        return;
+      } else {
+        this.duplicated = false;
+      }
     }
   }
 
