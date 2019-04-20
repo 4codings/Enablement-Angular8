@@ -57,6 +57,9 @@ export class RoleComponent implements OnInit {
     this.setButtonLabel();
     this.clonedName = this.roleData.V_ROLE_CD;
     this.clonedDesc = this.roleData.V_ROLE_DSC;
+    this.updateBtn = true;
+    this.nameChanged = false;
+    this.descChanged = false;
   }
 
   private setButtonLabel() {
@@ -114,14 +117,17 @@ export class RoleComponent implements OnInit {
   public nameModelChanged() {
     if (this.clonedName !== this.roleData.V_ROLE_CD) {
       this.nameChanged = true;
+      this.updateBtn = false;
     } else {
       this.nameChanged = false;
+      this.updateBtn = true;
     }
   }
 
   public descModelChanged() {
     if (this.clonedDesc !== this.roleData.V_ROLE_DSC) {
       this.descChanged = true;
+      this.updateBtn = !this.nameChanged;
     } else {
       this.descChanged = false;
     }
