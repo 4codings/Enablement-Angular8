@@ -25,6 +25,12 @@ export class RoleComponent implements OnInit {
 
   updateBtn = false;
 
+  public nameChanged = false;
+  private clonedName = '';
+
+  public descChanged = false;
+  private clonedDesc = '';
+
   constructor(
     public noAuthData: NoAuthDataService,
     private store: Store<AppState>
@@ -49,6 +55,8 @@ export class RoleComponent implements OnInit {
   selected(index) {
     this.selecteduser = index;
     this.setButtonLabel();
+    this.clonedName = this.roleData.V_ROLE_CD;
+    this.clonedDesc = this.roleData.V_ROLE_DSC;
   }
 
   private setButtonLabel() {
@@ -101,6 +109,22 @@ export class RoleComponent implements OnInit {
     //     console.log(result);
     //   });
     // }
+  }
+
+  public nameModelChanged() {
+    if (this.clonedName !== this.roleData.V_ROLE_CD) {
+      this.nameChanged = true;
+    } else {
+      this.nameChanged = false;
+    }
+  }
+
+  public descModelChanged() {
+    if (this.clonedDesc !== this.roleData.V_ROLE_DSC) {
+      this.descChanged = true;
+    } else {
+      this.descChanged = false;
+    }
   }
 
 }
