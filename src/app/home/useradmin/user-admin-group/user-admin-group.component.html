@@ -23,7 +23,7 @@
         <div class="col-6">
           <strong>{{Label['st_date']}}</strong>
           <mat-form-field style="width:100%;">
-            <input [(ngModel)]="start_date" matInput [matDatepicker]="picker">
+            <input [(ngModel)]="start_date" (ngModelChange)="dateChangedModel()" matInput [matDatepicker]="picker">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
@@ -41,7 +41,7 @@
         <div class="col-6">
           <strong>{{Label['en_date']}}</strong>
           <mat-form-field style="width:100%;">
-            <input [(ngModel)]="end_date" matInput [matDatepicker]="picker1">
+            <input [(ngModel)]="end_date" (ngModelChange)="dateChangedModel()" matInput [matDatepicker]="picker1">
             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
             <mat-datepicker #picker1></mat-datepicker>
           </mat-form-field>
@@ -53,9 +53,9 @@
   <div class="row d-flex justify-content-center">
     <div>
       <div class="CustomeButtonFloat">
-        <button mat-raised-button color="primary" [disabled]="!nameChanged && !descChanged" *ngIf = "!updateBtn" (click)="addGroup()">
+        <button mat-raised-button color="primary" [disabled]="!dateChanged && !nameChanged && !descChanged" *ngIf = "!updateBtn" (click)="addGroup()">
           <mat-icon style="vertical-align: middle;margin-right: 5px">add</mat-icon>{{Label['add_btn']}}</button>
-        <button mat-raised-button color="primary" [disabled]="!nameChanged && !descChanged" [hidden]="!updateBtn" (click)="updateGroup()">
+        <button mat-raised-button color="primary" [disabled]="!dateChanged && !nameChanged && !descChanged" [hidden]="!updateBtn" (click)="updateGroup()">
           <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['UpdateBtn']}}</button>
         <button mat-raised-button color="warn" [disabled]="!updateBtn" (click)="deleteGroup()">
           <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['dlt_btn']}}</button>

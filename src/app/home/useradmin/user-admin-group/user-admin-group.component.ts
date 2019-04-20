@@ -36,6 +36,11 @@ export class UserAdminGroupComponent implements OnInit {
 
   public descChanged = false;
   private clonedDesc = '';
+
+  public dateChanged = false;
+  private clonedEndDate = '';
+  private clonedStartDate = '';
+
   constructor(
     public noAuthData: NoAuthDataService,
     private store: Store<AppState>,
@@ -81,6 +86,12 @@ export class UserAdminGroupComponent implements OnInit {
     this.selectedgroup = index;
     this.clonedName = this.grpData.V_USR_GRP_CD;
     this.clonedDesc = this.grpData.V_USR_GRP_CD;
+    this.clonedEndDate = this.end_date;
+    this.clonedStartDate = this.start_date;
+    this.dateChanged = false;
+    this.descChanged = false;
+    this.nameChanged = false;
+    this.updateBtn = true;
     this.setButtonLabel();
   }
 
@@ -162,6 +173,14 @@ export class UserAdminGroupComponent implements OnInit {
       this.descChanged = true;
     } else {
       this.descChanged = false;
+    }
+  }
+
+  public dateChangedModel() {
+    if (this.clonedEndDate !== this.end_date || this.start_date !== this.clonedStartDate) {
+      this.dateChanged = true;
+    } else {
+      this.dateChanged = false;
     }
   }
 
