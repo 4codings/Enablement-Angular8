@@ -44,6 +44,8 @@ export class UserAdminUserComponent implements OnInit {
   public statusChanged = false;
   private clonedStatus = '';
   public duplicated = false;
+  public totalDuplicated = false;
+  public hideButton = false;
 
   private usersList = [];
 
@@ -148,6 +150,7 @@ export class UserAdminUserComponent implements OnInit {
     } else {
       this.statusChanged = false;
     }
+    this.checkDuplications();
   }
 
   private setButtonLabel() {
@@ -176,15 +179,33 @@ export class UserAdminUserComponent implements OnInit {
     } else {
       this.descChanged = false;
     }
+    this.checkDuplications();
   }
 
   public checkDuplications() {
     for (let i = 0; i < this.usersList.length; i++) {
       if (this.usersList[i].V_USR_NM === this.user.V_USR_NM) {
         this.duplicated = true;
+        this.updateBtn = true;
+        this.hideButton = true;
+        this.deepCheck();
         return;
       } else {
         this.duplicated = false;
+        this.hideButton = false;
+      }
+    }
+  }
+
+  private deepCheck() {
+    if (this.duplicated) {
+      for (let i = 0; i < this.usersList.length; i++) {
+        if (this.usersList[i].V_STS === this.user.V_STS && this.usersList[i].V_USR_DSC === this.user.V_USR_DSC) {
+          this.totalDuplicated = true;
+          return;
+        } else {
+          this.totalDuplicated = false;
+        }
       }
     }
   }

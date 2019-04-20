@@ -43,6 +43,9 @@ export class UserAdminGroupComponent implements OnInit {
 
   public duplicated = false;
 
+  public totalDuplicated = false;
+  public hideButton = false;
+
   constructor(
     public noAuthData: NoAuthDataService,
     private store: Store<AppState>,
@@ -177,6 +180,7 @@ export class UserAdminGroupComponent implements OnInit {
     } else {
       this.descChanged = false;
     }
+    this.checkDuplications();
   }
 
   public dateChangedModel() {
@@ -185,15 +189,33 @@ export class UserAdminGroupComponent implements OnInit {
     } else {
       this.dateChanged = false;
     }
+    this.checkDuplications();
   }
 
   public checkDuplications() {
     for (let i = 0; i < this.groupList.length; i++) {
       if (this.groupList[i].V_USR_GRP_CD === this.grpData.V_USR_GRP_CD) {
         this.duplicated = true;
+        this.updateBtn = true;
+        this.hideButton = true;
+        this.deepCheck();
         return;
       } else {
         this.duplicated = false;
+        this.hideButton = false;
+      }
+    }
+  }
+
+  private deepCheck() {
+    if (this.duplicated) {
+      for (let i = 0; i < this.groupList.length; i++) {
+        if (this.groupList[i].V_USR_GRP_DSC === this.grpData.V_USR_GRP_DSC) {
+          this.totalDuplicated = true;
+          return;
+        } else {
+          this.totalDuplicated = false;
+        }
       }
     }
   }

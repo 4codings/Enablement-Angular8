@@ -34,6 +34,9 @@ export class RoleComponent implements OnInit {
   public duplicated = false;
   private roleList = [];
 
+  public totalDuplicated = false;
+  public hideButton = false;
+
   constructor(
     public noAuthData: NoAuthDataService,
     private store: Store<AppState>
@@ -140,15 +143,33 @@ export class RoleComponent implements OnInit {
     } else {
       this.descChanged = false;
     }
+    this.checkDuplications();
   }
 
   public checkDuplications() {
     for (let i = 0; i < this.roleList.length; i++) {
       if (this.roleList[i].V_ROLE_CD === this.roleData.V_ROLE_CD) {
         this.duplicated = true;
+        this.updateBtn = true;
+        this.hideButton = true;
+        this.deepCheck();
         return;
       } else {
         this.duplicated = false;
+        this.hideButton = false;
+      }
+    }
+  }
+
+  private deepCheck() {
+    if (this.duplicated) {
+      for (let i = 0; i < this.roleList.length; i++) {
+        if (this.roleList[i].V_ROLE_DSC === this.roleData.V_ROLE_DSC) {
+          this.totalDuplicated = true;
+          return;
+        } else {
+          this.totalDuplicated = false;
+        }
       }
     }
   }
