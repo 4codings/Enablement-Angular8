@@ -1,29 +1,53 @@
 
 
 <div class="container-fluid">
-  <div class="row">
-    <div class="col">
+  <div class="row d-flex justify-content-center">
+    <div class="col-6" style="text-align: center">
       <strong>{{Label['available_role']}}</strong>
       <mat-list  class="scroll">
         <mat-list-item class="list_item" (click)="getRollData(role);selected(i);" *ngFor="let role of userRoles$ | async; let i = index;" [class.active]="selecteduser == i"
           >
-          <div>{{role.ROLE_CD}}</div>
+          <div>{{role.V_ROLE_CD}}</div>
         </mat-list-item>
       </mat-list>
     </div>
-    <div class="col">
+  </div>
+  <div class="row d-flex justify-content-center">
+    <div class="col-6" style="text-align: center">
       <strong>{{Label['role']}}</strong>
-    <mat-form-field style="width:100%;">
-      <input matInput [(ngModel)]="roleData.ROLE_CD" (keyup)="changeRole();" />
-    </mat-form-field>
-    <br />
-    <strong>{{Label['role_descripton']}}</strong>
-    <mat-form-field style="width:100%;">
-      <textarea matInput [(ngModel)]="roleData.ROLE_DSC">
+      <mat-form-field style="width:100%;">
+        <input matInput [(ngModel)]="roleData.V_ROLE_CD" (keyup)="changeRole();" />
+      </mat-form-field>
+      <br />
+      <strong>{{Label['role_descripton']}}</strong>
+      <mat-form-field style="width:100%;">
+      <textarea matInput [(ngModel)]="roleData.V_ROLE_DSC">
 
     </textarea>
-    </mat-form-field>
+      </mat-form-field>
     </div>
   </div>
 
+  <div class="row d-flex justify-content-center">
+    <div class="col-6 d-flex justify-content-center">
+      <div class="row">
+        <div>
+          <div class="CustomeButtonFloat">
+            <button mat-raised-button color="primary" *ngIf = "!updateBtn" (click)="addRole()">
+              <mat-icon style="vertical-align: middle;margin-right: 5px">add</mat-icon>{{Label['add_btn']}}</button>
+            <button mat-raised-button color="primary" [hidden]="!updateBtn" (click)="updateRole()">
+              <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['UpdateBtn']}}</button>
+            <button mat-raised-button color="warn" [disabled]="!updateBtn" (click)="deleteRole()">
+              <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['dlt_btn']}}</button>
+            <button title="Upload file" mat-raised-button color="primary" (click)="uploadData()">
+              <i class="fas fa-upload"></i> Upload
+            </button>
+            <button mat-raised-button color="primary" (click)="downloadFile()">
+              <i class="fas fa-download"></i> Download
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

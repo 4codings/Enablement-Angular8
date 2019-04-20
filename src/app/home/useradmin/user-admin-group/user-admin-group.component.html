@@ -2,74 +2,80 @@
 
 <div class="container-fluid">
   <div class="row">
-    <div class="col">
+    <div class="col-4">
       <strong>{{Label['Av_group']}}</strong>
-      <mat-list  class="scroll" style="text-align: center;">
-        <mat-list-item class="list_item" (click)="getDataGroup(usrGroup);selected(i)" *ngFor="let usrGroup of userGroups$ | async ;let i=index"
-         [class.active]="i == selectedgroup">
-          <div>{{usrGroup.USR_GRP_CD}}</div>
+      <mat-list class="scroll" style="text-align: center;">
+        <mat-list-item class="list_item" (click)="getDataGroup(usrGroup);selected(i)"
+                       *ngFor="let usrGroup of userGroups$ | async;let i=index"
+                       [class.active]="i == selectedgroup">
+          <div>{{usrGroup.V_USR_GRP_CD}}</div>
         </mat-list-item>
       </mat-list>
     </div>
-    <div class="col">
-      <br />
-      <strong>{{Label['Group']}}</strong>
-      <mat-form-field style="width:100%;">
-        <input [(ngModel)]="grpData.USR_GRP_CD" matInput (keyup)="putInDescription($event)" name="" />
-      </mat-form-field>
-      <br />
-      <br />
-      <strong>{{Label['st_date']}}</strong>
-      <mat-form-field style="width:100%;">
-  
-        <input [(ngModel)]="grpData.EFF_STRT_DT_TM" matInput [matDatepicker]="picker">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field> 
+    <div class="col-8 pt-3">
+      <div class="row">
+        <div class="col-6">
+          <strong>{{Label['Group']}}</strong>
+          <mat-form-field style="width:100%;">
+            <input [(ngModel)]="grpData.V_USR_GRP_CD" (ngModelChange)="newGroupDate()" matInput name=""/>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <strong>{{Label['st_date']}}</strong>
+          <mat-form-field style="width:100%;">
+            <input [(ngModel)]="start_date" matInput [matDatepicker]="picker">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
 
-      <strong>{{Label['Grp_dscr']}}</strong>
-		<mat-form-field style="width:100%;margin-top:5px;">
-			<textarea [(ngModel)]="grpData.USR_GRP_DSC" matInput>
+      <div class="row">
+        <div class="col-6">
+          <strong>{{Label['Grp_dscr']}}</strong>
+          <mat-form-field style="width:100%;margin-top:5px;">
+			<textarea [(ngModel)]="grpData.V_USR_GRP_DSC" matInput>
 				</textarea>
-
-		</mat-form-field>
-		<br />
-		<br />
-		<strong>{{Label['en_date']}}</strong>
-		<mat-form-field style="width:100%;">
-
-			<input [(ngModel)]="userGroup.end_date" matInput [matDatepicker]="picker1">
-			<mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-			<mat-datepicker #picker1></mat-datepicker>
-		</mat-form-field>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <strong>{{Label['en_date']}}</strong>
+          <mat-form-field style="width:100%;">
+            <input [(ngModel)]="end_date" matInput [matDatepicker]="picker1">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
     </div>
   </div>
 
-</div>
+  <div class="row d-flex justify-content-center">
+    <div>
+      <div class="CustomeButtonFloat">
+        <button mat-raised-button color="primary" *ngIf = "!updateBtn" (click)="addGroup()">
+          <mat-icon style="vertical-align: middle;margin-right: 5px">add</mat-icon>{{Label['add_btn']}}</button>
+        <button mat-raised-button color="primary" [hidden]="!updateBtn" (click)="updateGroup()">
+          <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['UpdateBtn']}}</button>
+        <button mat-raised-button color="warn" [disabled]="!updateBtn" (click)="deleteGroup()">
+          <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['dlt_btn']}}</button>
+      </div>
+      <div class="CustomeButtonFloat">
+        <button title="Upload file" mat-raised-button color="primary" (click)="uploadData()">
+          <i class="fas fa-upload"></i> Upload
+        </button>
+        <button mat-raised-button color="primary" (click)="downloadFile()">
+          <i class="fas fa-download"></i> Download
+        </button>
+      </div>
+      <br />
+      <div class="alertSuccess" *ngIf="emailMessage!=undefined && emailMessage!=''">
+        {{emailMessage}}
+      </div>
+    </div>
+    <div fxFlex="0"></div>
+  </div>
 
-<div fxLayout="row">
-	<div fxFlex="38"></div>
-	<div fxFlex="60">
-		<div class="CustomeButtonFloat">
-			<button mat-raised-button color="primary" [disabled]="addBtn" (click)="addUSer()">
-				<mat-icon style="vertical-align: middle;margin-right: 5px">add</mat-icon>{{Label['add_btn']}}</button>
-			<button mat-raised-button color="primary" [hidden]="!updateBtn" (click)="updateUser()">
-				<mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['UpdateBtn']}}</button>
-		</div>
-		<div class="CustomeButtonFloat">
-			<button title="Upload file" mat-raised-button color="primary" (click)="uploadData()">
-				<i class="fas fa-upload"></i> Upload
-			</button>
-			<button mat-raised-button color="primary" (click)="downloadFile()">
-				<i class="fas fa-download"></i> Download
-			</button>
-		</div>
-		<br />
-		<div class="alertSuccess" *ngIf="emailMessage!=undefined && emailMessage!=''">
-			{{emailMessage}}
-		</div>
-	</div>
-	<div fxFlex="0"></div>
 </div>
 
 <input type="file" (change)="fileChangeEvent($event ,files)" #files name="Document_File" id="Document_File" style="display:none"

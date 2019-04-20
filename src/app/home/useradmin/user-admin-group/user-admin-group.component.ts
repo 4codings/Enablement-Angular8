@@ -10,6 +10,7 @@ import * as userGroupSelectors from '../../../store/user-admin/user-group/usergr
 import * as userGroupActions from '../../../store/user-admin/user-group/usergroup.action';
 import { Observable } from 'rxjs';
 import { userGroup } from 'src/app/store/user-admin/user-group/usergroup.model';
+import {addUserGroup, DeleteUserGroup, UpdateUserGroup} from '../../../store/user-admin/user-group/usergroup.action';
 
 @Component({
   selector: 'app-user-admin-group',
@@ -26,6 +27,12 @@ export class UserAdminGroupComponent implements OnInit {
   updateBtn = false;
   selectedgroup: number;
   grpData = new varData;
+
+  public start_date: any;
+  public end_date: any;
+  public groupList = [];
+  public buttonLabel = 'Add';
+
   constructor(
     public noAuthData: NoAuthDataService,
     private store: Store<AppState>
@@ -40,15 +47,23 @@ export class UserAdminGroupComponent implements OnInit {
     this.didLoading$ = this.store.pipe(select(userGroupSelectors.getLoading));
     this.didLoaded$ = this.store.pipe(select(userGroupSelectors.getLoaded));
 
+    this.userGroups$
+      .subscribe((groupList) => {
+        this.groupList = groupList;
+      });
+
     this.noAuthData.getJSON().subscribe(data => {
       console.log(data);
       this.Label = data;
     });
 
+    this.setButtonLabel();
+
   }
 
   getDataGroup(dataGroup) {
     this.grpData = dataGroup;
+    this.setDateValue(dataGroup);
     // this.grpData.USR_GRP_CD = dataGroup["USR_GRP_CD"];
     // this.grpData.USR_GRP_DSC = dataGroup["USR_GRP_DSC"];
   }
@@ -56,10 +71,72 @@ export class UserAdminGroupComponent implements OnInit {
   selected(index) {
     console.log(index);
     this.selectedgroup = index;
+    this.setButtonLabel();
   }
 
   onpselect(i) {
 
+  }
+
+  public setDateValue(dataGroup) {
+    this.start_date = new Date(dataGroup.V_EFF_STRT_DT_TM);
+    this.end_date = new Date(dataGroup.V_EFF_END_DT_TM);
+  }
+
+  public addGroup() {
+    const data = {
+      V_USR_GRP_CD: this.grpData.V_USR_GRP_CD,
+      V_USR_GRP_DSC: this.grpData.V_USR_GRP_DSC,
+      V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
+      V_GRP_TYP: 'Group',
+      V_EFF_STRT_DT_TM: this.start_date,
+      V_EFF_END_DT_TM: this.end_date,
+      V_USR_NM: JSON.parse(sessionStorage.getItem('u')).USR_NM,
+      REST_Service: 'Group',
+      Verb : 'POST'
+    };
+    this.store.dispatch(new addUserGroup(data));
+  }
+
+  public updateGroup() {
+    const data = {
+      V_USR_GRP_CD: this.grpData.V_USR_GRP_CD,
+      V_USR_GRP_DSC: this.grpData.V_USR_GRP_DSC,
+      V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
+      V_GRP_TYP: 'Group',
+      V_EFF_STRT_DT_TM: this.start_date,
+      V_EFF_END_DT_TM: this.end_date,
+      V_USR_NM: JSON.parse(sessionStorage.getItem('u')).USR_NM,
+      REST_Service: 'Group',
+      Verb : 'PATCH'
+    };
+    this.store.dispatch(new UpdateUserGroup(data));
+  }
+
+  private setButtonLabel() {
+    this.updateBtn = !!this.groupList[this.selectedgroup];
+  }
+
+  public newGroupDate() {
+    if (!this.selectedgroup) {
+      this.start_date = new Date(Date.now());
+      this.end_date = new Date(Date.now() + 1.577e+11);
+    }
+  }
+
+  public deleteGroup() {
+    const data = {
+      V_USR_GRP_CD: this.grpData.V_USR_GRP_CD,
+      V_USR_GRP_DSC: this.grpData.V_USR_GRP_DSC,
+      V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
+      V_GRP_TYP: 'Group',
+      V_EFF_STRT_DT_TM: this.start_date,
+      V_EFF_END_DT_TM: this.end_date,
+      V_USR_NM: JSON.parse(sessionStorage.getItem('u')).USR_NM,
+      REST_Service: 'Group',
+      Verb : 'PATCH'
+    };
+    this.store.dispatch(new DeleteUserGroup(data));
   }
 
 
@@ -77,4 +154,6 @@ export class varData {
   is_selected: boolean;
   is_selected_role: boolean;
   is_selected_user: boolean;
+  V_USR_GRP_CD: string;
+  V_USR_GRP_DSC: string;
 }

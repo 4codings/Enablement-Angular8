@@ -23,7 +23,7 @@ export class UserAdminService {
 
     getUsers(): Observable<User[]> {
 		const header = new HttpHeaders().set('Authorization', `Bearer ${this.sessionDataToken}`);
-		return this.http.get<User[]>('https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=USER&amp;V_SRC_CD=cbp%207&amp;REST_Service=Masters&amp;Verb=GET', {headers: header});
+		return this.http.get<User[]>('https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=USER&V_SRC_CD=cbp%207&REST_Service=Masters&Verb=GET', {headers: header});
 	}
 
 	getUserGroups(): Observable<userGroup[]> {

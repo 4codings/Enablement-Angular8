@@ -6,13 +6,11 @@ import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/app.state';
 import { User } from '../../../store/user-admin/user/user.model';
 import * as userSelectors from '../../../store/user-admin/user/user.selectors';
-import * as userGroupSelectors from '../../../store/user-admin/user-group/usergroup.selectors';
-import * as userGroupActions from '../../../store/user-admin/user-group/usergroup.action';
 import { Observable } from 'rxjs';
-import { userGroup } from 'src/app/store/user-admin/user-group/usergroup.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { filter } from 'rxjs/operators';
+import {AddUser, UpdateUser} from '../../../store/user-admin/user/user.action';
 
 @Component({
   selector: 'app-user-admin-user',
@@ -21,13 +19,12 @@ import { filter } from 'rxjs/operators';
 })
 export class UserAdminUserComponent implements OnInit {
   Label: any[] = [];
-  user = 
-    {
-      'USR_NM_R':'',
-      'USR_DSC_R':'',
-      'STS_R':''
-    }
-  
+  user = {
+    V_USR_NM: '',
+    V_USR_DSC: '',
+    V_STS: ''
+  };
+
   public users$: Observable<User[]>;
   form: FormGroup;
   addBtn = true;
@@ -36,7 +33,7 @@ export class UserAdminUserComponent implements OnInit {
   error$: Observable<string>;
   didLoading$: Observable<boolean>;
   didLoaded$: Observable<boolean>;
-  selecteduser: string;
+  selecteduser: any;
 
   constructor(
     public noAuthData: NoAuthDataService,
@@ -58,12 +55,14 @@ export class UserAdminUserComponent implements OnInit {
     this.didLoading$ = this.store.pipe(select(userSelectors.getLoading));
     this.didLoaded$ = this.store.pipe(select(userSelectors.getLoaded));
 
+    this.setButtonLabel();
+    this.user.V_STS = 'ACTIVE';
   }
 
   getUserDetails(user) {
-    this.user.USR_NM_R = user.USR_NM;
-    this.user.USR_DSC_R = user.USR_DSC;
-    this.user.STS_R = user.STS;
+    this.user.V_USR_NM = user.V_USR_NM;
+    this.user.V_USR_DSC = user.V_USR_DSC;
+    this.user.V_STS = user.V_STS;
     // this.addBtn = true;
   }
   availableGroupValueChange(usr) {
@@ -79,6 +78,7 @@ export class UserAdminUserComponent implements OnInit {
 
   selected(index) {
     this.selecteduser = index;
+    this.setButtonLabel();
   }
 
   downloadFile() {
@@ -89,15 +89,39 @@ export class UserAdminUserComponent implements OnInit {
   }
 
   addUser() {
-    alert('adduser Clicked !!!!');
+    const data = {
+      V_USR_NM: this.user.V_USR_NM,
+      V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
+      V_USR_DSC: this.user.V_USR_DSC,
+      V_STS: this.user.V_STS
+    };
+    this.store.dispatch(new AddUser(data));
   }
 
-  updateUser() {
-    alert('update Clicked !!!!');
+  public updateUser() {
+    const data = {
+      V_USR_NM: this.user.V_USR_NM,
+      V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
+      V_USR_DSC: this.user.V_USR_DSC,
+      V_STS: this.user.V_STS,
+      REST_Service: 'User',
+      Verb: 'PATCH'
+    };
+    this.store.dispatch(new UpdateUser(data));
   }
 
   statusChange() {
-    this.updateBtn = true;
+    if (this.selecteduser) {
+      this.updateBtn = true;
+    }
+  }
+
+  private setButtonLabel() {
+    if (this.selecteduser === 0) {
+      this.updateBtn = true;
+    } else {
+      this.updateBtn = !!this.selecteduser;
+    }
   }
 
 }
