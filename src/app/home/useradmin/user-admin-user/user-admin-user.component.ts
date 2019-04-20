@@ -43,6 +43,9 @@ export class UserAdminUserComponent implements OnInit {
 
   public statusChanged = false;
   private clonedStatus = '';
+  public duplicated = false;
+
+  private usersList = [];
 
   private emailIds: string[] = ['@gmail.', '@yahoo.', '@outlook.',
     '@hotmail.', '@live.', '@aol.', '@aim.', '@yandex.', '@protonmail.', '@zoho.', '@gmx.', '@tutanota.'];
@@ -67,6 +70,12 @@ export class UserAdminUserComponent implements OnInit {
     this.error$ = this.store.pipe(select(userSelectors.getErrors));
     this.didLoading$ = this.store.pipe(select(userSelectors.getLoading));
     this.didLoaded$ = this.store.pipe(select(userSelectors.getLoaded));
+
+    this.users$
+      .subscribe((val) => {
+        this.usersList = val;
+        console.log(val);
+      });
 
     this.setButtonLabel();
     this.user.V_STS = 'ACTIVE';
@@ -159,6 +168,7 @@ export class UserAdminUserComponent implements OnInit {
       this.updateBtn = true;
     }
     this.checkUserDomain();
+    this.checkDuplications();
   }
 
   public descModelChanged() {
@@ -166,6 +176,17 @@ export class UserAdminUserComponent implements OnInit {
       this.descChanged = true;
     } else {
       this.descChanged = false;
+    }
+  }
+
+  public checkDuplications() {
+    for (let i = 0; i < this.usersList.length; i++) {
+      if (this.usersList[i].V_USR_NM === this.user.V_USR_NM) {
+        this.duplicated = true;
+        return;
+      } else {
+        this.duplicated = false;
+      }
     }
   }
 

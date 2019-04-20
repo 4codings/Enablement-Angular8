@@ -42,9 +42,9 @@
 <div class="row d-flex justify-content-center">
   <div>
     <div class="CustomeButtonFloat">
-      <button mat-raised-button color="primary" [disabled]="!statusChanged && !nameChanged && !descChanged || domainError" *ngIf = "nameChanged || !updateBtn" (click)="addUser()">
+      <button mat-raised-button color="primary" [disabled]="(duplicated && !selecteduser) || !statusChanged && !nameChanged && !descChanged || domainError" *ngIf = "nameChanged || !updateBtn" (click)="addUser()">
         <mat-icon style="vertical-align: middle;margin-right: 5px">add</mat-icon>{{Label['add_btn']}}</button>
-      <button mat-raised-button color="primary" [disabled]="!statusChanged && !descChanged && !nameChanged" [hidden]="nameChanged || !updateBtn" (click)="updateUser()">
+      <button mat-raised-button color="primary" [disabled]="(duplicated && !selecteduser) || !statusChanged && !descChanged && !nameChanged" [hidden]="nameChanged || !updateBtn" (click)="updateUser()">
         <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['UpdateBtn']}}</button>
       <button title="Upload file" mat-raised-button color="primary" (click)="uploadData()">
         <i class="fas fa-upload"></i> Upload
