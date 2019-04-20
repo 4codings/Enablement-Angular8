@@ -41,6 +41,9 @@ export class UserAdminUserComponent implements OnInit {
   public descChanged = false;
   private clonedDesc = '';
 
+  public statusChanged = false;
+  private clonedStatus = '';
+
   private emailIds: string[] = ['@gmail.', '@yahoo.', '@outlook.',
     '@hotmail.', '@live.', '@aol.', '@aim.', '@yandex.', '@protonmail.', '@zoho.', '@gmx.', '@tutanota.'];
   public domainError = false;
@@ -90,6 +93,11 @@ export class UserAdminUserComponent implements OnInit {
     this.selecteduser = index;
     this.clonedName = this.user.V_USR_NM;
     this.clonedDesc = this.user.V_USR_NM;
+    this.clonedStatus = this.user.V_STS;
+    this.updateBtn = true;
+    this.statusChanged = false;
+    this.nameChanged = false;
+    this.descChanged = false;
     this.setButtonLabel();
   }
 
@@ -126,6 +134,12 @@ export class UserAdminUserComponent implements OnInit {
     if (this.selecteduser) {
       this.updateBtn = true;
     }
+    if (this.clonedStatus !== this.user.V_STS) {
+      this.statusChanged = true;
+      this.updateBtn = true;
+    } else {
+      this.statusChanged = false;
+    }
   }
 
   private setButtonLabel() {
@@ -139,8 +153,10 @@ export class UserAdminUserComponent implements OnInit {
   public nameModelChanged() {
     if (this.clonedName !== this.user.V_USR_NM) {
       this.nameChanged = true;
+      this.updateBtn = false;
     } else {
       this.nameChanged = false;
+      this.updateBtn = true;
     }
     this.checkUserDomain();
   }
