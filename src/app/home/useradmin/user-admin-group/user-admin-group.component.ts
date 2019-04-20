@@ -1,16 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { NoAuthDataService } from 'src/app/services/no-auth-data.service';
 
-import * as usreActions from '../../../store/user-admin/user/user.action';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/app.state';
-import { User } from '../../../store/user-admin/user/user.model';
-import * as userSelectors from '../../../store/user-admin/user/user.selectors';
 import * as userGroupSelectors from '../../../store/user-admin/user-group/usergroup.selectors';
 import * as userGroupActions from '../../../store/user-admin/user-group/usergroup.action';
 import { Observable } from 'rxjs';
 import { userGroup } from 'src/app/store/user-admin/user-group/usergroup.model';
 import {addUserGroup, DeleteUserGroup, UpdateUserGroup} from '../../../store/user-admin/user-group/usergroup.action';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-user-admin-group',
@@ -31,11 +29,11 @@ export class UserAdminGroupComponent implements OnInit {
   public start_date: any;
   public end_date: any;
   public groupList = [];
-  public buttonLabel = 'Add';
-
+  public ctrlVvariables;
   constructor(
     public noAuthData: NoAuthDataService,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private http: HttpClient
   ) { }
 
   ngOnInit() {
@@ -55,6 +53,10 @@ export class UserAdminGroupComponent implements OnInit {
     this.noAuthData.getJSON().subscribe(data => {
       console.log(data);
       this.Label = data;
+    });
+
+    this.http.get('../../../../assets/control-variable.json').subscribe(res => {
+      this.ctrlVvariables = res;
     });
 
     this.setButtonLabel();
@@ -120,7 +122,7 @@ export class UserAdminGroupComponent implements OnInit {
   public newGroupDate() {
     if (!this.selectedgroup) {
       this.start_date = new Date(Date.now());
-      this.end_date = new Date(Date.now() + 1.577e+11);
+      this.end_date = new Date(Date.now() + this.ctrlVvariables.effectiveEndDate);
     }
   }
 
