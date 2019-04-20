@@ -42,7 +42,7 @@
 <div class="row d-flex justify-content-center">
   <div>
     <div class="CustomeButtonFloat">
-      <button mat-raised-button color="primary" [disabled]="!nameChanged && !descChanged" *ngIf = "!updateBtn" (click)="addUser()">
+      <button mat-raised-button color="primary" [disabled]="!nameChanged && !descChanged || domainError" *ngIf = "!updateBtn" (click)="addUser()">
         <mat-icon style="vertical-align: middle;margin-right: 5px">add</mat-icon>{{Label['add_btn']}}</button>
       <button mat-raised-button color="primary" [disabled]="!descChanged && !nameChanged" [hidden]="!updateBtn" (click)="updateUser()">
         <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['UpdateBtn']}}</button>

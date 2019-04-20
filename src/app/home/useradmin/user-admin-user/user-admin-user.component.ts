@@ -41,6 +41,10 @@ export class UserAdminUserComponent implements OnInit {
   public descChanged = false;
   private clonedDesc = '';
 
+  private emailIds: string[] = ['@gmail.', '@yahoo.', '@outlook.',
+    '@hotmail.', '@live.', '@aol.', '@aim.', '@yandex.', '@protonmail.', '@zoho.', '@gmx.', '@tutanota.'];
+  public domainError = false;
+
   constructor(
     public noAuthData: NoAuthDataService,
     private store: Store<AppState>
@@ -138,6 +142,7 @@ export class UserAdminUserComponent implements OnInit {
     } else {
       this.nameChanged = false;
     }
+    this.checkUserDomain();
   }
 
   public descModelChanged() {
@@ -145,6 +150,17 @@ export class UserAdminUserComponent implements OnInit {
       this.descChanged = true;
     } else {
       this.descChanged = false;
+    }
+  }
+
+  private checkUserDomain() {
+    for (let i = 0; i < this.emailIds.length; i++) {
+      if (this.user.V_USR_NM.indexOf(this.emailIds[i]) > -1) {
+        this.domainError = true;
+        return;
+      } else {
+        this.domainError = false;
+      }
     }
   }
 
