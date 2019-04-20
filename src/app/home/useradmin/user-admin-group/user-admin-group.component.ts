@@ -30,6 +30,12 @@ export class UserAdminGroupComponent implements OnInit {
   public end_date: any;
   public groupList = [];
   public ctrlVvariables;
+
+  public nameChanged = false;
+  private clonedName = '';
+
+  public descChanged = false;
+  private clonedDesc = '';
   constructor(
     public noAuthData: NoAuthDataService,
     private store: Store<AppState>,
@@ -73,6 +79,8 @@ export class UserAdminGroupComponent implements OnInit {
   selected(index) {
     console.log(index);
     this.selectedgroup = index;
+    this.clonedName = this.grpData.V_USR_GRP_CD;
+    this.clonedDesc = this.grpData.V_USR_GRP_CD;
     this.setButtonLabel();
   }
 
@@ -139,6 +147,22 @@ export class UserAdminGroupComponent implements OnInit {
       Verb : 'PATCH'
     };
     this.store.dispatch(new DeleteUserGroup(data));
+  }
+
+  public nameModelChanged() {
+    if (this.clonedName !== this.grpData.V_USR_GRP_CD) {
+      this.nameChanged = true;
+    } else {
+      this.nameChanged = false;
+    }
+  }
+
+  public descModelChanged() {
+    if (this.clonedDesc !== this.grpData.V_USR_GRP_DSC) {
+      this.descChanged = true;
+    } else {
+      this.descChanged = false;
+    }
   }
 
 
