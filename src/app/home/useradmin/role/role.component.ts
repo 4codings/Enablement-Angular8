@@ -65,7 +65,7 @@ export class RoleComponent implements OnInit {
     this.roleData = roleSelectData;
   }
   selected(index) {
-    this.selecteduser = index;
+    this.selecteduser = index.toString();
     this.setButtonLabel();
     this.clonedName = this.roleData.V_ROLE_CD;
     this.clonedDesc = this.roleData.V_ROLE_DSC;

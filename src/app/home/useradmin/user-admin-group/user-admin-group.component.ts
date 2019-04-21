@@ -88,7 +88,7 @@ export class UserAdminGroupComponent implements OnInit {
 
   selected(index) {
     console.log(index);
-    this.selectedgroup = index;
+    this.selectedgroup = index.toString();
     this.clonedName = this.grpData.V_USR_GRP_CD;
     this.clonedDesc = this.grpData.V_USR_GRP_CD;
     this.clonedEndDate = this.end_date;
