@@ -25,7 +25,8 @@ export class UserAdminGroupComponent implements OnInit {
   updateBtn = false;
   selectedgroup: number;
   grpData = new varData;
-
+  emailMessage;
+  
   public start_date: any;
   public end_date: any;
   public groupList = [];
@@ -223,7 +224,18 @@ export class UserAdminGroupComponent implements OnInit {
       }
     }
   }
+  
+  fileChangeEvent(event, files) {
+    
+  }
 
+  downloadFile() {
+
+  }
+
+  uploadData() {
+
+  }
 
 }
 export class varData {

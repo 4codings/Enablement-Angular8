@@ -25,6 +25,8 @@ export class MembershipComponent implements OnInit {
   user: any[] = [];
   public users$: Observable<User[]>;
   public groups$: Observable<userGroup[]>;
+  USR_DSC_R;
+  USR_GRP_DSCR;
 
   addBtn = true;
   updateBtn = false;

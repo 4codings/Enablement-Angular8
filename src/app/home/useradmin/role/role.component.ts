@@ -176,6 +176,14 @@ export class RoleComponent implements OnInit {
     }
   }
 
+  downloadFile() {
+
+  }
+
+  uploadData() {
+    
+  }
+
 }
 
 export class roleData {

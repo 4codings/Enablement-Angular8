@@ -25,8 +25,11 @@ import * as userRoleActions from '../../../store/user-admin/user-role/userrole.a
 export class AssignroleComponent implements OnInit {
   Label: any[] = [];
   user: any[] = [];
+  roledesc;
   public userGroup$: Observable<userGroup[]>;
   public roles$: Observable<userRole[]>;
+  selectedOptions;
+  RollR;
 
   addBtn = true;
   updateBtn = false;
@@ -103,5 +106,9 @@ export class AssignroleComponent implements OnInit {
   //    })
   //  })
   // }
+  }
+
+  addBothfield() {
+    
   }
 }

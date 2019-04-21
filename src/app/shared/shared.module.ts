@@ -5,6 +5,7 @@ import {NoDataMsgComponent} from './components/no-data-msg/no-data-msg.component
 // import {CoreModule} from "../core/core.module";
 import {RouterModule} from '@angular/router';
 import { MatIconModule, MatCardModule } from '@angular/material';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 
 @NgModule({
@@ -12,10 +13,9 @@ import { MatIconModule, MatCardModule } from '@angular/material';
         CommonModule,
         // CoreModule,
         RouterModule,
-
-
         MatCardModule,
-        MatIconModule
+        MatIconModule,
+        FlexLayoutModule
     ],
     declarations: [
         FormErrorMsgComponent,

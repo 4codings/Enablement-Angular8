@@ -20,7 +20,7 @@ export class AuthService {
             // this.userServicve.clear();
             if (data.userInfo.TOKEN != '') {
               if (this.userService.getDetailFromStorage() == null) {
-                console.log(data.userInfo.TOKEN);
+                //console.log(data.userInfo.TOKEN);
                 this.userService.setUser(data.userInfo);
               }
             }
