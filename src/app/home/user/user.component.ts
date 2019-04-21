@@ -25,8 +25,8 @@ export class UserComponent implements OnInit {
   constructor(private store: Store<AppState>) { }
 
   ngOnInit() {
-    this.store.dispatch(new usreActions.getUser());
-    this.store.dispatch(new userGroupActions.getUserGroup());
+    //this.store.dispatch(new usreActions.getUser());
+    //this.store.dispatch(new userGroupActions.getUserGroup());
     this.users$ = this.store.pipe(select(userSelectors.selectAllUsers));
     this.userGroups$ = this.store.pipe(select(userGroupSelectors.selectAllUserGroups));
     this.error$ = this.store.pipe(select(userSelectors.getErrors));

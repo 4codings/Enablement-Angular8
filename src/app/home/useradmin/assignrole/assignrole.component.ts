@@ -50,8 +50,8 @@ export class AssignroleComponent implements OnInit {
       this.Label = data;
     });
     // this.store.dispatch(new usreActions.getUser());
-    this.store.dispatch(new userGroupActions.getUserGroup());
-    this.store.dispatch(new userRoleActions.getUserRole());
+    //this.store.dispatch(new userGroupActions.getUserGroup());
+    //this.store.dispatch(new userRoleActions.getUserRole());
     this.userGroup$ = this.store.pipe(select(userGroupSelectors.selectAllUserGroups));
     this.roles$ = this.store.pipe(select(userRoleSelectors.selectAllUserRoles));
 
