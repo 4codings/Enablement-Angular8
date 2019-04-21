@@ -37,7 +37,7 @@
               <mat-icon style="vertical-align: middle;margin-right: 5px">add</mat-icon>{{Label['add_btn']}}</button>
             <button mat-raised-button color="primary" [disabled]="(totalDuplicated && !selecteduser) || (!nameChanged && !descChanged)" [hidden]="(nameChanged || !updateBtn) && !duplicated" (click)="updateRole()">
               <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['UpdateBtn']}}</button>
-            <button mat-raised-button color="warn" [disabled]="!duplicated || (selecteduser && (nameChanged || descChanged))" (click)="deleteRole()">
+            <button mat-raised-button color="warn" [disabled]="(duplicated && !totalDuplicated && descChanged) || !duplicated || (selecteduser && (nameChanged || descChanged))" (click)="deleteRole()">
               <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['dlt_btn']}}</button>
             <button title="Upload file" mat-raised-button color="primary" (click)="uploadData()">
               <i class="fas fa-upload"></i> Upload

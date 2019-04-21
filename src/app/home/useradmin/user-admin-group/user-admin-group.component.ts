@@ -98,6 +98,7 @@ export class UserAdminGroupComponent implements OnInit {
     this.nameChanged = false;
     this.updateBtn = true;
     this.setButtonLabel();
+    this.duplicated = true;
   }
 
   onpselect(i) {
@@ -197,12 +198,12 @@ export class UserAdminGroupComponent implements OnInit {
       if (this.groupList[i].V_USR_GRP_CD === this.grpData.V_USR_GRP_CD) {
         this.duplicated = true;
         this.updateBtn = true;
-        this.hideButton = true;
+        this.hideButton = false;
         this.deepCheck();
         return;
       } else {
         this.duplicated = false;
-        this.hideButton = false;
+        this.hideButton = true;
       }
     }
   }
