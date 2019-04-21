@@ -37,6 +37,7 @@ export class RoleComponent implements OnInit {
   public totalDuplicated = false;
   public hideButton = false;
 
+  public showDelete = false;
   constructor(
     public noAuthData: NoAuthDataService,
     private store: Store<AppState>
@@ -64,13 +65,14 @@ export class RoleComponent implements OnInit {
     this.roleData = roleSelectData;
   }
   selected(index) {
-    this.selecteduser = index;
+    this.selecteduser = index.toString();
     this.setButtonLabel();
     this.clonedName = this.roleData.V_ROLE_CD;
     this.clonedDesc = this.roleData.V_ROLE_DSC;
     this.updateBtn = true;
     this.nameChanged = false;
     this.descChanged = false;
+    this.duplicated = true;
   }
 
   private setButtonLabel() {
@@ -128,10 +130,8 @@ export class RoleComponent implements OnInit {
   public nameModelChanged() {
     if (this.clonedName !== this.roleData.V_ROLE_CD) {
       this.nameChanged = true;
-      this.updateBtn = false;
     } else {
       this.nameChanged = false;
-      this.updateBtn = true;
     }
     this.checkDuplications();
   }
@@ -139,7 +139,6 @@ export class RoleComponent implements OnInit {
   public descModelChanged() {
     if (this.clonedDesc !== this.roleData.V_ROLE_DSC) {
       this.descChanged = true;
-      this.updateBtn = !this.nameChanged;
     } else {
       this.descChanged = false;
     }
@@ -151,12 +150,12 @@ export class RoleComponent implements OnInit {
       if (this.roleList[i].V_ROLE_CD === this.roleData.V_ROLE_CD) {
         this.duplicated = true;
         this.updateBtn = true;
-        this.hideButton = true;
+        this.hideButton = false;
         this.deepCheck();
         return;
       } else {
         this.duplicated = false;
-        this.hideButton = false;
+        this.hideButton = true;
       }
     }
   }

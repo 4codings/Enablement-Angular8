@@ -100,7 +100,7 @@ export class UserAdminUserComponent implements OnInit {
   }
 
   selected(index) {
-    this.selecteduser = index;
+    this.selecteduser = index.toString();
     this.clonedName = this.user.V_USR_NM;
     this.clonedDesc = this.user.V_USR_NM;
     this.clonedStatus = this.user.V_STS;
