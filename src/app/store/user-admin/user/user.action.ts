@@ -12,6 +12,8 @@ export const ACTION_ERROR = '[User] Action Error';
 
 export class getUser implements Action {
   readonly type = GET_USER;
+  constructor(public payload: any) {
+  }
 }
 
 export class getUserSuccess implements Action {

@@ -48,7 +48,10 @@ export class RoleComponent implements OnInit {
       console.log(data);
       this.Label = data;
     });
-    this.store.dispatch(new userRoleActions.getUserRole());
+    const data = {
+      V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
+    };
+    this.store.dispatch(new userRoleActions.getUserRole(data));
     this.userRoles$ = this.store.pipe(select(userRoleSelectors.selectAllUserRoles));
     this.error$ = this.store.pipe(select(userRoleSelectors.getErrors));
     this.didLoading$ = this.store.pipe(select(userRoleSelectors.getLoading));

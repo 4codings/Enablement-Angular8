@@ -84,7 +84,10 @@ export class UserAdminUserComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(new usreActions.getUser());
+    const data = {
+      V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
+    };
+    this.store.dispatch(new usreActions.getUser(data));
     // this.store.dispatch(new userGroupActions.getUserGroup());
     this.users$ = this.store.pipe(select(userSelectors.selectAllUsers));
     // this.userGroups$ = this.store.pipe(select(userGroupSelectors.selectAllUserGroups));
