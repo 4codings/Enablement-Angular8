@@ -10,6 +10,9 @@ import { MatIconModule, MatCardModule } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
 import { UserRoleEffects } from 'src/app/store/user-admin/user-role/userrole.effects';
 import { UserMembershipEffects } from 'src/app/store/user-admin/user-membership/usermembership.effects';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { HeaderModule } from '../header/header.module';
 
 @NgModule({
   declarations: [UserComponent, ProfileComponent],
@@ -19,6 +22,9 @@ import { UserMembershipEffects } from 'src/app/store/user-admin/user-membership/
     CommonModule,
     UserRoutingModule,
     HttpClientModule,
+    SharedModule,
+    FlexLayoutModule,
+    HeaderModule,
     EffectsModule.forFeature([UserEffects, UserGroupEffects, UserRoleEffects, UserMembershipEffects]),
   ]
 })

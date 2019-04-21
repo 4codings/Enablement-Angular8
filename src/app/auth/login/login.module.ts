@@ -3,22 +3,24 @@ import {CommonModule} from '@angular/common';
 import {LoginComponent} from './login.component';
 import {LoginRoutingModule} from './login-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { EffectsModule } from '@ngrx/effects';
 import { UserLoginEffects } from 'src/app/store/auth/userlogin.effects';
-// import {SharedModule} from "../../shared/shared.module";
-// import {CoreModule} from "../../core/core.module";
-
+import {MatCardModule} from '@angular/material/card';
+import {MatButtonModule} from '@angular/material/button';
 
 @NgModule({
     imports:      [
         CommonModule,
         SharedModule,
-        // CoreModule,
         FormsModule,
         ReactiveFormsModule,
         LoginRoutingModule,
         EffectsModule.forFeature([UserLoginEffects]),
+        FlexLayoutModule,
+        MatCardModule,
+        MatButtonModule
     ],
     declarations: [LoginComponent]
 })

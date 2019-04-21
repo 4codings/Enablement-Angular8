@@ -19,6 +19,8 @@ import { UserRoleEffects } from 'src/app/store/user-admin/user-role/userrole.eff
 import { UserMembershipEffects } from 'src/app/store/user-admin/user-membership/usermembership.effects';
 import { AuthEffects } from 'src/app/store/user-admin/user-authorization/authorization.effects';
 import { AuthorizeComponent } from './authorize/authorize.component';
+import { HeaderModule } from '../header/header.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -48,6 +50,8 @@ import { AuthorizeComponent } from './authorize/authorize.component';
     FormsModule,
     CommonModule,
     UseradminRoutingModule,
+    HeaderModule,
+    //FlexLayoutModule,
     EffectsModule.forFeature([UserEffects, UserGroupEffects, UserRoleEffects, UserMembershipEffects, AuthEffects]),
   ]
 })

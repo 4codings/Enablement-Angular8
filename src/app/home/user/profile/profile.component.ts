@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 })
 export class ProfileComponent implements OnInit {
 
-  api = environment.domainName;
+  public api = environment.domainName;
   options = [];
   constructor(private http: HttpClient) { }
 
@@ -28,10 +28,10 @@ export class ProfileComponent implements OnInit {
              const data = {Lable: 'Developer' , path: '../developer'};
              this.options.push(data);
             } else if (data.ROLE_CD[i] == 'End User Role') {
-              const data = {Lable: 'End_User' , path: '../End_User'};
+              const data = {Lable: 'End User' , path: '../End_User'};
               this.options.push(data);
             } else if (data.ROLE_CD[i] == 'System Admin Role') {
-              const data = {Lable: 'System_Admin' , path: '../System_Admin'};
+              const data = {Lable: 'System Admin' , path: '../System_Admin'};
               this.options.push(data);
             } else if (data.ROLE_CD[i] == 'Finance Role') {
               const data = {Lable: 'Cost' , path: '../Cost'};
@@ -42,7 +42,7 @@ export class ProfileComponent implements OnInit {
               this.options.push(data);
             } else if (data.ROLE_CD[i] == 'User Admin Role') {
               // this.options.push("User_Admin");
-              const data = {Lable: 'User_Admin' , path: '../User_Admin'};
+              const data = {Lable: 'User Admin' , path: '../User_Admin'};
               this.options.push(data);
             }
 

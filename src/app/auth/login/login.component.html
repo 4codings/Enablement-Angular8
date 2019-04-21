@@ -1,89 +1,74 @@
-<div class="card border-grey border-lighten-3 m-0">
-  <div class="card-header border-0">
-      <div class="card-title text-center">
-          <div class="p-1">
-              <img src="assets/logo.png"
-                   alt="branding logo">
-          </div>
-      </div>
-      <!-- <h6 class="card-subtitle line-on-side text-muted text-center font-small-3 pt-2">
-          <span>Login with Wyatt</span>
-      </h6> -->
-  </div>
+<div flex fxLayout="row" fxLayout.lt-sm="column">
+	<div fxFlex="30"></div>
+	<div fxFlex="40">
+		<mat-card class="profileCard">
+			<mat-card-title>
 
-  <div class="card-content">
-      <div class="card-body">
-          <form class="form-horizontal form-simple" [formGroup]="form" (submit)="login()"
-                novalidate>
-              <fieldset class="form-group position-relative has-icon-left mb-0">
-                  <input type="email"
-                         class="form-control form-control-lg input-lg"
-                         id="user-name"
-                         autocomplete="email"
-                         placeholder="Your Email"
-                         required
-                         formControlName="email">
+			</mat-card-title>
+			<mat-card-content>
+				<div>
+					{{msg_alert}}
+				</div>
 
-                  <div class="form-control-position">
-                      <i class="feather icon-user"></i>
-                  </div>
+				<form class="login-form parent" (ngSubmit)="login(form)" #form="ngForm">
+					<div flex style="align-items: center;" fxLayout="row" fxLayout.lt-sm="column" style="padding-top: 30px;">
+						<span fxFlex="25" class="formLabel">Username</span>
+						<div fxFlex="60" class="formGroup">
+							<input type="email" placeholder="Provide Your Email id" (keyup)="onKey($event)" autocomplete="off" [(ngModel)]="email" name="email"
+							 value="">
+						</div>
+					</div>
 
-                  <form-error-msg controlName="email" class="d-none"></form-error-msg>
-              </fieldset>
+					<div *ngIf="pass1==true" class="parent">
+						<div flex fxLayout="row" style="align-items: center;" fxLayout.lt-sm="column" style="padding-top: 30px;">
+							<span fxFlex="25" class="formLabel">Password</span>
+							<div fxFlex="60" class="formGroup">
+								<input type="password" placeholder="Provide Your Password " [(ngModel)]="pass" autocomplete="off" name="pass" value="">
+							</div>
+						</div>
+					</div>
 
-              <fieldset class="form-group position-relative has-icon-left">
-                  <input type="password"
-                         class="form-control form-control-lg input-lg"
-                         id="user-password"
-                         autocomplete="current-password"
-                         placeholder="Enter Password" required
-                         formControlName="password">
-                  <div class="form-control-position">
-                      <i class="la la-key"></i>
-                  </div>
+					<div *ngIf="pass2==true" class="parent">
+						<div flex fxLayout="row" style="align-items: center;" fxLayout.lt-sm="column" style="padding-top: 30px;">
+							<span fxFlex="25" class="formLabel">{{Label['log_reset']}}</span>
+							<div fxFlex="60" class="formGroup">
+								<input class="userinp" type="password" matInput placeholder=" " [(ngModel)]="passr" name="passr" value="">
+							</div>
+						</div>
+						</div>
+						<div flex style="align-items: center;" fxLayout="row" *ngIf="agcy == false" fxLayout.lt-sm="column" style="padding-top: 30px;">
+							<span fxFlex="25" class="formLabel">Organization</span>
+							<div fxFlex="60" class="formGroup">
+								<input type="text" class="userinp ulabel" matInput placeholder="Enter Agency" [(ngModel)]="agency" name="agency" value="">
+							</div>
 
-                  <form-error-msg controlName="password" class="d-none"></form-error-msg>
-              </fieldset>
+						</div>
+						<br />
+						<div *ngIf="logBtn==true" flex fxLayout="row" fxLayout.lt-sm="column">
 
-              <div class="form-group row">
-                  <div class="col-md-6 col-12 text-center text-md-left">
-                      <fieldset>
-                          <input type="checkbox"
-                                 id="remember-me"
-                                 class="chk-remember" icheck
-                                 formControlName="rememberMe">
-                          <label for="remember-me" style="padding-left: 5px"> Remember Me </label>
-                      </fieldset>
-                  </div>
+							<div fxFlex="30"></div>
+							<div fxFlex="40" class="parent">
+								<button type="" [disabled]="btn_disabled" mat-raised-button color="primary">Login or Sign-up</button>
+							</div>
+							<div fxFlex="30"></div>
+						</div>
+						<div *ngIf="rstBnt==true" flex fxLayout="row" fxLayout.lt-sm="column">
+							<div fxFlex="27"></div>
+							<div fxFlex="46" class="parent">
+								<button class="content" type="" mat-raised-button color="primary">Reset</button>
+							</div>
+							<div fxFlex="27"></div>
+						</div>
+						<div flex fxLayout="row" fxLayout.lt-sm="column">
+							<div fxFlex="40"></div>
+							<div fxFlex="20">
+								<img src="./assets/logo.png" class="logo-img" />
+							</div>
+							<div fxFlex="40"></div>
+						</div>
+						
+				</form>
 
-                  <div class="col-md-6 col-12 text-center text-md-right">
-                      <a href="javascript:alert('Working ');" class="card-link">
-                          Forgot Password?</a>
-                  </div>
-              </div>
-              <button type="submit" class="btn btn-info btn-lg btn-block"
-                      >
-              <!-- <button type="submit" class="btn btn-info btn-lg btn-block"
-                      [ladda]="ui.laddaLogin"> -->
-                  <i class="feather icon-unlock"></i> Login
-              </button>
-          </form>
-      </div>
-  </div>
-
-  <!--<div class="card-footer">
-      <div class="">
-          <p class="float-sm-left text-center m-0">
-              <a href="javascript:alert('TBD');" class="card-link">
-                  Recover password
-              </a>
-          </p>
-          &lt;!&ndash;<p class="float-sm-right text-center m-0">New to Moden Admin? <a
-              href="javascript:void(0);"
-              class="card-link">Sign Up</a></p>&ndash;&gt;
-      </div>
-  </div>-->
-</div>
-
-
-
+			</mat-card-content>
+		</mat-card>
+		</div>

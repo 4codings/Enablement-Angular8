@@ -4,10 +4,9 @@ import { HomeComponent } from './home.component';
 import { HomeRoutingModule } from './home-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { MatIconModule } from '@angular/material';
-import { HeaderComponent } from './header/header.component';
 
 @NgModule({
-  declarations: [HomeComponent, HeaderComponent],
+  declarations: [HomeComponent],
   imports: [
     MatIconModule,
     CommonModule,

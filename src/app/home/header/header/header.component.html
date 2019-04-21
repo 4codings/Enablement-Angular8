@@ -1,0 +1,18 @@
+<div style="padding-bottom: 7px" fxLayout="row" fxLayout.lt-sm="row" fxLayout.sm="row" fxLayout.gt-sm="row">
+  <div>
+      <img src="./assets/logo.png" class="logo-img" />
+  </div>
+  <div fxFlex="100%">
+      <div>
+
+
+          <strong class="header_text">
+              <mat-icon class="myicon2">home</mat-icon>&nbsp;{{agency}}</strong>
+          <br>
+          <mat-icon *ngIf="showprofilebtn" class="myicon" matTooltip="Switch Profile" (click)="switchprofile()">switch</mat-icon>
+          <mat-icon style="margin-right: 5px;" class="myicon myicon2" matTooltip="Logout" (click)="logout()">logout</mat-icon>
+          <strong style="margin-right: 5px;" class="header_text marginn">
+              <mat-icon class="myicon2">user</mat-icon>&nbsp;{{userName}}&nbsp;&nbsp;</strong>
+      </div>
+  </div>
+</div>

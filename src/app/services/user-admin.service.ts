@@ -45,6 +45,6 @@ export class UserAdminService {
 
 	getAuthorizationData(): Observable<AuthorizationData[]> {
 		const header = new HttpHeaders().set('Authorization', `Bearer ${this.sessionDataToken}`);
-  return this.http.get<AuthorizationData[]>('https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=AUTH&V_SRC_CD=cbp%207&REST_Service=Masters&Verb=GET', {headers: header});
+  		return this.http.get<AuthorizationData[]>('https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=AUTH&V_SRC_CD=cbp%207&REST_Service=Masters&Verb=GET', {headers: header});
 	}
 }
