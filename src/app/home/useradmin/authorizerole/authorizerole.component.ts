@@ -19,6 +19,10 @@ export class AuthorizeroleComponent implements OnInit {
   didLoading$: Observable<boolean>;
   didLoaded$: Observable<boolean>;
   selecteduser: string;
+  rol = []
+  roledesc;
+  authoriztion=[];
+  authdesc;
 
   constructor(public noAuthData: NoAuthDataService, private store: Store<AppState>) { }
 

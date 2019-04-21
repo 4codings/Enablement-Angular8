@@ -24,6 +24,8 @@ export class UserAdminUserComponent implements OnInit {
     V_USR_DSC: '',
     V_STS: ''
   };
+  
+  emailMessage;
 
   public users$: Observable<User[]>;
   form: FormGroup;
@@ -219,6 +221,10 @@ export class UserAdminUserComponent implements OnInit {
         this.domainError = false;
       }
     }
+  }
+
+  fileChangeEvent(event, files) {
+
   }
 
 }
