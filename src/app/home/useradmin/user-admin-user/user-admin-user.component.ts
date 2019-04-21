@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { NoAuthDataService } from 'src/app/services/no-auth-data.service';
 
 import * as usreActions from '../../../store/user-admin/user/user.action';
@@ -54,6 +54,23 @@ export class UserAdminUserComponent implements OnInit {
   private emailIds: string[] = ['@gmail.', '@yahoo.', '@outlook.',
     '@hotmail.', '@live.', '@aol.', '@aim.', '@yandex.', '@protonmail.', '@zoho.', '@gmx.', '@tutanota.'];
   public domainError = false;
+  public screenHeight = 0;
+  public screenWidth = 0;
+  public mobileView = false;
+  public desktopView = true;
+  
+  @HostListener('window:resize', ['$event'])
+  onResize(event?) {
+    this.screenHeight = window.innerHeight;
+    this.screenWidth = window.innerWidth;
+    if (this.screenWidth <= 767) {
+      this.mobileView = true;
+      this.desktopView = false;
+    } else {
+      this.mobileView = false;
+      this.desktopView = true;
+    }
+  }
 
   constructor(
     public noAuthData: NoAuthDataService,

@@ -1,3 +1,46 @@
-<p>
-  user-admin-nav works!
-</p>
+<div flex fxLayout="column" fxLayout.lt-sm="column">
+
+  <nav class="navbar ">
+   
+  <!-- For Desktop Screen -->
+<div fxHide="true" fxShow.gt-sm="true">
+<mat-nav-list>
+ 
+  <button mat-raised-button><a [routerLink]="['Adminuser']" routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">person</mat-icon><mat-icon class="iconmod shwsvgicon deskicon deskicon" style="color:orange;">person</mat-icon>User</a></button>
+  <button mat-raised-button><a [routerLink]="['UserGroup']" routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">people</mat-icon><mat-icon class="iconmod shwsvgicon deskicon deskicon" svgIcon="group"></mat-icon>Group</a></button>
+  <button mat-raised-button><a [routerLink]="['UserRole']" routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">playlist_add_check</mat-icon><mat-icon class="iconmod shwsvgicon deskicon deskicon" svgIcon="playlist_add_check"></mat-icon>Role</a></button>
+  <button mat-raised-button><a [routerLink]="['UserAuthorize']" routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">account_balance</mat-icon><mat-icon class="iconmod shwsvgicon deskicon deskicon" svgIcon="home"></mat-icon>Authorize</a></button>
+  <button mat-raised-button><a [routerLink]="['Membership']" routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">credit_card</mat-icon><mat-icon class="iconmod shwsvgicon deskicon deskicon" svgIcon="membership"></mat-icon>Membership</a></button>
+  <button mat-raised-button><a [routerLink]="['Assignrole']" routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">assignment_returned</mat-icon><mat-icon class="iconmod shwsvgicon deskicon deskicon" svgIcon="assignment_ret"></mat-icon>Assign Role</a></button>
+  <button mat-raised-button><a [routerLink]="['Authorizerole']" routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">lock</mat-icon><mat-icon class="iconmod shwsvgicon deskicon deskicon" svgIcon="lock_red"></mat-icon>Authorize Role</a></button>
+
+</mat-nav-list>
+</div> 
+  <!-- For Mobile Screen -->
+<div fxHide="true" fxShow.xs="true">
+<mat-nav-list>
+         
+ <button matTooltip="User" matTooltipPosition='below' mat-icon-button><a [routerLink]="['Adminuser']" routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">person</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" style="color:orange;">person</mat-icon></a></button>
+ <button matTooltip="Group" matTooltipPosition='below' mat-icon-button><a [routerLink]="['UserGroup']" routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">people</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" style="color: darkorchid;">people</mat-icon></a></button>
+ <button matTooltip="Role" matTooltipPosition='below' mat-icon-button><a [routerLink]="['UserRole']" routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">playlist_add_check</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="playlist_add_check"></mat-icon></a></button>
+ <button matTooltip="Authorize" matTooltipPosition='below' mat-icon-button><a [routerLink]="['UserAuthorize']" routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">account_balance</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="home"></mat-icon></a></button>
+ <button matTooltip="Membership" matTooltipPosition='below' mat-icon-button><a [routerLink]="['Membership']" routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">credit_card</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="membership"></mat-icon></a></button>
+ <button matTooltip="Assignrole" matTooltipPosition='below' mat-icon-button><a [routerLink]="['Assignrole']" routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">assignment_returned</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="assignment_ret"></mat-icon></a></button>
+ <button matTooltip="Authorizerole" matTooltipPosition='below' mat-icon-button><a [routerLink]="['Authorizerole']" routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">lock</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="lock_red"></mat-icon></a></button>
+</mat-nav-list>
+</div>
+<!-- For Tab Screen -->
+<div fxHide="true" fxShow.sm="true">
+      <mat-nav-list>
+         
+  <button matTooltip="User" matTooltipPosition='below' mat-mini-fab><a [routerLink]="['Adminuser']" routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">person</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" style="color:orange;">person</mat-icon></a></button>
+  <button matTooltip="Group" matTooltipPosition='below' mat-mini-fab><a [routerLink]="['UserGroup']" routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">people</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" style="color:darkorchid;">people</mat-icon></a></button>
+  <button matTooltip="Role" matTooltipPosition='below' mat-mini-fab><a [routerLink]="['UserRole']" routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">playlist_add_check</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="playlist_add_check"></mat-icon></a></button>
+  <button matTooltip="Authorize" matTooltipPosition='below' mat-mini-fab><a [routerLink]="['UserAuthorize']" routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">account_balance</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="home"></mat-icon></a></button>
+  <button matTooltip="Membership" matTooltipPosition='below' mat-mini-fab><a [routerLink]="['Membership']" routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">credit_card</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="membership"></mat-icon></a></button>
+  <button matTooltip="Assignrole" matTooltipPosition='below' mat-mini-fab><a [routerLink]="['Assignrole']" routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">assignment_returned</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="assignment_ret"></mat-icon></a></button>
+  <button matTooltip="Authorizerole" matTooltipPosition='below' mat-mini-fab><a [routerLink]="['Authorizerole']" routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">lock</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="lock_red"></mat-icon></a></button>
+      </mat-nav-list>
+  </div>
+</nav>
+</div> 

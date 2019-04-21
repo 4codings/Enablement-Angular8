@@ -27,11 +27,12 @@ export class HeaderComponent implements OnInit {
     }
   }
   switchprofile(){
-    this.router.navigate(['Profile']);
+    this.router.navigate(['user']);
   }
   ngOnInit() {
     this.userName = this.userService.getDetailFromStorage(). SRC_CD;
     this.agency = this.userService.getDetailFromStorage(). SRC_CD;
+    //this.options=this.StorageSessionService.getLocalS("profileopt");
     if(this.options)this.options.length==0 ? this.showprofilebtn=false:this.showprofilebtn=true;
 
   }

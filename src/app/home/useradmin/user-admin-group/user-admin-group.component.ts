@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { NoAuthDataService } from 'src/app/services/no-auth-data.service';
 
 import { Store, select } from '@ngrx/store';
@@ -26,6 +26,10 @@ export class UserAdminGroupComponent implements OnInit {
   selectedgroup: number;
   grpData = new varData;
   emailMessage;
+  public screenHeight = 0;
+  public screenWidth = 0;
+  public mobileView = false;
+  public desktopView = true;
   
   public start_date: any;
   public end_date: any;
@@ -46,6 +50,19 @@ export class UserAdminGroupComponent implements OnInit {
 
   public totalDuplicated = false;
   public hideButton = false;
+  
+  @HostListener('window:resize', ['$event'])
+  onResize(event?) {
+    this.screenHeight = window.innerHeight;
+    this.screenWidth = window.innerWidth;
+    if (this.screenWidth <= 767) {
+      this.mobileView = true;
+      this.desktopView = false;
+    } else {
+      this.mobileView = false;
+      this.desktopView = true;
+    }
+  }
 
   constructor(
     public noAuthData: NoAuthDataService,

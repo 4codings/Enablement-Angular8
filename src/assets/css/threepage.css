@@ -1,0 +1,284 @@
+
+#body {
+    height: auto;
+    margin-top: 4%;
+    margin-bottom: 4%;
+}
+
+* {
+    font-size: 14px;
+}
+
+mat-radio-group {
+    display: flex;
+    text-align: left;
+    flex-direction: column;
+}
+
+::ng-deep .form_list .mat-input-infix {
+    background: none !important;
+    border: none !important;
+    padding: 10px;
+}
+
+::ng-deep .form_list .mat-list-text{
+    text-align: left;
+}
+
+/*----- css according to the CSS CD field----------------*/
+mat-icon.field-help{
+    font-size: 16px !important;
+}
+.field-config_Bold_Red input{
+    color: red !important;
+    font-weight: bold !important;
+}
+
+.field-config_Left_Aligned input{
+    text-align: left !important;
+}
+
+.field-config_Right_Aligned input{
+    text-align: right !important;
+}
+
+.field-config_Highlighted input{
+    color: red !important;
+}
+
+/*----------End css according to the CSS CD Field-------------*/
+
+#mat_card {
+    background-color: rgb(248, 248, 248);
+    margin: inherit;
+}
+
+#overlay * {
+    margin: 0;
+    position: absolute;
+    top: 30%;
+    left: 40%;
+    margin-right: -50%;
+}
+
+#cancel {
+    background-color: lightcoral;
+}
+
+#submit {
+    background-color: lightgreen;
+}
+
+#add {
+    background-color: lightblue;
+}
+
+.iconmod {
+    color: mediumslateblue;
+    font-size: 20px;
+    margin-top: 5px;
+}
+
+.iconmod:hover {
+    color: rgb(178, 169, 240);
+}
+
+.TableForm {
+    max-height: 700px;
+    width: auto;
+    overflow: hidden;
+}
+
+.mat-table {
+    max-height: 700px;
+    width: auto;
+    overflow: hidden;
+}
+
+.mat-header-row {
+    height: auto;
+    margin-bottom: 5px;
+    width: max-content;
+    overflow: hidden;
+}
+
+.ng-containe {
+    overflow: hidden;
+}
+
+.mat-row {
+    overflow: hidden;
+    height: auto;
+    width: max-content;
+}
+
+.mat-header-cell {
+    display: block !important;
+    color: rgba(26, 17, 17, 0.973);
+    width: auto;
+    font-size: 14px !important;
+}
+
+.title_form {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.mat-input-element {
+    font-size: 16px !important;
+    text-align: center;
+}
+
+.mat-card-title {
+    font-size: 1.25rem !important;
+}
+
+#he {
+    text-align: center;
+    font-size: 15px;
+    /*padding-left: 30px;*/
+}
+
+.alignRadioCenter {
+    margin-left: auto;
+    margin-right: auto;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-align-content: center;
+    align-content: center;
+}
+
+table {
+    margin-left: 80px;
+}
+
+mat-checkbox {
+    display: list-item;
+    list-style: none;
+}
+
+li {
+    margin-left: 0px;
+    align-content: inherit;
+}
+
+#p {
+    text-align: center;
+    font-size: 20px;
+}
+
+#tab3 {
+    padding-bottom: 10px;
+}
+
+mat-checkbox {
+    float: left !important;
+}
+
+@media only screen and (max-width: 767px) {
+    .mat-header-cell {
+        border: 1px dashed rgb(190, 190, 190);
+        height: auto;
+        vertical-align: middle;
+        font-size: 16px !important;
+    }
+    .mat-header-row {
+        position: sticky;
+        z-index: 1000;
+        width: auto;
+        top: 0;
+        left: 0;
+    }
+    mat-cell {
+        background-color: transparent;
+    }
+    .mat-cell {
+        height: auto;
+        padding-top: 15px;
+        vertical-align: middle;
+    }
+    .mat-sort-header-container {
+        display: flex;
+        color: rgb(218, 218, 218);
+        cursor: pointer;
+        justify-content: flex-end;
+    }
+}
+
+.mat-column- {
+    display: flex;
+    justify-content: flex-end;
+}
+
+::ng-deep .mat-input-infix {
+    background: white;
+    border: 1px solid rgb(200, 200, 200);
+    border-radius: 3px;
+}
+
+::ng-deep .mat-input-underline,
+.mat-form-field-underline {
+    display: none;
+}
+
+::ng-deep mat-form-field {
+    width: 100%;
+}
+
+.f_inp {
+    width: 100%;
+}
+
+.input_control{
+    width:100%;
+    padding-left: 10px;
+}
+
+
+.tab{
+    overflow: auto;
+    max-height: 250px;
+    width: auto;
+}
+
+.mat-radio-button {
+    padding-right: 10px;
+    padding-bottom: 10px;
+}
+
+label{
+    font-weight:bold;
+    display:block;
+    margin: 0.5em 0;
+}
+
+button{
+    margin-top: 10px;
+}
+mat-list-item div{
+    font-size: 1rem;
+    text-align:center;
+    width:100%;
+}
+mat-list{
+    border:1px solid #ccc;
+    border-radius: .25rem;
+    padding-top: 0;
+    width: 100%;
+
+    font-size: 1rem;
+    line-height: 1.5;
+    height: 200px;
+}
+.scroll *{
+    height: auto;
+    text-align:center;
+}
+
+
+.active{
+    background-color:darkslateblue !important;
+    color: white;
+}

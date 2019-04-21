@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
 
   <div fxLayout="row" fxLayout.lt-sm="column">
     <div fxFlex="9">
@@ -7,7 +7,7 @@
       <mat-card class="CustomeLayout">
 
         <mat-card-title>
-          <!-- <app-header></app-header> -->
+          <app-header></app-header>
           <div flex fxLayout="column" fxLayout.lt-sm="column">
 
             <nav class="navbar ">
@@ -66,4 +66,28 @@
     </div>
 
   </div>
+</div> -->
+
+<div>
+	 
+  <div fxLayout="row" fxLayout.lt-sm="column">                
+    <div fxFlex="9" >
+    </div>
+    <div fxFlex="82" >
+      <mat-card class="CustomeLayout">
+
+      <mat-card-title>
+      <app-header></app-header>
+      <app-user-admin-nav></app-user-admin-nav>
+      </mat-card-title>
+      <mat-card-content>
+      <router-outlet></router-outlet>
+      </mat-card-content>
+
+       </mat-card>
+      </div>
+    <div fxFlex="9" >
+    </div>
+
+</div>
 </div>
