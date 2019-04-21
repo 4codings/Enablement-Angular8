@@ -33,11 +33,11 @@
       <div class="row">
         <div>
           <div class="CustomeButtonFloat">
-            <button mat-raised-button color="primary" [disabled]="(duplicated && !selecteduser) || !nameChanged && !descChanged" *ngIf = "(nameChanged || !updateBtn) && !hideButton" (click)="addRole()">
+            <button mat-raised-button color="primary" [disabled]="(duplicated && !selecteduser) || !nameChanged && !descChanged" *ngIf = "(nameChanged || !updateBtn) && !duplicated" (click)="addRole()">
               <mat-icon style="vertical-align: middle;margin-right: 5px">add</mat-icon>{{Label['add_btn']}}</button>
-            <button mat-raised-button color="primary" [disabled]="(totalDuplicated && !selecteduser) || !nameChanged && !descChanged" [hidden]="(nameChanged || !updateBtn) && !hideButton" (click)="updateRole()">
+            <button mat-raised-button color="primary" [disabled]="(totalDuplicated && !selecteduser) || (!nameChanged && !descChanged)" [hidden]="(nameChanged || !updateBtn) && !duplicated" (click)="updateRole()">
               <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['UpdateBtn']}}</button>
-            <button mat-raised-button color="warn" [disabled]="!updateBtn || nameChanged || descChanged" (click)="deleteRole()">
+            <button mat-raised-button color="warn" [disabled]="!duplicated || (selecteduser && (nameChanged || descChanged))" (click)="deleteRole()">
               <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['dlt_btn']}}</button>
             <button title="Upload file" mat-raised-button color="primary" (click)="uploadData()">
               <i class="fas fa-upload"></i> Upload
