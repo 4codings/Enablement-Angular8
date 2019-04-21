@@ -19,10 +19,12 @@ export class UserEffects {
   getUsers$: Observable<Action> = this.actions$.pipe(
     ofType<userActions.getUser>(userActions.GET_USER),
     mergeMap((action: userActions.getUser) =>
-      this.useradmin.getUsers().pipe(
-        map((user: User[]) => new userActions.getUserSuccess(user)),
-        catchError(err => of(new userActions.getUserFail(err.error)))
-      )
+      this.http.get('https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=USER&V_SRC_CD='
+        + action.payload.V_SRC_CD + '&REST_Service=Masters&Verb=GET')
+        .pipe(
+          map((user: User[]) => new userActions.getUserSuccess(user)),
+            catchError(err => of(new userActions.getUserFail(err.error)))
+        )
     )
   );
 
@@ -44,7 +46,7 @@ export class UserEffects {
   updateUser: Observable<Action> = this.actions$.pipe(
     ofType<userActions.UpdateUser>(userActions.UPDATE_USER),
     mergeMap((action: userActions.UpdateUser) =>
-      this.http.patch('https://enablement.us/Enablement/rest/E_DB/SP', action.payload)
+      this.http.patch('https://enablement.us/Enablement/rest/v1/securedJSON', action.payload)
         .pipe(
           map(
             () => new userActions.ActionSuccess()

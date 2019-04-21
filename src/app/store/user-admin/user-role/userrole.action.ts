@@ -12,6 +12,9 @@ export const ACTION_ERROR = '[GROUP] Action Error';
 
 export class getUserRole implements Action {
   readonly type = GET_USER_ROLE;
+  constructor(public payload: any) {
+    console.log(this.payload);
+  }
 }
 
 export class getUserRoleSuccess implements Action {

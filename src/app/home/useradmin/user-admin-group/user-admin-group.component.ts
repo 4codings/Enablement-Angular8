@@ -54,7 +54,10 @@ export class UserAdminGroupComponent implements OnInit {
 
   ngOnInit() {
     // this.store.dispatch(new usreActions.getUser());
-    this.store.dispatch(new userGroupActions.getUserGroup());
+    const data = {
+      V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
+    };
+    this.store.dispatch(new userGroupActions.getUserGroup(data));
     // this.users$ = this.store.pipe(select(userSelectors.selectAllUsers));
     this.userGroups$ = this.store.pipe(select(userGroupSelectors.selectAllUserGroups));
     this.error$ = this.store.pipe(select(userGroupSelectors.getErrors));
