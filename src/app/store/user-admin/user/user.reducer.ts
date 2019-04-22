@@ -45,7 +45,50 @@ export function userReducer(
         loading: false,
         error: action.payload
       };
+    
+    case UserActions.ADD_USER:
+      return {
+        ...state,
+        loading: true,
+        loaded: false
+      };
 
+    case UserActions.ADD_USER_SUCCESS:
+      console.log(action.payload);
+      return adapter.addOne(action.payload, {
+        ...state,
+        loading: false,
+        loaded: true
+      });
+
+    case UserActions.ADD_USER_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload
+      };
+     
+      case UserActions.UPDATE_USER:
+      return {
+        ...state,
+        loading: true,
+        loaded: false
+      };
+
+    case UserActions.UPDATE_USER_SUCCESS:
+      return adapter.upsertOne(action.payload, {
+        ...state,
+        loading: false,
+        loaded: true
+      });
+
+    case UserActions.UPDATE_USER_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload
+      };  
+    
     default:
       return state;
   }

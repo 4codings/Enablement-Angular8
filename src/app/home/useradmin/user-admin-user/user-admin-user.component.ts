@@ -36,6 +36,7 @@ export class UserAdminUserComponent implements OnInit {
   didLoading$: Observable<boolean>;
   didLoaded$: Observable<boolean>;
   selecteduser: any;
+  selectedid;
 
   public nameChanged = false;
   private clonedName = '';
@@ -133,6 +134,10 @@ export class UserAdminUserComponent implements OnInit {
     this.setButtonLabel();
   }
 
+  selectedId(id) {
+    this.selectedid = id;
+  }
+
   downloadFile() {
     alert('Download Clicked !!!!');
   }
@@ -145,7 +150,7 @@ export class UserAdminUserComponent implements OnInit {
       V_USR_NM: this.user.V_USR_NM,
       V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
       V_USR_DSC: this.user.V_USR_DSC,
-      V_STS: this.user.V_STS
+      V_STS: this.user.V_STS,
     };
     this.store.dispatch(new AddUser(data));
   }
@@ -157,7 +162,8 @@ export class UserAdminUserComponent implements OnInit {
       V_USR_DSC: this.user.V_USR_DSC,
       V_STS: this.user.V_STS,
       REST_Service: 'User',
-      Verb: 'PATCH'
+      Verb: 'PATCH',
+      id : this.selectedid
     };
     this.store.dispatch(new UpdateUser(data));
   }

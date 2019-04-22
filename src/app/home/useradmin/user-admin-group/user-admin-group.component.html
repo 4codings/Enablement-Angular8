@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<!---<div class="container-fluid">
   <div class="row">
     <div class="col-4">
       <strong>{{Label['Av_group']}}</strong>
@@ -81,22 +81,24 @@
 
 <input type="file" (change)="fileChangeEvent($event ,files)" #files name="Document_File" id="Document_File" style="display:none"
 />
+-->
 
-
-<!-- <div fxLayout="row" fxLayout.lt-sm="column">
+<div fxLayout="row" fxLayout.lt-sm="column">
 	<div fxFlex="30" style="text-align: center;">
 		<br />
 		<strong>{{Label['Av_group']}}</strong>
-		<mat-list *ngIf="desktopView" class="scroll" style="text-align: center;" [(ngModel)]="USR_GRP_CD_SELC">
-			<mat-list-item class="list_item" (click)="getAvailableGroup(g);selected(g);onpselect(i)" *ngFor="let g of USR_GRP_CD;let i=index"
-			 [class.active]="i == selectedgroup">
-				<div>{{g}}</div>
-			</mat-list-item>
+		<mat-list *ngIf="desktopView" class="scroll" style="text-align: center;">
+			<mat-list-item class="list_item" (click)="getDataGroup(usrGroup);selected(i)"
+                      *ngFor="let usrGroup of userGroups$ | async;let i=index"
+                      [class.active]="i == selectedgroup">
+        <div>{{usrGroup.V_USR_GRP_CD}}</div>
+      </mat-list-item>
 		</mat-list>
 		<mat-form-field *ngIf="mobileView" style="width:100%;text-align: center;" [floatLabel]="'never'">
 			<mat-select style="margin-top:10px;" placeholder="--Select--">
-				<mat-option style="text-align:center;" (click)="getAvailableGroup(g);selected(g);onpselect(i);" *ngFor="let g of USR_GRP_CD;let i=index"
-				 [value]="g">{{g}}</mat-option>
+				<mat-option style="text-align:center;" (click)="getDataGroup(usrGroup);selected(i)"
+                      *ngFor="let usrGroup of userGroups$ | async;let i=index"
+                      [class.active]="i == selectedgroup">{{usrGroup.V_USR_GRP_CD}}</mat-option>
 			</mat-select>
 		</mat-form-field>
 
@@ -106,14 +108,14 @@
 		<br />
 		<strong>{{Label['Group']}}</strong>
 		<mat-form-field style="width:100%;">
-			<input [(ngModel)]="USR_GRP_CDR" matInput (keyup)="putInDescription($event)" name="" />
+			<input [(ngModel)]="grpData.V_USR_GRP_CD" (ngModelChange)="newGroupDate()" (ngModelChange)="nameModelChanged()" matInput name="" />
 		</mat-form-field>
 		<br />
 		<br />
 		<strong>{{Label['st_date']}}</strong>
 		<mat-form-field style="width:100%;">
 
-			<input [(ngModel)]="start_date" matInput [matDatepicker]="picker">
+			<input [(ngModel)]="start_date" (ngModelChange)="dateChangedModel()" matInput [matDatepicker]="picker">
 			<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 			<mat-datepicker #picker></mat-datepicker>
 		</mat-form-field>
@@ -122,7 +124,7 @@
 	<div fxFlex="30" style="text-align: center;">
 		<strong>{{Label['Grp_dscr']}}</strong>
 		<mat-form-field style="width:100%;margin-top:5px;">
-			<textarea [(ngModel)]="USR_GRP_DSCR" matInput>
+			<textarea [(ngModel)]="grpData.V_USR_GRP_DSC" (ngModelChange)="descModelChanged()" matInput>
 				</textarea>
 
 		</mat-form-field>
@@ -131,7 +133,7 @@
 		<strong>{{Label['en_date']}}</strong>
 		<mat-form-field style="width:100%;">
 
-			<input [(ngModel)]="end_date" matInput [matDatepicker]="picker1">
+			<input [(ngModel)]="end_date" (ngModelChange)="dateChangedModel()" matInput [matDatepicker]="picker1">
 			<mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
 			<mat-datepicker #picker1></mat-datepicker>
 		</mat-form-field>
@@ -145,29 +147,33 @@
 	<div fxFlex="60">
 		
 		<div class="CustomeButtonFloat">
-			<button mat-raised-button color="primary" [disabled]="addBtn" (click)="AddGroup()">
-				<mat-icon style="vertical-align: middle;margin-right: 5px">add</mat-icon>{{Label['add_btn']}}</button>
-			<button mat-raised-button color="warn" [disabled]="deleteBtn" (click)="Delete()">
-				<mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['dlt_btn']}}</button>
-
+			<button mat-raised-button color="primary" [disabled]="(duplicated && !selectedgroup) || !dateChanged && !nameChanged && !descChanged"
+                *ngIf = "((nameChanged || !updateBtn) && !duplicated) || (nameChanged && selectedgroup)" (click)="addGroup()">
+          <mat-icon style="vertical-align: middle;margin-right: 5px">add</mat-icon>{{Label['add_btn']}}</button>
+        <button mat-raised-button color="primary" [disabled]="(totalDuplicated && !selectedgroup) || !dateChanged && !nameChanged && !descChanged"
+                [hidden]="(nameChanged || !updateBtn) && !duplicated || (nameChanged && selectedgroup)" (click)="updateGroup()">
+          <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['UpdateBtn']}}</button>
+        <button mat-raised-button color="warn"
+                [disabled]="!duplicated || (selectedgroup && (nameChanged))" (click)="deleteGroup()">
+          <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['dlt_btn']}}</button>
 		</div>
 
 		<div class="CustomeButtonFloat">
-			<button title="Upload file" mat-raised-button color="primary" (click)="uploadBtnClick()">
-				<i class="fas fa-upload"></i> Upload
-			</button>
-			<button mat-raised-button color="primary" (click)="downloadFile()">
-				<i class="fas fa-download"></i> Download
-			</button>
+			<button title="Upload file" mat-raised-button color="primary" (click)="uploadData()">
+          <i class="fas fa-upload"></i> Upload
+        </button>
+        <button mat-raised-button color="primary" (click)="downloadFile()">
+          <i class="fas fa-download"></i> Download
+        </button>
 		</div>
-
-
+    <br />
+      <div class="alertSuccess" *ngIf="emailMessage!=undefined && emailMessage!=''">
+        {{emailMessage}}
+      </div>
 	</div>
-	<div fxFlex="0">
-
-	</div>
+	<div fxFlex="0"></div>
 </div>
 
 <input type="file" (change)="fileChangeEvent($event ,files)" #files name="Document_File" id="Document_File" style="display:none"
 />
- -->
+

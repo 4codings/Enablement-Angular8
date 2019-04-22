@@ -6,9 +6,11 @@ export const GET_USER = '[User] User';
 export const GET_USER_SUCCESS = '[User] User Success';
 export const GET_USER_FAIL = '[User] User Fail';
 export const ADD_USER = '[User] Add User';
+export const ADD_USER_SUCCESS = '[User] Add User Success';
+export const ADD_USER_FAIL = '[User] Add User Fail';
 export const UPDATE_USER = '[User] Update User';
-export const ACTION_SUCCESS = '[User] Action Success';
-export const ACTION_ERROR = '[User] Action Error';
+export const UPDATE_USER_SUCCESS = '[User] Update User Success';
+export const UPDATE_USER_FAIL = '[User] Update User Fail';
 
 export class getUser implements Action {
   readonly type = GET_USER;
@@ -31,6 +33,19 @@ export class getUserFail implements Action {
 export class AddUser implements Action {
   readonly type = ADD_USER;
   constructor(public payload: any) {
+    console.log(payload);
+  }
+}
+
+export class AddUserSuccess implements Action {
+  readonly type = ADD_USER_SUCCESS;
+  constructor(public payload: any) {
+  }
+}
+
+export class AddUserFail implements Action {
+  readonly type = ADD_USER_FAIL;
+  constructor(public payload: any) {
   }
 }
 
@@ -40,21 +55,24 @@ export class UpdateUser implements Action {
   }
 }
 
-export class ActionSuccess implements Action {
-  readonly type = ACTION_SUCCESS;
+export class UpdateUserSuccess implements Action {
+  readonly type = UPDATE_USER_SUCCESS;
+  constructor(public payload: any) {
+  }
 }
 
-export class ActionError implements Action {
-  readonly type = ACTION_ERROR;
-  constructor(msg: string) {
-    console.log(msg);
+export class UpdateUserFail implements Action {
+  readonly type = UPDATE_USER_FAIL;
+  constructor(public payload: any) {
   }
 }
 
 export type Actions = getUser
 | getUserSuccess
+| getUserFail
 | AddUser
-| ActionError
+| AddUserSuccess
+| AddUserFail
 | UpdateUser
-| ActionSuccess
-| getUserFail;
+| UpdateUserSuccess
+| UpdateUserFail;

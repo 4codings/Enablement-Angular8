@@ -33,12 +33,8 @@ export class UserEffects {
     ofType<userActions.AddUser>(userActions.ADD_USER),
     mergeMap((action: userActions.AddUser) =>
       this.http.post('https://enablement.us/Enablement/rest/User/AddAndSendEmail', action.payload)
-        .pipe(
-          map(
-            () => new userActions.ActionSuccess()
-          ),
-          catchError(err => of(new userActions.ActionError(err.error)))
-        )
+        .pipe(map((res) => new userActions.AddUserSuccess(action.payload)),
+        catchError(err => of(new userActions.AddUserFail(err.error))))
     )
   );
 
@@ -48,10 +44,8 @@ export class UserEffects {
     mergeMap((action: userActions.UpdateUser) =>
       this.http.patch('https://enablement.us/Enablement/rest/v1/securedJSON', action.payload)
         .pipe(
-          map(
-            () => new userActions.ActionSuccess()
-          ),
-          catchError(err => of(new userActions.ActionError(err.error)))
+          map((res) => new userActions.UpdateUserSuccess(action.payload)),
+            catchError(err => of(new userActions.UpdateUserFail(err.error)))
         )
     )
   );

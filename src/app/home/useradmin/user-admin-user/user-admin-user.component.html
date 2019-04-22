@@ -78,7 +78,7 @@
 
 		<strong>{{Label['available_user']}}</strong>
 		<mat-list *ngIf="desktopView" class="scroll">
-			<mat-list-item class="list_item"  *ngFor="let user of users$ | async; let i = index;" [class.active]="i == selecteduser" (click)="getUserDetails(user); selected(i)">
+			<mat-list-item class="list_item"  *ngFor="let user of users$ | async; let i = index;" [class.active]="i == selecteduser" (click)="getUserDetails(user); selected(i); selectedId(user.id)">
         <div>{{user.V_USR_NM}}</div>
       </mat-list-item>
 		</mat-list>
