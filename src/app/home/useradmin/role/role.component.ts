@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { NoAuthDataService } from 'src/app/services/no-auth-data.service';
 import { Observable } from 'rxjs';
 import { userRole } from 'src/app/store/user-admin/user-role/userrole.model';
@@ -22,6 +22,10 @@ export class RoleComponent implements OnInit {
   didLoaded$: Observable<boolean>;
   roleData = new roleData;
   selecteduser: string;
+  public screenHeight = 0;
+  public screenWidth = 0;
+  public mobileView = false;
+  public desktopView = true;
 
   updateBtn = false;
 
@@ -38,6 +42,20 @@ export class RoleComponent implements OnInit {
   public hideButton = false;
 
   public showDelete = false;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event?) {
+    this.screenHeight = window.innerHeight;
+    this.screenWidth = window.innerWidth;
+    if (this.screenWidth <= 767) {
+      this.mobileView = true;
+      this.desktopView = false;
+    } else {
+      this.mobileView = false;
+      this.desktopView = true;
+    }
+  }
+
   constructor(
     public noAuthData: NoAuthDataService,
     private store: Store<AppState>
@@ -182,6 +200,10 @@ export class RoleComponent implements OnInit {
 
   uploadData() {
     
+  }
+
+  fileChangeEvent(event ,files) {
+
   }
 
 }

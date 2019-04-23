@@ -33,7 +33,6 @@ export class getUserFail implements Action {
 export class AddUser implements Action {
   readonly type = ADD_USER;
   constructor(public payload: any) {
-    console.log(payload);
   }
 }
 

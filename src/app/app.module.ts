@@ -14,7 +14,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { reducers } from './root.reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpInterceptorsService } from './services/http-interceptors.service';
 
 @NgModule({
   declarations: [AppComponent],

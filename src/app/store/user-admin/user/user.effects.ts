@@ -33,7 +33,7 @@ export class UserEffects {
     ofType<userActions.AddUser>(userActions.ADD_USER),
     mergeMap((action: userActions.AddUser) =>
       this.http.post('https://enablement.us/Enablement/rest/User/AddAndSendEmail', action.payload)
-        .pipe(map((res) => new userActions.AddUserSuccess(action.payload)),
+        .pipe(map((res) => new userActions.AddUserSuccess(res)),
         catchError(err => of(new userActions.AddUserFail(err.error))))
     )
   );

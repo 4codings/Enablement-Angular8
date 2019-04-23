@@ -54,8 +54,7 @@ export function userReducer(
       };
 
     case UserActions.ADD_USER_SUCCESS:
-      console.log(action.payload);
-      return adapter.addOne(action.payload, {
+      return adapter.addOne(action.payload[0], {
         ...state,
         loading: false,
         loaded: true
