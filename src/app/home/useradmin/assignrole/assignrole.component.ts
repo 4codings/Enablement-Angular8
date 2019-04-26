@@ -123,28 +123,41 @@ export class AssignroleComponent implements OnInit, OnDestroy {
   selectedRole(role, index) {
     
     if(this.selectCurrentGroup == undefined) { 
-      this.store.dispatch(new userRoleActions.selectRoleId(role.id));
-      let groupRelation = [];
-      let removeGroupRelation = [];
-      this.selectedrole = index;
-      this.USR_ROLE_DSR = role.V_ROLE_DSC; 
+      if(this.selectedrole == index) {
+        let removeGroupRelation = [];
+        this.selectedrole = null;
+        this.store.dispatch(new userRoleActions.RemoveRoleId());
 
-      this.groupData.forEach(group => {
-        if(group.is_selected_user == true || group.is_selected == true) {
-          removeGroupRelation.push({id:group.id, is_selected_user:false, is_selected:false});
-        }
-      });
-      this.store.dispatch(new userGroupActions.RemoveSelectedUserGroupRelation(removeGroupRelation));
-    
-      if (role.V_ROLE_ID != null) {
-        role.V_USR_GRP_ID.forEach(GRP_ID => {
-          this.groupData.forEach(group => {
-              if(GRP_ID == group.V_USR_GRP_ID) {
-                groupRelation.push({id:group.id, is_selected_user:true});
-              }
-          });
+        this.groupData.forEach(group => {
+          if(group.is_selected_user == true || group.is_selected == true) {
+            removeGroupRelation.push({id:group.id, is_selected_user:false, is_selected:false});
+          }
         });
-        this.store.dispatch(new userGroupActions.SelectUserGroupRelation(groupRelation));
+        this.store.dispatch(new userGroupActions.RemoveSelectedUserGroupRelation(removeGroupRelation));
+      } else {
+        this.store.dispatch(new userRoleActions.selectRoleId(role.id));
+        let groupRelation = [];
+        let removeGroupRelation = [];
+        this.selectedrole = index;
+        this.USR_ROLE_DSR = role.V_ROLE_DSC; 
+
+        this.groupData.forEach(group => {
+          if(group.is_selected_user == true || group.is_selected == true) {
+            removeGroupRelation.push({id:group.id, is_selected_user:false, is_selected:false});
+          }
+        });
+        this.store.dispatch(new userGroupActions.RemoveSelectedUserGroupRelation(removeGroupRelation));
+      
+        if (role.V_ROLE_ID != null) {
+          role.V_USR_GRP_ID.forEach(GRP_ID => {
+            this.groupData.forEach(group => {
+                if(GRP_ID == group.V_USR_GRP_ID) {
+                  groupRelation.push({id:group.id, is_selected_user:true});
+                }
+            });
+          });
+          this.store.dispatch(new userGroupActions.SelectUserGroupRelation(groupRelation));
+        }
       }
     }
 
@@ -153,31 +166,43 @@ export class AssignroleComponent implements OnInit, OnDestroy {
   selectGroup(group, index) {
     
     if(this.selectCurrentRole == undefined) { 
-      //console.log(group);
-      this.store.dispatch(new userGroupActions.selectGroupId(group.id));
-      let roleRelation = [];
-      let removeRolerelation = [];
-      this.selectedgroup = index;
-      this.USR_GRP_DSCR = group.V_USR_GRP_DSC; 
+      if(this.selectedgroup == index) {
+        let removeRolerelation = [];
+        this.selectedgroup = null;
+        this.store.dispatch(new userGroupActions.RemoveGroupId());
 
-      this.roleData.forEach(role => {
-        if(role.is_selected_usr_grp == true || role.is_selected == true) {
-          removeRolerelation.push({id:role.id, is_selected_usr_grp:false, is_selected:false});
-        }
-      });
-      this.store.dispatch(new userRoleActions.RemoveSelectedRoleGroupRelation(removeRolerelation));
-      
-      if (group.V_ROLE_ID != null) {
-        group.V_ROLE_ID.forEach(ROLE_ID => {
-          this.roleData.forEach(role => {
-              if(ROLE_ID == role.V_ROLE_ID) {
-                roleRelation.push({id:role.id, is_selected_usr_grp:true});
-              }
-          });
+        this.roleData.forEach(role => {
+          if(role.is_selected_usr_grp == true || role.is_selected == true) {
+            removeRolerelation.push({id:role.id, is_selected_usr_grp:false, is_selected:false});
+          }
         });
-        this.store.dispatch(new userRoleActions.SelectRoleGroupRelation(roleRelation));
-      }
-    }  
+        this.store.dispatch(new userRoleActions.RemoveSelectedRoleGroupRelation(removeRolerelation));
+      } else {
+        this.store.dispatch(new userGroupActions.selectGroupId(group.id));
+        let roleRelation = [];
+        let removeRolerelation = [];
+        this.selectedgroup = index;
+        this.USR_GRP_DSCR = group.V_USR_GRP_DSC; 
+
+        this.roleData.forEach(role => {
+          if(role.is_selected_usr_grp == true || role.is_selected == true) {
+            removeRolerelation.push({id:role.id, is_selected_usr_grp:false, is_selected:false});
+          }
+        });
+        this.store.dispatch(new userRoleActions.RemoveSelectedRoleGroupRelation(removeRolerelation));
+        
+        if (group.V_ROLE_ID != null) {
+          group.V_ROLE_ID.forEach(ROLE_ID => {
+            this.roleData.forEach(role => {
+                if(ROLE_ID == role.V_ROLE_ID) {
+                  roleRelation.push({id:role.id, is_selected_usr_grp:true});
+                }
+            });
+          });
+          this.store.dispatch(new userRoleActions.SelectRoleGroupRelation(roleRelation));
+        }
+      }  
+    }
     
   }
 
