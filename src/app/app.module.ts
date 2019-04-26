@@ -40,7 +40,13 @@ import { HttpInterceptorsService } from './services/http-interceptors.service';
       logOnly: environment.production
     })
   ],
-  providers: [],
+  providers: [
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: HttpInterceptorsService,
+    //   multi: true
+    // }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

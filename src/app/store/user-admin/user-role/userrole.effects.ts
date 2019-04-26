@@ -35,9 +35,9 @@ export class UserRoleEffects {
       this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', action.payload)
         .pipe(
           map(
-            () => new userRoleActions.ActionSuccess()
+            (res) => new userRoleActions.AddUserRoleSuccess(res)
           ),
-          catchError(err => of(new userRoleActions.ActionError(err.error)))
+          catchError(err => of(new userRoleActions.AddUserRoleFail(err.error)))
         )
     )
   );
@@ -49,9 +49,9 @@ export class UserRoleEffects {
       this.http.patch('https://enablement.us/Enablement/rest/v1/securedJSON', action.payload)
         .pipe(
           map(
-            () => new userRoleActions.ActionSuccess()
+            (res) => new userRoleActions.UpdateUserRoleSuccess(action.payload)
           ),
-          catchError(err => of(new userRoleActions.ActionError(err.error)))
+          catchError(err => of(new userRoleActions.UpdateUserRoleFail(err.error)))
         )
     )
   );
@@ -64,9 +64,9 @@ export class UserRoleEffects {
         + action.payload.V_ROLE_CD + '&V_SRC_CD=' + action.payload.V_SRC_CD + '&REST_Service=Role&Verb=DELETE')
         .pipe(
           map(
-            () => new userRoleActions.ActionSuccess()
+            (res) => new userRoleActions.DeleteUserRoleSuccess(res)
           ),
-          catchError(err => of(new userRoleActions.ActionError(err.error)))
+          catchError(err => of(new userRoleActions.DeleteUserRoleFail(err.error)))
         )
     )
   );

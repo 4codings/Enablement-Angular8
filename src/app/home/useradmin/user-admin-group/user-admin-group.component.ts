@@ -50,6 +50,7 @@ export class UserAdminGroupComponent implements OnInit {
 
   public totalDuplicated = false;
   public hideButton = false;
+  public selectedGroupid;
   
   @HostListener('window:resize', ['$event'])
   onResize(event?) {
@@ -125,6 +126,10 @@ export class UserAdminGroupComponent implements OnInit {
   onpselect(i) {
 
   }
+  
+  selectedGroupId(id) {
+    this.selectedGroupid = id;
+  }
 
   public setDateValue(dataGroup) {
     this.start_date = new Date(dataGroup.V_EFF_STRT_DT_TM);
@@ -156,7 +161,8 @@ export class UserAdminGroupComponent implements OnInit {
       V_EFF_END_DT_TM: this.end_date,
       V_USR_NM: JSON.parse(sessionStorage.getItem('u')).USR_NM,
       REST_Service: 'Group',
-      Verb : 'PATCH'
+      Verb : 'PATCH',
+      id:this.selectedGroupid
     };
     this.store.dispatch(new UpdateUserGroup(data));
   }

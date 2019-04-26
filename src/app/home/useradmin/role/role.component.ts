@@ -42,6 +42,7 @@ export class RoleComponent implements OnInit {
   public hideButton = false;
 
   public showDelete = false;
+  selectedRoleid;
 
   @HostListener('window:resize', ['$event'])
   onResize(event?) {
@@ -119,7 +120,8 @@ export class RoleComponent implements OnInit {
       V_USR_NM: JSON.parse(sessionStorage.getItem('u')).USR_NM,
       V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
       REST_Service: 'Role',
-      Verb: 'PATCH'
+      Verb: 'PATCH',
+      id:this.selectedRoleid
     };
     this.store.dispatch(new UpdateUserRole(data));
   }
@@ -204,6 +206,10 @@ export class RoleComponent implements OnInit {
 
   fileChangeEvent(event ,files) {
 
+  }
+
+  selectedRoleId(id) {
+    this.selectedRoleid = id;
   }
 
 }

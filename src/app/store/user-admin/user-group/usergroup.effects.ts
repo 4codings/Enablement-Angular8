@@ -35,9 +35,9 @@ export class UserGroupEffects {
       this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', action.payload)
         .pipe(
           map(
-            () => new userGroupActions.ActionSuccess()
+            (res) => new userGroupActions.addUserGroupSuccess(res)
           ),
-          catchError(err => of(new userGroupActions.ActionError(err.error)))
+          catchError(err => of(new userGroupActions.addUserGroupFail(err.error)))
         )
       )
     );
@@ -49,9 +49,9 @@ export class UserGroupEffects {
       this.http.patch('https://enablement.us/Enablement/rest/v1/securedJSON', action.payload)
         .pipe(
           map(
-            () => new userGroupActions.ActionSuccess()
+            (res) => new userGroupActions.UpdateUserGroupSuccess(action.payload)
           ),
-          catchError(err => of(new userGroupActions.ActionError(err.error)))
+          catchError(err => of(new userGroupActions.UpdateUserGroupFail(err.error)))
         )
     )
   );
@@ -64,9 +64,9 @@ export class UserGroupEffects {
         + action.payload.V_USR_GRP_CD + '&V_SRC_CD=' + action.payload.V_SRC_CD + '&REST_Service=Group&Verb=DELETE')
         .pipe(
           map(
-            () => new userGroupActions.ActionSuccess()
+            (res) => new userGroupActions.DeleteUserGroupSuccess(res)
           ),
-          catchError(err => of(new userGroupActions.ActionError(err.error)))
+          catchError(err => of(new userGroupActions.DeleteUserGroupSuccess(err.error)))
         )
     )
   );

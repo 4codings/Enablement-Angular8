@@ -88,7 +88,7 @@
 		<br />
 		<strong>{{Label['Av_group']}}</strong>
 		<mat-list *ngIf="desktopView" class="scroll" style="text-align: center;">
-			<mat-list-item class="list_item" (click)="getDataGroup(usrGroup);selected(i)"
+			<mat-list-item class="list_item" (click)="getDataGroup(usrGroup);selected(i);selectedGroupId(usrGroup.id)"
                       *ngFor="let usrGroup of userGroups$ | async;let i=index"
                       [class.active]="i == selectedgroup">
         <div>{{usrGroup.V_USR_GRP_CD}}</div>
@@ -96,7 +96,7 @@
 		</mat-list>
 		<mat-form-field *ngIf="mobileView" style="width:100%;text-align: center;" [floatLabel]="'never'">
 			<mat-select style="margin-top:10px;" placeholder="--Select--">
-				<mat-option style="text-align:center;" (click)="getDataGroup(usrGroup);selected(i)"
+				<mat-option style="text-align:center;" (click)="getDataGroup(usrGroup);selected(i);selectedGroupId(usrGroup.id)"
                       *ngFor="let usrGroup of userGroups$ | async;let i=index"
                       [class.active]="i == selectedgroup">{{usrGroup.V_USR_GRP_CD}}</mat-option>
 			</mat-select>

@@ -43,6 +43,107 @@ export function userRoleReducer(state = initialState, action: UserRoleActions.Ac
             loading: false,
             error: action.payload
         };
+        
+        case UserRoleActions.ADD_USER_ROLE:
+        return {
+            ...state,
+            loading: true,
+            loaded: false
+        };
+
+        case UserRoleActions.ADD_USER_ROLE_SUCCESS:
+        return adapter.addOne(action.payload[0], {
+            ...state,
+            loading: false,
+            loaded: true
+        });
+
+        case UserRoleActions.ADD_USER_ROLE_FAIL:
+        return {
+            ...state,
+            loading: false,
+            error: action.payload
+        };
+
+        case UserRoleActions.UPDATE_USER_ROLE:
+        return {
+            ...state,
+            loading: true,
+            loaded: false
+        };
+
+        case UserRoleActions.UPDATE_USER_ROLE_SUCCESS:
+        return adapter.upsertOne(action.payload, {
+            ...state,
+            loading: false,
+            loaded: true
+        });
+
+        case UserRoleActions.UPDATE_USER_ROLE_FAIL:
+        return {
+            ...state,
+            loading: false,
+            error: action.payload
+        };
+
+        case UserRoleActions.DELETE_USER_ROLE:
+        return {
+            ...state,
+            loading: true,
+            loaded: false
+        };
+
+        case UserRoleActions.DELETE_USER_ROLE_SUCCESS:
+        return adapter.removeOne(action.payload, {
+            ...state,
+            loading: false,
+            loaded: true
+        });
+
+        case UserRoleActions.DELETE_USER_ROLE_FAIL:
+        return {
+            ...state,
+            loading: false,
+            error: action.payload
+        };
+
+        case UserRoleActions.SELECT_ROLE_GROUP_RELATION:
+        return adapter.upsertMany(action.payload, {
+            ...state,
+            loading: false,
+            loaded: true
+        });
+
+        case UserRoleActions.REMOVE_SELECTED_ROLE_GROUP_RELATION:
+        return adapter.upsertMany(action.payload, {
+            ...state,
+            loading: false,
+            loaded: true
+        });
+        
+        case UserRoleActions.CHECKED_ROLE_GROUP:
+        return adapter.upsertOne(action.payload, {
+            ...state,
+            loading: false,
+            loaded: true
+        });
+
+        case UserRoleActions.SELECT_ROLE_ID:
+        return {
+            ...state,
+            selectedUserRoleId: action.payload
+        };
+
+        case UserRoleActions.REMOVE_ROLE_ID:
+        return {
+            ...state,
+            selectedUserRoleId: null
+        };
+
+        case UserRoleActions.UPDATE_GROUP_IDS:
+        return adapter.upsertOne(action.payload, {
+            ...state
+        });
 
         default:
             return state;

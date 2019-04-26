@@ -60,13 +60,13 @@
   <div fxFlex="48" style="text-align: center;">
     <strong>{{Label['available_role']}}</strong>
     <mat-list *ngIf="desktopView" class="scroll">
-      <mat-list-item class="list_item" (click)="getRollData(role);selected(i);" *ngFor="let role of userRoles$ | async; let i = index;" [class.active]="selecteduser == i">
+      <mat-list-item class="list_item" (click)="getRollData(role);selected(i); selectedRoleId(role.id)" *ngFor="let role of userRoles$ | async; let i = index;" [class.active]="selecteduser == i">
         <div>{{role.V_ROLE_CD}}</div>
       </mat-list-item>
     </mat-list>
     <mat-form-field *ngIf="mobileView" style="width:100%;text-align: center;" [floatLabel]="'never'">
       <mat-select style="margin-top:10px;" placeholder="--Select--">
-        <mat-option style="text-align:center;" (click)="getRollData(role);selected(i);" *ngFor="let role of userRoles$ | async; let i = index;" [class.active]="selecteduser == i">{{role.V_ROLE_CD}}</mat-option>
+        <mat-option style="text-align:center;" (click)="getRollData(role);selected(i); selectedRoleId(role.id)" *ngFor="let role of userRoles$ | async; let i = index;" [class.active]="selecteduser == i">{{role.V_ROLE_CD}}</mat-option>
       </mat-select>
     </mat-form-field>
 

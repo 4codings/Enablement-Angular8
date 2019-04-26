@@ -11,6 +11,12 @@ export const ADD_USER_FAIL = '[User] Add User Fail';
 export const UPDATE_USER = '[User] Update User';
 export const UPDATE_USER_SUCCESS = '[User] Update User Success';
 export const UPDATE_USER_FAIL = '[User] Update User Fail';
+export const SELECT_USER_GROUP_RELATION = '[USER] Select User Group Relation';
+export const REMOVE_SELECTED_USER_GROUP_RELATION = '[USER] Remove Selected User Group Relation';
+export const CHECKED_USER_GROUP = '[USER] Checked User Group';
+export const SELECT_USER_ID = '[User] Select User Id';
+export const REMOVE_USER_ID = '[User] Remove User Id';
+export const UPDATE_USER_GROUP_IDS = '[User] Update User Group Ids';
 
 export class getUser implements Action {
   readonly type = GET_USER;
@@ -66,6 +72,47 @@ export class UpdateUserFail implements Action {
   }
 }
 
+export class selectUserId implements Action {
+  readonly type = SELECT_USER_ID;
+  constructor(public payload: any) {
+  }
+}
+
+
+export class SelectUserGroupRelation implements Action {
+  readonly type = SELECT_USER_GROUP_RELATION;
+
+  constructor(public payload: any) {
+    //console.log('relation', payload);
+  }
+}
+
+export class RemoveSelectedUserGroupRelation implements Action {
+  readonly type = REMOVE_SELECTED_USER_GROUP_RELATION;
+
+  constructor(public payload: any) {
+    //console.log('remove relation', payload);
+  }
+}
+
+export class CheckedUserGroup implements Action {
+  readonly type = CHECKED_USER_GROUP;
+
+  constructor(public payload: any) {
+  }
+}
+
+export class RemoveUserId implements Action {
+  readonly type = REMOVE_USER_ID;
+}
+
+export class UpdateUserGroupIds implements Action {
+  readonly type = UPDATE_USER_GROUP_IDS;
+
+  constructor(public payload:any) {}
+}
+
+
 export type Actions = getUser
 | getUserSuccess
 | getUserFail
@@ -74,4 +121,10 @@ export type Actions = getUser
 | AddUserFail
 | UpdateUser
 | UpdateUserSuccess
-| UpdateUserFail;
+| UpdateUserFail
+| SelectUserGroupRelation
+| RemoveSelectedUserGroupRelation
+| CheckedUserGroup
+| selectUserId
+| RemoveUserId
+| UpdateUserGroupIds;

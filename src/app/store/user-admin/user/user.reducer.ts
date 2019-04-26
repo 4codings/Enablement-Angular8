@@ -86,7 +86,45 @@ export function userReducer(
         ...state,
         loading: false,
         error: action.payload
-      };  
+      }; 
+
+    case UserActions.SELECT_USER_GROUP_RELATION:
+      return adapter.upsertMany(action.payload, {
+          ...state,
+          loading: false,
+          loaded: true
+      });
+
+    case UserActions.REMOVE_SELECTED_USER_GROUP_RELATION:
+      return adapter.upsertMany(action.payload, {
+          ...state,
+          loading: false,
+          loaded: true
+      });
+      
+    case UserActions.CHECKED_USER_GROUP:
+      return adapter.upsertOne(action.payload, {
+          ...state,
+          loading: false,
+          loaded: true
+      });  
+      
+    case UserActions.SELECT_USER_ID:
+      return {
+        ...state,
+        selectedUserId: action.payload
+      }; 
+      
+    case UserActions.REMOVE_USER_ID:
+      return {
+        ...state,
+        selectedUserId: null
+      };   
+
+    case UserActions.UPDATE_USER_GROUP_IDS:
+    return adapter.upsertOne(action.payload, {
+      ...state
+    });  
     
     default:
       return state;
