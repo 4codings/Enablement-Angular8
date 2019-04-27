@@ -50,6 +50,7 @@ export class UserAdminUserComponent implements OnInit {
   public duplicated = false;
   public totalDuplicated = false;
   public hideButton = false;
+  public V_SRC_CD_DATA;
 
   private usersList = [];
 
@@ -87,10 +88,10 @@ export class UserAdminUserComponent implements OnInit {
   }
 
   ngOnInit() {
-    const data = {
+    this.V_SRC_CD_DATA = {
       V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
     };
-    this.store.dispatch(new usreActions.getUser(data));
+    this.store.dispatch(new usreActions.getUser(this.V_SRC_CD_DATA));
     // this.store.dispatch(new userGroupActions.getUserGroup());
     this.users$ = this.store.pipe(select(userSelectors.selectAllUsers));
     // this.userGroups$ = this.store.pipe(select(userGroupSelectors.selectAllUserGroups));
@@ -117,7 +118,7 @@ export class UserAdminUserComponent implements OnInit {
     // debugger
     this.users$.subscribe(data => {
       if (data.length) {
-        const newArray = data.filter(item => item.USR_NM == usr);
+        const newArray = data.filter(item => item.V_USR_NM == usr);
         console.log(newArray);
         this.addBtn = newArray.length == 0 ? false : true;
       }
@@ -149,12 +150,15 @@ export class UserAdminUserComponent implements OnInit {
   }
 
   addUser() {
+    
     const data = {
       V_USR_NM: this.user.V_USR_NM,
       V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
       V_USR_DSC: this.user.V_USR_DSC,
-      V_STS: this.user.V_STS,
+      V_STS: this.user.V_STS != '' ? this.user.V_STS : 'Active',
     };
+    console.log(data);
+
     this.store.dispatch(new AddUser(data));
   }
 
@@ -261,6 +265,7 @@ export class UserAdminUserComponent implements OnInit {
         (res);
         setTimeout(() => {
           //this.getUser();
+          this.store.dispatch(new usreActions.getUser(this.V_SRC_CD_DATA));
         }, 3000);
     },
       error => {

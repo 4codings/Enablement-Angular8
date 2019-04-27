@@ -119,6 +119,10 @@ export class MembershipComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.sub.unsubscribe();
     this.subUser.unsubscribe();
+    this.store.dispatch(new userGroupActions.RemoveGroupId());
+    this.store.dispatch(new userActions.RemoveUserId());
+    this.store.dispatch(new userGroupActions.getUserGroup(this.V_SRC_CD_DATA));
+    this.store.dispatch(new userActions.getUser(this.V_SRC_CD_DATA));
   }
 
   selectedUser(user, index) {

@@ -52,6 +52,7 @@ export class UserAdminGroupComponent implements OnInit {
   public totalDuplicated = false;
   public hideButton = false;
   public selectedGroupid;
+  public V_SRC_CD_DATA;
   
   @HostListener('window:resize', ['$event'])
   onResize(event?) {
@@ -75,10 +76,10 @@ export class UserAdminGroupComponent implements OnInit {
 
   ngOnInit() {
     // this.store.dispatch(new usreActions.getUser());
-    const data = {
+    this.V_SRC_CD_DATA = {
       V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
     };
-    this.store.dispatch(new userGroupActions.getUserGroup(data));
+    this.store.dispatch(new userGroupActions.getUserGroup(this.V_SRC_CD_DATA));
     // this.users$ = this.store.pipe(select(userSelectors.selectAllUsers));
     this.userGroups$ = this.store.pipe(select(userGroupSelectors.selectAllUserGroups));
     this.error$ = this.store.pipe(select(userGroupSelectors.getErrors));
@@ -111,7 +112,6 @@ export class UserAdminGroupComponent implements OnInit {
   }
 
   selected(index) {
-    console.log(index);
     this.selectedgroup = index.toString();
     this.clonedName = this.grpData.V_USR_GRP_CD;
     this.clonedDesc = this.grpData.V_USR_GRP_CD;
@@ -268,6 +268,7 @@ export class UserAdminGroupComponent implements OnInit {
         (res);
         setTimeout(() => {
           //this.getUser();
+          this.store.dispatch(new userGroupActions.getUserGroup(this.V_SRC_CD_DATA));
         }, 3000);
     },
       error => {
@@ -278,6 +279,7 @@ export class UserAdminGroupComponent implements OnInit {
   }
 
 }
+
 export class varData {
   EFF_END_DT_TM: string;
   EFF_STRT_DT_TM: string;

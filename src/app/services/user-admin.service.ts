@@ -6,7 +6,6 @@ import { userGroup } from '../store/user-admin/user-group/usergroup.model';
 import { userRole } from '../store/user-admin/user-role/userrole.model';
 import { userMemberShip } from '../store/user-admin/user-membership/usermembership.model';
 import { AuthorizationData } from '../store/user-admin/user-authorization/authorization.model';
-import { userInfo } from '../store/auth/userinfo.model';
 import { Http, ResponseContentType } from '@angular/http';
 
 @Injectable({
@@ -47,7 +46,7 @@ export class UserAdminService {
 	// membership-> user/group
 	getUserMemberShip(): Observable<userMemberShip[]> {
 		const header = new HttpHeaders().set('Authorization', `Bearer ${this.sessionDataToken}`);
-		return this.http.get<userRole[]>('https://enablement.us/Enablement/rest/E_DB/SPJSON?V_CD_TYP=ROLE&V_SRC_CD=AB&REST_Service=Masters&Verb=GET', {headers: header});
+		return this.http.get<userMemberShip[]>('https://enablement.us/Enablement/rest/E_DB/SPJSON?V_CD_TYP=ROLE&V_SRC_CD=AB&REST_Service=Masters&Verb=GET', {headers: header});
 		// return this.http.get<userMemberShip[]>('https://enablement.us/Enablement/rest/E_DB/SPJSON?V_SRC_CD=uttra.24&V_CD_TYP=USR_GRP&REST_Service=Masters&Verb=GET');
 	}
 
@@ -65,7 +64,7 @@ export class UserAdminService {
 		file['File_Path']="/opt/tomcat/webapps/"+this.reduceFilePath(this.V_SRC_CD)+"/BulkDataLoad/";
 		file['File_Name']=fileName;
 		formData.append('Source_File', currentFile);
-	  formData.append("FileInfo", JSON.stringify(file));
+	  	formData.append("FileInfo", JSON.stringify(file));
 	  
 		let obj=this.http.post("https://"+ this.removeSubDomain(this.domain_name) +"/FileAPIs/api/file/v1/upload", formData);
 		this.uploadFileSendInfo(fileName,screen);
@@ -94,7 +93,7 @@ export class UserAdminService {
 		   body['SCREEN']=screen;
 		   body['V_SRC_CD']=this.V_SRC_CD;
 		   body['USR_NM']=this.V_USR_NM;
-		   this.http.post("https://"+this.domain_name+"/rest/file/upload",body).subscribe(
+		   this.http.post("https://enablement.us/FileAPIs/api/file/v1/download",body).subscribe(
 			   res=>{
 				   ("File upload response : "+res);	
 			   },
@@ -105,23 +104,40 @@ export class UserAdminService {
 	}
 
 	public downloadFile(fileName:any) {
-		let formData: FormData = new FormData();
-	  let file:any={};
-	  file['File_Path']="/opt/tomcat/webapps/BulkDataDownload/";
-	  file['File_Name']=fileName;
-  
-	  formData.append("FileInfo", JSON.stringify(file));
-	 
-	  this.http.post("https://enablement.us/FileAPIs/api/file/v1/download", 
-	  formData,{responseType:'text'}).
-	  subscribe(data =>{
+		
+	    let formData: FormData = new FormData();
+		let file:any={};
+		file['File_Path']="/opt/tomcat/webapps/BulkDataDownload/";
+		file['File_Name']=fileName;
+	
+		formData.append("FileInfo", JSON.stringify(file));
+		
+		this.http.post("https://enablement.us/FileAPIs/api/file/v1/download", 
+		formData,{responseType:'blob' as 'json'}).
+		subscribe((data:any) =>{
 			var a = document.createElement("a");
-			//a.href = URL.createObjectURL(data.blob());
-			a.download = fileName;
-			// start download
-			a.click();
-	  });
-  
+				a.href = URL.createObjectURL(data.blob());
+				a.download = fileName;
+				// start download
+				a.click();
+		});
+		/*
+        return this.http.post("https://enablement.us/FileAPIs/api/file/v1/download", {
+            responseType: ResponseContentType.Blob
+        })
+        .toPromise()
+        .then(response => this.saveAsBlob(response))
+		.catch(error => console.log(error));
+		*/
 	}
+
+		private saveAsBlob(data: any) {
+			const blob = new Blob([data._body],
+				{ type: 'application/vnd.ms-excel' });
+			const file = new File([blob], 'report.xlsx',
+				{ type: 'application/vnd.ms-excel' });
+		
+			//FileSaver.saveAs(file);
+		}
  
 }

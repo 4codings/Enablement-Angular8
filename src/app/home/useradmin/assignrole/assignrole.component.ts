@@ -118,22 +118,14 @@ export class AssignroleComponent implements OnInit, OnDestroy {
   }
   
   ngOnDestroy() {
+    this.store.dispatch(new userGroupActions.RemoveGroupId());
+    this.store.dispatch(new userRoleActions.RemoveRoleId());
+    this.store.dispatch(new userGroupActions.getUserGroup(this.V_SRC_CD_DATA));
+    this.store.dispatch(new userRoleActions.getUserRole(this.V_SRC_CD_DATA));
   }
 
   selectedRole(role, index) {
     if(this.selectCurrentGroup != undefined) {
-      /*
-      let removeGroupRelation = [];
-      this.selectedrole = null;
-      this.store.dispatch(new userRoleActions.RemoveRoleId());
-
-      this.groupData.forEach(group => {
-        if(group.is_selected_user == true || group.is_selected == true) {
-          removeGroupRelation.push({id:group.id, is_selected_user:false, is_selected:false});
-        }
-      });
-      this.store.dispatch(new userGroupActions.RemoveSelectedUserGroupRelation(removeGroupRelation));
-      */
       let removeRolerelation = [];
       this.selectedgroup = null;
       this.store.dispatch(new userGroupActions.RemoveGroupId());
@@ -214,6 +206,7 @@ export class AssignroleComponent implements OnInit, OnDestroy {
       let removeRolerelation = [];
       this.selectedgroup = index;
       this.USR_GRP_DSCR = group.V_USR_GRP_DSC; 
+      this.USR_ROLE_DSR = ''; 
 
       this.roleData.forEach(role => {
         if(role.is_selected_usr_grp == true || role.is_selected == true) {
@@ -237,8 +230,7 @@ export class AssignroleComponent implements OnInit, OnDestroy {
       let roleRelation = [];
       let removeRolerelation = [];
       this.selectedgroup = index;
-      this.USR_GRP_DSCR = group.V_USR_GRP_DSC; 
-      this.USR_ROLE_DSR = ''; 
+      this.USR_GRP_DSCR = group.V_USR_GRP_DSC;
 
       this.roleData.forEach(role => {
         if(role.is_selected_usr_grp == true || role.is_selected == true) {

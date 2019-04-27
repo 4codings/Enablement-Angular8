@@ -233,11 +233,11 @@ export class RoleComponent implements OnInit {
 export class roleData {
   ROLE_CD: string;
   V_ROLE_CD: string;
-ROLE_DSC: string;
-V_ROLE_DSC: string;
-ROLE_ID: number;
-USR_GRP_ID: any;
-id: number;
-is_selected: boolean;
-is_selected_usr_grp: boolean;
+  ROLE_DSC: string;
+  V_ROLE_DSC: string;
+  ROLE_ID: number;
+  USR_GRP_ID: any;
+  id: number;
+  is_selected: boolean;
+  is_selected_usr_grp: boolean;
 }
