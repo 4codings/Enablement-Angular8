@@ -66,7 +66,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     login(form:NgForm) {
         if (form.invalid) { return; }
 
-        console.log(form.value);
+        //console.log(form.value);
         const body = {
             V_USR_NM: form.value.email,
             V_PSWRD: form.value.pass,

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpBackend } from '@angular/common/http';
 import { userInfo } from '../store/auth/userinfo.model';
 import { User } from '../store/user-admin/user/user.model';
 import { userGroup } from '../store/user-admin/user-group/usergroup.model';
@@ -14,9 +14,10 @@ import { UserLoginState } from '../store/auth/userlogin.reducer';
 })
 export class AuthService {
   userDetail: Observable<UserLoginState>;
-  constructor(private http: HttpClient, private store: Store<AppState>, public userService: UserService) {
+  constructor(private http: HttpClient, private store: Store<AppState>, public userService: UserService, handler:HttpBackend) {
+    this.http = new HttpClient(handler);
 		this.userDetail = this.store.pipe(select('userInfo'));
-  this.userDetail.subscribe(data => {
+    this.userDetail.subscribe(data => {
             // this.userServicve.clear();
             if (data.userInfo.TOKEN != '') {
               if (this.userService.getDetailFromStorage() == null) {

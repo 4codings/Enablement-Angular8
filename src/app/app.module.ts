@@ -41,11 +41,11 @@ import { HttpInterceptorsService } from './services/http-interceptors.service';
     })
   ],
   providers: [
-    // {
-    //   provide: HTTP_INTERCEPTORS,
-    //   useClass: HttpInterceptorsService,
-    //   multi: true
-    // }
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpInterceptorsService,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })
