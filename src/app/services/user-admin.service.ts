@@ -7,17 +7,25 @@ import { userRole } from '../store/user-admin/user-role/userrole.model';
 import { userMemberShip } from '../store/user-admin/user-membership/usermembership.model';
 import { AuthorizationData } from '../store/user-admin/user-authorization/authorization.model';
 import { userInfo } from '../store/auth/userinfo.model';
+import { Http, ResponseContentType } from '@angular/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserAdminService {
-    sessionDataToken;
+	sessionDataToken;
+	V_SRC_CD;
+	V_USR_NM;
+	domain_name;
+
 	constructor(private http: HttpClient) {
 		if (sessionStorage.getItem('u') != undefined || sessionStorage.getItem('u') != null) {
 		    const data = JSON.parse(sessionStorage.getItem('u'));
-			   this.sessionDataToken = data.TOKEN;
+			    this.sessionDataToken = data.TOKEN;
+			    this.V_SRC_CD = data.V_SRC_CD;
+       			this.V_USR_NM = data.V_USR_NM;
 		}
+		this.domain_name = 'enablement.us/Enablement';
 	}
 
 
@@ -47,4 +55,73 @@ export class UserAdminService {
 		const header = new HttpHeaders().set('Authorization', `Bearer ${this.sessionDataToken}`);
   		return this.http.get<AuthorizationData[]>('https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=AUTH&V_SRC_CD=cbp%207&REST_Service=Masters&Verb=GET', {headers: header});
 	}
+
+	public fileUpload(currentFile:File,fileName:any,screen:any)  {
+		("The file name is  :"+fileName);
+		("The current screen is :"+screen);
+	  let formData: FormData = new FormData();
+	  
+		let file:any={};
+		file['File_Path']="/opt/tomcat/webapps/"+this.reduceFilePath(this.V_SRC_CD)+"/BulkDataLoad/";
+		file['File_Name']=fileName;
+		formData.append('Source_File', currentFile);
+	  formData.append("FileInfo", JSON.stringify(file));
+	  
+		let obj=this.http.post("https://"+ this.removeSubDomain(this.domain_name) +"/FileAPIs/api/file/v1/upload", formData);
+		this.uploadFileSendInfo(fileName,screen);
+			return obj;
+	}
+
+	/*
+	replace the white spaces with - and dots
+    */
+	public reduceFilePath(pathName:string) : any{
+		return pathName.split(" ").join("-").replace(".","");
+	}
+    /*
+	Remove the extra domain sufix 
+	*/
+	private removeSubDomain(domain:string ) : string {
+	  return domain.split("/Enablement").join("");
+	}
+
+	public uploadFileSendInfo(fileName:any,screen:any){
+	
+		let body:any={};
+		   body['File_Path']="/opt/tomcat/webapps/"+this.reduceFilePath(this.V_SRC_CD)+"/BulkDataLoad/";
+		   body['File_Name']=fileName;
+		   body['TIMEZONE']=new Date();
+		   body['SCREEN']=screen;
+		   body['V_SRC_CD']=this.V_SRC_CD;
+		   body['USR_NM']=this.V_USR_NM;
+		   this.http.post("https://"+this.domain_name+"/rest/file/upload",body).subscribe(
+			   res=>{
+				   ("File upload response : "+res);	
+			   },
+			   error=>{
+				   console.error("File uploading info error :"+error);
+			   }
+		   );
+	}
+
+	public downloadFile(fileName:any) {
+		let formData: FormData = new FormData();
+	  let file:any={};
+	  file['File_Path']="/opt/tomcat/webapps/BulkDataDownload/";
+	  file['File_Name']=fileName;
+  
+	  formData.append("FileInfo", JSON.stringify(file));
+	 
+	  this.http.post("https://enablement.us/FileAPIs/api/file/v1/download", 
+	  formData,{responseType:'text'}).
+	  subscribe(data =>{
+			var a = document.createElement("a");
+			//a.href = URL.createObjectURL(data.blob());
+			a.download = fileName;
+			// start download
+			a.click();
+	  });
+  
+	}
+ 
 }

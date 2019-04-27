@@ -8,6 +8,7 @@ import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/app.state';
 import {addUserGroup, UpdateUserGroup} from '../../../store/user-admin/user-group/usergroup.action';
 import {AddUserRole, DeleteUserRole, UpdateUserRole} from '../../../store/user-admin/user-role/userrole.action';
+import { UserAdminService } from 'src/app/services/user-admin.service';
 
 @Component({
   selector: 'app-role',
@@ -59,7 +60,8 @@ export class RoleComponent implements OnInit {
 
   constructor(
     public noAuthData: NoAuthDataService,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private userAdminService:UserAdminService
   ) { }
 
   ngOnInit() {
@@ -197,15 +199,29 @@ export class RoleComponent implements OnInit {
   }
 
   downloadFile() {
-
+    this.userAdminService.downloadFile('UserDL.xlsx');
   }
 
   uploadData() {
-    
+    document.getElementById('Document_File').click();
   }
 
-  fileChangeEvent(event ,files) {
+  fileChangeEvent(event: any, file: any) {
+    const fileList: FileList = event.target.files;
+    ('====================');
+    (fileList.item(0));
+    this.userAdminService.fileUpload(fileList.item(0), 'UserDL.xlsx', 'user').subscribe(
+      res => {
+        (res);
+        setTimeout(() => {
+          //this.getUser();
+        }, 3000);
+    },
+      error => {
+        console.error(error);
 
+      }
+    );
   }
 
   selectedRoleId(id) {

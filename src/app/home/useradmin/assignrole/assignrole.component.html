@@ -101,7 +101,7 @@
     <div fxFlex="10" ></div>
     
     <div fxFlex="30" style="text-align: center;">
-        <strong>{{Label['Group']}}</strong>
+        <strong><!---{{Label['Group']}}--> Groups</strong>
         <mat-list *ngIf="desktopView" class="scroll">
           <mat-list-item  class="list_item"  *ngFor="let g of groups$ | async; let j = index;"  [class.active]="j == selectedgroup || g.is_selected_user == true">
               <div fxLayout="row" fxLayout.lt-sm="column">
@@ -132,7 +132,7 @@
 
     <div fxFlex="3" ></div>
     <div fxFlex="30" style="text-align: center;">
-        <strong>{{Label['role']}}</strong>
+        <strong><!---{{Label['role']}}--> Roles</strong>
         <mat-list *ngIf="desktopView" class="scroll">
           <mat-list-item  class="sd list_item"  *ngFor="let r of roles$ | async; let i = index;"  [class.active]="i == selectedrole || r.is_selected_usr_grp == true">
             <div fxLayout="row" fxLayout.lt-sm="column">

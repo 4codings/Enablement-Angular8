@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { userGroup } from 'src/app/store/user-admin/user-group/usergroup.model';
 import {addUserGroup, DeleteUserGroup, UpdateUserGroup} from '../../../store/user-admin/user-group/usergroup.action';
 import {HttpClient} from '@angular/common/http';
+import { UserAdminService } from 'src/app/services/user-admin.service';
 
 @Component({
   selector: 'app-user-admin-group',
@@ -68,7 +69,8 @@ export class UserAdminGroupComponent implements OnInit {
   constructor(
     public noAuthData: NoAuthDataService,
     private store: Store<AppState>,
-    private http: HttpClient
+    private http: HttpClient,
+    private userAdminService:UserAdminService
   ) { }
 
   ngOnInit() {
@@ -248,16 +250,31 @@ export class UserAdminGroupComponent implements OnInit {
     }
   }
   
-  fileChangeEvent(event, files) {
-    
-  }
 
   downloadFile() {
-
+    this.userAdminService.downloadFile('UserDL.xlsx');
   }
 
   uploadData() {
+    document.getElementById('Document_File').click();
+  }
 
+  fileChangeEvent(event: any, file: any) {
+    const fileList: FileList = event.target.files;
+    ('====================');
+    (fileList.item(0));
+    this.userAdminService.fileUpload(fileList.item(0), 'UserDL.xlsx', 'user').subscribe(
+      res => {
+        (res);
+        setTimeout(() => {
+          //this.getUser();
+        }, 3000);
+    },
+      error => {
+        console.error(error);
+
+      }
+    );
   }
 
 }

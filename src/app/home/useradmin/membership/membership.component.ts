@@ -122,86 +122,133 @@ export class MembershipComponent implements OnInit, OnDestroy {
   }
 
   selectedUser(user, index) {
-    if(this.selectCurrentGroup == undefined) {
-      if(this.selecteduser == index) {
-        let removeGroupRelation = [];
-        this.selecteduser = null;
-        this.store.dispatch(new userActions.RemoveUserId());
+    if(this.selectCurrentGroup != undefined) {
+      let removeUserelation = [];
+      this.selectedgroup = null;
+      this.store.dispatch(new userGroupActions.RemoveGroupId());
 
-        this.groupData.forEach(group => {
+      this.userData.forEach(user => {
+        if(user.is_selected_usr_grp == true || user.is_selected == true) {
+          removeUserelation.push({id:user.id, is_selected_usr_grp:false, is_selected:false});
+        }
+      });
+      this.store.dispatch(new userActions.RemoveSelectedUserGroupRelation(removeUserelation));
+
+      this.store.dispatch(new userActions.selectUserId(user.id));
+      let groupRelation = [];
+      let removeGroupRelation = [];
+      this.selecteduser = index;
+      this.USR_DSC_R = user.V_USR_DSC; 
+      this.USR_GRP_DSCR = ''; 
+
+      this.groupData.forEach(group => {
           if(group.is_selected_user == true || group.is_selected == true) {
             removeGroupRelation.push({id:group.id, is_selected_user:false, is_selected:false});
           }
-        });
-        this.store.dispatch(new userGroupActions.RemoveSelectedUserGroupRelation(removeGroupRelation));
-      } else {
-        this.store.dispatch(new userActions.selectUserId(user.id));
-        let groupRelation = [];
-        let removeGroupRelation = [];
-        this.selecteduser = index;
-        this.USR_DSC_R = user.V_USR_DSC; 
-
-        this.groupData.forEach(group => {
-            if(group.is_selected_user == true || group.is_selected == true) {
-              removeGroupRelation.push({id:group.id, is_selected_user:false, is_selected:false});
-            }
-        });
-        this.store.dispatch(new userGroupActions.RemoveSelectedUserGroupRelation(removeGroupRelation));
-      
-        if (user.V_USR_GRP_ID != null) {
-          user.V_USR_GRP_ID.forEach(GRP_ID => {
-            this.groupData.forEach(group => {
-                if(GRP_ID == group.V_USR_GRP_ID) {
-                  groupRelation.push({id:group.id, is_selected_user:true});
-                }
-            });
+      });
+      this.store.dispatch(new userGroupActions.RemoveSelectedUserGroupRelation(removeGroupRelation));
+    
+      if (user.V_USR_GRP_ID != null) {
+        user.V_USR_GRP_ID.forEach(GRP_ID => {
+          this.groupData.forEach(group => {
+              if(GRP_ID == group.V_USR_GRP_ID) {
+                groupRelation.push({id:group.id, is_selected_user:true});
+              }
           });
-          this.store.dispatch(new userGroupActions.SelectUserGroupRelation(groupRelation));
-        }
+        });
+        this.store.dispatch(new userGroupActions.SelectUserGroupRelation(groupRelation));
+      }
+    } else {
+      this.store.dispatch(new userActions.selectUserId(user.id));
+      let groupRelation = [];
+      let removeGroupRelation = [];
+      this.selecteduser = index;
+      this.USR_DSC_R = user.V_USR_DSC; 
+      this.USR_GRP_DSCR = ''; 
+
+      this.groupData.forEach(group => {
+          if(group.is_selected_user == true || group.is_selected == true) {
+            removeGroupRelation.push({id:group.id, is_selected_user:false, is_selected:false});
+          }
+      });
+      this.store.dispatch(new userGroupActions.RemoveSelectedUserGroupRelation(removeGroupRelation));
+    
+      if (user.V_USR_GRP_ID != null) {
+        user.V_USR_GRP_ID.forEach(GRP_ID => {
+          this.groupData.forEach(group => {
+              if(GRP_ID == group.V_USR_GRP_ID) {
+                groupRelation.push({id:group.id, is_selected_user:true});
+              }
+          });
+        });
+        this.store.dispatch(new userGroupActions.SelectUserGroupRelation(groupRelation));
       }
     }
   }
 
   selectGroup(group, index) {
-    if(this.selectCurrentUser == undefined) { 
-      if(this.selectedgroup == index) {
-        let removeUserelation = [];
-        this.selectedgroup = null;
-        this.store.dispatch(new userGroupActions.RemoveGroupId());
+    if(this.selectCurrentUser != undefined) {
+      let removeGroupRelation = [];
+      this.selecteduser = null;
+      this.store.dispatch(new userActions.RemoveUserId());
 
-        this.userData.forEach(user => {
-          if(user.is_selected_usr_grp == true || user.is_selected == true) {
-            removeUserelation.push({id:user.id, is_selected_usr_grp:false, is_selected:false});
-          }
-        });
-        this.store.dispatch(new userActions.RemoveSelectedUserGroupRelation(removeUserelation));
-      } else {
-        this.store.dispatch(new userGroupActions.selectGroupId(group.id));
-        let userRelation = [];
-        let removeUserelation = [];
-        this.selectedgroup = index;
-        this.USR_GRP_DSCR = group.V_USR_GRP_DSC; 
-
-        this.userData.forEach(user => {
-          if(user.is_selected_usr_grp == true || user.is_selected == true) {
-            removeUserelation.push({id:user.id, is_selected_usr_grp:false, is_selected:false});
-          }
-        });
-        this.store.dispatch(new userActions.RemoveSelectedUserGroupRelation(removeUserelation));
-        
-        if (group.V_USR_ID != null) {
-          group.V_USR_ID.forEach(USR_ID => {
-            this.userData.forEach(user => {
-                if(USR_ID == user.V_USR_ID) {
-                  userRelation.push({id:user.id, is_selected_usr_grp:true});
-                }
-            });
-          });
-          this.store.dispatch(new userActions.SelectUserGroupRelation(userRelation));
+      this.groupData.forEach(group => {
+        if(group.is_selected_user == true || group.is_selected == true) {
+          removeGroupRelation.push({id:group.id, is_selected_user:false, is_selected:false});
         }
-      }  
-    }
-    
+      });
+      this.store.dispatch(new userGroupActions.RemoveSelectedUserGroupRelation(removeGroupRelation));
+
+      this.store.dispatch(new userGroupActions.selectGroupId(group.id));
+      let userRelation = [];
+      let removeUserelation = [];
+      this.selectedgroup = index;
+      this.USR_GRP_DSCR = group.V_USR_GRP_DSC; 
+      this.USR_DSC_R = ''; 
+
+      this.userData.forEach(user => {
+        if(user.is_selected_usr_grp == true || user.is_selected == true) {
+          removeUserelation.push({id:user.id, is_selected_usr_grp:false, is_selected:false});
+        }
+      });
+      this.store.dispatch(new userActions.RemoveSelectedUserGroupRelation(removeUserelation));
+      
+      if (group.V_USR_ID != null) {
+        group.V_USR_ID.forEach(USR_ID => {
+          this.userData.forEach(user => {
+              if(USR_ID == user.V_USR_ID) {
+                userRelation.push({id:user.id, is_selected_usr_grp:true});
+              }
+          });
+        });
+        this.store.dispatch(new userActions.SelectUserGroupRelation(userRelation));
+      }
+    } else {
+      this.store.dispatch(new userGroupActions.selectGroupId(group.id));
+      let userRelation = [];
+      let removeUserelation = [];
+      this.selectedgroup = index;
+      this.USR_GRP_DSCR = group.V_USR_GRP_DSC; 
+      this.USR_DSC_R = ''; 
+
+      this.userData.forEach(user => {
+        if(user.is_selected_usr_grp == true || user.is_selected == true) {
+          removeUserelation.push({id:user.id, is_selected_usr_grp:false, is_selected:false});
+        }
+      });
+      this.store.dispatch(new userActions.RemoveSelectedUserGroupRelation(removeUserelation));
+      
+      if (group.V_USR_ID != null) {
+        group.V_USR_ID.forEach(USR_ID => {
+          this.userData.forEach(user => {
+              if(USR_ID == user.V_USR_ID) {
+                userRelation.push({id:user.id, is_selected_usr_grp:true});
+              }
+          });
+        });
+        this.store.dispatch(new userActions.SelectUserGroupRelation(userRelation));
+      }
+    }  
   }
 
   checkboxGroupSelect(event, group) {
@@ -225,7 +272,7 @@ export class MembershipComponent implements OnInit, OnDestroy {
       let addedIds = [];
     
       this.groupData.forEach(group => {
-        if(group.is_selected == true && group.is_selected_user == true) {
+        if(group.is_selected == false && group.is_selected_user == true) {
           deletedIds.push(group.V_USR_GRP_ID)
         }
       });
@@ -262,7 +309,7 @@ export class MembershipComponent implements OnInit, OnDestroy {
       let addedIds = [];
     
       this.userData.forEach(user => {
-        if(user.is_selected == true && user.is_selected_usr_grp == true) {
+        if(user.is_selected == false && user.is_selected_usr_grp == true) {
           deletedIds.push(user.V_USR_ID)
         }
       });

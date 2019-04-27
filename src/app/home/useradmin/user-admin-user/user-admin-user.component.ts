@@ -11,6 +11,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { filter } from 'rxjs/operators';
 import {AddUser, UpdateUser} from '../../../store/user-admin/user/user.action';
+import { UserAdminService } from 'src/app/services/user-admin.service';
 
 @Component({
   selector: 'app-user-admin-user',
@@ -75,7 +76,8 @@ export class UserAdminUserComponent implements OnInit {
 
   constructor(
     public noAuthData: NoAuthDataService,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private userAdminService:UserAdminService
   ) {
     // Label get service
     this.noAuthData.getJSON().subscribe(data => {
@@ -139,10 +141,11 @@ export class UserAdminUserComponent implements OnInit {
   }
 
   downloadFile() {
-    alert('Download Clicked !!!!');
+    this.userAdminService.downloadFile('UserDL.xlsx');
   }
+
   uploadData() {
-    alert('Upload Clicked !!!!');
+    document.getElementById('Document_File').click();
   }
 
   addUser() {
@@ -249,8 +252,22 @@ export class UserAdminUserComponent implements OnInit {
     }
   }
 
-  fileChangeEvent(event, files) {
+  fileChangeEvent(event: any, file: any) {
+    const fileList: FileList = event.target.files;
+    ('====================');
+    (fileList.item(0));
+    this.userAdminService.fileUpload(fileList.item(0), 'UserDL.xlsx', 'user').subscribe(
+      res => {
+        (res);
+        setTimeout(() => {
+          //this.getUser();
+        }, 3000);
+    },
+      error => {
+        console.error(error);
 
+      }
+    );
   }
 
 }
