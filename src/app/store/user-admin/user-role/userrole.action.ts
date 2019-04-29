@@ -92,7 +92,7 @@ export class DeleteUserRole implements Action {
 
 export class DeleteUserRoleSuccess implements Action {
   readonly type = DELETE_USER_ROLE_SUCCESS;
-  constructor(public payload: any) {
+  constructor(public res:any, public payload: any) {
     // console.log("roles", payload);
   }
 }

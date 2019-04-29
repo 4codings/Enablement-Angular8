@@ -129,7 +129,6 @@ export class RoleComponent implements OnInit {
   }
 
   public deleteRole() {
-    console.log('delete');
     const data = {
       V_ROLE_CD: this.roleData.V_ROLE_CD,
       V_ROLE_DSC: this.roleData.V_ROLE_DSC,
@@ -226,6 +225,7 @@ export class RoleComponent implements OnInit {
 
   selectedRoleId(id) {
     this.selectedRoleid = id;
+    this.store.dispatch(new userRoleActions.selectRoleId(id));
   }
 
 }

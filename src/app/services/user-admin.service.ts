@@ -66,7 +66,7 @@ export class UserAdminService {
 		formData.append('Source_File', currentFile);
 	  	formData.append("FileInfo", JSON.stringify(file));
 	  
-		let obj=this.http.post("https://"+ this.removeSubDomain(this.domain_name) +"/FileAPIs/api/file/v1/upload", formData);
+		let obj=this.http.post("https://enablement.us/FileAPIs/api/file/v1/upload", formData);
 		this.uploadFileSendInfo(fileName,screen);
 			return obj;
 	}

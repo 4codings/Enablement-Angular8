@@ -56,17 +56,17 @@ export class UserGroupEffects {
     )
   );
 
-  @Effect({ dispatch: true })
-  deleteGroup: Observable<Action> = this.actions$.pipe(
+  @Effect({dispatch: true})
+  deleteGroup$: Observable<Action> = this.actions$.pipe(
     ofType<userGroupActions.DeleteUserGroup>(userGroupActions.DELETE_USER_GROUP),
     mergeMap((action: userGroupActions.DeleteUserGroup) =>
-      this.http.patch('https://enablement.us/Enablement/rest/v1/securedJSON?V_USR_GRP_CD='
-        + action.payload.V_USR_GRP_CD + '&V_SRC_CD=' + action.payload.V_SRC_CD + '&REST_Service=Group&Verb=DELETE', action.payload)
+      this.http.get('https://enablement.us/Enablement/rest/v1/securedJSON?V_USR_GRP_CD='
+      + action.payload.V_USR_GRP_CD + '&V_SRC_CD=' + action.payload.V_SRC_CD + '&REST_Service=Group&Verb=DELETE')
         .pipe(
           map(
-            (res) => new userGroupActions.DeleteUserGroupSuccess(res)
+            (user:any) => new userGroupActions.DeleteUserGroupSuccess(user, action.payload.currentgroup)
           ),
-          catchError(err => of(new userGroupActions.DeleteUserGroupSuccess(err.error)))
+          catchError(err => of(new userGroupActions.DeleteUserGroupFail(err.error)))
         )
     )
   );

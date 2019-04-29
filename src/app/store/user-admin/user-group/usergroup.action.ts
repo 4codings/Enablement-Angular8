@@ -11,7 +11,7 @@ export const UPDATE_USER_GROUP = '[GROUP] User Group Update';
 export const UPDATE_USER_GROUP_SUCCESS = '[GROUP] User Group Update Success';
 export const UPDATE_USER_GROUP_FAIL = '[GROUP] User Group Update Fail';
 export const DELETE_USER_GROUP = '[GROUP] Delete Group';
-export const DELETE_USER_GROUP_SUCCESS = '[GROUP] Delete Group Sucess';
+export const DELETE_USER_GROUP_SUCCESS = '[GROUP] Delete Group Success';
 export const DELETE_USER_GROUP_FAIL = '[GROUP] Delete Group Fail';
 export const SELECT_USER_GROUP_RELATION = '[GROUP] Select User Group Relation';
 export const REMOVE_SELECTED_USER_GROUP_RELATION = '[GROUP] Remove Selected User Group Relation';
@@ -91,14 +91,12 @@ export class DeleteUserGroup implements Action {
   readonly type = DELETE_USER_GROUP;
 
   constructor(public payload: any) {
-    //console.log("userGroup deleted",payload);
   }
 }
 
 export class DeleteUserGroupSuccess implements Action {
   readonly type = DELETE_USER_GROUP_SUCCESS;
-  constructor(public payload: any) {
-    //console.log("userGroup deleted success",payload);
+  constructor(public res:any, public payload: any) {
   }
 }
 

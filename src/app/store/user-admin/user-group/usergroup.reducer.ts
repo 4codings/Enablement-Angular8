@@ -94,11 +94,20 @@ export function userGroupReducer(state = initialState, action: UserGroupActions.
         };
 
         case UserGroupActions.DELETE_USER_GROUP_SUCCESS:
-        return adapter.removeOne(action.payload, {
+        if(action.res[0].RESULT == "USER GROUP DELETED SUCCESSFULLY") {
+            console.log(action.payload)
+            return adapter.removeOne(action.payload, {
+                ...state,
+                loading: false,
+                loaded: true
+            });
+        } else {
+           return {
             ...state,
             loading: false,
             loaded: true
-        });
+           }
+        }
 
         case UserGroupActions.DELETE_USER_GROUP_FAIL:
         return {

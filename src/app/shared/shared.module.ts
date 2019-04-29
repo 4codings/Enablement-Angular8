@@ -6,6 +6,7 @@ import {NoDataMsgComponent} from './components/no-data-msg/no-data-msg.component
 import {RouterModule} from '@angular/router';
 import { MatIconModule, MatCardModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
         RouterModule,
         MatCardModule,
         MatIconModule,
-        FlexLayoutModule
+        FlexLayoutModule,
+        MatTooltipModule
     ],
     declarations: [
         FormErrorMsgComponent,
@@ -24,6 +26,10 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     exports:      [
         FormErrorMsgComponent,
         NoDataMsgComponent,
+        MatCardModule,
+        MatIconModule,
+        FlexLayoutModule,
+        MatTooltipModule
     ]
 })
 export class SharedModule {

@@ -94,11 +94,20 @@ export function userRoleReducer(state = initialState, action: UserRoleActions.Ac
         };
 
         case UserRoleActions.DELETE_USER_ROLE_SUCCESS:
-        return adapter.removeOne(action.payload, {
+        if(action.res[0].RESULT == "USER GROUP DELETED SUCCESSFULLY") {
+            console.log(action.payload)
+            return adapter.removeOne(action.payload, {
+                ...state,
+                loading: false,
+                loaded: true
+            });
+        } else {
+           return {
             ...state,
             loading: false,
             loaded: true
-        });
+           }
+        }
 
         case UserRoleActions.DELETE_USER_ROLE_FAIL:
         return {
