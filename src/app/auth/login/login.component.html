@@ -10,39 +10,13 @@
 					{{msg_alert}}
 				</div>
 
-				<form class="login-form parent" (ngSubmit)="checkUser(form)" #form="ngForm">
-						<div class="center-justified" *ngIf="msg1">
-								<span>  Please use your corporate email id, {{sub_string}} is not allowed"</span>
-							</div>
-						<div class="center-justified" *ngIf="!agcy">
-							<span>  please enter your organisation name </span>
-						</div>
-
-						<div class="center-justified" *ngIf="confirm_msg">
-								<span> A confirmation link is sent to your email id. Please check your email and confirm the registration</span>
-						</div>
-						<div class="center-justified" *ngIf="pwdset">
-								<span>Please provide a new password that you want to reset</span>
-						</div>
+				<form class="login-form parent" (ngSubmit)="login(form)" #form="ngForm">
 					<div flex style="align-items: center;" fxLayout="row" fxLayout.lt-sm="column" style="padding-top: 30px;">
-							
-							<span fxFlex="25" class="formLabel">Username</span>
+						<span fxFlex="25" class="formLabel">Username</span>
 						<div fxFlex="60" class="formGroup">
-							<!--<input type="email" placeholder="Provide Your Email id" (keyup)="onKey($event)" autocomplete="off" [(ngModel)]="email" name="email"
-							 value="" mat-raised-button
-							 matTooltip="please include an @ in the email address.is missing in @">-->
-							 
-						
-						<input class="form-control" type="email" id="username" name="username" placeholder="Provide your email id" (keyup)="onKey($event)" autocomplete="off" [(ngModel)]="email" name="email"
-						value="" mat-raised-button 
-						matTooltipclass='tooltip' [matTooltip]="tooltipflag ? tooltipmsg : null">
-						
-						
-							
-							
-						
-						<!-- matTooltip="please include an @ in the email address.is missing in @"> -->
-					</div>
+							<input type="email" placeholder="Provide Your Email id" (keyup)="onKey($event)" autocomplete="off" [(ngModel)]="email" name="email"
+							 value="">
+						</div>
 					</div>
 
 					<div *ngIf="pass1==true" class="parent">
@@ -71,17 +45,14 @@
 						</div>
 						<br />
 						<div *ngIf="logBtn==true" flex fxLayout="row" fxLayout.lt-sm="column">
-								
+
 							<div fxFlex="30"></div>
 							<div fxFlex="40" class="parent">
 								<button type="" [disabled]="btn_disabled" mat-raised-button color="primary">Login or Sign-up</button>
 							</div>
-							
 							<div fxFlex="30"></div>
 						</div>
 						<div *ngIf="rstBnt==true" flex fxLayout="row" fxLayout.lt-sm="column">
-								
-								
 							<div fxFlex="27"></div>
 							<div fxFlex="46" class="parent">
 								<button class="content" type="" mat-raised-button color="primary">Reset</button>
@@ -95,6 +66,7 @@
 							</div>
 							<div fxFlex="40"></div>
 						</div>
+						
 				</form>
 
 			</mat-card-content>

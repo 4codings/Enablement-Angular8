@@ -14,9 +14,10 @@ export class ProfileComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
+  
     const data = {
-      agency : 'CBP 4',
-      V_USR_NM: 'cbp4@adventbusiness.com'
+      agency : JSON.parse(sessionStorage.getItem('u')).SRC_CD,
+      V_USR_NM: JSON.parse(sessionStorage.getItem('u')).USR_NM
     };
     this.http.get<data>(this.api + 'rest/E_DB/SP?V_SRC_CD=' + data.agency + '&V_USR_NM=' + data.V_USR_NM + '&REST_Service=UserRoles&Verb=GET').subscribe(
       data => {
