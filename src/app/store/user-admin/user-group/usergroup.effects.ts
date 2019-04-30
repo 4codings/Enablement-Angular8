@@ -64,7 +64,7 @@ export class UserGroupEffects {
       + action.payload.V_USR_GRP_CD + '&V_SRC_CD=' + action.payload.V_SRC_CD + '&REST_Service=Group&Verb=DELETE')
         .pipe(
           map(
-            (user:any) => new userGroupActions.DeleteUserGroupSuccess(user, action.payload.currentgroup)
+            (user:any) => new userGroupActions.DeleteUserGroupSuccess(user, action.payload)
           ),
           catchError(err => of(new userGroupActions.DeleteUserGroupFail(err.error)))
         )

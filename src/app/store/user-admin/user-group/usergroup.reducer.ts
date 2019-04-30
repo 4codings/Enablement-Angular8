@@ -95,8 +95,7 @@ export function userGroupReducer(state = initialState, action: UserGroupActions.
 
         case UserGroupActions.DELETE_USER_GROUP_SUCCESS:
         if(action.res[0].RESULT == "USER GROUP DELETED SUCCESSFULLY") {
-            console.log(action.payload)
-            return adapter.removeOne(action.payload, {
+            return adapter.removeOne(action.payload.id, {
                 ...state,
                 loading: false,
                 loaded: true

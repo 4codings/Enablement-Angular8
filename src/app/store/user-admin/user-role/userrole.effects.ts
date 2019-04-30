@@ -27,9 +27,9 @@ export class UserRoleEffects {
         )
     )
   );
-
-  @Effect({ dispatch: true })
-  addUserRole: Observable<Action> = this.actions$.pipe(
+  
+  @Effect({dispatch: true})
+  addUserRole$: Observable<Action> = this.actions$.pipe(
     ofType<userRoleActions.AddUserRole>(userRoleActions.ADD_USER_ROLE),
     mergeMap((action: userRoleActions.AddUserRole) =>
       this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', action.payload)
@@ -43,7 +43,7 @@ export class UserRoleEffects {
   );
 
   @Effect({ dispatch: true })
-  updateUserRole: Observable<Action> = this.actions$.pipe(
+  updateUserRole$: Observable<Action> = this.actions$.pipe(
     ofType<userRoleActions.UpdateUserRole>(userRoleActions.UPDATE_USER_ROLE),
     mergeMap((action: userRoleActions.UpdateUserRole) =>
       this.http.patch('https://enablement.us/Enablement/rest/v1/securedJSON', action.payload)
@@ -58,9 +58,9 @@ export class UserRoleEffects {
   
   @Effect({ dispatch: true })
   deleteUserRole$: Observable<Action> = this.actions$.pipe(
-    ofType<userRoleActions.DeleteUserRole>(userRoleActions.UPDATE_USER_ROLE),
+    ofType<userRoleActions.DeleteUserRole>(userRoleActions.DELETE_USER_ROLE),
     mergeMap((action: userRoleActions.DeleteUserRole) =>
-      this.http.patch('https://enablement.us/Enablement/rest/v1/securedJSON?V_ROLE_CD='
+      this.http.get('https://enablement.us/Enablement/rest/v1/securedJSON?V_ROLE_CD='
       + action.payload.V_ROLE_CD + '&V_SRC_CD=' + action.payload.V_SRC_CD + '&REST_Service=Role&Verb=DELETE', action.payload)
         .pipe(
           map(

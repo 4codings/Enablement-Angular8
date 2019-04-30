@@ -87,7 +87,8 @@ export class UpdateUserRoleFail implements Action {
 export class DeleteUserRole implements Action {
   readonly type = DELETE_USER_ROLE;
 
-  constructor(public payload: any) {}
+  constructor(public payload: any) {
+  }
 }
 
 export class DeleteUserRoleSuccess implements Action {

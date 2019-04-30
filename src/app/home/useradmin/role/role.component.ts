@@ -112,7 +112,7 @@ export class RoleComponent implements OnInit {
       REST_Service: 'Role',
       Verb: 'POST'
     };
-    this.store.dispatch(new AddUserRole(data));
+    this.store.dispatch(new userRoleActions.AddUserRole(data));
   }
 
   public updateRole() {
@@ -122,10 +122,9 @@ export class RoleComponent implements OnInit {
       V_USR_NM: JSON.parse(sessionStorage.getItem('u')).USR_NM,
       V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
       REST_Service: 'Role',
-      Verb: 'PATCH',
-      id:this.selectedRoleid
+      Verb: 'PATCH'
     };
-    this.store.dispatch(new UpdateUserRole(data));
+    this.store.dispatch(new userRoleActions.UpdateUserRole(data));
   }
 
   public deleteRole() {
@@ -135,10 +134,11 @@ export class RoleComponent implements OnInit {
       V_USR_NM: JSON.parse(sessionStorage.getItem('u')).USR_NM,
       V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
       REST_Service: 'Role',
-      Verb: 'DELETE'
+      Verb: 'DELETE',
+      id:this.selectedRoleid
     };
 
-    this.store.dispatch(new DeleteUserRole(data));
+    this.store.dispatch(new userRoleActions.DeleteUserRole(data));
   }
 
   changeRole() {
