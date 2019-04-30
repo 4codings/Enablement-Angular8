@@ -4,9 +4,11 @@ import {FormErrorMsgComponent} from './components/form-error-msg/form-error-msg.
 import {NoDataMsgComponent} from './components/no-data-msg/no-data-msg.component';
 // import {CoreModule} from "../core/core.module";
 import {RouterModule} from '@angular/router';
-import { MatIconModule, MatCardModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatListModule, MatIconModule, MatCardModule, MatInputModule,MatRadioModule, MatButtonModule, 
+    MatFormFieldControl, MatFormFieldModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule, 
+    MatCheckboxModule, MatAutocompleteModule } from '@angular/material';
 
 
 @NgModule({
@@ -18,6 +20,16 @@ import {MatTooltipModule} from '@angular/material/tooltip';
         MatIconModule,
         FlexLayoutModule,
         MatTooltipModule,
+        MatListModule,
+        MatInputModule, 
+        MatButtonModule, 
+        MatFormFieldModule, 
+        MatSelectModule, 
+        MatDatepickerModule, 
+        MatNativeDateModule, 
+        MatCheckboxModule,
+        MatRadioModule,
+        MatAutocompleteModule
     ],
     declarations: [
         FormErrorMsgComponent,
@@ -29,7 +41,17 @@ import {MatTooltipModule} from '@angular/material/tooltip';
         MatCardModule,
         MatIconModule,
         FlexLayoutModule,
-        MatTooltipModule
+        MatTooltipModule,
+        MatListModule,
+        MatInputModule, 
+        MatButtonModule, 
+        MatFormFieldModule, 
+        MatSelectModule, 
+        MatDatepickerModule, 
+        MatNativeDateModule, 
+        MatCheckboxModule,
+        MatRadioModule,
+        MatAutocompleteModule
     ]
 })
 export class SharedModule {

@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./enduser.component.scss']
 })
 export class EnduserComponent implements OnInit {
+  
+  display_page=true;
 
   constructor() { }
 

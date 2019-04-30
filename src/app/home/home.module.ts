@@ -4,6 +4,9 @@ import { HomeComponent } from './home.component';
 import { HomeRoutingModule } from './home-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { MatIconModule } from '@angular/material';
+import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [HomeComponent],
@@ -11,7 +14,10 @@ import { MatIconModule } from '@angular/material';
     MatIconModule,
     CommonModule,
     SharedModule,
-    HomeRoutingModule
+    HomeRoutingModule,
+    HttpClientModule,
+    HttpModule,
+    FormsModule
   ]
 })
 export class HomeModule { }

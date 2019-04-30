@@ -1,3 +1,244 @@
-<p>
-  exception works!
-</p>
+<div flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="row">
+  <div fxFlex="30">
+    <label style="text-align:center;width:100%;">
+      <strong>{{Label['SRVC_CD']}}</strong>
+    </label>
+    <!-- <mat-form-field class="input_control">
+<mat-select [(value)]="exc_sl">
+  <mat-option style="text-align:center;"  (click)="functionATIDGetData();functionOTIDGetData();" *ngFor="let exc of srvcd" [value]="exc">
+    {{exc}}
+  </mat-option>
+</mat-select>
+  </mat-form-field> -->
+    <mat-list *ngIf="desktopView" class="scroll">
+      <mat-list-item class="list_item" *ngFor="let exc of srvcd ; let i = index;" (click)="functionATIDGetData(exc);functionOTIDGetData(exc);onpselect(i);"
+        [class.active]="i == selectedplat">
+      <div>{{exc}}</div>
+      </mat-list-item>
+    </mat-list>
+    <mat-form-field *ngIf="mobileView" style="width:100%;text-align: center;" [floatLabel]="'never'">
+      <mat-select style="margin-top:10px;" placeholder="--Select--" [value]="srvcd[selectedplat]">
+        <mat-option style="text-align:center;"  (click)="functionATIDGetData(exc);functionOTIDGetData(exc);onpselect(i);" *ngFor="let exc of srvcd ;let i = index;" [value]="exc">{{exc}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div fxFlex="5"></div>
+  <div fxFlex="30">
+    <label style="text-align:center;width:100%;">
+      <strong>Open {{Label['TXN_ID']}}</strong>
+    </label>
+    <!-- <mat-form-field class="input_control">
+    <mat-select [(value)]="txn_id">
+      <mat-option style="text-align:center;"  *ngFor="let o of otxnid" [value]="o" (click)="functionacqire();functionservicedetails();functiondetailshow()">
+        {{o}} 
+      </mat-option>
+    </mat-select>
+      </mat-form-field> -->
+    <mat-list *ngIf="desktopView" class="scroll">
+      <mat-list-item class="list_item" *ngFor="let o of otxnid; let j = index;" (click)="functionacqire();functionservicedetails(o);functiondetailshow();onqselect(j);"
+        [class.active]="j == selectedot">
+      <div>{{o}}</div>
+      </mat-list-item>
+    </mat-list>
+    <mat-form-field *ngIf="mobileView" style="width:100%;text-align: center;" [floatLabel]="'never'">
+      <mat-select style="margin-top:10px;" placeholder="--Select--" [value]="otxnid[selectedot]">
+        <mat-option style="text-align:center;"  (click)="functionacqire();functionservicedetails(o);functiondetailshow();onqselect(j);" *ngFor="let o of otxnid; let j = index;" [value]="o">{{o}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div fxFlex="5"></div>
+  <div fxFlex="30">
+    <label style="text-align:center;width:100%;">
+      <strong>Acquired {{Label['TXN_ID']}}</strong>
+    </label>
+    <!-- <mat-form-field class="input_control">
+        <mat-select  [(value)]="txn_id"> 
+          <mat-option style="text-align:center;"  *ngFor="let a of atxnid" [value]="a" (click)="functionoperations();functionownedservicedetails();functiondetailshow()">  
+            {{a}}                  
+          </mat-option>
+        </mat-select>
+      </mat-form-field> -->
+    <mat-list *ngIf="desktopView" class="scroll">
+      <mat-list-item class="list_item" *ngFor="let a of atxnid; let k = index;" (click)="functionoperations();functionownedservicedetails(a);functiondetailshow();onrselect(k);"
+        [class.active]="k == selectedat">
+      <div>{{a}}</div>
+      </mat-list-item>
+    </mat-list>
+    <mat-form-field *ngIf="mobileView" style="width:100%;text-align: center;" [floatLabel]="'never'">
+      <mat-select style="margin-top:10px;" placeholder="--Select--" [value]="atxnid[selectedat]">
+        <mat-option style="text-align:center;"  (click)="functionoperations();functionownedservicedetails(a);functiondetailshow();onrselect(k);" *ngFor="let a of atxnid; let k = index;" [value]="a">{{a}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+  </div>
+  <div fxFlex="5"></div>
+
+  <!--radio buttons-->
+  <div fxLayout="column" style="padding-top: 40px">
+  <div fxFlexAlign="center">
+    <mat-radio-group *ngIf="operationshow" [(ngModel)]="selectedradiobtn">
+      <div flex fxLayout="column" fxLayout.lt-sm="row" fxLayout.sm="row" fxLayout.gt-sm="column">
+        <div flex fxLayout="row">
+          <mat-radio-button value="Replay" checked="checked" (click)="hideagcygrpbox();functionparashow()">Replay</mat-radio-button>
+          &nbsp;&nbsp;&nbsp;
+          <mat-radio-button value="Ignore" (click)="hideagcygrpbox();hideparashow()">Ignore</mat-radio-button>
+        </div>
+        <div flex fxLayout="row">
+          <mat-radio-button value="Reassign" (click)="showagcygrpbox();functiongetgroups();hideparashow()">Reassign</mat-radio-button>
+
+          <mat-radio-button value="Release" (click)="hideagcygrpbox();hideparashow()">Release</mat-radio-button>
+        </div>
+      </div>
+    </mat-radio-group>
+  </div>
+
+  <div fxFlex="10" style="text-align:center;" *ngIf="operationshow">
+
+    <button mat-raised-button mat-button color="primary" (click)="functiontoRelease()">{{selectedradiobtn}}</button>
+  </div>
+
+  <div fxFlex="10" style="text-align:center;" *ngIf="acquirebtnshow">
+
+    <button mat-raised-button mat-button color="primary" (click)="functiontoAcquire()"><mat-icon>get_app</mat-icon> Acquire</button>
+  </div>
+  </div>
+</div>
+<br>
+<div *ngIf="detailshow" style="background: rgb(242,242,242);" class="input_control" flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.xs="column" fxLayout.sm="row"
+  fxLayout.gt-sm="row">
+
+  <div fxFlex="45">
+    <label style="text-align:center;width:100%;">
+      <strong>{{Label['EXCPN_MSG']}}</strong>
+    </label>
+    <mat-form-field class="input_control">
+      <textarea matInput [disabled]="disabled" [value]="excepmessage" [(ngModel)]="excepmessageedit"></textarea>
+    </mat-form-field>
+  </div>
+  <div fxFlex="10"></div>
+  <div fxFlex="45">
+    <label style="text-align:center;width:100%;">
+      <strong>{{Label['RSLTN_NOTE']}}</strong>
+    </label>
+    <mat-form-field class="input_control">
+      <textarea matInput [disabled]="disabled" placeholder={{notes}} [value]="" [(ngModel)]="notesedit"></textarea>
+    </mat-form-field>
+  </div>
+</div>
+<br />
+<div *ngIf="detailshow" style="background: rgb(242,242,242);">
+  <div flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.xs="column" fxLayout.sm="row" fxLayout.gt-sm="row">
+    <div fxFlex="100">
+      <label style="text-align:center;width:100%;">
+        <strong>{{Label['Parameters']}}</strong>
+      </label>
+      <div class="tab">
+        <mat-card style="background: rgb(242,242,242);box-shadow: 1px 1px 1px transparent;border:none;">
+          <mat-card-title>
+
+          </mat-card-title>
+
+          <mat-card-content>
+              <div *ngFor="let aa of array2" style="padding-left: 20px;padding-right: 20px;text-align: center;float:left;" class="myField">
+                <label>{{aa[0]}}</label>
+                <mat-form-field style="width: 100%;">
+                    <input [disabled]="disabled" class="text1" matInput style="text-align: center " [matAutocomplete]="auto" (click)="getDropDownListValue(aa[0])"
+                    value="{{aa[1]}}">
+                </mat-form-field>
+
+                <mat-autocomplete #auto="matAutocomplete" style="width: 100%;">
+                  <mat-option style="text-align:center;"  *ngFor="let item of searchResult" [value]="item">
+                    <span>{{item}}</span>
+                  </mat-option>
+                </mat-autocomplete>
+
+
+              </div>
+          </mat-card-content>
+
+        </mat-card>
+      </div>
+
+    </div>
+
+    <div *ngIf="agcygrpbox" fxFlex="50" flex fxLayout="row" fxLayout.xs="column" fxLayout.lt-sm="column" fxLayout.sm="row" fxLayout.gt-sm="row">
+      <div fxFlex="10"></div>
+      <div fxFlex="42">
+        <label style="text-align:center;width:100%;">
+          <strong>{{Label['V_SRC_CD']}}</strong>
+        </label>
+        <mat-form-field class="input_control" >
+          <mat-select [(ngModel)]="agency_sl">
+            <mat-option style="text-align:center;"  value="V_SRC_CD">
+              {{V_SRC_CD}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div fxFlex="6"></div>
+      <div fxFlex="42">
+        <label style="text-align:center;width:100%;">
+          <strong>{{Label['USR_GRP_CD']}}</strong>
+        </label>
+        <mat-form-field class="input_control">
+          <mat-select [(ngModel)]="group_sl" >
+            <mat-option style="text-align:center;"  *ngFor="let g of grp" [value]="g">
+              {{g}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+
+    <div *ngIf="parashow">
+      <div flex fxLayoutGap="10px" fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="column">
+
+        <div flex>
+          <label style="text-align:center;width:100%;">
+            <strong>Log Level</strong>
+          </label>
+          <mat-form-field class="input_control" > 
+            <mat-select [(ngModel)]="selectedoption">
+              <mat-option style="text-align:center;"  value="debug">DEBUG</mat-option>
+              <mat-option style="text-align:center;"  value="warning">WARNING</mat-option>
+              <mat-option style="text-align:center;"  value="info">INFO</mat-option>
+              <mat-option style="text-align:center;"  value="error">ERROR</mat-option>
+              <mat-option style="text-align:center;"  value="fatal">FATAL</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div flex>
+          <label style="text-align:center;width:100%;">
+            <strong>Time Out Factor</strong>
+          </label>
+          <mat-form-field class="input_control">
+            <input matInput type="number" id="timeOut" value="1.0" step="0.1" min="0.0" max="999.9">
+          </mat-form-field>
+        </div>
+
+        <div flex>
+          <label style="text-align:center;width:100%;">
+            <strong>Priority</strong>
+          </label>
+          <mat-form-field class="input_control">
+            <input matInput type="number" id="priority" value="1" min="1" max="10">
+          </mat-form-field>
+        </div>
+      </div>
+      <div flex fxLayout="row" fxLayoutGap="10px">
+        <div fxFlex="10"></div>
+        <mat-checkbox>Check Next</mat-checkbox>
+        <div fxFlex="10"></div>
+        <mat-checkbox>Skip Dependency Check</mat-checkbox>
+      </div>
+    </div>
+
+
+
+    <!-- <div fxLayoutGap="10px" fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="row" fxLayout.gt-sm="row" *ngIf="showLogout()">
+</div> -->
+  </div>
+</div>
