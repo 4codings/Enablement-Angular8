@@ -22,7 +22,6 @@ import { HttpInterceptorsService } from './services/http-interceptors.service';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-
     ToastrModule.forRoot(),
     LaddaModule.forRoot({
       style: 'zoom-in',

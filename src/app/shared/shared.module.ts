@@ -17,7 +17,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
         MatCardModule,
         MatIconModule,
         FlexLayoutModule,
-        MatTooltipModule
+        MatTooltipModule,
     ],
     declarations: [
         FormErrorMsgComponent,
