@@ -7,9 +7,10 @@ import { MatIconModule } from '@angular/material';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { SplitFormsPipe } from '../split-forms.pipe';
 
 @NgModule({
-  declarations: [HomeComponent, KeepAliveDialog],
+  declarations: [HomeComponent, KeepAliveDialog, SplitFormsPipe],
   imports: [
     MatIconModule,
     CommonModule,
