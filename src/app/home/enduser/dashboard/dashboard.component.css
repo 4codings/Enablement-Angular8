@@ -1,0 +1,100 @@
+.input_control{
+    width:100%;
+    padding-left: 10px;
+  }
+
+  
+
+  .tab{
+    overflow: auto;
+    max-height: 250px;
+    width: auto;
+  } 
+  
+  .mat-radio-button {
+  padding-right: 10px;
+  padding-bottom: 10px;
+  }
+  
+  label{
+  font-weight:bold;
+  display:block;
+  margin: 0.5em 0;
+  }
+  
+  button{
+    margin-top: 10px;
+  }
+  mat-list-item div{
+    font-size: 1rem;
+    text-align:center;
+    width:100%;    
+  }
+  mat-list{
+    border:1px solid #ccc;
+    border-radius: .25rem;
+    padding-top: 0;
+    width: 100%;
+    
+    font-size: 1rem;
+    line-height: 1.5;
+    height: 200px;
+  }
+  .scroll *{
+    height: auto;
+    text-align:center;
+  }
+
+  .active{
+  background-color:rgba(0,0,0,0.7) !important;
+  color: white;
+  }
+  mat-header-row{
+    background-color: #ccc;
+  }
+  mat-header-row::after{
+    content:none;
+  }
+  #dboard>mat-header-row{
+    background-color: #ccc;
+    width: fit-content !important; 
+  }
+  #dboard>mat-row{
+    width: fit-content !important; 
+  }
+  mat-table{
+    max-height: 300px !important;
+  }
+  @media only screen and (max-width: 767px){
+  .mat-header-row::after {
+    content: none;
+  }
+  .mat-row::after{
+    content: none;
+  }
+  /* .mat-row{
+    
+  } */
+  .mat-table {
+    /*width: fit-content;*/
+    min-width: 300px;
+  }
+  mat-cell{
+    border:1px solid lightgray;
+  }
+  mat-header-cell{
+    border:1px solid black;
+  }
+}
+::ng-deep .mat-input-infix{
+  background: white;
+  border:1px solid rgb(200,200,200);
+  border-radius: 3px;
+  padding-bottom: 5px;
+}
+::ng-deep .mat-input-underline {
+  display: none!important;
+}
+::ng-deep .mat-form-field-underline {
+  display: none!important;
+}

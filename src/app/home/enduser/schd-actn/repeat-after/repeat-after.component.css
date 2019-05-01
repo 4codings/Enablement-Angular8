@@ -1,0 +1,8 @@
+.parent{
+    text-align: center;
+  }
+  .parent .content {
+    display: inline-block;
+    font-weight:bold;
+    margin-bottom:8px;
+  }

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import { EnduserRoutingModule } from './enduser-routing.module';
 import { EnduserComponent } from '../enduser/enduser.component';
@@ -14,7 +15,18 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { UsernavbarComponent } from './usernavbar/usernavbar.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { HeaderModule } from '../header/header.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RepeatAfterComponent } from './schd-actn/repeat-after/repeat-after.component';
+import { FormComponent } from './execute/form/form.component';
+import { DialogScheduleComponent } from './execute/dialog-schedule/dialog-schedule.component';
+import { InputArtComponent } from './execute/Input_Art/InputArt.component';
+import { NonRepeatableFormComponent } from './execute/non-repeatable-form/non-repeatable-form.component';
+import { RepeatProcessComponent } from './execute/repeat-process/repeat-process.component';
+import { RepeatableFormComponent } from './execute/repeatable-form/repeatable-form.component';
+import { ReportTableComponent } from './report-table/report-table.component';
+import { DialogChartsComponent } from './report-table/dialog-charts/dialog-charts.component';
+import { MyFilterPipe, SplitLastPipe } from './execute/MyFilterPipe ';
+import { MyFilterPipe1 } from './schd-actn/myFilterPipe1';
 
 @NgModule({
   declarations: [
@@ -26,14 +38,30 @@ import { FormsModule } from '@angular/forms';
     ProcessComponent, 
     OrchestrateComponent, 
     DashboardComponent, 
-    UsernavbarComponent],
+    UsernavbarComponent,
+    RepeatAfterComponent,
+    FormComponent,
+    DialogScheduleComponent,
+    InputArtComponent,
+    NonRepeatableFormComponent,
+    RepeatProcessComponent,
+    RepeatableFormComponent,
+    ReportTableComponent,
+    DialogChartsComponent,
+    MyFilterPipe,
+    MyFilterPipe1,
+    SplitLastPipe
+  ],
   imports: [
     CommonModule,
     EnduserRoutingModule,
     SharedModule,
     HeaderModule,
     HttpClientModule,
-    FormsModule
-  ]
+    FormsModule,
+    ReactiveFormsModule,
+    NgbModule
+  ],
+  entryComponents: [DialogScheduleComponent, DialogChartsComponent]
 })
 export class EnduserModule { }

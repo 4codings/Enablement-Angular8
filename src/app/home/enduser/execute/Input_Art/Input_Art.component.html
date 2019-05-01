@@ -1,0 +1,95 @@
+<div fxLayout="row" fxLayout.lt-sm="column">
+  <div fxFlex="9">
+  </div>
+  <div fxFlex="82">
+    <mat-card class="CustomeLayout">
+      <mat-card-content>
+        <!-- <button title="Upload file" mat-raised-button color="primary" (click)="uploadBtnClick()">
+          <i class="fas fa-upload"></i> Upload
+        </button> -->
+        <table class="table">
+          <tr>
+            <th>File</th>
+            <th>Description</th>
+            <th>Size (MB)</th>
+            <th>Date Uploaded</th>
+            <th>Execute</th>
+            <th (click)="uploadBtnClick(template)" *ngIf="CREATE!=='N'" class="addButton">+</th>
+          </tr>
+          <!-- <tr *ngFor="let file of allFiles">
+            <td>{{file.ARTFCT_NM || file.V_ARTFCT_NM}}</td>
+            <td>{{file.ART_DSC || file.V_ART_DSC}}</td>
+            <td>{{file.ART_SIZE_MB || file.V_ART_SIZE_MB}}</td>
+            <td>{{file.LST_UPDT_DT_TM}}</td>
+            <td><input type="checkbox" *ngIf="globals.Report.EXECUTE[0]=='Y'" onchange='selectFiles(this, file.ARTFCT_ID);'></td>
+            <td><i class="fa fa-trash" aria-hidden="true" *ngIf="globals.Report.DELETE[0]=='Y'" (click)="Delete(file)"></i></td>
+          </tr> -->
+          <tr *ngFor="let file of allFiles">
+            <td>{{file.ARTFCT_NM}}</td>
+            <td>{{file.ART_DSC}}</td>
+            <td>{{file.ART_SIZE_MB}}</td>
+            <td>{{file.LST_UPDT_DT_TM}}</td>
+            <td><input type="checkbox" *ngIf="file.EXECUTE!=='N'" (change)="selectFiles(file.ARTFCT_ID)"></td>
+            <td><i class="fa fa-trash" aria-hidden="true" *ngIf="file.DELETE!=='N'" (click)="Delete(file)"></i></td>
+          </tr>
+        </table>
+        <hr />
+        <!-- <div fxLayout="row" fxLayout.lt-sm="column">
+          <div fxFlex="30">
+          </div>
+          <div fxFlex="40">
+            <h3>Current Data in the system..</h3>
+            <mat-checkbox (click)="selectedFile(files)" *ngFor="let files of allFiles">{{files}}</mat-checkbox>
+          </div>
+          <div fxFlex="30">
+          </div>
+        </div> -->
+        <div class="adventColor" flex fxLayout="row" fxLayoutAlign="center">
+          <!-- <button mat-raised-button (click)="addbtn_click();" id="add">  //Excute in DataB
+            <mat-icon class="iconmod">add</mat-icon>Add
+          </button>
+          <div flex fxFlex="5"></div> -->
+
+          <button mat-raised-button (click)="cancelbtn_click();" id="cancel">
+            <mat-icon class="iconmod">clear</mat-icon>Cancel
+          </button>
+          <div flex fxFlex="5"></div>
+
+          <button mat-raised-button *ngIf="EXECUTE!=='N'" (click)="submitbtn_click();" id="submit">
+            <mat-icon class="iconmod">done_all</mat-icon>Submit
+          </button>
+          <div flex fxFlex="5"></div>
+        </div>
+      </mat-card-content>
+
+    </mat-card>
+  </div>
+  <div fxFlex="9">
+  </div>
+
+</div>
+<!-- <input type="file" (change)="fileChangeEvent($event ,files)" #files name="Document_File" id="Document_File"
+  style="display:none" [accept]="globals.Report.ARTFCT_TYP[0]" /> -->
+
+<!-- from template-->
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Add File</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form" (ngSubmit)="add_file()">
+      <div class="form-group">
+        <label for="fileDescription">description</label>
+        <input formControlName="description" type="text" class="form-control" id="fileDescription"
+          placeholder="description">
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="!form.valid">Add</button>
+    </form>
+  </div>
+</ng-template>
+
+<input type="file" style="display:none" (change)="fileChangeEvent($event ,files)" #files name="Document_File"
+  id="Document_File" [accept]="globals.Report.PVP.ARTFCT_TYP[0]" />

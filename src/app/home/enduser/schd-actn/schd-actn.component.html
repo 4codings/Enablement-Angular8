@@ -1,3 +1,211 @@
-<p>
-  schd-actn works!
-</p>
+
+        <div flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="row">
+          <div  fxFlex="30">
+          <h3 class="CenterAlign">{{Label['APP_CD']}}</h3>
+
+            <!---  select application -->
+            <mat-list *ngIf="desktopView" class="scroll">
+              <mat-list-item class="list_item" (click)="getProcessCD(app);" *ngFor="let app of App_CD_data['APP_CD']" [class.active]="app == selectedplat">
+                <div> {{app}}</div>
+              </mat-list-item>
+            </mat-list>
+            <mat-form-field *ngIf="mobileView" style="width:100%;text-align: center;" [floatLabel]="'never'">
+              <mat-select style="margin-top:10px;" (selectionChange)="getProcessCD($event);" placeholder="--Select--" [value]="selectedplat">
+                <mat-option style="text-align:center;" *ngFor="let app of App_CD_data['APP_CD']" [value]="app">{{app}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+          </div>
+          <div  fxFlex="3"></div>
+          <!-- ___________________________________SELECT PROCESS CD -->
+          <div  fxFlex="30"  *ngIf="process_box">
+            <h3 class="CenterAlign">{{Label['PRCS_CD']}}</h3>
+
+            <!--  select process -->
+            <mat-list *ngIf="desktopView" class="scroll">
+              <mat-list-item class="list_item" (click)="fooo1(prc)" *ngFor="let prc of proc_CD_data['PRCS_CD']" [class.active]="prc == selectedplat1">
+                <div> {{prc}}</div>
+              </mat-list-item>
+            </mat-list>
+            <mat-form-field *ngIf="mobileView" style="width:100%;text-align: center;" [floatLabel]="'never'">
+              <mat-select style="margin-top:10px;" (selectionChange)="fooo1($event);" placeholder="--Select--" [value]="selectedplat1">
+                <mat-option style="text-align:center;" *ngFor="let prc of proc_CD_data['PRCS_CD']" [value]="prc">{{prc}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div  fxFlex="3"></div>
+          <div  fxFlex="30"  *ngIf="action_box">
+            <!-- select status -->
+            <h3 class="CenterAlign">{{Label['Status']}}</h3>
+            <mat-list *ngIf="desktopView" class="scroll">
+              <mat-list-item class="list_item" (click)="fooo2(act)" *ngFor="let act of Action" [class.active]="act == selectedplat2">
+                <div> {{act}}</div>
+              </mat-list-item>
+            </mat-list>
+            <mat-form-field *ngIf="mobileView" style="width:100%;text-align: center;" [floatLabel]="'never'">
+              <mat-select style="margin-top:10px;" (selectionChange)="fooo2($event);" placeholder="--Select--" [value]="selectedplat2">
+                <mat-option style="text-align:center;" *ngFor="let act of Action" [value]="act">{{act}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <!-- <button mat-raised-button style="float:right;" (click)="find_process()">Find</button>  -->
+        <!-- ___________________________TABLE________________________________________________________ -->
+     
+        <div class="dynamicFormContent">
+          <h3 style="text-align: center;" *ngIf="Data!='' &&  Data!=undefined">{{Label['Parameters']}}</h3>
+          <div class="dynamicContent">
+            <div class="padding-input flexLeft" *ngFor="let pr of Data">
+        
+              <ng-container *ngIf="pr.type=='date'">
+                <label class="f_label">{{pr.placeholder | removeWt}}</label>
+                 <mat-form-field class="form_input">
+                     <input [name]="pr.name" [value]="pr.value" (change)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value" matInput [matDatepicker]="picker" class="f_inp">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+             </ng-container>
+             <ng-container *ngIf="pr.type=='radio'">
+               <mat-radio-button [value]="pr.name" style="background-color: #f4f6f7">{{pr.placeholder | removeWt}}</mat-radio-button>
+             </ng-container>
+             <ng-container *ngIf="pr.type=='checkbox'">
+               <mat-checkbox [value]="pr.name" style="background-color: #f4f6f7">{{pr.placeholder | removeWt}}</mat-checkbox>
+              </ng-container>
+             <ng-container *ngIf="pr.type=='time'">
+               <label class="f_label">{{pr.placeholder | removeWt}}</label>
+                 <mat-form-field class="form_input">
+               <input matInput [type]="pr.type" [name]="pr.name" [value]="pr.value" (change)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value" class="f_inp">
+             </mat-form-field>
+           </ng-container>
+             <ng-container *ngIf="pr.type=='datetime'">
+               <label class="f_label">{{pr.placeholder | removeWt}}</label>
+                 <mat-form-field class="form_input" style="background-color: #f4f6f7">
+                 <input matInput [name]="pr.name" [value]="pr.value" (change)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value" [owlDateTimeTrigger]="fdate" [owlDateTime]="fdate">
+                 <owl-date-time [attr.id]="pr.name"></owl-date-time>
+                 </mat-form-field>
+             </ng-container>
+             <ng-container *ngIf="pr.type=='password'">
+               <label class="f_label">{{pr.placeholder | removeWt}}</label>
+                 <mat-form-field class="form_input">
+                 <input matInput [type]="pr.type"  [name]="pr.name" [value]="pr.value" (change)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value" class="f_inp">
+               </mat-form-field>
+               </ng-container>
+               <ng-container *ngIf="pr.type=='range'">
+                 <label class="f_label">{{pr.placeholder | removeWt}}</label>
+                   <mat-slider [(ngModel)]="pr.value" value="1" step="1" min="1" max="100" (change)="Update_value($event.target.value,pr.placeholder)" style="background-color: #f4f6f7"></mat-slider>
+               </ng-container>
+                 <ng-container *ngIf="pr.type=='color'">
+                     <label class="f_label">{{pr.placeholder | removeWt}}</label>
+                     <input [(colorPicker)]="_backgroundColor" [style.background]="_backgroundColor" [(ngModel)]="pr.value" class="f_inp">
+                 </ng-container>
+             <ng-container *ngIf="pr.type=='input'">
+               <label class="f_label">{{pr.placeholder | removeWt}}</label>
+             <mat-form-field class="form_input">
+               <input matInput [name]="pr.name" (value)="pr.value" [matAutocomplete]="auto" (click)="getDropDownListValue(pr.name)"
+                 (change)="Update_value($event.target.value,pr.placeholder)"  [(ngModel)]="pr.value" class="f_inp">
+        
+               <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
+                 <mat-option style="text-align:center;"  (click)="Update_value(pr.value ,pr.placeholder)" *ngFor="let item of searchResult | myfilter:FilterAutoValue" [value]="item">
+                   {{ item }}
+                 </mat-option>
+               </mat-autocomplete>
+             </mat-form-field>
+             <!-- <mat-form-field class="form_input">
+              <input matInput  [name]="pr.name" (value)="pr.value" #values [matAutocomplete]="auto"  (click)="makeFilterValueEmpty();getDropDownListValue(pr.name)"
+              (keyup)="keyUpEventActive($event.target.value,pr.placeholder)"
+              (mouseout)="mouseOutEventActive($event.target.value,pr.placeholder)"
+              [(ngModel)]="pr.value" class="f_inp glo_input">
+                <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
+                  <mat-option style="text-align:center;"  (click)="updateParameterValue(item,pr.placeholder)" *ngFor="let item of searchResult | myfilter:FilterAutoValue" [value]="item">
+                    {{ item }}
+                  </mat-option>
+                </mat-autocomplete>
+             </mat-form-field> -->
+            
+           </ng-container>
+        
+           </div>
+          </div>
+         
+        </div>
+     
+
+            <div *ngIf="display_process_table">
+              <mat-form-field *ngIf="show_filter_input">
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+              </mat-form-field>
+              <img src="./assets/img/progress.gif" style="height:20px;width:20px;" *ngIf="progressImg" alt="" />
+              <mat-table #table [dataSource]="dataSource" MatSort>
+
+                <!-- Checkbox Column -->
+                <ng-container matColumnDef="#">
+                  <mat-header-cell *matHeaderCellDef>#
+                    <!-- <mat-checkbox [class]="checkbox_color_value" (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
+                </mat-checkbox> -->
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let dataSource">
+                    <!--  <mat-checkbox (click)="$event.stopPropagation();Check_process_id(element.JOB_NAME)" (change)="$event ? selection.toggle(element.JOB_NAME) : null" [checked]="selection.isSelected(element.JOB_NAME)">
+                </mat-checkbox>  -->
+                    <mat-checkbox [class]="checkbox_color_value" (click)="$event.stopPropagation();Check_process_id(dataSource.job_name)"></mat-checkbox>
+                  </mat-cell>
+                </ng-container>
+
+                <!-- Position Column -->
+                <ng-container matColumnDef="name">
+                  <mat-header-cell *matHeaderCellDef> Services </mat-header-cell>
+                  <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="status">
+                  <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+                  <mat-cell *matCellDef="let element"> {{element.status}} </mat-cell>
+                </ng-container>
+
+                <!-- Weight Column -->
+                <ng-container matColumnDef="lastrun">
+                  <mat-header-cell *matHeaderCellDef> Last Run </mat-header-cell>
+                  <mat-cell *matCellDef="let element"> {{element.lastrun}} </mat-cell>
+                </ng-container>
+
+                <!-- Symbol Column -->
+                <ng-container matColumnDef="nextrun">
+                  <mat-header-cell *matHeaderCellDef> Next Run </mat-header-cell>
+                  <mat-cell *matCellDef="let element"> {{element.nextrun}} </mat-cell>
+                </ng-container>
+
+                <!-- Symbol Column -->
+                <ng-container matColumnDef="details">
+                  <mat-header-cell *matHeaderCellDef> Details </mat-header-cell>
+                  <mat-cell *matCellDef="let element"> {{element.details}} </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)" (click)="onRowClick(row)">
+                </mat-row>
+              </mat-table>
+
+            </div>
+            <div>
+              <hr />
+              <h4 class="CenterAlign">Schedule</h4>
+              <hr />
+              <app-repeat-process [parentapp]="selectedplat" [parentpro]="selectedplat1"></app-repeat-process>
+              <hr />
+            </div>
+       
+
+        <!-- ______________________________________________________CLOSE TABLE________________________________ -->
+        <div class="row">
+          <div class="col-md-5"></div>
+          <div class="col-md-5">
+            <br />
+            <!-- <button mat-raised-button color="primary" *ngIf="Save_btn" [disabled]="save_shedule_btn" (click)="repeatURL()">Save the Schedule</button> -->
+            <button mat-raised-button color="primary" (click)="onPause()" *ngIf="Pause_btn">Pause Selected Schedules</button>
+            <button mat-raised-button color="primary" (click)="onResume()" *ngIf="Resume_btn">Resume Selected Schedules</button>
+            <button mat-raised-button color="primary" (click)="onKill()" *ngIf="Kill_btn">Kill Selected Schedules</button>
+
+            <br />
+          </div>
+        </div>
+

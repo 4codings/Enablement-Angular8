@@ -1,0 +1,11 @@
+<div flex fxLayout="column">
+  <div flex fxLayout="row">
+    <div fxFlex="90"></div>
+    <div fxFlex="10" (click)="close();" style="color: white;background-color: red;border-radius: 5px; text-align: center;" >x</div>
+  </div>
+  <div flex fxLayout="row">
+    <canvas id="myGanttchart" *ngIf="gantt" fxFlex="100"></canvas>
+    <canvas id="myBarchart" *ngIf="bar" fxFlex="100"></canvas>
+    <canvas id="myPie" *ngIf="pie" fxFlex="100"></canvas>
+  </div>
+</div>

@@ -131,13 +131,17 @@ export class UserAdminService {
 		*/
 	}
 
-		private saveAsBlob(data: any) {
-			const blob = new Blob([data._body],
-				{ type: 'application/vnd.ms-excel' });
-			const file = new File([blob], 'report.xlsx',
-				{ type: 'application/vnd.ms-excel' });
-		
-			//FileSaver.saveAs(file);
-		}
+	private saveAsBlob(data: any) {
+		const blob = new Blob([data._body],
+			{ type: 'application/vnd.ms-excel' });
+		const file = new File([blob], 'report.xlsx',
+			{ type: 'application/vnd.ms-excel' });
+	
+		//FileSaver.saveAs(file);
+	}
+
+	public getJSON(): Observable<any> {
+		return this.http.get("./assets/label/label.json")
+	}
  
 }

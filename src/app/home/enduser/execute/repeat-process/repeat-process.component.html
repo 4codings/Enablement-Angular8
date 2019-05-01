@@ -1,0 +1,256 @@
+<div fxLayout="row" fxLayoutAlign="center">
+    <!-- <div fxFlex></div> -->
+
+    <div flex fxLayout="column" style="text-align: center;">
+        <label>Start At</label>
+        <mat-form-field style="width: 160px;">
+            <input matInput placeholder="" [min]="min_start" [(ngModel)]="start_date" [owlDateTimeTrigger]="dtPicker11"
+                [owlDateTime]="dtPicker11" style="text-align: center;"/>
+            <owl-date-time #dtPicker11></owl-date-time>
+        </mat-form-field>
+    </div>
+    <div fxFlex="10" style="width: 100%;"></div>
+    <div flex fxLayout="column" style="text-align: center;">
+        <label>End At</label>
+        <mat-form-field style="width: 160px;">
+            <input [(ngModel)]="End_date" [min]="min_start" matInput placeholder="" [owlDateTimeTrigger]="dtPicker1" [owlDateTime]="dtPicker1" style="text-align: center;">
+            <owl-date-time #dtPicker1></owl-date-time>
+        </mat-form-field>
+    </div>
+
+    <!-- <div fxFlex></div> -->
+</div>
+<!-- <mat-radio-group (onclick)="check_end_date_start_date()" [(ngModel)]="end_and_start_date">
+    <div flex fxLayout="row" fxLayout.lt-sm="column">
+
+        <div fxFlex="30">
+
+        </div>
+        <div fxFlex="15">
+            <mat-radio-button  value="no_end">No End Date</mat-radio-button> 
+         </div>
+        <div fxFlex="10">
+
+        </div>
+        <div fxFlex="35"> 
+             <mat-radio-button   value="end_after">End After</mat-radio-button>
+         </div>
+        <div fxFlex="10">
+
+        </div>
+    </div>
+</mat-radio-group> -->
+<!-- expression    -->
+<div flex fxLayout="row" fxLayoutAlign="center" style="margin-top:20px;">
+
+    <div  fxShow="true" fxHide.gt-sm="true">
+
+        <label style="text-align:center;width:100%;">
+            <strong>Select a Candence</strong>
+        </label>
+        <div flex fxLayout="row" fxLayoutAlign="center">
+            <div fxFlex="100" style=" width: 100%;">
+                <mat-list class="scroll">
+                    <mat-list-item  class="list_item" (click)="changeView(cn);fooo(cn)" *ngFor="let cn of Select_candence_option" [class.active]="cn == fo1">
+                        <div> {{cn}}</div>
+                    </mat-list-item>
+                </mat-list>
+            </div>
+        </div>
+    </div>
+    <div fxHide="true" fxShow.gt-sm="true">
+
+        <label style="text-align:center;width:100%;margin-top: 5px;">
+            <strong>Select a Candence</strong>
+        </label>&nbsp;
+        <div fxFlex="100">
+            <mat-radio-group class="example-radio-group" [(ngModel)]="candence_choice">
+                <mat-radio-button style="margin-left:15px;" class="example-radio-button" (click)="changeView(cn);fooo(cn)" *ngFor="let cn of Select_candence_option"
+                    [value]="cn">
+                    {{cn}}
+                </mat-radio-button>
+            </mat-radio-group>
+
+        </div>
+    </div>
+    <div fxFlex="5"></div>
+    <div fxFlex="15">
+        <mat-form-field style="width:80px;resize: none" [floatLabel]="'always'">
+            <input matInput placeholder="Repeat After" type="number" [(ngModel)]="Repeat_after" min="1" max="86400" />
+        </mat-form-field>
+
+    </div>
+</div>
+<!-- hide show  -->
+<div fxLayoutAlign="center" fxLayout="row" style="margin-top:20px;">
+
+        <div *ngIf="week_block" fxLayoutAlign="center">
+            <mat-form-field style="width:123px;">
+                <mat-select [formControl]="toppings" multiple placeholder="Select Day" [(ngModel)]="week_day_selected" style="text-align:center;">
+                    <mat-option style="text-align:center;"  value="Sunday">Sunday</mat-option>
+                    <mat-option style="text-align:center;"  value="Monday">Monday</mat-option>
+                    <mat-option style="text-align:center;"  value="Tuesday">Tuesday</mat-option>
+                    <mat-option style="text-align:center;"  value="Wednessday">Wednessday</mat-option>
+                    <mat-option style="text-align:center;"  value="Thursday">Thursday</mat-option>
+                    <mat-option style="text-align:center;"  value="Friday">Friday</mat-option>
+                    <mat-option style="text-align:center;"  value="Saturday">Saturday</mat-option>
+                </mat-select>
+            </mat-form-field>
+    </div>
+    
+</div>
+<div flex fxLayout="row" fxLayoutAlign="center" fxLayout.lt-sm="column" style="margin-top:20px;">
+    <div fxFlex="25">
+
+    </div>
+    <div fxFlex="50">
+
+        <!-- this is for month select                          -->
+        <div *ngIf="month_block">
+            <mat-radio-group [(ngModel)]="Month_choice">
+                <table>
+
+                    <tbody>
+                        <tr>
+                            <td>
+                                <mat-radio-button value="1">Day</mat-radio-button>&nbsp;
+
+                                <mat-form-field style="width:30%;text-align: center">
+                                    <input matInput type="number" [(ngModel)]="numberthDayOfEveryMonth" min="1" max="31" />
+                                </mat-form-field>&nbsp;
+                                <b>of every Month</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <mat-radio-button value="2">The</mat-radio-button>&nbsp;
+
+                                <mat-form-field style="width:30%;">
+                                    <mat-select [(ngModel)]="Month_timeth">
+                                        <mat-option style="text-align:center;"  value="1">First</mat-option>
+                                        <mat-option style="text-align:center;"  value="2">Second</mat-option>
+                                        <mat-option style="text-align:center;"  value="3">Third</mat-option>
+                                        <mat-option style="text-align:center;"  value="4">Fourth</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                &nbsp;
+                                <mat-form-field style="width:30%;">
+                                    <mat-select [(ngModel)]="Month_dayth">
+                                        <mat-option style="text-align:center;"  value="Sunday">Sunday</mat-option>
+                                        <mat-option style="text-align:center;"  value="Monday">Monday</mat-option>
+                                        <mat-option style="text-align:center;"  value="Tuesday">Tuesday</mat-option>
+                                        <mat-option style="text-align:center;"  value="Wednessday">Wednessday</mat-option>
+                                        <mat-option style="text-align:center;"  value="Thursday">Thursday</mat-option>
+                                        <mat-option style="text-align:center;"  value="Friday">Friday</mat-option>
+                                        <mat-option style="text-align:center;"  value="Saturday">Saturday</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+
+
+            </mat-radio-group>
+        </div>
+        <!-- close month selected                            -->
+        <div *ngIf="year_block">
+            <section class="example-section">
+
+
+                <label></label>
+                <mat-radio-group [(ngModel)]="year_choice_final">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <mat-radio-button value="1">On</mat-radio-button>
+                                    &nbsp;
+                                    <mat-form-field style="width:30%;">
+                                        <mat-select [(ngModel)]="month_select_for_year">
+                                            <mat-option style="text-align:center;"  value="0">January</mat-option>
+                                            <mat-option style="text-align:center;"  value="1">February</mat-option>
+                                            <mat-option style="text-align:center;"  value="2">March</mat-option>
+                                            <mat-option style="text-align:center;"  value="3">April</mat-option>
+                                            <mat-option style="text-align:center;"  value="4">May</mat-option>
+                                            <mat-option style="text-align:center;"  value="5">June</mat-option>
+                                            <mat-option style="text-align:center;"  value="6">July</mat-option>
+                                            <mat-option style="text-align:center;"  value="7">August</mat-option>
+                                            <mat-option style="text-align:center;"  value="8">September</mat-option>
+                                            <mat-option style="text-align:center;"  value="9">October</mat-option>
+                                            <mat-option style="text-align:center;"  value="10">November</mat-option>
+                                            <mat-option style="text-align:center;"  value="11">December</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    &nbsp;
+                                    <mat-form-field style="width:30%;">
+                                        <input matInput type="number" [(ngModel)]="numberthDayOfMonth" min="1" max="31" />
+                                    </mat-form-field>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <mat-radio-button value="2">On</mat-radio-button>
+                                    &nbsp;
+                                    <mat-form-field style="width:20%;">
+                                        <mat-select [(ngModel)]="Year_timeth">
+                                            <mat-option style="text-align:center;"  value="0">First</mat-option>
+                                            <mat-option style="text-align:center;"  value="1">Second</mat-option>
+                                            <mat-option style="text-align:center;"  value="2">Third</mat-option>
+                                            <mat-option style="text-align:center;"  value="3">Fourth</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    &nbsp;
+                                    <mat-form-field style="width:20%;">
+                                        <mat-select [(ngModel)]="Year_dayth">
+                                            <mat-option style="text-align:center;"  value="Sunday">Sunday</mat-option>
+                                            <mat-option style="text-align:center;"  value="Monday">Monday</mat-option>
+                                            <mat-option style="text-align:center;"  value="Tuesday">Tuesday</mat-option>
+                                            <mat-option style="text-align:center;"  value="Wednessday">Wednessday</mat-option>
+                                            <mat-option style="text-align:center;"  value="Thursday">Thursday</mat-option>
+                                            <mat-option style="text-align:center;"  value="Friday">Friday</mat-option>
+                                            <mat-option style="text-align:center;"  value="Saturday">Saturday</mat-option>
+
+                                        </mat-select>
+                                    </mat-form-field> 
+                                    &nbsp;
+                                    <b>Of</b>&nbsp;
+                                    <mat-form-field style="width:25%;">
+                                        <mat-select [(ngModel)]="month_select_for_year1">
+                                            <mat-option style="text-align:center;"  value="0">January</mat-option>
+                                            <mat-option style="text-align:center;"  value="1">February</mat-option>
+                                            <mat-option style="text-align:center;"  value="2">March</mat-option>
+                                            <mat-option style="text-align:center;"  value="3">April</mat-option>
+                                            <mat-option style="text-align:center;"  value="4">May</mat-option>
+                                            <mat-option style="text-align:center;"  value="5">June</mat-option>
+                                            <mat-option style="text-align:center;"  value="6">July</mat-option>
+                                            <mat-option style="text-align:center;"  value="7">August</mat-option>
+                                            <mat-option style="text-align:center;"  value="8">September</mat-option>
+                                            <mat-option style="text-align:center;"  value="9">October</mat-option>
+                                            <mat-option style="text-align:center;"  value="10">November</mat-option>
+                                            <mat-option style="text-align:center;"  value="11">December</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </mat-radio-group>
+
+            </section>
+        </div>
+    </div>
+    <div fxFlex="25">
+
+    </div>
+</div>
+<!-- close expression -->
+
+<div flex fxLayout="row" fxLayoutAlign="center" style="margin-top:20px;">
+
+    <button mat-raised-button color="primary" [disabled]="Execute_Later" (click)="cronEditForRepeat()">
+        <mat-icon class="iconmod">done_outline</mat-icon>Submit</button>
+
+</div>

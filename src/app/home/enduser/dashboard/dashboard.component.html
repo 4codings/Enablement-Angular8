@@ -1,3 +1,252 @@
-<p>
-  dashboard works!
-</p>
+
+        <div flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="row">
+
+          <div fxFlex="32">
+
+            <label style="text-align:center;width:100%;">
+              <strong>Applications</strong>
+            </label>
+            <mat-list *ngIf="desktopView" class="scroll">
+              <mat-list-item class="list_item" (click)="clickme(app,$event)" *ngFor="let app of APP_CD" [class.active]="app ==selectedapp">
+                <div> {{app}} </div>
+              </mat-list-item>
+            </mat-list>
+            <mat-form-field *ngIf="mobileView" style="width:100%;text-align: center;" [floatLabel]="'never'">
+              <mat-select style="margin-top:10px;" (selectionChange)="clickme(app,$event)" placeholder="--Select--" [value]="selectedapp">
+                <mat-option style="text-align:center;"  *ngFor="let app of APP_CD" [value]="app">{{app}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div fxFlex="3"></div>
+          <div fxFlex="32">
+
+            <label style="text-align:center;width:100%;">
+              <strong>Processes</strong>
+            </label>
+            <mat-list *ngIf="desktopView" class="scroll">
+              <mat-list-item class="list_item" (click)="clickme1(app1,$event)" *ngFor="let app1 of PRCS_CD" [class.active]="app1 ==selectedprcs">
+                <div> {{app1}} </div>
+              </mat-list-item>
+            </mat-list>
+            <mat-form-field *ngIf="mobileView" style="width:100%;text-align: center;" [floatLabel]="'never'">
+              <mat-select style="margin-top:10px;" (selectionChange)="clickme1(app1,$event)" placeholder="--Select--" [value]="selectedprcs">
+                <mat-option style="text-align:center;"  *ngFor="let app1 of PRCS_CD" [value]="app1">{{app1}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div fxFlex="3"></div>
+          <div fxFlex="32">
+
+            <label style="text-align:center;width:100%;">
+              <strong>Services</strong>
+            </label>
+            <mat-list *ngIf="desktopView" class="scroll">
+              <mat-list-item class="list_item" (click)="clickme2(app2,$event)" *ngFor="let app2 of SRVC_CD" [class.active]="app2 ==selectedsrvc">
+                <div> {{app2}} </div>
+              </mat-list-item>
+            </mat-list>
+            <mat-form-field *ngIf="mobileView" style="width:100%;text-align: center;" [floatLabel]="'never'">
+              <mat-select style="margin-top:10px;" (selectionChange)="clickme2(app2,$event)" placeholder="--Select--" [value]="selectedsrvc">
+                <mat-option style="text-align:center;"  *ngFor="let app2 of SRVC_CD" [value]="app2">{{app2}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="row">
+          <div fxFlex="32">
+            <label style="text-align:center;width:100%;margin-top:30px;">
+              <strong>User Group</strong>
+            </label>
+            <mat-form-field style="width:100%;text-align: center;" [floatLabel]="'never'">
+              <mat-select style="margin-top:10px;" (selectionChange)="clickme3($event)" placeholder="--Select--">
+                <mat-option style="text-align:center;" >-- None --</mat-option>
+                <mat-option style="text-align:center;"  *ngFor="let app3 of groups" [value]="app3">{{app3}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div fxFlex="3"></div>
+          <div fxFlex="32">
+            <label style="text-align:center;width:100%;margin-top:30px;">
+              <strong>User</strong>
+            </label>
+            <mat-form-field style="width:100%;text-align: center;" [floatLabel]="'never'">
+              <mat-select style="margin-top:10px;" (selectionChange)="clickme4($event)" placeholder="--Select--">
+                <mat-option style="text-align:center;" >-- None --</mat-option>
+                <mat-option style="text-align:center;"  *ngFor="let app4 of user_list" [value]="app4">{{app4}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div fxFlex="3"></div>
+          <div fxFlex="32">
+            <label style="text-align:center;width:100%;margin-top:30px;">
+              <strong>Status</strong>
+            </label>
+            <mat-form-field style="width:100%;text-align: center;" [floatLabel]="'never'">
+              <mat-select style="margin-top:10px;" (selectionChange)="clickme5($event)" placeholder="--Select--">
+                <mat-option style="text-align:center;"  *ngFor="let app5 of Status_" [value]="app5">{{app5}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+        <div flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="row" style="margin-top: 2rem;">
+          <div fxFlex="14" flex fxLayout="column" style="text-align: center;">
+            <label>Order ID</label>
+            <mat-form-field>
+              <input matInput type="number" id="order_id" placeholder="">
+            </mat-form-field>
+          </div>
+          <div fxFlex="3"></div>
+          <div fxFlex="14" flex fxLayout="column" style="text-align: center;">
+            <label>Process Txn ID</label>
+            <mat-form-field>
+              <input matInput type="number" id="ptxn_id" placeholder="">
+            </mat-form-field>
+          </div>
+          <div fxFlex="3"></div>
+          <div fxFlex="14" flex fxLayout="column" style="text-align: center;">
+            <label>Service Txn ID</label>
+            <mat-form-field>
+              <input matInput type="number" id="stxn_id" placeholder="">
+            </mat-form-field>
+          </div>
+          <div fxFlex="6"></div>
+          <div fxFlex="15" flex fxLayout="column" style="text-align: center;">
+          <label>From</label>
+          <mat-form-field>
+            <input [(ngModel)]="start_date" matInput placeholder="" [owlDateTimeTrigger]="fromDate" [owlDateTime]="fromDate">
+            <owl-date-time #fromDate></owl-date-time>
+          </mat-form-field>
+          </div>
+          <div fxFlex="3"></div>
+          <div fxFlex="15" flex fxLayout="column" style="text-align: center;">
+          <label>To</label>
+          <mat-form-field>
+            <input [(ngModel)]="end_date" matInput placeholder="" [owlDateTimeTrigger]="toDate" [owlDateTime]="toDate">
+            <owl-date-time #toDate></owl-date-time>
+          </mat-form-field>
+          </div>
+          <div fxFlex="3"></div>
+          <div fxFlex="10" flex fxLayout="column" style="text-align: center;">
+          <label style="padding-bottom: 10px;"></label>
+          <button (click)="onFetchClick()" mat-raised-button style="color:white;background-color:purple;height:2rem;"><mat-icon>get_app</mat-icon>Fetch</button>
+          </div>
+        </div>
+        <div flex fxLayout="row" *ngIf="showNotFound" fxLayout.lt-sm="row" fxLayout.sm="row" fxLayout.gt-sm="row">
+          <strong style="width:100%;text-align: center;">No Records Found !</strong>
+        </div>
+        <div flex fxLayout="row" *ngIf="showLoading" fxLayout.lt-sm="row" fxLayout.sm="row" fxLayout.gt-sm="row">
+          <strong style="width:100%;text-align: center;">Loading...</strong>
+        </div>
+        <div flex fxLayout="row" *ngIf="showElement" fxLayout.lt-sm="row" fxLayout.sm="row" fxLayout.gt-sm="row">
+          <mat-table #table id="dboard" class="top_sticky" [dataSource]="dataSource" class="mat-elevation-z6" fxFlex="100" style="overflow: auto;margin-top: 2rem;">
+            <ng-container matColumnDef="#">
+              <mat-header-cell *matHeaderCellDef class="top_row">#</mat-header-cell>
+              <mat-cell *matCellDef="let elem" class="top_row">
+                <mat-radio-button value="elem.NO" name="row_group" (click)="onRowClick(elem)"></mat-radio-button>
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Application">
+              <mat-header-cell *matHeaderCellDef>Application</mat-header-cell>
+              <mat-cell *matCellDef="let elem">{{elem.Application}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Process">
+              <mat-header-cell *matHeaderCellDef>Process</mat-header-cell>
+              <mat-cell *matCellDef="let elem">{{elem.Process}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Service">
+              <mat-header-cell *matHeaderCellDef>Service</mat-header-cell>
+              <mat-cell *matCellDef="let elem">{{elem.Service}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Order_ID">
+              <mat-header-cell *matHeaderCellDef>Order ID</mat-header-cell>
+              <mat-cell *matCellDef="let elem">{{elem.Order_ID}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="PTXN_ID">
+              <mat-header-cell *matHeaderCellDef>Process Txn ID</mat-header-cell>
+              <mat-cell *matCellDef="let elem">{{elem.PTXN_ID}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="STXN_ID">
+              <mat-header-cell *matHeaderCellDef>Service Txn ID</mat-header-cell>
+              <mat-cell *matCellDef="let elem">{{elem.STXN_ID}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="TXN_STAT">
+              <mat-header-cell *matHeaderCellDef>TXN Status</mat-header-cell>
+              <mat-cell *matCellDef="let elem">{{elem.TXN_STAT}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Username">
+              <mat-header-cell *matHeaderCellDef>Username</mat-header-cell>
+              <mat-cell *matCellDef="let elem">{{elem.Username}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Last_updated">
+              <mat-header-cell *matHeaderCellDef>Last Updated</mat-header-cell>
+              <mat-cell *matCellDef="let elem">{{elem.Last_updated}}</mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns:displayedColumns"></mat-row>
+          </mat-table>
+        </div>
+        <div flex fxLayout="row" *ngIf="showPayloads" fxLayout.lt-sm="column" style="margin-top: 2rem;" fxLayout.sm="column" fxLayout.gt-sm="row">
+          <div *ngIf="showInput" fxFlex="35">
+            <div flex fxLayout="column">
+              <label style="text-align:center;width:100%;">
+                <strong>Input Payload</strong>
+              </label>
+              <mat-table #table fxFlex="100" [dataSource]="dataSource_Inp" class="mat-elevation-z6" style="overflow: auto;width: 100%;">
+                <ng-container matColumnDef="Input_name">
+                  <mat-header-cell *matHeaderCellDef>Input Name</mat-header-cell>
+                  <mat-cell *matCellDef="let elem">{{elem.Input_name}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="Input_value">
+                  <mat-header-cell *matHeaderCellDef>Input Value</mat-header-cell>
+                  <mat-cell *matCellDef="let elem">{{elem.Input_value}}</mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedCol_Inp"></mat-header-row>
+                <mat-row *matRowDef="let row; columns:displayedCol_Inp"></mat-row>
+              </mat-table>
+            </div>
+          </div>
+          <div fxFlex="2"></div>
+          <div *ngIf="showOutput" fxFlex="35">
+            <div flex fxLayout="column">
+              <label style="text-align:center;width:100%;">
+                <strong>Output Payload</strong>
+              </label>
+              <mat-table #table fxFlex="100" [dataSource]="dataSource_Oup" class="mat-elevation-z6" style="overflow: auto;width: 100%;">
+                <ng-container matColumnDef="Output_name">
+                  <mat-header-cell *matHeaderCellDef>Output Name</mat-header-cell>
+                  <mat-cell *matCellDef="let elem">{{elem.Output_name}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="Output_value">
+                  <mat-header-cell *matHeaderCellDef>Output Value</mat-header-cell>
+                  <mat-cell *matCellDef="let elem">{{elem.Output_value}}</mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedCol_Oup"></mat-header-row>
+                <mat-row *matRowDef="let row; columns:displayedCol_Oup"></mat-row>
+              </mat-table>
+            </div>
+          </div>
+          <div fxFlex="3"></div>
+          <div fxFlex="25" style="margin-top: 1rem;">
+            <div *ngIf="showSLA" flex fxLayout="column">
+              <mat-form-field style="float: left;" class="inp" fxFlex="100">
+                <input matInput placeholder="Start Time">
+              </mat-form-field>
+              <mat-form-field style="float: left;" class="inp" fxFlex="100">
+                <input matInput placeholder="SLA">
+              </mat-form-field>
+              <mat-form-field style="float: left;" class="inp" fxFlex="100">
+                <input matInput placeholder="End Time">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div flex fxLayout="row" *ngIf="showCanvas" fxLayout.lt-sm="column" style="margin-top: 2rem;" fxLayout.sm="column" fxLayout.gt-sm="row">
+          <div fxFlex="10"></div>
+          <canvas id="myGanttchart" fxFlex="80"></canvas>
+          <div fxFlex="10"></div>
+        </div>
+        <div flex fxLayout="row" fxLayout.lt-sm="column" *ngIf="showCanvas" style="margin-top: 2rem;" fxLayout.sm="column" fxLayout.gt-sm="row">
+          <canvas id="myBarchart" fxFlex="50"></canvas>
+          <canvas id="myPie" fxFlex="50"></canvas>
+        </div>
