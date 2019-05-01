@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HomeComponent } from './home.component';
+import { HomeComponent, KeepAliveDialog } from './home.component';
 import { HomeRoutingModule } from './home-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { MatIconModule } from '@angular/material';
@@ -9,7 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [HomeComponent],
+  declarations: [HomeComponent, KeepAliveDialog],
   imports: [
     MatIconModule,
     CommonModule,
@@ -18,6 +18,7 @@ import { FormsModule } from '@angular/forms';
     HttpClientModule,
     HttpModule,
     FormsModule
-  ]
+  ],
+  entryComponents: [KeepAliveDialog]
 })
 export class HomeModule { }

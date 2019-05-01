@@ -13,6 +13,7 @@ import { Globals } from 'src/app/services/globals';
 import { UserAdminService } from 'src/app/services/user-admin.service';
 import { StorageSessionService } from 'src/app/services/storage-session.service';
 import { EndUserService } from 'src/app/services/EndUser-service';
+import { NoAuthDataService } from 'src/app/services/no-auth-data.service';
 
 @Component({
   selector: 'app-schd-actn',
@@ -97,6 +98,7 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
               private data: ConfigServiceService,
               private endUsrData: EndUserService,
               private storageSessionService: StorageSessionService,
+              private noAuthData: NoAuthDataService,
               private detector: ChangeDetectorRef) {
     this.onpselect = function (index) {
       this.selectedrole = index;
@@ -308,10 +310,9 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
     if (this.app.selected_PROCESS !== 'ALL' && !this.app.START) {
       this.ProcessCD = this.app.selected_PROCESS;
     }
-    this.data2.getJSON().subscribe(data2 => {
-
-      this.Label = data2.json();
-
+    this.noAuthData.getJSON().subscribe(data => {
+      //console.log(data);
+      this.Label = data;
     });
 
     this.getAppCode();

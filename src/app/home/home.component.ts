@@ -1,21 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { MatIconRegistry } from "@angular/material/icon";
+import { DomSanitizer } from "@angular/platform-browser";
 import { MatDialog, MatDialogRef } from '@angular/material';
-import { DomSanitizer } from '@angular/platform-browser';
-import { Subscription } from 'rxjs';
 import { Router, NavigationEnd } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { UserIdleService } from 'angular-user-idle';
 import { environment } from '../../environments/environment';
 import { ApiService } from '../service/api/api.service';
-import { UserService } from '../core/user.service';
-import { UserIdleService } from 'angular-user-idle';
+import { StorageSessionService } from '../services/storage-session.service';
 
+@Injectable()
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
-  
+export class HomeComponent implements OnInit, OnDestroy {
+  title = 'app';
   text_mgs: string;
   public loading = false;
   public loadingCharts = false;
@@ -34,9 +36,10 @@ export class HomeComponent implements OnInit {
     private dialog: MatDialog,
     private router: Router,
     private userIdle: UserIdleService,
-    private apiService: ApiService,
-    private userService:UserService
-  ) { 
+    private storageSessionService: StorageSessionService,
+    private apiService: ApiService
+  ) {
+    //--------------------Workflow Profile---------------------
     this.matIconRegistry.addSvgIcon(
       "settings",
       this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/img/navbaricons/settings.svg")
@@ -194,12 +197,25 @@ export class HomeComponent implements OnInit {
     if (this.dialogRef) {
       this.dialogRef.close();
     }
-    this.userService.clear();
-    this.router.navigate(['/auth/login']);
+    //this.storageSessionService.ClearSession('email');
+    //this.storageSessionService.ClearSession('agency');
+    this.router.navigate(['']);
   }
-
 }
 
+@Component({
+  selector: 'keep-alive-dialog',
+  template: `
+    <h1 mat-dialog-title>Session Timeout</h1>
+    <div mat-dialog-content>
+      <p>Your session will be timeout in {{timeout}} minutes.</p>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-button (click)="keepMeAlive()">Keep me alive</button>
+      <button mat-button (click)="logout()">Logout</button>
+    </div>
+  `,
+})
 export class KeepAliveDialog {
 
   public timeout = environment.timeout % 60 === 0 ? environment.timeout / 60 : (environment.timeout / 60).toFixed(1);
