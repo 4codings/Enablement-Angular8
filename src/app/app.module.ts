@@ -16,6 +16,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpInterceptorsService } from './services/http-interceptors.service';
+import { LocalStorageService, SessionStorageService, CookiesStorageService, SharedStorageService } from 'ngx-store';
+import { DeviceDetectorModule } from 'ngx-device-detector';
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,6 +34,7 @@ import { HttpInterceptorsService } from './services/http-interceptors.service';
     AuthModule,
     HomeModule,
     HttpClientModule,
+    DeviceDetectorModule.forRoot(),
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({
@@ -44,7 +47,11 @@ import { HttpInterceptorsService } from './services/http-interceptors.service';
       provide: HTTP_INTERCEPTORS,
       useClass: HttpInterceptorsService,
       multi: true
-    }
+    },
+    LocalStorageService,
+    SessionStorageService,
+    CookiesStorageService,
+    SharedStorageService
   ],
   bootstrap: [AppComponent]
 })

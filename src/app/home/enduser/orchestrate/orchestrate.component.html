@@ -1,3 +1,188 @@
-<p>
-  orchestrate works!
-</p>
+
+<!-- /////////////// Row 1 ////////////////// -->
+<div flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="row" fxLayout.gt-sm="row">
+    <label class="staticlabel" style="text-align:center;width:100%;"><strong>{{Label['Predecessor']}}</strong></label>
+    </div><br>
+    <div flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="row" fxLayout.gt-sm="row">
+    
+    <div fxFlex="30" >
+        <label style="text-align:center;width:100%;"><strong>{{Label['APP_CD']}}</strong></label>
+      <mat-form-field class="input_control"  [floatLabel]="'never'">
+        <mat-select placeholder="--Select--" [(value)]="predapp_sl">
+            <mat-option style="text-align:center;"  (click)="functionprocesslist() ; functionsuccprocesslist() ; foo() ;">-- None --</mat-option>
+          <mat-option style="text-align:center;"  (click)="functionprocesslist() ; functionsuccprocesslist() ; foo() ;" *ngFor="let a of app_cd" [value]="a">
+            {{a}}
+          </mat-option>
+        </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div fxFlex="5"></div>
+<div fxFlex="30">
+    <label style="text-align:center;width:100%;">  <strong>{{Label['PRCS_CD']}}</strong></label>
+          <mat-form-field class="input_control" [floatLabel]="'never'">
+            <mat-select placeholder="Predecessor Process" [(value)]="predpro_sl">
+              <mat-option style="text-align:center;"  *ngFor="let p of prcs_cd" [value]="p" (click)="functionserviceslist();functionsuccserviceslist();functiongettable();foo1();">
+                {{p}}
+              </mat-option>
+              
+            </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="5"></div>
+<div fxFlex="30">
+      <label style="text-align:center;width:100%;"><strong>{{Label['SRVC_CD']}}</strong></label>
+            <mat-form-field class="input_control" [floatLabel]="'never'">
+                <mat-select placeholder="Predecessor Services" [(value)]="predsvc_sl">
+                    
+                  <mat-option style="text-align:center;"  *ngFor="let s of srvc_cd" [value]="s" (click)="functionsuccserviceslist();functiongettable();foo2();">  
+                    {{s}}                  
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              </div>
+</div>
+<br>
+<div>
+<mat-divider></mat-divider>
+</div>
+<!-- /////////////// Row 2 ////////////////// -->
+<br>
+<div flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="row" fxLayout.gt-sm="row">
+    <label class="staticlabel" style="text-align:center;width:100%;"><strong>{{Label['Successor']}}</strong></label>
+    </div><br>
+<div flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="row" fxLayout.gt-sm="row">
+                <div fxFlex="30" >
+                    <label style="text-align:center;width:100%;"> <strong>{{Label['APP_CD']}}</strong></label>
+                  <mat-form-field class="input_control" [floatLabel]="'never'">
+                    <mat-select placeholder="--Select--" [(value)]="succapp_sl">
+                        <mat-option style="text-align:center;" >-- None --</mat-option>
+                      <mat-option style="text-align:center;"  (click)="functionsuccprocesslist()" *ngFor="let sa of succapp_cd" [value]="sa">
+                        {{sa}}
+                      </mat-option>
+                    </mat-select>
+                      </mat-form-field>
+                    </div>
+            
+                    <div fxFlex="5"></div>
+            <div fxFlex="30">
+                <label style="text-align:center;width:100%;"> <strong>{{Label['PRCS_CD']}}</strong></label>
+                      <mat-form-field class="input_control" [floatLabel]="'never'">
+                        <mat-select placeholder="Successor Process" [(value)]="succpro_sl">
+                          <mat-option style="text-align:center;"  *ngFor="let sp of succprcs_cd" [value]="sp" (click)="functionsuccserviceslist()">
+                            {{sp}}
+                          </mat-option>
+                          
+                        </mat-select>
+                          </mat-form-field>
+                        </div>
+                        <div fxFlex="5"></div>
+                          <div fxFlex="30">
+                          <label style="text-align:center;width:100%;"> <strong >{{Label['SRVC_CD']}}</strong></label>
+                          <mat-form-field class="input_control" [floatLabel]="'never'">
+                            <mat-select placeholder="Successor Services" [(value)]="succsvc_sl">
+                                
+                              <mat-option style="text-align:center;"  *ngFor="let ss of succsrvc_cd" (click)="enabledisable()" [value]="ss"  >  
+                                {{ss}}                  
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          </div>
+                        </div>
+<br>
+<div flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="row" fxLayout.gt-sm="row">
+  
+    <div fxFlex="82">
+       <label style="text-align:center;width:100%;"> <strong>{{Label['TRNSN_CND']}}</strong></label>
+        <mat-form-field class="input_control" floatPlaceholder="never">
+            <input matInput placeholder="Name=age,Value=45..." [value]="" [(ngModel)]="trnsn_sl">
+          </mat-form-field>
+    </div>
+    <div fxFlex="5"></div>
+    <div>
+        <label style="text-align:center;width:100%;"> <strong>{{Label['CONT_ON_ERR_FLG']}}</strong></label>
+    <div style="text-align:center"><mat-checkbox class="customcheckbox" [(ngModel)]="contonerr_sl"></mat-checkbox></div>
+    </div>
+</div>
+
+<br>
+<div  flex fxLayout="row" fxLayout.lt-sm="row" fxLayout.sm="row" fxLayout.gt-sm="row" > 
+  <div  fxFlex="100"  fxLayoutAlign="center center">
+<mat-radio-group [(ngModel)]="selectedradio">
+    <mat-radio-button  value="Upstream" (click)="checkradio('Upstream');functiongettable()" >Upstream</mat-radio-button>
+    
+    <mat-radio-button value="Downstream" (click)="checkradio('Downstream');functiongettable()">Downstream</mat-radio-button>
+    
+    <mat-radio-button value="Complete" (click)="checkradio('Complete');functiongettable()" checked="checked">Complete</mat-radio-button>
+    </mat-radio-group>
+</div>
+</div>
+<br>
+<div flex fxLayout="row" fxLayout.lt-sm="row" fxLayout.sm="row" fxLayout.gt-sm="row">
+  <div fxFlex="100">
+<label style="text-align:center;width:100%;"> <strong>Orchestration Table</strong></label>
+<div class="mat-elevation-z4" style="background: #ccc;">
+    
+    <mat-table #table [dataSource]="dataSource">
+  
+      <!-- Checkbox Column -->
+      <ng-container matColumnDef="#">
+          <mat-header-cell *matHeaderCellDef >#
+            <!-- <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
+            </mat-checkbox> -->
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row" >
+            <mat-checkbox (click)="$event.stopPropagation();onRowCheck(row)" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+            </mat-checkbox>
+          </mat-cell>
+        </ng-container>
+        <!-- <ng-container *ngFor="let x of displayedColumns" matColumnDef="{{x}}">
+            <mat-header-cell *matHeaderCellDef> {{x}} </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element[x]}} </mat-cell>
+          </ng-container> -->
+
+        <!-- <ng-container  matColumnDef="#">
+    <mat-header-cell  *matHeaderCellDef>#</mat-header-cell>
+          <mat-cell  *matCellDef="let element"><mat-checkbox color="primary"></mat-checkbox></mat-cell>
+        </ng-container> -->
+      
+  
+      <!-- Predecessor Service Column -->
+      <ng-container  matColumnDef="Predecessor_Service">
+         <mat-header-cell  *matHeaderCellDef>Predecessor Service</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.Predecessor_Service}} </mat-cell>
+      </ng-container>
+  
+      <!-- Successor Service Column -->
+      <ng-container matColumnDef="Successor_Service">
+        <mat-header-cell  *matHeaderCellDef> Successor Service </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.Successor_Service}} </mat-cell>
+      </ng-container>
+  
+      <!-- Transition Condition Column -->
+      <ng-container matColumnDef="Transition_Condition">
+        <mat-header-cell  *matHeaderCellDef> Transition Condition </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.Transition_Condition}} </mat-cell>
+      </ng-container>
+  
+      <!-- Continue on Error Column -->
+      <ng-container matColumnDef="Continue_on_Error">
+        <mat-header-cell   *matHeaderCellDef> Continue on Error </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.Continue_on_Error}} </mat-cell>
+      </ng-container>
+  
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)" (click)="onRowClick(row)"></mat-row>
+    </mat-table>
+  </div>
+  </div>
+</div>
+<br>
+<div class="input_control" style="justify-content: center" flex fxLayout="row" fxLayout.lt-sm="row" fxLayout.sm="row" fxLayout.gt-sm="row">
+<div fxFlex="10"></div> 
+<button mat-raised-button mat-button color="primary" [disabled]="disabled" (click)="functionadd();" ><mat-icon>add_circle</mat-icon>Add</button>
+<div fxFlex="10"></div>
+<button mat-raised-button mat-button color="warn" [disabled]="disableddelete" (click)="functiondelete()"><mat-icon>delete</mat-icon>Delete</button>
+<div fxFlex="10"></div>
+</div>
+

@@ -9,7 +9,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import { MatListModule, MatIconModule, MatCardModule, MatInputModule,MatRadioModule, MatButtonModule, 
     MatFormFieldControl, MatFormFieldModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule, 
     MatCheckboxModule, MatAutocompleteModule } from '@angular/material';
-
+import {MatTableModule} from '@angular/material/table';
 
 @NgModule({
     imports:      [
@@ -29,7 +29,8 @@ import { MatListModule, MatIconModule, MatCardModule, MatInputModule,MatRadioMod
         MatNativeDateModule, 
         MatCheckboxModule,
         MatRadioModule,
-        MatAutocompleteModule
+        MatAutocompleteModule,
+        MatTableModule
     ],
     declarations: [
         FormErrorMsgComponent,
@@ -51,7 +52,8 @@ import { MatListModule, MatIconModule, MatCardModule, MatInputModule,MatRadioMod
         MatNativeDateModule, 
         MatCheckboxModule,
         MatRadioModule,
-        MatAutocompleteModule
+        MatAutocompleteModule,
+        MatTableModule
     ]
 })
 export class SharedModule {

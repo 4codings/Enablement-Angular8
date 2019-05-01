@@ -1,3 +1,96 @@
-<p>
-  process works!
-</p>
+
+          <div flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="row"  >
+
+              <div fxFlex="32">
+
+                <label style="text-align:center;width:100%;">
+                  <strong>Applications</strong>
+                </label>
+                <mat-list class="scroll">
+                  <mat-list-item class="list_item" (click)="clickme(app ,i,$event)" *ngFor="let app of APP_CD;let i = index" [class.active]="app ==selectedapp">
+                    <div> {{app}} </div>
+                  </mat-list-item>
+                </mat-list>
+                <label style="text-align:center;width:100%;">
+                  <strong>Applications Name</strong>
+                </label>
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Appliaction Name" value="">
+                </mat-form-field>
+                <label style="text-align:center;width:100%;">
+                  <strong>Applications Description</strong>
+                </label>
+                <mat-form-field class="example-full-width">
+                  <textarea matInput placeholder="Appliaction Description" value=""></textarea>
+                </mat-form-field>
+                <div>
+
+                <button mat-raised-button color="primary" style="margin-right:10px; ">Add</button>
+                <button mat-raised-button color="warn">Delete</button>
+              </div>
+              </div>
+
+              <div fxFlex="3"></div>
+              <div fxFlex="32">
+
+                <label style="text-align:center;width:100%;">
+                  <strong>Processes</strong>
+                </label>
+                <mat-list class="scroll">
+                  <mat-list-item class="list_item" (click)="clickme1(app1,$event)" *ngFor="let app1 of APP_SEL_PRCS_ARR_final" [class.active]="app1 ==selectedprcs">
+                    <div> {{app1}} </div>
+                  </mat-list-item>
+                </mat-list>
+                <label style="text-align:center;width:100%;">
+                    <strong>Process Name</strong>
+                  </label>
+                  <mat-form-field class="example-full-width">
+                      <input matInput placeholder="Appliaction Name" value="">
+                    </mat-form-field>
+                    <label style="text-align:center;width:100%;">
+                        <strong>Process Description</strong>
+                      </label>
+                      <mat-form-field class="example-full-width">
+                        <textarea matInput placeholder="Appliaction Description" value=""></textarea>
+                      </mat-form-field>
+                      <div style="margin-bottom:30px;">
+
+                      <button mat-raised-button color="primary" style="margin-right:10px; ">Add</button>
+                      <button mat-raised-button color="warn">Delete</button>
+                    </div>
+              </div>
+              <div fxFlex="3"></div>
+              <div fxFlex="32">
+
+                <label style="text-align:center;width:100%;">
+                  <strong>Services</strong>
+                </label>
+                <mat-list class="scroll">
+                  <mat-list-item class="list_item" (click)="clickme2(app2,$event)" *ngFor="let app2 of SRVC_CD" [class.active]="app2 ==selectedsrvc">
+                    <div> {{app2}} </div>
+                  </mat-list-item>
+                </mat-list>
+                <label style="text-align:center;width:100%;">
+                    <strong>Service Name</strong>
+                  </label>
+                  <mat-form-field class="example-full-width">
+                      <input matInput placeholder="Appliaction Name" value="">
+                    </mat-form-field>
+                    <label style="text-align:center;width:100%;">
+                        <strong>Service Description</strong>
+                      </label>
+                      <mat-form-field class="example-full-width">
+                        <textarea matInput placeholder="Appliaction Description" value=""></textarea>
+                      </mat-form-field>
+                      <div>
+
+                      <button mat-raised-button color="primary" style="margin-right:10px; ">Add</button>
+                      <button mat-raised-button color="warn">Delete</button>
+                    </div>
+              </div>
+            </div>
+            <div flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="row">
+              <div fxFlex="35"></div>
+              <button fxFlex="30" (click)="sendMessage()" mat-raised-button style="color:white;background-color:darkslateblue;">Send Message</button>
+              <div fxFlex="35"></div>
+            </div>

@@ -44,7 +44,9 @@ export class ExceptionComponent implements OnInit {
   }
  
   constructor(private http:HttpClient,private router:Router,
-    private data:UserAdminService,private globals:Globals, private app:HomeComponent, public noAuthData: NoAuthDataService) {
+    private data:UserAdminService,private globals:Globals, 
+    private app:HomeComponent, 
+    private noAuthData: NoAuthDataService) {
       this.onResize();
       this.onpselect = function(index){
         this.selectedplat = index;
@@ -332,7 +334,7 @@ agcygrpbox:boolean=false;
     ("Data fetch..........")
     this.functionsrvcGetData();
     this.noAuthData.getJSON().subscribe(data => {
-      console.log(data);
+      //console.log(data);
       this.Label = data;
     });
     

@@ -1,0 +1,64 @@
+.staticlabel{
+    color: rgb(54, 44, 110);
+    font-weight: 900!important;
+    font-size: 20px;
+}
+  .customcheckbox{
+      zoom: 1.5;
+  }
+  mat-radio-button{
+      padding-left:20px;
+  }
+
+  @media only screen and (max-width: 767px) {
+
+    .mat-header-row, .mat-row{display:table-cell!important;padding: 0!important;}
+
+    .mat-table{width:720px;}
+
+    .mat-header-cell{border:1px solid #333;height: 50px;}
+
+    .mat-cell{height: 50px;border: 1px solid #ccc; }
+    .top_row{
+        position: sticky;
+        top:0;
+        height: 50px;
+    }
+}
+::ng-deep .mat-input-infix{
+    background: white;
+    border:1px solid rgb(200,200,200);
+    border-radius: 3px;
+    padding-bottom: 5px;
+}
+::ng-deep .mat-input-underline {
+    display: none!important;
+}
+::ng-deep .mat-form-field-underline {
+    display: none!important;
+}
+  
+::ng-deep .mat-select-trigger{
+    align-content: center;
+}
+
+
+
+
+  .mat-table {
+  overflow: auto;
+  max-height: 200px;
+  width: auto;
+  }
+  .mat-header-cell {
+    font-weight: 900!important;
+    font-size: 12px !important;
+    -webkit-text-fill-color: black;
+}
+.mat-header-row {
+    z-index: 1;
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    background:inherit;
+}
