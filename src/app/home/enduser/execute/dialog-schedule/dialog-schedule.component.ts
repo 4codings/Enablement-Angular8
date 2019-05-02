@@ -30,8 +30,8 @@ export class DialogScheduleComponent implements OnInit {
 	private Url = "https://"+this.domain_name+"/rest/Process/Schedule"
 
 	Exe_data = this.store.getSession("Exe_data");
-	V_SRC_CD = this.store.getSession("agency");
-	V_USR_NM = this.store.getSession("email");
+	V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+  	V_USR_NM:string=JSON.parse(sessionStorage.getItem('u')).USR_NM;
 	Execute() {
 		var date = new Date(this.start_date);
 		var sec: any = date.getSeconds();

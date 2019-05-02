@@ -9,6 +9,7 @@ import { UserIdleService } from 'angular-user-idle';
 import { environment } from '../../environments/environment';
 import { ApiService } from '../service/api/api.service';
 import { StorageSessionService } from '../services/storage-session.service';
+import { UserService } from '../core/user.service';
 
 @Injectable()
 @Component({
@@ -37,7 +38,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     private router: Router,
     private userIdle: UserIdleService,
     private storageSessionService: StorageSessionService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private userService:UserService
   ) {
     //--------------------Workflow Profile---------------------
     this.matIconRegistry.addSvgIcon(
@@ -197,6 +199,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (this.dialogRef) {
       this.dialogRef.close();
     }
+    this.userService.clear();
     //this.storageSessionService.ClearSession('email');
     //this.storageSessionService.ClearSession('agency');
     this.router.navigate(['']);

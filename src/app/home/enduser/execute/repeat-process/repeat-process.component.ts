@@ -95,8 +95,8 @@ export class RepeatProcessComponent implements OnInit {
   }
   //----------------------------cron expression
   Exe_data = this.store.getSession("Exe_data");
-  V_SRC_CD = this.store.getSession("agency");
-  V_USR_NM = this.store.getSession("email");
+  V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+  V_USR_NM:string=JSON.parse(sessionStorage.getItem('u')).USR_NM;
   private Url = "https://"+this.domain_name+"/rest/Process/Schedule"
   cronEditForRepeat() {
 

@@ -17,8 +17,8 @@ export class RollserviceService {
   ) { }
 
   domain_name=this.globals.domain_name;
-  agency=this.StorageSessionService.getSession("agency");
-  V_USR_NM=this.StorageSessionService.getSession("email");
+  agency=JSON.parse(sessionStorage.getItem('u')).SRC_CD
+  V_USR_NM:string=JSON.parse(sessionStorage.getItem('u')).USR_NM;
   Roll_cd:any[]=[];
 getRollCd(){
    return this.http.get("https://"+this.domain_name+"/rest/E_DB/SP?V_SRC_CD="+this.agency+"&V_USR_NM="+this.V_USR_NM+"&REST_Service=UserRoles&Verb=GET")

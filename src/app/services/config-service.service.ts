@@ -17,8 +17,8 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 export class ConfigServiceService {
   domain_name = this.globals.domain_name;
 
-  V_SRC_CD: string = this.StorageSessionService.getSession("agency");
-  V_USR_NM: string = this.StorageSessionService.getSession("email");
+  V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+  V_USR_NM:string=JSON.parse(sessionStorage.getItem('u')).USR_NM;
   constructor(private http: Http, private https: HttpClient, private apiService: ApiService,
     private StorageSessionService: StorageSessionService, private globals: Globals) { }
 
