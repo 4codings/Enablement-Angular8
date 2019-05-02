@@ -110,7 +110,9 @@ export class FormComponent implements OnInit {
     this.Form_Data = this.StorageSessionService.getCookies('report_table');
     // console.log('this.Form_date', this.Form_Data);
     this.configService.prepareAndGetFieldConfigurations(this.Form_Data, true);
-
+    this.RVP_Keys = [];
+    this.RVP_Values = []
+    this.RVP_labels = [];
     this.PVP = JSON.parse(this.Form_Data['PVP'][0]);
     this.srvc_cd_sl = this.Form_Data['SRVC_CD'][0];
     (this.PVP);
@@ -293,13 +295,15 @@ export class FormComponent implements OnInit {
     // console.log('setCookies');
     let serviceCode = null;
     if (CommonUtils.isValidValue(res['SRVC_CD']) && res['SRVC_CD'][0] === "END") {
-      this.router.navigate(["/EndUser/Execute"]);
+      this.router.navigate(["/EndUser/Execute"], { skipLocationChange: true });
     } else {
       var timeout = res['RESULT'][0].toString().substring(0, 7) == "TIMEOUT";
       // (timeout);
       if (timeout && this.ctrl_variables.call_repeat_on_TIMEOUT) {
         this.app.fromNonRepForm = true;
-        this.router.navigate(["/EndUser/Execute"]);
+        this.router.navigate(["/EndUser/Execute"], { skipLocationChange: true });
+      } else if (res['RESULT'][0] === 'SUCCESS' || res['RESULT'][0] === 'COMPLETED') {
+        this.router.navigate(["/EndUser/Execute"], { skipLocationChange: true });
       } else {
         // 10th April added for future call after token works
         const url = this.apiService.securedApiUrl + '/secured/FormSubmit';
@@ -308,13 +312,13 @@ export class FormComponent implements OnInit {
         this.StorageSessionService.setCookies('report_table', res);
         // // console.log('setCookies');
         if (res['RESULT'] == 'INPUT_ARTFCT_TASK') {
-          this.router.navigateByUrl('InputArtForm');
+          this.router.navigate(['InputArtForm'], { skipLocationChange: true });
         } else if (res['RESULT'][0] == 'NONREPEATABLE_MANUAL_TASK') {
-          this.router.navigateByUrl('NonRepeatForm');
+          this.router.navigate(['NonRepeatForm'], { skipLocationChange: true });
         } else if (res['RESULT'][0] == 'REPEATABLE_MANUAL_TASK') {
-          this.router.navigateByUrl('RepeatForm');
+          this.router.navigate(['RepeatForm'], { skipLocationChange: true });
         } if (res['RESULT'] == 'TABLE') {
-          this.router.navigateByUrl('ReportTable');
+          this.router.navigate(['ReportTable'], { skipLocationChange: true });
         }
       }
     }
@@ -417,7 +421,7 @@ export class FormComponent implements OnInit {
     (encoded_url);
     ("Option Values: " + V_PARAM_NM);
     // insecure
-    // this.apiService.requestInSecureApi(encoded_url,'get').subscribe(
+    // this.apiService.requestInSecureApi(encoded_url, 'get').subscribe(
     //   res => {
     //     (res);
     //     const resData = res.json();
@@ -448,9 +452,11 @@ export class FormComponent implements OnInit {
   retruns options with token headers
   */
   setHeaders() {
-    const headers = new Headers();
-    //headers.append('Content-Type', 'application/json');
-    //headers.append('Access-Control-Allow-Origin', '*');
+    const headers = new Headers({
+      Authorization: `Bearer ${this.globarUser.currentUser.TOKEN}`
+    });
+    headers.append('Content-Type', 'application/json');
+    headers.append('Access-Control-Allow-Origin', '*');
 
     const options = new RequestOptions({ headers: headers });
     return options;

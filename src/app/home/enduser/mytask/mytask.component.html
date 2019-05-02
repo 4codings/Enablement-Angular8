@@ -1,227 +1,229 @@
-<div flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="row">
-  <div fxFlex="30">
-    <label style="text-align:center;width:100%;">
-      <strong>{{Label['SRVC_CD']}}</strong>
-    </label>
-    <!-- <mat-form-field class="input_control" [floatLabel]="'never'">
-<mat-select [(value)]="exc_sl"  placeholder="--Select--">
- <mat-option style="text-align:center;"  [value]="">-- None --</mat-option>
-  <mat-option style="text-align:center;"  (click)="functionATIDGetData() ;functionOTIDGetData()" *ngFor="let exc of srvcd" [value]="exc">
-    {{exc}}
-  </mat-option>
-</mat-select>
-  </mat-form-field> -->
-    <mat-list class="scroll">
-      <mat-list-item class="list_item" *ngFor="let exc of srvcd ; let i = index;" (click)="functionATIDGetData(exc);functionOTIDGetData(exc);onpselect(i);"
-        [class.active]="i == selectedplat">
-      <div>{{exc}}</div>
-      </mat-list-item>
-    </mat-list>
-  </div>
 
-  <div fxFlex="7"></div>
-  <div fxFlex="30">
-    <label style="text-align:center;width:100%;">
-      <strong>Open {{Label['TXN_ID']}}</strong>
-    </label>
-    <!--<mat-form-field class="input_control">
-     <mat-select [(value)]="txnid_sl">
 
-      <mat-option style="text-align:center;"  *ngFor="let o of otxnid" [value]="o" (click)="functionacqire();functionopendetails();functiondetailshow()">
-        {{o}}
-      </mat-option>
-
-    </mat-select>
-      </mat-form-field> -->
-    <mat-list class="scroll">
-      <mat-list-item class="list_item" *ngFor="let o of otxnid; let j = index;" (click)="functionacqire();functionopendetails(o);functiondetailshow();onqselect(j);"
-        [class.active]="j == selectedot">
-      <div>{{o}}</div>
-      </mat-list-item>
-    </mat-list>
-  </div>
-  <div fxFlex="7"></div>
-  <div fxFlex="30">
-    <label style="text-align:center;width:100%;">
-      <strong>Acquired {{Label['TXN_ID']}}</strong>
-    </label>
-    <!-- <mat-form-field class="input_control">
-        <mat-select [(value)]="txnid_sl">
-
-          <mat-option style="text-align:center;"  *ngFor="let a of atxnid" [value]="a" (click)="functionoperations();functiondetailshow();functionacquireddetails()" >
-            {{a}}
+        <div flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="row">
+          <div fxFlex="30">
+            <label style="text-align:center;width:100%;">
+              <strong>{{Label['SRVC_CD']}}</strong>
+            </label>
+            <!-- <mat-form-field class="input_control" [floatLabel]="'never'">
+        <mat-select [(value)]="exc_sl"  placeholder="--Select--">
+         <mat-option style="text-align:center;"  [value]="">-- None --</mat-option>
+          <mat-option style="text-align:center;"  (click)="functionATIDGetData() ;functionOTIDGetData()" *ngFor="let exc of srvcd" [value]="exc">
+            {{exc}}
           </mat-option>
         </mat-select>
-      </mat-form-field> -->
-    <mat-list class="scroll">
-      <mat-list-item class="list_item" *ngFor="let a of atxnid; let k = index;" (click)="functionoperations();functionacquireddetails(a);;functiondetailshow();onrselect(k);"
-        [class.active]="k == selectedat">
-      <div>{{a}}</div>
-      </mat-list-item>
-    </mat-list>
-  </div>
-  <div fxFlex="5"></div>
-  <div fxLayout="column" style="padding-top: 40px">
+          </mat-form-field> -->
+            <mat-list class="scroll">
+              <mat-list-item class="list_item" *ngFor="let exc of srvcd ; let i = index;" (click)="functionATIDGetData(exc);functionOTIDGetData(exc);onpselect(i);"
+                [class.active]="i == selectedplat">
+              <div>{{exc}}</div>
+              </mat-list-item>
+            </mat-list>
+          </div>
 
-  <div fxFlexAlign="center">
-    <mat-radio-group *ngIf="operationshow" [(ngModel)]="selectedradiobtn">
-      <div flex fxLayout="column" fxLayout.lt-sm="row" fxLayout.sm="row" fxLayout.gt-sm="column">
-        <div flex fxLayout="row">
-          <mat-radio-button (click)="hideagcygrpbox()" value="Approve" checked="checked">Approve</mat-radio-button>
+          <div fxFlex="7"></div>
+          <div fxFlex="30">
+            <label style="text-align:center;width:100%;">
+              <strong>Open {{Label['TXN_ID']}}</strong>
+            </label>
+            <!--<mat-form-field class="input_control">
+             <mat-select [(value)]="txnid_sl">
 
-          <mat-radio-button (click)="hideagcygrpbox()" value="Reject">Reject</mat-radio-button>
-        </div>
-        <div flex fxLayout="row">
-          <mat-radio-button (click)="hideagcygrpbox()" value="Release">Release</mat-radio-button>
+              <mat-option style="text-align:center;"  *ngFor="let o of otxnid" [value]="o" (click)="functionacqire();functionopendetails();functiondetailshow()">
+                {{o}}
+              </mat-option>
 
-          <mat-radio-button (click)="showagcygrpbox();functiongetgroups();" value="Reassign">Reassign</mat-radio-button>
-        </div>
-      </div>
-    </mat-radio-group>
-  </div>
+            </mat-select>
+              </mat-form-field> -->
+            <mat-list class="scroll">
+              <mat-list-item class="list_item" *ngFor="let o of otxnid; let j = index;" (click)="functionacqire();functionopendetails(o);functiondetailshow();onqselect(j);"
+                [class.active]="j == selectedot">
+              <div>{{o}}</div>
+              </mat-list-item>
+            </mat-list>
+          </div>
+          <div fxFlex="7"></div>
+          <div fxFlex="30">
+            <label style="text-align:center;width:100%;">
+              <strong>Acquired {{Label['TXN_ID']}}</strong>
+            </label>
+            <!-- <mat-form-field class="input_control">
+                <mat-select [(value)]="txnid_sl">
 
-  <div fxFlex="10" style="text-align:center;" *ngIf="operationshow">
-
-    <button mat-raised-button mat-button color="primary" (click)="toRelease()">{{selectedradiobtn}}</button>
-  </div>
-
-  <div fxFlex="10" style="text-align:center;" *ngIf="acquirebtnshow">
-
-    <button mat-raised-button mat-button color="primary" (click)="toAcquire()">Acquire</button>
-  </div>
-</div>
-</div>
-<br />
-<div *ngIf="detailshow" class="input_control" flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.xs="column" fxLayout.sm="row"
-  fxLayout.gt-sm="row">
-
-  <div fxFlex="45">
-    <label style="text-align:center;width:100%;">
-      <strong>{{Label['HOLD_RSN']}}</strong>
-    </label>
-    <mat-form-field class="input_control">
-      <textarea matInput [disabled]="disabled" [value]="holdreason" [(ngModel)]="hldrsnedit"></textarea>
-    </mat-form-field>
-  </div>
-  <div fxFlex="10"></div>
-  <div fxFlex="45">
-    <label style="text-align:center;width:100%;">
-      <strong>{{Label['RELEASE_RSN']}}</strong>
-    </label>
-    <mat-form-field class="input_control">
-      <textarea matInput [disabled]="disabled" placeholder={{notes}} [value]="" [(ngModel)]="notesedit"></textarea>
-    </mat-form-field>
-  </div>
-</div>
-
-<br />
-<div *ngIf="detailshow">
-  <div flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.xs="column" fxLayout.sm="row" fxLayout.gt-sm="row">
-    <div fxFlex="100">
-      <label style="text-align:center;width:100%;">
-        <strong>{{Label['Parameters']}}</strong>
-      </label>
-      <div class="tab">
-        <mat-card>
-          <mat-card-title>
-
-          </mat-card-title>
-
-          <mat-card-content>
-            <div style="justify-content:space-around">
-
-              <mat-form-field *ngFor="let aa of array2" style="padding-left: 20px;padding-right: 20px">
-                <mat-form-field>
-                  <input matInput value="{{aa[0]}}" style="text-align: center" disabled="true">
-
-                </mat-form-field>
-
-
-                <input [disabled]="disabled" matInput style="text-align: center" [matAutocomplete]="auto" (click)="getDropDownListValue(aa[0])"
-                  value="{{aa[1]}}">
-                <mat-autocomplete #auto="matAutocomplete">
-                  <mat-option style="text-align:center;"  *ngFor="let item of searchResult" [value]="item">
-                    <span>{{item}}</span>
+                  <mat-option style="text-align:center;"  *ngFor="let a of atxnid" [value]="a" (click)="functionoperations();functiondetailshow();functionacquireddetails()" >
+                    {{a}}
                   </mat-option>
-                </mat-autocomplete>
+                </mat-select>
+              </mat-form-field> -->
+            <mat-list class="scroll">
+              <mat-list-item class="list_item" *ngFor="let a of atxnid; let k = index;" (click)="functionoperations();functionacquireddetails(a);;functiondetailshow();onrselect(k);"
+                [class.active]="k == selectedat">
+              <div>{{a}}</div>
+              </mat-list-item>
+            </mat-list>
+          </div>
+          <div fxFlex="5"></div>
+          <div fxLayout="column" style="padding-top: 40px">
+
+          <div fxFlexAlign="center">
+            <mat-radio-group *ngIf="operationshow" [(ngModel)]="selectedradiobtn">
+              <div flex fxLayout="column" fxLayout.lt-sm="row" fxLayout.sm="row" fxLayout.gt-sm="column">
+                <div flex fxLayout="row">
+                  <mat-radio-button (click)="hideagcygrpbox()" value="Approve" checked="checked">Approve</mat-radio-button>
+
+                  <mat-radio-button (click)="hideagcygrpbox()" value="Reject">Reject</mat-radio-button>
+                </div>
+                <div flex fxLayout="row">
+                  <mat-radio-button (click)="hideagcygrpbox()" value="Release">Release</mat-radio-button>
+
+                  <mat-radio-button (click)="showagcygrpbox();functiongetgroups();" value="Reassign">Reassign</mat-radio-button>
+                </div>
+              </div>
+            </mat-radio-group>
+          </div>
+
+          <div fxFlex="10" style="text-align:center;" *ngIf="operationshow">
+
+            <button mat-raised-button mat-button color="primary" (click)="toRelease()">{{selectedradiobtn}}</button>
+          </div>
+
+          <div fxFlex="10" style="text-align:center;" *ngIf="acquirebtnshow">
+
+            <button mat-raised-button mat-button color="primary" (click)="toAcquire()">Acquire</button>
+          </div>
+</div>
+        </div>
+        <br />
+        <div *ngIf="detailshow" class="input_control" flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.xs="column" fxLayout.sm="row"
+          fxLayout.gt-sm="row">
+
+          <div fxFlex="45">
+            <label style="text-align:center;width:100%;">
+              <strong>{{Label['HOLD_RSN']}}</strong>
+            </label>
+            <mat-form-field class="input_control">
+              <textarea matInput [disabled]="disabled" [value]="holdreason" [(ngModel)]="hldrsnedit"></textarea>
+            </mat-form-field>
+          </div>
+          <div fxFlex="10"></div>
+          <div fxFlex="45">
+            <label style="text-align:center;width:100%;">
+              <strong>{{Label['RELEASE_RSN']}}</strong>
+            </label>
+            <mat-form-field class="input_control">
+              <textarea matInput [disabled]="disabled" placeholder={{notes}} [value]="" [(ngModel)]="notesedit"></textarea>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <br />
+        <div *ngIf="detailshow">
+          <div flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.xs="column" fxLayout.sm="row" fxLayout.gt-sm="row">
+            <div fxFlex="100">
+              <label style="text-align:center;width:100%;">
+                <strong>{{Label['Parameters']}}</strong>
+              </label>
+              <div class="tab">
+                <mat-card>
+                  <mat-card-title>
+
+                  </mat-card-title>
+
+                  <mat-card-content>
+                    <div style="justify-content:space-around">
+
+                      <mat-form-field *ngFor="let aa of array2" style="padding-left: 20px;padding-right: 20px">
+                        <mat-form-field>
+                          <input matInput value="{{aa[0]}}" style="text-align: center" disabled="true">
+
+                        </mat-form-field>
 
 
-              </mat-form-field>
+                        <input [disabled]="disabled" matInput style="text-align: center" [matAutocomplete]="auto" (click)="getDropDownListValue(aa[0])"
+                          value="{{aa[1]}}">
+                        <mat-autocomplete #auto="matAutocomplete">
+                          <mat-option style="text-align:center;"  *ngFor="let item of searchResult" [value]="item">
+                            <span>{{item}}</span>
+                          </mat-option>
+                        </mat-autocomplete>
+
+
+                      </mat-form-field>
+
+                    </div>
+                  </mat-card-content>
+
+                </mat-card>
+              </div>
+              <!-- <label style="text-align:center;width:100%;"><strong >Parameters</strong></label>
+                  
+                            <div class="mat-elevation-z4">
+                                <mat-table #table [dataSource]="dataSource"> -->
+              <!-- Name Column -->
+              <!-- <ng-container matColumnDef="Name">
+                                <strong>   <mat-header-cell *matHeaderCellDef>Name</mat-header-cell></strong>
+                              <mat-cell *matCellDef="let element" > {{element.Name}} </mat-cell>
+                              
+                            </ng-container> -->
+
+              <!-- Values Column -->
+              <!-- <ng-container matColumnDef="Values">
+                                    <mat-header-cell *matHeaderCellDef >Values</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" >
+                                      
+                                        <mat-form-field>
+                                            <input [disabled]="disabled"  matInput style="text-align: center" [matAutocomplete]="auto" [name]="element.Name" (click)="getDropDownListValue(element.Name)"
+                                            [value]="element.Values"  >
+                                            <mat-autocomplete  #auto="matAutocomplete">
+                                              <mat-option style="text-align:center;"   *ngFor="let item of searchResult" [value]="item">
+                                                <span>{{item}}</span>
+                                              </mat-option>
+                                            </mat-autocomplete>
+                                          </mat-form-field> -->
+              <!-- <input matInput value={{element.Values}}> -->
+
+              <!-- </mat-cell>
+                                  </ng-container>
+                      
+                                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                          </mat-table>
+                                </div>     -->
+
 
             </div>
-          </mat-card-content>
 
-        </mat-card>
-      </div>
-      <!-- <label style="text-align:center;width:100%;"><strong >Parameters</strong></label>
-          
-                    <div class="mat-elevation-z4">
-                        <mat-table #table [dataSource]="dataSource"> -->
-      <!-- Name Column -->
-      <!-- <ng-container matColumnDef="Name">
-                        <strong>   <mat-header-cell *matHeaderCellDef>Name</mat-header-cell></strong>
-                      <mat-cell *matCellDef="let element" > {{element.Name}} </mat-cell>
-                      
-                    </ng-container> -->
+            <div *ngIf="agcygrpbox" fxFlex="50" flex fxLayout="row" fxLayout.xs="column" fxLayout.lt-sm="column" fxLayout.sm="row" fxLayout.gt-sm="row">
+              <div fxFlex="10"></div>
+              <div fxFlex="42">
+                <label>
+                  <strong style="text-align:center;width:100%;">{{Label['V_SRC_CD']}}</strong>
+                </label>
+                <br />
+                <mat-form-field class="input_control">
+                  <mat-select [(value)]="agency_sl">
+                    <mat-option style="text-align:center;"  value="{{V_SRC_CD}}">
+                      {{V_SRC_CD}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxFlex="6"></div>
+              <div fxFlex="42" flex>
+                <label>
+                  <strong style="text-align:center;width:100%;">{{Label['USR_GRP_CD']}}</strong>
+                </label>
+                <br />
+                <mat-form-field class="input_control">
+                  <mat-select [(value)]="group_sl">
+                    <mat-option style="text-align:center;"  *ngFor="let grp of groups" [value]="grp">
+                      {{grp}}
+                    </mat-option>
 
-      <!-- Values Column -->
-      <!-- <ng-container matColumnDef="Values">
-                            <mat-header-cell *matHeaderCellDef >Values</mat-header-cell>
-                            <mat-cell *matCellDef="let element" >
-                              
-                                <mat-form-field>
-                                    <input [disabled]="disabled"  matInput style="text-align: center" [matAutocomplete]="auto" [name]="element.Name" (click)="getDropDownListValue(element.Name)"
-                                    [value]="element.Values"  >
-                                    <mat-autocomplete  #auto="matAutocomplete">
-                                      <mat-option style="text-align:center;"   *ngFor="let item of searchResult" [value]="item">
-                                        <span>{{item}}</span>
-                                      </mat-option>
-                                    </mat-autocomplete>
-                                  </mat-form-field> -->
-      <!-- <input matInput value={{element.Values}}> -->
+                  </mat-select>
+                </mat-form-field>
+              </div>
 
-      <!-- </mat-cell>
-                          </ng-container>
-              
-                          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-                  </mat-table>
-                        </div>     -->
-
-
-    </div>
-
-    <div *ngIf="agcygrpbox" fxFlex="50" flex fxLayout="row" fxLayout.xs="column" fxLayout.lt-sm="column" fxLayout.sm="row" fxLayout.gt-sm="row">
-      <div fxFlex="10"></div>
-      <div fxFlex="42">
-        <label>
-          <strong style="text-align:center;width:100%;">{{Label['V_SRC_CD']}}</strong>
-        </label>
-        <br />
-        <mat-form-field class="input_control">
-          <mat-select [(value)]="agency_sl">
-            <mat-option style="text-align:center;"  value="{{V_SRC_CD}}">
-              {{V_SRC_CD}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div fxFlex="6"></div>
-      <div fxFlex="42" flex>
-        <label>
-          <strong style="text-align:center;width:100%;">{{Label['USR_GRP_CD']}}</strong>
-        </label>
-        <br />
-        <mat-form-field class="input_control">
-          <mat-select [(value)]="group_sl">
-            <mat-option style="text-align:center;"  *ngFor="let grp of groups" [value]="grp">
-              {{grp}}
-            </mat-option>
-
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-    </div>
-  </div>
-</div>
+            </div>
+          </div>
+        </div>

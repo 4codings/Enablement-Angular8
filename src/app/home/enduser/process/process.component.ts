@@ -4,7 +4,6 @@ import { Http, Response, Headers } from '@angular/http';
 import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 import { Router } from '@angular/router'
 import { Observable } from 'rxjs';
-import { AppComponent } from '../../../app.component';
 import { DeviceDetectorService } from 'ngx-device-detector';
 
 import { EVENT_MANAGER_PLUGINS } from '../../../../../node_modules/@angular/platform-browser';
@@ -13,6 +12,7 @@ import { RollserviceService } from 'src/app/services/rollservice.service';
 import { ConfigServiceService } from 'src/app/services/config-service.service';
 import { GetMessageService } from 'src/app/services/get-message.service';
 import { WebSocketService } from 'src/app/services/web-socket.service';
+import { StorageSessionService } from 'src/app/services/storage-session.service';
 
 @Component({
   selector: 'app-process',
@@ -24,6 +24,7 @@ export class ProcessComponent implements OnInit {
   constructor(private Router: Router,
     private http: HttpClient,
     private https: Http,
+    private StorageSessionService: StorageSessionService,
     private data: ConfigServiceService,
     private roll: RollserviceService,
     public resp: GetMessageService,
@@ -93,8 +94,8 @@ export class ProcessComponent implements OnInit {
   domain_name=this.globals.domain_name;
   private apiUrlGet = "https://"+this.domain_name+"/rest/E_DB/SP?";
   private apiUrlAdd = "https://"+this.domain_name+"/rest/E_DB/SP";
-  V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
-  V_USR_NM:string=JSON.parse(sessionStorage.getItem('u')).USR_NM;
+  V_SRC_CD: string = this.StorageSessionService.getSession("agency");
+  V_USR_NM: string = this.StorageSessionService.getSession("email");
   APP_CD = [];
   PRCS_CD = [];
   SRVC_CD = [];

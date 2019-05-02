@@ -1,0 +1,25 @@
+* {
+    font-size: 14px;
+}
+
+#cancel {
+    background-color: lightcoral;
+}
+
+#submit {
+    background-color: lightgreen;
+}
+
+#add {
+    background-color: lightblue;
+}
+
+
+.addButton {
+    font-size: 26px;
+    cursor: pointer;
+}
+
+.dialog_btn {
+    justify-content: center;
+}

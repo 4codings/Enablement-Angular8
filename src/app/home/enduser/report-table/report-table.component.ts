@@ -625,7 +625,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     this.endUserService.processCancel(this.SRVC_ID, this.PRCS_TXN_ID, this.globals.Report.TEMP_UNIQUE_ID[0]).subscribe(
       res => {
         // console.log('Response:\n', res);
-        this.route.navigateByUrl('End_User');
+        this.route.navigateByUrl('End_User',{ skipLocationChange: true });
       });
   }
 

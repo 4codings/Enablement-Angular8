@@ -27,6 +27,7 @@ import { ReportTableComponent } from './report-table/report-table.component';
 import { DialogChartsComponent } from './report-table/dialog-charts/dialog-charts.component';
 import { MyFilterPipe, SplitLastPipe } from './execute/MyFilterPipe ';
 import { MyFilterPipe1 } from './schd-actn/myFilterPipe1';
+import { DeleteConfirmComponent } from './execute/delete-confirm/delete-confirm.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { MyFilterPipe1 } from './schd-actn/myFilterPipe1';
     RepeatProcessComponent,
     RepeatableFormComponent,
     ReportTableComponent,
-    DialogChartsComponent
+    DialogChartsComponent,
+    DeleteConfirmComponent
   ],
   imports: [
     CommonModule,
@@ -59,6 +61,6 @@ import { MyFilterPipe1 } from './schd-actn/myFilterPipe1';
     ReactiveFormsModule,
     NgbModule
   ],
-  entryComponents: [DialogScheduleComponent, DialogChartsComponent]
+  entryComponents: [DialogScheduleComponent, DialogChartsComponent, DeleteConfirmComponent]
 })
 export class EnduserModule { }

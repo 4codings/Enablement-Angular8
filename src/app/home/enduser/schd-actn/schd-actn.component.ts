@@ -21,7 +21,7 @@ import { NoAuthDataService } from 'src/app/services/no-auth-data.service';
   // styleUrls: ['./schd-actn.component.css'],
 
 })
-
+  
 export class SchdActnComponent implements OnInit, AfterViewInit {
   onpselect: Function;
   screenHeight = 0;
@@ -95,10 +95,9 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
               private https: Http,
               private _http: HttpClient,
               private data2: UserAdminService,
+              private storageSessionService: StorageSessionService,
               private data: ConfigServiceService,
               private endUsrData: EndUserService,
-              private storageSessionService: StorageSessionService,
-              private noAuthData: NoAuthDataService,
               private detector: ChangeDetectorRef) {
     this.onpselect = function (index) {
       this.selectedrole = index;
@@ -310,9 +309,10 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
     if (this.app.selected_PROCESS !== 'ALL' && !this.app.START) {
       this.ProcessCD = this.app.selected_PROCESS;
     }
-    this.noAuthData.getJSON().subscribe(data => {
-      //console.log(data);
-      this.Label = data;
+    this.data2.getJSON().subscribe(data2 => {
+
+      this.Label = data2.json();
+
     });
 
     this.getAppCode();

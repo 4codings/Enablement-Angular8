@@ -1,4 +1,4 @@
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource, MatDialog } from '@angular/material';
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Location } from '@angular/common';
@@ -12,6 +12,8 @@ import { ApiService } from 'src/app/service/api/api.service';
 import { Http, Headers, RequestOptions, RequestMethod } from '@angular/http';
 import { Globals } from 'src/app/services/globals';
 import { EndUserService } from 'src/app/services/EndUser-service';
+import { DeleteConfirmComponent } from '../delete-confirm/delete-confirm.component';
+import { CommonUtils } from 'src/app/common/utils';
 
 @Component({
   selector: 'app-input-art',
@@ -44,6 +46,8 @@ export class InputArtComponent {
   READ: any;
   CREATE: any;
   UPDATE: any;
+  private dialogRef = null;
+
   // accepType;
   // @ override
   //public filesUrl: FileUrls;
@@ -56,6 +60,7 @@ export class InputArtComponent {
     private modalService: BsModalService,
     private formBuilder: FormBuilder,
     public router: Router,
+    private dialog: MatDialog,
     private _location: Location,
     private StorageSessionService: StorageSessionService,
     private endUserService: EndUserService,
@@ -294,6 +299,7 @@ export class InputArtComponent {
 
     // this.https.post(this.apiService.endPoints.insecureFormSubmit, body).subscribe(
     //   res => {
+    //     this.invoke_router(res.json());
     //     // console.log(res);
     //   }
     // );
@@ -301,48 +307,86 @@ export class InputArtComponent {
     // secure
     this.https.post(this.apiService.endPoints.secureFormSubmit, body, this.apiService.setHeaders()).subscribe(
       res => {
+        this.invoke_router(res.json());
         // console.log(res);
       }
     );
   }
+  invoke_router(res) {
+    // console.log('setCookies');
+    let serviceCode = null;
+    if (CommonUtils.isValidValue(res['SRVC_CD']) && res['SRVC_CD'][0] === "END") {
+      this.router.navigate(["/EndUser/Execute"], { skipLocationChange: true });
+    } else {
+      var timeout = res['RESULT'][0].toString().substring(0, 7) == "TIMEOUT";
+      // (timeout);
+      if (timeout) {
+        this.router.navigate(["/EndUser/Execute"], { skipLocationChange: true });
+      } else if (res['RESULT'][0] === 'SUCCESS' || res['RESULT'][0] === 'COMPLETED') {
+        this.router.navigateByUrl('End_User', { skipLocationChange: true });
+      } else {
+        // 10th April added for future call after token works
+        const url = this.apiService.securedApiUrl + '/secured/FormSubmit';
+
+        // // console.log('https://' + this.domain_name + '/rest/Submit/FormSubmit');
+        this.StorageSessionService.setCookies('report_table', res);
+        // // console.log('setCookies');
+        if (res['RESULT'] == 'INPUT_ARTFCT_TASK') {
+          this.router.navigate(['InputArtForm'], { skipLocationChange: true });
+        } else if (res['RESULT'][0] == 'NONREPEATABLE_MANUAL_TASK') {
+          this.router.navigate(['NonRepeatForm'], { skipLocationChange: true });
+        } else if (res['RESULT'][0] == 'REPEATABLE_MANUAL_TASK') {
+          this.router.navigate(['RepeatForm'], { skipLocationChange: true });
+        } if (res['RESULT'] == 'TABLE') {
+          this.router.navigate(['ReportTable'], { skipLocationChange: true });
+        }
+      }
+    }
+  }
 
   Delete(file) {
-    // console.log(file)
-    let str =
-      `V_ARTFCT_ID=${file.ARTFCT_ID}&V_ARTFCT_NM=${file.ARTFCT_NM}&V_SRC_CD=${this.globals.Report.SRC_CD}&V_PHY_LCTN=${this.globals.Report.PVP.PHY_LCTN}&V_USR_NM=${this.globals.Report.USR_NM}&V_APP_CD=${this.globals.Report.APP_CD}&V_PRCS_CD=${this.globals.Report.PRCS_CD}&V_SRVC_CD=${this.globals.Report.SRVC_CD}&REST_Service=Artifacts&Verb=DELETE`
-    // console.log(str)
+    console.log(file)
+    this.dialogRef = this.dialog.open(DeleteConfirmComponent, { data: { recordName: file.ARTFCT_NM }, disableClose: true, hasBackdrop: true });
+    this.dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        let str =
+          `V_ARTFCT_ID=${file.ARTFCT_ID}&V_ARTFCT_NM=${file.ARTFCT_NM}&V_SRC_CD=${this.globals.Report.SRC_CD}&V_PHY_LCTN=${this.globals.Report.PVP.PHY_LCTN}&V_USR_NM=${this.globals.Report.USR_NM}&V_APP_CD=${this.globals.Report.APP_CD}&V_PRCS_CD=${this.globals.Report.PRCS_CD}&V_SRVC_CD=${this.globals.Report.SRVC_CD}&REST_Service=Artifacts&Verb=DELETE`
+        // console.log(str)
 
-    // insecure
+        // insecure
 
-    // this.https.delete(this.apiService.endPoints.insecure + str)
-    //   .subscribe(
-    //     res => {
-    //       // console.log(res)
-    //       for (let i = 0; i < this.allFiles.length; i++) {
-    //         if (this.allFiles[i].ARTFCT_ID == file.ARTFCT_ID) {
-    //           this.allFiles.splice(i, 1);
-    //           break;
-    //         }
-    //       }
-    //       this.selectedFiles.splice(this.selectedFiles.indexOf(file.ARTFCT_ID), 1)
-    //       // console.log(this.allFiles, this.selectedFiles)
-    //     });
+        // this.https.delete(this.apiService.endPoints.deleteArtifact + str)
+        //   .subscribe(
+        //     res => {
+        //       // console.log(res)
+        //       for (let i = 0; i < this.allFiles.length; i++) {
+        //         if (this.allFiles[i].ARTFCT_ID == file.ARTFCT_ID) {
+        //           this.allFiles.splice(i, 1);
+        //           break;
+        //         }
+        //       }
+        //       this.selectedFiles.splice(this.selectedFiles.indexOf(file.ARTFCT_ID), 1)
+        //       // console.log(this.allFiles, this.selectedFiles)
+        //     });
 
-    // secure
+        // secure
 
-    this.https.delete(this.apiService.endPoints.secure + str, this.apiService.setHeaders())
-      .subscribe(
-        res => {
-          // console.log(res)
-          for (let i = 0; i < this.allFiles.length; i++) {
-            if (this.allFiles[i].ARTFCT_ID == file.ARTFCT_ID) {
-              this.allFiles.splice(i, 1);
-              break;
-            }
-          }
-          this.selectedFiles.splice(this.selectedFiles.indexOf(file.ARTFCT_ID), 1)
-          // console.log(this.allFiles, this.selectedFiles)
-        });
+        this.https.delete(this.apiService.endPoints.deleteArtifact + str, this.apiService.setHeaders())
+          .subscribe(
+            res => {
+              // console.log(res)
+              for (let i = 0; i < this.allFiles.length; i++) {
+                if (this.allFiles[i].ARTFCT_ID == file.ARTFCT_ID) {
+                  this.allFiles.splice(i, 1);
+                  break;
+                }
+              }
+              this.selectedFiles.splice(this.selectedFiles.indexOf(file.ARTFCT_ID), 1)
+              // console.log(this.allFiles, this.selectedFiles)
+            });
+      }
+    });
+
   }
 
   cancelbtn_click() {
@@ -350,7 +394,7 @@ export class InputArtComponent {
     this.endUserService.processCancel(this.globals.Report.SRVC_ID[0], this.Execute_res_data['V_PRCS_TXN_ID'], this.globals.Report.TEMP_UNIQUE_ID[0]).subscribe(
       res => {
         // console.log('Response:\n', res);
-        this.router.navigateByUrl('End_User');
+        this.router.navigateByUrl('End_User', { skipLocationChange: true });
       });
   }
 

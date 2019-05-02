@@ -13,6 +13,7 @@ import { Globals } from 'src/app/services/globals';
 import { ConfigServiceService } from 'src/app/services/config-service.service';
 import { HomeComponent } from '../../home.component';
 import { RollserviceService } from 'src/app/services/rollservice.service';
+import { StorageSessionService } from 'src/app/services/storage-session.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -72,6 +73,7 @@ export class DashboardComponent extends dboard_secondary implements OnInit, Afte
     private Router: Router,
     private http: HttpClient,
     private https: Http,
+    private StorageSessionService: StorageSessionService,
     private data: ConfigServiceService,
     private roll: RollserviceService,
     public app:HomeComponent

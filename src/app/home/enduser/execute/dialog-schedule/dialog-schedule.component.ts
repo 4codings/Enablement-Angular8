@@ -102,5 +102,3 @@ export class DialogScheduleComponent implements OnInit {
 	}
 
 }
-
-

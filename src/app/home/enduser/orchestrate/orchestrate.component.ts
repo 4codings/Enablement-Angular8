@@ -18,6 +18,7 @@ import { UserAdminService } from 'src/app/services/user-admin.service';
 import { Globals } from 'src/app/services/globals';
 import { HomeComponent } from '../../home.component';
 import { NoAuthDataService } from 'src/app/services/no-auth-data.service';
+import { StorageSessionService } from 'src/app/services/storage-session.service';
 
  @Component({
    selector: 'app-orchestrate',
@@ -37,9 +38,8 @@ export class OrchestrateComponent implements OnInit {
   V_BASE_ID:string[]=null;
    
     constructor(private http:HttpClient,private data:UserAdminService,
-      private app:HomeComponent, 
-      private globals:Globals,
-      private noAuthData: NoAuthDataService
+      private StorageSessionService:StorageSessionService,
+      private app:HomeComponent, private globals:Globals
       ) { 
 
       
@@ -425,10 +425,14 @@ enabledisable(){
     ngOnInit() {
       this.functionapplist();
       this.functionsuccapplist();  
-      this.noAuthData.getJSON().subscribe(data => {
-        //console.log(data);
-        this.Label = data;
-      });
+      this.data.getJSON().subscribe(data => {
+              //  (data.json());       
+               this.Label=data.json();       
+              //  (this.Label);  
+               }) 
+     
+  
+      
     }
   }
   export interface data{

@@ -25,10 +25,11 @@ export class ApiService {
 		secureProcessReport: `${this.securedApiUrl}/secured/Process/Report`,
 		secureProcessStart: `${this.securedApiUrl}/secured/Process/Start`,
 		insecureProcessStart: `${this.insecureUrl}/Process/Start`,
-		secureFormSubmit:`${this.securedApiUrl}/secured/FormSubmit`,
-		insecureFormSubmit:`${this.insecureUrl}/Submit/FormSubmit`,
+		secureFormSubmit: `${this.securedApiUrl}/secured/FormSubmit`,
+		insecureFormSubmit: `${this.insecureUrl}/Submit/FormSubmit`,
 		sessionRefresh: `${this.insecureUrl}/sessionRefresh`,
 		logout: `${this.insecureUrl}/logout`,
+		deleteArtifact: `${this.insecureUrl}/Artifact/DeleteArtifact?`
 	}
 
 	constructor(private http: HttpClient, private globals: Globals2, private globalUrl: Globals,
@@ -99,7 +100,7 @@ export class ApiService {
 		const options = this.setHeaders();
 		return this.https.get(url, options);
 	}
-	
+
 	public requestInSecureApi(url, type, data?): Observable<any> {
 		if (type === 'get') {
 			return this.getInSecure(url);
@@ -109,6 +110,11 @@ export class ApiService {
 	private getInSecure(url: string): any {
 		return this.https.get(url);
 	}
+
+	// getUsers(): Observable<User[]> {
+	// 	this.setAuthHeader();
+	// 	return this.http.get<User[]>('https://enablement.us/Enablement/rest/E_DB/SPJSON?V_CD_TYP=USER&V_SRC_CD=uttra.24&REST_Service=Masters&Verb=GET');
+	// }
 	
 	setHeaders() {
 		const headers = new Headers();

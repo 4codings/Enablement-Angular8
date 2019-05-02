@@ -1,41 +1,41 @@
 mat-checkbox{
-    display: list-item;
-    list-style: none;
-    font-size: 13px;
+  display: list-item;
+  list-style: none;
+  font-size: 13px;
 }
 *{
-    font-size: 14px;
+  font-size: 14px;
 }
 #cancel{
-    background-color: lightcoral;
-  }
-  #submit{
-    background-color: lightgreen;
-  }
-  #add{
-    background-color: lightblue;
-  }
+  background-color: lightcoral;
+}
+#submit{
+  background-color: lightgreen;
+}
+#add{
+  background-color: lightblue;
+}
 
 
 .addButton{
-    font-size: 26px;
-    cursor: pointer;
+  font-size: 26px;
+  cursor: pointer;
 }
 
 
 .table {
-  width: 100%;
+width: 100%;
 }
 .table,.table th ,.table td {
-  border: 1px solid grey;
-  border-collapse: collapse;
-  padding: 5px;
+border: 1px solid grey;
+border-collapse: collapse;
+padding: 5px;
 }
 
 .table tr:nth-child(odd) {
-  background-color: #f1f1f1;
+background-color: #f1f1f1;
 }
 
 .table tr:nth-child(even) {
-  background-color: #ffffff;
+background-color: #ffffff;
 }

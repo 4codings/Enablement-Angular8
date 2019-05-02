@@ -6,7 +6,7 @@
 
 
       <!-- App hide when the array of value <2 -->
-      <div fxFlex="45"  *ngIf="applicationViewFlag">
+      <div fxFlex="45" *ngIf="applicationViewFlag">
         <!-- <div *ngIf="Application_box"> -->
         <label style="text-align:center;width:100%;">
           <strong>{{Label['APP_CD']}}</strong>
@@ -18,8 +18,8 @@
           </mat-list-item>
         </mat-list>
         <mat-form-field *ngIf="mobileView" style="width:100%;text-align: center;" [floatLabel]="'never'">
-          <mat-select style="margin-top:10px;" (selectionChange)="getProcessCD($event);fooo($event)"
-            placeholder="--Select--" [value]="selectedapp">
+          <mat-select style="margin-top:10px;" (selectionChange)="getProcessCD($event.value);fooo($event.value)"
+          placeholder="--Select--" [value]="selectedapp">
             <mat-option style="text-align:center;max-width: 400px;" *ngFor="let app of APP_CD['APP_CD']" [value]="app">
               {{app}}</mat-option>
           </mat-select>
@@ -47,8 +47,8 @@
           </mat-list-item>
         </mat-list>
         <mat-form-field *ngIf="mobileView" style="width:100%;text-align: center;" [floatLabel]="'never'">
-          <mat-select style="margin-top:10px;" (selectionChange)="getServiceCode($event);fooo1($event);Execute_AP_PR();"
-            placeholder="--Select--" [value]="selectedprcs">
+          <mat-select style="margin-top:10px;" (selectionChange)="getServiceCode($event.value);fooo1($event.value);Execute_AP_PR();"
+          placeholder="--Select--" [value]="selectedprcs">
             <mat-option style="text-align:center;" *ngFor="let pro of PRC_CD['PRCS_CD'];" [value]="pro">{{pro}}
             </mat-option>
           </mat-select>
@@ -261,8 +261,9 @@
             <ng-container *ngSwitchDefault>
               <mat-form-field class="form_input">
                 <input matInput [name]="pr.name" [required]="data.isFieldMendatory(pr.name)" #name="ngModel"
-                  [readonly]="data.isFieldDisabled(pr.name)" (change)="Update_value(pr.value ,pr.placeholder)" [maxLength]="data.getFieldMaxLength(pr.name)"
-                  [matAutocomplete]="auto" [(ngModel)]="pr.value" class="f_inp">
+                  [readonly]="data.isFieldDisabled(pr.name)" (change)="Update_value(pr.value ,pr.placeholder)"
+                  [maxLength]="data.getFieldMaxLength(pr.name)" [matAutocomplete]="auto" [(ngModel)]="pr.value"
+                  class="f_inp">
                 <mat-autocomplete #auto="matAutocomplete">
                   <mat-option style="text-align:center;" (click)="Update_value(pr.value ,pr.placeholder)"
                     *ngFor="let option of options[pr.name]" [value]="option">

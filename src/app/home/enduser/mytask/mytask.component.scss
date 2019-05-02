@@ -1,0 +1,62 @@
+.input_control {
+	width: 100%;
+}
+.mat-radio-button {
+	padding-right: 10px;
+	padding-bottom: 10px;
+}
+.mat-table {
+	overflow: auto;
+	max-height: 300px;
+	width: 100%;
+}
+.mat-header-cell {
+	font-weight: 900!important;
+	font-size: 12px !important;
+	-webkit-text-fill-color: black;
+}
+.tab {
+	overflow: auto;
+	max-height: 250px;
+}
+.example-container {
+	& > * {
+		width: 100%;
+	}
+}
+label {
+	font-weight: bold;
+	display: block;
+	margin: 0.5ec 0;
+}
+button {
+	margin-top: 10px;
+}
+.example-full-width {
+	width: 100%;
+}
+mat-list-item {
+	div {
+		text-align: center;
+		width: 100%;
+	}
+}
+mat-list {
+	border: 1px solid #ccc;
+	border-radius: .25rem;
+	width: 100%;
+	padding-top: 0;
+	font-size: 1rem;
+	line-height: 1.5;
+	height: 200px;
+}
+.scroll {
+	* {
+		height: auto;
+		text-align: center;
+	}
+}
+.active {
+	background-color: rgba(0,0,0,0.7) !important;
+	color: white;
+}

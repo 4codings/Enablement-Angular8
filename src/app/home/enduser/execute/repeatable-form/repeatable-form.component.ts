@@ -2,7 +2,7 @@ import { Component, OnInit, Input, forwardRef, ChangeDetectorRef, ViewChild } fr
 //import { GetFormData } from '../getDataForm';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { FormComponent } from '../form/form.component';
 import { AppComponent } from '../../../../app.component';
 import * as dateFormat from 'dateformat';
@@ -15,6 +15,9 @@ import { Globals } from 'src/app/services/globals';
 import { ApiService } from 'src/app/service/api/api.service';
 import { ConfigServiceService } from 'src/app/services/config-service.service';
 import { EndUserService } from 'src/app/services/EndUser-service';
+import { MatDialog } from '@angular/material';
+import { filter } from 'rxjs/operators';
+import { DeleteConfirmComponent } from '../delete-confirm/delete-confirm.component';
 
 @Component({
   selector: 'app-repeatable-form',
@@ -38,6 +41,8 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
   deleted: boolean[] = [false];
   currentDate: any;
   PVP_Updated: any = {};
+  navigationSubscription;
+  dialogRef: any;
   @ViewChild('rpForm') rpForm: any;
   constructor(
     public StorageSessionService: StorageSessionService,
@@ -51,8 +56,18 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     public apiService: ApiService,
     public configService: ConfigServiceService,
     private endUserService: EndUserService,
+    private dialog: MatDialog,
   ) {
     super(StorageSessionService, http, https, router, globals, app, cdr, apiService, globalUser, configService);
+    this.navigationSubscription = router.events
+      .pipe(filter(e => e instanceof NavigationEnd))
+      .subscribe((e: NavigationEnd) => {
+        // alert('en'+e.urlAfterRedirects);
+        this.registerDataChangeHandler(this.updateInput.bind(this));
+        this.getFormData();
+        this.updateInput();
+        // this.ngOnInit();
+      });
   }
 
 
@@ -113,28 +128,43 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     //   }
   }
 
-  deleteForm(form): void {
+  deleteForm(form, index): void {
     ('delete form call');
     (form["iteration"]);
+    
+        // var del_URL = "https://" + this.domain_name + "/rest/E_DB/SP?V_Table_Name=" + this.V_TABLE_NAME + "&V_Schema_Name=" + this.V_SCHEMA_NAME + "&V_ID=" + this.V_ID[form["iteration"] - 1] + "&V_SRVC_CD=" + this.V_SRVC_CD + "&V_USR_NM=" + this.V_USR_NM + "&V_SRC_CD=" + this.V_SRC_CD + "&V_PRCS_ID=" + this.V_PRCS_ID + "&REST_Service=Forms_Record&Verb=DELETE";
 
-    // var del_URL = "https://" + this.domain_name + "/rest/E_DB/SP?V_Table_Name=" + this.V_TABLE_NAME + "&V_Schema_Name=" + this.V_SCHEMA_NAME + "&V_ID=" + this.V_ID[form["iteration"] - 1] + "&V_SRVC_CD=" + this.V_SRVC_CD + "&V_USR_NM=" + this.V_USR_NM + "&V_SRC_CD=" + this.V_SRC_CD + "&V_PRCS_ID=" + this.V_PRCS_ID + "&REST_Service=Forms_Record&Verb=DELETE";
-    var secure_del_URL = this.apiService.endPoints.secure + "V_Table_Name=" + this.V_TABLE_NAME + "&V_Schema_Name=" + this.V_SCHEMA_NAME + "&V_ID=" + this.V_ID[form["iteration"] - 1] + "&V_SRVC_CD=" + this.V_SRVC_CD + "&V_USR_NM=" + this.V_USR_NM + "&V_SRC_CD=" + this.V_SRC_CD + "&V_PRCS_ID=" + this.V_PRCS_ID + "&REST_Service=Forms_Record&Verb=DELETE";
+    // var secure_del_URL = this.apiService.endPoints.secure + "V_Table_Name=" + this.V_TABLE_NAME + "&V_Schema_Name=" + this.V_SCHEMA_NAME + "&V_ID=" + this.V_ID[form["iteration"] - 1] + "&V_SRVC_CD=" + this.V_SRVC_CD + "&V_USR_NM=" + this.V_USR_NM + "&V_SRC_CD=" + this.V_SRC_CD + "&V_PRCS_ID=" + this.V_PRCS_ID + "&REST_Service=Forms_Record&Verb=DELETE";
+
+    var secure_del_URL = this.apiService.endPoints.secure + "V_Table_Name=" + this.V_TABLE_NAME + "&V_Schema_Name=" + this.V_SCHEMA_NAME + "&V_SRVC_CD=" + this.V_SRVC_CD + "&V_USR_NM=" + this.V_USR_NM + "&V_SRC_CD=" + this.V_SRC_CD + "&V_PRCS_ID=" + this.V_PRCS_ID + "&REST_Service=Forms_Record&Verb=DELETE";
     secure_del_URL = encodeURI(secure_del_URL);
 
-    // secure
-    this.https.delete(secure_del_URL, this.apiService.setHeaders()).subscribe(
-      res => {
-        ("Response:\n" + res);
-      });
-
-    var insecure_del_URL = this.apiService.endPoints.insecure + "V_Table_Name=" + this.V_TABLE_NAME + "&V_Schema_Name=" + this.V_SCHEMA_NAME + "&V_ID=" + this.V_ID[form["iteration"] - 1] + "&V_SRVC_CD=" + this.V_SRVC_CD + "&V_USR_NM=" + this.V_USR_NM + "&V_SRC_CD=" + this.V_SRC_CD + "&V_PRCS_ID=" + this.V_PRCS_ID + "&REST_Service=Forms_Record&Verb=DELETE";
+    var insecure_del_URL = this.apiService.endPoints.insecure + "V_Table_Name=" + this.V_TABLE_NAME + "&V_Schema_Name=" + this.V_SCHEMA_NAME + "&V_SRVC_CD=" + this.V_SRVC_CD + "&V_USR_NM=" + this.V_USR_NM + "&V_SRC_CD=" + this.V_SRC_CD + "&V_PRCS_ID=" + this.V_PRCS_ID + "&REST_Service=Forms_Record&Verb=DELETE";
     insecure_del_URL = encodeURI(insecure_del_URL);
 
-    // insecure
-    // this.https.delete(insecure_del_URL).subscribe(
-    //   res => {
-    //     ("Response:\n" + res);
-    //   });
+    this.dialogRef = this.dialog.open(DeleteConfirmComponent, { data: { recordName: this.V_TABLE_NAME }, disableClose: true, hasBackdrop: true });
+    this.dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        // secure
+        this.https.delete(secure_del_URL, this.apiService.setHeaders()).subscribe(
+          res => {
+            ("Response:\n" + res);
+            this.deleted[index] = true;
+          });
+
+          // var insecure_del_URL = this.apiService.endPoints.insecure + "V_Table_Name=" + this.V_TABLE_NAME + "&V_Schema_Name=" + this.V_SCHEMA_NAME + "&V_ID=" + this.V_ID[form["iteration"] - 1] + "&V_SRVC_CD=" + this.V_SRVC_CD + "&V_USR_NM=" + this.V_USR_NM + "&V_SRC_CD=" + this.V_SRC_CD + "&V_PRCS_ID=" + this.V_PRCS_ID + "&REST_Service=Forms_Record&Verb=DELETE";
+          // insecure_del_URL = encodeURI(insecure_del_URL);
+
+        // insecure
+        // this.https.delete(insecure_del_URL).subscribe(
+        //   res => {
+        //     ("Response:\n" + res);
+        //     this.deleted[index] = true;
+        //   });
+
+      }
+    });
+    // var del_URL = "https://" + this.domain_name + "/rest/E_DB/SP?V_Table_Name=" + this.V_TABLE_NAME + "&V_Schema_Name=" + this.V_SCHEMA_NAME + "&V_ID=" + this.V_ID[form["iteration"] - 1] + "&V_SRVC_CD=" + this.V_SRVC_CD + "&V_USR_NM=" + this.V_USR_NM + "&V_SRC_CD=" + this.V_SRC_CD + "&V_PRCS_ID=" + this.V_PRCS_ID + "&REST_Service=Forms_Record&Verb=DELETE";
 
   }
 
@@ -179,6 +209,7 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     // this.https.post(this.apiService.endPoints.insecureFormSubmit, body_buildPVP).subscribe(
     //   res => {
     //     (res);
+    //     res = res.json();
     //     this.invoke_router(res.json());
     //   });
 
@@ -187,15 +218,14 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     this.https.post(this.apiService.endPoints.secureFormSubmit, body_buildPVP, this.apiService.setHeaders()).subscribe(
       res => {
         (res);
+        res = res.json();
         this.invoke_router(res);
       });
   }
   Field_Names_initial = '';
   Field_Values_initial = "";
   ngOnInit() {
-    this.registerDataChangeHandler(this.updateInput.bind(this));
-    this.getFormData();
-    this.updateInput();
+
     var form: any[][] = [];
     for (let i = 0; i < this.totalRow; i++) {
       for (let j = 0; j < this.RVP_labels.length; j++) {
@@ -223,6 +253,9 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
 
   }
 
+  ngOnDestroy() {
+    this.navigationSubscription.unsubscribe();
+  }
   updateInput() {
     for (let i = 0; i < this.RVP_labels.length; i++) {
       this.input[this.RVP_labels[i]] = [];
@@ -241,6 +274,7 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
       for (let j = 0; j < this.RVP_labels.length; j++) {
         this.input[this.RVP_labels[j]][i] = this.RVP_DataObj[this.RVP_labels[j].split(" ").join("_")][i - 1];
       }
+      this.edit_or_done[i] = 'edit';
     }
     this.cdr.detectChanges();
   }
@@ -283,8 +317,10 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
   }
 
   delete_click(i) {
-    this.deleted[i] = true;
+    // this.deleted[i] = true;
     var form: any = [];
+    if (this.V_TABLE_NAME === null || this.V_TABLE_NAME.length > 0)
+      this.deleteForm(form, i);
     for (let j = 0; j < this.RVP_labels.length; j++) {
       form[this.RVP_labels[j].split(" ").join("_")] = this.input[this.RVP_labels[j]][i];
       if (form[this.RVP_labels[j].split(" ").join("_")] == null) {
@@ -293,8 +329,8 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     }
     form["iteration"] = i;
     (form);
-    if (this.V_TABLE_NAME === null || this.V_TABLE_NAME.length > 0)
-      this.deleteForm(form);
+    // if (this.V_TABLE_NAME === null || this.V_TABLE_NAME.length > 0)
+    //   this.deleteForm(form,i);
   }
 
   onCancel() {
@@ -302,7 +338,7 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     this.endUserService.processCancel(this.V_SRVC_ID, this.V_PRCS_TXN_ID, this.V_UNIQUE_ID[0]).subscribe(
       res => {
         // console.log('Response:\n', res);
-        this.router.navigateByUrl('End_User');
+        this.router.navigateByUrl('End_User', { skipLocationChange: true });
       });
   }
 
@@ -325,11 +361,11 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
       }
       (form);
       var areAllDisabled = true;
-      for (let i = 0; i < this.totalRow; i++) {
-        if (!this.isDisabled[i]) {
-          areAllDisabled = false;
-        }
-      }
+      // for (let i = 0; i < this.totalRow; i++) {
+      //   if (!this.isDisabled[i]) {
+      //     areAllDisabled = false;
+      //   }
+      // }
       if (areAllDisabled)
         this.build_PVP(form);
     }

@@ -161,7 +161,7 @@ export class ExecuteComponent implements OnInit {
     this.onResize();
   }
   repeatProcess() {
-    this.router.navigateByUrl('repeat');
+    this.router.navigateByUrl('repeat', { skipLocationChange: true });
     this.dialog.closeAll();
   }
   openEmojiDialog() {
@@ -865,9 +865,11 @@ export class ExecuteComponent implements OnInit {
   retruns options with token headers
   */
   setHeaders() {
-    const headers = new Headers();
-    //headers.append('Content-Type', 'application/json');
-    //headers.append('Access-Control-Allow-Origin', '*');
+    const headers = new Headers({
+      Authorization: `Bearer ${this.globarUser.currentUser.TOKEN}`
+    });
+    headers.append('Content-Type', 'application/json');
+    headers.append('Access-Control-Allow-Origin', '*');
 
     const options = new RequestOptions({ headers: headers });
     return options;
@@ -908,63 +910,65 @@ export class ExecuteComponent implements OnInit {
     this.https.post(this.aptUrlPost_report_new, body, this.apiservice.setHeaders())
       .subscribe(
         (res: any) => {
-          this.globals.Report = JSON.parse(res._body)
-          // console.log("abdalla here", res.json());
+          if (res._body) {
+            this.globals.Report = JSON.parse(res._body)
+            // console.log("abdalla here", res.json());
 
-          this.StorageSessionService.setCookies('report_table', res.json());
-          this.check_data = res.json();
-          this.app.loadingCharts = false;
-          this.report = res.json();
+            this.StorageSessionService.setCookies('report_table', res.json());
+            this.check_data = res.json();
+            this.app.loadingCharts = false;
+            this.report = res.json();
 
-          (this.report);
+            (this.report);
 
-          (this.report.RESULT);
-          (res.json());
-          var timeout = res.json().RESULT.toString().substring(0, 7) == "TIMEOUT";
-          (timeout);
-          /*const dt = JSON.stringify(res);
-          (dt);*/
-          if (timeout && this.ctrl_variables.call_repeat_on_TIMEOUT) {
-            this.repeatCallTable(true);
-          } else if (this.report.RESULT == 'TABLE') {
+            (this.report.RESULT);
+            (res.json());
+            var timeout = res.json().RESULT.toString().substring(0, 7) == "TIMEOUT";
+            (timeout);
+            /*const dt = JSON.stringify(res);
+            (dt);*/
+            if (timeout && this.ctrl_variables.call_repeat_on_TIMEOUT) {
+              this.repeatCallTable(true);
+            } else if (this.report.RESULT == 'TABLE') {
 
-            this.router.navigateByUrl('ReportTable', { skipLocationChange: true });
-          } else if (this.report.RESULT[0] == 'INPUT_ARTFCT_TASK') {
+              this.router.navigateByUrl('ReportTable', { skipLocationChange: true });
+            } else if (this.report.RESULT[0] == 'INPUT_ARTFCT_TASK') {
 
-            this.router.navigateByUrl('InputArtForm', { skipLocationChange: true });
+              this.router.navigateByUrl('InputArtForm', { skipLocationChange: true });
 
-          } else if (CommonUtils.isValidValue(this.report.V_EXE_CD)) {
+            } else if (CommonUtils.isValidValue(this.report.V_EXE_CD)) {
 
-            if (this.report.RESULT[0] == 'NONREPEATABLE_MANUAL_TASK') {
-              // non-Repeatable NonRepeatForm
-              this.router.navigateByUrl('NonRepeatForm');
-              //this.router.navigateByUrl('Forms', { skipLocationChange: true });
+              if (this.report.RESULT[0] == 'NONREPEATABLE_MANUAL_TASK') {
+                // non-Repeatable NonRepeatForm
+                this.router.navigateByUrl('NonRepeatForm', { skipLocationChange: true });
+                //this.router.navigateByUrl('Forms', { skipLocationChange: true });
 
-            } else if (this.report.RESULT[0] == 'REPEATABLE_MANUAL_TASK') {
-              //Repeatable
-              this.router.navigateByUrl('RepeatForm');
-              //this.router.navigateByUrl('RepeatForm');
+              } else if (this.report.RESULT[0] == 'REPEATABLE_MANUAL_TASK') {
+                //Repeatable
+                this.router.navigateByUrl('RepeatForm', { skipLocationChange: true });
+                //this.router.navigateByUrl('RepeatForm');
+              }
+
+            } else {
+              this.repeatCallTable(true);
             }
+            this.StorageSessionService.setCookies('App_Prcs', { 'V_APP_CD': this.APP_CD, 'V_PRCS_CD': this.PRCS_CD });
 
-          } else {
-            this.repeatCallTable(true);
+            // if ('V_EXE_CD' in this.check_data) {
+            //   this.router.navigateByUrl('forms');
+            //   //             var exe_cd:any[] = this.check_data["V_EXE_CD"];
+            //   //             //(exe_cd);
+            //   //             if(exe_cd.includes("NONREPEATABLE_MANUAL_TASK")){
+            //   //                 alert("FORM DATA");
+            //   //           }
+            //   //           else if(exe_cd.includes("NONREPEATABLE_MANUAL_TASK")){
+            //   //             alert("FORM DATA");
+            //   //                       }
+            // }
+            // else {
+            //   this.router.navigateByUrl('reportTable');
+            // }
           }
-          this.StorageSessionService.setCookies('App_Prcs', { 'V_APP_CD': this.APP_CD, 'V_PRCS_CD': this.PRCS_CD });
-
-          // if ('V_EXE_CD' in this.check_data) {
-          //   this.router.navigateByUrl('forms');
-          //   //             var exe_cd:any[] = this.check_data["V_EXE_CD"];
-          //   //             //(exe_cd);
-          //   //             if(exe_cd.includes("NONREPEATABLE_MANUAL_TASK")){
-          //   //                 alert("FORM DATA");
-          //   //           }
-          //   //           else if(exe_cd.includes("NONREPEATABLE_MANUAL_TASK")){
-          //   //             alert("FORM DATA");
-          //   //                       }
-          // }
-          // else {
-          //   this.router.navigateByUrl('reportTable');
-          // }
         }
       );
     if (!this.app.fromNonRepForm) {
@@ -978,59 +982,65 @@ export class ExecuteComponent implements OnInit {
     // this.https.post(this.aptUrlPost_report, body)
     //   .subscribe(
     //     (res: any) => {
-    //       this.globals.Report = JSON.parse(res._body)
-    //       // console.log("abdalla here", res.json());
+    //       if (res._body) {
+    //         this.globals.Report = JSON.parse(res._body)
 
-    //       this.StorageSessionService.setCookies('report_table', res.json());
-    //       this.check_data = res.json();
-    //       this.app.loadingCharts = false;
-    //       this.report = res.json();
+    //         // console.log("abdalla here", res.json());
 
-    //       (this.report);
+    //         this.StorageSessionService.setCookies('report_table', res.json());
+    //         this.check_data = res.json();
+    //         this.app.loadingCharts = false;
+    //         this.report = res.json();
 
-    //       (this.report.RESULT);
-    //       (res.json());
-    //       var timeout = res.json().RESULT.toString().substring(0, 7) == "TIMEOUT";
-    //       (timeout);
-    //       /*const dt = JSON.stringify(res);
-    //       (dt);*/
-    //       if (timeout && this.ctrl_variables.call_repeat_on_TIMEOUT) {
-    //         this.repeatCallTable(true);
-    //       } else if (this.report.RESULT == 'TABLE') {
+    //         (this.report);
 
-    //         this.router.navigateByUrl('ReportTable', { skipLocationChange: true });
-    //       } else if (this.report.RESULT[0] == 'INPUT_ARTFCT_TASK') {
+    //         (this.report.RESULT);
+    //         (res.json());
+    //         if (this.report.RESULT) {
 
-    //         this.router.navigateByUrl('InputArtForm', { skipLocationChange: true });
+    //           var timeout = res.json().RESULT.toString().substring(0, 7) == "TIMEOUT";
+    //           (timeout);
+    //           /*const dt = JSON.stringify(res);
+    //           (dt);*/
+    //           if (timeout && this.ctrl_variables.call_repeat_on_TIMEOUT) {
+    //             this.repeatCallTable(true);
+    //           } else if (this.report.RESULT == 'TABLE') {
 
-    //       } else if (CommonUtils.isValidValue(this.report.V_EXE_CD)) {
-    //         if (this.report.RESULT[0] == 'NONREPEATABLE_MANUAL_TASK') {
-    //           // non-Repeatable NonRepeatForm
-    //           this.router.navigateByUrl('NonRepeatForm');
-    //           //this.router.navigateByUrl('Forms', { skipLocationChange: true });
-    //         } else if (this.report.RESULT[0] == 'REPEATABLE_MANUAL_TASK') {
-    //           //Repeatable
-    //           this.router.navigateByUrl('RepeatForm');
-    //           //this.router.navigateByUrl('RepeatForm');    //         }
-    //         } else {
-    //           this.repeatCallTable(true);
+    //             this.router.navigateByUrl('ReportTable', { skipLocationChange: true });
+    //           } else if (this.report.RESULT[0] == 'INPUT_ARTFCT_TASK') {
+
+    //             this.router.navigateByUrl('InputArtForm', { skipLocationChange: true });
+
+    //           } else if (CommonUtils.isValidValue(this.report.V_EXE_CD)) {
+    //             if (this.report.RESULT[0] == 'NONREPEATABLE_MANUAL_TASK') {
+    //               // non-Repeatable NonRepeatForm
+    //               this.router.navigateByUrl('NonRepeatForm', { skipLocationChange: true });
+    //               //this.router.navigateByUrl('Forms', { skipLocationChange: true });
+    //             } else if (this.report.RESULT[0] == 'REPEATABLE_MANUAL_TASK') {
+    //               //Repeatable
+    //               this.router.navigateByUrl('RepeatForm', { skipLocationChange: true });
+    //               //this.router.navigateByUrl('RepeatForm');    //         }
+    //             } else {
+    //               this.repeatCallTable(true);
+    //             }
+    //             this.StorageSessionService.setCookies('App_Prcs', { 'V_APP_CD': this.APP_CD, 'V_PRCS_CD': this.PRCS_CD });
+
+    //             // if ('V_EXE_CD' in this.check_data) {
+    //             //   this.router.navigateByUrl('forms');
+    //             //   //             var exe_cd:any[] = this.check_data["V_EXE_CD"];
+    //             //   //             //(exe_cd);
+    //             //   //             if(exe_cd.includes("NONREPEATABLE_MANUAL_TASK")){
+    //             //   //                 alert("FORM DATA");
+    //             //   //           }
+    //             //   //           else if(exe_cd.includes("NONREPEATABLE_MANUAL_TASK")){
+    //             //   //             alert("FORM DATA");
+    //             //   //                       }
+    //             // }
+    //             // else {
+    //             //   this.router.navigateByUrl('reportTable');
+    //             // }
+    //           }
     //         }
-    //         this.StorageSessionService.setCookies('App_Prcs', { 'V_APP_CD': this.APP_CD, 'V_PRCS_CD': this.PRCS_CD });
-
-    //         // if ('V_EXE_CD' in this.check_data) {
-    //         //   this.router.navigateByUrl('forms');
-    //         //   //             var exe_cd:any[] = this.check_data["V_EXE_CD"];
-    //         //   //             //(exe_cd);
-    //         //   //             if(exe_cd.includes("NONREPEATABLE_MANUAL_TASK")){
-    //         //   //                 alert("FORM DATA");
-    //         //   //           }
-    //         //   //           else if(exe_cd.includes("NONREPEATABLE_MANUAL_TASK")){
-    //         //   //             alert("FORM DATA");
-    //         //   //                       }
-    //         // }
-    //         // else {
-    //         //   this.router.navigateByUrl('reportTable');
-    //         // }
     //       }
     //     });
     // if (!this.app.fromNonRepForm) {

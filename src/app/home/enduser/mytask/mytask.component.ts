@@ -18,6 +18,7 @@ import { UserAdminService } from 'src/app/services/user-admin.service';
 import { Globals } from 'src/app/services/globals';
 import { HomeComponent } from '../../home.component';
 import { NoAuthDataService } from 'src/app/services/no-auth-data.service';
+import { StorageSessionService } from 'src/app/services/storage-session.service';
 
 
 @Component({
@@ -40,10 +41,8 @@ export class MytaskComponent implements OnInit {
 
   constructor(private http: HttpClient,private router:Router,
     private data:UserAdminService,
-     private app: HomeComponent,
-     private globals:Globals,
-     private noAuthData: NoAuthDataService
-     ) { 
+     private app: HomeComponent,private globals:Globals,
+    private StorageSessionService: StorageSessionService) { 
       this.onpselect = function(index){
         this.selectedplat = index;
         this.selectedot=null;
@@ -355,10 +354,7 @@ export class MytaskComponent implements OnInit {
 
   ngOnInit() {
     this.functionsrvcGetData();
-    this.noAuthData.getJSON().subscribe(data => {
-      //console.log(data);
-      this.Label = data;
-    });
+    this.data.getJSON().subscribe(data => {       (data.json());       this.Label=data.json();       (this.Label);   })
   }
 }
 export interface data {
@@ -369,4 +365,5 @@ export interface data {
   HOLD_RSN: string[];
   RELEASE_RSN: string[];
   BASE_ID: string[];
+
 }

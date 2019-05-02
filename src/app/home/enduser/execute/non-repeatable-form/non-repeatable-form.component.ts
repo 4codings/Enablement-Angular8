@@ -4,7 +4,7 @@ import { AppComponent } from '../../../../app.component';
 
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http'
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import * as dateFormat from 'dateformat';
 import { HostListener, ChangeDetectorRef, ViewChild } from "@angular/core";
 import { MatTableDataSource } from '@angular/material';
@@ -19,12 +19,14 @@ import { StorageSessionService } from 'src/app/services/storage-session.service'
 import { ApiService } from 'src/app/service/api/api.service';
 import { ConfigServiceService } from 'src/app/services/config-service.service';
 import { EndUserService } from 'src/app/services/EndUser-service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-non-repeatable-form',
   templateUrl: './non-repeatable-form.component.html',
   styleUrls: ['./../../../../../assets/css/threepage.css']
 })
+
 export class NonRepeatableFormComponent extends FormComponent implements OnInit {
   // 10th April added two row
   rows = [0];
@@ -46,6 +48,7 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
   screenWidth: number;
   desktopView: boolean = true;
   @ViewChild('nrpForm') nrpForm: any;
+  navigationSubscription;
   constructor(
     public StorageSessionService: StorageSessionService,
     public app: HomeComponent,
@@ -60,6 +63,15 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     private endUserService: EndUserService,
   ) {
     super(StorageSessionService, http, https, router, globals, app, cdr, apiService, globalUser, configService);
+    // 10th April
+    this.navigationSubscription = router.events
+      .pipe(filter(e => e instanceof NavigationEnd))
+      .subscribe((e: NavigationEnd) => {
+        // alert('e'+e.urlAfterRedirects);
+        this.registerDataChangeHandler(this.updateInput.bind(this));
+        this.getFormData();
+        this.updateInput();
+      });
   }
   @HostListener('window:resize', ['$event'])
   onResize(event?) {
@@ -74,7 +86,6 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     }
   }
   ngOnInit() {
-    this.registerDataChangeHandler(this.updateInput.bind(this));
     this.screenHeight = window.innerHeight;
     this.screenWidth = window.innerWidth;
     if (this.screenWidth <= 900) {
@@ -86,11 +97,15 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     }
     // 10th April removed set timeout
     // setTimeout(()=>{ this.getFormData();}, 500);
-    this.getFormData();
-    this.updateInput();
+    // 10th April commented
+    // this.getFormData();
+    // this.updateInput();
 
   }
 
+  ngOnDestroy(){
+    this.navigationSubscription.unsubscribe();
+  }
   updateInput() {
     // 10th April added code to display data in form
     for (let i = 0; i < this.RVP_labels.length; i++) {
@@ -216,7 +231,7 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     // this.https.post(this.apiService.endPoints.insecureFormSubmit, body_buildPVP).subscribe(
     //   res => {
     //     // console.log(res); //igor
-    //     debugger
+    //     res = res.json();
     //     if (res['RESULT'][0] === 'SUCCESS') {
     //       this.reportCall(body_buildPVP)
     //     }
@@ -227,7 +242,7 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     this.https.post(this.apiService.endPoints.secureFormSubmit, body_buildPVP, this.apiService.setHeaders()).subscribe(
       res => {
         // console.log(res); //igor
-        debugger
+        res = res.json();
         if (res['RESULT'][0] === 'SUCCESS') {
           this.reportCall(body_buildPVP)
         }
@@ -255,7 +270,7 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     this.endUserService.processCancel(this.V_SRVC_ID, this.V_PRCS_TXN_ID, this.V_UNIQUE_ID[0]).subscribe(
       res => {
         // console.log('Response:\n', res);
-        this.router.navigateByUrl('End_User');
+        this.router.navigateByUrl('End_User', { skipLocationChange: true });
       });
   }
 

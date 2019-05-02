@@ -9,6 +9,7 @@ import { HostListener } from "@angular/core";
 import { HomeComponent } from '../../home.component';
 import { UserAdminService } from 'src/app/services/user-admin.service';
 import { NoAuthDataService } from 'src/app/services/no-auth-data.service';
+import { StorageSessionService } from 'src/app/services/storage-session.service';
 
 @Component({
   selector: 'app-exception',
@@ -44,9 +45,8 @@ export class ExceptionComponent implements OnInit {
   }
  
   constructor(private http:HttpClient,private router:Router,
-    private data:UserAdminService,private globals:Globals, 
-    private app:HomeComponent, 
-    private noAuthData: NoAuthDataService) {
+    private data:UserAdminService,private globals:Globals,
+    private StorageSessionService:StorageSessionService,private app:HomeComponent) {
       this.onResize();
       this.onpselect = function(index){
         this.selectedplat = index;
@@ -333,10 +333,11 @@ agcygrpbox:boolean=false;
   ngOnInit() {
     ("Data fetch..........")
     this.functionsrvcGetData();
-    this.noAuthData.getJSON().subscribe(data => {
-      //console.log(data);
-      this.Label = data;
-    });
+    this.data.getJSON().subscribe(data => {      
+       (data.json());       
+       this.Label=data.json();       
+       (this.Label);   
+      })
     
   }
 
