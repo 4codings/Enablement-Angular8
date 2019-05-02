@@ -22,6 +22,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import { SplitLastPipe, MyFilterPipe } from '../home/enduser/execute/MyFilterPipe ';
+import { MyFilterPipe1 } from '../home/enduser/schd-actn/myFilterPipe1';
 
 @NgModule({
     imports:      [
@@ -59,6 +61,9 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
     declarations: [
         FormErrorMsgComponent,
         NoDataMsgComponent,
+        MyFilterPipe,
+        MyFilterPipe1,
+        SplitLastPipe
     ],
     exports:      [
         FormErrorMsgComponent,
@@ -89,7 +94,10 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
         MatExpansionModule,
         MatSlideToggleModule,
         MatButtonToggleModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        MyFilterPipe,
+        MyFilterPipe1,
+        SplitLastPipe
     ]
 })
 export class SharedModule {

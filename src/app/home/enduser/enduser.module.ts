@@ -47,10 +47,7 @@ import { MyFilterPipe1 } from './schd-actn/myFilterPipe1';
     RepeatProcessComponent,
     RepeatableFormComponent,
     ReportTableComponent,
-    DialogChartsComponent,
-    MyFilterPipe,
-    MyFilterPipe1,
-    SplitLastPipe
+    DialogChartsComponent
   ],
   imports: [
     CommonModule,
