@@ -27,7 +27,7 @@ export class HeaderComponent implements OnInit {
     }
   }
   switchprofile(){
-    this.router.navigate(['user']);
+    this.router.navigateByUrl('user', {skipLocationChange:true});
   }
   ngOnInit() {
     this.userName = this.userService.getDetailFromStorage(). SRC_CD;
@@ -39,7 +39,7 @@ export class HeaderComponent implements OnInit {
 
   logout(){
     this.userService.clear();
-    this.router.navigate(['/auth/login']);
+    this.router.navigateByUrl('/auth/login', {skipLocationChange:true});
   }
 
 }

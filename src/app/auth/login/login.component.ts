@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.didLoaded$ = this.store.pipe(select(state => state.userInfo && state.userInfo.loaded));
         this.sub = this.didLoaded$.subscribe(loaded => {
         if (loaded == true) {
-            this.router.navigate(['/user']);
+            this.router.navigateByUrl('/user', { skipLocationChange: true });
         }
         });
     }

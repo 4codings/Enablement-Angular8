@@ -21,10 +21,11 @@ export class IsAuthenticatedGuard implements CanActivate {
     }
 
     private validate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        console.log(this.user.isAnonymous)
         if (this.user.isAnonymous) {
-            this.router.navigate(
-                ['/auth/login'],
-                {queryParams: {next: state.url}}
+            this.router.navigateByUrl(
+                '/auth/login',
+                {queryParams: {next: state.url}, skipLocationChange: true}
             );
             return false;
         }

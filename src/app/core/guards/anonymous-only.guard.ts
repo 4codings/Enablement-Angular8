@@ -18,7 +18,7 @@ export class AnonymousOnlyGuard implements CanActivate {
         state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
         console.log(this.user.isAnonymous);
         if (!this.user.isAnonymous) {
-            this.router.navigate(['/user']);
+            this.router.navigateByUrl('/user', { skipLocationChange: true });
             return false;
         }
 

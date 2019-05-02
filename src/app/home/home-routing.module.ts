@@ -13,7 +13,7 @@ const routes: Routes = [
         loadChildren: './user/user.module#UserModule'
       },
       {
-        path: 'developer',
+        path: 'Developer',
         loadChildren: './developer/developer.module#DeveloperModule'
       },
       {
