@@ -46,7 +46,8 @@ export class ExceptionComponent implements OnInit {
  
   constructor(private http:HttpClient,private router:Router,
     private data:UserAdminService,private globals:Globals,
-    private StorageSessionService:StorageSessionService,private app:HomeComponent) {
+    private StorageSessionService:StorageSessionService,
+    private app:HomeComponent, private noAuthData:NoAuthDataService) {
       this.onResize();
       this.onpselect = function(index){
         this.selectedplat = index;
@@ -333,11 +334,15 @@ agcygrpbox:boolean=false;
   ngOnInit() {
     ("Data fetch..........")
     this.functionsrvcGetData();
-    this.data.getJSON().subscribe(data => {      
-       (data.json());       
-       this.Label=data.json();       
-       (this.Label);   
-      })
+    // this.data.getJSON().subscribe(data => {      
+    //    (data.json());       
+    //    this.Label=data.json();       
+    //    (this.Label);   
+    //   })
+    this.noAuthData.getJSON().subscribe(data => {
+      //console.log(data);
+      this.Label = data;
+    });
     
   }
 

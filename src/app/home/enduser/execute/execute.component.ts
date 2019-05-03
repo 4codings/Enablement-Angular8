@@ -865,9 +865,7 @@ export class ExecuteComponent implements OnInit {
   retruns options with token headers
   */
   setHeaders() {
-    const headers = new Headers({
-      Authorization: `Bearer ${this.globarUser.currentUser.TOKEN}`
-    });
+    const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Access-Control-Allow-Origin', '*');
 

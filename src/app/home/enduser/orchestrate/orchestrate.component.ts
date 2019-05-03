@@ -39,7 +39,7 @@ export class OrchestrateComponent implements OnInit {
    
     constructor(private http:HttpClient,private data:UserAdminService,
       private StorageSessionService:StorageSessionService,
-      private app:HomeComponent, private globals:Globals
+      private app:HomeComponent, private globals:Globals, private noAuthData: NoAuthDataService
       ) { 
 
       
@@ -425,14 +425,15 @@ enabledisable(){
     ngOnInit() {
       this.functionapplist();
       this.functionsuccapplist();  
-      this.data.getJSON().subscribe(data => {
-              //  (data.json());       
-               this.Label=data.json();       
-              //  (this.Label);  
-               }) 
-     
-  
-      
+      // this.data.getJSON().subscribe(data => {
+      //         //  (data.json());       
+      //          this.Label=data.json();       
+      //         //  (this.Label);  
+      //          }) 
+      this.noAuthData.getJSON().subscribe(data => {
+        //console.log(data);
+        this.Label = data;
+      });
     }
   }
   export interface data{

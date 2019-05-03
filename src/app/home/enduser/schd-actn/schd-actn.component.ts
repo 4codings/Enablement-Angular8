@@ -98,7 +98,8 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
               private storageSessionService: StorageSessionService,
               private data: ConfigServiceService,
               private endUsrData: EndUserService,
-              private detector: ChangeDetectorRef) {
+              private detector: ChangeDetectorRef,
+              private noAuthData: NoAuthDataService) {
     this.onpselect = function (index) {
       this.selectedrole = index;
     };
@@ -309,10 +310,10 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
     if (this.app.selected_PROCESS !== 'ALL' && !this.app.START) {
       this.ProcessCD = this.app.selected_PROCESS;
     }
-    this.data2.getJSON().subscribe(data2 => {
-
-      this.Label = data2.json();
-
+    // 
+    this.noAuthData.getJSON().subscribe(data => {
+      //console.log(data);
+      this.Label = data;
     });
 
     this.getAppCode();
