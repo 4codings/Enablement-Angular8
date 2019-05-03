@@ -42,7 +42,7 @@ export class MytaskComponent implements OnInit {
   constructor(private http: HttpClient,private router:Router,
     private data:UserAdminService,
      private app: HomeComponent,private globals:Globals,
-    private StorageSessionService: StorageSessionService) { 
+    private StorageSessionService: StorageSessionService, private noAuthData:NoAuthDataService) { 
       this.onpselect = function(index){
         this.selectedplat = index;
         this.selectedot=null;
@@ -354,7 +354,11 @@ export class MytaskComponent implements OnInit {
 
   ngOnInit() {
     this.functionsrvcGetData();
-    this.data.getJSON().subscribe(data => {       (data.json());       this.Label=data.json();       (this.Label);   })
+    // this.data.getJSON().subscribe(data => {       (data.json());       this.Label=data.json();       (this.Label);   })
+    this.noAuthData.getJSON().subscribe(data => {
+      //console.log(data);
+      this.Label = data;
+    });
   }
 }
 export interface data {
