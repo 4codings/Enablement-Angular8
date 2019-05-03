@@ -94,8 +94,8 @@ export class ProcessComponent implements OnInit {
   domain_name=this.globals.domain_name;
   private apiUrlGet = "https://"+this.domain_name+"/rest/E_DB/SP?";
   private apiUrlAdd = "https://"+this.domain_name+"/rest/E_DB/SP";
-  V_SRC_CD: string = this.StorageSessionService.getSession("agency");
-  V_USR_NM: string = this.StorageSessionService.getSession("email");
+  V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+  V_USR_NM:string=JSON.parse(sessionStorage.getItem('u')).USR_NM;
   APP_CD = [];
   PRCS_CD = [];
   SRVC_CD = [];

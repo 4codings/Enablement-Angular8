@@ -10,6 +10,7 @@ import { userGroup } from 'src/app/store/user-admin/user-group/usergroup.model';
 import {addUserGroup, DeleteUserGroup, UpdateUserGroup} from '../../../store/user-admin/user-group/usergroup.action';
 import {HttpClient} from '@angular/common/http';
 import { UserAdminService } from 'src/app/services/user-admin.service';
+import { UseradminService } from 'src/app/services/useradmin.service2';
 
 @Component({
   selector: 'app-user-admin-group',
@@ -71,7 +72,7 @@ export class UserAdminGroupComponent implements OnInit {
     public noAuthData: NoAuthDataService,
     private store: Store<AppState>,
     private http: HttpClient,
-    private userAdminService:UserAdminService
+    private userAdminService:UseradminService
   ) { }
 
   ngOnInit() {
@@ -197,7 +198,7 @@ export class UserAdminGroupComponent implements OnInit {
   }
 
   public nameModelChanged() {
-    if (this.clonedName !== this.grpData.V_USR_GRP_CD) {
+    if (this.clonedName.toLowerCase() !== this.grpData.V_USR_GRP_CD.toLowerCase()) {
       this.nameChanged = true;
     } else {
       this.nameChanged = false;

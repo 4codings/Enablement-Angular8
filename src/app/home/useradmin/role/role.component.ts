@@ -9,6 +9,7 @@ import { AppState } from 'src/app/app.state';
 import {addUserGroup, UpdateUserGroup} from '../../../store/user-admin/user-group/usergroup.action';
 import {AddUserRole, DeleteUserRole, UpdateUserRole} from '../../../store/user-admin/user-role/userrole.action';
 import { UserAdminService } from 'src/app/services/user-admin.service';
+import { UseradminService } from 'src/app/services/useradmin.service2';
 
 @Component({
   selector: 'app-role',
@@ -61,7 +62,7 @@ export class RoleComponent implements OnInit {
   constructor(
     public noAuthData: NoAuthDataService,
     private store: Store<AppState>,
-    private userAdminService:UserAdminService
+    private userAdminService:UseradminService
   ) { }
 
   ngOnInit() {
@@ -152,7 +153,7 @@ export class RoleComponent implements OnInit {
   }
 
   public nameModelChanged() {
-    if (this.clonedName !== this.roleData.V_ROLE_CD) {
+    if (this.clonedName.toLowerCase() !== this.roleData.V_ROLE_CD.toLowerCase()) {
       this.nameChanged = true;
     } else {
       this.nameChanged = false;

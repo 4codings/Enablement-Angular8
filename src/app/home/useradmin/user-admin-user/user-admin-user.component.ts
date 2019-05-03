@@ -12,6 +12,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { filter } from 'rxjs/operators';
 import {AddUser, UpdateUser} from '../../../store/user-admin/user/user.action';
 import { UserAdminService } from 'src/app/services/user-admin.service';
+import { UseradminService } from 'src/app/services/useradmin.service2';
 
 @Component({
   selector: 'app-user-admin-user',
@@ -78,7 +79,7 @@ export class UserAdminUserComponent implements OnInit {
   constructor(
     public noAuthData: NoAuthDataService,
     private store: Store<AppState>,
-    private userAdminService:UserAdminService
+    private userAdminService:UseradminService
   ) {
     // Label get service
     this.noAuthData.getJSON().subscribe(data => {
@@ -157,8 +158,6 @@ export class UserAdminUserComponent implements OnInit {
       V_USR_DSC: this.user.V_USR_DSC,
       V_STS: this.user.V_STS != '' ? this.user.V_STS : 'Active',
     };
-    console.log(data);
-
     this.store.dispatch(new AddUser(data));
   }
 
@@ -197,7 +196,7 @@ export class UserAdminUserComponent implements OnInit {
   }
 
   public nameModelChanged() {
-    if (this.clonedName !== this.user.V_USR_NM) {
+    if (this.clonedName.toLowerCase() !== this.user.V_USR_NM.toLowerCase()) {
       this.nameChanged = true;
       this.updateBtn = false;
     } else {
