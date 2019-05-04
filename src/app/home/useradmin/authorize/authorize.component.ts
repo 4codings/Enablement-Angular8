@@ -31,7 +31,7 @@ export class AuthorizeComponent implements OnInit {
   ) {
     // Label get service
     this.noAuthData.getJSON().subscribe(data => {
-      console.log(data);
+      //console.log(data);
       this.Label = data;
     });
   }
@@ -43,7 +43,7 @@ export class AuthorizeComponent implements OnInit {
     this.didLoading$ = this.store.pipe(select(authSelectors.getLoading));
     this.didLoaded$ = this.store.pipe(select(authSelectors.getLoaded));
     this.authValues$.subscribe(data => {
-      console.log('Auth', data);
+      //console.log('Auth', data);
     });
   }
   selected(index) {
@@ -61,12 +61,12 @@ export class AuthorizeComponent implements OnInit {
   authData(auth) {
   this.authValues$.subscribe(data => {
   this.updateBtn = data.filter(s => s.AUTH_CD == auth).length > 0 ? true : false;
-  console.log(this.updateBtn);
+  //console.log(this.updateBtn);
     // }
   });
   }
   checkUncheck(str) {
-    console.log(str);
+    //console.log(str);
     switch (str) {
       case 'Read': {
         this.authD.read_select = !this.authD.read_select;

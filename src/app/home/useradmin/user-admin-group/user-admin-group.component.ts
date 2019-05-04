@@ -93,7 +93,7 @@ export class UserAdminGroupComponent implements OnInit {
       });
 
     this.noAuthData.getJSON().subscribe(data => {
-      console.log(data);
+      //console.log(data);
       this.Label = data;
     });
 

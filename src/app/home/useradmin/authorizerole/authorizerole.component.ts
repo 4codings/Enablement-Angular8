@@ -28,7 +28,7 @@ export class AuthorizeroleComponent implements OnInit {
 
   ngOnInit() {
     this.noAuthData.getJSON().subscribe(data => {
-      console.log(data);
+      //console.log(data);
       this.Label = data;
     });
 

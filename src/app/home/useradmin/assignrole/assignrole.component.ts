@@ -79,7 +79,7 @@ export class AssignroleComponent implements OnInit, OnDestroy {
     };
 
     this.noAuthData.getJSON().subscribe(data => {
-      console.log(data);
+      //console.log(data);
       this.Label = data;
     });
     this.store.dispatch(new userGroupActions.RemoveGroupId());
