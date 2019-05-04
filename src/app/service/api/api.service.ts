@@ -82,7 +82,7 @@ export class ApiService {
 		this.setAuthHeader();
 		this.http.post(
 			this.endPoints.sessionRefresh,
-			{ V_USR_NM: this.globals.currentUser.USR_NM },
+			{ V_USR_NM: JSON.parse(sessionStorage.getItem('u')).USR_NM },
 			{ headers: this.authHeader }
 		).subscribe();
 	}
@@ -91,7 +91,7 @@ export class ApiService {
 		this.setAuthHeader();
 		this.http.post(
 			this.endPoints.logout,
-			{ V_USR_NM: this.globals.currentUser.USR_NM },
+			{ V_USR_NM: JSON.parse(sessionStorage.getItem('u')).USR_NM },
 			{ headers: this.authHeader }
 		).subscribe();
 	}

@@ -6,11 +6,12 @@ import * as authActions from './authorization.actions';
 import { mergeMap, map, catchError } from 'rxjs/operators';
 import { AuthorizationData } from './authorization.model';
 import { UserAdminService } from 'src/app/services/user-admin.service';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable()
 export class AuthEffects {
 
-    constructor(private actions$: Actions, private userAdminService: UserAdminService) {}
+    constructor(private actions$: Actions, private userAdminService: UserAdminService, private http: HttpClient) {}
 
     @Effect({dispatch: true})
     getAuthData$: Observable<Action> = this.actions$.pipe(
@@ -18,7 +19,8 @@ export class AuthEffects {
         authActions.GET_AUTH
     ),
     mergeMap((action: authActions.getAuth) =>
-      this.userAdminService.getAuthorizationData().pipe(
+    this.http.get('https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=AUTH&V_SRC_CD='
+    + action.payload.V_SRC_CD + '&REST_Service=Masters&Verb=GET').pipe(
         map(
           (userAuth: AuthorizationData[]) =>
             new authActions.getAuthSuccess(userAuth)

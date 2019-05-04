@@ -25,6 +25,8 @@ export class AuthorizeComponent implements OnInit {
   didLoaded$: Observable<boolean>;
   selecteduser: string;
   authD = new data;
+  V_SRC_CD_DATA;
+
   constructor(
     public noAuthData: NoAuthDataService,
     private store: Store<AppState>
@@ -37,7 +39,10 @@ export class AuthorizeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(new authActions.getAuth());
+    this.V_SRC_CD_DATA = {
+      V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
+    };
+    this.store.dispatch(new authActions.getAuth(this.V_SRC_CD_DATA));
     this.authValues$ = this.store.pipe(select(authSelectors.selectAllAutorizationvalues));
     this.error$ = this.store.pipe(select(authSelectors.getErrors));
     this.didLoading$ = this.store.pipe(select(authSelectors.getLoading));
@@ -98,27 +103,27 @@ export class AuthorizeComponent implements OnInit {
 
 export class data {
   APP_ID: number;
-AUTH_CD: string;
-AUTH_DSC: string;
-AUTH_FLD: number;
-ROLE_ID: any;
-AUTH_ID: number;
-CREATE: string;
-create_select: boolean;
+  AUTH_CD: string;
+  AUTH_DSC: string;
+  AUTH_FLD: number;
+  ROLE_ID: any;
+  AUTH_ID: number;
+  CREATE: string;
+  create_select: boolean;
 
-DELETE: string;
-delete_select: boolean;
+  DELETE: string;
+  delete_select: boolean;
 
-EXECUTE: string;
-execute_select: boolean;
+  EXECUTE: string;
+  execute_select: boolean;
 
-READ: string;
-read_select: boolean;
+  READ: string;
+  read_select: boolean;
 
-UPDATE: string;
-update_select: boolean;
+  UPDATE: string;
+  update_select: boolean;
 
-id: number;
-is_selected: boolean;
-is_selected_role: boolean;
+  id: number;
+  is_selected: boolean;
+  is_selected_role: boolean;
 }

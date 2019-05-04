@@ -46,6 +46,45 @@ export function authReducer(state = initialState, action: AuthActions.Actions): 
             error: action.payload
         };
 
+        case AuthActions.SELECT_ROLE_AUTH_RELATION:
+        return adapter.upsertMany(action.payload, {
+            ...state,
+            loading: false,
+            loaded: true
+        });
+
+        case AuthActions.REMOVE_SELECTED_ROLE_AUTH_RELATION:
+        return adapter.upsertMany(action.payload, {
+            ...state,
+            loading: false,
+            loaded: true
+        });
+        
+        case AuthActions.CHECKED_AUTH_ROLE:
+        return adapter.upsertOne(action.payload, {
+            ...state,
+            loading: false,
+            loaded: true
+        });
+
+        case AuthActions.SELECT_AUTH_ID:
+        return {
+            ...state,
+            selectedAuthId: action.payload
+        };
+
+        case AuthActions.REMOVE_AUTH_ID:
+        return {
+            ...state,
+            selectedAuthId: null
+        };
+
+        case AuthActions.UPDATE_AUTH_IDS:
+        return adapter.upsertOne(action.payload, {
+            ...state
+        });
+
+
         default:
             return state;
     }
