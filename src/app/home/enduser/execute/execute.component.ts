@@ -64,8 +64,8 @@ export class ExecuteComponent implements OnInit {
   mobileView = false;
   desktopView = true;
   //----------------GET APP CODE
-  V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
-  V_USR_NM:string=JSON.parse(sessionStorage.getItem('u')).USR_NM;
+  V_SRC_CD: string = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+  V_USR_NM: string = JSON.parse(sessionStorage.getItem('u')).USR_NM;
   get_cxn = true;
   APP_CD = [];
   PRC_CD = [];
@@ -908,7 +908,7 @@ export class ExecuteComponent implements OnInit {
     this.https.post(this.aptUrlPost_report_new, body, this.apiservice.setHeaders())
       .subscribe(
         (res: any) => {
-          if (res._body) {
+          if (res._body !== '{}') {
             this.globals.Report = JSON.parse(res._body)
             // console.log("abdalla here", res.json());
 
@@ -932,18 +932,18 @@ export class ExecuteComponent implements OnInit {
               this.router.navigateByUrl('ReportTable', { skipLocationChange: true });
             } else if (this.report.RESULT[0] == 'INPUT_ARTFCT_TASK') {
 
-              this.router.navigateByUrl('InputArtForm', { skipLocationChange: true });
+              this.router.navigateByUrl('/End_User/InputArtForm', { skipLocationChange: true });
 
             } else if (CommonUtils.isValidValue(this.report.V_EXE_CD)) {
 
               if (this.report.RESULT[0] == 'NONREPEATABLE_MANUAL_TASK') {
                 // non-Repeatable NonRepeatForm
-                this.router.navigateByUrl('NonRepeatForm', { skipLocationChange: true });
+                this.router.navigateByUrl('/End_User/NonRepeatForm', { skipLocationChange: true });
                 //this.router.navigateByUrl('Forms', { skipLocationChange: true });
 
               } else if (this.report.RESULT[0] == 'REPEATABLE_MANUAL_TASK') {
                 //Repeatable
-                this.router.navigateByUrl('RepeatForm', { skipLocationChange: true });
+                this.router.navigateByUrl('/End_User/RepeatForm', { skipLocationChange: true });
                 //this.router.navigateByUrl('RepeatForm');
               }
 
@@ -966,6 +966,8 @@ export class ExecuteComponent implements OnInit {
             // else {
             //   this.router.navigateByUrl('reportTable');
             // }
+          } else {
+            location.reload();
           }
         }
       );

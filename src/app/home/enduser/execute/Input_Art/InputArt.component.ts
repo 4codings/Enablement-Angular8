@@ -332,13 +332,13 @@ export class InputArtComponent {
         this.StorageSessionService.setCookies('report_table', res);
         // // console.log('setCookies');
         if (res['RESULT'] == 'INPUT_ARTFCT_TASK') {
-          this.router.navigate(['InputArtForm'], { skipLocationChange: true });
+          this.router.navigate(['/End_User/InputArtForm'], { skipLocationChange: true });
         } else if (res['RESULT'][0] == 'NONREPEATABLE_MANUAL_TASK') {
-          this.router.navigate(['NonRepeatForm'], { skipLocationChange: true });
+          this.router.navigate(['/End_User/NonRepeatForm'], { skipLocationChange: true });
         } else if (res['RESULT'][0] == 'REPEATABLE_MANUAL_TASK') {
-          this.router.navigate(['RepeatForm'], { skipLocationChange: true });
+          this.router.navigate(['/End_User/RepeatForm'], { skipLocationChange: true });
         } if (res['RESULT'] == 'TABLE') {
-          this.router.navigate(['ReportTable'], { skipLocationChange: true });
+          this.router.navigate(['/End_User/ReportTable'], { skipLocationChange: true });
         }
       }
     }

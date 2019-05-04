@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
   constructor(
     // private /api: ApiSdkService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // this.api.http.apiUrl = environment.apiUrl;
@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
-        if (event.url == '/') { this.router.navigate(['/user']); }
+        if (event.url == '/') { this.router.navigate(['/user'], { skipLocationChange: true }); }
       });
   }
 }

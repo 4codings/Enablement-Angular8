@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 import { EnduserRoutingModule } from './enduser-routing.module';
 import { EnduserComponent } from '../enduser/enduser.component';
@@ -59,7 +60,8 @@ import { DeleteConfirmComponent } from './execute/delete-confirm/delete-confirm.
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    NgbModule
+    NgbModule,
+    ModalModule.forRoot(),
   ],
   entryComponents: [DialogScheduleComponent, DialogChartsComponent, DeleteConfirmComponent]
 })

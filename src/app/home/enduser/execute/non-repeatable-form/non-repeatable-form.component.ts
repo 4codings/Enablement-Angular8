@@ -103,7 +103,7 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
 
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.navigationSubscription.unsubscribe();
   }
   updateInput() {
@@ -240,13 +240,18 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     //10th April secured call
     // secure
     this.https.post(this.apiService.endPoints.secureFormSubmit, body_buildPVP, this.apiService.setHeaders()).subscribe(
-      res => {
-        // console.log(res); //igor
-        res = res.json();
-        if (res['RESULT'][0] === 'SUCCESS') {
-          this.reportCall(body_buildPVP)
+      (res: any) => {
+        if (res._body !== '{}') {
+          // console.log(res); //igor
+          res = res.json();
+          if (res['RESULT'][0] === 'SUCCESS') {
+            this.reportCall(body_buildPVP)
+          }
+          this.invoke_router(res);
         }
-        this.invoke_router(res);
+        else {
+          this.router.navigate(['/End_User'], { skipLocationChange: true });
+        }
       });
   }
   reportCall(data) {
