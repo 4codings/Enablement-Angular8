@@ -93,7 +93,7 @@ export class AuthorizeroleComponent implements OnInit {
     this.store.dispatch(new userAuthorizationActions.getAuth(this.V_SRC_CD_DATA));
     this.store.dispatch(new userRoleActions.getUserRole(this.V_SRC_CD_DATA));
   }
-  /*
+  
   selectedRole(role, index) {
     if(this.selectCurrentAuth != undefined) {
       let removeRolerelation = [];
@@ -101,31 +101,31 @@ export class AuthorizeroleComponent implements OnInit {
       this.store.dispatch(new userAuthorizationActions.RemoveAuthId());
 
       this.roleData.forEach(role => {
-        if(role.is_selected_usr_grp == true || role.is_selected == true) {
-          removeRolerelation.push({id:role.id, is_selected_usr_grp:false, is_selected:false});
+        if(role.is_selected_auth == true || role.is_selected == true) {
+          removeRolerelation.push({id:role.id, is_selected_auth:false, is_selected:false});
         }
       });
       this.store.dispatch(new userRoleActions.RemoveSelectedRoleGroupRelation(removeRolerelation));
 
       this.store.dispatch(new userRoleActions.selectRoleId(role.id));
       let authRelation = [];
-      let removeauthRelation = [];
+      let removeAuthRelation = [];
       this.selectedrole = index;
       this.USR_ROLE_DSR = role.V_ROLE_DSC; 
       this. USR_AUTH_DSCR = ''; 
 
       this.authData.forEach(auth => {
-        if(auth.is_selected_user == true || auth.is_selected == true) {
-          removeAuthRelation.push({id:auth.id, is_selected_user:false, is_selected:false});
+        if(auth.is_selected_role == true || auth.is_selected == true) {
+          removeAuthRelation.push({id:auth.id, is_selected_role:false, is_selected:false});
         }
       });
       this.store.dispatch(new userAuthorizationActions.RemoveSelectedRoleAuthRelation(removeAuthRelation));
     
       if (role.V_ROLE_ID != null) {
-        role.V_USR_GRP_ID.forEach(GRP_ID => {
+        role.V_AUTH_ID.forEach(AUTH_ID => {
           this.authData.forEach(auth => {
-              if(GRP_ID == auth.V_USR_GRP_ID) {
-                authRelation.push({id:auth.id, is_selected_user:true});
+              if(AUTH_ID == auth.V_AUTH_ID) {
+                authRelation.push({id:auth.id, is_selected_role:true});
               }
           });
         });
@@ -134,22 +134,22 @@ export class AuthorizeroleComponent implements OnInit {
     } else {
       this.store.dispatch(new userRoleActions.selectRoleId(role.id));
       let authRelation = [];
-      let removeauthRelation = [];
+      let removeAuthRelation = [];
       this.selectedrole = index;
       this.USR_ROLE_DSR = role.V_ROLE_DSC; 
 
       this.authData.forEach(auth => {
-        if(auth.is_selected_user == true || auth.is_selected == true) {
-          removeAuthRelation.push({id:auth.id, is_selected_user:false, is_selected:false});
+        if(auth.is_selected_role == true || auth.is_selected == true) {
+          removeAuthRelation.push({id:auth.id, is_selected_role:false, is_selected:false});
         }
       });
       this.store.dispatch(new userAuthorizationActions.RemoveSelectedRoleAuthRelation(removeAuthRelation));
     
       if (role.V_ROLE_ID != null) {
-        role.V_USR_GRP_ID.forEach(GRP_ID => {
+        role.V_AUTH_ID.forEach(AUTH_ID => {
           this.authData.forEach(auth => {
-              if(GRP_ID == auth.V_USR_GRP_ID) {
-                authRelation.push({id:auth.id, is_selected_user:true});
+              if(AUTH_ID == auth.V_AUTH_ID) {
+                authRelation.push({id:auth.id, is_selected_role:true});
               }
           });
         });
@@ -157,7 +157,7 @@ export class AuthorizeroleComponent implements OnInit {
       }
     }
   }
-  */
+  
 
  selectedAuth(auth, index) {
     if(this.selectCurrentRole != undefined) {
@@ -166,8 +166,8 @@ export class AuthorizeroleComponent implements OnInit {
       this.store.dispatch(new userRoleActions.RemoveRoleId());
 
       this.authData.forEach(auth => {
-        if(auth.is_selected_user == true || auth.is_selected == true) {
-          removeauthRelation.push({id:auth.id, is_selected_user:false, is_selected:false});
+        if(auth.is_selected_role == true || auth.is_selected == true) {
+          removeauthRelation.push({id:auth.id, is_selected_role:false, is_selected:false});
         }
       });
       this.store.dispatch(new userAuthorizationActions.RemoveSelectedRoleAuthRelation(removeauthRelation));
@@ -180,8 +180,8 @@ export class AuthorizeroleComponent implements OnInit {
       this.USR_ROLE_DSR = ''; 
 
       this.roleData.forEach(role => {
-        if(role.is_selected_usr_grp == true || role.is_selected == true) {
-          removeRolerelation.push({id:role.id, is_selected_usr_grp:false, is_selected:false});
+        if(role.is_selected_auth == true || role.is_selected == true) {
+          removeRolerelation.push({id:role.id, is_selected_auth:false, is_selected:false});
         }
       });
       this.store.dispatch(new userRoleActions.RemoveSelectedRoleGroupRelation(removeRolerelation));
@@ -190,7 +190,7 @@ export class AuthorizeroleComponent implements OnInit {
         auth.V_ROLE_ID.forEach(ROLE_ID => {
           this.roleData.forEach(role => {
               if(ROLE_ID == role.V_ROLE_ID) {
-                roleRelation.push({id:role.id, is_selected_usr_grp:true});
+                roleRelation.push({id:role.id, is_selected_auth:true});
               }
           });
         });
@@ -204,8 +204,8 @@ export class AuthorizeroleComponent implements OnInit {
       this.USR_AUTH_DSCR = auth.V_AUTH_DSC;
 
       this.roleData.forEach(role => {
-        if(role.is_selected_usr_grp == true || role.is_selected == true) {
-          removeRolerelation.push({id:role.id, is_selected_usr_grp:false, is_selected:false});
+        if(role.is_selected_auth == true || role.is_selected == true) {
+          removeRolerelation.push({id:role.id, is_selected_auth:false, is_selected:false});
         }
       });
       this.store.dispatch(new userRoleActions.RemoveSelectedRoleGroupRelation(removeRolerelation));
@@ -214,7 +214,7 @@ export class AuthorizeroleComponent implements OnInit {
         auth.V_ROLE_ID.forEach(ROLE_ID => {
           this.roleData.forEach(role => {
               if(ROLE_ID == role.V_ROLE_ID) {
-                roleRelation.push({id:role.id, is_selected_usr_grp:true});
+                roleRelation.push({id:role.id, is_selected_auth:true});
               }
           });
         });
@@ -265,55 +265,55 @@ export class AuthorizeroleComponent implements OnInit {
 
   submitAssignRole() {
     
-    // if(this.selectCurrentRole != undefined) {
-    //   let deletedIds = [];
-    //   let addedIds = [];
+    if(this.selectCurrentRole != undefined) {
+      let deletedIds = [];
+      let addedIds = [];
     
-    //   this.groupData.forEach(group => {
-    //     if(group.is_selected == false && group.is_selected_user == true) {
-    //       deletedIds.push(group.V_USR_GRP_ID)
-    //     }
-    //   });
+      this.authData.forEach(auth => {
+        if(auth.is_selected == false && auth.is_selected_role == true) {
+          deletedIds.push(auth.V_ROLE_ID)
+        }
+      });
 
-    //   this.groupData.forEach(group => {
-    //     if(group.is_selected == true && group.is_selected_user == false) {
-    //       addedIds.push(group.V_USR_GRP_ID)
-    //     }
-    //   });
-    //   this.start_date = new Date(Date.now());
-    //   this.end_date = new Date(Date.now() + this.ctrlVvariables.effectiveEndDate);
+      this.authData.forEach(auth => {
+        if(auth.is_selected == true && auth.is_selected_role == false) {
+          addedIds.push(auth.V_ROLE_ID)
+        }
+      });
+      this.start_date = new Date(Date.now());
+      this.end_date = new Date(Date.now() + this.ctrlVvariables.effectiveEndDate);
 
-    //   let json = {
-    //     "V_DELETED_ID_ARRAY":deletedIds.toString(),
-    //     "V_ADDED_ID_ARRAY":addedIds.toString(),
-    //     "SELECTED_ENTITY":['ROLE'],
-    //     "SELECTED_ENTITY_ID":[this.selectCurrentRole.id],
-    //     "V_EFF_STRT_DT_TM":[this.start_date],
-    //     "V_EFF_END_DT_TM":[this.end_date],
-    //     "REST_Service":["Group_Role"],
-    //     "Verb":["POST"]
-    //   }
-      
-    //   this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', json).subscribe(res => {
-    //     this.updateGroupStateAdded(res[0]);
-    //     this.updateGroupStateDeleted(deletedIds)
-    //   }, err => {
-    //     console.log(err);
-    //   });
-    // }
+      let json = {
+        "V_DELETED_ID_ARRAY":deletedIds.toString(),
+        "V_ADDED_ID_ARRAY":addedIds.toString(),
+        "SELECTED_ENTITY":['ROLE'],
+        "SELECTED_ENTITY_ID":[this.selectCurrentRole.id],
+        "V_EFF_STRT_DT_TM":[this.start_date],
+        "V_EFF_END_DT_TM":[this.end_date],
+        "REST_Service":["Role_Auth"],
+        "Verb":["POST"]
+      }
+      //console.log(json);
+      this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', json).subscribe(res => {
+        this.updateAuthStateAdded(res[0]);
+        this.updateAuthStateDeleted(deletedIds)
+      }, err => {
+        console.log(err);
+      });
+    }
 
     if(this.selectCurrentAuth != undefined) {
       let deletedIds = [];
       let addedIds = [];
     
       this.roleData.forEach(role => {
-        if(role.is_selected == false && role.is_selected_usr_grp == true) {
+        if(role.is_selected == false && role.is_selected_auth == true) {
           deletedIds.push(role.V_ROLE_ID)
         }
       });
 
       this.roleData.forEach(role => {
-        if(role.is_selected == true && role.is_selected_usr_grp == false) {
+        if(role.is_selected == true && role.is_selected_auth == false) {
           addedIds.push(role.V_ROLE_ID)
         }
       });
@@ -330,15 +330,15 @@ export class AuthorizeroleComponent implements OnInit {
         "REST_Service":["Role_Auth"],
         "Verb":["POST"]
       }
-      console.log(json);
-      /*
+      //console.log(json);
+      
       this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', json).subscribe(res => {
         this.updateRoleStateAdded(res[0]);
         this.updateRoleStateDeleted(deletedIds)
       }, err => {
         console.log(err);
       });
-      */
+      
     }
     
   }
@@ -349,7 +349,7 @@ export class AuthorizeroleComponent implements OnInit {
     role.V_ROLE_ID.forEach(ROLE_ID => {
       this.roleData.forEach(role => {
           if(ROLE_ID == role.V_ROLE_ID) {
-            roleRelation.push({id:role.id, is_selected_usr_grp:true, is_selected:false});
+            roleRelation.push({id:role.id, is_selected_auth:true, is_selected:false});
           }
       });
     });
@@ -362,11 +362,37 @@ export class AuthorizeroleComponent implements OnInit {
     deletedRole.forEach(deletedId => {
       this.roleData.forEach(role => {
           if(role.V_ROLE_ID == deletedId) {
-            removeRoleRelation.push({id:role.id, is_selected_usr_grp:false, is_selected:false});
+            removeRoleRelation.push({id:role.id, is_selected_auth:false, is_selected:false});
           }
       });
     });
     this.store.dispatch(new userRoleActions.RemoveSelectedRoleGroupRelation(removeRoleRelation));
+  }
+
+  updateAuthStateAdded(auth) {
+    let authRelation = [];
+    this.store.dispatch(new userRoleActions.UpdateGroupIds({id:this.selectCurrentRole.id, V_AUTH_ID:auth.V_AUTH_ID}));
+    auth.V_AUTH_ID.forEach(AUTH_ID => {
+      this.authData.forEach(auth => {
+          if(AUTH_ID == auth.V_AUTH_ID) {
+            authRelation.push({id:auth.id, is_selected_role:true, is_selected:false});
+          }
+      });
+    });
+    this.store.dispatch(new userAuthorizationActions.SelectRoleAuthRelation(authRelation));
+  }
+
+  updateAuthStateDeleted(deletedAuth) {
+    let removeAuthpRelation = [];
+    
+    deletedAuth.forEach(deletedId => {
+      this.authData.forEach(auth => {
+          if(auth.V_AUTH_ID == deletedId) {
+            removeAuthpRelation.push({id:auth.id, is_selected_role:false, is_selected:false});
+          }
+      });
+    });
+    this.store.dispatch(new userAuthorizationActions.RemoveSelectedRoleAuthRelation(removeAuthpRelation));
   }
 
 }
