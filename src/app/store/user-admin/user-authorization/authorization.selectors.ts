@@ -29,7 +29,7 @@ export const selectAuthId = createSelector(
     fromUserAuthorization.getSelectedAuthId
   );
 
-export const selectCurrentUserMemberShip = createSelector(
+export const selectCurrentAuth = createSelector(
     selectAuthorizationEntities,
     selectAuthId,
     (AuthorizationEntities, AuthorizationId) => AuthorizationEntities[AuthorizationId]

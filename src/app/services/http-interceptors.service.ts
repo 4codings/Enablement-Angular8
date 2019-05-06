@@ -15,7 +15,7 @@ export class HttpInterceptorsService implements HttpInterceptor {
 
     if(sessiondata.TOKEN){
       const cloned = request.clone({
-        headers: request.headers.set("authorization", `Bearer ${sessiondata.TOKEN}`)
+        headers: request.headers.set("Authorization", `Bearer ${sessiondata.TOKEN}`)
       });
       return next.handle(cloned);
     } else {

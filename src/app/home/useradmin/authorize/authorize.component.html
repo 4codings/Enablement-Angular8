@@ -4,7 +4,7 @@
       <strong>Authorization</strong>
   <mat-list  class="scroll">
   <mat-list-item class="list_item" (click)="authData(authorize);showAuthData(authorize);selected(i)"  *ngFor="let authorize of authValues$ | async;let i = index;"  [class.active]="authorize.selected == true">
-  <div>{{authorize.AUTH_CD}}</div>
+  <div>{{authorize.V_AUTH_CD}}</div>
   </mat-list-item>
   </mat-list>
     </div>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClientModule,HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { StorageSessionService } from './storage-session.service';
 import {Http} from '@angular/http';
 import {Globals} from './globals';

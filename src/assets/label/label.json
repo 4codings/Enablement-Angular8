@@ -43,23 +43,25 @@
 		"process":"Process",
 		"service":"Services",
 
-		"available_user":"Available User",
+		"available_user":"Users",
 		"user_name":"User Name",
 		"user_description":"User Description",
 		"current_status":"Current Status",
 		
 		"Av_group":"Available Group",
-		"Group":"Group",
+		"Group":"Groups",
 		"Grp_dscr":"Group Description",
 		"st_date":"Effective Start Date and Time",
 		"en_date":"Effective End Date and Time",
 		
 		"available_role":"Available Role",
-		"role":"Role",
+		"role":"Roles",
 		"role_descripton":"Role Description",
 		"log_password":"Provide Password that you want to use",
 		"log_name":"Provide your email  id",
 		"log_reset":"Reset Password",
+		"Auth":"Authorization",
+		"Auth_dec":"Authorization Description",
 	
 		"add_btn":"Add",
 		"dlt_btn":"Delete",
@@ -70,6 +72,7 @@
 		"executeNow_btn":"Execute Now",
 		"schedule_btn":"Schedule",
 		"executeLater_btn":"Execute Later",
+		"submit_btn":"Submit",
 
 		"RM_NMBR":"Room No", 
 		"RCK_NMBR":"Rack No", 

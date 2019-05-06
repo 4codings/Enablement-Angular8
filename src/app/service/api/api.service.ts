@@ -82,7 +82,7 @@ export class ApiService {
 		this.setAuthHeader();
 		this.http.post(
 			this.endPoints.sessionRefresh,
-			{ V_USR_NM: this.globals.currentUser.USR_NM },
+			{ V_USR_NM: JSON.parse(sessionStorage.getItem('u')).USR_NM },
 			{ headers: this.authHeader }
 		).subscribe();
 	}
@@ -91,7 +91,7 @@ export class ApiService {
 		this.setAuthHeader();
 		this.http.post(
 			this.endPoints.logout,
-			{ V_USR_NM: this.globals.currentUser.USR_NM },
+			{ V_USR_NM: JSON.parse(sessionStorage.getItem('u')).USR_NM },
 			{ headers: this.authHeader }
 		).subscribe();
 	}
@@ -118,9 +118,9 @@ export class ApiService {
 	
 	setHeaders() {
 		const headers = new Headers();
-		//headers.append('Content-Type', 'application/json');
+		headers.append('Content-Type', 'application/json');
 		//headers.append('Access-Control-Allow-Origin', '*');
-
+        headers.append('Authorization', `Bearer ${JSON.parse(sessionStorage.getItem('u')).TOKEN}`)
 		const options = new RequestOptions({ headers: headers });
 		return options;
 	}

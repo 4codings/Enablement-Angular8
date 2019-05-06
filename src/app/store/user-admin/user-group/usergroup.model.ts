@@ -5,7 +5,7 @@ export interface userGroup {
     V_ROLE_ID: Array<any>;
     V_USR_GRP_CD: string;
     V_USR_GRP_DSC: string;
-    V_USR_GRP_ID: "132";
+    V_USR_GRP_ID: string;
     V_USR_ID: Array<any>;
     id: string;
     is_selected: boolean;

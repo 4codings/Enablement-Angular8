@@ -39,7 +39,7 @@
   <div fxFlex="10" ></div>
   
   <div fxFlex="30" style="text-align: center;">
-      <strong><!--{{Label['available_user']}}--> Users</strong>
+      <strong>{{Label['available_user']}}</strong>
       <mat-list class="scroll">
         <mat-list-item  class="sd list_item"  *ngFor="let u of users$ | async; let i = index;"  [class.active]="i == selecteduser || u.is_selected_usr_grp == true">
           <div fxLayout="row">
@@ -64,7 +64,7 @@
   </div>
   <div fxFlex="3" ></div>
   <div fxFlex="30" style="text-align: center;">
-      <strong><!---{{Label['Group']}}--> Groups</strong>
+      <strong>{{Label['Group']}}</strong>
       <mat-list class="scroll">
         <mat-list-item  class="list_item"  *ngFor="let g of groups$ | async; let j = index;"  [class.active]="j == selectedgroup || g.is_selected_user == true">
             <div fxLayout="row">
@@ -98,7 +98,7 @@
   <div  fxFlex="30">
   <br /> <br /> <br />
     <!-- <button mat-raised-button (click)="AddGroupTL()" color="primary"><mat-icon>play_arrow</mat-icon> {{Label['execute_btn']}}</button> -->
-    <button mat-raised-button color="primary" [disabled]="enableSubmitButton()" (click)="submitMemberShip()"><mat-icon>move_to_inbox</mat-icon> <!--{{Label['include_btn']}}--> Submit</button>
+    <button mat-raised-button color="primary" [disabled]="enableSubmitButton()" (click)="submitMemberShip()"><mat-icon>move_to_inbox</mat-icon>{{Label['submit_btn']}}</button>
   </div>
 </div>
 

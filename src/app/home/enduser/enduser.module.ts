@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { ModalModule } from 'ngx-bootstrap/modal';
 
@@ -57,7 +56,6 @@ import { DeleteConfirmComponent } from './execute/delete-confirm/delete-confirm.
     EnduserRoutingModule,
     SharedModule,
     HeaderModule,
-    HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     NgbModule,

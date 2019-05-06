@@ -5,7 +5,6 @@ import { HomeRoutingModule } from './home-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { MatIconModule } from '@angular/material';
 import { HttpModule } from '@angular/http';
-import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { SplitFormsPipe } from '../split-forms.pipe';
 
@@ -16,7 +15,6 @@ import { SplitFormsPipe } from '../split-forms.pipe';
     CommonModule,
     SharedModule,
     HomeRoutingModule,
-    HttpClientModule,
     HttpModule,
     FormsModule
   ],

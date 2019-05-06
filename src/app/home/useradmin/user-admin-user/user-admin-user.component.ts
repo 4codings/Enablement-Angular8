@@ -83,7 +83,7 @@ export class UserAdminUserComponent implements OnInit {
   ) {
     // Label get service
     this.noAuthData.getJSON().subscribe(data => {
-      console.log(data);
+      //console.log(data);
       this.Label = data;
     });
   }
@@ -120,7 +120,7 @@ export class UserAdminUserComponent implements OnInit {
     this.users$.subscribe(data => {
       if (data.length) {
         const newArray = data.filter(item => item.V_USR_NM == usr);
-        console.log(newArray);
+        //console.log(newArray);
         this.addBtn = newArray.length == 0 ? false : true;
       }
     });

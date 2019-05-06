@@ -95,7 +95,7 @@ export function userRoleReducer(state = initialState, action: UserRoleActions.Ac
 
         case UserRoleActions.DELETE_USER_ROLE_SUCCESS:
         if(action.res[0].RESULT == "ROLE DELETED SUCCESSFULLY") {
-            console.log(action.payload.id)
+            //console.log(action.payload.id)
             return adapter.removeOne(action.payload.id, {
                 ...state,
                 loading: false,

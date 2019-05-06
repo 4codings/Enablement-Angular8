@@ -25,25 +25,30 @@ export class AuthorizeComponent implements OnInit {
   didLoaded$: Observable<boolean>;
   selecteduser: string;
   authD = new data;
+  V_SRC_CD_DATA;
+
   constructor(
     public noAuthData: NoAuthDataService,
     private store: Store<AppState>
   ) {
     // Label get service
     this.noAuthData.getJSON().subscribe(data => {
-      console.log(data);
+      //console.log(data);
       this.Label = data;
     });
   }
 
   ngOnInit() {
-    this.store.dispatch(new authActions.getAuth());
+    this.V_SRC_CD_DATA = {
+      V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
+    };
+    this.store.dispatch(new authActions.getAuth(this.V_SRC_CD_DATA));
     this.authValues$ = this.store.pipe(select(authSelectors.selectAllAutorizationvalues));
     this.error$ = this.store.pipe(select(authSelectors.getErrors));
     this.didLoading$ = this.store.pipe(select(authSelectors.getLoading));
     this.didLoaded$ = this.store.pipe(select(authSelectors.getLoaded));
     this.authValues$.subscribe(data => {
-      console.log('Auth', data);
+      //console.log('Auth', data);
     });
   }
   selected(index) {
@@ -61,12 +66,12 @@ export class AuthorizeComponent implements OnInit {
   authData(auth) {
   this.authValues$.subscribe(data => {
   this.updateBtn = data.filter(s => s.AUTH_CD == auth).length > 0 ? true : false;
-  console.log(this.updateBtn);
+  //console.log(this.updateBtn);
     // }
   });
   }
   checkUncheck(str) {
-    console.log(str);
+    //console.log(str);
     switch (str) {
       case 'Read': {
         this.authD.read_select = !this.authD.read_select;
@@ -98,27 +103,27 @@ export class AuthorizeComponent implements OnInit {
 
 export class data {
   APP_ID: number;
-AUTH_CD: string;
-AUTH_DSC: string;
-AUTH_FLD: number;
-ROLE_ID: any;
-AUTH_ID: number;
-CREATE: string;
-create_select: boolean;
+  AUTH_CD: string;
+  AUTH_DSC: string;
+  AUTH_FLD: number;
+  ROLE_ID: any;
+  AUTH_ID: number;
+  CREATE: string;
+  create_select: boolean;
 
-DELETE: string;
-delete_select: boolean;
+  DELETE: string;
+  delete_select: boolean;
 
-EXECUTE: string;
-execute_select: boolean;
+  EXECUTE: string;
+  execute_select: boolean;
 
-READ: string;
-read_select: boolean;
+  READ: string;
+  read_select: boolean;
 
-UPDATE: string;
-update_select: boolean;
+  UPDATE: string;
+  update_select: boolean;
 
-id: number;
-is_selected: boolean;
-is_selected_role: boolean;
+  id: number;
+  is_selected: boolean;
+  is_selected_role: boolean;
 }
