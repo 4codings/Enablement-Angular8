@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Router,ActivatedRoute } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import { UserService } from 'src/app/core/user.service';
 
 
@@ -10,36 +10,36 @@ import { UserService } from 'src/app/core/user.service';
   // styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  options:any=[];
-  showprofilebtn:boolean=true;
-  public userName:string = '';
-  public agency:string = '';
-  public index:any;
+  options: any = [];
+  showprofilebtn: boolean = true;
+  public userName: string = '';
+  public agency: string = '';
+  public index: any;
   constructor(
-    private route: ActivatedRoute, 
+    private route: ActivatedRoute,
     private router: Router,
-    private userService:UserService
+    private userService: UserService
   ) {
-     this.index = this.userName.indexOf('@');
-     this.userName = this.userName.substring(0,this.index).toUpperCase();
-    if(this.userName == undefined){
-      this.router.navigate(['']);
+    this.index = this.userName.indexOf('@');
+    this.userName = this.userName.substring(0, this.index).toUpperCase();
+    if (this.userName == undefined) {
+      this.router.navigate([''], { skipLocationChange: true });
     }
   }
-  switchprofile(){
-    this.router.navigateByUrl('user', {skipLocationChange:true});
+  switchprofile() {
+    this.router.navigateByUrl('/user', { skipLocationChange: true });
   }
   ngOnInit() {
-    this.userName = this.userService.getDetailFromStorage(). SRC_CD;
-    this.agency = this.userService.getDetailFromStorage(). SRC_CD;
+    this.userName = this.userService.getDetailFromStorage().SRC_CD;
+    this.agency = this.userService.getDetailFromStorage().SRC_CD;
     //this.options=this.StorageSessionService.getLocalS("profileopt");
-    if(this.options)this.options.length==0 ? this.showprofilebtn=false:this.showprofilebtn=true;
+    if (this.options) this.options.length == 0 ? this.showprofilebtn = false : this.showprofilebtn = true;
 
   }
 
-  logout(){
+  logout() {
     this.userService.clear();
-    this.router.navigateByUrl('/auth/login', {skipLocationChange:true});
+    this.router.navigateByUrl('/auth/login', { skipLocationChange: true });
   }
 
 }

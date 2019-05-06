@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Http, Headers, RequestOptions, RequestMethod } from '@angular/http';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Chart } from 'chart.js';
 import { DialogScheduleComponent } from './dialog-schedule/dialog-schedule.component';
 // import { FieldConfig } from '../../dynamic-form/models/field-config.interface';
@@ -151,14 +151,30 @@ export class ExecuteComponent implements OnInit {
       scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     return { top: rect.top + scrollTop, left: rect.left + scrollLeft };
   }
-
+  navigationSubscription;
   constructor(private router: Router, private http: HttpClient, private https: Http, private StorageSessionService: StorageSessionService,
     private data: ConfigServiceService, public dialog: MatDialog, private app: HomeComponent,
     private PFrame: EnduserComponent, private roll: RollserviceService, public snackBar: MatSnackBar,
     private wSocket: WebSocketService, private msg: GetMessageService, private globals: Globals, private globarUser: Globals2,
-    private apiservice: ApiService
+    private apiservice: ApiService, private activatedRoute: ActivatedRoute
   ) {
+    this.navigationSubscription = this.router.events.subscribe((e: any) => {
+      if (e instanceof NavigationEnd) {
+        this.router.navigated = false;
+        window.scrollTo(0, 0);
+        this.initialiseInvites();
+      }
+    });
     this.onResize();
+  }
+
+  initialiseInvites() {
+    this.ngOnInit();
+  }
+  ngOnDestroy() {
+    if (this.navigationSubscription) {
+      this.navigationSubscription.unsubscribe();
+    }
   }
   repeatProcess() {
     this.router.navigateByUrl('repeat', { skipLocationChange: true });
@@ -821,7 +837,8 @@ export class ExecuteComponent implements OnInit {
           this.Execute_res_data = res.json();
           this.StorageSessionService.setCookies('executeresdata', this.Execute_res_data);
           // (this.Execute_res_data);
-          this.PFrame.display_page = false;
+          // 6th may made false to true
+          this.PFrame.display_page = true;
           // (this.Execute_res_data);
           this.GenerateReportTable();
         });
@@ -967,7 +984,7 @@ export class ExecuteComponent implements OnInit {
             //   this.router.navigateByUrl('reportTable');
             // }
           } else {
-            location.reload();
+            this.router.navigate(['End_User/Execute'], { queryParams: { page: 1 }, skipLocationChange: true });
           }
         }
       );

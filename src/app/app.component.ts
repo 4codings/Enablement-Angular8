@@ -13,12 +13,14 @@ export class AppComponent implements OnInit {
   constructor(
     // private /api: ApiSdkService,
     private router: Router
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     // this.api.http.apiUrl = environment.apiUrl;
+    this.router.navigateByUrl('/user', { skipLocationChange: true });
 
-    this.initHomeRedirect();
+    // this.initHomeRedirect();
   }
 
   /**
