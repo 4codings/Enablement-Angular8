@@ -113,7 +113,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 // import { Component, OnInit,ViewContainerRef } from '@angular/core';
 // import{RouterModule,Route} from '@angular/router';
 // import { RouterLink } from '@angular/router/src/directives/router_link';
-// import {HttpClientModule,HttpClient, HttpHeaders} from '@angular/common/http';
+// import { HttpClient, HttpHeaders} from '@angular/common/http';
 // import { Http,Response,Headers } from '@angular/http';
 // import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 

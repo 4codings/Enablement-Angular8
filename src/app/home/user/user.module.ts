@@ -7,7 +7,6 @@ import { UserEffects } from 'src/app/store/user-admin/user/user.effects';
 import { UserGroupEffects } from 'src/app/store/user-admin/user-group/usergroup.effects';
 import { ProfileComponent } from './profile/profile.component';
 import { MatIconModule, MatCardModule } from '@angular/material';
-import { HttpClientModule } from '@angular/common/http';
 import { UserRoleEffects } from 'src/app/store/user-admin/user-role/userrole.effects';
 import { UserMembershipEffects } from 'src/app/store/user-admin/user-membership/usermembership.effects';
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -21,7 +20,6 @@ import { HeaderModule } from '../header/header.module';
     MatIconModule,
     CommonModule,
     UserRoutingModule,
-    HttpClientModule,
     SharedModule,
     FlexLayoutModule,
     HeaderModule,

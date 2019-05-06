@@ -118,9 +118,9 @@ export class ApiService {
 	
 	setHeaders() {
 		const headers = new Headers();
-		//headers.append('Content-Type', 'application/json');
+		headers.append('Content-Type', 'application/json');
 		//headers.append('Access-Control-Allow-Origin', '*');
-
+        headers.append('Authorization', `Bearer ${JSON.parse(sessionStorage.getItem('u')).TOKEN}`)
 		const options = new RequestOptions({ headers: headers });
 		return options;
 	}
