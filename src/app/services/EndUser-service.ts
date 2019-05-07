@@ -82,10 +82,10 @@ export class EndUserService {
     processCancel(V_SRVC_ID, V_PRCS_TXN_ID, V_UNIQUE_ID) {
         ('process Cancel call');
 
-        const url = `https://${this.globals.domain_name + this.globals.Path}/v${this.globals.Version}/securedJSON?V_SRC_ID=${V_SRVC_ID}&V_USR_ID=${this.globals2.currentUser.USR_ID}&V_PRCS_TXN_ID=${V_PRCS_TXN_ID}&V_UNIQUE_ID=${V_UNIQUE_ID}&REST_Service=ProcessCancel&Verb=DELETE`;
+        const url = `https://${this.globals.domain_name + this.globals.Path}/v${this.globals.Version}/securedJSON?V_SRC_ID=${V_SRVC_ID}&V_USR_ID=${JSON.parse(sessionStorage.getItem('u')).USR_ID}&V_PRCS_TXN_ID=${V_PRCS_TXN_ID}&V_UNIQUE_ID=${V_UNIQUE_ID}&REST_Service=ProcessCancel&Verb=DELETE`;
 
         const headers = new Headers({
-            Authorization: `Bearer ${this.globals2.currentUser.TOKEN}`
+            Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('u')).TOKEN}`
         });
         const options = new RequestOptions({ headers: headers });
         return this.http.delete(url, options);
