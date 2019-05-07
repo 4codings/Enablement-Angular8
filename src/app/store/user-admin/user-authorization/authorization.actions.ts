@@ -20,7 +20,7 @@ export class getAuth implements Action {
 export class getAuthSuccess implements Action {
     readonly type = GET_AUTH_SUCCESS;
     constructor(public payload: AuthorizationData[]) {
-        console.log('authorization', payload);
+      //console.log('authorization', payload);
     }
 }
 

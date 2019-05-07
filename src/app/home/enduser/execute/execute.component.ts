@@ -910,7 +910,7 @@ export class ExecuteComponent implements OnInit {
       V_PRCS_TXN_ID: this.Execute_res_data['V_PRCS_TXN_ID'],
       // V_NAV_DIRECTION: this.Execute_res_data['V_NAV_DIRECTION'],
       // V_TIMEOUT_SEC: this.globals.TIMEOUT_IN_SECONDS,
-      V_USR_ID: this.globarUser.currentUser.USR_ID,
+      V_USR_ID: JSON.parse(sessionStorage.getItem('u')).USR_ID,
       // V_DSPLY_WAIT_SEC: 100,
       // V_MNL_WAIT_SEC: 180,
       REST_Service: 'Report',
