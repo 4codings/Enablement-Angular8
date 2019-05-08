@@ -1,3 +1,162 @@
-<p>
-  deploymentsnavbar works!
-</p>
+<div flex fxLayout="column" fxLayout.lt-sm="column">
+
+    <nav class="navbar ">
+
+
+        <!-- For Mobile Screen -->
+        <div fxHide="true" fxShow.xs="true">
+            <mat-nav-list>
+
+                <button matTooltip="Status" matTooltipPosition='below' mat-icon-button>
+                    <a [routerLink]="['AppDeploy']" routerLinkActive="active" skipLocationChange class="nav-link">
+                        <mat-icon class="iconmod shwmaticon">search</mat-icon>
+                        <mat-icon class="iconmod shwsvgicon" svgIcon="search"></mat-icon>
+                    </a>
+                </button>
+                <button matTooltip="Install" matTooltipPosition='below' mat-icon-button>
+                    <a [routerLink]="['Install']" routerLinkActive="active" skipLocationChange class="nav-link">
+                        <mat-icon class="iconmod shwmaticon">refresh</mat-icon>
+                        <mat-icon class="iconmod shwsvgicon" svgIcon="refresh"></mat-icon>
+                    </a>
+                </button>
+                <button matTooltip="Machine Connection" matTooltipPosition='below' mat-icon-button>
+                    <a [routerLink]="['Machineconnection']" routerLinkActive="active" skipLocationChange class="nav-link">
+                        <mat-icon class="iconmod shwmaticon">swap_horiz</mat-icon>
+                        <mat-icon class="iconmod shwsvgicon" svgIcon="swap_horiz"></mat-icon>
+                    </a>
+                </button>
+                <button matTooltip="Deployment" matTooltipPosition='below' mat-icon-button>
+                    <a [routerLink]="['Deployment']" routerLinkActive="active" skipLocationChange class="nav-link">
+                        <mat-icon class="iconmod shwmaticon">cloud_upload</mat-icon>
+                        <mat-icon class="iconmod shwsvgicon" svgIcon="cloud_upload"></mat-icon>
+                    </a>
+                </button>
+                <button matTooltip="Connection" matTooltipPosition='below' mat-icon-button>
+                    <a [routerLink]="['Connection']" routerLinkActive="active" skipLocationChange class="nav-link">
+                        <mat-icon class="iconmod shwmaticon">insert_link</mat-icon>
+                        <mat-icon class="iconmod shwsvgicon" svgIcon="insert_link"></mat-icon>
+                    </a>
+                </button>
+                <button matTooltip="Machine" matTooltipPosition='below' mat-icon-button>
+                    <a [routerLink]="['Machine']" routerLinkActive="active" skipLocationChange class="nav-link">
+                        <mat-icon class="iconmod shwmaticon" svgIcon="machines"></mat-icon>
+                        <mat-icon class="iconmod shwsvgicon" svgIcon="machines2"></mat-icon>
+                    </a>
+                </button>
+                <button matTooltip="Machine Specs" matTooltipPosition='below' mat-icon-button>
+                    <a [routerLink]="['Machinespecs']" routerLinkActive="active" skipLocationChange class="nav-link">
+                        <mat-icon class="iconmod shwmaticon">build</mat-icon>
+                        <mat-icon class="iconmod shwsvgicon" svgIcon="build"></mat-icon>
+                    </a>
+                </button>
+                <button matTooltip="Platform" matTooltipPosition='below' mat-icon-button>
+                    <a [routerLink]="['Platform']" routerLinkActive="active" skipLocationChange class="nav-link">
+                        <mat-icon class="iconmod shwmaticon">developer_mode</mat-icon>
+                        <mat-icon class="iconmod shwsvgicon" svgIcon="developer_mode"></mat-icon>
+                    </a>
+                </button>
+            </mat-nav-list>
+        </div>
+        <!-- For Desktop Screen -->
+        <div fxHide="true" fxShow.gt-sm="true">
+            <mat-nav-list>
+
+                <button mat-raised-button>
+                    <a [routerLink]="['AppDeploy']" routerLinkActive="active" skipLocationChange class="nav-link">
+                        <mat-icon class="iconmod shwmaticon">search</mat-icon>
+                        <mat-icon class="iconmod shwsvgicon deskicon" svgIcon="search"></mat-icon>Status</a>
+                </button>
+                <button mat-raised-button>
+                    <a [routerLink]="['Install']" routerLinkActive="active" skipLocationChange class="nav-link">
+                        <mat-icon class="iconmod shwmaticon">refresh</mat-icon>
+                        <mat-icon class="iconmod shwsvgicon deskicon" svgIcon="refresh"></mat-icon>Install</a>
+                </button>
+                <button mat-raised-button>
+                    <a [routerLink]="['Machineconnection']" routerLinkActive="active" skipLocationChange class="nav-link">
+                        <mat-icon class="iconmod shwmaticon">swap_horiz</mat-icon>
+                        <mat-icon class="iconmod shwsvgicon deskicon" svgIcon="swap_horiz"></mat-icon>Machine Connection</a>
+                </button>
+                <button mat-raised-button>
+                    <a [routerLink]="['Deployment']" routerLinkActive="active" skipLocationChange class="nav-link">
+                        <mat-icon class="iconmod shwmaticon">cloud_upload</mat-icon>
+                        <mat-icon class="iconmod shwsvgicon deskicon" svgIcon="cloud_upload"></mat-icon>Deployment</a>
+                </button>
+                <button mat-raised-button>
+                    <a [routerLink]="['Connection']" routerLinkActive="active" skipLocationChange class="nav-link">
+                        <mat-icon class="iconmod shwmaticon">insert_link</mat-icon>
+                        <mat-icon class="iconmod shwsvgicon deskicon" svgIcon="insert_link"></mat-icon>Connection</a>
+                </button>
+                <button mat-raised-button>
+                    <a [routerLink]="['Machine']" routerLinkActive="active" skipLocationChange class="nav-link">
+                        <mat-icon class="iconmod shwmaticon" svgIcon="machines"></mat-icon>
+                        <mat-icon class="iconmod shwsvgicon deskicon" svgIcon="machines2"></mat-icon>Machine</a>
+                </button>
+                <button mat-raised-button>
+                    <a [routerLink]="['Machinespecs']" routerLinkActive="active" skipLocationChange class="nav-link">
+                        <mat-icon class="iconmod shwmaticon">build</mat-icon>
+                        <mat-icon class="iconmod shwsvgicon deskicon" svgIcon="build"></mat-icon>Machine Specs</a>
+                </button>
+                <button mat-raised-button>
+                    <a [routerLink]="['Platform']" routerLinkActive="active" skipLocationChange class="nav-link">
+                        <mat-icon class="iconmod shwmaticon">developer_mode</mat-icon>
+                        <mat-icon class="iconmod shwsvgicon deskicon" svgIcon="developer_mode"></mat-icon>Platform</a>
+                </button>
+            </mat-nav-list>
+        </div>
+        <!-- For Tab Screen -->
+        <div fxHide="true" fxShow.sm="true">
+            <mat-nav-list>
+
+                <button matTooltip="Status" matTooltipPosition='below' mat-mini-fab>
+                    <a [routerLink]="['AppDeploy']" routerLinkActive="active" skipLocationChange class="nav-link">
+                        <mat-icon class="iconmod shwmaticon">search</mat-icon>
+                        <mat-icon class="iconmod shwsvgicon" svgIcon="search"></mat-icon>
+                    </a>
+                </button>
+                <button  matTooltipPosition='below' mat-mini-fab>
+                    <a [routerLink]="['Install']" routerLinkActive="active" skipLocationChange class="nav-link">
+                        <mat-icon class="iconmod shwmaticon">refresh</mat-icon>
+                        <mat-icon class="iconmod shwsvgicon" svgIcon="refresh"></mat-icon>
+                    </a>
+                </button>
+                <button  matTooltipPosition='below' mat-mini-fab>
+                    <a [routerLink]="['Machineconnection']" routerLinkActive="active" skipLocationChange class="nav-link">
+                        <mat-icon class="iconmod shwmaticon">swap_horiz</mat-icon>
+                        <mat-icon class="iconmod shwsvgicon" svgIcon="swap_horiz"></mat-icon>
+                    </a>
+                </button>
+                <button matTooltip="Deployment" matTooltipPosition='below' mat-mini-fab>
+                    <a [routerLink]="['Deployment']" routerLinkActive="active" skipLocationChange class="nav-link">
+                        <mat-icon class="iconmod shwmaticon">cloud_upload</mat-icon>
+                        <mat-icon class="iconmod shwsvgicon" svgIcon="cloud_upload"></mat-icon>
+                    </a>
+                </button>
+                <button [routerLink]="['Connection']" matTooltipPosition='below' mat-mini-fab>
+                    <a routerLink="/connection" routerLinkActive="active" skipLocationChange class="nav-link">
+                        <mat-icon class="iconmod shwmaticon">insert_link</mat-icon>
+                        <mat-icon class="iconmod shwsvgicon" svgIcon="insert_link"></mat-icon>
+                    </a>
+                </button>
+                <button matTooltip="Machine" matTooltipPosition='below' mat-mini-fab>
+                    <a [routerLink]="['Machine']" routerLinkActive="active" skipLocationChange class="nav-link">
+                        <mat-icon class="iconmod shwmaticon" svgIcon="machines"></mat-icon>
+                        <mat-icon class="iconmod shwsvgicon" svgIcon="machines2"></mat-icon>
+                    </a>
+                </button>
+                <button matTooltip="Machine Specs" matTooltipPosition='below' mat-mini-fab>
+                    <a [routerLink]="['Machinespecs']" routerLinkActive="active" skipLocationChange class="nav-link">
+                        <mat-icon class="iconmod shwmaticon">build</mat-icon>
+                        <mat-icon class="iconmod shwsvgicon" svgIcon="build"></mat-icon>
+                    </a>
+                </button>
+                <button matTooltip="Platform" matTooltipPosition='below' mat-mini-fab>
+                    <a [routerLink]="['Platform']" routerLinkActive="active" skipLocationChange class="nav-link">
+                        <mat-icon class="iconmod shwmaticon">developer_mode</mat-icon>
+                        <mat-icon class="iconmod shwsvgicon" svgIcon="developer_mode"></mat-icon>
+                    </a>
+                </button>
+            </mat-nav-list>
+        </div>
+
+    </nav>
+</div>

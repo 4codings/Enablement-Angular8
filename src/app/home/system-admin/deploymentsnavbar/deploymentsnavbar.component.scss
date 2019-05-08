@@ -1,0 +1,67 @@
+.mat-raised-button{
+  padding:0%;
+  margin-left: 8px;
+  background: linear-gradient(#ccc, gray);
+  color: rgb(233, 233, 233);
+  border:1px solid gray;
+  border-radius: 5px;
+  width:130px;
+  margin-top:4px;
+  margin-bottom:4px;
+}
+.mat-mini-fab,.mat-icon-button{
+  text-align:center;
+  padding:0%;
+  margin-left: 18px;
+  background-color: rgba(105, 105, 105, 0.562);
+  color: rgb(233, 233, 233);
+  
+}
+@media only screen and (max-width: 600px){
+  .mat-mini-fab,.mat-icon-button{
+    text-align:center;
+    padding:0%;
+    margin-left: 0px;
+    background-color: rgba(105, 105, 105, 0.562);
+    color: rgb(233, 233, 233);
+    
+  } 
+}
+
+button:active{
+  transform: scale3d(0.9,0.9,0.9);
+}
+mat-nav-list{
+  padding-top:0.015rem;
+  
+}
+.active.nav-link .shwsvgicon{
+  display:inline-block;
+ /* color: rgba(0,0,0,0.6); */
+  }
+ .active.nav-link .shwmaticon{
+  display:none;
+  /* color: rgba(0,0,0,0.6);  */
+  }    
+  
+.iconmod{
+  vertical-align: middle;
+}
+.deskicon{
+   vertical-align: middle;
+   padding-right:5px   
+}
+.nav-link .shwsvgicon{
+display:none;
+}
+.nav-link:hover .shwmaticon,
+.nav-link:active .shwmaticon{
+  display: none;
+}
+.nav-link:hover .shwsvgicon,
+.nav-link:active .shwsvgicon{
+  display: inline-block;
+}
+
+
+

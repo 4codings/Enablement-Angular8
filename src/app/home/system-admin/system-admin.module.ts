@@ -13,6 +13,7 @@ import { MachineComponent } from './machine/machine.component';
 import { MachineconnectionComponent } from './machineconnection/machineconnection.component';
 import { MachinespecsComponent } from './machinespecs/machinespecs.component';
 import { HeaderModule } from '../header/header.module';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [SystemAdminComponent, PlatformComponent, ConnectionComponent, DeployStatusComponent, DeploymentComponent, DeploymentsnavbarComponent, InstallComponent, MachineComponent, MachineconnectionComponent, MachinespecsComponent],
@@ -20,7 +21,9 @@ import { HeaderModule } from '../header/header.module';
     CommonModule,
     SystemAdminRoutingModule,
     SharedModule,
-    HeaderModule
+    HeaderModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class SystemAdminModule { }
