@@ -9,7 +9,6 @@ import { ProfileComponent } from './profile/profile.component';
 const routes: Routes = [
     {path: 'profile', component: UserComponent},
     {path: '', component: ProfileComponent},
-    // {path: ':id/edit', component: EditComponent},
 ];
 
 @NgModule({
