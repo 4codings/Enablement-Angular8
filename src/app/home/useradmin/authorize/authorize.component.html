@@ -1,31 +1,89 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col">
-      <strong>Authorization</strong>
-  <mat-list  class="scroll">
-  <mat-list-item class="list_item" (click)="authData(authorize);showAuthData(authorize);selected(i)"  *ngFor="let authorize of authValues$ | async;let i = index;"  [class.active]="authorize.selected == true">
-  <div>{{authorize.V_AUTH_CD}}</div>
-  </mat-list-item>
-  </mat-list>
-    </div>
-    <div class="col">
-      <strong>{{updateBtn}}Authorization Description</strong>
-  <mat-form-field style="width:100%;">
-        <textarea matInput [(ngModel)]="authD.AUTH_DSC" (keyup)="authData(authD.AUTH_DSC)">
+<div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="center start">
+  <div fxFlex="82">
+    <mat-radio-group #matRadioBtn="matRadioGroup" (change)="onItemSelect($event)" value="PROCESS" fxLayout="row"
+      fxLayoutAlign="space-between center">
+      <mat-radio-button *ngFor="let item of radioList" [value]="item">
+        {{item}}
+      </mat-radio-button>
+    </mat-radio-group>
+  </div>
+</div>
+<div fxLayout="row" fxLayoutAlign="center start">
+  <div fxFlex="82">
 
-        </textarea>
-  </mat-form-field>
+    <table style="width: 100%" class="table">
+      <tr>
+        <th>Auth Type</th>
+        <th>Input 1</th>
+        <th *ngIf="matRadioBtn.value === 'PROCESS' ||matRadioBtn.value === 'SERVICE' || matRadioBtn.value === 'EXE' ">
+          Input 2</th>
+        <th *ngIf="matRadioBtn.value === 'SERVICE'">Input 3</th>
+        <th>Create</th>
+        <th>Update</th>
+        <th>Read</th>
+        <th>Delete</th>
+        <th>Execute</th>
+        <!-- <th (click)="uploadBtnClick(template)" *ngIf="CREATE!=='N'" class="addButton">+</th> -->
+      </tr>
+      <tr *ngFor="let authorize of filteredAuthValues;let i = index;">
+        <td>{{authorize.V_AUTH_TYP}}</td>
+        <td></td>
+        <td *ngIf="matRadioBtn.value === 'PROCESS' ||matRadioBtn.value === 'SERVICE' || matRadioBtn.value === 'EXE' ">
+        </td>
+        <td *ngIf="matRadioBtn.value === 'SERVICE'"></td>
+        <td>{{authorize.V_CREATE}}</td>
+        <td>{{authorize.V_UPDATE}}</td>
+        <td>{{authorize.V_READ}}</td>
+        <td>{{authorize.V_DELETE}}</td>
+        <td>{{authorize.V_EXECUTE}}</td>
+      </tr>
+    </table>
+    <hr />
+    <!-- <div class="adventColor" flex fxLayout="row" fxLayoutAlign="center">
 
-  <br/>
-   <input type="checkbox"  [checked]="authD.read_select" (click)="checkUncheck('Read')"/>Read
-      <div fxFlex="3" ></div>
-      <input type="checkbox"  [checked]="authD.delete_select" (click)="checkUncheck('Delete')"/>Delete
-      <div fxFlex="3" ></div>
-      <input type="checkbox"  [checked]="authD.create_select" (click)="checkUncheck('Create')"/>Create
-      <div fxFlex="3" ></div>
-      <input type="checkbox"  [checked]="authD.update_select" (click)="checkUncheck('Update')"/>Update
-      <div fxFlex="3" ></div>
-    </div>
+      <button mat-raised-button (click)="cancelbtn_click();" id="cancel">
+        <mat-icon class="iconmod">clear</mat-icon>End
+      </button>
+      <div flex fxFlex="5"></div>
+
+      <button mat-raised-button (click)="submitbtn_click();" id="submit">
+        <mat-icon class="iconmod">done_all</mat-icon>Submit
+      </button>
+      <div flex fxFlex="5"></div>
+    </div> -->
+
   </div>
 
 </div>
+<!-- <div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <strong>Authorization</strong>
+      <mat-list class="scroll">
+        <mat-list-item class="list_item" (click)="authData(authorize);showAuthData(authorize);selected(i)"
+          *ngFor="let authorize of authValues$ | async;let i = index;" [class.active]="authorize.selected == true">
+          <div>{{authorize.V_AUTH_CD}}</div>
+        </mat-list-item>
+      </mat-list>
+    </div>
+    <div class="col">
+      <strong>{{updateBtn}}Authorization Description</strong>
+      <mat-form-field style="width:100%;">
+        <textarea matInput [(ngModel)]="authD.AUTH_DSC" (keyup)="authData(authD.AUTH_DSC)">
+
+        </textarea>
+      </mat-form-field>
+
+      <br />
+      <input type="checkbox" [checked]="authD.read_select" (click)="checkUncheck('Read')" />Read
+      <div fxFlex="3"></div>
+      <input type="checkbox" [checked]="authD.delete_select" (click)="checkUncheck('Delete')" />Delete
+      <div fxFlex="3"></div>
+      <input type="checkbox" [checked]="authD.create_select" (click)="checkUncheck('Create')" />Create
+      <div fxFlex="3"></div>
+      <input type="checkbox" [checked]="authD.update_select" (click)="checkUncheck('Update')" />Update
+      <div fxFlex="3"></div>
+    </div>
+  </div>
+
+</div> -->
