@@ -253,7 +253,7 @@ export class UseradminService {
     const headers = new Headers();
     //headers.append('Accept','application/json');
     //headers.append('Content-Type','application/json');
-    headers.append('Access-Control-Allow-Origin', '*');
+    //headers.append('Access-Control-Allow-Origin', '*');
     headers.append('Authorization', `Bearer ${JSON.parse(sessionStorage.getItem('u')).TOKEN}`)
     //headers.append('responseType', 'blob')
     //const options = new RequestOptions({ headers: headers });
