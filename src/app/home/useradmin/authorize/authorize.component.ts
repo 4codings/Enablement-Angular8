@@ -6,6 +6,7 @@ import { AppState } from 'src/app/app.state';
 import { Store, select } from '@ngrx/store';
 import * as authActions from '../../../store/user-admin/user-authorization/authorization.actions';
 import * as authSelectors from '../../../store/user-admin//user-authorization/authorization.selectors';
+import { MatRadioChange } from '@angular/material';
 
 @Component({
   selector: 'app-authorize',
@@ -26,7 +27,9 @@ export class AuthorizeComponent implements OnInit {
   selecteduser: string;
   authD = new data;
   V_SRC_CD_DATA;
-
+  radioList = ['PROCESS', 'SERVICE', 'EXE', 'ARTIFACT', 'PLATFORM', 'SERVER', 'SLA'];
+  authValues: AuthorizationData[] = [];
+  filteredAuthValues: AuthorizationData[] = [];
   constructor(
     public noAuthData: NoAuthDataService,
     private store: Store<AppState>
@@ -48,27 +51,32 @@ export class AuthorizeComponent implements OnInit {
     this.didLoading$ = this.store.pipe(select(authSelectors.getLoading));
     this.didLoaded$ = this.store.pipe(select(authSelectors.getLoaded));
     this.authValues$.subscribe(data => {
-      //console.log('Auth', data);
+      this.authValues = data;
+      this.getFilterData(this.radioList[0]);
     });
   }
   selected(index) {
     this.selecteduser = index;
   }
+  getFilterData(data: string) {
+    this.filteredAuthValues = [];
+    this.filteredAuthValues = this.authValues.filter(v => v['V_AUTH_TYP'] === data);
+  }
   showAuthData(authData) {
-   this.authD.AUTH_DSC =  authData.AUTH_DSC;
-   this.authD.create_select = authData.CREATE == 'Y' ? true : false ;
-   this.authD.read_select = authData.READ == 'Y' ? true : false ;
-   this.authD.update_select = authData.UPDATE == 'Y' ? true : false ;
-   this.authD.delete_select = authData.DELETE == 'Y' ? true : false ;
-   this.authD.execute_select = authData.EXECUTE == 'Y' ? true : false ;
+    this.authD.AUTH_DSC = authData.AUTH_DSC;
+    this.authD.create_select = authData.CREATE == 'Y' ? true : false;
+    this.authD.read_select = authData.READ == 'Y' ? true : false;
+    this.authD.update_select = authData.UPDATE == 'Y' ? true : false;
+    this.authD.delete_select = authData.DELETE == 'Y' ? true : false;
+    this.authD.execute_select = authData.EXECUTE == 'Y' ? true : false;
 
   }
   authData(auth) {
-  this.authValues$.subscribe(data => {
-  this.updateBtn = data.filter(s => s.AUTH_CD == auth).length > 0 ? true : false;
-  //console.log(this.updateBtn);
-    // }
-  });
+    this.authValues$.subscribe(data => {
+      this.updateBtn = data.filter(s => s.AUTH_CD == auth).length > 0 ? true : false;
+      //console.log(this.updateBtn);
+      // }
+    });
   }
   checkUncheck(str) {
     //console.log(str);
@@ -87,17 +95,20 @@ export class AuthorizeComponent implements OnInit {
         this.authD.create_select = !this.authD.create_select;
         this.authD.CREATE = this.authD.create_select ? 'Y' : 'N';
         break;
-     }
-     case 'Update': {
+      }
+      case 'Update': {
         this.authD.update_select = !this.authD.update_select;
         this.authD.UPDATE = this.authD.update_select ? 'Y' : 'N';
         break;
-     }
-      default: {
-         // statements;
-         break;
       }
-   }
+      default: {
+        // statements;
+        break;
+      }
+    }
+  }
+  onItemSelect(event: MatRadioChange) {
+    this.getFilterData(event.value);
   }
 }
 
