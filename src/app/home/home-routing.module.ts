@@ -23,6 +23,10 @@ const routes: Routes = [
       {
         path: 'End_User',
         loadChildren: './enduser/enduser.module#EnduserModule'
+      },
+      {
+        path: 'System_Admin',
+        loadChildren: './system-admin/system-admin.module#SystemAdminModule'
       }
     ],
     canActivate: [IsAuthenticatedGuard]

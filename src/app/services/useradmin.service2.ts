@@ -188,6 +188,7 @@ export class UseradminService {
  just parameter changes
  */
  public downloadFile(fileName:any) {
+   let option = this.setHeaders();
 	  let formData: FormData = new FormData();
     let file:any={};
     file['File_Path']="/opt/tomcat/webapps/BulkDataDownload/";
@@ -196,7 +197,7 @@ export class UseradminService {
     formData.append("FileInfo", JSON.stringify(file));
    
     this.http.post("https://"+this.removeSubDomain(this.domain_name)+"/FileAPIs/api/file/v1/download", 
-	formData,{responseType:ResponseContentType.Blob}).
+	formData, option).
 	subscribe(data =>{
 		  var a = document.createElement("a");
           a.href = URL.createObjectURL(data.blob());
@@ -247,6 +248,18 @@ export class UseradminService {
  public tests(){
 	 
  }
+
+  setHeaders() {
+    const headers = new Headers();
+    //headers.append('Accept','application/json');
+    //headers.append('Content-Type','application/json');
+    //headers.append('Access-Control-Allow-Origin', '*');
+    headers.append('Authorization', `Bearer ${JSON.parse(sessionStorage.getItem('u')).TOKEN}`)
+    //headers.append('responseType', 'blob')
+    //const options = new RequestOptions({ headers: headers });
+    const options = new RequestOptions({ headers: headers, responseType:ResponseContentType.Blob });
+    return options;
+  } 
   //code by manav end
 
 }

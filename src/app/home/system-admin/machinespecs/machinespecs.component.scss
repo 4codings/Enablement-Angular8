@@ -1,19 +1,27 @@
 
-  .scroll {
-    height: 200px;
-    overflow-y: auto;
-    background-color: white;
-    border: 1px solid lightblue;
-  }
-  
 
-  .incwid {
-    width: 100%;
-  }
-  .mat-nav-list
- {
-  display: block;
-  height: 28px;
+  .scroll {
+  height: 230px;
+  overflow-y: auto;
+  background-color: white;
+  border: 1px solid lightblue;
+}
+
+
+
+.incwid {
+  width: 100%;
+}
+.tab {
+  overflow: auto;
+  max-height: 250px;
+  width: auto;
+}
+
+.mat-nav-list
+{
+ display: block;
+ height: 28px;
 }
 .mat-list .mat-list-item , .mat-selection-list .mat-list-option
 {
@@ -21,8 +29,14 @@
     height: 30px;
 }
 .active{
-  background-color:rgba(0,0,0,0.7) !important;
-  color: white;
+ background-color:rgba(0,0,0,0.7) !important;
+ color: white;
+}
+
+mat-form-field{
+  padding-left: 2%;
+  padding-right: 2%;
+  /* width: 75%; */
 }
 ::ng-deep .mat-input-infix{
   background: white;

@@ -1,0 +1,98 @@
+
+<div id="body" fxLayout="row" fxLayout.lt-sm="column">                
+    <div fxFlex="10" ></div>
+        <div fxFlex="80" >
+            
+                <!-- ROW START -->
+                <div flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="row" fxLayout.gt-sm="row">
+
+                  
+
+                  <!-- APPLICATION -->
+                  <div fxFlex="40">
+
+                    <label style="text-align:center;width:100%;"><strong>{{Label['APP_CD']}}</strong></label>
+                    <mat-list *ngIf="desktopView" class="scroll">
+                      <mat-list-item class="list_item" *ngFor="let app of APP_CD" (click)="getProcessCode(app)" [class.active]="app == selectedapp">
+                          <div>{{app}}</div> 
+                      </mat-list-item>
+                    </mat-list>
+                    <mat-form-field class="form_input" *ngIf="mobileView" [floatLabel]="'never'">
+                      <mat-select placeholder="{{Label['APP_CD']}}" [(value)]="SL_APP_CD">
+                        <mat-option style="text-align:center;"  (click)="getProcessCode(app)"  [value]="app" *ngFor="let app of APP_CD">
+                          {{app}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                
+
+                  </div>
+                  <!-- END APPLICATION -->
+                  <div fxFlex="20"> 
+                    
+                    
+                  </div>
+                  
+                  <!-- PROCESS -->
+                  <div fxFlex="40">
+                  <label style="text-align:center;width:100%;"><strong>{{Label['PRCS_CD']}}</strong> </label>
+                  <mat-list *ngIf="desktopView" class="scroll">
+                    <mat-list-item class="list_item" (click)="getServiceCode(prcs)" *ngFor="let prcs of PRCS_CD" [class.active]="prcs == selectedprcs">
+                        <div>{{prcs}}</div> 
+                    </mat-list-item>
+                  </mat-list>
+                    <mat-form-field *ngIf="mobileView" class="form_input" [floatLabel]="'never'">
+                      <mat-select placeholder="{{Label['PRCS_CD']}}" [(value)]="SL_PRCS_CD">
+                        <mat-option style="text-align:center;"  (click)="getServiceCode(prcs)" [value]="prcs" *ngFor="let prcs of PRCS_CD">
+                          {{prcs}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+
+
+                  </div>
+                  <!-- END PROCESS -->
+
+
+                </div>
+                <!-- ROW END -->
+                <!--TABLE START -->
+
+                <!-- _________NEW START________ -->
+
+                <div class="example-container " style="margin-top: 20px;" flex fxLayout="row">
+                  <!-- mat-elevation-z8 -->
+                
+                  <mat-table #table [dataSource]="dataSource" id="table_demo" fxFlex="100">
+                
+                    <!-- Checkbox Column -->
+                    <!-- <ng-container matColumnDef="select">
+                      <mat-header-cell *matHeaderCellDef>
+                        <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
+                        </mat-checkbox>
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let row">
+                        <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+                        </mat-checkbox>
+                      </mat-cell>
+                    </ng-container>
+                 -->
+                    <!-- Position Column -->
+                    <ng-container *ngFor="let x of displayedColumns" matColumnDef="{{x}}">
+                      <mat-header-cell *matHeaderCellDef  > {{x}} </mat-header-cell>
+                      <mat-cell  *matCellDef="let element"> {{element[x]}} </mat-cell>
+                    </ng-container>
+                
+                
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;" >
+                    </mat-row>
+                  </mat-table>
+                </div>
+                <!-- TABLE END -->
+
+             
+        </div>
+</div>

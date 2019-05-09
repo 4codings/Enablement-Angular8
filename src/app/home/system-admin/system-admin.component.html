@@ -1,3 +1,17 @@
-<p>
-  system-admin works!
-</p>
+<div fxLayout="row">
+  <div fxFlex="2"></div>
+  <div fxFlex="96">
+    <mat-card class="CustomeLayout">
+
+        <mat-card-title>
+            <app-header></app-header>
+            <app-deploymentsnavbar></app-deploymentsnavbar>
+        </mat-card-title>
+        <mat-card-content>
+            <router-outlet></router-outlet>
+        </mat-card-content>
+
+    </mat-card>
+  </div>
+  <div fxFlex="2"></div>
+</div>

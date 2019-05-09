@@ -1,0 +1,76 @@
+<div flex fxLayoutGap="30px" fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="row" fxLayout.gt-sm="row">
+  <div flex fxFlex="30">
+    <strong>
+      <label style="text-align:center;width:100%;">{{Label['CXN_TYP']}}</label>
+    </strong>
+    <mat-list *ngIf="desktopView" class="scroll">
+      <mat-list-item class="list_item" *ngFor="let a of con_type;let i = index" (click)="oncontypeselect(i);getconnections(a)"
+        [class.active]="i == selectedcontype">
+        <div>{{a}}</div>
+      </mat-list-item>
+    </mat-list>
+    <mat-form-field *ngIf="mobileView" style="width:100%;text-align: center;" [floatLabel]="'never'">
+      <mat-select style="margin-top:10px;" placeholder="--Select--">
+        <mat-option style="text-align:center;" (click)="oncontypeselect(i);getconnections(a);" *ngFor="let a of con_type;let i = index;"
+          [value]="a">{{a}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div flex fxFlex="30">
+    <label style="text-align:center;width:100%;">
+      <strong>{{Label['PLATFORM_CD']}}</strong>
+    </label>
+    <mat-list *ngIf="desktopView" class="scroll">
+      <mat-list-item class="list_item" *ngFor="let b of machines; let j = index" (click)="getmachinedesc(b);onmselect(j);" [class.active]="j == selectedmach">
+        <div>{{b}}</div>
+      </mat-list-item>
+    </mat-list>
+    <mat-form-field *ngIf="mobileView" style="width:100%;text-align: center;" [floatLabel]="'never'">
+      <mat-select style="margin-top:10px;" placeholder="--Select--">
+        <mat-option style="text-align:center;" (click)="getmachinedesc(b);onmselect(j);" *ngFor="let b of machines; let j = index;"
+          [value]="b">{{b}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div flex fxFlex="30">
+    <strong>
+      <label style="text-align:center;width:100%;">{{Label['CXN_CD']}}</label>
+    </strong>
+    <mat-list *ngIf="desktopView" class="scroll">
+      <mat-list-item class="list_item" *ngFor="let c of connections; let k = index" (click)="getcondesc(c);onconselect(k);" [class.active]="k == selectedcon">
+        <div>{{c}}</div>
+      </mat-list-item>
+    </mat-list>
+    <mat-form-field *ngIf="mobileView" style="width:100%;text-align: center;" [floatLabel]="'never'">
+      <mat-select style="margin-top:10px;" placeholder="--Select--">
+        <mat-option style="text-align:center;" (click)="getcondesc(c);onconselect(k);" *ngFor="let c of connections; let k = index;"
+          [value]="c">{{c}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+<br>
+<div fxLayoutGap="30px" fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="row" fxLayout.gt-sm="row">
+  <div fxFlex="30"></div>
+  <div fxFlex="30" style="text-align: center;">
+    <label style="margin-bottom: 0;">Machine Description</label>
+    <mat-form-field class="incwid">
+      <textarea matInput [(value)]="m_desc"></textarea>
+    </mat-form-field>
+  </div>
+
+  <div fxFlex="30" style="text-align: center;">
+    <label style="margin-bottom: 0;">Connection Description</label>
+    <mat-form-field class="incwid">
+      <textarea matInput [(value)]="c_desc"></textarea>
+    </mat-form-field>
+  </div>
+</div>
+<br>
+<div flex fxLayout="row" fxLayout.lt-sm="row" fxLayout.sm="row" fxLayout.gt-sm="row" fxLayoutAlign="space-around center">
+  <div fxFlex="60"></div>
+  <button mat-raised-button color="primary" (click)="attach()">
+    <mat-icon>link</mat-icon>Attach</button>
+  <button mat-raised-button color="warn" (click)="detach()">
+    <mat-icon>link_off</mat-icon>Detach</button>
+</div>
