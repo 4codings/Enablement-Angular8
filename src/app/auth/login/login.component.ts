@@ -202,7 +202,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 // }
 
 //  domain_name="enablement.online";
-//  private apiUrlGet = "https://"+this.domain_name+"/rest/E_DB/SP?";
+//  private apiUrlGet = "https://"+this.domain_name+"/rest/v1/secured?";
 // private apiUrlPost = "https://"+this.domain_name+"/";
 // public agcy:boolean = true;
 // public msg:boolean = true;

@@ -58,7 +58,7 @@ export class MytaskComponent implements OnInit {
             }
     }
 
-  domain_name=this.globals.domain_name; private apiUrlGet = "https://"+this.domain_name+"/rest/E_DB/SP?";
+  domain_name=this.globals.domain_name; private apiUrlGet = "https://"+this.domain_name+"/rest/v1/secured?";
   private apiUrlPost = "https://"+this.domain_name+"/rest/Hold/MyTask";
   atxnid: string[];
   srvcd: string[];
@@ -217,7 +217,7 @@ export class MytaskComponent implements OnInit {
   getDropDownListValue(e) {
     this.app.loading = true;
     this.searchResult = [];
-    this.http.get("https://"+this.domain_name+"/rest/E_DB/SP?V_SRC_CD=AWS1&V_APP_CD=Federal%20Contracts&V_PRCS_CD=Federal%20Opportunities&V_PARAM_NM=Type%20of%20Set%20Aside&V_SRVC_CD=Pull%20FPDS%20Contracts&REST_Service=ProcessParametersOptions&Verb=GET")
+    this.http.get("https://"+this.domain_name+"/rest/v1/secured?V_SRC_CD=AWS1&V_APP_CD=Federal%20Contracts&V_PRCS_CD=Federal%20Opportunities&V_PARAM_NM=Type%20of%20Set%20Aside&V_SRVC_CD=Pull%20FPDS%20Contracts&REST_Service=ProcessParametersOptions&Verb=GET")
       .subscribe(
         res => {
           (res[e]);
@@ -231,7 +231,7 @@ export class MytaskComponent implements OnInit {
       let ag=this.StorageSessionService.getSession('agency');
       let ur=this.StorageSessionService.getSession('email');
       this.apiUrlGet+"V_TXN_ID="+this.txnid_sl+"&V_USR_NM="+this.V_USR_NM+"&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=TaskDetail&Verb=GET"
-          this.http.get("https://"+this.domain_name+"/rest/E_DB/SP?V_SRC_CD=AWS1&V_APP_CD=Federal%20Contracts&V_PRCS_CD=Federal%20Opportunities&V_PARAM_NM=Type%20of%20Set%20Aside&V_SRVC_CD=Pull%20FPDS%20Contracts&REST_Service=ProcessParametersOptions&Verb=GET").subscribe(
+          this.http.get("https://"+this.domain_name+"/rest/v1/secured?V_SRC_CD=AWS1&V_APP_CD=Federal%20Contracts&V_PRCS_CD=Federal%20Opportunities&V_PARAM_NM=Type%20of%20Set%20Aside&V_SRVC_CD=Pull%20FPDS%20Contracts&REST_Service=ProcessParametersOptions&Verb=GET").subscribe(
             res=>{
              
             }

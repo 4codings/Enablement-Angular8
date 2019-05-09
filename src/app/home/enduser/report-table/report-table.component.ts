@@ -78,7 +78,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   }
   dataSource = new MatTableDataSource(this.Table_of_Data4);
   columnsToDisplay = [];
-  private apiUrlGet = "https://" + this.domain_name + "/rest/E_DB/SP?";
+  private apiUrlGet = "https://" + this.domain_name + "/rest/v1/secured?";
   ngAfterViewInit() {
 
     this.dataSource.sort = this.sort;

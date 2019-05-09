@@ -38,13 +38,13 @@ export class UseradminService {
   }
 
   AvaiableGroup() {
-    return this.https.get("https://" + this.domain_name + "/rest/E_DB/SP?V_SRC_CD=" + this.V_SRC_CD + "&V_CD_TYP=USR_GRP&REST_Service=Masters&Verb=GET");
+    return this.https.get("https://" + this.domain_name + "/rest/v1/secured?V_SRC_CD=" + this.V_SRC_CD + "&V_CD_TYP=USR_GRP&REST_Service=Masters&Verb=GET");
   }
   getAvailableGroup(V_USR_GRP_CD: AnalyserNode) {
-    return this.https.get("https://" + this.domain_name + "/rest/E_DB/SP?V_USR_GRP_CD=" + V_USR_GRP_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=Group&Verb=GET");
+    return this.https.get("https://" + this.domain_name + "/rest/v1/secured?V_USR_GRP_CD=" + V_USR_GRP_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=Group&Verb=GET");
   }
   Delete(V_USR_GRP_CD: any) {
-    return this.http.get("https://" + this.domain_name + "/rest/E_DB/SP?V_USR_GRP_CD=" + V_USR_GRP_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=Group&Verb=DELETE");
+    return this.http.get("https://" + this.domain_name + "/rest/v1/secured?V_USR_GRP_CD=" + V_USR_GRP_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=Group&Verb=DELETE");
   }
   AddGroup(endDate: any, stDate: any, V_USR_GRP_DSC: any, V_USR_GRP_CD: any) {
     let body = {
@@ -57,16 +57,16 @@ export class UseradminService {
       "REST_Service": ["Group"],
       "Verb": ["PUT"]
     }
-    return this.http.put("https://" + this.domain_name + "/rest/E_DB/SP", body);
+    return this.http.put("https://" + this.domain_name + "/rest/v1/secured", body);
   }
 
   //-------------------------------------ROLL
 
   getRoll() {
-    return this.http.get("https://" + this.domain_name + "/rest/E_DB/SP?V_SRC_CD=" + this.V_SRC_CD + "&V_CD_TYP=ROLE&REST_Service=Masters&Verb=GET");
+    return this.http.get("https://" + this.domain_name + "/rest/v1/secured?V_SRC_CD=" + this.V_SRC_CD + "&V_CD_TYP=ROLE&REST_Service=Masters&Verb=GET");
   }
   getRollDSCR(ROLE_CD: any) {
-    return this.http.get("https://" + this.domain_name + "/rest/E_DB/SP?V_ROLE_CD=" + ROLE_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=Role&Verb=GET");
+    return this.http.get("https://" + this.domain_name + "/rest/v1/secured?V_ROLE_CD=" + ROLE_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=Role&Verb=GET");
   }
   addRoll(V_ROLE_CD: any, V_ROLE_DSC: any) {
     let body = {
@@ -78,21 +78,21 @@ export class UseradminService {
       "Verb": ["PUT"]
     }
 
-    return this.http.put("https://" + this.domain_name + "/rest/E_DB/SP", body);
+    return this.http.put("https://" + this.domain_name + "/rest/v1/secured", body);
   }
   DeleteRoll(V_ROLE_CD: any) {
-    return this.http.get("https://" + this.domain_name + "/rest/E_DB/SP?V_ROLE_CD=" + V_ROLE_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=Role&Verb=DELETE");
+    return this.http.get("https://" + this.domain_name + "/rest/v1/secured?V_ROLE_CD=" + V_ROLE_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=Role&Verb=DELETE");
   }
   //-------------user
   mapUser = new Map();
   getUser() {
-    return this.http.get("https://" + this.domain_name + "/rest/E_DB/SP?V_SRC_CD=" + this.V_SRC_CD + "&V_CD_TYP=USER&REST_Service=Masters&Verb=GET");
+    return this.http.get("https://" + this.domain_name + "/rest/v1/secured?V_SRC_CD=" + this.V_SRC_CD + "&V_CD_TYP=USER&REST_Service=Masters&Verb=GET");
   }
   getUserLable() {
 
   }
   getUSerDetails(USR_NM: any) {
-    return this.http.get("https://" + this.domain_name + "/rest/E_DB/SP?V_USR_NM=" + USR_NM + "&REST_Service=User_Detail&Verb=GET");
+    return this.http.get("https://" + this.domain_name + "/rest/v1/secured?V_USR_NM=" + USR_NM + "&REST_Service=User_Detail&Verb=GET");
   }
   AddUser(USR_NM: any, USR_DSC: any, USR_PASS: any, USR_STS: any) {
     let body = {
@@ -104,12 +104,12 @@ export class UseradminService {
       "REST_Service": ["User_Master"],
       "Verb": ["PUT"]
     }
-    return this.http.put("https://" + this.domain_name + "/rest/E_DB/SP", body);
+    return this.http.put("https://" + this.domain_name + "/rest/v1/secured", body);
   }
 
   //-------------------organization
   getOrganization() {
-    return this.http.get("https://" + this.domain_name + "/rest/E_DB/SP?V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=Orgnization&Verb=GET");
+    return this.http.get("https://" + this.domain_name + "/rest/v1/secured?V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=Orgnization&Verb=GET");
   }
   UpdateOrganization() {
     let body = {
@@ -234,7 +234,7 @@ export class UseradminService {
  */
  public updateExistingUser(user:any){
 	
-	this.http.get("https://"+this.domain_name+"/rest/E_DB/SP?V_USR_NM="+user.USR_NM_R+"&V_SRC_CD="+this.V_SRC_CD+"&V_USR_DSC="+user.USR_DSC_R+"&V_STS="+user.USRC_STATUS_R. toUpperCase()+"&REST_Service=User&Verb=PATCH")
+	this.http.get("https://"+this.domain_name+"/rest/v1/secured?V_USR_NM="+user.USR_NM_R+"&V_SRC_CD="+this.V_SRC_CD+"&V_USR_DSC="+user.USR_DSC_R+"&V_STS="+user.USRC_STATUS_R. toUpperCase()+"&REST_Service=User&Verb=PATCH")
 		.subscribe(
 			res=>{
 				("Existing user updation : "+res);

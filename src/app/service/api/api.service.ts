@@ -19,7 +19,7 @@ export class ApiService {
 	public readonly endPoints = {
 		// Authentications
 		login: `${this.apiURL}auth/login`,
-		insecure: `${this.insecureUrl}/E_DB/SP?`,
+		insecure: `${this.insecureUrl}/v1/secured?`,
 		secure: `${this.securedApiUrl}/secured?`,
 		insecureProcessReport: `${this.insecureUrl}/Process/Report`,
 		secureProcessReport: `${this.securedApiUrl}/secured/Process/Report`,
@@ -113,7 +113,7 @@ export class ApiService {
 
 	// getUsers(): Observable<User[]> {
 	// 	this.setAuthHeader();
-	// 	return this.http.get<User[]>('https://enablement.us/Enablement/rest/E_DB/SPJSON?V_CD_TYP=USER&V_SRC_CD=uttra.24&REST_Service=Masters&Verb=GET');
+	// 	return this.http.get<User[]>('https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=USER&V_SRC_CD=uttra.24&REST_Service=Masters&Verb=GET');
 	// }
 	
 	setHeaders() {

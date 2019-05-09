@@ -387,14 +387,14 @@ export class ConfigServiceService {
     // return this.http.get(this.apiUrlGet + "V_EXE_CD="+EXE_CD+"&V_SRC_CD=" + this.V_SRC_CD +"&V_APP_CD="+this.V_APP_CD+"&SCREEN=PROFILE&REST_Service=Masters&Verb=GET");
 
   }
-  //  /E_DB/SP?V_EXE_CD=GetRefulingDistanceTimeFuel&V_SRC_CD=local&V_APP_CD=ALL&V_PRCS_CD=Contracts%20Opportunities&V_USR_NM=local@adventbusiness.com&V_TRIGGER_STATE=ALL&REST_Service= Exe_Server&Verb=GET
+  //  /v1/secured?V_EXE_CD=GetRefulingDistanceTimeFuel&V_SRC_CD=local&V_APP_CD=ALL&V_PRCS_CD=Contracts%20Opportunities&V_USR_NM=local@adventbusiness.com&V_TRIGGER_STATE=ALL&REST_Service= Exe_Server&Verb=GET
 
   getPlatformDescription(PLF_CD) {
     // return this.http.get(this.apiUrlGet + "V_CD_TYP=SERVER&V_CD=" + PLF_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=Description&Verb=GET" );
 
     // secure
     return this.http.get(this.apiUrlGetSecure + "V_CD_TYP=SERVER&V_CD=" + PLF_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=Description&Verb=GET", this.apiService.setHeaders());
-    // return this.http.get("https://"+this.domain_name+"/rest/E_DB/SP?V_CD_TYP=ROLE&V_SRC_CD=Advent%20Business%20Company%20Inc.&REST_Service=Masters&Verb=GET")
+    // return this.http.get("https://"+this.domain_name+"/rest/v1/secured?V_CD_TYP=ROLE&V_SRC_CD=Advent%20Business%20Company%20Inc.&REST_Service=Masters&Verb=GET")
   }
 
   getRoleCode() {
@@ -422,7 +422,7 @@ export class ConfigServiceService {
 
   sendParams(body) {
     // return this.http.put(this.apiUrlGet + "V_EXE_CD=" + EXE[] + "&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=Description&Verb=GET");
-    return this.http.put("https://" + this.domain_name + "/rest/E_DB/SP", body);
+    return this.http.put("https://" + this.domain_name + "/rest/v1/secured", body);
 
   }
 
@@ -600,7 +600,7 @@ export class ConfigServiceService {
     // this.apiUrlGet + "V_SRC_CD=" + this.V_SRC_CD + "&V_APP_CD=" + ApplicationCD + "&V_PRCS_CD=" + ProcessCD + "&V_USR_NM=" + this.V_USR_NM + "&V_TRIGGER_STATE=" + StatusCD + "&REST_Service=ScheduledJobs&Verb=GET"
 
 
-    //  https://enablement.us/rest/E_DB/SP?V_SRC_CD=local&V_APP_CD=ALL&V_PRCS_CD=Contracts%20Opportunities&V_USR_NM=local@adventbusiness.com&V_TRIGGER_STATE=ALL&REST_Service=ScheduledJobs&Verb=GET
+    //  https://enablement.us/rest/v1/secured?V_SRC_CD=local&V_APP_CD=ALL&V_PRCS_CD=Contracts%20Opportunities&V_USR_NM=local@adventbusiness.com&V_TRIGGER_STATE=ALL&REST_Service=ScheduledJobs&Verb=GET
   }
   Execute_AP_PR(SL_APP_CD, SL_PRC_CD) {
     // return this.http.get(this.apiUrlGet + "V_APP_CD=" + SL_APP_CD + "&V_PRCS_CD=" + SL_PRC_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=PorcessParameters&Verb=GET" );
@@ -672,7 +672,7 @@ export class ConfigServiceService {
 
 
   functionDemo() {
-    // return this.http.get("https://" + this.domain_name + "/rest/E_DB/SP?V_SRC_CD=exeserver&V_EXE_TYP=E_REST&V_USR_NM=exeserver@adventbusiness.com&REST_Service=UserExes&Verb=GET" );
+    // return this.http.get("https://" + this.domain_name + "/rest/v1/secured?V_SRC_CD=exeserver&V_EXE_TYP=E_REST&V_USR_NM=exeserver@adventbusiness.com&REST_Service=UserExes&Verb=GET" );
 
     // secure
     return this.http.get(this.apiService.endPoints.secure + "V_SRC_CD=exeserver&V_EXE_TYP=E_REST&V_USR_NM=exeserver@adventbusiness.com&REST_Service=UserExes&Verb=GET", this.apiService.setHeaders());

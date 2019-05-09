@@ -48,7 +48,7 @@ export class DeployStatusComponent implements OnInit {
       this.onResize();
     }
 
-  domain_name=this.globals.domain_name; private apiUrlGet = "https://"+this.domain_name+"/rest/E_DB/SP?";
+  domain_name=this.globals.domain_name; private apiUrlGet = "https://"+this.domain_name+"/rest/v1/secured?";
   private apiUrlPost = "https://"+this.domain_name+"/rest/";
 
   APP_CD=[];

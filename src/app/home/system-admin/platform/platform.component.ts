@@ -39,10 +39,10 @@ export class PlatformComponent implements OnInit {
         }
      }
 
-  domain_name=this.globals.domain_name; private apiUrlGet = "https://"+this.domain_name+"/rest/E_DB/SP?";
-  private apiUrlPost = "https://"+this.domain_name+"/rest/E_DB/SP";
-  private apiUrlPut = "https://"+this.domain_name+"/rest/E_DB/SP";
-  private apiUrldelete = "https://"+this.domain_name+"/rest/E_DB/SP";
+  domain_name=this.globals.domain_name; private apiUrlGet = "https://"+this.domain_name+"/rest/v1/secured?";
+  private apiUrlPost = "https://"+this.domain_name+"/rest/v1/secured";
+  private apiUrlPut = "https://"+this.domain_name+"/rest/v1/secured";
+  private apiUrldelete = "https://"+this.domain_name+"/rest/v1/secured";
 
   plat:string[]=[];
   p_plat:string[]=[];

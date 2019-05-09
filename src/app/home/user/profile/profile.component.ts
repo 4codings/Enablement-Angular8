@@ -28,7 +28,7 @@ export class ProfileComponent implements OnInit {
       agency : JSON.parse(sessionStorage.getItem('u')).SRC_CD,
       V_USR_NM: JSON.parse(sessionStorage.getItem('u')).USR_NM
     };
-    this.http.get<data>("https://" + this.domain_name + "/rest/E_DB/SP?V_SRC_CD=" + data.agency + "&V_USR_NM=" + data.V_USR_NM + "&REST_Service=UserRoles&Verb=GET").subscribe(
+    this.http.get<data>("https://" + this.domain_name + "/rest/v1/secured?V_SRC_CD=" + data.agency + "&V_USR_NM=" + data.V_USR_NM + "&REST_Service=UserRoles&Verb=GET").subscribe(
       data => {
         // (data);
         if (data.ROLE_CD) {

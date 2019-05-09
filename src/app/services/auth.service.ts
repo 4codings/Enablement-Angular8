@@ -16,7 +16,7 @@ import {Globals} from './globals';
 export class AuthService {
   userDetail: Observable<UserLoginState>;
   domain_name="enablement.us/Enablement"; 
-  private apiUrlGet = "https://"+this.domain_name+"/rest/E_DB/SP?";
+  private apiUrlGet = "https://"+this.domain_name+"/rest/v1/secured?";
   private apiUrlPost = "https://"+this.domain_name+"/";
 
   constructor(private http: HttpClient, private store: Store<AppState>, public userService: UserService, handler:HttpBackend) {
@@ -83,7 +83,7 @@ export class AuthService {
     }
     //-----------------------------
     ChangePassword(form){
-          return this.http.get("https://"+this.domain_name+"/rest/E_DB/SP?V_USR_NM=exeserver@adventbusiness.com&V_PSWRD=bala&REST_Service=Password&Verb=PATCH");
+          return this.http.get("https://"+this.domain_name+"/rest/v1/secured?V_USR_NM=exeserver@adventbusiness.com&V_PSWRD=bala&REST_Service=Password&Verb=PATCH");
     }
   
 }

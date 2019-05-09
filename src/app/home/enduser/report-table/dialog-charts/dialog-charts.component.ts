@@ -48,7 +48,7 @@ export class DialogChartsComponent implements OnInit {
     ColorBar=[];
     ColorBar_border=[];
     domain_name = this.globals.domain_name;
-    private apiUrlGet = "https://"+this.domain_name+"/rest/E_DB/SP?";
+    private apiUrlGet = "https://"+this.domain_name+"/rest/v1/secured?";
     time_to_sec(time):any{
       return parseInt(time.substring(0,2))*3600+parseInt(time.substring(3,5))*60+(parseInt(time.substring(6)));
     }

@@ -26,7 +26,7 @@ export class InputArtComponent {
   private reportData: ReportData;
   private scope: ScopeLimiting = new ScopeLimiting();
   private domain_name = this.globals.domain_name;;
-  private apiUrlGet = 'https://' + this.domain_name + '/rest/E_DB/SP?';
+  private apiUrlGet = 'https://' + this.domain_name + '/rest/v1/secured?';
   allFiles = [];
   sizes = [];
   size
