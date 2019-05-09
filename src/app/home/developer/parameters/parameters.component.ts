@@ -250,7 +250,7 @@ makeDefine(){
   // (this.ROLE_DATA);
   // this.accessRights();
   // this.roleDescription();
-  this.StorageSessionService.session_check();
+  //this.StorageSessionService.session_check();
   
   }
 
