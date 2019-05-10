@@ -5,6 +5,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { StorageSessionService } from 'src/app/services/storage-session.service';
 import { ConfigServiceService } from 'src/app/services/config-service.service';
+import { NoAuthDataService } from 'src/app/services/no-auth-data.service';
 // import { DefineDialogComponent} from './define-dialog/define-dialog.component';
 
 
@@ -14,11 +15,11 @@ import { ConfigServiceService } from 'src/app/services/config-service.service';
   // styleUrls: ['./parameters.component.css']
 })
 export class ParametersComponent implements OnInit {
-
+  Label: any[] = [];
   constructor(private router:Router,
     private StorageSessionService:StorageSessionService,
     public dialog: MatDialog,
-    private http:Http,private data:ConfigServiceService) { }
+    private http:Http,private data:ConfigServiceService, public noAuthData: NoAuthDataService) { }
 
   selectedEmoji: string;
 
@@ -42,10 +43,6 @@ export class ParametersComponent implements OnInit {
   //       }
   //     });
   // }
-
-  
-
-
 V_USR_NM="";
 V_SRC_CD="";
 
@@ -113,8 +110,10 @@ getExecutableCode(){
 getAllExecutable(){
   this.DorA = "Authorize";    //change define to authorize
   this.data.getExecutableAll(this.EXE_TYPE_R,this.EXE_CD_R).subscribe(
-    res=>{this.EXE_ALL=res.json()
-      (this.EXE_ALL);
+    (res:any)=>{
+      this.EXE_ALL=JSON.parse(res._body)
+      //(this.EXE_ALL);
+      //console.log(this.EXE_ALL['SYNC_FLG']);
       this.F_EXE_CD=this.EXE_ALL['EXE_CD'];
       this.F_EXE_SIGN=this.EXE_ALL['EXE_SIGN'];
       this.F_EXE_OUT_PARAM=this.EXE_ALL['EXE_OUT_PARAMS'];
@@ -247,6 +246,10 @@ makeDefine(){
   this.getPlatformTypeCode();
   this.roleCode();
   this.DorA="Define";
+  this.noAuthData.getJSON().subscribe(data => {
+    //console.log(data);
+    this.Label = data;
+  });
   // (this.ROLE_DATA);
   // this.accessRights();
   // this.roleDescription();
