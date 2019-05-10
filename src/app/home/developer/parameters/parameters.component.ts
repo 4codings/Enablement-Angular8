@@ -237,6 +237,22 @@ makeDefine(){
    });
  }
 
+ downloadFile() {
+  //this.userAdminService.downloadFile('UserDL.xlsx');
+}
+
+uploadData() {
+  //document.getElementById('Document_File').click();
+}
+
+delete() {
+
+}
+
+add() {
+  
+}
+
  
 //  openDefineDialog(){
 //    this.router.navigateByUrl("defineRole");
