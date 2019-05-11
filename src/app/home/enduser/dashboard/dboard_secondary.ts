@@ -52,9 +52,9 @@ export class dboard_secondary{
   selectedusr: string='';
   selectedstatus: string=null;
   domain_name=this.globals.domain_name; 
-  apiUrlGet = "https://"+this.domain_name+"/rest/E_DB/SP?";
-  apiUrlAdd = "https://"+this.domain_name+"/rest/E_DB/SP";
-  apiFetch = "https://"+this.domain_name+"/rest/E_DB/SP";
+  apiUrlGet = "https://"+this.domain_name+"/rest/v1/secured?";
+  apiUrlAdd = "https://"+this.domain_name+"/rest/v1/secured";
+  apiFetch = "https://"+this.domain_name+"/rest/v1/secured";
   displayedColumns = ['#','Application', 'Process', 'Service', 'Order_ID', 'PTXN_ID', 'STXN_ID', 'TXN_STAT', 'Username', 'Last_updated'];
   displayedCol_Inp = ['Input_name','Input_value'];
   displayedCol_Oup = ['Output_name','Output_value'];

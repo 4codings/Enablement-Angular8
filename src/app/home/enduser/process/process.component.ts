@@ -67,7 +67,7 @@ export class ProcessComponent implements OnInit {
     var i=0;
 
     this.timer= setInterval(function(){i++; (i+" seconds passed");},1000);
-    this.http.get<any>("https://enablement.us/rest/E_DB/SP?V_SRC_ID=205&V_APP_ID=143&V_PRCS_ID=311&V_PRCS_TXN_ID=8752&REST_Service=ProcessStatus&Verb=GET").subscribe(
+    this.http.get<any>("https://enablement.us/rest/v1/secured?V_SRC_ID=205&V_APP_ID=143&V_PRCS_ID=311&V_PRCS_TXN_ID=8752&REST_Service=ProcessStatus&Verb=GET").subscribe(
       res=>{
         var proc=this;
 
@@ -83,7 +83,7 @@ export class ProcessComponent implements OnInit {
   }
   timer:any;
   recr_(){
-    this.http.get<any>("https://enablement.us/rest/E_DB/SP?V_SRC_ID=205&V_APP_ID=143&V_PRCS_ID=311&V_PRCS_TXN_ID=8752&REST_Service=ProcessStatus&Verb=GET").subscribe(
+    this.http.get<any>("https://enablement.us/rest/v1/secured?V_SRC_ID=205&V_APP_ID=143&V_PRCS_ID=311&V_PRCS_TXN_ID=8752&REST_Service=ProcessStatus&Verb=GET").subscribe(
       res=>{
 
         if(this.flag)
@@ -92,8 +92,8 @@ export class ProcessComponent implements OnInit {
     );
   }
   domain_name=this.globals.domain_name;
-  private apiUrlGet = "https://"+this.domain_name+"/rest/E_DB/SP?";
-  private apiUrlAdd = "https://"+this.domain_name+"/rest/E_DB/SP";
+  private apiUrlGet = "https://"+this.domain_name+"/rest/v1/secured?";
+  private apiUrlAdd = "https://"+this.domain_name+"/rest/v1/secured";
   V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
   V_USR_NM:string=JSON.parse(sessionStorage.getItem('u')).USR_NM;
   APP_CD = [];

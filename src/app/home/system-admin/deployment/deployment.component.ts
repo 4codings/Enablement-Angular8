@@ -64,8 +64,8 @@ showexebox(){
 setexecutable_sl(b){
   this.executable_sl=b;
 }
-    domain_name=this.globals.domain_name; private apiUrlGet = "https://"+this.domain_name+"/rest/E_DB/SP?";
-    private apiUrlPost = "https://"+this.domain_name+"/rest/E_DB/SP";
+    domain_name=this.globals.domain_name; private apiUrlGet = "https://"+this.domain_name+"/rest/v1/secured?";
+    private apiUrlPost = "https://"+this.domain_name+"/rest/v1/secured";
     showexe:boolean=true;
     exe_type:string[];
     executables:string[];

@@ -6,7 +6,7 @@
       <div fxFlex="30" style="text-align: center;">
         <br>
         <!-- ___________Available Executable Type____________ -->
-        <label item-width="100"><strong>Available Executable Type</strong></label>
+        <label item-width="100"><strong>Executable Type</strong></label>
         <mat-form-field class="form_in">
           <mat-select [(ngModel)]="EXE_TYPE_R" >
             <mat-option style="text-align:center;"  (click)="getExecutableCode()" [value]="ex" *ngFor="let ex of EXE_TYPE['EXE_TYP']">{{ex}}</mat-option>
@@ -15,7 +15,7 @@
         <br />
     
         <!-- __________Developer________________- -->
-        <label item-width="100"><strong>DEVELOPER</strong></label>
+        <label item-width="100"><strong>Executable</strong></label>
         <mat-form-field class="form_in">
           <mat-select [(ngModel)]="EXE_CD_R" >
             <mat-option style="text-align:center;"  (click)="getAllExecutable()" [value]="ex" *ngFor="let ex of EXE_CD['EXE_CD']">
@@ -24,13 +24,13 @@
           </mat-select>
         </mat-form-field>
         <!-- ____________________DEVELOPER_____________ -->
-        <label item-width="100"><strong>DEVELOPER</strong></label>
+        <!-- <label item-width="100"><strong>DEVELOPER</strong></label>
         <mat-form-field class="form_in">
           <input matInput  value="" (click)=makeDefine() [(ngModel)]="F_EXE_CD" name="Executable" />
-        </mat-form-field>
+        </mat-form-field> -->
         <br />
         <!-- __________DEVELOPER Description___________ -->
-        <label item-width="100"><strong>DEVELOPER Description</strong></label>
+        <label item-width="100"><strong>Executable Description</strong></label>
         <mat-form-field class="form_in">
           <textarea matInput  [(ngModel)]="F_EXE_DSC" value="" name="">
         
@@ -65,9 +65,9 @@
         </mat-form-field>
         <br>
         <!-- SYNCH ASYNCH -->
-      <mat-radio-group [(ngModel)]="F_SYNC_FLG" flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="row" fxLayoutAlign="space-around center">
-        <mat-radio-button value="Y">Synch</mat-radio-button>
-        <mat-radio-button value="N">Asynch </mat-radio-button>
+        <mat-radio-group [(ngModel)]="F_SYNC_FLG" flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="row" fxLayoutAlign="space-around center">
+          <mat-radio-button value="Y">Synch</mat-radio-button>
+          <mat-radio-button value="N">Asynch </mat-radio-button>
       </mat-radio-group>
       <!-- INPUT OUTPUT ARTIFACT -->
     <br>
@@ -126,31 +126,29 @@
     <hr />
     
     <!-- START BUTTON ROW -->
-    <div flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="row" fxLayoutAlign="space-around center" fxLayoutGap="20px" *ngIf="execshow">
-    
-    
-      <div fxFlex="10"></div>
-      <div fxFlex="20">
-        <button type="submit" mat-raised-button color="primary"><mat-icon>get_app</mat-icon> Data Load</button>
-      </div>
-      <div fxFlex="10"></div>
-    
-      <div fxFlex="20">
-        <button type="submit"  (click)="delExec()" mat-raised-button color="primary"><mat-icon>remove_circle</mat-icon> Undefine</button>
-      </div>
-      <div fxFlex="10"></div>
-    
-      <div fxFlex="20">
-        <button type="submit" mat-raised-button color="primary" (click)=onDefine()><mat-icon>add_circle</mat-icon> {{DorA}}</button>
-        <!-- *ngIf="EXE_CD_R===F1_EXE_CD;else DorA='Define'" -->
-        <!-- <ng-template #other_content>other content here...</ng-template> -->
-        <!-- <ng-button type="submit" #other_content mat-raised-button color="primary" (click)=openDialog()>{{DorA}}</ng-button> -->
+    <div fxLayout="row">
+      <div fxFlex="38" style="text-align: center;">
     
       </div>
-      <div fxFlex="10"></div>
+      <div fxFlex="60">
+        
+        <div class="CustomeButtonFloat">
+          <button mat-raised-button color="primary" (click)="add()">
+              <mat-icon style="vertical-align: middle;margin-right: 5px">add</mat-icon>{{Label['add_btn']}}</button>
+            <button mat-raised-button color="warn"(click)="delete()">
+              <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['dlt_btn']}}</button>
+        </div>
     
-    
-    
+        <div class="CustomeButtonFloat">
+          <button title="Upload file" mat-raised-button color="primary" (click)="uploadData()">
+              <i class="fas fa-upload"></i> Upload
+            </button>
+            <button mat-raised-button color="primary" (click)="downloadFile()">
+              <i class="fas fa-download"></i> Download
+            </button>
+        </div>
+      </div>
+      <div fxFlex="0"></div>
     </div>
     <!-- END BUTTON ROW -->
   

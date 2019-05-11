@@ -32,7 +32,7 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
   rows = [0];
   totalRow = 1;
   // domain_name = this.globals.domain_name;
-  //  private apiUrlGet = "https://" + this.domain_name + "/rest/E_DB/SP?";
+  //  private apiUrlGet = "https://" + this.domain_name + "/rest/v1/secured?";
   public param: any;
   mobileView = false;
   editing = true;

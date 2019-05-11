@@ -65,7 +65,7 @@ export class ExceptionComponent implements OnInit {
             }
      }
 
-  domain_name=this.globals.domain_name; private apiUrlGet = "https://"+this.domain_name+"/rest/E_DB/SP?";
+  domain_name=this.globals.domain_name; private apiUrlGet = "https://"+this.domain_name+"/rest/v1/secured?";
   private apiUrlPost = "https://"+this.domain_name+"/rest/Hold/Exception/";
   atxnid:string[];
   srvcd:string[];
@@ -240,7 +240,7 @@ getDropDownListValue(e){
   ("GET5.....................")
   this.app.loading=true;
   this.searchResult=[];
-                    this.http.get("https://"+this.domain_name+"/rest/E_DB/SP?V_SRC_CD=AWS1&V_APP_CD=Federal%20Contracts&V_PRCS_CD=Federal%20Opportunities&V_PARAM_NM=Type%20of%20Set%20Aside&V_SRVC_CD=Pull%20FPDS%20Contracts&REST_Service=ProcessParametersOptions&Verb=GET")
+                    this.http.get("https://"+this.domain_name+"/rest/v1/secured?V_SRC_CD=AWS1&V_APP_CD=Federal%20Contracts&V_PRCS_CD=Federal%20Opportunities&V_PARAM_NM=Type%20of%20Set%20Aside&V_SRVC_CD=Pull%20FPDS%20Contracts&REST_Service=ProcessParametersOptions&Verb=GET")
                     .subscribe(
                         res=>{
                          (res[e]);

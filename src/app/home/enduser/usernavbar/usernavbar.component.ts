@@ -31,7 +31,7 @@ export class UsernavbarComponent implements OnInit {
     };
     this.agency = data.agency,
     this.V_USR_NM = data.V_USR_NM
-    this.http.get("https://"+this.domain_name+"/rest/E_DB/SP?V_SRC_CD="+this.agency+"&V_USR_NM="+this.V_USR_NM+"&REST_Service=UserRoles&Verb=GET").subscribe(
+    this.http.get("https://"+this.domain_name+"/rest/v1/secured?V_SRC_CD="+this.agency+"&V_USR_NM="+this.V_USR_NM+"&REST_Service=UserRoles&Verb=GET").subscribe(
      res=>{   this.Roll_cd=res['ROLE_CD'];
         (this.Roll_cd);
         let l =this.Roll_cd.length;

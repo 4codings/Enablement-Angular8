@@ -46,8 +46,8 @@ export class UserAdminService {
 	// membership-> user/group
 	getUserMemberShip(): Observable<userMemberShip[]> {
 		const header = new HttpHeaders().set('Authorization', `Bearer ${this.sessionDataToken}`);
-		return this.http.get<userMemberShip[]>('https://enablement.us/Enablement/rest/E_DB/SPJSON?V_CD_TYP=ROLE&V_SRC_CD=AB&REST_Service=Masters&Verb=GET');
-		// return this.http.get<userMemberShip[]>('https://enablement.us/Enablement/rest/E_DB/SPJSON?V_SRC_CD=uttra.24&V_CD_TYP=USR_GRP&REST_Service=Masters&Verb=GET');
+		return this.http.get<userMemberShip[]>('https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=ROLE&V_SRC_CD=AB&REST_Service=Masters&Verb=GET');
+		// return this.http.get<userMemberShip[]>('https://enablement.us/Enablement/rest/v1/securedJSON?V_SRC_CD=uttra.24&V_CD_TYP=USR_GRP&REST_Service=Masters&Verb=GET');
 	}
 
 	getAuthorizationData(): Observable<AuthorizationData[]> {

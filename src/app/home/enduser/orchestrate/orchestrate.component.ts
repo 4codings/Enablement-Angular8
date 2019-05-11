@@ -45,8 +45,8 @@ export class OrchestrateComponent implements OnInit {
       
       }
   
-    domain_name=this.globals.domain_name; private apiUrlGet = "https://"+this.domain_name+"/rest/E_DB/SP?";
-    private apiUrlAdd = "https://"+this.domain_name+"/rest/E_DB/SP";
+    domain_name=this.globals.domain_name; private apiUrlGet = "https://"+this.domain_name+"/rest/v1/secured?";
+    private apiUrlAdd = "https://"+this.domain_name+"/rest/v1/secured";
    
   prcs_cd:string[];
   srvc_cd:string[];

@@ -28,7 +28,7 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
   screenWidth = 0;
   mobileView = false;
   desktopView = true;
-  domain_name = this.globals.domain_name; private apiUrlGet = 'https://' + this.domain_name + '/rest/E_DB/SP?';
+  domain_name = this.globals.domain_name; private apiUrlGet = 'https://' + this.domain_name + '/rest/v1/secured?';
   App_CD_data = [];
   proc_CD_data = [];
   ser_cd_data = [];
@@ -547,7 +547,7 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
     this.FilterAutoValue = v;
     const ag = this.storageSessionService.getSession('agency');
     const ur = this.storageSessionService.getSession('email');
-    this.http.get('https://' + this.domain_name + '/rest/E_DB/SP?V_APP_CD=' +
+    this.http.get('https://' + this.domain_name + '/rest/v1/secured?V_APP_CD=' +
       this.ApplicationCD + '&V_PRCS_CD=' + this.ProcessCD +
       '&V_SRC_CD=' + ag + '&V_USR_NM=' + ur + '&V_PARAM_NM=' + n +
       '&V_PARAM_VAL=' + v + '&REST_Service=ProcessParameters&Verb=PATCH')
