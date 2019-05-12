@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { AuthorizationData } from 'src/app/store/user-admin/user-authorization/authorization.model';
 import { NoAuthDataService } from 'src/app/services/no-auth-data.service';
 import { AppState } from 'src/app/app.state';
@@ -7,13 +7,14 @@ import { Store, select } from '@ngrx/store';
 import * as authActions from '../../../store/user-admin/user-authorization/authorization.actions';
 import * as authSelectors from '../../../store/user-admin//user-authorization/authorization.selectors';
 import { MatRadioChange } from '@angular/material';
+import { OptionalValuesService } from 'src/app/services/optional-values.service';
 
 @Component({
   selector: 'app-authorize',
   templateUrl: './authorize.component.html',
   styleUrls: ['./authorize.component.scss']
 })
-export class AuthorizeComponent implements OnInit {
+export class AuthorizeComponent implements OnInit, OnDestroy {
 
   Label: any[] = [];
   user: any[] = [];
@@ -30,9 +31,19 @@ export class AuthorizeComponent implements OnInit {
   radioList = ['PROCESS', 'SERVICE', 'EXE', 'ARTIFACT', 'PLATFORM', 'SERVER', 'SLA'];
   authValues: AuthorizationData[] = [];
   filteredAuthValues: AuthorizationData[] = [];
+  applicationValues$: Subscription;
+  processValues$: Subscription;
+  serviceValues$: Subscription;
+  applicationValues = [];
+  processValues = [];
+  serviceValues = [];
+  selectedApplication = [];
+  selectedProcess = [];
+  addFlag = false;
   constructor(
     public noAuthData: NoAuthDataService,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private optionalService: OptionalValuesService
   ) {
     // Label get service
     this.noAuthData.getJSON().subscribe(data => {
@@ -54,14 +65,52 @@ export class AuthorizeComponent implements OnInit {
       this.authValues = data;
       this.getFilterData(this.radioList[0]);
     });
+    this.getApplicationList();
+    this.applicationValues$ = this.optionalService.applicationOptionalValue.subscribe(data => {
+      if (data != null) {
+        this.applicationValues = data;
+      }
+    });
+    this.processValues$ = this.optionalService.processOptionalValue.subscribe(data => {
+      if (data != null) {
+        this.processValues = data;
+      }
+    });
+    this.serviceValues$ = this.optionalService.serviceOptionalValue.subscribe(data => {
+      if (data != null) {
+        this.serviceValues = data;
+      }
+    });
   }
+  ngOnDestroy() {
+    this.applicationValues$.unsubscribe();
+    this.processValues$.unsubscribe();
+    this.serviceValues$.unsubscribe();
+  }
+
   selected(index) {
     this.selecteduser = index;
+  }
+
+  onAppSelect(event, index) {
+    console.log('value', event.value);
+    this.selectedApplication.push({ 'index': index, 'app': event.value });
+    this.optionalService.getProcessOptionalValue(event.value);
+  }
+
+  onProcessSelect(event, index) {
+    console.log('value', event.value);
+    this.selectedProcess.push({ 'index': index, 'process': event.value });
+    this.optionalService.getServiceOptionalValue(this.selectedApplication[index].app, event.value);
   }
   getFilterData(data: string) {
     this.filteredAuthValues = [];
     this.filteredAuthValues = this.authValues.filter(v => v['V_AUTH_TYP'] === data);
   }
+  getApplicationList() {
+    this.optionalService.getApplicationOptionalValue();
+  }
+
   showAuthData(authData) {
     this.authD.AUTH_DSC = authData.AUTH_DSC;
     this.authD.create_select = authData.CREATE == 'Y' ? true : false;
@@ -69,7 +118,7 @@ export class AuthorizeComponent implements OnInit {
     this.authD.update_select = authData.UPDATE == 'Y' ? true : false;
     this.authD.delete_select = authData.DELETE == 'Y' ? true : false;
     this.authD.execute_select = authData.EXECUTE == 'Y' ? true : false;
-
+    
   }
   authData(auth) {
     this.authValues$.subscribe(data => {
