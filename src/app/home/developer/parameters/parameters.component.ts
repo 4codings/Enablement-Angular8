@@ -254,6 +254,26 @@ makeDefine(){
   this.userAdminService.downloadFile('UserDL.xlsx');
 }
 
+fileChangeEvent(event: any, file: any) {
+  const fileList: FileList = event.target.files;
+  ('====================');
+  (fileList.item(0));
+  this.userAdminService.fileUpload(fileList.item(0), 'UserDL.xlsx', 'user').subscribe(
+    res => {
+      (res);
+      setTimeout(() => {
+        //this.getUser();
+        this.getAllExecutable(this.EXE_CD_R);
+        //this.store.dispatch(new userGroupActions.getUserGroup(this.V_SRC_CD_DATA));
+      }, 3000);
+  },
+    error => {
+      console.error(error);
+
+    }
+  );
+}
+
 uploadData() {
   document.getElementById('Document_File').click();
 }
