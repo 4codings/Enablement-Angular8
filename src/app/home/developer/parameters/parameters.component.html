@@ -149,7 +149,7 @@
               <mat-icon style="vertical-align: middle;margin-right: 5px">add</mat-icon>{{Label['add_btn']}}</button>
             <button *ngIf="!showAddBtn && showUpdateBtn" [disabled]="showUpdateBtn == false" mat-raised-button color="primary" (click)="update()">
               <mat-icon style="vertical-align: middle;margin-right: 5px">update</mat-icon>{{Label['UpdateBtn']}}</button>
-            <button mat-raised-button color="warn"(click)="delete()">
+            <button mat-raised-button color="warn"(click)="delete()" [disabled]="showAddBtn == true || (this.selectedExecutableType == undefined || this.selectedexecutable == undefined)">
               <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['dlt_btn']}}</button>
         </div>
     
