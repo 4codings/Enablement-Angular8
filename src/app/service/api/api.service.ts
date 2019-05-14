@@ -29,7 +29,9 @@ export class ApiService {
 		insecureFormSubmit: `${this.insecureUrl}/Submit/FormSubmit`,
 		sessionRefresh: `${this.insecureUrl}/sessionRefresh`,
 		logout: `${this.insecureUrl}/logout`,
-		deleteArtifact: `${this.insecureUrl}/Artifact/DeleteArtifact?`
+		deleteArtifact: `${this.insecureUrl}/Artifact/DeleteArtifact?`,
+		securedJSON: `${this.securedApiUrl}/securedJSON?`,
+
 	}
 
 	constructor(private http: HttpClient, private globals: Globals2, private globalUrl: Globals,
