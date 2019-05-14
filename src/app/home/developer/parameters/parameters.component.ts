@@ -6,6 +6,7 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 import { StorageSessionService } from 'src/app/services/storage-session.service';
 import { ConfigServiceService } from 'src/app/services/config-service.service';
 import { NoAuthDataService } from 'src/app/services/no-auth-data.service';
+import { UseradminService } from 'src/app/services/useradmin.service2';
 // import { DefineDialogComponent} from './define-dialog/define-dialog.component';
 
 
@@ -19,7 +20,9 @@ export class ParametersComponent implements OnInit {
   constructor(private router:Router,
     private StorageSessionService:StorageSessionService,
     public dialog: MatDialog,
-    private http:Http,private data:ConfigServiceService, public noAuthData: NoAuthDataService) { }
+    private http:Http,private data:ConfigServiceService, 
+    public noAuthData: NoAuthDataService,
+    private userAdminService:UseradminService) { }
 
   selectedEmoji: string;
 
@@ -87,6 +90,8 @@ up:boolean = false;
 ex: boolean = false;
 ipart: boolean = false;
 opart: boolean = false;
+public selectedExecutableType;
+public selectedexecutable;
 
   // ROLE_DATA:any;
 // this.ROLE_DATA = {
@@ -98,7 +103,8 @@ opart: boolean = false;
 getExecutableTypeCode(){
   this.data.getExecutableType().subscribe(res=>{this.EXE_TYPE=res.json()});}
 //  _____________________________________
-getExecutableCode(){
+getExecutableCode(EXE_TYPE_R){
+  this.EXE_TYPE_R = EXE_TYPE_R;
   (this.EXE_TYPE_R);
             this.data.getExecutableCode(this.EXE_TYPE_R).subscribe(
               res=>{this.EXE_CD=res.json();
@@ -107,7 +113,8 @@ getExecutableCode(){
             }
 
 //____________________________________________________            
-getAllExecutable(){
+getAllExecutable(EXE_CD_R){
+  this.EXE_CD_R = EXE_CD_R;
   this.DorA = "Authorize";    //change define to authorize
   this.data.getExecutableAll(this.EXE_TYPE_R,this.EXE_CD_R).subscribe(
     (res:any)=>{
@@ -159,11 +166,9 @@ getPlatformTypeCode(){
         this.PLF=res.json();
         (this.PLF);
         this.PLF_DSC=this.PLF['SERVER_DSC'];
-
-        
-
       });
  }
+
  roleCode(){
    this.data.getRoleCode().subscribe(res=>{
      this.ROLE_TYPE=res.json();
@@ -212,6 +217,14 @@ getPlatformTypeCode(){
 
   }
 
+  selectedExecutabletype(index) {
+    this.selectedExecutableType = index;
+  }
+
+  selectedExecutable(index) {
+    this.selectedexecutable = index;
+  }
+
   onDefine(){
     this.roleshow=true;
     this.execshow=false;
@@ -238,11 +251,31 @@ makeDefine(){
  }
 
  downloadFile() {
-  //this.userAdminService.downloadFile('UserDL.xlsx');
+  this.userAdminService.downloadFile('UserDL.xlsx');
+}
+
+fileChangeEvent(event: any, file: any) {
+  const fileList: FileList = event.target.files;
+  ('====================');
+  (fileList.item(0));
+  this.userAdminService.fileUpload(fileList.item(0), 'UserDL.xlsx', 'user').subscribe(
+    res => {
+      (res);
+      setTimeout(() => {
+        //this.getUser();
+        this.getAllExecutable(this.EXE_CD_R);
+        //this.store.dispatch(new userGroupActions.getUserGroup(this.V_SRC_CD_DATA));
+      }, 3000);
+  },
+    error => {
+      console.error(error);
+
+    }
+  );
 }
 
 uploadData() {
-  //document.getElementById('Document_File').click();
+  document.getElementById('Document_File').click();
 }
 
 delete() {
@@ -250,7 +283,7 @@ delete() {
 }
 
 add() {
-  
+
 }
 
  

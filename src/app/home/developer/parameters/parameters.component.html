@@ -7,27 +7,44 @@
         <br>
         <!-- ___________Available Executable Type____________ -->
         <label item-width="100"><strong>Executable Type</strong></label>
-        <mat-form-field class="form_in">
+        <!-- <mat-form-field class="form_in">
           <mat-select [(ngModel)]="EXE_TYPE_R" >
             <mat-option style="text-align:center;"  (click)="getExecutableCode()" [value]="ex" *ngFor="let ex of EXE_TYPE['EXE_TYP']">{{ex}}</mat-option>
           </mat-select>
-        </mat-form-field>
+        </mat-form-field> -->
+
+        <mat-list class="scroll" style="text-align: center;">
+          <mat-list-item class="list_item" (click)="getExecutableCode(ex);selectedExecutabletype(i);"
+           *ngFor="let ex of EXE_TYPE['EXE_TYP']; let i = index;"
+                          [class.active]="i == selectedExecutableType">
+            <div>{{ex}}</div>
+          </mat-list-item>
+        </mat-list>
+
         <br />
     
         <!-- __________Developer________________- -->
         <label item-width="100"><strong>Executable</strong></label>
-        <mat-form-field class="form_in">
+        <!-- <mat-form-field class="form_in">
           <mat-select [(ngModel)]="EXE_CD_R" >
             <mat-option style="text-align:center;"  (click)="getAllExecutable()" [value]="ex" *ngFor="let ex of EXE_CD['EXE_CD']">
               {{ex}}
             </mat-option>
           </mat-select>
-        </mat-form-field>
+        </mat-form-field> -->
+
+        <mat-list class="scroll" style="text-align: center;">
+          <mat-list-item class="list_item" (click)="getAllExecutable(ex);selectedExecutable(i);"
+           *ngFor="let ex of EXE_CD['EXE_CD']; let i = index;"
+                          [class.active]="i == selectedexecutable">
+            <div>{{ex}}</div>
+          </mat-list-item>
+        </mat-list>
         <!-- ____________________DEVELOPER_____________ -->
-        <!-- <label item-width="100"><strong>DEVELOPER</strong></label>
+        <label item-width="100"><strong>Executable</strong></label>
         <mat-form-field class="form_in">
           <input matInput  value="" (click)=makeDefine() [(ngModel)]="F_EXE_CD" name="Executable" />
-        </mat-form-field> -->
+        </mat-form-field>
         <br />
         <!-- __________DEVELOPER Description___________ -->
         <label item-width="100"><strong>Executable Description</strong></label>
@@ -65,9 +82,11 @@
         </mat-form-field>
         <br>
         <!-- SYNCH ASYNCH -->
-        <mat-radio-group [(ngModel)]="F_SYNC_FLG" flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="row" fxLayoutAlign="space-around center">
-          <mat-radio-button value="Y">Synch</mat-radio-button>
-          <mat-radio-button value="N">Asynch </mat-radio-button>
+        <mat-radio-group flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="row" fxLayoutAlign="space-around center">
+          <mat-radio-button *ngIf="F_SYNC_FLG != 'Y'" [value]="Y">Synch</mat-radio-button>
+          <mat-radio-button *ngIf="F_SYNC_FLG == 'Y'" [value]="Y" checked>Synch</mat-radio-button>
+          <mat-radio-button *ngIf="F_SYNC_FLG != 'N'" [value]="N">Asynch </mat-radio-button>
+          <mat-radio-button *ngIf="F_SYNC_FLG == 'N'" [value]="N" checked>Asynch </mat-radio-button>
       </mat-radio-group>
       <!-- INPUT OUTPUT ARTIFACT -->
     <br>
@@ -114,7 +133,7 @@
         <!-- PLATFORM DESCRIPTION -->
         <label item-width="100"><strong>Platform Description</strong></label>
         <mat-form-field class="form_in">
-          <textarea matInput  [(ngModel)]="PLF_DSC" value="" name="">
+          <textarea matInput  [(ngModel)]="PLF_DSC" name="PLF_DSC">
               
                     </textarea>
         </mat-form-field>
@@ -194,3 +213,4 @@
   <!-- EXPERIMENTALROW END -->
   <br />
   <br /><br />
+  <input type="file" (change)="fileChangeEvent($event ,files)" #files name="Document_File" id="Document_File" style="display:none"/>
