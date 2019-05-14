@@ -1,7 +1,7 @@
 <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="center start">
   <div fxFlex="82">
-    <mat-radio-group #matRadioBtn="matRadioGroup" (change)="onItemSelect($event)" value="PROCESS" fxLayout="row"
-      fxLayoutAlign="space-between center">
+    <mat-radio-group #matRadioBtn="matRadioGroup" (change)="onItemSelect($event)" [(ngModel)]="radioSelected"
+      fxLayout="row" fxLayoutAlign="space-between center">
       <mat-radio-button *ngFor="let item of radioList" [value]="item">
         {{item}}
       </mat-radio-button>
@@ -50,7 +50,77 @@
         <th>Read</th>
         <th>Delete</th>
         <th>Execute</th>
+        <th>
+          <div style="margin-top:-8px;">
+            Actions
+            <button mat-icon-button (click)="addRow()">
+              <mat-icon style="color:red;font-size: larger;font-weight: bold;">add</mat-icon>
+            </button>
+          </div>
+        </th>
         <!-- <th (click)="uploadBtnClick(template)" *ngIf="CREATE!=='N'" class="addButton">+</th> -->
+      </tr>
+      <tr *ngIf="addFlag">
+        <td>
+          <mat-form-field>
+            <mat-select (selectionChange)="onAppSelect($event)" *ngIf="applicationValues.length">
+              <mat-option *ngFor="let app of applicationValues" [value]="app">
+                {{app}}
+              </mat-option>
+            </mat-select>
+            <input matInput type="text" name="app" (change)="onAppSelect($event)" *ngIf="!applicationValues.length" />
+
+          </mat-form-field>
+        </td>
+        <td *ngIf="matRadioBtn.value === 'PROCESS' ||matRadioBtn.value === 'SERVICE' || matRadioBtn.value === 'EXE' ">
+          <!-- {{selectedApplication[i].index}} we {{i}} -->
+          <mat-form-field>
+            <mat-select (selectionChange)="onProcessSelect($event)" *ngIf="processValues.length">
+              <mat-option *ngFor="let process of processValues" [value]="process">
+                {{process}}
+              </mat-option>
+            </mat-select>
+            <input matInput type="text" name="process" (change)="onProcessSelect($event)"
+              *ngIf="!processValues.length" />
+          </mat-form-field>
+        </td>
+        <td *ngIf="matRadioBtn.value === 'SERVICE'">
+          <mat-form-field>
+            <mat-select (selectionChange)="onServiceSelect($event)" *ngIf="serviceValues.length">
+              <mat-option *ngFor="let service of serviceValues" [value]="service">
+                {{service}}
+              </mat-option>
+            </mat-select>
+            <input matInput type="text" name="service" (change)="onServiceSelect($event)"
+              *ngIf="!serviceValues.length" />
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-checkbox class="example-margin" (change)="onPermissionChange(authValueObj,'V_CREATE')"
+            [checked]="authValueObj.V_CREATE === 'Y'"></mat-checkbox>
+        </td>
+        <td>
+          <mat-checkbox class="example-margin" (change)="onPermissionChange(authValueObj,'V_UPDATE')"
+            [checked]="authValueObj.V_UPDATE === 'Y'"></mat-checkbox>
+        </td>
+        <td>
+          <mat-checkbox class="example-margin" (change)="onPermissionChange(authValueObj,'V_READ')"
+            [checked]="authValueObj.V_READ === 'Y'"></mat-checkbox>
+        </td>
+        <td>
+          <mat-checkbox class="example-margin" (change)="onPermissionChange(authValueObj,'V_DELETE')"
+            [checked]="authValueObj.V_DELETE === 'Y'"></mat-checkbox>
+        </td>
+        <td>
+          <mat-checkbox class="example-margin" (change)="onPermissionChange(authValueObj,'V_EXECUTE')"
+            [checked]="authValueObj.V_EXECUTE === 'Y'"></mat-checkbox>
+        </td>
+        <td>
+          <button mat-icon-button (click)="onAddSubmit()">
+            <mat-icon style="color:blue;font-size: larger;">done
+            </mat-icon>
+          </button>
+        </td>
       </tr>
       <tr *ngFor="let authorize of filteredAuthValues;let i = index;">
         <td>
@@ -61,96 +131,64 @@
             {{authorize.V_EXE_TYP}}
           </span>
           <span *ngIf="matRadioBtn.value === 'ARTIFACT' ">
-            {{authorize.V_ARTFCT_TYP}}
+            {{authorize.V_AUTH_DSC}}
           </span>
           <span *ngIf="matRadioBtn.value === 'SERVER'">
-            {{authorize.V_SERVER_CD}}
+            {{authorize.V_AUTH_DSC}}
           </span>
           <span *ngIf="matRadioBtn.value === 'PLATFORM'">
-            {{authorize.V_PLATFORM_CD}}
+            {{authorize.V_AUTH_DSC}}
           </span>
           <span *ngIf="matRadioBtn.value === 'SLA'">
-            {{authorize.V_APP_CD}}
+            {{authorize.V_AUTH_DSC}}
           </span>
         </td>
         <td *ngIf="matRadioBtn.value === 'PROCESS' ||matRadioBtn.value === 'SERVICE' || matRadioBtn.value === 'EXE' ">
           <!-- {{selectedApplication[i].index}} we {{i}} -->
-          <span *ngIf="matRadioBtn.value === 'EXE'">
-            {{authorize.V_EXE_CD}}
+          <span *ngIf="matRadioBtn.value === 'EXE' || matRadioBtn.value === 'PROCESS'">
+            {{authorize.V_AUTH_DSC}}
           </span>
-          <span *ngIf="matRadioBtn.value === 'PROCESS' ||matRadioBtn.value === 'SERVICE'">
+          <span *ngIf="matRadioBtn.value === 'SERVICE'">
             {{authorize.V_PRCS_CD}}
           </span>
-          <span *ngIf="matRadioBtn.value === 'ARTIFACT' ">
-            {{authorize.V_ARTFCT_NM}}
-          </span>
+          <!-- <span *ngIf="matRadioBtn.value === 'ARTIFACT' ">
+            {{authorize.V_AUTH_DSC}}
+          </span> -->
         </td>
         <td *ngIf="matRadioBtn.value === 'SERVICE'">
-          {{authorize.V_SRVC_CD}}
+          {{authorize.V_AUTH_DSC}}
         </td>
         <td>
-          <mat-checkbox class="example-margin" [checked]="authorize.V_CREATE === 'Y'">Y</mat-checkbox>
+          <mat-checkbox class="example-margin" (change)="onPermissionChange(authorize,'V_CREATE')"
+            [checked]="authorize.V_CREATE === 'Y'"></mat-checkbox>
         </td>
         <td>
-          <mat-checkbox class="example-margin" [checked]="authorize.V_UPDATE === 'Y'">Y</mat-checkbox>
-
+          <mat-checkbox class="example-margin" (change)="onPermissionChange(authorize,'V_UPDATE')"
+            [checked]="authorize.V_UPDATE === 'Y'"></mat-checkbox>
         </td>
         <td>
-          <mat-checkbox class="example-margin" [checked]="authorize.V_READ === 'Y'">Y</mat-checkbox>
+          <mat-checkbox class="example-margin" (change)="onPermissionChange(authorize,'V_READ')"
+            [checked]="authorize.V_READ === 'Y'"></mat-checkbox>
         </td>
         <td>
-          <mat-checkbox class="example-margin" [checked]="authorize.V_DELETE === 'Y'">Y</mat-checkbox>
+          <mat-checkbox class="example-margin" (change)="onPermissionChange(authorize,'V_DELETE')"
+            [checked]="authorize.V_DELETE === 'Y'"></mat-checkbox>
         </td>
         <td>
-          <mat-checkbox class="example-margin" [checked]="authorize.V_EXECUTE === 'Y'">Y</mat-checkbox>
+          <mat-checkbox class="example-margin" (change)="onPermissionChange(authorize,'V_EXECUTE')"
+            [checked]="authorize.V_EXECUTE === 'Y'"></mat-checkbox>
+        </td>
+        <td>
+          <button mat-icon-button (click)="editTick_click(i)">
+            <mat-icon style="color:blue;font-size: larger;">edit
+            </mat-icon>
+          </button>
+          <button mat-icon-button (click)="delete_click(i)">
+            <mat-icon style="color:blue;font-size: larger;">delete</mat-icon>
+          </button>
         </td>
       </tr>
-      <tr *ngIf="addFlag">
-        <td>
-          <mat-form-field>
-            <mat-select (selectionChange)="onAppSelect($event,i)">
-              <mat-option *ngFor="let app of applicationValues" [value]="app">
-                {{app}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </td>
-        <td *ngIf="matRadioBtn.value === 'PROCESS' ||matRadioBtn.value === 'SERVICE' || matRadioBtn.value === 'EXE' ">
-          <!-- {{selectedApplication[i].index}} we {{i}} -->
-          <mat-form-field>
-            <mat-select (selectionChange)="onProcessSelect($event,i)">
-              <mat-option *ngFor="let process of processValues" [value]="process">
-                {{process}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </td>
-        <td *ngIf="matRadioBtn.value === 'SERVICE'">
-          <mat-form-field>
-            <mat-select>
-              <mat-option *ngFor="let service of serviceValues" [value]="service">
-                {{service}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </td>
-        <td>
-          <mat-checkbox class="example-margin" [checked]="authorize.V_CREATE === 'Y'">Y</mat-checkbox>
-        </td>
-        <td>
-          <mat-checkbox class="example-margin" [checked]="authorize.V_UPDATE === 'Y'">Y</mat-checkbox>
 
-        </td>
-        <td>
-          <mat-checkbox class="example-margin" [checked]="authorize.V_READ === 'Y'">Y</mat-checkbox>
-        </td>
-        <td>
-          <mat-checkbox class="example-margin" [checked]="authorize.V_DELETE === 'Y'">Y</mat-checkbox>
-        </td>
-        <td>
-          <mat-checkbox class="example-margin" [checked]="authorize.V_EXECUTE === 'Y'">Y</mat-checkbox>
-        </td>
-      </tr>
     </table>
     <hr />
     <!-- <div class="adventColor" flex fxLayout="row" fxLayoutAlign="center">
