@@ -137,8 +137,9 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
         this.filteredAuthValues.forEach(ele => {
           this.applicationValues.push(ele.V_AUTH_DSC);
         });
+      } else {
+        this.applicationValues = [];
       }
-      this.applicationValues = [];
     } else if (this.radioSelected === 'EXE') {
       if (this.filteredAuthValues.length) {
         this.applicationValues = [];
@@ -147,9 +148,10 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
           this.applicationValues.push(ele.V_EXE_TYP);
           this.processValues.push(ele.V_AUTH_DSC);
         });
+      } else {
+        this.applicationValues = [];
+        this.processValues = [];
       }
-      this.applicationValues = [];
-      this.processValues = [];
     }
   }
   getApplicationList() {
