@@ -254,7 +254,7 @@ export class UserAdminGroupComponent implements OnInit {
   
 
   downloadFile() {
-    this.userAdminService.downloadFile('UserDL.xlsx');
+    this.userAdminService.downloadFile('GroupDL.xlsx');
   }
 
   uploadData() {
@@ -265,7 +265,7 @@ export class UserAdminGroupComponent implements OnInit {
     const fileList: FileList = event.target.files;
     ('====================');
     (fileList.item(0));
-    this.userAdminService.fileUpload(fileList.item(0), 'UserDL.xlsx', 'user').subscribe(
+    this.userAdminService.fileUpload(fileList.item(0), 'GroupDL.xlsx', 'usr_grp').subscribe(
       res => {
         (res);
         setTimeout(() => {

@@ -43,13 +43,13 @@
         <!-- ____________________DEVELOPER_____________ -->
         <label item-width="100"><strong>Executable</strong></label>
         <mat-form-field class="form_in">
-          <input matInput  value="" (click)=makeDefine() [(ngModel)]="F_EXE_CD" name="Executable" />
+          <input matInput  value="" (click)=makeDefine() [(ngModel)]="F_EXE_CD" name="Executable" (ngModelChange)="executableChange()" />
         </mat-form-field>
         <br />
         <!-- __________DEVELOPER Description___________ -->
         <label item-width="100"><strong>Executable Description</strong></label>
         <mat-form-field class="form_in">
-          <textarea matInput  [(ngModel)]="F_EXE_DSC" value="" name="">
+          <textarea matInput value=""  [(ngModel)]="F_EXE_DSC" (ngModelChange)= "executableValChange()" name="executable-description">
         
               </textarea>
         </mat-form-field>
@@ -64,29 +64,27 @@
         <!-- INPUT PARAMETERS -->
         <label item-width="100"><strong>Input Parameters</strong></label>
         <mat-form-field class="form_in">
-          <input matInput  [(ngModel)]="F_EXE_SIGN" name="Parameters" value="" />
+          <input matInput  [(ngModel)]="F_EXE_SIGN" (ngModelChange)= "executableValChange()" name="Parameters" value="" />
         </mat-form-field>
         <br />
     
         <!-- OUTPUT PARAMETERS -->
         <label item-width="100"><strong>Output Parameters</strong></label>
         <mat-form-field class="form_in">
-          <input matInput  [(ngModel)]="F_EXE_OUT_PARAM" value="" name="" />
+          <input matInput  [(ngModel)]="F_EXE_OUT_PARAM" (ngModelChange)= "executableValChange()" value="" name="" />
         </mat-form-field>
         <br />
     
         <!-- VERSION -->
         <label item-width="100"><strong>Version</strong></label>
         <mat-form-field class="form_in">
-          <input matInput [(ngModel)]="F_EXE_VRSN" value="" name="" />
+          <input matInput [(ngModel)]="F_EXE_VRSN" (ngModelChange)= "executableValChange()" value="" name="" />
         </mat-form-field>
         <br>
         <!-- SYNCH ASYNCH -->
-        <mat-radio-group flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="row" fxLayoutAlign="space-around center">
-          <mat-radio-button *ngIf="F_SYNC_FLG != 'Y'" [value]="Y">Synch</mat-radio-button>
-          <mat-radio-button *ngIf="F_SYNC_FLG == 'Y'" [value]="Y" checked>Synch</mat-radio-button>
-          <mat-radio-button *ngIf="F_SYNC_FLG != 'N'" [value]="N">Asynch </mat-radio-button>
-          <mat-radio-button *ngIf="F_SYNC_FLG == 'N'" [value]="N" checked>Asynch </mat-radio-button>
+        <mat-radio-group flex fxLayout="row" [(ngModel)]="F_SYNC_FLG" (ngModelChange)= "executableValChange()" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="row" fxLayoutAlign="space-around center">
+          <mat-radio-button  value="Y">Synch</mat-radio-button>
+          <mat-radio-button  value="N">Asynch </mat-radio-button>
       </mat-radio-group>
       <!-- INPUT OUTPUT ARTIFACT -->
     <br>
@@ -94,12 +92,7 @@
         <mat-checkbox [checked]="ipart">Input Artifact</mat-checkbox>
         <mat-checkbox [checked]="opart">Output Artifact</mat-checkbox>
       </div>
-    
-        
-    
-    
-    
-    
+  
       </div>
       <!-- END COL 2 -->
       <div fxFlex="5"></div>
@@ -111,19 +104,19 @@
         <!-- START DELIMITER -->
         <label item-width="100"><strong>Start Delimiter</strong></label>
         <mat-form-field class="form_in">
-          <input matInput [(ngModel)]="F_EXE_S_DLMTR" value="" name="" />
+          <input matInput [(ngModel)]="F_EXE_S_DLMTR" (ngModelChange)= "executableValChange()" value="" name="" />
         </mat-form-field>
         
         <!-- END DELIMITER -->
         <label item-width="100"><strong>End Delimiter</strong></label>
         <mat-form-field class="form_in">
-          <input matInput [(ngModel)]="F_EXE_E_DLMTR" value="" name="" />
+          <input matInput [(ngModel)]="F_EXE_E_DLMTR" (ngModelChange)= "executableValChange()" value="" name="" />
         </mat-form-field>
     
     <!-- PLATFORM -->
       <label item-width="100"><strong>Platform</strong></label>
         <mat-form-field class="form_in">
-          <mat-select [(ngModel)]="PLF_CD">
+          <mat-select [(ngModel)]="PLF_CD" (ngModelChange)= "executableValChange()">
             <mat-option style="text-align:center;"  (click)=platformDescription() [value]="pf" *ngFor="let pf of PLF_TYPE['SERVER_CD']">
               {{pf}}
             </mat-option>
@@ -152,9 +145,11 @@
       <div fxFlex="60">
         
         <div class="CustomeButtonFloat">
-          <button mat-raised-button color="primary" (click)="add()">
+          <button *ngIf="!showUpdateBtn && (showAddBtn || !showAddBtn)" [disabled]="showAddBtn == false" mat-raised-button color="primary" (click)="add()">
               <mat-icon style="vertical-align: middle;margin-right: 5px">add</mat-icon>{{Label['add_btn']}}</button>
-            <button mat-raised-button color="warn"(click)="delete()">
+            <button *ngIf="!showAddBtn && showUpdateBtn" [disabled]="showUpdateBtn == false" mat-raised-button color="primary" (click)="update()">
+              <mat-icon style="vertical-align: middle;margin-right: 5px">update</mat-icon>{{Label['UpdateBtn']}}</button>
+            <button mat-raised-button color="warn"(click)="delete()" [disabled]="showAddBtn == true || (this.selectedExecutableType == undefined || this.selectedexecutable == undefined)">
               <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['dlt_btn']}}</button>
         </div>
     

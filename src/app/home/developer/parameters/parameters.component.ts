@@ -7,6 +7,7 @@ import { StorageSessionService } from 'src/app/services/storage-session.service'
 import { ConfigServiceService } from 'src/app/services/config-service.service';
 import { NoAuthDataService } from 'src/app/services/no-auth-data.service';
 import { UseradminService } from 'src/app/services/useradmin.service2';
+import { HttpClient } from '@angular/common/http';
 // import { DefineDialogComponent} from './define-dialog/define-dialog.component';
 
 
@@ -22,7 +23,8 @@ export class ParametersComponent implements OnInit {
     public dialog: MatDialog,
     private http:Http,private data:ConfigServiceService, 
     public noAuthData: NoAuthDataService,
-    private userAdminService:UseradminService) { }
+    private userAdminService:UseradminService,
+    private https:HttpClient) { }
 
   selectedEmoji: string;
 
@@ -68,12 +70,29 @@ F_EXE_E_DLMTR = "";
 F_EXE_S_DLMTR = "";
 F_SRC_ID = "";
 F_SYNC_FLG = "";
+PLF_CD = "";
+PLF_DSC = "";
 
+DUP_F_EXE_CD="";
+DUP_F_EXE_DSC="";
+DUP_F_EXE_ID="";
+DUP_F_EXE_IN_ART="";
+DUP_F_EXE_OUT_ART="";
+DUP_F_EXE_OUT_PARAM="";
+DUP_F_EXE_SIGN="";
+DUP_F_EXE_TYP = "";
+DUP_F_EXE_VRSN = "";
+DUP_F_EXE_E_DLMTR = "";
+DUP_F_EXE_S_DLMTR = "";
+DUP_F_SRC_ID = "";
+DUP_F_SYNC_FLG = "";
+DUP_PLF_CD = "";
+DUP_PLF_DSC = "";
 
+showAddBtn = false;
+showUpdateBtn = false;
 
 PLF_TYPE=[];
-PLF_CD="";
-PLF_DSC="";
 PLF="";
 ROLE_TYPE=[];
 ROLE="";
@@ -132,9 +151,27 @@ getAllExecutable(EXE_CD_R){
       this.F_EXE_IN_ART = this.EXE_ALL['EXE_IN_ARTFCTS'];
       this.F_EXE_OUT_ART = this.EXE_ALL['EXE_OUT_ARTFCTS'];
       this.F_SRC_ID = this.EXE_ALL['SRC_ID'];
-      this.F_SYNC_FLG = this.EXE_ALL['SYNC_FLG'];
+      this.F_SYNC_FLG = this.EXE_ALL['SYNC_FLG'].toString();
       this.F_EXE_TYP = this.EXE_ALL['EXE_TYP'];
+      this.PLF_CD = this.EXE_ALL['SERVER_CD'].toString();
+      this.PLF_DSC = this.EXE_ALL['SERVER_DSC'];
 
+      this.DUP_F_EXE_CD=this.EXE_ALL['EXE_CD'];
+      this.DUP_F_EXE_SIGN=this.EXE_ALL['EXE_SIGN'];
+      this.DUP_F_EXE_OUT_PARAM=this.EXE_ALL['EXE_OUT_PARAMS'];
+      this.DUP_F_EXE_DSC=this.EXE_ALL['EXE_DSC'];
+      this.DUP_F_EXE_VRSN=this.EXE_ALL['EXE_VRSN'];
+      this.DUP_F_EXE_S_DLMTR=this.EXE_ALL['PARAM_DLMTR_STRT'];
+      this.DUP_F_EXE_E_DLMTR=this.EXE_ALL['PARAM_DLMTR_END'];
+      this.DUP_F_EXE_ID = this.EXE_ALL['EXE_ID'];
+      this.DUP_F_EXE_IN_ART = this.EXE_ALL['EXE_IN_ARTFCTS'];
+      this.DUP_F_EXE_OUT_ART = this.EXE_ALL['EXE_OUT_ARTFCTS'];
+      this.DUP_F_SRC_ID = this.EXE_ALL['SRC_ID'];
+      this.DUP_F_SYNC_FLG = this.EXE_ALL['SYNC_FLG'].toString();
+      this.DUP_F_EXE_TYP = this.EXE_ALL['EXE_TYP'];
+      this.DUP_PLF_CD = this.EXE_ALL['SERVER_CD'].toString();
+      this.DUP_PLF_DSC = this.EXE_ALL['SERVER_DSC'];
+ 
       if(this.F_EXE_IN_ART=="Y")
       {
         this.ipart=true;
@@ -143,8 +180,6 @@ getAllExecutable(EXE_CD_R){
       if (this.F_EXE_OUT_ART == "Y") {
         this.opart = true;
       }
-
-
 
     }
   );
@@ -218,7 +253,46 @@ getPlatformTypeCode(){
   }
 
   selectedExecutabletype(index) {
+    if(this.selectedexecutable != undefined) {
+      this.clearSelectedexecutable();
+    }
     this.selectedExecutableType = index;
+  }
+  
+  clearSelectedexecutable() {
+    this.selectedexecutable = null;
+
+    this.F_EXE_CD='';
+    this.F_EXE_SIGN='';
+    this.F_EXE_OUT_PARAM='';
+    this.F_EXE_DSC='';
+    this.F_EXE_VRSN='';
+    this.F_EXE_S_DLMTR='';
+    this.F_EXE_E_DLMTR='';
+    this.F_EXE_ID = '';
+    this.F_EXE_IN_ART = '';
+    this.F_EXE_OUT_ART = '';
+    this.F_SRC_ID = '';
+    this.F_SYNC_FLG = '';
+    this.F_EXE_TYP = '';
+    this.PLF_CD = '';
+    this.PLF_DSC = '';
+
+    this.DUP_F_EXE_CD= '';
+    this.DUP_F_EXE_SIGN= '';
+    this.DUP_F_EXE_OUT_PARAM= '';
+    this.DUP_F_EXE_DSC= '';
+    this.DUP_F_EXE_VRSN= '';
+    this.DUP_F_EXE_S_DLMTR= '';
+    this.DUP_F_EXE_E_DLMTR= '';
+    this.DUP_F_EXE_ID = '';
+    this.DUP_F_EXE_IN_ART = '';
+    this.DUP_F_EXE_OUT_ART = '';
+    this.DUP_F_SRC_ID = '';
+    this.DUP_F_SYNC_FLG = '';
+    this.DUP_F_EXE_TYP = '';
+    this.DUP_PLF_CD = '';
+    this.DUP_PLF_DSC = '';
   }
 
   selectedExecutable(index) {
@@ -251,14 +325,14 @@ makeDefine(){
  }
 
  downloadFile() {
-  this.userAdminService.downloadFile('UserDL.xlsx');
+  this.userAdminService.downloadFile('ExeDL.xlsx');
 }
 
 fileChangeEvent(event: any, file: any) {
   const fileList: FileList = event.target.files;
   ('====================');
   (fileList.item(0));
-  this.userAdminService.fileUpload(fileList.item(0), 'UserDL.xlsx', 'user').subscribe(
+  this.userAdminService.fileUpload(fileList.item(0), 'ExeDL.xlsx ', 'developer').subscribe(
     res => {
       (res);
       setTimeout(() => {
@@ -279,11 +353,128 @@ uploadData() {
 }
 
 delete() {
-
+  if(this.selectedExecutableType != undefined && this.selectedexecutable != undefined) {
+    this.https.get('https://enablement.us/Enablement/rest/v1/securedJSON?V_EXE_TYP='+ this.F_EXE_TYP + '&V_EXE_CD='+ this.F_EXE_CD + '&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=Exe&Verb=DELETE').subscribe(res => {
+      console.log("res",res);
+      this.getExecutableTypeCode();
+      this.clearSelectedexecutable();
+    }, err => {
+      console.log("err", err)
+    }); 
+  }
 }
 
 add() {
+  let data = {
+    "V_EXE_CD": this.F_EXE_CD,
+    "V_SRC_CD": this.V_SRC_CD,
+    "V_EXE_SIGN": this.F_EXE_SIGN,
+    "V_PARAM_DLMTR": this.F_EXE_S_DLMTR,
+    "V_PARAM_DLMTR_END":this.F_EXE_E_DLMTR,
+    "V_EXE_VRSN": this.F_EXE_VRSN,
+    "V_EXE_TYP": this.F_EXE_TYP,
+    "V_SYNC_FLG": this.F_SYNC_FLG,
+    "V_EXE_DSC": this.F_EXE_DSC,
+    "V_EXE_OUT_PARAMS": this.F_EXE_OUT_PARAM,
+    "V_EXE_IN_ARTFCTS": this.F_EXE_IN_ART,
+    "V_EXE_OUT_ARTFCTS":this.F_EXE_OUT_ART,
+    "V_USR_NM": this.V_USR_NM,
+    "V_COMMNT": '',
+    "V_SERVER_CD":this.PLF_CD,
+    "REST_Service":["Exe"],
+    "Verb":["PUT"]
+  } 
+  this.https.put('https://enablement.us/Enablement/rest/v1/securedJSON?', data).subscribe(res => {
+    console.log("res",res);
+    this.getExecutableTypeCode();
+    this.clearSelectedexecutable();
+    this.showUpdateBtn = false;
+    this.showAddBtn = false;
+  }, err => {
 
+  })
+}
+
+update() {
+  let data = {
+    "V_EXE_CD": this.F_EXE_CD,
+    "V_SRC_CD": this.V_SRC_CD,
+    "V_EXE_SIGN": this.F_EXE_SIGN,
+    "V_PARAM_DLMTR": this.F_EXE_S_DLMTR,
+    "V_PARAM_DLMTR_END":this.F_EXE_E_DLMTR,
+    "V_EXE_VRSN": this.F_EXE_VRSN,
+    "V_EXE_TYP": this.F_EXE_TYP,
+    "V_SYNC_FLG": this.F_SYNC_FLG,
+    "V_EXE_DSC": this.F_EXE_DSC,
+    "V_EXE_OUT_PARAMS": this.F_EXE_OUT_PARAM,
+    "V_EXE_IN_ARTFCTS": this.F_EXE_IN_ART,
+    "V_EXE_OUT_ARTFCTS":this.F_EXE_OUT_ART,
+    "V_USR_NM": this.V_USR_NM,
+    "V_COMMNT": '',
+    "V_SERVER_CD":this.PLF_CD,
+    "REST_Service":["Exe"],
+    "Verb":["PUT"]
+  }  
+  this.https.put('https://enablement.us/Enablement/rest/v1/securedJSON?', data).subscribe(res => {
+    console.log("res",res);
+    this.getExecutableTypeCode();
+    this.clearSelectedexecutable();
+    this.showUpdateBtn = false;
+    this.showAddBtn = false;
+  }, err => {
+    
+  })
+
+}
+
+executableChange() {
+  
+  if((this.DUP_F_EXE_CD.toString()).toLowerCase() != this.F_EXE_CD.toLowerCase()) {
+    this.showAddBtn = true;
+    if(this.showUpdateBtn == true) {
+      this.showUpdateBtn = false;
+    }
+  } else {
+    this.showAddBtn = false;
+  }
+}
+
+executableValChange() {
+  if(this.DUP_F_EXE_DSC != this.F_EXE_DSC) {
+    if(this.showAddBtn != true) {
+      this.showUpdateBtn = true;
+    }
+  } else if(this.DUP_F_EXE_VRSN != this.F_EXE_VRSN) {
+    if(this.showAddBtn != true) {
+      this.showUpdateBtn = true;
+    }
+  } else if(this.DUP_F_SYNC_FLG != this.F_SYNC_FLG) {
+    if(this.showAddBtn != true) {
+      this.showUpdateBtn = true;
+    }
+  } else if(this.DUP_F_EXE_SIGN != this.F_EXE_SIGN) {
+    if(this.showAddBtn != true) {
+      this.showUpdateBtn = true;
+    }
+  } else if(this.F_EXE_OUT_PARAM != this.F_EXE_OUT_PARAM) {
+    if(this.showAddBtn != true) {
+      this.showUpdateBtn = true;
+    }
+  } else if(this.DUP_F_EXE_S_DLMTR != this.F_EXE_S_DLMTR) {
+    if(this.showAddBtn != true) {
+      this.showUpdateBtn = true;
+    }
+  } else if(this.DUP_F_EXE_E_DLMTR != this.F_EXE_E_DLMTR) {
+    if(this.showAddBtn != true) {
+      this.showUpdateBtn = true;
+    }
+  } else if(this.DUP_PLF_CD != this.PLF_CD) {
+    if(this.showAddBtn != true) {
+      this.showUpdateBtn = true;
+    }
+  } else {
+    this.showUpdateBtn = false;
+  }
 }
 
  
@@ -291,6 +482,8 @@ add() {
 //    this.router.navigateByUrl("defineRole");
 //  }
   ngOnInit() {
+  this.V_SRC_CD=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+  this.V_USR_NM=JSON.parse(sessionStorage.getItem('u')).USR_NM;
   this.getExecutableTypeCode();
   this.getPlatformTypeCode();
   this.roleCode();
