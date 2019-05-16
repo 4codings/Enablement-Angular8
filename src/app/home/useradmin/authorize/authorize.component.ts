@@ -38,8 +38,11 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
   processValues$: Subscription;
   serviceValues$: Subscription;
   applicationValues = [];
+  applicationValuesObservable = [];
   processValues = [];
+  processValuesObservable = [];
   serviceValues = [];
+  serviceValuesObservable = [];
   selectedApplication = [];
   selectedProcess = [];
   addFlag = false;
@@ -80,17 +83,20 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
     this.getApplicationList();
     this.applicationValues$ = this.optionalService.applicationOptionalValue.subscribe(data => {
       if (data != null) {
-        this.applicationValues = data;
+        this.applicationValuesObservable = data;
+        this.applicationValues = [...this.applicationValuesObservable];
       }
     });
     this.processValues$ = this.optionalService.processOptionalValue.subscribe(data => {
       if (data != null) {
-        this.processValues = data;
+        this.processValuesObservable = data;
+        this.processValues = [...this.processValuesObservable];
       }
     });
     this.serviceValues$ = this.optionalService.serviceOptionalValue.subscribe(data => {
       if (data != null) {
-        this.serviceValues = data;
+        this.serviceValuesObservable = data;
+        this.serviceValues = [...this.serviceValuesObservable];
       }
     });
   }
@@ -105,31 +111,33 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
   }
 
   onAppSelect(event) {
-    this.selectedApplication = event.value;
+    this.selectedApplication = event;
     if (this.radioSelected === 'SERVICE' || this.radioSelected === 'PROCESS') {
-      this.authValueObj.V_APP_CD = event.value;
-      this.optionalService.getProcessOptionalValue(event.value);
+      this.authValueObj.V_APP_CD = event;
+      this.optionalService.getProcessOptionalValue(event);
     } else if (this.radioSelected === 'ARTIFACT' || this.radioSelected === 'PLATFORM' || this.radioSelected === 'SERVER' || this.radioSelected === 'SLA') {
-      this.authValueObj.V_AUTH_DSC = event.value;
+      this.authValueObj.V_AUTH_DSC = event;
     } else {
-      this.authValueObj.V_EXE_TYP = event.value;
+      this.authValueObj.V_EXE_TYP = event;
     }
   }
 
   onProcessSelect(event) {
     // this.selectedProcess.push({ 'index': index, 'process': event.value });
     if (this.radioSelected === 'SERVICE') {
-      this.authValueObj.V_PRCS_CD = event.value;
+      this.authValueObj.V_PRCS_CD = event;
     } else {
-      this.authValueObj.V_AUTH_DSC = event.value;
+      this.authValueObj.V_AUTH_DSC = event;
     }
-    this.optionalService.getServiceOptionalValue(this.selectedApplication, event.value);
+    this.optionalService.getServiceOptionalValue(this.selectedApplication, event);
   }
   onServiceSelect(event) {
-    this.authValueObj.V_AUTH_DSC = event.value;
+    this.authValueObj.V_AUTH_DSC = event;
   }
   getFilterData(data: string) {
     this.filteredAuthValues = [];
+    this.applicationValues = [];
+    this.processValues = [];
     this.filteredAuthValues = this.authValues.filter(v => v['V_AUTH_TYP'] === data);
     if (this.radioSelected === 'ARTIFACT' || this.radioSelected === 'PLATFORM' || this.radioSelected === 'SERVER' || this.radioSelected === 'SLA') {
       if (this.filteredAuthValues.length) {
@@ -164,6 +172,10 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
         this.applicationValues = [];
         this.processValues = [];
       }
+    } else {
+      this.applicationValues = [...this.applicationValuesObservable];
+      this.processValues = [...this.processValuesObservable];
+      this.serviceValues = [...this.serviceValuesObservable];
     }
   }
   getApplicationList() {
