@@ -43,10 +43,12 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
   processValuesObservable = [];
   serviceValues = [];
   serviceValuesObservable = [];
-  selectedApplication = [];
-  selectedProcess = [];
+  selectedApplication = '';
+  selectedProcess = '';
+  selectedService = '';
   addFlag = false;
   radioSelected;
+  enableAddButtonFlag = false;
   constructor(
     public noAuthData: NoAuthDataService,
     private store: Store<AppState>,
@@ -64,23 +66,6 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
       //console.log(data);
       this.Label = data;
     });
-  }
-
-  ngOnInit() {
-    this.V_SRC_CD_DATA = {
-      V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
-    };
-    this.radioSelected = this.radioList[0];
-    this.store.dispatch(new authActions.getAuth(this.V_SRC_CD_DATA));
-    this.authValues$ = this.store.pipe(select(authSelectors.selectAllAutorizationvalues));
-    this.error$ = this.store.pipe(select(authSelectors.getErrors));
-    this.didLoading$ = this.store.pipe(select(authSelectors.getLoading));
-    this.didLoaded$ = this.store.pipe(select(authSelectors.getLoaded));
-    this.authValues$.subscribe(data => {
-      this.authValues = data;
-      this.getFilterData(this.radioSelected);
-    });
-    this.getApplicationList();
     this.applicationValues$ = this.optionalService.applicationOptionalValue.subscribe(data => {
       if (data != null) {
         this.applicationValuesObservable = data;
@@ -100,6 +85,25 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  ngOnInit() {
+    this.V_SRC_CD_DATA = {
+      V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
+    };
+    this.radioSelected = this.radioList[0];
+    this.store.dispatch(new authActions.getAuth(this.V_SRC_CD_DATA));
+    this.authValues$ = this.store.pipe(select(authSelectors.selectAllAutorizationvalues));
+    this.error$ = this.store.pipe(select(authSelectors.getErrors));
+    this.didLoading$ = this.store.pipe(select(authSelectors.getLoading));
+    this.didLoaded$ = this.store.pipe(select(authSelectors.getLoaded));
+    this.authValues$.subscribe(data => {
+      this.authValues = data;
+      this.getFilterData(this.radioSelected);
+    });
+    if (!this.applicationValues.length) {
+      this.getApplicationList();
+    }
+  }
   ngOnDestroy() {
     this.applicationValues$.unsubscribe();
     this.processValues$.unsubscribe();
@@ -114,25 +118,56 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
     this.selectedApplication = event;
     if (this.radioSelected === 'SERVICE' || this.radioSelected === 'PROCESS') {
       this.authValueObj.V_APP_CD = event;
-      this.optionalService.getProcessOptionalValue(event);
+      if (!this.processValues.length) {
+        this.optionalService.getProcessOptionalValue(event);
+      }
     } else if (this.radioSelected === 'ARTIFACT' || this.radioSelected === 'PLATFORM' || this.radioSelected === 'SERVER' || this.radioSelected === 'SLA') {
       this.authValueObj.V_AUTH_DSC = event;
     } else {
       this.authValueObj.V_EXE_TYP = event;
     }
+    this.enableAddButtonFlag = this.checkEnableButtonFlag();
   }
 
   onProcessSelect(event) {
     // this.selectedProcess.push({ 'index': index, 'process': event.value });
+    this.selectedProcess = event;
     if (this.radioSelected === 'SERVICE') {
       this.authValueObj.V_PRCS_CD = event;
+      if (!this.serviceValues.length) {
+        this.optionalService.getServiceOptionalValue(this.selectedApplication, event);
+      }
     } else {
       this.authValueObj.V_AUTH_DSC = event;
     }
-    this.optionalService.getServiceOptionalValue(this.selectedApplication, event);
+    this.enableAddButtonFlag = this.checkEnableButtonFlag();
   }
   onServiceSelect(event) {
+    this.selectedService = event;
     this.authValueObj.V_AUTH_DSC = event;
+    this.enableAddButtonFlag = this.checkEnableButtonFlag();
+  }
+
+  checkEnableButtonFlag() {
+    if (this.radioSelected === 'ARTIFACT' || this.radioSelected === 'PLATFORM' || this.radioSelected === 'SERVER' || this.radioSelected === 'SLA') {
+      if (this.selectedApplication !== '') {
+        return true;
+      } else {
+        return false;
+      }
+    } else if (this.radioSelected === 'EXE' || this.radioSelected === 'PROCESS') {
+      if (this.selectedApplication !== '' && this.selectedProcess !== '') {
+        return true;
+      } else {
+        return false;
+      }
+    } else if (this.radioSelected === 'SERVICE') {
+      if (this.selectedApplication !== '' && this.selectedProcess !== '' && this.selectedService !== '') {
+        return true;
+      } else {
+        return false;
+      }
+    }
   }
   getFilterData(data: string) {
     this.filteredAuthValues = [];
@@ -182,7 +217,11 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
     this.optionalService.getApplicationOptionalValue();
   }
   addRow() {
+    this.selectedApplication = '';
+    this.selectedProcess = '';
+    this.selectedService = '';
     this.addFlag = true;
+    this.enableAddButtonFlag = false;
   }
   onPermissionChange(item, paramter_name) {
     item[paramter_name] = item[paramter_name] === 'Y' ? 'N' : 'Y';

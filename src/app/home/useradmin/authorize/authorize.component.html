@@ -143,7 +143,7 @@
             [checked]="authValueObj.V_EXECUTE === 'Y'"></mat-checkbox>
         </td>
         <td>
-          <button mat-icon-button (click)="onAddSubmit()">
+          <button [disabled]=!enableAddButtonFlag mat-icon-button (click)="onAddSubmit()">
             <mat-icon style="color:blue;font-size: larger;">done
             </mat-icon>
           </button>
