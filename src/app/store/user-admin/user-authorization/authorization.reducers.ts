@@ -84,6 +84,21 @@ export function authReducer(state = initialState, action: AuthActions.Actions): 
             ...state
         });
 
+        case AuthActions.ADD_AUTH:
+        return adapter.addOne(action.payload, {
+            ...state
+        });
+
+        case AuthActions.UPDATE_AUTH:
+        return adapter.updateOne(action.payload, {
+            ...state
+        });
+
+        case AuthActions.DELETE_AUTH:
+        return adapter.removeOne(action.payload, {
+            ...state
+        });
+
 
         default:
             return state;

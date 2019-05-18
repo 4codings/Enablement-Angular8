@@ -39,7 +39,7 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.userService.clear();
-    this.router.navigateByUrl('/auth/login', { skipLocationChange: true });
+    this.router.navigateByUrl('/', { skipLocationChange: true });
   }
 
 }

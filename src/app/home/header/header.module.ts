@@ -4,6 +4,8 @@ import { HeaderComponent } from './header/header.component';
 import {MatIconModule} from '@angular/material/icon';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatButtonModule} from '@angular/material/button';
 
 @NgModule({
   declarations: [HeaderComponent],
@@ -11,7 +13,9 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     CommonModule,
     MatIconModule,
     FlexLayoutModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatMenuModule,
+    MatButtonModule
   ],
   exports:[HeaderComponent]
 })

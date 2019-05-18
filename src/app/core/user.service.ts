@@ -2,7 +2,9 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs/internal/BehaviorSubject';
 import * as _ from 'lodash';
 import { userInfo } from '../store/auth/userinfo.model';
-
+import { Store } from '@ngrx/store';
+import { AppState } from '../app.state';
+import * as usreLoginActions from '../store/auth/userlogin.action';
 
 @Injectable({
     providedIn: 'root'
@@ -10,7 +12,7 @@ import { userInfo } from '../store/auth/userinfo.model';
 export class UserService {
     detail: BehaviorSubject<userInfo>;
 
-    constructor() {
+    constructor(private store: Store<AppState>) {
         this.detail = new BehaviorSubject<any>(this.getDetailFromStorage());
     }
 
@@ -36,7 +38,7 @@ export class UserService {
     clear() {
         sessionStorage.removeItem('u');
         localStorage.removeItem('u');
-
+        this.store.dispatch(new usreLoginActions.clearUserInfo());
         this.detail.next(this.getDetailFromStorage());
     }
 

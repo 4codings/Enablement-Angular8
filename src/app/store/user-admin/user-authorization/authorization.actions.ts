@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Action } from '@ngrx/store';
 import { AuthorizationData } from './authorization.model';
+import { Update } from '@ngrx/entity';
 
 export const GET_AUTH = '[AUTH] Auth Data';
 export const GET_AUTH_SUCCESS = '[AUTH] Auth Data Success';
@@ -11,6 +12,9 @@ export const CHECKED_AUTH_ROLE = '[AUTH] Checked Auth Role';
 export const SELECT_AUTH_ID = '[AUTH] Select Auth Id';
 export const REMOVE_AUTH_ID = '[AUTH] Remove Auth Id';
 export const UPDATE_AUTH_IDS = '[AUTH] Update Auth Ids';
+export const ADD_AUTH = '[AUTH] Add Auth';
+export const UPDATE_AUTH = '[AUTH] Update Auth';
+export const DELETE_AUTH = '[AUTH] Delete Auth';
 
 export class getAuth implements Action {
     readonly type = GET_AUTH;
@@ -68,6 +72,24 @@ export class SelectRoleAuthRelation implements Action {
   
     constructor(public payload: any) {}
   }
+
+  export class AddAuth implements Action {
+    readonly type = ADD_AUTH;
+  
+    constructor(public payload: any) {}
+  }
+
+  export class UpdateAuth implements Action {
+    readonly type = UPDATE_AUTH;
+  
+    constructor(public payload: any) {}
+  }
+
+  export class DeleteAuth implements Action {
+    readonly type = DELETE_AUTH;
+  
+    constructor(public payload: any) {}
+  }
   
 
 export type Actions = getAuth
@@ -78,4 +100,7 @@ export type Actions = getAuth
 | CheckedRoleAuth
 | selectAuthId
 | RemoveAuthId
-| UpdateAuthIds;
+| UpdateAuthIds
+| AddAuth
+| UpdateAuth
+| DeleteAuth;
