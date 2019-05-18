@@ -1,6 +1,7 @@
 import { AppComponent } from '../../../app.component';
 import { HomeComponent } from '../../home.component';
 import { Globals } from 'src/app/services/globals';
+import { ProcessObservable, ServiceObservable } from 'src/app/services/optional-values.service';
 
 export class dboard_secondary{
   V_BASE_ID: string[] = null;
@@ -70,6 +71,12 @@ export class dboard_secondary{
   succpro_sl = '';
   predpro_sl = '';
   groups=[];
+  applicationValues = [];
+  applicationValuesObservable = [];
+  processValues: ProcessObservable[] = [];
+  processValuesObservable: ProcessObservable[] = [];
+  serviceValues: ServiceObservable[] = [];
+  serviceValuesObservable: ServiceObservable[] = [];
   constructor(public app:HomeComponent, public globals:Globals){}
   time_to_num(time):any{
       return parseInt(time.substring(0,2))*60+parseInt(time.substring(3,5))+(parseInt(time.substring(6))/60);

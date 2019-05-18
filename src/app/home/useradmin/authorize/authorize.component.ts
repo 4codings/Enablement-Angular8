@@ -7,7 +7,7 @@ import { Store, select } from '@ngrx/store';
 import * as authActions from '../../../store/user-admin/user-authorization/authorization.actions';
 import * as authSelectors from '../../../store/user-admin//user-authorization/authorization.selectors';
 import { MatRadioChange } from '@angular/material';
-import { OptionalValuesService } from 'src/app/services/optional-values.service';
+import { OptionalValuesService, ProcessObservable, ServiceObservable } from 'src/app/services/optional-values.service';
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from 'src/app/service/api/api.service';
 
@@ -38,12 +38,17 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
   processValues$: Subscription;
   serviceValues$: Subscription;
   applicationValues = [];
-  processValues = [];
-  serviceValues = [];
-  selectedApplication = [];
-  selectedProcess = [];
+  applicationValuesObservable = [];
+  processValues: ProcessObservable[] = [];
+  processValuesObservable: ProcessObservable[] = [];
+  serviceValues: ServiceObservable[] = [];
+  serviceValuesObservable: ServiceObservable[] = [];
+  selectedApplication = '';
+  selectedProcess = '';
+  selectedService = '';
   addFlag = false;
   radioSelected;
+  enableAddButtonFlag = false;
   constructor(
     public noAuthData: NoAuthDataService,
     private store: Store<AppState>,
@@ -61,6 +66,43 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
       //console.log(data);
       this.Label = data;
     });
+    this.applicationValues$ = this.optionalService.applicationOptionalValue.subscribe(data => {
+      if (data != null) {
+        this.applicationValuesObservable = data;
+        this.applicationValues = [...this.applicationValuesObservable];
+      }
+    });
+    this.processValues$ = this.optionalService.processOptionalValue.subscribe(data => {
+      if (data != null) {
+        this.processValuesObservable = data;
+        if (this.processValuesObservable.length) {
+          this.processValues = [];
+          if (this.selectedApplication !== '') {
+            this.processValuesObservable.forEach(ele => {
+              if (ele.app === this.selectedApplication) {
+                this.processValues = ele.process;
+              }
+            });
+          }
+        }
+      }
+    });
+    this.serviceValues$ = this.optionalService.serviceOptionalValue.subscribe(data => {
+      if (data != null) {
+        this.serviceValuesObservable = [];
+        this.serviceValuesObservable = data;
+        if (this.serviceValuesObservable.length) {
+          this.serviceValues = [];
+          if (this.selectedApplication !== '' && this.selectedProcess !== '') {
+            this.serviceValuesObservable.forEach(ele => {
+              if (ele.app === this.selectedApplication && ele.process === this.selectedProcess) {
+                this.serviceValues = ele.service;
+              }
+            });
+          }
+        }
+      }
+    });
   }
 
   ngOnInit() {
@@ -77,22 +119,9 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
       this.authValues = data;
       this.getFilterData(this.radioSelected);
     });
-    this.getApplicationList();
-    this.applicationValues$ = this.optionalService.applicationOptionalValue.subscribe(data => {
-      if (data != null) {
-        this.applicationValues = data;
-      }
-    });
-    this.processValues$ = this.optionalService.processOptionalValue.subscribe(data => {
-      if (data != null) {
-        this.processValues = data;
-      }
-    });
-    this.serviceValues$ = this.optionalService.serviceOptionalValue.subscribe(data => {
-      if (data != null) {
-        this.serviceValues = data;
-      }
-    });
+    if (!this.applicationValues.length) {
+      this.getApplicationList();
+    }
   }
   ngOnDestroy() {
     this.applicationValues$.unsubscribe();
@@ -105,58 +134,137 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
   }
 
   onAppSelect(event) {
-    this.selectedApplication = event.value;
+    this.selectedApplication = event;
     if (this.radioSelected === 'SERVICE' || this.radioSelected === 'PROCESS') {
-      this.authValueObj.V_APP_CD = event.value;
-      this.optionalService.getProcessOptionalValue(event.value);
+      this.authValueObj.V_APP_CD = event;
+      if (!this.processValuesObservable.length) {
+        this.optionalService.getProcessOptionalValue(event);
+      } else {
+        let flag = 0;
+        this.processValuesObservable.forEach(ele => {
+          if (ele.app === this.selectedApplication) {
+            this.processValues = [];
+            this.processValues = ele.process;
+            flag = 1;
+          }
+        });
+        if (!flag) {
+          this.optionalService.getProcessOptionalValue(event);
+        }
+      }
     } else if (this.radioSelected === 'ARTIFACT' || this.radioSelected === 'PLATFORM' || this.radioSelected === 'SERVER' || this.radioSelected === 'SLA') {
-      this.authValueObj.V_AUTH_DSC = event.value;
+      this.authValueObj.V_AUTH_DSC = event;
     } else {
-      this.authValueObj.V_EXE_TYP = event.value;
+      this.authValueObj.V_EXE_TYP = event;
     }
+    this.enableAddButtonFlag = this.checkEnableButtonFlag();
   }
 
   onProcessSelect(event) {
     // this.selectedProcess.push({ 'index': index, 'process': event.value });
+    this.selectedProcess = event;
     if (this.radioSelected === 'SERVICE') {
-      this.authValueObj.V_PRCS_CD = event.value;
+      this.authValueObj.V_PRCS_CD = event;
+      if (!this.serviceValuesObservable.length) {
+        this.optionalService.getServiceOptionalValue(this.selectedApplication, event);
+      } else {
+        let flag = 0;
+        this.serviceValuesObservable.forEach(ele => {
+          if (ele.app === this.selectedApplication && ele.process === this.selectedProcess) {
+            this.serviceValues = [];
+            this.serviceValues = ele.service;
+            flag = 1;
+          }
+        });
+        if (!flag) {
+          this.optionalService.getServiceOptionalValue(this.selectedApplication, event);
+        }
+      }
     } else {
-      this.authValueObj.V_AUTH_DSC = event.value;
+      this.authValueObj.V_AUTH_DSC = event;
     }
-    this.optionalService.getServiceOptionalValue(this.selectedApplication, event.value);
+    this.enableAddButtonFlag = this.checkEnableButtonFlag();
   }
   onServiceSelect(event) {
-    this.authValueObj.V_AUTH_DSC = event.value;
+    this.selectedService = event;
+    this.authValueObj.V_AUTH_DSC = event;
+    this.enableAddButtonFlag = this.checkEnableButtonFlag();
+  }
+
+  checkEnableButtonFlag() {
+    if (this.radioSelected === 'ARTIFACT' || this.radioSelected === 'PLATFORM' || this.radioSelected === 'SERVER' || this.radioSelected === 'SLA') {
+      if (this.selectedApplication !== '') {
+        return true;
+      } else {
+        return false;
+      }
+    } else if (this.radioSelected === 'EXE' || this.radioSelected === 'PROCESS') {
+      if (this.selectedApplication !== '' && this.selectedProcess !== '') {
+        return true;
+      } else {
+        return false;
+      }
+    } else if (this.radioSelected === 'SERVICE') {
+      if (this.selectedApplication !== '' && this.selectedProcess !== '' && this.selectedService !== '') {
+        return true;
+      } else {
+        return false;
+      }
+    }
   }
   getFilterData(data: string) {
     this.filteredAuthValues = [];
+    this.applicationValues = [];
+    this.processValues = [];
     this.filteredAuthValues = this.authValues.filter(v => v['V_AUTH_TYP'] === data);
     if (this.radioSelected === 'ARTIFACT' || this.radioSelected === 'PLATFORM' || this.radioSelected === 'SERVER' || this.radioSelected === 'SLA') {
       if (this.filteredAuthValues.length) {
         this.applicationValues = [];
-        this.filteredAuthValues.forEach(ele => {
-          this.applicationValues.push(ele.V_AUTH_DSC);
+        this.filteredAuthValues.forEach((ele: any) => {
+          if (this.applicationValues.length && (this.applicationValues.indexOf(ele.V_AUTH_DSC) > -1)) {
+
+          } else {
+            this.applicationValues.push(ele.V_AUTH_DSC);
+          }
         });
+      } else {
+        this.applicationValues = [];
       }
-      this.applicationValues = [];
     } else if (this.radioSelected === 'EXE') {
       if (this.filteredAuthValues.length) {
         this.applicationValues = [];
         this.processValues = [];
-        this.filteredAuthValues.forEach(ele => {
-          this.applicationValues.push(ele.V_EXE_TYP);
-          this.processValues.push(ele.V_AUTH_DSC);
+        this.filteredAuthValues.forEach((ele: any) => {
+          if (this.applicationValues.length && (this.applicationValues.indexOf(ele.V_EXE_TYP) > -1)) {
+
+          } else {
+            this.applicationValues.push(ele.V_EXE_TYP);
+          }
+          if (this.processValues.length && this.processValues.indexOf(ele.V_AUTH_DSC) > -1) {
+
+          } else {
+            this.processValues.push(ele.V_AUTH_DSC);
+          }
         });
+      } else {
+        this.applicationValues = [];
+        this.processValues = [];
       }
-      this.applicationValues = [];
-      this.processValues = [];
+    } else {
+      this.applicationValues = [...this.applicationValuesObservable];
+      // this.processValues = [...this.processValuesObservable];
+      // this.serviceValues = [...this.serviceValuesObservable];
     }
   }
   getApplicationList() {
     this.optionalService.getApplicationOptionalValue();
   }
   addRow() {
+    this.selectedApplication = '';
+    this.selectedProcess = '';
+    this.selectedService = '';
     this.addFlag = true;
+    this.enableAddButtonFlag = false;
   }
   onPermissionChange(item, paramter_name) {
     item[paramter_name] = item[paramter_name] === 'Y' ? 'N' : 'Y';

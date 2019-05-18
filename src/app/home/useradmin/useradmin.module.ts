@@ -22,6 +22,7 @@ import { AuthorizeComponent } from './authorize/authorize.component';
 import { HeaderModule } from '../header/header.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatIconModule } from '@angular/material/icon';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { MatIconModule } from '@angular/material/icon';
     HeaderModule,
     FlexLayoutModule,
     MatRadioModule,
+    SharedModule,
     EffectsModule.forFeature([UserEffects, UserGroupEffects, UserRoleEffects, UserMembershipEffects, AuthEffects]),
   ]
 })
