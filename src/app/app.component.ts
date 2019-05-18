@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { filter } from 'rxjs/operators';
 import { NavigationEnd, Router } from '@angular/router';
+import { environment } from '../environments/environment';
+
+declare var $;
 
 @Component({
   selector: 'app-root',
@@ -19,8 +22,17 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     // this.api.http.apiUrl = environment.apiUrl;
     this.router.navigateByUrl('/user', { skipLocationChange: true });
-
-    // this.initHomeRedirect();
+    if(environment.production) {
+      $(document).keydown(function(e){
+        if(e.which === 123){
+          return false;
+        }
+      });
+      $(document).bind("contextmenu",function(e) {
+        e.preventDefault();
+      });
+      this.initHomeRedirect();
+    }
   }
 
   /**

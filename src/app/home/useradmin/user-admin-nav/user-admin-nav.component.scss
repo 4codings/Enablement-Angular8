@@ -1,10 +1,10 @@
 .mat-raised-button{
     padding:0%;
-    margin-left: 8px;
+    margin-left: 10px;
     background: linear-gradient(#ccc, gray);
     color: rgb(233, 233, 233);
-    border:1px solid gray;
-    border-radius: 5px;
+    //border:1px solid gray;
+    border-radius: 3px;
     width:130px;
     margin-top:4px;
     margin-bottom:4px;
@@ -18,14 +18,23 @@
 
     }
     @media only screen and (max-width: 600px){
-    .mat-mini-fab,.mat-icon-button{
-        text-align:center;
-        padding:0%;
-        margin-left: 0px;
-        background-color: rgba(105, 105, 105, 0.562);
-        color: rgb(233, 233, 233);
-        
-    } 
+        .mat-mini-fab,.mat-icon-button{
+            text-align:center;
+            padding:0%;
+            margin-left: 5px;
+            background-color: rgba(105, 105, 105, 0.562);
+            color: rgb(233, 233, 233);
+            margin-top: 5px;
+            margin-bottom: 3px;
+        } 
+
+        .nav-link {
+           padding: 0;
+
+           .iconmod {
+             margin-right: 0;
+           }
+        }
     }
 
     button:active{

@@ -49,6 +49,14 @@ export function userLoginReducer(
         loading: false,
         error: action.payload
       };
+    
+      case UserLoginActions.CLEAR_USER_INFO:
+      return {
+        userInfo: {'USR_ID': null, 'SRC_ID': null,'SRC_CD': '', 'TOKEN': '', 'USR_NM': ''},
+        loading: false,
+        loaded: false,
+        error: ''
+      };
 
     default:
       return state;

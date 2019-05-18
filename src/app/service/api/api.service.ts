@@ -18,7 +18,7 @@ export class ApiService {
 
 	public readonly endPoints = {
 		// Authentications
-		login: `${this.apiURL}auth/login`,
+		login: `${this.apiURL}/`,
 		insecure: `${this.insecureUrl}/v1/secured?`,
 		secure: `${this.securedApiUrl}/secured?`,
 		insecureProcessReport: `${this.insecureUrl}/Process/Report`,
