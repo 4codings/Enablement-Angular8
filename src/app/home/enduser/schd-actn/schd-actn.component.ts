@@ -21,7 +21,7 @@ import { NoAuthDataService } from 'src/app/services/no-auth-data.service';
   // styleUrls: ['./schd-actn.component.css'],
 
 })
-  
+
 export class SchdActnComponent implements OnInit, AfterViewInit {
   onpselect: Function;
   screenHeight = 0;
@@ -32,8 +32,8 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
   App_CD_data = [];
   proc_CD_data = [];
   ser_cd_data = [];
-  V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
-  V_USR_NM:string=JSON.parse(sessionStorage.getItem('u')).USR_NM;
+  V_SRC_CD: string = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+  V_USR_NM: string = JSON.parse(sessionStorage.getItem('u')).USR_NM;
   ApplicationCD = '';
   ProcessCD = '';
   StatusCD = '';
@@ -89,17 +89,17 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
     }
   }
   constructor(private router: Router,
-              private http: HttpClient,
-              private globals: Globals,
-              public app: HomeComponent,
-              private https: Http,
-              private _http: HttpClient,
-              private data2: UserAdminService,
-              private storageSessionService: StorageSessionService,
-              private data: ConfigServiceService,
-              private endUsrData: EndUserService,
-              private detector: ChangeDetectorRef,
-              private noAuthData: NoAuthDataService) {
+    private http: HttpClient,
+    private globals: Globals,
+    public app: HomeComponent,
+    private https: Http,
+    private _http: HttpClient,
+    private data2: UserAdminService,
+    private storageSessionService: StorageSessionService,
+    private data: ConfigServiceService,
+    private endUsrData: EndUserService,
+    private detector: ChangeDetectorRef,
+    private noAuthData: NoAuthDataService) {
     this.onpselect = function (index) {
       this.selectedrole = index;
     };
@@ -159,47 +159,56 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
       '&V_APP_CD=' + ApplicationCD + '&V_PRCS_CD=' + ProcessCD + '&V_USR_NM=' +
       this.V_USR_NM + '&V_TRIGGER_STATE=' + StatusCD +
       '&REST_Service=ScheduledJobs&Verb=GET').subscribe(dataResult => {
-      let rm_f: boolean;
-      let ps_r: boolean;
+        let rm_f: boolean;
+        let ps_r: boolean;
 
-      (dataResult);
+        if (this.isEmpty(dataResult)) {
+        } else {
 
-      this.F1 = dataResult.SRVC_CD;
-      (this.F1);
-      (this.F1.length);
-      for (let i = 0; i < this.F1.length; i++) {
-        this.innerTableDT[i] = {
-          name: dataResult.SRVC_CD[i],
-          status: dataResult.TRIGGER_STATE[i],
-          lastrun: dataResult.PREV_FIRE_TIME[i],
-          nextrun: dataResult.NEXT_FIRE_TIME[i],
-          details: dataResult.DESCRIPTION[i],
-          job_name: dataResult.JOB_NAME[i]
+          this.F1 = dataResult.SRVC_CD;
+          (this.F1);
+          (this.F1.length);
+          for (let i = 0; i < this.F1.length; i++) {
+            this.innerTableDT[i] = {
+              name: dataResult.SRVC_CD[i],
+              status: dataResult.TRIGGER_STATE[i],
+              lastrun: dataResult.PREV_FIRE_TIME[i],
+              nextrun: dataResult.NEXT_FIRE_TIME[i],
+              details: dataResult.DESCRIPTION[i],
+              job_name: dataResult.JOB_NAME[i]
 
-        };
+            };
 
-        // _______check trigger status
-        if (dataResult.TRIGGER_STATE[i] === 'SCHEDULED') {
-          ps_r = true;
-        } if (dataResult.TRIGGER_STATE[i] === 'PAUSED') {
-          rm_f = true;
+            // _______check trigger status
+            if (dataResult.TRIGGER_STATE[i] === 'SCHEDULED') {
+              ps_r = true;
+            } if (dataResult.TRIGGER_STATE[i] === 'PAUSED') {
+              rm_f = true;
+            }
+          }
+          // push dependent flag
+          this.Action.push('Setup a New Schedule');
+          if (rm_f) {
+            this.Action.push('Resume Existing Schedule');
+          } if (ps_r) {
+            this.Action.push('Pause Existing Schedules');
+
+          }
+          //    push kill flag if process are not empty
+          if (dataResult.TRIGGER_STATE.length > 0) {
+            this.Action.push('Kill Existing Schedule');
+          }
+          this.dataSource.data = this.innerTableDT;
         }
-      }
-      // push dependent flag
-      this.Action.push('Setup a New Schedule');
-      if (rm_f) {
-        this.Action.push('Resume Existing Schedule');
-      } if (ps_r) {
-        this.Action.push('Pause Existing Schedules');
+      });
 
-      }
-      //    push kill flag if process are not empty
-      if (dataResult.TRIGGER_STATE.length > 0) {
-        this.Action.push('Kill Existing Schedule');
-      }
-      this.dataSource.data = this.innerTableDT;
-    });
-
+  }
+  isEmpty(obj) {
+    for (var key in obj) {
+      if (obj.hasOwnProperty(key))
+        return false;
+    }
+    return true;
   }
   /** Whether the number of selected elements matches the total number of rows. */
 
@@ -236,7 +245,7 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
     // ("Array lenght"+this.Process_key.length+" elm"+this.Process_key);
   }
   onRowClick(row) {
-    
+
   }
 
 
@@ -427,119 +436,119 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
   show_btn_save_schedule() {
     // --------------Reuse from ConfigService: ABHISHEK ABHINAV----------------//
     this.endUsrData.getprocessParameter(this.ApplicationCD, this.ProcessCD)
-    .subscribe(
-      res => {
-        const FormData = res.json();
-        this.ref = {disp_dyn_param: false};
-        const got_res = this.data.exec_schd_restCall(FormData, this.ref);
-        this.Data = got_res.Data;
-        this.kl = got_res.K;
-    // /*this.https.get(this.apiUrlGet + "V_APP_CD=" + this.ApplicationCD + "&V_PRCS_CD=" +
-        // this.ProcessCD + "&V_SRC_CD=" +
-        // this.V_SRC_CD + "&REST_Service=ProcessParameters&Verb=GET").subscribe(
-    //   res => {
-    //     (this.apiUrlGet + "V_APP_CD=" + this.ApplicationCD + "&V_PRCS_CD=" +
-        // this.ProcessCD + "&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=ProcessParameters&Verb=GET");
-    //     (res.json());
-    //     this.FormData = res.json();
-    //     this.ParametrValue = this.FormData['PARAM_VAL'];
-    //     this.ParameterName = this.FormData['PARAM_NM'];
-    //     let arr: string;
-    //
-    //     for (let i = 0; i < this.ParametrValue.length; i++) {
-    //       if (this.ParameterName[i].includes('Date') && !(this.ParameterName[i].includes('DateTime'))) {
-    //         this.Data[i] = {
-    //           type: 'date',
-    //           name: this.ParameterName[i],
-    //           value: this.ParametrValue[i],
-    //           placeholder: this.ParameterName[i].split('_').join(' '),
-    //
-    //         };
-    //
-    //       }
-    //       else if (this.ParameterName[i].charAt(0) == '?') {
-    //         this.Data[i] = {
-    //           type: 'radio',
-    //           name: this.ParameterName[i],
-    //           value: this.ParametrValue[i],
-    //           placeholder: this.ParameterName[i].split('_').join(' '),
-    //         };
-    //       }
-    //       else if (this.ParameterName[i].charAt(this.ParameterName[i].length - 1) == '?') {
-    //         this.Data[i] = {
-    //           type: 'checkbox',
-    //           name: this.ParameterName[i],
-    //           value: this.ParametrValue[i],
-    //           placeholder: this.ParameterName[i].split('_').join(' '),
-    //         };
-    //       }
-    //       else if (this.ParameterName[i].includes('Time') && !(this.ParameterName[i].includes('DateTime'))) {
-    //         this.Data[i] = {
-    //           type: 'time',
-    //           name: this.ParameterName[i],
-    //           value: this.ParametrValue[i],
-    //           placeholder: this.ParameterName[i].split('_').join(' '),
-    //         };
-    //       }
-    //       else if (this.ParameterName[i].includes('DateTime')) {
-    //         this.Data[i] = {
-    //           type: 'datetime',
-    //           name: this.ParameterName[i],
-    //           value: this.ParametrValue[i],
-    //           placeholder: this.ParameterName[i].split('_').join(' '),
-    //         };
-    //       }
-    //       else if (this.ParameterName[i].includes('Password')) {
-    //         this.Data[i] = {
-    //           type: 'password',
-    //           name: this.ParameterName[i],
-    //           value: this.ParametrValue[i],
-    //           placeholder: this.ParameterName[i].split('_').join(' '),
-    //         };
-    //       }
-    //       else if (this.ParameterName[i].includes('Range')) {
-    //         this.Data[i] = {
-    //           type: 'range',
-    //           name: this.ParameterName[i],
-    //           value: this.ParametrValue[i],
-    //           placeholder: this.ParameterName[i].split('_').join(' '),
-    //         };
-    //       }
-    //       else if (this.ParameterName[i].includes('Color')) {
-    //         this.Data[i] = {
-    //           type: 'color',
-    //           name: this.ParameterName[i],
-    //           value: this.ParametrValue[i],
-    //           placeholder: this.ParameterName[i].split('_').join(' '),
-    //         };
-    //       }
-    //       else {
-    //         this.Data[i] = {
-    //           type: 'input',
-    //           name: this.ParameterName[i],
-    //           value: this.ParametrValue[i],
-    //           placeholder: this.ParameterName[i].split('_').join(' '),
-    //
-    //         };
-    //       }
-    //
-    //       if (this.ParametrValue.length > 0)
-    //         this.display_dynamic_paramter = true;
-    //       this.kl = i;
-    //     }*/
+      .subscribe(
+        res => {
+          const FormData = res.json();
+          this.ref = { disp_dyn_param: false };
+          const got_res = this.data.exec_schd_restCall(FormData, this.ref);
+          this.Data = got_res.Data;
+          this.kl = got_res.K;
+          // /*this.https.get(this.apiUrlGet + "V_APP_CD=" + this.ApplicationCD + "&V_PRCS_CD=" +
+          // this.ProcessCD + "&V_SRC_CD=" +
+          // this.V_SRC_CD + "&REST_Service=ProcessParameters&Verb=GET").subscribe(
+          //   res => {
+          //     (this.apiUrlGet + "V_APP_CD=" + this.ApplicationCD + "&V_PRCS_CD=" +
+          // this.ProcessCD + "&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=ProcessParameters&Verb=GET");
+          //     (res.json());
+          //     this.FormData = res.json();
+          //     this.ParametrValue = this.FormData['PARAM_VAL'];
+          //     this.ParameterName = this.FormData['PARAM_NM'];
+          //     let arr: string;
+          //
+          //     for (let i = 0; i < this.ParametrValue.length; i++) {
+          //       if (this.ParameterName[i].includes('Date') && !(this.ParameterName[i].includes('DateTime'))) {
+          //         this.Data[i] = {
+          //           type: 'date',
+          //           name: this.ParameterName[i],
+          //           value: this.ParametrValue[i],
+          //           placeholder: this.ParameterName[i].split('_').join(' '),
+          //
+          //         };
+          //
+          //       }
+          //       else if (this.ParameterName[i].charAt(0) == '?') {
+          //         this.Data[i] = {
+          //           type: 'radio',
+          //           name: this.ParameterName[i],
+          //           value: this.ParametrValue[i],
+          //           placeholder: this.ParameterName[i].split('_').join(' '),
+          //         };
+          //       }
+          //       else if (this.ParameterName[i].charAt(this.ParameterName[i].length - 1) == '?') {
+          //         this.Data[i] = {
+          //           type: 'checkbox',
+          //           name: this.ParameterName[i],
+          //           value: this.ParametrValue[i],
+          //           placeholder: this.ParameterName[i].split('_').join(' '),
+          //         };
+          //       }
+          //       else if (this.ParameterName[i].includes('Time') && !(this.ParameterName[i].includes('DateTime'))) {
+          //         this.Data[i] = {
+          //           type: 'time',
+          //           name: this.ParameterName[i],
+          //           value: this.ParametrValue[i],
+          //           placeholder: this.ParameterName[i].split('_').join(' '),
+          //         };
+          //       }
+          //       else if (this.ParameterName[i].includes('DateTime')) {
+          //         this.Data[i] = {
+          //           type: 'datetime',
+          //           name: this.ParameterName[i],
+          //           value: this.ParametrValue[i],
+          //           placeholder: this.ParameterName[i].split('_').join(' '),
+          //         };
+          //       }
+          //       else if (this.ParameterName[i].includes('Password')) {
+          //         this.Data[i] = {
+          //           type: 'password',
+          //           name: this.ParameterName[i],
+          //           value: this.ParametrValue[i],
+          //           placeholder: this.ParameterName[i].split('_').join(' '),
+          //         };
+          //       }
+          //       else if (this.ParameterName[i].includes('Range')) {
+          //         this.Data[i] = {
+          //           type: 'range',
+          //           name: this.ParameterName[i],
+          //           value: this.ParametrValue[i],
+          //           placeholder: this.ParameterName[i].split('_').join(' '),
+          //         };
+          //       }
+          //       else if (this.ParameterName[i].includes('Color')) {
+          //         this.Data[i] = {
+          //           type: 'color',
+          //           name: this.ParameterName[i],
+          //           value: this.ParametrValue[i],
+          //           placeholder: this.ParameterName[i].split('_').join(' '),
+          //         };
+          //       }
+          //       else {
+          //         this.Data[i] = {
+          //           type: 'input',
+          //           name: this.ParameterName[i],
+          //           value: this.ParametrValue[i],
+          //           placeholder: this.ParameterName[i].split('_').join(' '),
+          //
+          //         };
+          //       }
+          //
+          //       if (this.ParametrValue.length > 0)
+          //         this.display_dynamic_paramter = true;
+          //       this.kl = i;
+          //     }*/
 
 
-        for (let i = 0; i <= this.kl; i++) {
+          for (let i = 0; i <= this.kl; i++) {
 
-          if (this.Data[i].value !== '' && this.Data[i].value !== null) {
-            this.tp[this.Data[i].name] = this.Data[i].value;
+            if (this.Data[i].value !== '' && this.Data[i].value !== null) {
+              this.tp[this.Data[i].name] = this.Data[i].value;
+            }
           }
+          (this.tp);
+
+
         }
-        (this.tp);
-
-
-      }
-    );
+      );
     // this.save_shedule_btn = false;
   }
 
@@ -551,13 +560,13 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
       this.ApplicationCD + '&V_PRCS_CD=' + this.ProcessCD +
       '&V_SRC_CD=' + ag + '&V_USR_NM=' + ur + '&V_PARAM_NM=' + n +
       '&V_PARAM_VAL=' + v + '&REST_Service=ProcessParameters&Verb=PATCH')
-    .subscribe(
-      res => {
+      .subscribe(
+        res => {
 
-      }
-    );
+        }
+      );
   }
-// filteredOptions: Observable<string[]>;
+  // filteredOptions: Observable<string[]>;
   getDropDownListValue(e) {
     // this.app.loading=true;
     this.searchResult = [];
@@ -565,7 +574,7 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
     // this.ApplicationCD + "&V_PRCS_CD=" + this.ProcessCD + "&V_PARAM_NM=" + e +
     // "&V_SRVC_CD=Pull%20FPDS%20Contracts&REST_Service=ProcessParametersOptions&Verb=GET")
     this.endUsrData.getParameterAllOption(this.ApplicationCD, this.ProcessCD, e, 'Pull%20FPDS%20Contract')
-    .subscribe(
+      .subscribe(
         res => {
           ('Parameter option response is :');
           (res.json());

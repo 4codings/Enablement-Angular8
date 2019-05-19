@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Http, Headers, RequestOptions, RequestMethod } from '@angular/http';
@@ -13,7 +13,7 @@ import { Injectable, ViewChild, ViewChildren } from '@angular/core';
 import { EnduserComponent } from '../enduser.component';
 
 import { Form_data } from './Form_data';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { MatTableDataSource } from '@angular/material';
 import { CommonUtils } from '../../../common/utils';
 import { WebSocketService } from 'src/app/services/web-socket.service';
@@ -25,6 +25,7 @@ import { Globals2 } from 'src/app/service/globals';
 import { HomeComponent } from '../../home.component';
 import { ConfigServiceService, IFormFieldConfig } from 'src/app/services/config-service.service';
 import { StorageSessionService } from 'src/app/services/storage-session.service';
+import { OptionalValuesService, ProcessObservable, ServiceObservable } from 'src/app/services/optional-values.service';
 
 export class ReportData {
   public RESULT: string;
@@ -40,7 +41,7 @@ export class ReportData {
 
 })
 @Injectable()
-export class ExecuteComponent implements OnInit {
+export class ExecuteComponent implements OnInit, OnDestroy {
 
   // domain_name = this.globals.domain_name;
   // 10th April
@@ -95,7 +96,16 @@ export class ExecuteComponent implements OnInit {
   Data_Values: any[] = [];
   Data_labels: any[] = [];
   applicationViewFlag = false;
+  applicationValues$: Subscription;
+  processValues$: Subscription;
+  serviceValues$: Subscription;
 
+  applicationValuesObservable = [];
+  applicationValues = [];
+  processValues = [];
+  serviceValues = [];
+  processValuesObservable: ProcessObservable[] = [];
+  serviceValuesObservable: ServiceObservable[] = [];
   //-------Balraj Code--------
   // =========== CHARTS FLAGS ( Toggle these to display or hide charts at loading page )=========
   /*show_PIE = false;
@@ -156,8 +166,74 @@ export class ExecuteComponent implements OnInit {
     private data: ConfigServiceService, public dialog: MatDialog, private app: HomeComponent,
     private PFrame: EnduserComponent, private roll: RollserviceService, public snackBar: MatSnackBar,
     private wSocket: WebSocketService, private msg: GetMessageService, private globals: Globals, private globarUser: Globals2,
-    private apiservice: ApiService, private activatedRoute: ActivatedRoute
+    private apiservice: ApiService, private activatedRoute: ActivatedRoute, private optionalService: OptionalValuesService
   ) {
+    this.applicationValues$ = this.optionalService.applicationOptionalValue.subscribe(data => {
+      if (data != null) {
+        this.applicationValuesObservable = data;
+        this.applicationValues = (data.sort(function (a, b) { return a.localeCompare(b); }));
+        if (this.applicationValues.length == 1) {
+          this.SL_APP_CD = this.applicationValues[0];
+          this.applicationViewFlag = false;
+          if (!this.processValues.length) {
+            this.optionalService.getProcessOptionalValue(this.SL_APP_CD);
+          } else {
+            this.functionCommonApp();
+          }
+        } else {
+          this.applicationViewFlag = true;
+        }
+        if (this.selectedapp != null && this.app.START == false && this.app.selected_APPLICATION != 'ALL') {
+          this.SL_APP_CD = this.selectedapp;
+          if (this.desktopView) {
+            if (!this.processValues.length) {
+              this.optionalService.getProcessOptionalValue(this.SL_APP_CD);
+            } else {
+              this.functionCommonApp();
+            }
+          } else if (this.mobileView) {
+            if (!this.processValues.length) {
+              this.optionalService.getProcessOptionalValue(this.SL_APP_CD);
+            } else {
+              this.functionCommonApp();
+            }
+          }
+        }
+      }
+    });
+    this.processValues$ = this.optionalService.processOptionalValue.subscribe(data => {
+      if (data != null) {
+        this.processValuesObservable = data;
+        if (this.processValuesObservable.length) {
+          this.processValues = [];
+          if (this.SL_APP_CD !== '') {
+            this.processValuesObservable.forEach(ele => {
+              if (ele.app === this.SL_APP_CD) {
+                this.processValues = (ele.process.sort(function (a, b) { return a.localeCompare(b); }));
+                this.functionCommonProcess();
+              }
+            });
+          }
+        }
+      }
+    });
+    this.serviceValues$ = this.optionalService.serviceOptionalValue.subscribe(data => {
+      if (data != null) {
+        this.serviceValuesObservable = [];
+        this.serviceValuesObservable = data;
+        if (this.serviceValuesObservable.length) {
+          this.serviceValues = [];
+          if (this.SL_APP_CD !== '' && this.SL_PRCS_CD !== '') {
+            this.serviceValuesObservable.forEach(ele => {
+              if (ele.app === this.SL_APP_CD && ele.process === this.SL_PRCS_CD) {
+                this.serviceValues = (ele.service.sort(function (a, b) { return a.localeCompare(b); }));
+                this.functionCommonService();
+              }
+            });
+          }
+        }
+      }
+    });
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       if (e instanceof NavigationEnd) {
         this.router.navigated = false;
@@ -168,10 +244,52 @@ export class ExecuteComponent implements OnInit {
     this.onResize();
   }
 
+  functionCommonApp() {
+    var flag = 0;
+    this.processValues.forEach(ele => {
+      if (ele.app === this.SL_APP_CD) {
+        this.processValues = ele.process;
+        flag = 1;
+      }
+    });
+    if (!flag) {
+      this.optionalService.getProcessOptionalValue(this.SL_APP_CD);
+    }
+  }
+  functionCommonProcess() {
+    if (!this.applicationViewFlag) {
+      let defaultSelectedProcess = [];
+      defaultSelectedProcess = this.processValues[0];
+      this.getServiceCode(defaultSelectedProcess);
+      this.fooo1(this.processValues[0]);
+      this.Execute_AP_PR();
+    }
+    //this.app.PRC_CD_GLOBAL=this.PRC_CD;
+    //(this.PRC_CD);
+    //(V_APP_CD);
+    if (this.processValues.length == 1) {
+      this.SL_PRC_CD = this.processValues[0];
+      // this.Process_box=false;
+      // this.Process_label=true;
+
+      this.data_form = new Form_data(this.SL_APP_CD, this.SL_PRC_CD);
+
+      // this.Execute_AP_PR();getDropDownListValue
+
+    }
+  }
+  functionCommonService() {
+    this.SRVC_CD = this.serviceValues;
+    //(this.SRVC_CD);
+    this.getIdCode();
+  }
   initialiseInvites() {
     this.ngOnInit();
   }
   ngOnDestroy() {
+    this.applicationValues$.unsubscribe();
+    this.processValues$.unsubscribe();
+    this.serviceValues$.unsubscribe();
     if (this.navigationSubscription) {
       this.navigationSubscription.unsubscribe();
     }
@@ -218,34 +336,37 @@ export class ExecuteComponent implements OnInit {
   }
   //_____________________________1_____________________
   getAppCode() {
-    this.data.getAppCode(this.V_SRC_CD).subscribe(res => {
-      this.APP_CD = res.json();
-      //this.app.APP_CD_GLOBAL=this.APP_CD;
-      //------------get lenght
-      (this.APP_CD);
+    if (!this.applicationValuesObservable.length) {
+      this.optionalService.getApplicationOptionalValue();
+    }
+    // this.data.getAppCode(this.V_SRC_CD).subscribe(res => {
+    //   this.APP_CD = res.json();
+    //   //this.app.APP_CD_GLOBAL=this.APP_CD;
+    //   //------------get lenght
+    //   (this.APP_CD);
 
-      if (this.APP_CD['APP_CD'].length == 1) {
-        //hide the application select box
-        this.SL_APP_CD = this.APP_CD['APP_CD'][0];
-        this.applicationViewFlag = false;
-        this.getProcessCD(this.SL_APP_CD);
-        // this.Application_label=true;
+    //   if (this.APP_CD['APP_CD'].length == 1) {
+    //     //hide the application select box
+    //     this.SL_APP_CD = this.APP_CD['APP_CD'][0];
+    //     this.applicationViewFlag = false;
+    //     this.getProcessCD(this.SL_APP_CD);
+    //     // this.Application_label=true;
 
-      } else {
-        this.applicationViewFlag = true;
-      }
-      //("START= "+this.app.START+"; selectedapp="+this.selectedapp);
-      if (this.selectedapp != null && this.app.START == false && this.app.selected_APPLICATION != 'ALL') {
-        //("calling getProcess");
-        this.SL_APP_CD = this.selectedapp;
-        if (this.desktopView) {
-          this.getProcessCD(this.selectedapp);
-        } else if (this.mobileView) {
-          this.getProcessCD({ value: this.selectedapp });
-        }
-      }
+    //   } else {
+    //     this.applicationViewFlag = true;
+    //   }
+    //   //("START= "+this.app.START+"; selectedapp="+this.selectedapp);
+    //   if (this.selectedapp != null && this.app.START == false && this.app.selected_APPLICATION != 'ALL') {
+    //     //("calling getProcess");
+    //     this.SL_APP_CD = this.selectedapp;
+    //     if (this.desktopView) {
+    //       this.getProcessCD(this.selectedapp);
+    //     } else if (this.mobileView) {
+    //       this.getProcessCD({ value: this.selectedapp });
+    //     }
+    //   }
 
-    });
+    // });
   }
 
   getProcessCD(V_APP_CD) {
@@ -260,6 +381,22 @@ export class ExecuteComponent implements OnInit {
       this.Execute_Now_btn = false;
       this.Schedule_btn = false;
       this.Data = [];
+      if (!this.processValuesObservable.length) {
+        this.optionalService.getProcessOptionalValue(this.selectedapp);
+      } else {
+        let flag = 0;
+        this.processValuesObservable.forEach(ele => {
+          if (ele.app === this.selectedapp) {
+            this.processValues = [];
+            this.processValues = ele.process.sort(function (a, b) { return a.localeCompare(b); });
+            flag = 1;
+            this.functionCommonProcess();
+          }
+        });
+        if (!flag) {
+          this.optionalService.getProcessOptionalValue(this.selectedapp);
+        }
+      }
       // this.Process_box=true;
       // this.Process_label=false;
 
@@ -289,29 +426,29 @@ export class ExecuteComponent implements OnInit {
       // });
 
       // secure
-      this.apiservice.requestSecureApi(this.apiUrlGetSecure + 'V_APP_CD=' + V_APP_CD + '&V_SRC_CD=' + this.V_SRC_CD + '&V_USR_NM=' + this.V_USR_NM + '&REST_Service=UserProcesses&Verb=GET', 'get').subscribe(res => {
-        this.PRC_CD = res.json();
-        if (!this.applicationViewFlag) {
-          let defaultSelectedProcess = [];
-          defaultSelectedProcess = this.PRC_CD['PRCS_CD'][0];
-          this.getServiceCode(defaultSelectedProcess);
-          this.fooo1(this.PRC_CD['PRCS_CD'][0]);
-          this.Execute_AP_PR();
-        }
-        //this.app.PRC_CD_GLOBAL=this.PRC_CD;
-        //(this.PRC_CD);
-        //(V_APP_CD);
-        if (this.PRC_CD['PRCS_CD'].length == 1) {
-          this.SL_PRC_CD = this.PRC_CD['PRCS_CD'][0];
-          // this.Process_box=false;
-          // this.Process_label=true;
+      // this.apiservice.requestSecureApi(this.apiUrlGetSecure + 'V_APP_CD=' + V_APP_CD + '&V_SRC_CD=' + this.V_SRC_CD + '&V_USR_NM=' + this.V_USR_NM + '&REST_Service=UserProcesses&Verb=GET', 'get').subscribe(res => {
+      //   this.PRC_CD = res.json();
+      //   if (!this.applicationViewFlag) {
+      //     let defaultSelectedProcess = [];
+      //     defaultSelectedProcess = this.PRC_CD['PRCS_CD'][0];
+      //     this.getServiceCode(defaultSelectedProcess);
+      //     this.fooo1(this.PRC_CD['PRCS_CD'][0]);
+      //     this.Execute_AP_PR();
+      //   }
+      //   //this.app.PRC_CD_GLOBAL=this.PRC_CD;
+      //   //(this.PRC_CD);
+      //   //(V_APP_CD);
+      //   if (this.PRC_CD['PRCS_CD'].length == 1) {
+      //     this.SL_PRC_CD = this.PRC_CD['PRCS_CD'][0];
+      //     // this.Process_box=false;
+      //     // this.Process_label=true;
 
-          this.data_form = new Form_data(this.SL_APP_CD, this.SL_PRC_CD);
+      //     this.data_form = new Form_data(this.SL_APP_CD, this.SL_PRC_CD);
 
-          // this.Execute_AP_PR();getDropDownListValue
+      //     // this.Execute_AP_PR();getDropDownListValue
 
-        }
-      });
+      //   }
+      // });
     }
   }
   /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -344,15 +481,30 @@ export class ExecuteComponent implements OnInit {
       this.SRVC_CD = [];
       this.SL_PRCS_CD = V_PRCS_CD;
       this.selectedprcs = V_PRCS_CD;
+      if (!this.serviceValuesObservable.length) {
+        this.optionalService.getServiceOptionalValue(this.SL_APP_CD, this.SL_PRCS_CD);
+      } else {
+        let flag = 0;
+        this.serviceValuesObservable.forEach(ele => {
+          if (ele.app === this.SL_APP_CD && ele.process === this.SL_PRCS_CD) {
+            this.serviceValues = [];
+            this.serviceValues = (ele.service.sort(function (a, b) { return a.localeCompare(b); }));
+            flag = 1;
+            this.functionCommonService();
+          }
+        });
+        if (!flag) {
+          this.optionalService.getServiceOptionalValue(this.SL_APP_CD, this.SL_PRCS_CD);
+        }
+      }
+      // this.data.serviceCode(this.SL_APP_CD, this.SL_PRCS_CD).subscribe(res => {
+      //   //(res.json());
+      //   this.SRVC_DATA = res.json();
+      //   this.SRVC_CD = this.SRVC_DATA['SRVC_CD'];
 
-      this.data.serviceCode(this.SL_APP_CD, this.SL_PRCS_CD).subscribe(res => {
-        //(res.json());
-        this.SRVC_DATA = res.json();
-        this.SRVC_CD = this.SRVC_DATA['SRVC_CD'];
-
-        //(this.SRVC_CD);
-        this.getIdCode();
-      });
+      //   //(this.SRVC_CD);
+      //   this.getIdCode();
+      // });
     }
     // }
 
@@ -1510,7 +1662,9 @@ export class ExecuteComponent implements OnInit {
       this.Label = data.json();
       //(this.Label);
     });
-    this.getAppCode();
+    if (!this.applicationValuesObservable.length) {
+      this.getAppCode();
+    }
     //-----------------------------for checking the role cd
     this.roll.getRollCd().subscribe(
       res => {

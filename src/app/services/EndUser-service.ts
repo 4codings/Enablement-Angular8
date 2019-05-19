@@ -15,8 +15,10 @@ import { Globals2 } from '../service/globals';
 export class EndUserService {
     private baseUrl: string = this.apiService.endPoints.insecure;
     private baseSecureUrl: string = this.apiService.endPoints.secure;
-    private V_SRC_CD: string = this.storage.getSession("agency");
-    private V_USR_NM: string = this.storage.getSession("email");
+    // private V_SRC_CD: string = this.storage.getSession("agency");
+    // private V_USR_NM: string = this.storage.getSession("email");
+    V_SRC_CD: string = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+    V_USR_NM: string = JSON.parse(sessionStorage.getItem('u')).USR_NM;
     private ResetOptimised: boolean = false;
     private Lazyload: boolean = true;
     constructor(private globals: Globals,

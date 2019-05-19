@@ -57,7 +57,7 @@ import { DeleteConfirmComponent } from './execute/delete-confirm/delete-confirm.
     SharedModule,
     HeaderModule,
     FormsModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule.withConfig({warnOnNgModelWithFormControl: 'never'}),
     NgbModule,
     ModalModule.forRoot(),
   ],

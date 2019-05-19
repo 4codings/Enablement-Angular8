@@ -48,7 +48,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     MatButtonModule,
     MatNativeDateModule,
     MatCheckboxModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule.withConfig({warnOnNgModelWithFormControl: 'never'}),
     FormsModule,
     CommonModule,
     UseradminRoutingModule,
