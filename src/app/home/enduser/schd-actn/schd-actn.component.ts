@@ -1,11 +1,11 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Http } from '@angular/http';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { data } from './schd_data';
 import { MatTableDataSource, MatSort } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { HostListener } from '@angular/core';
 import { ConfigServiceService } from 'src/app/services/config-service.service';
 import { HomeComponent } from '../../home.component';
@@ -14,6 +14,7 @@ import { UserAdminService } from 'src/app/services/user-admin.service';
 import { StorageSessionService } from 'src/app/services/storage-session.service';
 import { EndUserService } from 'src/app/services/EndUser-service';
 import { NoAuthDataService } from 'src/app/services/no-auth-data.service';
+import { ProcessObservable, OptionalValuesService } from 'src/app/services/optional-values.service';
 
 @Component({
   selector: 'app-schd-actn',
@@ -22,7 +23,7 @@ import { NoAuthDataService } from 'src/app/services/no-auth-data.service';
 
 })
 
-export class SchdActnComponent implements OnInit, AfterViewInit {
+export class SchdActnComponent implements OnInit, AfterViewInit, OnDestroy {
   onpselect: Function;
   screenHeight = 0;
   screenWidth = 0;
@@ -76,6 +77,16 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
   Process_key: any = [];
   table = '';
   searchResult: any[] = [];
+
+  applicationViewFlag = false;
+  applicationValues$: Subscription;
+  processValues$: Subscription;
+
+  applicationValuesObservable = [];
+  applicationValues = [];
+  processValues = [];
+  processValuesObservable: ProcessObservable[] = [];
+
   @HostListener('window:resize', ['$event'])
   onResize(event?) {
     this.screenHeight = window.innerHeight;
@@ -99,25 +110,82 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
     private data: ConfigServiceService,
     private endUsrData: EndUserService,
     private detector: ChangeDetectorRef,
+    private optionalService: OptionalValuesService,
     private noAuthData: NoAuthDataService) {
+    this.applicationValues$ = this.optionalService.applicationOptionalValue.subscribe(data => {
+      if (data != null) {
+        this.applicationValuesObservable = data;
+        this.applicationValues = (data.sort(function (a, b) { return a.localeCompare(b); }));
+        if (this.applicationValues.length == 1) {
+          this.selectedplat = this.applicationValues[0];
+          this.ApplicationCD=this.selectedplat;
+          this.applicationViewFlag = false;
+          if (!this.processValues.length) {
+            this.optionalService.getProcessOptionalValue(this.selectedplat);
+          } else {
+            this.functionCommonApp();
+          }
+        } else {
+          this.applicationViewFlag = true;
+        }
+        if (this.app.START === false && this.ApplicationCD.length > 0 && this.app.selected_APPLICATION !== 'ALL') {
+          if (this.mobileView) {
+            if (!this.processValues.length) {
+              this.optionalService.getProcessOptionalValue(this.ApplicationCD);
+            } else {
+              this.functionCommonApp();
+            }
+          } else {
+            if (!this.processValues.length) {
+              this.optionalService.getProcessOptionalValue(this.ApplicationCD);
+            } else {
+              this.functionCommonApp();
+            }
+          }
+        }
+      }
+    });
+    this.processValues$ = this.optionalService.processOptionalValue.subscribe(data => {
+      if (data != null) {
+        this.processValuesObservable = data;
+        if (this.processValuesObservable.length) {
+          this.processValues = [];
+          if (this.selectedplat !== '') {
+            this.processValuesObservable.forEach(ele => {
+              if (ele.app === this.selectedplat) {
+                this.processValues = (ele.process.sort(function (a, b) { return a.localeCompare(b); }));
+                this.functionCommonProcess();
+              }
+            });
+          }
+        }
+      }
+    });
     this.onpselect = function (index) {
       this.selectedrole = index;
     };
     this.onResize();
   }
+  ngOnDestroy() {
+    this.applicationValues$.unsubscribe();
+    this.processValues$.unsubscribe();
+  }
   getAppCode() {
-    this.endUsrData.getApplication().subscribe(
-      res => {
-        this.App_CD_data = res.json();
-        (res);
-        if (this.app.START === false && this.ApplicationCD.length > 0 && this.app.selected_APPLICATION !== 'ALL') {
-          if (this.mobileView) {
-            this.getProcessCD({ value: this.ApplicationCD });
-          } else {
-            this.getProcessCD(this.ApplicationCD);
-          }
-        }
-      });
+    if (!this.applicationValuesObservable.length) {
+      this.optionalService.getApplicationOptionalValue();
+    }
+    // this.endUsrData.getApplication().subscribe(
+    //   res => {
+    //     this.App_CD_data = res.json();
+    //     (res);
+    //     if (this.app.START === false && this.ApplicationCD.length > 0 && this.app.selected_APPLICATION !== 'ALL') {
+    //       if (this.mobileView) {
+    //         this.getProcessCD({ value: this.ApplicationCD });
+    //       } else {
+    //         this.getProcessCD(this.ApplicationCD);
+    //       }
+    //     }
+    //   });
   }
   getProcessCD(u) {
     if (this.mobileView) {
@@ -131,10 +199,69 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
     this.Action = [];
     this.innerTableDT = [];
     this.Data = [];
-    this.endUsrData.getProcesses(u)
-      .subscribe(res => { this.proc_CD_data = res.json(); });
+    if (!this.processValuesObservable.length) {
+      this.optionalService.getProcessOptionalValue(this.selectedplat);
+    } else {
+      let flag = 0;
+      this.processValuesObservable.forEach(ele => {
+        if (ele.app === this.selectedplat) {
+          this.processValues = [];
+          this.processValues = ele.process.sort(function (a, b) { return a.localeCompare(b); });
+          flag = 1;
+          this.functionCommonProcess();
+        }
+      });
+      if (!flag) {
+        this.optionalService.getProcessOptionalValue(this.selectedplat);
+      }
+    }
+    // this.endUsrData.getProcesses(u)
+    //   .subscribe(res => {
+    //     this.proc_CD_data = res.json();
+    //     if (!this.applicationViewFlag) {
+    //       this.selectedplat1 = this.proc_CD_data['PRCS_CD'][0];
+    //       this.ProcessCD = this.selectedplat1;
+    //       this.fooo1(this.proc_CD_data['PRCS_CD'][0]);
+    //     }
+    //     this.process_box = true;
+    //     if (this.app.START === false && this.ProcessCD.length > 0 && this.app.selected_PROCESS !== 'ALL') {
+    //       if (this.mobileView) {
+    //         this.fooo1({ value: this.ProcessCD });
+    //       } else {
+    //         this.fooo1(this.ProcessCD);
+    //       }
+    //     }
+    //   });
     // enable the scheduler btn
     // this.find_process(u, this.ProcessCD, "All");
+    // this.process_box = true;
+    // if (this.app.START === false && this.ProcessCD.length > 0 && this.app.selected_PROCESS !== 'ALL') {
+    //   if (this.mobileView) {
+    //     this.fooo1({ value: this.ProcessCD });
+    //   } else {
+    //     this.fooo1(this.ProcessCD);
+    //   }
+    // }
+
+  }
+  functionCommonApp() {
+    var flag = 0;
+    this.processValues.forEach(ele => {
+      if (ele.app === this.selectedplat) {
+        this.processValues = ele.process;
+        flag = 1;
+      }
+    });
+    if (!flag) {
+      this.optionalService.getProcessOptionalValue(this.selectedplat);
+    }
+  }
+  functionCommonProcess() {
+    if (!this.applicationViewFlag) {
+      this.selectedplat1 = this.processValues[0];
+      this.ProcessCD = this.selectedplat1;
+      this.fooo1(this.processValues[0]);
+    }
     this.process_box = true;
     if (this.app.START === false && this.ProcessCD.length > 0 && this.app.selected_PROCESS !== 'ALL') {
       if (this.mobileView) {
@@ -143,7 +270,6 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
         this.fooo1(this.ProcessCD);
       }
     }
-
   }
   // _________________________________FIND PROCESS__________________________________________
   // Table_scheduled_data: any[] = [];
@@ -324,8 +450,9 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
       //console.log(data);
       this.Label = data;
     });
-
-    this.getAppCode();
+    if (!this.applicationValuesObservable.length) {
+      this.getAppCode();
+    }
     this.data.getJSON().subscribe(data1 => { (data1.json()); this.Label = data1.json(); (this.Label); });
 
   }

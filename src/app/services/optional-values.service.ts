@@ -44,7 +44,7 @@ export class OptionalValuesService {
       this.http.get(this.apiUrlGet + "V_APP_CD=" + application + "&V_SRC_CD=" + this.V_SRC_CD + "&V_USR_NM=" + this.V_USR_NM + "&REST_Service=AppProcesses&Verb=GET").subscribe(
         res => {
           if (res) {
-            this.processArray.push({ 'app': application, 'process': res['PRCS_CD'] });
+            this.processArray.push({ 'app': application, 'process': res['PRCS_CD'], 'data': res });
             this.processOptionalValue.next(this.processArray);
           }
         });
@@ -63,7 +63,7 @@ export class OptionalValuesService {
       this.http.get(this.apiUrlGet + "V_APP_CD=" + application + "&V_SRC_CD=" + this.V_SRC_CD + "&V_PRCS_CD=" + process + "&V_USR_NM=" + this.V_USR_NM + "&REST_Service=ProcessServices&Verb=GET").subscribe(
         res => {
           if (res) {
-            this.serviceArray.push({ 'app': application, 'process': process, 'service': res['SRVC_CD'] });
+            this.serviceArray.push({ 'app': application, 'process': process, 'service': res['SRVC_CD'], 'data': res });
             this.serviceOptionalValue.next(this.serviceArray);
           }
         });
@@ -73,9 +73,11 @@ export class OptionalValuesService {
 export class ProcessObservable {
   app: any;
   process: any;
+  data:any;
 }
 export class ServiceObservable {
   app: any;
   process: any;
   service: any;
+  data:any;
 }

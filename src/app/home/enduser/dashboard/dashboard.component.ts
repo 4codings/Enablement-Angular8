@@ -811,9 +811,11 @@ export class DashboardComponent extends dboard_secondary implements OnInit, Afte
       let flag = 0;
       this.processValuesObservable.forEach(ele => {
         if (ele.app === this.selectedapp) {
-          this.processValues = [];
-          this.PRCS_CD = this.PRCS_CD.concat(ele.process.sort(function (a, b) { return a.localeCompare(b); }));
-          flag = 1;
+          if (ele.data.CREATE[0] == "Y" && ele.data.DELETE[0] == "Y" && ele.data.UPDATE[0] == "Y") {
+            this.processValues = [];
+            this.PRCS_CD = this.PRCS_CD.concat(ele.process.sort(function (a, b) { return a.localeCompare(b); }));
+            flag = 1;
+          }
         }
       });
       if (!flag) {

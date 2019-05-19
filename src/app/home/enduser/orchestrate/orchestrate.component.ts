@@ -198,10 +198,12 @@ export class OrchestrateComponent implements OnInit, OnDestroy {
       let flag = 0;
       this.processValuesObservable.forEach(ele => {
         if (ele.app === this.predapp_sl) {
-          this.prcs_cd = [];
-          this.prcs_cd = ele.process.sort(function (a, b) { return a.localeCompare(b); });
-          flag = 1;
-          this.functionCommonPreProcess();
+          if (ele.data.CREATE[0] == "Y" && ele.data.DELETE[0] == "Y" && ele.data.UPDATE[0] == "Y") {
+            this.prcs_cd = [];
+            this.prcs_cd = ele.process.sort(function (a, b) { return a.localeCompare(b); });
+            flag = 1;
+            this.functionCommonPreProcess();
+          }
         }
       });
       if (!flag) {
@@ -302,9 +304,11 @@ export class OrchestrateComponent implements OnInit, OnDestroy {
       let flag = 0;
       this.processValuesObservable.forEach(ele => {
         if (ele.app === this.succapp_sl) {
-          this.succprcs_cd = [];
-          this.succprcs_cd = (ele.process.sort(function (a, b) { return a.localeCompare(b); }));
-          flag = 1;
+          if (ele.data.CREATE[0] == "Y" && ele.data.DELETE[0] == "Y" && ele.data.UPDATE[0] == "Y") {
+            this.succprcs_cd = [];
+            this.succprcs_cd = (ele.process.sort(function (a, b) { return a.localeCompare(b); }));
+            flag = 1;
+          }
         }
       });
       if (!flag) {
@@ -617,7 +621,7 @@ export class OrchestrateComponent implements OnInit, OnDestroy {
   ngOnInit() {
     if (!this.applicationValuesObservable.length) {
       this.functionapplist();
-      this.functionsuccapplist();
+      // this.functionsuccapplist();
     }
     // this.data.getJSON().subscribe(data => {
     //         //  (data.json());       
