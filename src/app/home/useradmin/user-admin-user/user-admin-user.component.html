@@ -121,31 +121,30 @@
 	</div>
 
 </div>
-
+<br><br>
 <div fxLayout="row">
 	<div fxFlex="38"></div>
 	<div fxFlex="60">
 		<div class="CustomeButtonFloat">
-			<button mat-raised-button color="primary" [disabled]="(duplicated && !selecteduser) || !statusChanged && !nameChanged && !descChanged || domainError"
-              *ngIf = "(nameChanged || !updateBtn) && !hideButton" (click)="addUser()">
+			<button class="mr-2" mat-raised-button color="primary" [disabled]="(duplicated && !selecteduser) || !statusChanged && !nameChanged && !descChanged || domainError"
+               (click)="addUser()">
         <mat-icon style="vertical-align: middle;margin-right: 5px">add</mat-icon>{{Label['add_btn']}}</button>
-      <button mat-raised-button color="primary"
+      <button class="mr-2" mat-raised-button color="primary"
               [disabled]="(totalDuplicated && !selecteduser) || !statusChanged && !descChanged && !nameChanged"
-              [hidden]="(nameChanged || !updateBtn) && !hideButton" (click)="updateUser()">
+               (click)="updateUser()">
         <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['UpdateBtn']}}</button>
-		</div>
-		<div class="CustomeButtonFloat">
-			<button title="Upload file" mat-raised-button color="primary" (click)="uploadData()">
+      
+      <button class="mr-2" title="Upload file" mat-raised-button color="primary" (click)="uploadData()">
         <i class="fas fa-upload"></i> Upload
       </button>
       <button mat-raised-button color="primary" (click)="downloadFile()">
         <i class="fas fa-download"></i> Download
       </button>
-		</div>
-		<br />
-		<div class="alertSuccess" *ngIf="emailMessage!=undefined && emailMessage!=''">
-			{{emailMessage}}
-		</div>
+    </div>
+    <br />
+    <div class="alertSuccess" *ngIf="emailMessage!=undefined && emailMessage!=''">
+      {{emailMessage}}
+    </div>
 	</div>
 	<div fxFlex="0"></div>
 </div>

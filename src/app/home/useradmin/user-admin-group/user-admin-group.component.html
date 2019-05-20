@@ -139,7 +139,7 @@
 		</mat-form-field>
 	</div>
 </div>
-
+<br><br/>
 <div fxLayout="row">
 	<div fxFlex="38" style="text-align: center;">
 
@@ -147,19 +147,17 @@
 	<div fxFlex="60">
 		
 		<div class="CustomeButtonFloat">
-			<button mat-raised-button color="primary" [disabled]="(duplicated && !selectedgroup) || !dateChanged && !nameChanged && !descChanged"
+			<button class="mr-2" mat-raised-button color="primary" [disabled]="(duplicated && !selectedgroup) || !dateChanged && !nameChanged && !descChanged"
                 *ngIf = "((nameChanged || !updateBtn) && !duplicated) || (nameChanged && selectedgroup)" (click)="addGroup()">
           <mat-icon style="vertical-align: middle;margin-right: 5px">add</mat-icon>{{Label['add_btn']}}</button>
-        <button mat-raised-button color="primary" [disabled]="(totalDuplicated && !selectedgroup) || !dateChanged && !nameChanged && !descChanged"
+        <button class="mr-2" mat-raised-button color="primary" [disabled]="(totalDuplicated && !selectedgroup) || !dateChanged && !nameChanged && !descChanged"
                 [hidden]="(nameChanged || !updateBtn) && !duplicated || (nameChanged && selectedgroup)" (click)="updateGroup()">
           <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['UpdateBtn']}}</button>
-        <button mat-raised-button color="warn"
+        <button class="mr-2" mat-raised-button color="warn"
                 [disabled]="!duplicated || (selectedgroup && (nameChanged))" (click)="deleteGroup()">
           <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['dlt_btn']}}</button>
-		</div>
-
-		<div class="CustomeButtonFloat">
-			<button title="Upload file" mat-raised-button color="primary" (click)="uploadData()">
+		
+			<button class="mr-2" title="Upload file" mat-raised-button color="primary" (click)="uploadData()">
           <i class="fas fa-upload"></i> Upload
         </button>
         <button mat-raised-button color="primary" (click)="downloadFile()">

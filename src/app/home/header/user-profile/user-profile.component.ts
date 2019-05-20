@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router'
+import { Router, NavigationEnd, Event } from '@angular/router'
 import { HttpClient } from '@angular/common/http';
 import { StorageSessionService } from 'src/app/services/storage-session.service';
 import { Globals } from 'src/app/services/globals';
@@ -11,6 +11,8 @@ import { Globals } from 'src/app/services/globals';
   //   styleUrls: ['./user-profile.component.css']
 })
 export class UserProfileComponent implements OnInit {
+  
+  public selectedProfile = '';
 
   constructor(private router: Router, private StorageSessionService: StorageSessionService, private globals: Globals,
     public toastr: ToastrService,
@@ -51,21 +53,13 @@ export class UserProfileComponent implements OnInit {
 
           }
         }
-
-        //navigate when the lenght is 1
-        // this.StorageSessionService.setLocatS("profileopt",this.options);
-        if (this.options.length == 1) {
-          // this.StorageSessionService.setLocatS("profileopt",this.options);
-
-          this.toastr.info(this.options[0].toString(), "profile");
-          this.router.navigateByUrl(this.options.pop(), { skipLocationChange: true });
-        }
-        this.StorageSessionService.setLocatS("profileopt", this.options);
       });
   }
 
   //Selected option in the profile section
   optionSelecteds(e: any) {
+     //console.log(e);
+     this.selectedProfile = e;
     //if(e.split(" ") > 0)
     // this.toastr.info("your profile "+e+"profile");
     this.router.navigateByUrl(e.replace(" ", "_"), { skipLocationChange: true });
@@ -75,6 +69,15 @@ export class UserProfileComponent implements OnInit {
     this.chooworkingProfile();
     // let url:string="user";
     // this.router.navigateByUrl(url);
+    if(this.router.url == "/End_User/Execute") {
+      this.selectedProfile = "End_User";
+    } else if(this.router.url == "/User_Admin/Adminuser") {
+      this.selectedProfile = "User_Admin";
+    } else if(this.router.url == "/Developer") {
+      this.selectedProfile = "Devloper";
+    } else if(this.router.url == "/System_Admin/AppDeploy") {
+      this.selectedProfile = "System_Admin";
+    }
   }
 
 }
