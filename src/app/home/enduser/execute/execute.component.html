@@ -12,7 +12,7 @@
           <strong>{{Label['APP_CD']}}</strong>
         </label>
         <mat-list *ngIf="desktopView" class="scroll">
-          <mat-list-item class="list_item" (click)="getProcessCD(app);fooo(app)" *ngFor="let app of APP_CD['APP_CD']"
+          <mat-list-item class="list_item" (click)="getProcessCD(app);fooo(app)" *ngFor="let app of applicationValues"
             [class.active]="app == selectedapp">
             <div> {{app}}</div>
           </mat-list-item>
@@ -20,7 +20,7 @@
         <mat-form-field *ngIf="mobileView" style="width:100%;text-align: center;" [floatLabel]="'never'">
           <mat-select style="margin-top:10px;" (selectionChange)="getProcessCD($event.value);fooo($event.value)"
           placeholder="--Select--" [value]="selectedapp">
-            <mat-option style="text-align:center;max-width: 400px;" *ngFor="let app of APP_CD['APP_CD']" [value]="app">
+            <mat-option style="text-align:center;max-width: 400px;" *ngFor="let app of applicationValues" [value]="app">
               {{app}}</mat-option>
           </mat-select>
         </mat-form-field>
@@ -42,14 +42,14 @@
         </label>
         <mat-list *ngIf="desktopView" class="scroll">
           <mat-list-item class="list_item" (click)="getServiceCode(pro);fooo1(pro);Execute_AP_PR();"
-            *ngFor="let pro of PRC_CD['PRCS_CD'];" [class.active]="pro === selectedprcs">
+            *ngFor="let pro of processValues" [class.active]="pro === selectedprcs">
             <div>{{pro}}</div>
           </mat-list-item>
         </mat-list>
         <mat-form-field *ngIf="mobileView" style="width:100%;text-align: center;" [floatLabel]="'never'">
           <mat-select style="margin-top:10px;" (selectionChange)="getServiceCode($event.value);fooo1($event.value);Execute_AP_PR();"
           placeholder="--Select--" [value]="selectedprcs">
-            <mat-option style="text-align:center;" *ngFor="let pro of PRC_CD['PRCS_CD'];" [value]="pro">{{pro}}
+            <mat-option style="text-align:center;" *ngFor="let pro of processValues" [value]="pro">{{pro}}
             </mat-option>
           </mat-select>
         </mat-form-field>

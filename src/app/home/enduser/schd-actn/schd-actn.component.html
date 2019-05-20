@@ -1,17 +1,17 @@
 
         <div flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="row">
-          <div  fxFlex="30">
+          <div  fxFlex="30" *ngIf="applicationViewFlag">
           <h3 class="CenterAlign">{{Label['APP_CD']}}</h3>
 
             <!---  select application -->
             <mat-list *ngIf="desktopView" class="scroll">
-              <mat-list-item class="list_item" (click)="getProcessCD(app);" *ngFor="let app of App_CD_data['APP_CD']" [class.active]="app == selectedplat">
+              <mat-list-item class="list_item" (click)="getProcessCD(app);" *ngFor="let app of applicationValues" [class.active]="app == selectedplat">
                 <div> {{app}}</div>
               </mat-list-item>
             </mat-list>
             <mat-form-field *ngIf="mobileView" style="width:100%;text-align: center;" [floatLabel]="'never'">
               <mat-select style="margin-top:10px;" (selectionChange)="getProcessCD($event);" placeholder="--Select--" [value]="selectedplat">
-                <mat-option style="text-align:center;" *ngFor="let app of App_CD_data['APP_CD']" [value]="app">{{app}}</mat-option>
+                <mat-option style="text-align:center;" *ngFor="let app of applicationValues" [value]="app">{{app}}</mat-option>
               </mat-select>
             </mat-form-field>
 
@@ -23,13 +23,13 @@
 
             <!--  select process -->
             <mat-list *ngIf="desktopView" class="scroll">
-              <mat-list-item class="list_item" (click)="fooo1(prc)" *ngFor="let prc of proc_CD_data['PRCS_CD']" [class.active]="prc == selectedplat1">
+              <mat-list-item class="list_item" (click)="fooo1(prc)" *ngFor="let prc of processValues" [class.active]="prc == selectedplat1">
                 <div> {{prc}}</div>
               </mat-list-item>
             </mat-list>
             <mat-form-field *ngIf="mobileView" style="width:100%;text-align: center;" [floatLabel]="'never'">
               <mat-select style="margin-top:10px;" (selectionChange)="fooo1($event);" placeholder="--Select--" [value]="selectedplat1">
-                <mat-option style="text-align:center;" *ngFor="let prc of proc_CD_data['PRCS_CD']" [value]="prc">{{prc}}</mat-option>
+                <mat-option style="text-align:center;" *ngFor="let prc of processValues" [value]="prc">{{prc}}</mat-option>
               </mat-select>
             </mat-form-field>
           </div>

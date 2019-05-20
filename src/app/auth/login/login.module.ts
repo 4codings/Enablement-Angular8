@@ -15,7 +15,7 @@ import {MatButtonModule} from '@angular/material/button';
         CommonModule,
         SharedModule,
         FormsModule,
-        ReactiveFormsModule,
+        ReactiveFormsModule.withConfig({warnOnNgModelWithFormControl: 'never'}),
         LoginRoutingModule,
         EffectsModule.forFeature([UserLoginEffects]),
         FlexLayoutModule,

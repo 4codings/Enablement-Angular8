@@ -23,7 +23,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     SharedModule,
     HeaderModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule.withConfig({ warnOnNgModelWithFormControl: 'never' })
   ]
 })
 export class SystemAdminModule { }

@@ -39,9 +39,9 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
   serviceValues$: Subscription;
   applicationValues = [];
   applicationValuesObservable = [];
-  processValues: ProcessObservable[] = [];
+  processValues = [];
   processValuesObservable: ProcessObservable[] = [];
-  serviceValues: ServiceObservable[] = [];
+  serviceValues = [];
   serviceValuesObservable: ServiceObservable[] = [];
   selectedApplication = '';
   selectedProcess = '';
