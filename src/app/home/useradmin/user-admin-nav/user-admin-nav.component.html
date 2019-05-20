@@ -3,53 +3,87 @@
   <nav class="navbar ">
    
   <!-- For Desktop Screen -->
-<div fxHide="true" fxShow.gt-sm="true">
+<div class="w-100" fxHide="true" fxShow.gt-sm="true">
 <mat-nav-list>
-  <div class="nav-link pl-2 mb-2">
-    <img src="./assets/logo.png" class="logo-img" />
-  </div>
-  <button mat-raised-button>
-    <a [routerLink]="['Adminuser']" skipLocationChange routerLinkActive="active" class="nav-link">
-      <mat-icon class="iconmod shwmaticon">person</mat-icon><mat-icon class="iconmod shwsvgicon deskicon deskicon" style="color:orange;">person</mat-icon>
-      <span class="link-content">User</span>
-    </a></button>
-  <button mat-raised-button><a [routerLink]="['UserGroup']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">people</mat-icon><mat-icon class="iconmod shwsvgicon deskicon deskicon" svgIcon="group"></mat-icon><span class="link-content">Group</span></a></button>
-  <button mat-raised-button><a [routerLink]="['Membership']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">credit_card</mat-icon><mat-icon class="iconmod shwsvgicon deskicon deskicon" svgIcon="membership"></mat-icon><span class="link-content">Membership</span></a></button>
-  <button mat-raised-button><a [routerLink]="['UserRole']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">playlist_add_check</mat-icon><mat-icon class="iconmod shwsvgicon deskicon deskicon" svgIcon="playlist_add_check"></mat-icon><span class="link-content">Role</span></a></button>
-  <button mat-raised-button><a [routerLink]="['Assignrole']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">assignment_returned</mat-icon><mat-icon class="iconmod shwsvgicon deskicon deskicon" svgIcon="assignment_ret"></mat-icon><span class="link-content">Assign Role</span></a></button>
-  <button mat-raised-button><a [routerLink]="['UserAuthorize']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">account_balance</mat-icon><mat-icon class="iconmod shwsvgicon deskicon deskicon" svgIcon="home"></mat-icon><span class="link-content">Auth</span></a></button>
-  <button mat-raised-button><a [routerLink]="['Authorizerole']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">lock</mat-icon><mat-icon class="iconmod shwsvgicon deskicon deskicon" svgIcon="lock_red"></mat-icon><span class="link-content">Authorization</span></a></button>
+  <div class="list-wrapper" flex fxLayout="row" fxLayout.lt-sm="row">
+      <div class="nav-link pl-3 mb-2">
+        <img src="./assets/logo.png" class="logo-img" />
+      </div>
+      <div class="ml-auto pr-4">
+        <button mat-raised-button>
+          <a [routerLink]="['Adminuser']" skipLocationChange routerLinkActive="active" class="nav-link">
+            <mat-icon class="iconmod shwmaticon">person</mat-icon><mat-icon class="iconmod shwsvgicon deskicon deskicon" style="color:orange;">person</mat-icon>
+            <span class="link-content">User</span>
+          </a></button>
+        <button mat-raised-button><a [routerLink]="['UserGroup']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">people</mat-icon><mat-icon class="iconmod shwsvgicon deskicon deskicon" svgIcon="group"></mat-icon><span class="link-content">Group</span></a></button>
+        <button mat-raised-button><a [routerLink]="['Membership']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">credit_card</mat-icon><mat-icon class="iconmod shwsvgicon deskicon deskicon" svgIcon="membership"></mat-icon><span class="link-content">Membership</span></a></button>
+        <button mat-raised-button><a [routerLink]="['UserRole']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">playlist_add_check</mat-icon><mat-icon class="iconmod shwsvgicon deskicon deskicon" svgIcon="playlist_add_check"></mat-icon><span class="link-content">Role</span></a></button>
+        <button mat-raised-button><a [routerLink]="['Assignrole']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">assignment_returned</mat-icon><mat-icon class="iconmod shwsvgicon deskicon deskicon" svgIcon="assignment_ret"></mat-icon><span class="link-content">Assign Role</span></a></button>
+        <button mat-raised-button><a [routerLink]="['UserAuthorize']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">account_balance</mat-icon><mat-icon class="iconmod shwsvgicon deskicon deskicon" svgIcon="home"></mat-icon><span class="link-content">Auth</span></a></button>
+        <button mat-raised-button><a [routerLink]="['Authorizerole']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">lock</mat-icon><mat-icon class="iconmod shwsvgicon deskicon deskicon" svgIcon="lock_red"></mat-icon><span class="link-content">Authorization</span></a></button>
+
+        <button matTooltip="View profile" mat-mini-fab class="ml-5" [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+
+        <mat-menu #menu="matMenu" xPosition="before">
+          <app-header></app-header>
+        </mat-menu>
+
+      </div>  
+  </div> 
 
 </mat-nav-list>
 </div> 
   <!-- For Mobile Screen -->
-<div fxHide="true" fxShow.xs="true">
+<div class="w-100" fxHide="true" fxShow.xs="true">
 <mat-nav-list>
-  <div class="nav-link pl-2 mb-2">
-    <img src="./assets/logo.png" class="logo-img" />
-  </div>       
- <button matTooltip="User" matTooltipPosition='below' mat-icon-button><a [routerLink]="['Adminuser']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">person</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" style="color:orange;">person</mat-icon></a></button>
- <button matTooltip="Group" matTooltipPosition='below' mat-icon-button><a [routerLink]="['UserGroup']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">people</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" style="color: darkorchid;">people</mat-icon></a></button>
- <button matTooltip="Membership" matTooltipPosition='below' mat-icon-button><a [routerLink]="['Membership']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">credit_card</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="membership"></mat-icon></a></button>
- <button matTooltip="Role" matTooltipPosition='below' mat-icon-button><a [routerLink]="['UserRole']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">playlist_add_check</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="playlist_add_check"></mat-icon></a></button>
- <button matTooltip="Assignrole" matTooltipPosition='below' mat-icon-button><a [routerLink]="['Assignrole']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">assignment_returned</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="assignment_ret"></mat-icon></a></button>
- <button matTooltip="Auth" matTooltipPosition='below' mat-icon-button><a [routerLink]="['UserAuthorize']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">account_balance</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="home"></mat-icon></a></button>
- <button matTooltip="Authorizerole" matTooltipPosition='below' mat-icon-button><a [routerLink]="['Authorizerole']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">lock</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="lock_red"></mat-icon></a></button>
+  
+    <div class="text-center">
+      <img src="./assets/logo.png" class="logo-img" />
+    </div>       
+    <div class="" style="display:flex;">
+      <button matTooltip="User" matTooltipPosition='below' mat-icon-button><a [routerLink]="['Adminuser']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">person</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" style="color:orange;">person</mat-icon></a></button>
+      <button matTooltip="Group" matTooltipPosition='below' mat-icon-button><a [routerLink]="['UserGroup']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">people</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" style="color: darkorchid;">people</mat-icon></a></button>
+      <button matTooltip="Membership" matTooltipPosition='below' mat-icon-button><a [routerLink]="['Membership']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">credit_card</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="membership"></mat-icon></a></button>
+      <button matTooltip="Role" matTooltipPosition='below' mat-icon-button><a [routerLink]="['UserRole']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">playlist_add_check</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="playlist_add_check"></mat-icon></a></button>
+      <button matTooltip="Assignrole" matTooltipPosition='below' mat-icon-button><a [routerLink]="['Assignrole']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">assignment_returned</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="assignment_ret"></mat-icon></a></button>
+      <button matTooltip="Auth" matTooltipPosition='below' mat-icon-button><a [routerLink]="['UserAuthorize']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">account_balance</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="home"></mat-icon></a></button>
+      <button matTooltip="Authorizerole" matTooltipPosition='below' mat-icon-button><a [routerLink]="['Authorizerole']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">lock</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="lock_red"></mat-icon></a></button>
+      <button mat-mini-fab [matMenuTriggerFor]="menu">
+          <a class="nav-link"><mat-icon>more_vert</mat-icon></a>
+      </button>
+    </div>
+
+    <mat-menu #menu="matMenu" xPosition="before">
+      <app-header></app-header>
+    </mat-menu>
+  
 </mat-nav-list>
 </div>
 <!-- For Tab Screen -->
-<div fxHide="true" fxShow.sm="true">
+<div class="w-100" fxHide="true" fxShow.sm="true">
   <mat-nav-list>
-    <div class="nav-link pl-2 mb-2">
-      <img src="./assets/logo.png" class="logo-img" />
-    </div>
-  <button matTooltip="User" matTooltipPosition='below' mat-mini-fab><a [routerLink]="['Adminuser']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">person</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" style="color:orange;">person</mat-icon></a></button>
-  <button matTooltip="Group" matTooltipPosition='below' mat-mini-fab><a [routerLink]="['UserGroup']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">people</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" style="color:darkorchid;">people</mat-icon></a></button>
-  <button matTooltip="Membership" matTooltipPosition='below' mat-mini-fab><a [routerLink]="['Membership']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">credit_card</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="membership"></mat-icon></a></button>
-  <button matTooltip="Role" matTooltipPosition='below' mat-mini-fab><a [routerLink]="['UserRole']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">playlist_add_check</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="playlist_add_check"></mat-icon></a></button>
-  <button matTooltip="Assignrole" matTooltipPosition='below' mat-mini-fab><a [routerLink]="['Assignrole']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">assignment_returned</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="assignment_ret"></mat-icon></a></button>
-  <button matTooltip="Auth" matTooltipPosition='below' mat-mini-fab><a [routerLink]="['UserAuthorize']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">account_balance</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="home"></mat-icon></a></button>
-  <button matTooltip="Authorizerole" matTooltipPosition='below' mat-mini-fab><a [routerLink]="['Authorizerole']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">lock</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="lock_red"></mat-icon></a></button>
+      <div class="text-center">
+        <img src="./assets/logo.png" class="logo-img" />
+      </div>
+        <div class="" style="display:flex;">
+        <button matTooltip="User" matTooltipPosition='below' mat-mini-fab><a [routerLink]="['Adminuser']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">person</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" style="color:orange;">person</mat-icon></a></button>
+        <button matTooltip="Group" matTooltipPosition='below' mat-mini-fab><a [routerLink]="['UserGroup']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">people</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" style="color:darkorchid;">people</mat-icon></a></button>
+        <button matTooltip="Membership" matTooltipPosition='below' mat-mini-fab><a [routerLink]="['Membership']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">credit_card</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="membership"></mat-icon></a></button>
+        <button matTooltip="Role" matTooltipPosition='below' mat-mini-fab><a [routerLink]="['UserRole']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">playlist_add_check</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="playlist_add_check"></mat-icon></a></button>
+        <button matTooltip="Assignrole" matTooltipPosition='below' mat-mini-fab><a [routerLink]="['Assignrole']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">assignment_returned</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="assignment_ret"></mat-icon></a></button>
+        <button matTooltip="Auth" matTooltipPosition='below' mat-mini-fab><a [routerLink]="['UserAuthorize']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">account_balance</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="home"></mat-icon></a></button>
+        <button matTooltip="Authorizerole" matTooltipPosition='below' mat-mini-fab><a [routerLink]="['Authorizerole']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">lock</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="lock_red"></mat-icon></a></button>
+        <button mat-mini-fab [matMenuTriggerFor]="menu">
+          <a class="nav-link"><mat-icon>more_vert</mat-icon></a>
+        </button>
+
+        <mat-menu #menu="matMenu" xPosition="before">
+          <app-header></app-header>
+        </mat-menu>
+      </div>  
+      
   </mat-nav-list>
   </div>
 </nav>

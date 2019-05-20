@@ -1,8 +1,8 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 .mat-card:not([class*="mat-elevation-z"]) {
-  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14),
-    0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  //box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14),0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
 }
 
 .mat-card {
@@ -10,11 +10,12 @@
   display: block;
   position: relative;
   padding: 24px;
-  border-radius: 2px;
+  border: 1px solid rgba(0, 0, 0, .2);
+  border-radius: 6px;
 }
 
 .mat-card {
-  background: #fff;
+  background: #f2f2f2;
   color: rgba(0, 0, 0, 0.87);
 }
 .mat-button-toggle,
@@ -58,9 +59,14 @@ button.mat-raised-button {
   padding: 0 6px;
 }
 
+.mat-mini-fab{
+  background: linear-gradient(#ccc, gray);
+  color: #e9e9e9;
+}
 .mat-card-content {
   font-size: 16px;
 }
+
 
 mat-option {
   &.mat-option.ng-star-inserted {
@@ -120,7 +126,7 @@ mat-list {
 }
 
 .active {
-  background-color: #464444 !important;
+  background-color: #737373 !important;
   color: white;
 }
 mat-header-row {
@@ -212,3 +218,4 @@ mat-list {
   line-height: 1.5;
   height: 200px;
 }
+

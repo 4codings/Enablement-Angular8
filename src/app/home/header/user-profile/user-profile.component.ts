@@ -6,11 +6,11 @@ import { StorageSessionService } from 'src/app/services/storage-session.service'
 import { Globals } from 'src/app/services/globals';
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  //   styleUrls: ['./profile.component.css']
+  selector: 'app-user-profile',
+  templateUrl: './user-profile.component.html',
+  //   styleUrls: ['./user-profile.component.css']
 })
-export class ProfileComponent implements OnInit {
+export class UserProfileComponent implements OnInit {
 
   constructor(private router: Router, private StorageSessionService: StorageSessionService, private globals: Globals,
     public toastr: ToastrService,
@@ -73,43 +73,8 @@ export class ProfileComponent implements OnInit {
   }
   ngOnInit() {
     this.chooworkingProfile();
-    this.redirectingToUserProfile();
     // let url:string="user";
     // this.router.navigateByUrl(url);
-  }
-
-  redirectingToUserProfile() {
-    const data = {
-      agency : JSON.parse(sessionStorage.getItem('u')).SRC_CD,
-      V_USR_NM: JSON.parse(sessionStorage.getItem('u')).USR_NM
-    };
-    this.http.get<data>("https://" + this.domain_name + "/rest/v1/secured?V_SRC_CD=" + data.agency + "&V_USR_NM=" + data.V_USR_NM + "&REST_Service=UserRoles&Verb=GET").subscribe(
-      data => {
-        // (data);
-        if (data.ROLE_CD) {
-          for (let i = 0; i < data.ROLE_CD.length; i++) {
-            // (data.ROLE_CD[i]);
-            if (data.ROLE_CD[i] == "End User Role") {
-              this.router.navigateByUrl('/End_User', { skipLocationChange: true });
-              return false;
-            } else if(data.ROLE_CD[i] == "User Admin Role") {
-              this.router.navigateByUrl('/User_Admin', { skipLocationChange: true });
-              return false;
-            }
-  
-          }
-          if (data.ROLE_CD[0] == "Developer Role") {
-            this.router.navigateByUrl('/Developer', { skipLocationChange: true });
-          } else if (data.ROLE_CD[0] == "End User Role") {
-            this.router.navigateByUrl('/End_User', { skipLocationChange: true });
-          } else if (data.ROLE_CD[0] == 'System Admin Role') {
-            this.router.navigateByUrl('/System_Admin', { skipLocationChange: true });
-          } else if (data.ROLE_CD[0] == 'User Admin Role') {
-            this.router.navigateByUrl('/User_Admin', { skipLocationChange: true });
-          } 
-        }
-  
-      });
   }
 
 }
@@ -117,3 +82,4 @@ export class ProfileComponent implements OnInit {
 export interface data {
   ROLE_CD: string[];
 }
+

@@ -5,8 +5,12 @@
   padding: 0 0.2rem 0.2rem 0;
   justify-content: center;
 
+  .list-wrapper {
+    align-items: center;
+  }
+
   .nav-link {
-    padding: 2px;
+    padding: 2px 5px;
     
     .iconmod {
       margin-right: 2px;
