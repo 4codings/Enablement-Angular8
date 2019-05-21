@@ -50,7 +50,7 @@
       <button matTooltip="Assignrole" matTooltipPosition='below' mat-icon-button><a [routerLink]="['Assignrole']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">assignment_returned</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="assignment_ret"></mat-icon></a></button>
       <button matTooltip="Auth" matTooltipPosition='below' mat-icon-button><a [routerLink]="['UserAuthorize']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">account_balance</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="home"></mat-icon></a></button>
       <button matTooltip="Authorizerole" matTooltipPosition='below' mat-icon-button><a [routerLink]="['Authorizerole']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">lock</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="lock_red"></mat-icon></a></button>
-      <button mat-mini-fab [matMenuTriggerFor]="menu">
+      <button class="profile-btn" mat-mini-fab [matMenuTriggerFor]="menu">
           <a class="nav-link"><mat-icon>more_vert</mat-icon></a>
       </button>
     </div>
@@ -75,7 +75,7 @@
         <button matTooltip="Assignrole" matTooltipPosition='below' mat-mini-fab><a [routerLink]="['Assignrole']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">assignment_returned</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="assignment_ret"></mat-icon></a></button>
         <button matTooltip="Auth" matTooltipPosition='below' mat-mini-fab><a [routerLink]="['UserAuthorize']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">account_balance</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="home"></mat-icon></a></button>
         <button matTooltip="Authorizerole" matTooltipPosition='below' mat-mini-fab><a [routerLink]="['Authorizerole']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">lock</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="lock_red"></mat-icon></a></button>
-        <button mat-mini-fab [matMenuTriggerFor]="menu">
+        <button class="profile-btn" mat-mini-fab [matMenuTriggerFor]="menu">
           <a class="nav-link"><mat-icon>more_vert</mat-icon></a>
         </button>
 

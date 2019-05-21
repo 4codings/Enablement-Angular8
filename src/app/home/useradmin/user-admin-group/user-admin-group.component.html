@@ -83,7 +83,7 @@
 />
 -->
 
-<div fxLayout="row" fxLayout.lt-sm="column">
+<div class="p-3" fxLayout="row" fxLayout.lt-sm="column">
 	<div fxFlex="30" style="text-align: center;">
 		<br />
 		<strong>{{Label['Av_group']}}</strong>
@@ -147,17 +147,17 @@
 	<div fxFlex="60">
 		
 		<div class="CustomeButtonFloat">
-			<button class="mr-2" mat-raised-button color="primary" [disabled]="(duplicated && !selectedgroup) || !dateChanged && !nameChanged && !descChanged"
+			<button class="mr-2 mb-2" mat-raised-button color="primary" [disabled]="(duplicated && !selectedgroup) || !dateChanged && !nameChanged && !descChanged"
                 *ngIf = "((nameChanged || !updateBtn) && !duplicated) || (nameChanged && selectedgroup)" (click)="addGroup()">
           <mat-icon style="vertical-align: middle;margin-right: 5px">add</mat-icon>{{Label['add_btn']}}</button>
-        <button class="mr-2" mat-raised-button color="primary" [disabled]="(totalDuplicated && !selectedgroup) || !dateChanged && !nameChanged && !descChanged"
+        <button class="mr-2 mb-2" mat-raised-button color="primary" [disabled]="(totalDuplicated && !selectedgroup) || !dateChanged && !nameChanged && !descChanged"
                 [hidden]="(nameChanged || !updateBtn) && !duplicated || (nameChanged && selectedgroup)" (click)="updateGroup()">
           <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['UpdateBtn']}}</button>
-        <button class="mr-2" mat-raised-button color="warn"
+        <button class="mr-2 mb-2" mat-raised-button color="warn"
                 [disabled]="!duplicated || (selectedgroup && (nameChanged))" (click)="deleteGroup()">
           <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['dlt_btn']}}</button>
 		
-			<button class="mr-2" title="Upload file" mat-raised-button color="primary" (click)="uploadData()">
+			<button class="mr-2 mb-2" title="Upload file" mat-raised-button color="primary" (click)="uploadData()">
           <i class="fas fa-upload"></i> Upload
         </button>
         <button mat-raised-button color="primary" (click)="downloadFile()">

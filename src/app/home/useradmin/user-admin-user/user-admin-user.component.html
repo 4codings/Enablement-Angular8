@@ -126,15 +126,15 @@
 	<div fxFlex="38"></div>
 	<div fxFlex="60">
 		<div class="CustomeButtonFloat">
-			<button class="mr-2" mat-raised-button color="primary" [disabled]="(duplicated && !selecteduser) || !statusChanged && !nameChanged && !descChanged || domainError || updateBtn"
+			<button class="mr-2 mb-2" mat-raised-button color="primary" [disabled]="(duplicated && !selecteduser) || !statusChanged && !nameChanged && !descChanged || domainError || updateBtn"
                (click)="addUser()">
         <mat-icon style="vertical-align: middle;margin-right: 5px">add</mat-icon>{{Label['add_btn']}}</button>
-      <button class="mr-2" mat-raised-button color="primary"
+      <button class="mr-2 mb-2" mat-raised-button color="primary"
               [disabled]="(totalDuplicated && !selecteduser) || !statusChanged && !descChanged && !nameChanged || !updateBtn"
                (click)="updateUser()">
         <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['UpdateBtn']}}</button>
       
-      <button class="mr-2" title="Upload file" mat-raised-button color="primary" (click)="uploadData()">
+      <button class="mr-2 mb-2" title="Upload file" mat-raised-button color="primary" (click)="uploadData()">
         <i class="fas fa-upload"></i> Upload
       </button>
       <button mat-raised-button color="primary" (click)="downloadFile()">

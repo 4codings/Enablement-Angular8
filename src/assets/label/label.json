@@ -48,11 +48,11 @@
 		"user_description":"User Description",
 		"current_status":"Current Status",
 		
-		"Av_group":"Available Group",
-		"Group":"Groups",
-		"Grp_dscr":"Group Description",
-		"st_date":"Effective Start Date and Time",
-		"en_date":"Effective End Date and Time",
+		"Av_group":"Groups",
+		"Group":"Group",
+		"Grp_dscr":"Description",
+		"st_date":"Start Date",
+		"en_date":"End Date",
 		
 		"available_role":"Available Role",
 		"role":"Roles",
