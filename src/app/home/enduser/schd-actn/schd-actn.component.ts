@@ -7,7 +7,7 @@ import { MatTableDataSource, MatSort } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Observable, Subscription } from 'rxjs';
 import { HostListener } from '@angular/core';
-import { ConfigServiceService } from 'src/app/services/config-service.service';
+import { ConfigServiceService, IFormFieldConfig } from 'src/app/services/config-service.service';
 import { HomeComponent } from '../../home.component';
 import { Globals } from 'src/app/services/globals';
 import { UserAdminService } from 'src/app/services/user-admin.service';
@@ -15,6 +15,7 @@ import { StorageSessionService } from 'src/app/services/storage-session.service'
 import { EndUserService } from 'src/app/services/EndUser-service';
 import { NoAuthDataService } from 'src/app/services/no-auth-data.service';
 import { ProcessObservable, OptionalValuesService } from 'src/app/services/optional-values.service';
+import { ApiService } from 'src/app/service/api/api.service';
 
 @Component({
   selector: 'app-schd-actn',
@@ -24,6 +25,7 @@ import { ProcessObservable, OptionalValuesService } from 'src/app/services/optio
 })
 
 export class SchdActnComponent implements OnInit, AfterViewInit, OnDestroy {
+  private apiUrlGetSecure = this.apiService.endPoints.secure;
   onpselect: Function;
   screenHeight = 0;
   screenWidth = 0;
@@ -86,7 +88,10 @@ export class SchdActnComponent implements OnInit, AfterViewInit, OnDestroy {
   applicationValues = [];
   processValues = [];
   processValuesObservable: ProcessObservable[] = [];
-
+  fieldConfig: { [key: string]: IFormFieldConfig } = {};
+  Data_Keys: string[];
+  Data_Values: any[] = [];
+  Data_labels: any[] = [];
   @HostListener('window:resize', ['$event'])
   onResize(event?) {
     this.screenHeight = window.innerHeight;
@@ -111,14 +116,15 @@ export class SchdActnComponent implements OnInit, AfterViewInit, OnDestroy {
     private endUsrData: EndUserService,
     private detector: ChangeDetectorRef,
     private optionalService: OptionalValuesService,
-    private noAuthData: NoAuthDataService) {
+    private noAuthData: NoAuthDataService,
+    private apiService: ApiService) {
     this.applicationValues$ = this.optionalService.applicationOptionalValue.subscribe(data => {
       if (data != null) {
         this.applicationValuesObservable = data;
         this.applicationValues = (data.sort(function (a, b) { return a.localeCompare(b); }));
         if (this.applicationValues.length == 1) {
           this.selectedplat = this.applicationValues[0];
-          this.ApplicationCD=this.selectedplat;
+          this.ApplicationCD = this.selectedplat;
           this.applicationViewFlag = false;
           if (!this.processValues.length) {
             this.optionalService.getProcessOptionalValue(this.selectedplat);
@@ -558,7 +564,8 @@ export class SchdActnComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   }
-
+  result: any = {};
+  options: any = {};
   // ---------------------------------
   show_btn_save_schedule() {
     // --------------Reuse from ConfigService: ABHISHEK ABHINAV----------------//
@@ -566,9 +573,24 @@ export class SchdActnComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe(
         res => {
           const FormData = res.json();
+          console.log('data', FormData)
           this.ref = { disp_dyn_param: false };
           const got_res = this.data.exec_schd_restCall(FormData, this.ref);
           this.Data = got_res.Data;
+          this.result = got_res.Result;
+          this.fieldConfig = this.data.prepareAndGetFieldConfigurations(FormData);
+          this.Data_Keys = [];
+          this.Data_Values = [];
+          this.Data_labels = [];
+          this.labels_toShow();
+          this.options = {};
+          for (let i = 0; i < this.Data_Keys.length; i++) {
+            if (this.Data[i].name === this.Data_labels[i] && this.Data[i].hasOptions && this.Data[i].hasOptions === 'Y') {
+              this.getOptional_values(this.Data_Keys[i], this.Data_labels[i]);
+            }
+          }
+          console.log('Data', this.Data)
+
           this.kl = got_res.K;
           // /*this.https.get(this.apiUrlGet + "V_APP_CD=" + this.ApplicationCD + "&V_PRCS_CD=" +
           // this.ProcessCD + "&V_SRC_CD=" +
@@ -678,14 +700,35 @@ export class SchdActnComponent implements OnInit, AfterViewInit, OnDestroy {
       );
     // this.save_shedule_btn = false;
   }
+  labels_toShow(): any {
+    //----------------Lables to Show---------------//
+    this.Data_Keys = Object.keys(this.result);
+    for (let i = 0; i < this.Data_Keys.length; i++) {
+      this.Data_Values.push(this.result[this.Data_Keys[i]]);
+      // if (this.RVP_Keys[i].substring(0, 2) == "V_") {
 
+      // } else {
+      this.Data_labels.push(this.Data_Keys[i]);
+      // }
+    }
+  }
+  getOptional_values(V_PARAM_NM, display_label) {
+    const secureUrl = this.apiUrlGetSecure + 'V_SRC_CD=' + this.V_SRC_CD + '&V_APP_CD=' + this.selectedplat + '&V_PRCS_CD=' + this.selectedplat1 + '&V_PARAM_NM=' + V_PARAM_NM + '&REST_Service=ProcessParametersOptions&Verb=GET';
+    const secure_encoded_url = encodeURI(secureUrl);
+
+    this.apiService.requestSecureApi(secure_encoded_url, 'get').subscribe(
+      res => {
+        const resData = res.json();
+        this.options[display_label] = resData[V_PARAM_NM];
+      });
+  }
   Update_value(v: any, n) { // v=value and n=paramter name
     this.FilterAutoValue = v;
-    const ag = this.storageSessionService.getSession('agency');
-    const ur = this.storageSessionService.getSession('email');
+    // const ag = this.storageSessionService.getSession('agency');
+    // const ur = this.storageSessionService.getSession('email');
     this.http.get('https://' + this.domain_name + '/rest/v1/secured?V_APP_CD=' +
       this.ApplicationCD + '&V_PRCS_CD=' + this.ProcessCD +
-      '&V_SRC_CD=' + ag + '&V_USR_NM=' + ur + '&V_PARAM_NM=' + n +
+      '&V_SRC_CD=' + this.V_SRC_CD + '&V_USR_NM=' + this.V_USR_NM + '&V_PARAM_NM=' + n +
       '&V_PARAM_VAL=' + v + '&REST_Service=ProcessParameters&Verb=PATCH')
       .subscribe(
         res => {

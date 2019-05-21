@@ -1707,7 +1707,7 @@ export class ExecuteComponent implements OnInit, OnDestroy {
 
   // 10th April
   getOptional_values(V_PARAM_NM, display_label) {
-    const url = this.apiUrlGetInsecure + 'V_SRC_CD=' + this.V_SRC_CD + '&V_APP_CD=' + this.SL_APP_CD + '&V_PRCS_CD=' + this.SL_PRC_CD + '&V_PARAM_NM=' + V_PARAM_NM + '&V_SRVC_CD=' + this.SL_SRVC_CD + '&REST_Service=ProcessParametersOptions&Verb=GET';
+    const url = this.apiUrlGetInsecure + 'V_SRC_CD=' + this.V_SRC_CD + '&V_APP_CD=' + this.SL_APP_CD + '&V_PRCS_CD=' + this.SL_PRC_CD + '&V_PARAM_NM=' + V_PARAM_NM  + '&REST_Service=ProcessParametersOptions&Verb=GET';
     const encoded_url = encodeURI(url);
     (encoded_url);
     ("Option Values: " + V_PARAM_NM);
