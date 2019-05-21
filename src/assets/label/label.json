@@ -44,8 +44,8 @@
 		"service":"Services",
 
 		"available_user":"Users",
-		"user_name":"User Name",
-		"user_description":"User Description",
+		"user_name":"User",
+		"user_description":"Description",
 		"current_status":"Current Status",
 		
 		"Av_group":"Groups",
@@ -54,9 +54,9 @@
 		"st_date":"Start Date",
 		"en_date":"End Date",
 		
-		"available_role":"Available Role",
-		"role":"Roles",
-		"role_descripton":"Role Description",
+		"available_role":"Roles",
+		"role":"Role",
+		"role_descripton":"Description",
 		"log_password":"Provide Password that you want to use",
 		"log_name":"Provide your email  id",
 		"log_reset":"Reset Password",
