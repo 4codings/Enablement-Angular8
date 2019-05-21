@@ -129,7 +129,7 @@ export class UserAdminUserComponent implements OnInit {
   selected(index) {
     this.selecteduser = index.toString();
     this.clonedName = this.user.V_USR_NM;
-    this.clonedDesc = this.user.V_USR_NM;
+    this.clonedDesc = this.user.V_USR_DSC;
     this.clonedStatus = this.user.V_STS;
     this.updateBtn = true;
     this.statusChanged = false;
@@ -209,9 +209,13 @@ export class UserAdminUserComponent implements OnInit {
 
   public descModelChanged() {
     if (this.clonedDesc !== this.user.V_USR_DSC) {
-      this.descChanged = true;
+      if(this.nameChanged == false) {
+        this.descChanged = true;
+        this.updateBtn = true;
+      }
     } else {
       this.descChanged = false;
+      this.updateBtn = false;
     }
     this.checkDuplications();
   }

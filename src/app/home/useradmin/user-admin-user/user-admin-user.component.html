@@ -103,7 +103,7 @@
 		<div fxFlex="48">
 			<strong>{{Label['user_description']}}</strong>
 			<mat-form-field style="width:100%;">
-				<textarea  matInput [(ngModel)]="user.V_USR_DSC" (ngModelChange)="updateBtn = false; statusChange(); descModelChanged()"></textarea>
+				<textarea  matInput [(ngModel)]="user.V_USR_DSC" (ngModelChange)="descModelChanged()"></textarea>
 			</mat-form-field>
 			<br />
 
@@ -126,11 +126,11 @@
 	<div fxFlex="38"></div>
 	<div fxFlex="60">
 		<div class="CustomeButtonFloat">
-			<button class="mr-2" mat-raised-button color="primary" [disabled]="(duplicated && !selecteduser) || !statusChanged && !nameChanged && !descChanged || domainError"
+			<button class="mr-2" mat-raised-button color="primary" [disabled]="(duplicated && !selecteduser) || !statusChanged && !nameChanged && !descChanged || domainError || updateBtn"
                (click)="addUser()">
         <mat-icon style="vertical-align: middle;margin-right: 5px">add</mat-icon>{{Label['add_btn']}}</button>
       <button class="mr-2" mat-raised-button color="primary"
-              [disabled]="(totalDuplicated && !selecteduser) || !statusChanged && !descChanged && !nameChanged"
+              [disabled]="(totalDuplicated && !selecteduser) || !statusChanged && !descChanged && !nameChanged || !updateBtn"
                (click)="updateUser()">
         <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['UpdateBtn']}}</button>
       
