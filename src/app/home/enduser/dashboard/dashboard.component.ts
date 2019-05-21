@@ -90,7 +90,7 @@ export class DashboardComponent extends dboard_secondary implements OnInit, Afte
     this.applicationValues$ = this.optionalService.applicationOptionalValue.subscribe(data => {
       if (data != null) {
         this.applicationValuesObservable = data;
-        this.APP_CD = this.APP_CD.concat(data.sort(function (a, b) { return a.localeCompare(b); }));
+        this.APP_CD = (data.sort(function (a, b) { return a.localeCompare(b); }));
       }
     });
     this.processValues$ = this.optionalService.processOptionalValue.subscribe(data => {
@@ -102,7 +102,7 @@ export class DashboardComponent extends dboard_secondary implements OnInit, Afte
           if (this.selectedapp !== '' && this.selectedapp !== value) {
             this.processValuesObservable.forEach(ele => {
               if (ele.app === this.selectedapp) {
-                this.PRCS_CD = this.PRCS_CD.concat(ele.process.sort(function (a, b) { return a.localeCompare(b); }));
+                this.PRCS_CD = (ele.process.sort(function (a, b) { return a.localeCompare(b); }));
               }
             });
           }
@@ -119,7 +119,7 @@ export class DashboardComponent extends dboard_secondary implements OnInit, Afte
           if (this.selectedapp !== '' && this.selectedprcs !== '' && this.selectedapp !== value) {
             this.serviceValuesObservable.forEach(ele => {
               if (ele.app === this.selectedapp && ele.process === this.selectedprcs) {
-                this.SRVC_CD = this.SRVC_CD.concat(ele.service.sort(function (a, b) { return a.localeCompare(b); }));
+                this.SRVC_CD = (ele.service.sort(function (a, b) { return a.localeCompare(b); }));
               }
             });
           }
@@ -813,7 +813,7 @@ export class DashboardComponent extends dboard_secondary implements OnInit, Afte
         if (ele.app === this.selectedapp) {
           if (ele.data.CREATE[0] == "Y" && ele.data.DELETE[0] == "Y" && ele.data.UPDATE[0] == "Y") {
             this.processValues = [];
-            this.PRCS_CD = this.PRCS_CD.concat(ele.process.sort(function (a, b) { return a.localeCompare(b); }));
+            this.PRCS_CD = (ele.process.sort(function (a, b) { return a.localeCompare(b); }));
             flag = 1;
           }
         }
@@ -843,7 +843,7 @@ export class DashboardComponent extends dboard_secondary implements OnInit, Afte
       this.serviceValuesObservable.forEach(ele => {
         if (ele.app === this.selectedapp && ele.process === this.selectedprcs) {
           this.serviceValues = [];
-          this.SRVC_CD = this.SRVC_CD.concat(ele.service.sort(function (a, b) { return a.localeCompare(b); }));
+          this.SRVC_CD = (ele.service.sort(function (a, b) { return a.localeCompare(b); }));
           flag = 1;
         }
       });
