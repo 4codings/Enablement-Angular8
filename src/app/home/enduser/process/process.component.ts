@@ -218,6 +218,7 @@ export class ProcessComponent implements OnInit, OnDestroy {
       let flag = 0;
       this.processValuesObservable.forEach(ele => {
         if (ele.app === this.selectedapp) {
+          this.PRCS_CD = [];
           if (ele.data.CREATE[0] == "Y" && ele.data.DELETE[0] == "Y" && ele.data.UPDATE[0] == "Y") {
             this.PRCS_CD = (ele.process.sort(function (a, b) { return a.localeCompare(b); }));
             flag = 1;
@@ -294,7 +295,9 @@ export class ProcessComponent implements OnInit, OnDestroy {
         .subscribe(res => {
           // if (res) {
           this.selectedsrvc = '';
-          this.SRVC_CD.slice(this.SRVC_CD.indexOf(this.selectedsrvc), 1);
+          this.serviceDescription = '';
+          this.optionalService.getServiceOptionalValue(this.selectedapp, this.selectedsrvc, true);
+          // this.SRVC_CD.slice(this.SRVC_CD.indexOf(this.selectedsrvc), 1);
           // }
         })
     }
@@ -304,8 +307,17 @@ export class ProcessComponent implements OnInit, OnDestroy {
       this.http.delete(this.apiUrlGet + 'V_APP_CD=' + this.selectedapp + '&V_SRC_CD=' + this.V_SRC_CD + '&V_USR_NM=' + this.V_USR_NM + '&REST_Service=Application&Verb=DELETE')
         .subscribe(res => {
           // if (res) {
+          let index = this.optionalService.applicationArray.indexOf(this.selectedapp);
+          this.optionalService.applicationArray.splice(index, 1);
+          this.optionalService.applicationOptionalValue.next(this.optionalService.applicationArray);
           this.selectedapp = '';
-          this.APP_CD.splice(this.APP_CD.indexOf(this.selectedapp), 1);
+          this.selectedprcs = '';
+          this.selectedsrvc = '';
+          this.processDescription = '';
+          this.serviceDescription = '';
+          this.applicationDescription = '';
+          this.PRCS_CD = [];
+          this.SRVC_CD = [];
           // }
         })
     }
@@ -316,7 +328,11 @@ export class ProcessComponent implements OnInit, OnDestroy {
         .subscribe(res => {
           // if (res) {
           this.selectedprcs = '';
-          this.PRCS_CD.splice(this.PRCS_CD.indexOf(this.selectedprcs), 1);
+          this.selectedsrvc = '';
+          this.processDescription = '';
+          this.serviceDescription = '';
+          this.optionalService.getProcessOptionalValue(this.selectedapp, true);
+          // this.PRCS_CD.splice(this.PRCS_CD.indexOf(this.selectedprcs), 1);
           // }
         })
     }
@@ -333,14 +349,16 @@ export class ProcessComponent implements OnInit, OnDestroy {
     this.http.post(this.apiUrlGet, body)
       .subscribe(res => {
         if (res) {
-          this.APP_CD.push(this.selectedapp);
+          this.optionalService.applicationArray.push(this.selectedapp);
+          this.optionalService.applicationOptionalValue.next(this.optionalService.applicationArray);
+          // this.APP_CD.push(this.selectedapp);
           this.selectedapp = '';
           this.applicationDescription = '';
         }
       })
   }
   getRoles() {
-    this.http.get(this.apiUrlGet + 'V_USR_NM=' + this.V_USR_NM + '&V_SRC_CD=' + this.V_SRC_CD + '&&REST_Service=UserRoles&Verb=GET')
+    this.http.get(this.apiUrlGet + 'V_USR_NM=' + this.V_USR_NM + '&V_SRC_CD=' + this.V_SRC_CD + '&REST_Service=WorkflowRoles&Verb=GET')
       .subscribe((data: any) => {
         if (data) {
           this.rolesList = data;
@@ -366,7 +384,8 @@ export class ProcessComponent implements OnInit, OnDestroy {
     this.http.post(this.apiUrlGet, body)
       .subscribe(res => {
         if (res) {
-          this.PRCS_CD.push(this.selectedprcs);
+          // this.PRCS_CD.push(this.selectedprcs);
+          this.optionalService.getProcessOptionalValue(this.selectedapp, true);
           this.selectedprcs = '';
           this.processDescription = '';
           this.selectedPrcsRole = '';
@@ -394,7 +413,8 @@ export class ProcessComponent implements OnInit, OnDestroy {
     this.http.post(this.apiUrlGet, body)
       .subscribe(res => {
         if (res) {
-          this.SRVC_CD.push(this.selectedsrvc);
+          this.optionalService.getServiceOptionalValue(this.selectedapp, this.selectedprcs, true);
+          // this.SRVC_CD.push(this.selectedsrvc);
           this.selectedsrvc = '';
           this.serviceDescription = '';
           this.selectedSrvcRole = '';

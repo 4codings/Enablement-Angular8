@@ -382,11 +382,11 @@ export class ExecuteComponent implements OnInit, OnDestroy {
       this.Schedule_btn = false;
       this.Data = [];
       if (!this.processValuesObservable.length) {
-        this.optionalService.getProcessOptionalValue(this.selectedapp);
+        this.optionalService.getProcessOptionalValue(V_APP_CD);
       } else {
         let flag = 0;
         this.processValuesObservable.forEach(ele => {
-          if (ele.app === this.selectedapp) {
+          if (ele.app === V_APP_CD) {
             this.processValues = [];
             this.processValues = ele.process.sort(function (a, b) { return a.localeCompare(b); });
             flag = 1;
@@ -394,7 +394,7 @@ export class ExecuteComponent implements OnInit, OnDestroy {
           }
         });
         if (!flag) {
-          this.optionalService.getProcessOptionalValue(this.selectedapp);
+          this.optionalService.getProcessOptionalValue(V_APP_CD);
         }
       }
       // this.Process_box=true;
@@ -1707,7 +1707,7 @@ export class ExecuteComponent implements OnInit, OnDestroy {
 
   // 10th April
   getOptional_values(V_PARAM_NM, display_label) {
-    const url = this.apiUrlGetInsecure + 'V_SRC_CD=' + this.V_SRC_CD + '&V_APP_CD=' + this.SL_APP_CD + '&V_PRCS_CD=' + this.SL_PRC_CD + '&V_PARAM_NM=' + V_PARAM_NM  + '&REST_Service=ProcessParametersOptions&Verb=GET';
+    const url = this.apiUrlGetInsecure + 'V_SRC_CD=' + this.V_SRC_CD + '&V_APP_CD=' + this.SL_APP_CD + '&V_PRCS_CD=' + this.SL_PRC_CD + '&V_PARAM_NM=' + V_PARAM_NM + '&REST_Service=ProcessParametersOptions&Verb=GET';
     const encoded_url = encodeURI(url);
     (encoded_url);
     ("Option Values: " + V_PARAM_NM);

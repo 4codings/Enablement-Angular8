@@ -269,11 +269,14 @@ export class SchdActnComponent implements OnInit, AfterViewInit, OnDestroy {
       this.fooo1(this.processValues[0]);
     }
     this.process_box = true;
-    if (this.app.START === false && this.ProcessCD.length > 0 && this.app.selected_PROCESS !== 'ALL') {
-      if (this.mobileView) {
-        this.fooo1({ value: this.ProcessCD });
-      } else {
-        this.fooo1(this.ProcessCD);
+
+    if (this.applicationViewFlag) {
+      if (this.app.START === false && this.ProcessCD.length > 0 && this.app.selected_PROCESS !== 'ALL') {
+        if (this.mobileView) {
+          this.fooo1({ value: this.ProcessCD });
+        } else {
+          this.fooo1(this.ProcessCD);
+        }
       }
     }
   }
