@@ -14,6 +14,7 @@ import { GetMessageService } from 'src/app/services/get-message.service';
 import { WebSocketService } from 'src/app/services/web-socket.service';
 import { StorageSessionService } from 'src/app/services/storage-session.service';
 import { OptionalValuesService, ProcessObservable, ServiceObservable } from 'src/app/services/optional-values.service';
+import { ApiService } from 'src/app/service/api/api.service';
 
 @Component({
   selector: 'app-process',
@@ -25,8 +26,7 @@ export class ProcessComponent implements OnInit, OnDestroy {
   processValues$: Subscription;
   serviceValues$: Subscription;
   domain_name = this.globals.domain_name;
-  private apiUrlGet = "https://" + this.domain_name + "/rest/v1/secured?";
-  private apiUrlAdd = "https://" + this.domain_name + "/rest/v1/secured";
+  private apiUrlGet = this.apiService.endPoints.securedJSON;
   V_SRC_CD: string = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
   V_USR_NM: string = JSON.parse(sessionStorage.getItem('u')).USR_NM;
   APP_CD = [];
@@ -38,13 +38,22 @@ export class ProcessComponent implements OnInit, OnDestroy {
   selectedapp: string = null;
   selectedprcs: string = null;
   selectedsrvc: string = null;
+  applicationDescription = '';
+  processDescription = '';
+  serviceDescription = '';
   modifing;
   applicationValuesObservable = [];
   processValuesObservable: ProcessObservable[] = [];
   serviceValuesObservable: ServiceObservable[] = [];
   flag = true;
   timer: any;
-
+  processBtnName = 'Add';
+  serviceBtnName = 'Add';
+  rolesList = [];
+  selectedPrcsRole = '';
+  selectedSrvcRole = '';
+  processPermission: RolePermission;
+  servicePermission: RolePermission;
 
   constructor(private Router: Router,
     private http: HttpClient,
@@ -56,8 +65,11 @@ export class ProcessComponent implements OnInit, OnDestroy {
     public deviceService: DeviceDetectorService,
     private webSocket: WebSocketService,
     private globals: Globals,
-    private optionalService: OptionalValuesService
+    private optionalService: OptionalValuesService,
+    private apiService: ApiService
   ) {
+    this.processPermission = new RolePermission();
+    this.servicePermission = new RolePermission();
     this.applicationValues$ = this.optionalService.applicationOptionalValue.subscribe(data => {
       if (data != null) {
         this.applicationValuesObservable = data;
@@ -100,8 +112,7 @@ export class ProcessComponent implements OnInit, OnDestroy {
     if (!this.applicationValuesObservable.length) {
       this.functionapplist();
     }
-
-
+    this.getRoles();
   }
   ngOnDestroy() {
     this.applicationValues$.unsubscribe();
@@ -152,6 +163,7 @@ export class ProcessComponent implements OnInit, OnDestroy {
 
   clickme(app, i, evt) {
     this.selectedapp = app;
+    this.functionGetAppDescription(this.selectedapp);
     this.functionprocesslist();
     // this.APP_SEL_PRCS_ARR_final = [];
     // this.selectedapp = app;
@@ -172,10 +184,14 @@ export class ProcessComponent implements OnInit, OnDestroy {
   }
   clickme1(u, evt) {
     this.selectedprcs = u;
+    this.functionGetProcessDescription(this.selectedprcs);
+    this.processBtnName = 'Authorize';
     // (<HTMLElement>document.querySelectorAll("mat-list")[2]).style.display = "block";
     this.functionserviceslist();
   }
   clickme2(u, evt) {
+    this.functionGetServiceDescription(u);
+    this.serviceBtnName = 'Authorize';
     this.selectedsrvc = u;
   }
   // ----------- get Applications ------------
@@ -245,6 +261,147 @@ export class ProcessComponent implements OnInit, OnDestroy {
     //   }
     // );
   }
+  functionGetAppDescription(value) {
+    this.http.get(this.apiUrlGet + 'V_CD_TYP=APP' + '&V_CD=' + value + '&V_SRC_CD=' + this.V_SRC_CD + '&&REST_Service=Description&Verb=GET')
+      .subscribe((data: any) => {
+        if (data.length) {
+          this.applicationDescription = data[0].APP_DSC;
+        }
+      })
+  }
+  functionGetProcessDescription(value) {
+    this.http.get(this.apiUrlGet + 'V_CD_TYP=PRCS' + '&V_CD=' + value + '&V_SRC_CD=' + this.V_SRC_CD + '&&REST_Service=Description&Verb=GET')
+      .subscribe((data: any) => {
+        if (data.length) {
+          this.processDescription = data[0].PRCS_DSC;
+        }
+      })
+  }
+  functionGetServiceDescription(value) {
+    this.http.get(this.apiUrlGet + 'V_CD_TYP=SRVC' + '&V_CD=' + value + '&V_SRC_CD=' + this.V_SRC_CD + '&&REST_Service=Description&Verb=GET')
+      .subscribe((data: any) => {
+        if (data.length) {
+          this.serviceDescription = data[0].SRVC_DSC;
+        }
+      })
+  }
+  onPermissionChange(item, paramter_name) {
+    item[paramter_name] = item[paramter_name] === 'Y' ? 'N' : 'Y';
+  }
+  onServiceDelete() {
+    if (this.selectedsrvc !== '' || this.selectedsrvc !== null) {
+      this.http.delete(this.apiUrlGet + 'V_APP_CD=' + this.selectedapp + '&V_PRCS_CD=' + this.selectedprcs + 'V_SRVC_CD=' + this.selectedsrvc + '&V_SRC_CD=' + this.V_SRC_CD + '&V_USR_NM=' + this.V_USR_NM + '&REST_Service=Service&Verb=DELETE')
+        .subscribe(res => {
+          // if (res) {
+          this.selectedsrvc = '';
+          this.SRVC_CD.slice(this.SRVC_CD.indexOf(this.selectedsrvc), 1);
+          // }
+        })
+    }
+  }
+  onAppDelete() {
+    if (this.selectedapp !== '' || this.selectedapp !== null) {
+      this.http.delete(this.apiUrlGet + 'V_APP_CD=' + this.selectedapp + '&V_SRC_CD=' + this.V_SRC_CD + '&V_USR_NM=' + this.V_USR_NM + '&REST_Service=Application&Verb=DELETE')
+        .subscribe(res => {
+          // if (res) {
+          this.selectedapp = '';
+          this.APP_CD.splice(this.APP_CD.indexOf(this.selectedapp), 1);
+          // }
+        })
+    }
+  }
+  onProcessDelete() {
+    if (this.selectedprcs !== '' || this.selectedprcs !== null) {
+      this.http.delete(this.apiUrlGet + 'V_APP_CD=' + this.selectedapp + '&V_PRCS_CD=' + this.selectedprcs + '&V_SRC_CD=' + this.V_SRC_CD + '&V_USR_NM=' + this.V_USR_NM + '&REST_Service=Process&Verb=DELETE')
+        .subscribe(res => {
+          // if (res) {
+          this.selectedprcs = '';
+          this.PRCS_CD.splice(this.PRCS_CD.indexOf(this.selectedprcs), 1);
+          // }
+        })
+    }
+  }
+  onAppAdd() {
+    const body = {
+      V_APP_CD: this.selectedapp,
+      V_SRC_CD: this.V_SRC_CD,
+      V_APP_DSC: this.applicationDescription,
+      V_USR_NM: this.V_USR_NM,
+      REST_Service: 'Application',
+      Verb: 'PUT'
+    };
+    this.http.post(this.apiUrlGet, body)
+      .subscribe(res => {
+        if (res) {
+          this.APP_CD.push(this.selectedapp);
+          this.selectedapp = '';
+          this.applicationDescription = '';
+        }
+      })
+  }
+  getRoles() {
+    this.http.get(this.apiUrlGet + 'V_USR_NM=' + this.V_USR_NM + '&V_SRC_CD=' + this.V_SRC_CD + '&&REST_Service=UserRoles&Verb=GET')
+      .subscribe((data: any) => {
+        if (data) {
+          this.rolesList = data;
+        }
+      })
+  }
+  onProcessAdd() {
+    const body = {
+      V_APP_CD: this.selectedapp,
+      V_PRCS_CD: this.selectedprcs,
+      V_SRC_CD: this.V_SRC_CD,
+      V_PRCS_DSC: this.processDescription,
+      V_ROLE_CD: this.selectedPrcsRole,
+      V_READ: this.processPermission.READ,
+      V_EXECUTE: this.processPermission.EXECUTE,
+      V_DELETE: this.processPermission.DELETE,
+      V_CREATE: this.processPermission.CREATE,
+      V_UPDATE: this.processPermission.UPDATE,
+      V_USR_NM: this.V_USR_NM,
+      REST_Service: 'Process',
+      Verb: 'PUT'
+    };
+    this.http.post(this.apiUrlGet, body)
+      .subscribe(res => {
+        if (res) {
+          this.PRCS_CD.push(this.selectedprcs);
+          this.selectedprcs = '';
+          this.processDescription = '';
+          this.selectedPrcsRole = '';
+          this.processPermission = new RolePermission();
+        }
+      })
+  }
+  onServiceAdd() {
+    const body = {
+      V_APP_CD: this.selectedapp,
+      V_PRCS_CD: this.selectedprcs,
+      V_SRC_CD: this.V_SRC_CD,
+      V_SRVC_CD: this.selectedsrvc,
+      V_SRVC_DSC: this.serviceDescription,
+      V_ROLE_CD: this.selectedSrvcRole,
+      V_READ: this.servicePermission.READ,
+      V_EXECUTE: this.servicePermission.EXECUTE,
+      V_DELETE: this.servicePermission.DELETE,
+      V_CREATE: this.servicePermission.CREATE,
+      V_UPDATE: this.servicePermission.UPDATE,
+      V_USR_NM: this.V_USR_NM,
+      REST_Service: 'Service',
+      Verb: 'PUT'
+    };
+    this.http.post(this.apiUrlGet, body)
+      .subscribe(res => {
+        if (res) {
+          this.SRVC_CD.push(this.selectedsrvc);
+          this.selectedsrvc = '';
+          this.serviceDescription = '';
+          this.selectedSrvcRole = '';
+          this.servicePermission = new RolePermission();
+        }
+      })
+  }
 }
 export interface data {
   APP_CD: string[];
@@ -258,4 +415,19 @@ export interface data {
   CONT_ON_ERR_FLG: string[];
   AUTO_ID: string[];
   USR_GRP_CD: string[];
+}
+
+export class RolePermission {
+  READ: any;
+  UPDATE: any;
+  CREATE: any;
+  DELETE: any;
+  EXECUTE: any;
+  constructor() {
+    this.CREATE = 'Y';
+    this.DELETE = 'Y';
+    this.UPDATE = 'Y';
+    this.READ = 'Y';
+    this.EXECUTE = 'Y';
+  }
 }
