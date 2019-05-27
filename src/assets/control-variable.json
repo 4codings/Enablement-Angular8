@@ -1,12 +1,12 @@
 {
-    "checkDeployment":false,
-    "show_PIE": false,
-    "show_BAR": false,
-    "show_Gantt": false,
-    "show_ALL": false,
-    "show_SM_PIE": false,
-    "call_repeat_on_TIMEOUT":true,
-    "repeat_count":100,
-    "message_access_denied":"Sorry, you do not have access to this form",
-    "effectiveEndDate": 1.577e+11
+  "checkDeployment": false,
+  "show_PIE": false,
+  "show_BAR": false,
+  "show_Gantt": false,
+  "show_ALL": false,
+  "show_SM_PIE": false,
+  "call_repeat_on_TIMEOUT": true,
+  "repeat_count": 5,
+  "message_access_denied": "Sorry, you do not have access to this form",
+  "effectiveEndDate": 1.577e+11
 }

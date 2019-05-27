@@ -1026,6 +1026,9 @@ export class ExecuteComponent implements OnInit, OnDestroy {
     if (data && this.repeat < this.ctrl_variables.repeat_count) {
       this.repeat++;
       this.GenerateReportTable();
+    } else {
+      this.repeat = 0;
+      this.router.navigate(["/End_User/Execute"], { skipLocationChange: true });
     }
   }
 
