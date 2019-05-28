@@ -30,7 +30,7 @@ export class HeaderComponent implements OnInit {
     this.router.navigateByUrl('/user', { skipLocationChange: true });
   }
   ngOnInit() {
-    this.userName = this.userService.getDetailFromStorage().SRC_CD;
+    this.userName = this.userService.getDetailFromStorage().USR_NM;
     this.agency = this.userService.getDetailFromStorage().SRC_CD;
     //this.options=this.StorageSessionService.getLocalS("profileopt");
     if (this.options) this.options.length == 0 ? this.showprofilebtn = false : this.showprofilebtn = true;
