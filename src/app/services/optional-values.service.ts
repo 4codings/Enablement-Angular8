@@ -31,12 +31,14 @@ export class OptionalValuesService {
         }
       });
   }
-  getProcessOptionalValue(application) {
+  getProcessOptionalValue(application, update?) {
     let flag = 0;
+    let index = 0;
     if (this.processArray.length) {
-      this.processArray.forEach(ele => {
+      this.processArray.forEach((ele, i) => {
         if (ele.app === application) {
           flag = 1;
+          index = i;
         }
       })
     }
@@ -49,13 +51,26 @@ export class OptionalValuesService {
           }
         });
     }
+    if (flag && update) {
+      this.http.get(this.apiUrlGet + "V_APP_CD=" + application + "&V_SRC_CD=" + this.V_SRC_CD + "&V_USR_NM=" + this.V_USR_NM + "&REST_Service=AppProcesses&Verb=GET").subscribe(
+        res => {
+          if (res) {
+            this.processArray[index].app = application;
+            this.processArray[index].process = res['PRCS_CD'];
+            this.processArray[index].data = res;
+            this.processOptionalValue.next(this.processArray);
+          }
+        });
+    }
   }
-  getServiceOptionalValue(application, process) {
+  getServiceOptionalValue(application, process, update?) {
     let flag = 0;
+    let index = 0;
     if (this.serviceArray.length) {
-      this.serviceArray.forEach(ele => {
+      this.serviceArray.forEach((ele, i) => {
         if (ele.process === process && ele.app === application) {
           flag = 1;
+          index = i;
         }
       })
     }
@@ -68,16 +83,28 @@ export class OptionalValuesService {
           }
         });
     }
+    if (flag && update) {
+      this.http.get(this.apiUrlGet + "V_APP_CD=" + application + "&V_SRC_CD=" + this.V_SRC_CD + "&V_PRCS_CD=" + process + "&V_USR_NM=" + this.V_USR_NM + "&REST_Service=ProcessServices&Verb=GET").subscribe(
+        res => {
+          if (res) {
+            this.serviceArray[index].app = application;
+            this.serviceArray[index].process = process;
+            this.serviceArray[index].service = res['SRVC_CD'];
+            this.serviceArray[index].data = res;
+            this.serviceOptionalValue.next(this.serviceArray);
+          }
+        });
+    }
   }
 }
 export class ProcessObservable {
   app: any;
   process: any;
-  data:any;
+  data: any;
 }
 export class ServiceObservable {
   app: any;
   process: any;
   service: any;
-  data:any;
+  data: any;
 }

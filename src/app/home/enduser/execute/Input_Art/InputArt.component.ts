@@ -316,12 +316,12 @@ export class InputArtComponent {
     // console.log('setCookies');
     let serviceCode = null;
     if (CommonUtils.isValidValue(res['SRVC_CD']) && res['SRVC_CD'][0] === "END") {
-      this.router.navigate(["/EndUser/Execute"], { skipLocationChange: true });
+      this.router.navigate(["/End_User/Execute"], { skipLocationChange: true });
     } else {
       var timeout = res['RESULT'][0].toString().substring(0, 7) == "TIMEOUT";
       // (timeout);
       if (timeout) {
-        this.router.navigate(["/EndUser/Execute"], { skipLocationChange: true });
+        this.router.navigate(["/End_User/Execute"], { skipLocationChange: true });
       } else if (res['RESULT'][0] === 'SUCCESS' || res['RESULT'][0] === 'COMPLETED') {
         this.router.navigateByUrl('End_User', { skipLocationChange: true });
       } else {
