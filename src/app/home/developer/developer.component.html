@@ -5,7 +5,72 @@
             <mat-card class="CustomeLayout">
 
             <mat-card-title>
-            <!-- <app-header></app-header> -->
+                    <div flex fxLayout="column" fxLayout.lt-sm="column">
+
+                            <nav class="navbar ">
+                             <!-- Desktop View -->
+                            <div class="w-100" fxHide="true" fxShow.gt-sm="true">
+                            <mat-nav-list>
+                              <div class="list-wrapper" flex fxLayout="row" fxLayout.lt-sm="row">
+                                  <div class="nav-link pl-3 mb-2">
+                                  <img src="./assets/logo.png" class="logo-img" />
+                                  </div>
+                                  <div class="ml-auto pr-4">
+                                      <button matTooltip="View profile" mat-mini-fab class="ml-5" [matMenuTriggerFor]="menu">
+                                          <mat-icon>more_vert</mat-icon>
+                                      </button>
+                              
+                                      <mat-menu #menu="matMenu" xPosition="before">
+                                          <app-header></app-header>
+                                      </mat-menu>
+                          
+                                  </div>    
+                              </div>  
+                            </mat-nav-list>
+                            </div> 
+
+                            <div class="w-100" fxHide="true" fxShow.xs="true">
+                                <mat-nav-list>
+                                         
+                                    <div class="" style="display:flex;">
+                                        <div class="pl-2">
+                                            <img src="./assets/logo.png" class="logo-img" />
+                                        </div> 
+                                        <div class="ml-auto pr-2">
+                                            <button class="profile-btn" mat-mini-fab [matMenuTriggerFor]="menu">
+                                                <a class="nav-link"><mat-icon>more_vert</mat-icon></a>
+                                            </button>
+                                        </div>    
+                                    </div>
+                                
+                                    <mat-menu #menu="matMenu" xPosition="before">
+                                        <app-header></app-header>
+                                    </mat-menu>
+                                    
+                                </mat-nav-list>
+                            </div>
+                            <!-- For Tab Screen -->
+                            <div class="w-100" fxHide="true" fxShow.sm="true">
+                                <mat-nav-list>
+                                    <div class="" style="display:flex;">
+                                        <div class="pl-2">
+                                            <img src="./assets/logo.png" class="logo-img" />
+                                        </div>
+                                        <div class="ml-auto pr-2">
+                                            <button class="profile-btn" mat-mini-fab [matMenuTriggerFor]="menu">
+                                                <a class="nav-link"><mat-icon>more_vert</mat-icon></a>
+                                            </button>
+                                        </div>    
+                            
+                                    <mat-menu #menu="matMenu" xPosition="before">
+                                        <app-header></app-header>
+                                    </mat-menu>
+                                    </div>  
+                                    
+                                </mat-nav-list>
+                            </div>
+                        </nav>
+                    </div>        
             
             </mat-card-title>
             <mat-card-content>
