@@ -1,0 +1,22 @@
+<div class="app-form-wrapper">
+  <form [formGroup]="form">
+    <mat-form-field>
+      <input type="text" matInput placeholder="Name" formControlName="V_USR_GRP_CD">
+    </mat-form-field>
+    <mat-form-field>
+      <input type="text" matInput placeholder="Description" formControlName="V_USR_GRP_DSC">
+    </mat-form-field>
+    <div fxLayout="row" fxLayoutGap="8px">
+      <mat-form-field>
+        <input matInput [matDatepicker]="startDate" placeholder="Start date" formControlName="V_EFF_STRT_DT_TM">
+        <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+        <mat-datepicker #startDate></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [matDatepicker]="endDate" placeholder="End date" formControlName="V_EFF_END_DT_TM">
+        <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+        <mat-datepicker #endDate></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </form>
+</div>

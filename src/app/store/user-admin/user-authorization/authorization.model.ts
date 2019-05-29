@@ -13,6 +13,8 @@ export interface AuthorizationData {
     'V_EXECUTE': string;
     'V_USR_NM': string;
     'V_COMMNT': string;
+    'V_AUTH_ID': string;
+    'V_ROLE_ID': Array<any>;
 
     'AUTH_ID': number;
     'APP_ID': number;
