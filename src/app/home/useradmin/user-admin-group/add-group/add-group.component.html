@@ -1,0 +1,13 @@
+<div class="dialog-wrapper" fxLayoutGap="8px" fxLayout="column" fxLayoutAlign="start stretch">
+  <div class="dialog-header content-wrapper">
+    Add Group
+  </div>
+  <mat-divider></mat-divider>
+  <div class="dialog-body content-wrapper">
+    <app-group-form></app-group-form>
+  </div>
+  <div class="dialog-footer content-wrapper" fxLayoutAlign="end center" fxLayoutGap="8px">
+    <button mat-button (click)="onBtnCancelClick()">Cancel</button>
+    <button mat-flat-button color="primary" (click)="onBtnAddClick()">Add</button>
+  </div>
+</div>

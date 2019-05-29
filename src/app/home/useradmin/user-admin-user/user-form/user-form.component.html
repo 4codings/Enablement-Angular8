@@ -1,0 +1,15 @@
+<div class="app-form-wrapper">
+  <form [formGroup]="userForm">
+    <mat-form-field>
+      <input type="text" matInput placeholder="Name" formControlName="V_USR_NM">
+    </mat-form-field>
+    <mat-form-field>
+      <input type="text" matInput placeholder="Description" formControlName="V_USR_DSC">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select formControlName="V_STS" placeholder="Status">
+        <mat-option *ngFor="let status of userStatusOptions" [value]="status.key">{{status.label}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</div>
