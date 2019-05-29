@@ -18,12 +18,14 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpInterceptorsService } from './services/http-interceptors.service';
 import { LocalStorageService, SessionStorageService, CookiesStorageService, SharedStorageService } from 'ngx-store';
 import { DeviceDetectorModule } from 'ngx-device-detector';
+import { UserIdleModule } from 'angular-user-idle';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    UserIdleModule.forRoot({ idle: environment.idle, timeout: environment.timeout, ping: 300 }),
     ToastrModule.forRoot(),
     LaddaModule.forRoot({
       style: 'zoom-in',
