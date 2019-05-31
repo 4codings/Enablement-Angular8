@@ -42,6 +42,14 @@ export class FormComponent implements OnInit {
   V_DELETE: any;
   V_EXECUTE: any;
   HAS_OPTIONS: any;
+  HAS_DSPLY: any;
+  DISPLAY_TXT: any;
+  DSPLY_FLD: any;
+  VLDTN: any;
+  VLDTN_ALERT_TXT: any;
+  CNSLD_VLDTN_ALERT: any;
+  FLD_HLP_TXT: any;
+  PARAM_DSC: any;
 
   constructor(
     public StorageSessionService: StorageSessionService,
@@ -66,8 +74,8 @@ export class FormComponent implements OnInit {
   public apiUrlGet = this.apiService.endPoints.insecure;
   public apiUrlGetSecured = this.apiService.endPoints.secure;
   public dataChangeHandler: any;
-  V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
-  V_USR_NM:string=JSON.parse(sessionStorage.getItem('u')).USR_NM;
+  V_SRC_CD: string = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+  V_USR_NM: string = JSON.parse(sessionStorage.getItem('u')).USR_NM;
   Form_Data: any;
   options: any = {};
   PVP: any;
@@ -94,6 +102,7 @@ export class FormComponent implements OnInit {
   srvc_cd: any;
   srvc_cd_sl: any;
   RVP_labels: any[] = [];
+  RVP_placeholder: any[] = [];
   RVP_Keys: string[];
   RVP_Values: any[] = [];
   V_APP_CD: string = '';
@@ -123,6 +132,20 @@ export class FormComponent implements OnInit {
 
     this.setField_RVP();
 
+    this.RVP_Keys = Object.keys(this.RVP_DataObj);
+    for (let i = 0; i < this.RVP_Keys.length; i++) {
+      this.FLD_TYPE[i] = this.FLD_TYPE[i].trim();
+      this.HAS_OPTIONS[i] = this.HAS_OPTIONS[i].trim();
+      this.HAS_DSPLY[i] = this.HAS_DSPLY[i].trim();
+      this.DSPLY_FLD[i] = this.DSPLY_FLD[i].trim();
+      this.DISPLAY_TXT[i] = this.DISPLAY_TXT[i].trim();
+      this.PARAM_DSC[i] = this.PARAM_DSC[i].trim();
+      this.FLD_HLP_TXT[i] = this.FLD_HLP_TXT[i].trim();
+      this.VLDTN[i] = this.VLDTN[i].trim();
+      this.VLDTN_ALERT_TXT[i] = this.VLDTN_ALERT_TXT[i].trim();
+      this.CNSLD_VLDTN_ALERT[i] = this.CNSLD_VLDTN_ALERT[i].trim();
+    }
+
     this.labels_toShow();
 
     // for (let i = 0; i < this.RVP_labels.length; i++) {
@@ -131,10 +154,7 @@ export class FormComponent implements OnInit {
 
 
     // added get call 10th April 
-    for (let i = 0; i < this.RVP_Keys.length; i++) {
-      this.FLD_TYPE[i] = this.FLD_TYPE[i].trim();
-      this.HAS_OPTIONS[i] = this.HAS_OPTIONS[i].trim();
-    }
+
 
     for (let i = 0; i < this.RVP_Keys.length; i++) {
       if (this.FLD_TYPE && this.FLD_TYPE[i] === "'dropdown'") {
@@ -156,7 +176,6 @@ export class FormComponent implements OnInit {
 
   labels_toShow(): any {
     //----------------Lables to Show---------------//
-    this.RVP_Keys = Object.keys(this.RVP_DataObj);
     for (let i = 0; i < this.RVP_Keys.length; i++) {
       this.RVP_Values.push(this.RVP_DataObj[this.RVP_Keys[i]]);
       // if (this.RVP_Keys[i].substring(0, 2) == "V_") {
@@ -164,6 +183,16 @@ export class FormComponent implements OnInit {
       // } else {
       this.RVP_labels.push(this.RVP_Keys[i].replace(new RegExp('_', 'g'), ' '));
       // }
+      if (this.HAS_DSPLY[i] === "'Y'") {
+        this.RVP_placeholder.push(this.DISPLAY_TXT[i].toString().replace(/'/g, ""));
+      } else {
+        this.RVP_placeholder.push(this.RVP_Keys[i].replace(new RegExp('_', 'g'), ' '));
+      }
+      if (this.DSPLY_FLD[i] === "'Y'") {
+        this.DSPLY_FLD[i] = true;
+      } else {
+        this.DSPLY_FLD[i] = false;
+      }
     }
     (this.RVP_labels);
   }
@@ -241,6 +270,15 @@ export class FormComponent implements OnInit {
     this.V_EXECUTE = this.Form_Data['V_EXECUTE'][0];
 
     this.HAS_OPTIONS = this.Form_Data['HAS_OPTNS'][0].split(",");
+    this.HAS_DSPLY = this.Form_Data['HAS_DSPLY'][0].split(",");
+    this.DSPLY_FLD = this.Form_Data['DSPLY_FLD'][0].split(",");
+    this.DISPLAY_TXT = this.Form_Data['DSPLY'][0].split(",");
+    this.VLDTN = this.Form_Data['VLDTN'][0].split(",");
+    this.VLDTN_ALERT_TXT = this.Form_Data['VLDTN_ALERT_TXT'][0].split(",");
+    this.CNSLD_VLDTN_ALERT = this.Form_Data['CNSLD_VLDTN_ALERT'][0].split(",");
+    this.PARAM_DSC = this.Form_Data['PARAM_DSC'][0].split(",");
+    this.FLD_HLP_TXT = this.Form_Data['FLD_HLP_TXT'][0].split(",");
+
     this.FLD_TYPE = this.Form_Data['FLD_TYPE'][0].split(",");
 
     this.SL_APP_CD = this.StorageSessionService.getCookies('executedata')['SL_APP_CD'];
