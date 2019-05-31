@@ -17,8 +17,8 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 export class ConfigServiceService {
   domain_name = this.globals.domain_name;
 
-  V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
-  V_USR_NM:string=JSON.parse(sessionStorage.getItem('u')).USR_NM;
+  V_SRC_CD: string = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+  V_USR_NM: string = JSON.parse(sessionStorage.getItem('u')).USR_NM;
   constructor(private http: Http, private https: HttpClient, private apiService: ApiService,
     private StorageSessionService: StorageSessionService, private globals: Globals) { }
 
@@ -612,6 +612,15 @@ export class ConfigServiceService {
     const ParameterName: any[] = FormData['PARAM_NM'];
     const ParameterType: any[] = FormData['FLD_TYPE'];
     const ParameterHasOptions: any[] = FormData['HAS_OPTNS'];
+    const ParameterHasDisplay: any[] = FormData['HAS_DSPLY'];
+    const ParamterDisplay: any[] = FormData['DSPLY'];
+    const ParamterDisplayField: any[] = FormData['DSPLY_FLD'];
+    const ParamterValidation: any[] = FormData['VLDTN'];
+    const ParameterValidationAlertText: any[] = FormData['VLDTN_ALERT_TXT'];
+    const ParameterCnsldtVldtnAlert: any[] = FormData['CNSLD_VLDTN_ALERT'];
+    const ParamterHelpText: any[] = FormData['FLD_HLP_TXT'];
+    const ParamterDescription: any[] = FormData['PARAM_DSC'];
+
     var result: any = {};
     var Data: any = [];
     var k;
@@ -632,19 +641,31 @@ export class ConfigServiceService {
       } else {
         currentVal[0] = null;
       }
+      const fieldObj: any = {};
       const currentKey = ParameterName[i];
       result[currentKey] = currentVal;
-      const fieldObj: any = {};
       fieldObj.name = ParameterName[i];
       fieldObj.placeholder = ParameterName[i];
+      if (ParameterHasDisplay[i] === 'Y') {
+        fieldObj.display = ParamterDisplay[i];
+      } else {
+        fieldObj.display = ParameterName[i];
+      }
+
       if (ParameterHasOptions) {
         fieldObj.hasOptions = ParameterHasOptions[i];
+      }
+      if (ParamterDisplayField[i] === 'Y') {
+        fieldObj.hasfield = true;
+      } else {
+        fieldObj.hasfield = false;
       }
       if (CommonUtils.isValidValue(ParameterType) && CommonUtils.isValidValue(ParameterType[i]) && ParameterType[i] !== "") {
         fieldObj.type = ParameterType[i] || "input";
       } else {
         fieldObj.type = "input";
       }
+      fieldObj.helptext = ParamterHelpText[i];
       if (fieldObj.type === "Checkbox" || fieldObj.type === "openlist") {
         // need value as array
         fieldObj.value = [currentVal[0]];
