@@ -47,7 +47,7 @@
     <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="50" fxLayoutGap="8px">
       <div fxLayoutAlign="space-between center">
         <div style="padding-left: 8px">Roles</div>
-        <button mat-icon-button matTooltip="Add Role" class="add-btn"><mat-icon>add_circle</mat-icon></button>
+        <button mat-icon-button matTooltip="Add Role" class="add-btn" (click)="onAddRoleBtnClick()"><mat-icon>add_circle</mat-icon></button>
       </div>
       <mat-divider></mat-divider>
       <div *ngFor="let currRole of roles" class="tile-container">
@@ -59,6 +59,9 @@
                (click)="onAuthTileClick(currAuth)">
             <div>Auth</div>
             <div><strong>{{currAuth.V_AUTH_ID}}</strong></div>
+          </div>
+          <div class="tile add-new-tile" (click)="onAddAuthBtnClick(currRole.id)" matTooltip="Add Auth" matRipple>
+            <mat-icon>add_circle</mat-icon>
           </div>
         </div>
       </div>

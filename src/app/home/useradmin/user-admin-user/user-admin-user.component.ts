@@ -41,21 +41,21 @@ export class UserAdminUserComponent implements OnInit {
   selectedid;
 
   public nameChanged = false;
-  private clonedName = '';
+  protected clonedName = '';
 
   public descChanged = false;
-  private clonedDesc = '';
+  protected clonedDesc = '';
 
   public statusChanged = false;
-  private clonedStatus = '';
+  protected clonedStatus = '';
   public duplicated = false;
   public totalDuplicated = false;
   public hideButton = false;
   public V_SRC_CD_DATA;
 
-  private usersList = [];
+  protected usersList = [];
 
-  private emailIds: string[] = ['@gmail.', '@yahoo.', '@outlook.',
+  protected emailIds: string[] = ['@gmail.', '@yahoo.', '@outlook.',
     '@hotmail.', '@live.', '@aol.', '@aim.', '@yandex.', '@protonmail.', '@zoho.', '@gmx.', '@tutanota.'];
   public domainError = false;
   public screenHeight = 0;
@@ -78,8 +78,8 @@ export class UserAdminUserComponent implements OnInit {
 
   constructor(
     public noAuthData: NoAuthDataService,
-    private store: Store<AppState>,
-    private userAdminService:UseradminService
+    protected store: Store<AppState>,
+    protected userAdminService:UseradminService
   ) {
     // Label get service
     this.noAuthData.getJSON().subscribe(data => {
@@ -187,7 +187,7 @@ export class UserAdminUserComponent implements OnInit {
     this.checkDuplications();
   }
 
-  private setButtonLabel() {
+  protected setButtonLabel() {
     if (this.selecteduser === 0) {
       this.updateBtn = true;
     } else {
@@ -235,7 +235,7 @@ export class UserAdminUserComponent implements OnInit {
     }
   }
 
-  private deepCheck() {
+  protected deepCheck() {
     if (this.duplicated) {
       for (let i = 0; i < this.usersList.length; i++) {
         if (this.usersList[i].V_STS === this.user.V_STS && this.usersList[i].V_USR_DSC === this.user.V_USR_DSC) {
@@ -248,7 +248,7 @@ export class UserAdminUserComponent implements OnInit {
     }
   }
 
-  private checkUserDomain() {
+  protected checkUserDomain() {
     for (let i = 0; i < this.emailIds.length; i++) {
       if (this.user.V_USR_NM.indexOf(this.emailIds[i]) > -1) {
         this.domainError = true;

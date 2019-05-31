@@ -82,14 +82,25 @@
 <input type="file" (change)="fileChangeEvent($event ,files)" #files name="Document_File" id="Document_File" style="display:none"
 />
 -->
-
+<div>
+  <div fxFlex="10" ></div>
+  <mat-radio-group #matRadioBtn="matRadioGroup"
+                   fxFlex="100"
+                   value=""
+                   fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-radio-button *ngFor="let item of groupTypeOptions" [value]="item.key">
+      {{item.label}}
+    </mat-radio-button>
+  </mat-radio-group>
+  <div fxFlex="10" ></div>
+</div>
 <div class="p-3" fxLayout="row" fxLayout.lt-sm="column">
 	<div fxFlex="30" style="text-align: center;">
 		<br />
 		<strong>{{Label['Av_group']}}</strong>
 		<mat-list *ngIf="desktopView" class="scroll" style="text-align: center;">
 			<mat-list-item class="list_item" (click)="getDataGroup(usrGroup);selected(i);selectedGroupId(usrGroup.id)"
-                      *ngFor="let usrGroup of userGroups$ | async;let i=index"
+                      *ngFor="let usrGroup of userGroups$ | async | groupType:matRadioBtn.value;let i=index"
                       [class.active]="i == selectedgroup">
         <div>{{usrGroup.V_USR_GRP_CD}}</div>
       </mat-list-item>

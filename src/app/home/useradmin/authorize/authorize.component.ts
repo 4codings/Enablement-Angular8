@@ -51,9 +51,9 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
   enableAddButtonFlag = false;
   constructor(
     public noAuthData: NoAuthDataService,
-    private store: Store<AppState>,
-    private optionalService: OptionalValuesService,
-    private http: HttpClient, private apiServcie: ApiService
+    protected store: Store<AppState>,
+    protected optionalService: OptionalValuesService,
+    protected http: HttpClient, protected apiServcie: ApiService
   ) {
     this.authValueObj = new data();
     this.authValueObj.V_CREATE = 'N';
@@ -273,6 +273,7 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
     const data = this.filteredAuthValues[index];
     let body = {
       "V_AUTH_DSC": data.V_AUTH_DSC,
+      "V_AUTH_CD": data.V_AUTH_CD,
       "V_AUTH_TYP": data.V_AUTH_TYP,
       "V_SRC_CD": this.V_SRC_CD_DATA.V_SRC_CD,
       "V_APP_CD": data.V_APP_CD,
@@ -287,29 +288,28 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
       "V_COMMNT": '',
       "REST_Service": "Auth",
       "Verb": "POST"
-    }
+    };
     this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', body)
       .subscribe(res => {
         this.store.dispatch(new authActions.getAuth(this.V_SRC_CD_DATA));
+      },err => {
+        console.log("Error in form record post request:\n" + err);
       });
-    err => {
-      ("Error in form record post request:\n" + err);
-    }
   }
   delete_click(index) {
     const data = this.filteredAuthValues[index];
     this.http.delete(this.apiServcie.endPoints.securedJSON + `V_AUTH_CD=${data.V_AUTH_CD}&V_AUTH_TYP=${data.V_AUTH_TYP}&V_SRC_CD=${this.V_SRC_CD_DATA.V_SRC_CD}&REST_Service=Auth&Verb=DELETE`)
       .subscribe(res => {
         this.store.dispatch(new authActions.getAuth(this.V_SRC_CD_DATA));
+      },err => {
+        console.log("Error in form record post request:\n" + err);
       });
-    err => {
-      ("Error in form record post request:\n" + err);
-    }
   }
-  onAddSubmit() {
+  onAddSubmit(){
     const data = this.authValueObj;
     let body = {
       "V_AUTH_DSC": data.V_AUTH_DSC,
+      "V_AUTH_CD": data.V_AUTH_CD,
       "V_AUTH_TYP": this.radioSelected,
       "V_SRC_CD": this.V_SRC_CD_DATA.V_SRC_CD,
       "V_APP_CD": data.V_APP_CD,
@@ -324,15 +324,15 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
       "V_COMMNT": '',
       "REST_Service": "Auth",
       "Verb": "POST"
-    }
-    this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', body)
-      .subscribe(res => {
+    };
+    let obs = this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', body)
+    obs.subscribe(res => {
         this.addFlag = false;
         this.store.dispatch(new authActions.getAuth(this.V_SRC_CD_DATA));
-      });
+      },
     err => {
-      ("Error in form record post request:\n" + err);
-    }
+      console.log("Error in form record post request:\n" + err);
+    });
   }
   // showAuthData(authData) {
   //   this.authD.AUTH_DSC = authData.AUTH_DSC;

@@ -39,6 +39,18 @@
   </div>
 
 </div> -->
+<div>
+  <div fxFlex="10" ></div>
+  <mat-radio-group #matRadioBtn="matRadioGroup"
+                   fxFlex="100"
+                   value=""
+                   fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-radio-button *ngFor="let item of authorizationTypeOptions" [value]="item.key">
+      {{item.label}}
+    </mat-radio-button>
+  </mat-radio-group>
+  <div fxFlex="10" ></div>
+</div>
 <div fxLayout="row" fxLayout.lt-sm="column">                
   <div fxFlex="10" ></div>
   <div fxFlex="30" style="text-align: center;">
@@ -70,7 +82,7 @@
   <div fxFlex="30" style="text-align: center;">
     <strong>{{Label['Auth']}}</strong>
     <mat-list  class="scroll">
-      <mat-list-item  class="sd list_item"  *ngFor="let a of authData$ | async; let j = index;"  [class.active]="j == selectedauth || a.is_selected_role == true">
+      <mat-list-item  class="sd list_item"  *ngFor="let a of authData$ | async | authType:matRadioBtn.value; let j = index;"  [class.active]="j == selectedauth || a.is_selected_role == true">
           <div fxLayout="row">
             <div fxFlex="90" (click)="selectedAuth(a,j);">{{a.V_AUTH_CD}}</div>
             <div fxFlex="10"><mat-checkbox [disabled]="selectCurrentAuth != undefined" [(ngModel)]="a.is_selected" (change)="checkboxAuthSelect($event, a)"></mat-checkbox></div>

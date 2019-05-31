@@ -7,7 +7,7 @@ import {AuthorizationData} from '../../../store/user-admin/user-authorization/au
 export class AuthTypePipe implements PipeTransform {
 
   transform(values: AuthorizationData[], type?: string): any {
-    if(values && values.length){
+    if(values && values.length && type){
       return values.filter(currVal => currVal.V_AUTH_TYP == type);
     }
     return values;

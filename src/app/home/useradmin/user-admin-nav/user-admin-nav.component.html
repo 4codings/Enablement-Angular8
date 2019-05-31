@@ -21,15 +21,10 @@
         <button mat-raised-button><a [routerLink]="['Assignrole']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">assignment_returned</mat-icon><mat-icon class="iconmod shwsvgicon deskicon deskicon" svgIcon="assignment_ret"></mat-icon><span class="link-content">Assign Role</span></a></button>
         <button mat-raised-button><a [routerLink]="['UserAuthorize']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">account_balance</mat-icon><mat-icon class="iconmod shwsvgicon deskicon deskicon" svgIcon="home"></mat-icon><span class="link-content">Auth</span></a></button>
         <button mat-raised-button><a [routerLink]="['Authorizerole']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">lock</mat-icon><mat-icon class="iconmod shwsvgicon deskicon deskicon" svgIcon="lock_red"></mat-icon><span class="link-content">Authorization</span></a></button>
-        <button mat-raised-button><a [routerLink]="['UserAuth']" skipLocationChange routerLinkActive="active" class="nav-link">
-          <mat-icon class="iconmod shwmaticon">person</mat-icon>
-          <mat-icon class="iconmod shwsvgicon deskicon deskicon" style="color:orange;">person</mat-icon>
-          <span class="link-content">Authorize User</span></a>
-        </button>
+        <button mat-raised-button><a [routerLink]="['UserAuth']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">person</mat-icon><mat-icon class="iconmod shwsvgicon deskicon deskicon" style="color:orange;">person</mat-icon><span class="link-content">Authorize User</span></a></button>
         <button matTooltip="View profile" mat-mini-fab class="ml-5" [matMenuTriggerFor]="menu">
           <mat-icon>more_vert</mat-icon>
         </button>
-
         <mat-menu #menu="matMenu" xPosition="before">
           <app-header></app-header>
         </mat-menu>
@@ -54,6 +49,7 @@
       <button matTooltip="Assignrole" matTooltipPosition='below' mat-icon-button><a [routerLink]="['Assignrole']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">assignment_returned</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="assignment_ret"></mat-icon></a></button>
       <button matTooltip="Auth" matTooltipPosition='below' mat-icon-button><a [routerLink]="['UserAuthorize']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">account_balance</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="home"></mat-icon></a></button>
       <button matTooltip="Authorizerole" matTooltipPosition='below' mat-icon-button><a [routerLink]="['Authorizerole']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">lock</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="lock_red"></mat-icon></a></button>
+      <button matTooltip="Authorize User" matTooltipPosition='below' mat-icon-button><a [routerLink]="['UserAuth']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">person</mat-icon><mat-icon class="iconmod shwsvgicon deskicon deskicon" style="color:orange;">person</mat-icon></a></button>
       <button class="profile-btn" mat-mini-fab [matMenuTriggerFor]="menu">
           <a class="nav-link"><mat-icon>more_vert</mat-icon></a>
       </button>
@@ -79,6 +75,7 @@
         <button matTooltip="Assignrole" matTooltipPosition='below' mat-mini-fab><a [routerLink]="['Assignrole']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">assignment_returned</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="assignment_ret"></mat-icon></a></button>
         <button matTooltip="Auth" matTooltipPosition='below' mat-mini-fab><a [routerLink]="['UserAuthorize']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">account_balance</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="home"></mat-icon></a></button>
         <button matTooltip="Authorizerole" matTooltipPosition='below' mat-mini-fab><a [routerLink]="['Authorizerole']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">lock</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="lock_red"></mat-icon></a></button>
+        <button matTooltip="Authorize User" matTooltipPosition='below' mat-mini-fab><a [routerLink]="['UserAuth']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">person</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" style="color:orange;">person</mat-icon></a></button>
         <button class="profile-btn" mat-mini-fab [matMenuTriggerFor]="menu">
           <a class="nav-link"><mat-icon>more_vert</mat-icon></a>
         </button>
@@ -86,8 +83,7 @@
         <mat-menu #menu="matMenu" xPosition="before">
           <app-header></app-header>
         </mat-menu>
-      </div>  
-      
+      </div>
   </mat-nav-list>
   </div>
 </nav>
