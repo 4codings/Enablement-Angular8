@@ -1,28 +1,24 @@
 <div class="auth-user-wrapper" fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="8px">
-  <div class="content-wrapper" fxLayoutAlign="space-between center">
-    <div></div>
-    <div>
-      <span>Authorization Type : </span>
-      <button mat-button [matMenuTriggerFor]="authTypeMenu">{{radioSelected}}
-        <mat-icon matSuffix>arrow_drop_down</mat-icon>
-      </button>
-      <mat-menu #authTypeMenu="matMenu">
-        <button mat-menu-item *ngFor="let item of radioList" (click)="radioSelected = item">{{item}}</button>
-      </mat-menu>
-    </div>
-  </div>
-  <mat-divider></mat-divider>
   <div fxLayout="row" fxLayoutGap="8px" class="content-wrapper">
     <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="50" fxLayoutGap="8px">
       <div fxLayoutAlign="space-between center">
         <div style="padding-left: 8px">Groups</div>
+        <div>
+          <span>Group Type : </span>
+          <button mat-button [matMenuTriggerFor]="groupTypeMenu">{{selectedGroupType.label}}
+            <mat-icon matSuffix>arrow_drop_down</mat-icon>
+          </button>
+          <mat-menu #groupTypeMenu="matMenu">
+            <button mat-menu-item *ngFor="let item of groupTypeOptions" (click)="selectedGroupType = item">{{item.label}}</button>
+          </mat-menu>
+        </div>
         <button mat-icon-button class="add-btn"
                 matTooltip="Add Group"
                 (click)="onAddGroupBtnClick()"><mat-icon>add_circle</mat-icon></button>
       </div>
       <mat-divider></mat-divider>
       <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="16px">
-        <div *ngFor="let currGroup of groups" class="tile-container">
+        <div *ngFor="let currGroup of groups | groupType:selectedGroupType.key" class="tile-container">
           <div class="container-header">{{currGroup.V_USR_GRP_CD}} - {{currGroup.V_USR_GRP_ID}}</div>
           <div class="tiles-wrapper" fxLayout="row wrap">
             <div class="tile"
@@ -47,18 +43,30 @@
     <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="50" fxLayoutGap="8px">
       <div fxLayoutAlign="space-between center">
         <div style="padding-left: 8px">Roles</div>
-        <button mat-icon-button matTooltip="Add Role" class="add-btn"><mat-icon>add_circle</mat-icon></button>
+        <div>
+          <span>Authorization Type : </span>
+          <button mat-button [matMenuTriggerFor]="authTypeMenu">{{selectedAuthType.label}}
+            <mat-icon matSuffix>arrow_drop_down</mat-icon>
+          </button>
+          <mat-menu #authTypeMenu="matMenu">
+            <button mat-menu-item *ngFor="let item of authorizationTypeOptions" (click)="selectedAuthType = item">{{item.label}}</button>
+          </mat-menu>
+        </div>
+        <button mat-icon-button matTooltip="Add Role" class="add-btn" (click)="onAddRoleBtnClick()"><mat-icon>add_circle</mat-icon></button>
       </div>
       <mat-divider></mat-divider>
       <div *ngFor="let currRole of roles" class="tile-container">
         <div class="container-header">{{currRole.V_ROLE_CD}} - {{currRole.V_ROLE_ID}}</div>
         <div class="tiles-wrapper" fxLayout="row wrap">
-          <div class="tile" *ngFor="let currAuth of authRoleMap.get(currRole.id) | authType: radioSelected"
+          <div class="tile" *ngFor="let currAuth of authRoleMap.get(currRole.id) | authType: selectedAuthType.key"
                [class.active]="currAuth == selectedAuth"
                [class.highlight]="highlightedAuths.isSelected(currAuth)"
                (click)="onAuthTileClick(currAuth)">
             <div>Auth</div>
             <div><strong>{{currAuth.V_AUTH_ID}}</strong></div>
+          </div>
+          <div class="tile add-new-tile" (click)="onAddAuthBtnClick(currRole.id)" matTooltip="Add Auth" matRipple>
+            <mat-icon>add_circle</mat-icon>
           </div>
         </div>
       </div>

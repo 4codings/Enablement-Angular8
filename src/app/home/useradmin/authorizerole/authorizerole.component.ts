@@ -10,6 +10,7 @@ import { userRole } from 'src/app/store/user-admin/user-role/userrole.model';
 import * as userRoleSelectors from '../../../store/user-admin/user-role/userrole.selectors';
 import * as userRoleActions from '../../../store/user-admin/user-role/userrole.action';
 import { HttpClient } from '@angular/common/http';
+import {authorizationTypeOptions} from '../useradmin.constants';
 
 @Component({
   selector: 'app-authorizerole',
@@ -42,7 +43,7 @@ export class AuthorizeroleComponent implements OnInit {
   public end_date: any;
   public subRole;
   public subAuth;
-
+  authorizationTypeOptions = authorizationTypeOptions;
   constructor(public noAuthData: NoAuthDataService, private store: Store<AppState>, private http:HttpClient) { }
 
   ngOnInit() {

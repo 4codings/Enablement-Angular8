@@ -32,13 +32,13 @@ export class RoleComponent implements OnInit {
   updateBtn = false;
 
   public nameChanged = false;
-  private clonedName = '';
+  protected clonedName = '';
 
   public descChanged = false;
-  private clonedDesc = '';
+  protected clonedDesc = '';
 
   public duplicated = false;
-  private roleList = [];
+  protected roleList = [];
 
   public totalDuplicated = false;
   public hideButton = false;
@@ -61,8 +61,8 @@ export class RoleComponent implements OnInit {
 
   constructor(
     public noAuthData: NoAuthDataService,
-    private store: Store<AppState>,
-    private userAdminService:UseradminService
+    protected store: Store<AppState>,
+    protected userAdminService:UseradminService
   ) { }
 
   ngOnInit() {
@@ -100,7 +100,7 @@ export class RoleComponent implements OnInit {
     this.duplicated = true;
   }
 
-  private setButtonLabel() {
+  protected setButtonLabel() {
     this.updateBtn = !!this.selecteduser;
   }
 
@@ -185,7 +185,7 @@ export class RoleComponent implements OnInit {
     }
   }
 
-  private deepCheck() {
+  protected deepCheck() {
     if (this.duplicated) {
       for (let i = 0; i < this.roleList.length; i++) {
         if (this.roleList[i].V_ROLE_DSC === this.roleData.V_ROLE_DSC) {

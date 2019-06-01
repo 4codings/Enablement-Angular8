@@ -32,6 +32,16 @@
   }
 }
 
+.p-8{
+  padding: 8px;
+}
+
+.content-wrapper {
+  padding: 8px;
+  background-color: #e5e5e5;
+  border-radius: 5px;
+}
+
 .dialog-wrapper {
   .dialog-header {
     font-size: 16px;
@@ -41,6 +51,8 @@
 
   .content-wrapper {
     padding: 8px;
+    background-color: transparent;
+    border-radius: 0;
   }
 
   .mat-divider {

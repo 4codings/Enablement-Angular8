@@ -22,6 +22,11 @@ import {data} from '../authorize/authorize.component';
 import {AddUserComponent} from '../user-admin-user/add-user/add-user.component';
 import {combineLatest} from 'rxjs';
 import {AddGroupComponent} from '../user-admin-group/add-group/add-group.component';
+import {AddEditRoleComponent} from '../role/add-edit-role/add-edit-role.component';
+import {take} from 'rxjs/operators';
+import {AddEditUserComponent} from '../user-admin-user/add-edit-user/add-edit-user.component';
+import {AddEditAuthorizeComponent} from '../authorize/add-edit-authorize/add-edit-authorize.component';
+import {authorizationTypeOptions, groupTypeOptions} from '../useradmin.constants';
 
 @Component({
   selector: 'app-authorize-user',
@@ -49,8 +54,10 @@ export class AuthorizeUserComponent implements OnInit {
   highlightedUsers: SelectionModel<User> = new SelectionModel<User>(true);
   highlightedAuths: SelectionModel<AuthorizationData> = new SelectionModel<AuthorizationData>(true);
 
-  radioList = ['PROCESS', 'SERVICE', 'EXE', 'ARTIFACT', 'PLATFORM', 'SERVER', 'SLA'];
-  radioSelected = this.radioList[0];
+  groupTypeOptions = groupTypeOptions;
+  selectedGroupType = this.groupTypeOptions[0];
+  authorizationTypeOptions = authorizationTypeOptions;
+  selectedAuthType = this.authorizationTypeOptions[0];
 
   constructor(
     public noAuthData: NoAuthDataService,
@@ -84,16 +91,30 @@ export class AuthorizeUserComponent implements OnInit {
     combineLatest(this.users$, this.groups$, this.roles$, this.authData$).subscribe(result => {
       this.users = result[0];
       // TODO : @hiren check if constants are define for Group type
-      this.groups = result[1].filter(group => group.V_GRP_TYP == 'CUSTOM');
-      this.roles = result[2].filter(role => role.V_AUTH_ID && role.V_AUTH_ID.length);
+      this.groups = result[1];
+      this.roles = result[2];
       this.authorizations = result[3];
-
       this.prepareUserGroupMap();
       this.prepareAuthRoleMap();
-
+      this.updateSelectedDataObjRef();
     }, error => {
       console.log('http error => ', error);
     });
+  }
+
+  updateSelectedDataObjRef(): void {
+    if (this.selectedUser) {
+      const newUser = this.users.filter(currUser => currUser.id == this.selectedUser.id)[0];
+      if (newUser) {
+        this.setSelectedUser(newUser);
+      }
+    }
+    if (this.selectedAuth) {
+      const newAuth = this.authorizations.filter(currAuth => currAuth.id == this.selectedAuth.id)[0];
+      if (newAuth) {
+        this.setSelectedAuth(newAuth);
+      }
+    }
   }
 
   prepareUserGroupMap(): void {
@@ -135,11 +156,15 @@ export class AuthorizeUserComponent implements OnInit {
     if (this.selectedUser == user) {
       this.resetSelection();
     } else {
-      this.resetSelection();
-      this.selectedUser = user;
-      if (user.V_USR_GRP_ID) {
-        this.highlightAuthorizations(user);
-      }
+      this.setSelectedUser(user);
+    }
+  }
+
+  setSelectedUser(user: User): void {
+    this.resetSelection();
+    this.selectedUser = user;
+    if (user.V_USR_GRP_ID) {
+      this.highlightAuthorizations(user);
     }
   }
 
@@ -147,11 +172,15 @@ export class AuthorizeUserComponent implements OnInit {
     if (this.selectedAuth == auth) {
       this.resetSelection();
     } else {
-      this.resetSelection();
-      this.selectedAuth = auth;
-      if (auth.V_ROLE_ID) {
-        this.highlightUsers(auth);
-      }
+      this.setSelectedAuth(auth);
+    }
+  }
+
+  setSelectedAuth(auth: AuthorizationData): void {
+    this.resetSelection();
+    this.selectedAuth = auth;
+    if (auth.V_ROLE_ID) {
+      this.highlightUsers(auth);
     }
   }
 
@@ -191,20 +220,57 @@ export class AuthorizeUserComponent implements OnInit {
   }
 
   onAddUserTileClick(groupId: string): void {
-    const dialogRef = this.dialog.open(AddUserComponent,
+    const dialogRef = this.dialog.open(AddEditUserComponent,
       {
-        panelClass:'app-dialog',
-        width:'600px',
+        panelClass: 'app-dialog',
+        width: '600px',
         data: {groupId: groupId}
       });
+    dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
+      if (flag) {
+        this.store.dispatch(new usreActions.getUser(this.V_SRC_CD_DATA));
+      }
+    });
   }
 
-  onAddGroupBtnClick(): void{
+  onAddGroupBtnClick(): void {
     const dialogRef = this.dialog.open(AddGroupComponent,
       {
-        width:'600px',
-        panelClass:'app-dialog'
+        width: '600px',
+        panelClass: 'app-dialog'
       });
+    dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
+      if (flag) {
+        this.store.dispatch(new userGroupActions.getUserGroup(this.V_SRC_CD_DATA));
+      }
+    });
+  }
+
+  onAddRoleBtnClick(): void {
+    const dialogRef = this.dialog.open(AddEditRoleComponent,
+      {
+        width: '600px',
+        panelClass: 'app-dialog'
+      });
+    dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
+      if (flag) {
+        this.store.dispatch(new userRoleActions.getUserRole(this.V_SRC_CD_DATA));
+      }
+    });
+  }
+
+  onAddAuthBtnClick(roleId: string): void {
+    const dialogRef = this.dialog.open(AddEditAuthorizeComponent,
+      {
+        width: '700px',
+        panelClass: 'app-dialog',
+        data: {roleId: roleId}
+      });
+    dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
+      if (flag) {
+        this.store.dispatch(new authActions.getAuth(this.V_SRC_CD_DATA));
+      }
+    });
   }
 
 }

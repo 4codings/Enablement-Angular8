@@ -11,6 +11,7 @@ import * as userGroupSelectors from '../../../store/user-admin/user-group/usergr
 import * as userGroupActions from '../../../store/user-admin/user-group/usergroup.action';
 import { userGroup } from 'src/app/store/user-admin/user-group/usergroup.model';
 import { HttpClient } from '@angular/common/http';
+import {groupTypeOptions} from '../useradmin.constants';
 
 
 @Component({
@@ -50,6 +51,8 @@ export class MembershipComponent implements OnInit, OnDestroy {
   screenWidth=0;
   mobileView=false;
   desktopView=true;
+
+  groupTypeOptions = groupTypeOptions;
   @HostListener('window:resize', ['$event'])
     onResize(event?) {
       this.screenHeight = window.innerHeight;

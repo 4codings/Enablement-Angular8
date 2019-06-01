@@ -13,6 +13,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { userRole } from 'src/app/store/user-admin/user-role/userrole.model';
 import * as userRoleSelectors from '../../../store/user-admin/user-role/userrole.selectors';
 import * as userRoleActions from '../../../store/user-admin/user-role/userrole.action';
+import {groupTypeOptions} from '../useradmin.constants';
 
 
 @Component({
@@ -53,6 +54,7 @@ export class AssignroleComponent implements OnInit, OnDestroy {
   screenWidth=0;
   mobileView=false;
   desktopView=true;
+  groupTypeOptions = groupTypeOptions;
   @HostListener('window:resize', ['$event'])
     onResize(event?) {
       this.screenHeight = window.innerHeight;

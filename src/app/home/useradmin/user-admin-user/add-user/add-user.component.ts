@@ -9,7 +9,7 @@ import {AddUser} from '../../../../store/user-admin/user/user.action';
 import {UseradminService} from '../../../../services/useradmin.service2';
 import {User} from '../../../../store/user-admin/user/user.model';
 import * as userGroupActions from '../../../../store/user-admin/user-group/usergroup.action';
-
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-user',
@@ -28,7 +28,8 @@ export class AddUserComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.actions$.pipe(ofType(userActions.ADD_USER_SUCCESS)).subscribe((result:any) => {
+    this.userAdminService.getControlVariables();
+    this.actions$.pipe(ofType(userActions.ADD_USER_SUCCESS),take(1)).subscribe((result:any) => {
       console.log(result);
       this.addUserInGroup(this.data.groupId, result.payload[0]);
     });

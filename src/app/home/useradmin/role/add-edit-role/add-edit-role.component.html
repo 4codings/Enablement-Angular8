@@ -1,0 +1,50 @@
+<div class="dialog-wrapper" fxLayoutGap="8px" fxLayout="column" fxLayoutAlign="start stretch">
+  <div class="dialog-header content-wrapper">
+    Add {{Label['role']}}
+  </div>
+  <mat-divider></mat-divider>
+  <div class="dialog-body content-wrapper">
+    <div fxLayout="row" fxLayout.lt-sm="column" class="app-form-wrapper">
+      <div fxFlex="100">
+        <strong>{{Label['role']}}</strong>
+        <mat-form-field>
+          <input matInput [(ngModel)]="roleData.V_ROLE_CD" (ngModelChange)="nameModelChanged()" (keyup)="changeRole();" />
+        </mat-form-field>
+        <br />
+        <strong>{{Label['role_descripton']}}</strong>
+        <mat-form-field style="width:100%;">
+      <textarea matInput [(ngModel)]="roleData.V_ROLE_DSC" (ngModelChange)="descModelChanged()">
+    </textarea>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div class="dialog-footer content-wrapper" fxLayoutAlign="end center" fxLayoutGap="8px">
+    <div fxLayout="row" fxLayout.lt-sm="column">
+      <div fxFlex="100">
+        <div class="CustomeButtonFloat" fxLayoutAlign="end center">
+          <button class="mr-2" mat-raised-button color="primary"
+                  [disabled]="(duplicated && !selecteduser) || !nameChanged && !descChanged"
+                  *ngIf = "(nameChanged || !updateBtn) && !duplicated || (nameChanged && selecteduser)"
+                  (click)="addRole()">
+            <mat-icon style="vertical-align: middle;margin-right: 5px">add</mat-icon>{{Label['add_btn']}}
+          </button>
+
+          <button class="mr-2" mat-raised-button color="primary"
+                  [disabled]="(totalDuplicated && !selecteduser) || (!nameChanged && !descChanged)"
+                  [hidden]="(nameChanged || !updateBtn) && !duplicated || (nameChanged && selecteduser)"
+                  (click)="updateRole()">
+            <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['UpdateBtn']}}
+          </button>
+
+          <button class="mr-2" mat-raised-button color="warn"
+                  [disabled]="!duplicated || (selecteduser && (nameChanged))"
+                  (click)="deleteRole()">
+            <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['dlt_btn']}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

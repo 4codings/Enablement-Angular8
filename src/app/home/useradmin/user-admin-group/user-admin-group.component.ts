@@ -11,6 +11,7 @@ import {addUserGroup, DeleteUserGroup, UpdateUserGroup} from '../../../store/use
 import {HttpClient} from '@angular/common/http';
 import { UserAdminService } from 'src/app/services/user-admin.service';
 import { UseradminService } from 'src/app/services/useradmin.service2';
+import {groupTypeOptions} from '../useradmin.constants';
 
 @Component({
   selector: 'app-user-admin-group',
@@ -54,7 +55,7 @@ export class UserAdminGroupComponent implements OnInit {
   public hideButton = false;
   public selectedGroupid;
   public V_SRC_CD_DATA;
-  
+  groupTypeOptions = groupTypeOptions;
   @HostListener('window:resize', ['$event'])
   onResize(event?) {
     this.screenHeight = window.innerHeight;
