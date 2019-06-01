@@ -16,6 +16,10 @@
       </mat-card-title>
 
       <mat-card-content *ngIf="V_READ!=='N' && desktopView">
+        <!-- <div *ngIf="1" class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+          [style.width]="60 + '%'">
+          60%
+        </div> -->
         <form name="form" #nrpForm="ngForm" novalidate>
           <div style="overflow: auto;white-space: nowrap;">
             <div *ngFor="let label of RVP_labels;let i = index" style="float:left;" [style.width.%]="formWidth[label]"
@@ -26,6 +30,8 @@
                   [matTooltip]="configService.getFieldTooltip(label)" class="field-help">help
                 </mat-icon>
               </h4>
+              <mat-icon *ngIf="FLD_HLP_TXT[i] !== null" matTooltip="{{FLD_HLP_TXT[i]}}" class="field-help"
+                matTooltipPosition="after">help</mat-icon>
               <br />
               <div *ngIf="DSPLY_FLD[i]">
                 <ng-container [ngSwitch]="fieldType[label]">
@@ -209,10 +215,16 @@
       </mat-card-content>
 
       <form name="form" #nrpForm="ngForm" novalidate>
+        <!-- <div *ngIf="1" class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+          [style.width]="60 + '%'">
+          60%
+        </div> -->
         <mat-card-content *ngIf="V_READ!=='N' && mobileView">
           <div fxLayout="column">
             <div *ngFor="let label of RVP_labels;let i = index" fxFlex="100">
               <h4 style="text-align:center;margin-bottom: 0px;">{{RVP_placeholder[i]}}</h4>
+              <mat-icon *ngIf="FLD_HLP_TXT[i] !== null" matTooltip="{{FLD_HLP_TXT[i]}}" class="field-help"
+                matTooltipPosition="after">help</mat-icon>
               <br />
               <div *ngIf="DSPLY_FLD[i]">
                 <ng-container [ngSwitch]="fieldType[label]">

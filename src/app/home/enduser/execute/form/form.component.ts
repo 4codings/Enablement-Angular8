@@ -193,6 +193,9 @@ export class FormComponent implements OnInit {
       } else {
         this.DSPLY_FLD[i] = false;
       }
+      if(this.FLD_HLP_TXT[i] === "''"){
+        this.FLD_HLP_TXT[i] = null;
+      }
     }
     (this.RVP_labels);
   }

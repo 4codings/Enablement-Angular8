@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from '../service/api/api.service';
@@ -6,7 +6,7 @@ import { ApiService } from '../service/api/api.service';
 @Injectable({
   providedIn: 'root'
 })
-export class OptionalValuesService {
+export class OptionalValuesService implements OnDestroy {
 
   applicationOptionalValue: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   processOptionalValue: BehaviorSubject<any> = new BehaviorSubject<any>(null);
@@ -20,9 +20,20 @@ export class OptionalValuesService {
   serviceArray = [];
 
   private apiUrlGet = this.apiService.endPoints.insecure;
-  constructor(private http: HttpClient, private apiService: ApiService) { }
+  constructor(private http: HttpClient, private apiService: ApiService) {
+    this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+    this.V_USR_NM = JSON.parse(sessionStorage.getItem('u')).USR_NM;
+  }
+
+  ngOnDestroy() {
+    this.applicationOptionalValue.unsubscribe();
+    this.processOptionalValue.unsubscribe();
+    this.serviceOptionalValue.unsubscribe();
+  }
 
   getApplicationOptionalValue() {
+    this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+    this.V_USR_NM = JSON.parse(sessionStorage.getItem('u')).USR_NM;
     this.http.get(this.apiUrlGet + "V_SRC_CD=" + this.V_SRC_CD + "&V_USR_NM=" + this.V_USR_NM + "&REST_Service=SourceApps&Verb=GET").subscribe(
       res => {
         if (res) {
@@ -32,6 +43,8 @@ export class OptionalValuesService {
       });
   }
   getProcessOptionalValue(application, update?) {
+    this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+    this.V_USR_NM = JSON.parse(sessionStorage.getItem('u')).USR_NM;
     let flag = 0;
     let index = 0;
     if (this.processArray.length) {
@@ -64,6 +77,8 @@ export class OptionalValuesService {
     }
   }
   getServiceOptionalValue(application, process, update?) {
+    this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+    this.V_USR_NM = JSON.parse(sessionStorage.getItem('u')).USR_NM;
     let flag = 0;
     let index = 0;
     if (this.serviceArray.length) {

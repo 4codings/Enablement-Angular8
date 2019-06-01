@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Router, ActivatedRoute } from "@angular/router";
 import { UserService } from 'src/app/core/user.service';
+import { OptionalValuesService } from 'src/app/services/optional-values.service';
 
 
 @Component({
@@ -18,7 +19,8 @@ export class HeaderComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private optionalService: OptionalValuesService
   ) {
     this.index = this.userName.indexOf('@');
     this.userName = this.userName.substring(0, this.index).toUpperCase();
@@ -38,6 +40,12 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
+    this.optionalService.applicationOptionalValue.next(null);
+    this.optionalService.processOptionalValue.next(null);
+    this.optionalService.serviceOptionalValue.next(null);
+    this.optionalService.applicationArray = [];
+    this.optionalService.serviceArray = [];
+    this.optionalService.processArray = [];
     this.userService.clear();
     this.router.navigateByUrl('/', { skipLocationChange: true });
   }

@@ -15,6 +15,10 @@
         <hr />
       </mat-card-title>
       <mat-card-content *ngIf="V_READ!=='N'">
+        <!-- <div *ngIf="1" class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+          [style.width]="60 + '%'">
+          60%
+        </div> -->
         <form name="form" #rpForm="ngForm" novalidate>
           <div style="overflow: auto;white-space: nowrap;">
             <div *ngFor="let iter of rows">
@@ -25,9 +29,11 @@
                   <h4 style="text-align:center;margin-bottom: 0px;" *ngIf="iter===0">
                     <label class="f_label f_inp">{{RVP_placeholder[i]}}<span
                         *ngIf="configService.isFieldMendatory(label)">*</span></label>
-                    <mat-icon *ngIf="configService.getFieldTooltip(label)!=null"
+                    <mat-icon *ngIf="FLD_HLP_TXT[i] !== null" matTooltip="{{FLD_HLP_TXT[i]}}" class="field-help"
+                      matTooltipPosition="after">help</mat-icon>
+                    <!-- <mat-icon *ngIf="configService.getFieldTooltip(label)!=null"
                       [matTooltip]="configService.getFieldTooltip(label)" class="field-help">help
-                    </mat-icon>
+                    </mat-icon> -->
                   </h4>
                   <br *ngIf="iter>0" />
                   <ng-container *ngIf="iter>0 && DSPLY_FLD[i]">
