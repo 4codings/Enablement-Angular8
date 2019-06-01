@@ -26,6 +26,7 @@ import {AddEditRoleComponent} from '../role/add-edit-role/add-edit-role.componen
 import {take} from 'rxjs/operators';
 import {AddEditUserComponent} from '../user-admin-user/add-edit-user/add-edit-user.component';
 import {AddEditAuthorizeComponent} from '../authorize/add-edit-authorize/add-edit-authorize.component';
+import {authorizationTypeOptions, groupTypeOptions} from '../useradmin.constants';
 
 @Component({
   selector: 'app-authorize-user',
@@ -53,8 +54,10 @@ export class AuthorizeUserComponent implements OnInit {
   highlightedUsers: SelectionModel<User> = new SelectionModel<User>(true);
   highlightedAuths: SelectionModel<AuthorizationData> = new SelectionModel<AuthorizationData>(true);
 
-  radioList = ['PROCESS', 'SERVICE', 'EXE', 'ARTIFACT', 'PLATFORM', 'SERVER', 'SLA'];
-  radioSelected = this.radioList[0];
+  groupTypeOptions = groupTypeOptions;
+  selectedGroupType = this.groupTypeOptions[0];
+  authorizationTypeOptions = authorizationTypeOptions;
+  selectedAuthType = this.authorizationTypeOptions[0];
 
   constructor(
     public noAuthData: NoAuthDataService,
@@ -88,13 +91,12 @@ export class AuthorizeUserComponent implements OnInit {
     combineLatest(this.users$, this.groups$, this.roles$, this.authData$).subscribe(result => {
       this.users = result[0];
       // TODO : @hiren check if constants are define for Group type
-      this.groups = result[1].filter(group => group.V_GRP_TYP == 'CUSTOM');
+      this.groups = result[1];
       this.roles = result[2];
       this.authorizations = result[3];
-      this.updateSelectedDataObjRef();
       this.prepareUserGroupMap();
       this.prepareAuthRoleMap();
-
+      this.updateSelectedDataObjRef();
     }, error => {
       console.log('http error => ', error);
     });
@@ -103,14 +105,14 @@ export class AuthorizeUserComponent implements OnInit {
   updateSelectedDataObjRef(): void {
     if (this.selectedUser) {
       const newUser = this.users.filter(currUser => currUser.id == this.selectedUser.id)[0];
-      if (newUser && this.selectedUser != newUser) {
-        this.onUserTileClick(newUser);
+      if (newUser) {
+        this.setSelectedUser(newUser);
       }
     }
-    if(this.selectedAuth){
+    if (this.selectedAuth) {
       const newAuth = this.authorizations.filter(currAuth => currAuth.id == this.selectedAuth.id)[0];
-      if (newAuth && this.selectedAuth != newAuth) {
-        this.onAuthTileClick( newAuth);
+      if (newAuth) {
+        this.setSelectedAuth(newAuth);
       }
     }
   }
@@ -154,11 +156,15 @@ export class AuthorizeUserComponent implements OnInit {
     if (this.selectedUser == user) {
       this.resetSelection();
     } else {
-      this.resetSelection();
-      this.selectedUser = user;
-      if (user.V_USR_GRP_ID) {
-        this.highlightAuthorizations(user);
-      }
+      this.setSelectedUser(user);
+    }
+  }
+
+  setSelectedUser(user: User): void {
+    this.resetSelection();
+    this.selectedUser = user;
+    if (user.V_USR_GRP_ID) {
+      this.highlightAuthorizations(user);
     }
   }
 
@@ -166,11 +172,15 @@ export class AuthorizeUserComponent implements OnInit {
     if (this.selectedAuth == auth) {
       this.resetSelection();
     } else {
-      this.resetSelection();
-      this.selectedAuth = auth;
-      if (auth.V_ROLE_ID) {
-        this.highlightUsers(auth);
-      }
+      this.setSelectedAuth(auth);
+    }
+  }
+
+  setSelectedAuth(auth: AuthorizationData): void {
+    this.resetSelection();
+    this.selectedAuth = auth;
+    if (auth.V_ROLE_ID) {
+      this.highlightUsers(auth);
     }
   }
 
@@ -216,8 +226,10 @@ export class AuthorizeUserComponent implements OnInit {
         width: '600px',
         data: {groupId: groupId}
       });
-    dialogRef.afterClosed().pipe(take(1)).subscribe(() => {
-      this.store.dispatch(new usreActions.getUser(this.V_SRC_CD_DATA));
+    dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
+      if (flag) {
+        this.store.dispatch(new usreActions.getUser(this.V_SRC_CD_DATA));
+      }
     });
   }
 
@@ -227,8 +239,10 @@ export class AuthorizeUserComponent implements OnInit {
         width: '600px',
         panelClass: 'app-dialog'
       });
-    dialogRef.afterClosed().pipe(take(1)).subscribe(() => {
-      this.store.dispatch(new userGroupActions.getUserGroup(this.V_SRC_CD_DATA));
+    dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
+      if (flag) {
+        this.store.dispatch(new userGroupActions.getUserGroup(this.V_SRC_CD_DATA));
+      }
     });
   }
 
@@ -238,20 +252,24 @@ export class AuthorizeUserComponent implements OnInit {
         width: '600px',
         panelClass: 'app-dialog'
       });
-    dialogRef.afterClosed().pipe(take(1)).subscribe(() => {
-      this.store.dispatch(new userRoleActions.getUserRole(this.V_SRC_CD_DATA));
+    dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
+      if (flag) {
+        this.store.dispatch(new userRoleActions.getUserRole(this.V_SRC_CD_DATA));
+      }
     });
   }
 
   onAddAuthBtnClick(roleId: string): void {
     const dialogRef = this.dialog.open(AddEditAuthorizeComponent,
       {
-        width: '600px',
+        width: '700px',
         panelClass: 'app-dialog',
         data: {roleId: roleId}
       });
-    dialogRef.afterClosed().pipe(take(1)).subscribe(() => {
-      this.store.dispatch(new authActions.getAuth(this.V_SRC_CD_DATA));
+    dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
+      if (flag) {
+        this.store.dispatch(new authActions.getAuth(this.V_SRC_CD_DATA));
+      }
     });
   }
 

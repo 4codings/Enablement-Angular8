@@ -30,7 +30,7 @@ export class AddEditRoleComponent extends RoleComponent implements OnInit {
     this.actions$.pipe(ofType(userRoleActions.ADD_USER_ROLE_SUCCESS, userRoleActions.UPDATE_USER_ROLE_SUCCESS, userRoleActions.DELETE_USER_ROLE_SUCCESS),
       take(1),
       tap(action => {
-      this.dialogRef.close();
+      this.dialogRef.close(true);
     })).subscribe();
   }
 

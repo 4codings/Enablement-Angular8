@@ -7,6 +7,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {GroupFormComponent} from '../group-form/group-form.component';
 import * as userGroupActions from '../../../../store/user-admin/user-group/usergroup.action';
 import {addUserGroup} from '../../../../store/user-admin/user-group/usergroup.action';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-group',
@@ -25,8 +26,8 @@ export class AddGroupComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.actions$.pipe(ofType(userGroupActions.ADD_USER_GROUP_SUCCESS)).subscribe((result:any) => {
-      this.dialogRef.close();
+    this.actions$.pipe(ofType(userGroupActions.ADD_USER_GROUP_SUCCESS), take(1)).subscribe((result:any) => {
+      this.dialogRef.close(true);
     });
   }
 

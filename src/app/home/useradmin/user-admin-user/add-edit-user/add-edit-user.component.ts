@@ -37,7 +37,7 @@ export class AddEditUserComponent extends UserAdminUserComponent implements OnIn
           this.addUserInGroup(this.data.groupId, action.payload[0]);
         }
         if (action.type == userActions.UPDATE_USER_SUCCESS) {
-          this.dialogRef.close();
+          this.dialogRef.close(true);
         }
       });
   }
@@ -58,7 +58,7 @@ export class AddEditUserComponent extends UserAdminUserComponent implements OnIn
         V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
       };
       this.store.dispatch(new userGroupActions.getUserGroup(V_SRC_CD_DATA));
-      this.dialogRef.close();
+      this.dialogRef.close(true);
     }, err => {
       console.log(err);
     });
