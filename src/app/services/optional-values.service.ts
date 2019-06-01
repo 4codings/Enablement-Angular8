@@ -11,8 +11,8 @@ export class OptionalValuesService implements OnDestroy {
   applicationOptionalValue: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   processOptionalValue: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   serviceOptionalValue: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  V_SRC_CD: string = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
-  V_USR_NM: string = JSON.parse(sessionStorage.getItem('u')).USR_NM;
+  V_SRC_CD: string;
+  V_USR_NM: string;
   application_id: any;
   process_id: any;
   applicationArray = [];
@@ -21,8 +21,6 @@ export class OptionalValuesService implements OnDestroy {
 
   private apiUrlGet = this.apiService.endPoints.insecure;
   constructor(private http: HttpClient, private apiService: ApiService) {
-    this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
-    this.V_USR_NM = JSON.parse(sessionStorage.getItem('u')).USR_NM;
   }
 
   ngOnDestroy() {
