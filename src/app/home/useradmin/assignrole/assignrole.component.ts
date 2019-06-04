@@ -157,7 +157,7 @@ export class AssignroleComponent implements OnInit, OnDestroy {
         role.V_USR_GRP_ID.forEach(GRP_ID => {
           this.groupData.forEach(group => {
               if(GRP_ID == group.V_USR_GRP_ID) {
-                groupRelation.push({id:group.id, is_selected_user:true});
+                groupRelation.push({id:group.id, is_selected_user:true, is_selected:true});
               }
           });
         });
@@ -181,7 +181,7 @@ export class AssignroleComponent implements OnInit, OnDestroy {
         role.V_USR_GRP_ID.forEach(GRP_ID => {
           this.groupData.forEach(group => {
               if(GRP_ID == group.V_USR_GRP_ID) {
-                groupRelation.push({id:group.id, is_selected_user:true});
+                groupRelation.push({id:group.id, is_selected_user:true, is_selected:true});
               }
           });
         });
@@ -221,7 +221,7 @@ export class AssignroleComponent implements OnInit, OnDestroy {
         group.V_ROLE_ID.forEach(ROLE_ID => {
           this.roleData.forEach(role => {
               if(ROLE_ID == role.V_ROLE_ID) {
-                roleRelation.push({id:role.id, is_selected_usr_grp:true});
+                roleRelation.push({id:role.id, is_selected_usr_grp:true, is_selected:true});
               }
           });
         });
@@ -245,7 +245,7 @@ export class AssignroleComponent implements OnInit, OnDestroy {
         group.V_ROLE_ID.forEach(ROLE_ID => {
           this.roleData.forEach(role => {
               if(ROLE_ID == role.V_ROLE_ID) {
-                roleRelation.push({id:role.id, is_selected_usr_grp:true});
+                roleRelation.push({id:role.id, is_selected_usr_grp:true, is_selected:true});
               }
           });
         });
@@ -379,7 +379,7 @@ export class AssignroleComponent implements OnInit, OnDestroy {
     user.V_USR_GRP_ID.forEach(GRP_ID => {
       this.groupData.forEach(group => {
           if(GRP_ID == group.V_USR_GRP_ID) {
-            groupRelation.push({id:group.id, is_selected_user:true, is_selected:false});
+            groupRelation.push({id:group.id, is_selected_user:true, is_selected:true});
           }
       });
     });

@@ -18,6 +18,9 @@ import {User} from '../../../../store/user-admin/user/user.model';
 })
 export class AddEditUserComponent extends UserAdminUserComponent implements OnInit {
 
+  editUser: User;
+  selectedView: 'selectUser' | 'addNewUser' = 'selectUser';
+
   constructor(public noAuthData: NoAuthDataService,
               protected store: Store<AppState>,
               protected userAdminService: UseradminService,
@@ -40,6 +43,11 @@ export class AddEditUserComponent extends UserAdminUserComponent implements OnIn
           this.dialogRef.close(true);
         }
       });
+
+    if (this.data.user) {
+      this.editUser = this.data.user;
+      this.onUserSelect(this.data.user, 1);
+    }
   }
 
   addUserInGroup(groupId: string, user: User): void {

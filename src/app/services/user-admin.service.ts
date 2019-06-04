@@ -59,5 +59,9 @@ export class UserAdminService {
 	public getJSON(): Observable<any> {
 		return this.http.get("./assets/label/label.json")
 	}
+
+  public postSecuredJSON(json: any): Observable<any>{
+    return this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', json)
+  }
  
 }

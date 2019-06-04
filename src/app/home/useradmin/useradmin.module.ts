@@ -48,6 +48,7 @@ import {AddEditRoleComponent} from './role/add-edit-role/add-edit-role.component
 import { AddEditUserComponent } from './user-admin-user/add-edit-user/add-edit-user.component';
 import { AddEditAuthorizeComponent } from './authorize/add-edit-authorize/add-edit-authorize.component';
 import { GroupTypePipe } from './user-admin-group/group-type.pipe';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -96,6 +97,7 @@ import { GroupTypePipe } from './user-admin-group/group-type.pipe';
     EffectsModule.forFeature([UserEffects, UserGroupEffects, UserRoleEffects, UserMembershipEffects, AuthEffects]),
     MatGridListModule,
     MatRippleModule,
+    DragDropModule,
   ],
   entryComponents: [AddUserComponent, AddGroupComponent, EditUserComponent, EditGroupComponent, AddEditRoleComponent, AddEditUserComponent, AddEditAuthorizeComponent]
 })

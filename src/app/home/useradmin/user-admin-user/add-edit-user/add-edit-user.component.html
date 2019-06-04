@@ -1,29 +1,55 @@
 <div class="dialog-wrapper" fxLayoutGap="8px" fxLayout="column" fxLayoutAlign="start stretch">
   <div class="dialog-header content-wrapper">
-    Add {{Label['available_user']}}
+    {{updateBtn ? 'Edit ' : 'Add '}}{{Label['available_user']}}
   </div>
   <mat-divider></mat-divider>
   <div class="dialog-body content-wrapper">
     <div fxLayout="column" fxLayout.lt-sm="column" fxFlex="100" class="app-form-wrapper">
-      <div fxFlex="100" fxLayout="column">
-        <strong>{{Label['user_name']}}</strong>
-        <mat-form-field>
-          <input matInput name="userName" [(ngModel)]="user.V_USR_NM" (ngModelChange)="nameModelChanged();" (keyup)="availableGroupValueChange(user.V_USR_NM)"/>
+      <div>
+        <mat-radio-group [(ngModel)]="selectedView" fxLayout="row" fxLayoutAlign="space-around center">
+          <mat-radio-button value="selectUser">Select User</mat-radio-button>
+          <mat-radio-button value="addNewUser">Add New User</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <div fxFlex="100" fxLayout="column" *ngIf="selectedView == 'selectUser'">
+        <strong>{{Label['available_user']}}</strong>
+        <mat-list *ngIf="desktopView" class="scroll">
+          <mat-list-item class="list_item" *ngFor="let user of users$ | async; let i = index;"
+                         [class.active]="i == selecteduser" (click)="onUserSelect(user, i)">
+            <div>{{user.V_USR_NM}}</div>
+          </mat-list-item>
+        </mat-list>
+        <mat-form-field *ngIf="mobileView" style="width:100%;text-align: center;" [floatLabel]="'never'">
+          <mat-select style="margin-top:10px;" placeholder="--Select--">
+            <mat-option style="text-align:center;" *ngFor="let user of users$ | async; let i = index;"
+                        [class.active]="i == selecteduser" (click)="onUserSelect(user , i)">
+              {{user.V_USR_NM}}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
       </div>
-      <div fxFlex="100" fxLayout="column">
-        <strong>{{Label['user_description']}}</strong>
-        <mat-form-field>
-          <textarea  matInput [(ngModel)]="user.V_USR_DSC" (ngModelChange)="descModelChanged()"></textarea>
-        </mat-form-field>
-        <strong>{{Label['current_status']}}</strong>
-        <mat-select class="glo_input" [(value)]="user.V_STS" [(ngModel)]="user.V_STS" (change)="statusChange()">
-          <mat-option value="ACTIVE">Active</mat-option>
-          <mat-option value="TERMINATED">Terminated</mat-option>
-          <mat-option value="VACATION">Vacation</mat-option>
-          <mat-option value="LEAVE">Leave</mat-option>
-          <mat-option value="UNAVAILABLE">Unavailable</mat-option>
-        </mat-select>
+      <div fxLayout="column" fxLayout.lt-sm="column" *ngIf="selectedView == 'addNewUser'">
+        <div fxFlex="100" fxLayout="column">
+          <strong>{{Label['user_name']}}</strong>
+          <mat-form-field>
+            <input matInput name="userName" [(ngModel)]="user.V_USR_NM" (ngModelChange)="nameModelChanged();"
+                   (keyup)="availableGroupValueChange(user.V_USR_NM)"/>
+          </mat-form-field>
+        </div>
+        <div fxFlex="100" fxLayout="column">
+          <strong>{{Label['user_description']}}</strong>
+          <mat-form-field>
+            <textarea matInput [(ngModel)]="user.V_USR_DSC" (ngModelChange)="descModelChanged()"></textarea>
+          </mat-form-field>
+          <strong>{{Label['current_status']}}</strong>
+          <mat-select class="glo_input" [(value)]="user.V_STS" [(ngModel)]="user.V_STS" (change)="statusChange()">
+            <mat-option value="ACTIVE">Active</mat-option>
+            <mat-option value="TERMINATED">Terminated</mat-option>
+            <mat-option value="VACATION">Vacation</mat-option>
+            <mat-option value="LEAVE">Leave</mat-option>
+            <mat-option value="UNAVAILABLE">Unavailable</mat-option>
+          </mat-select>
+        </div>
       </div>
     </div>
   </div>
@@ -31,13 +57,16 @@
     <div fxLayout="row">
       <div fxFlex="100" fxLayoutAlign="end center">
         <div class="CustomeButtonFloat" fxLayoutAlign="end center">
-          <button class="mr-2 mb-2" mat-raised-button color="primary" [disabled]="(duplicated && !selecteduser) || !statusChanged && !nameChanged && !descChanged || domainError || updateBtn"
+          <button class="mr-2 mb-2" mat-raised-button color="primary"
+                  [disabled]="(duplicated && !selecteduser) || !statusChanged && !nameChanged && !descChanged || domainError || updateBtn"
                   (click)="addUser()">
-            <mat-icon style="vertical-align: middle;margin-right: 5px">add</mat-icon>{{Label['add_btn']}}</button>
+            <mat-icon style="vertical-align: middle;margin-right: 5px">add</mat-icon>
+            {{Label['add_btn']}}</button>
           <button class="mr-2 mb-2" mat-raised-button color="primary"
                   [disabled]="(totalDuplicated && !selecteduser) || !statusChanged && !descChanged && !nameChanged || !updateBtn"
                   (click)="updateUser()">
-            <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['UpdateBtn']}}</button>
+            <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>
+            {{Label['UpdateBtn']}}</button>
         </div>
         <div class="alertSuccess" *ngIf="emailMessage!=undefined && emailMessage!=''">
           {{emailMessage}}

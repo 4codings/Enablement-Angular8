@@ -27,6 +27,9 @@ import {take} from 'rxjs/operators';
 import {AddEditUserComponent} from '../user-admin-user/add-edit-user/add-edit-user.component';
 import {AddEditAuthorizeComponent} from '../authorize/add-edit-authorize/add-edit-authorize.component';
 import {authorizationTypeOptions, groupTypeOptions} from '../useradmin.constants';
+import {CdkDragDrop, copyArrayItem, moveItemInArray} from '@angular/cdk/drag-drop';
+import {Actions, ofType} from '@ngrx/effects';
+import * as fromUserMembership from '../../../store/user-admin/user-membership/usermembership.action';
 
 @Component({
   selector: 'app-authorize-user',
@@ -63,7 +66,8 @@ export class AuthorizeUserComponent implements OnInit {
     public noAuthData: NoAuthDataService,
     private store: Store<AppState>,
     private userAdminService: UseradminService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private actions$: Actions
   ) {
     // Label get service
     this.noAuthData.getJSON().subscribe(data => {
@@ -73,6 +77,7 @@ export class AuthorizeUserComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.userAdminService.getControlVariables();
     this.V_SRC_CD_DATA = {
       V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
     };
@@ -85,6 +90,11 @@ export class AuthorizeUserComponent implements OnInit {
     this.roles$ = this.store.pipe(select(userRoleSelectors.selectAllUserRoles));
     this.authData$ = this.store.pipe(select(authSelectors.selectAllAutorizationvalues));
     this.getAllData();
+    this.actions$.pipe(ofType(fromUserMembership.ADD_USER_MEMBERSHIP_SUCCESS)).subscribe(
+      (action: fromUserMembership.addUserMembershipSuccess) => {
+        this.store.dispatch(new userGroupActions.getUserGroup(this.V_SRC_CD_DATA));
+      }
+    );
   }
 
   getAllData() {
@@ -158,6 +168,10 @@ export class AuthorizeUserComponent implements OnInit {
     } else {
       this.setSelectedUser(user);
     }
+  }
+
+  onUserTileDoubleClick(user: User): void{
+    this.onAddUserTileClick(null);
   }
 
   setSelectedUser(user: User): void {
@@ -271,6 +285,32 @@ export class AuthorizeUserComponent implements OnInit {
         this.store.dispatch(new authActions.getAuth(this.V_SRC_CD_DATA));
       }
     });
+  }
+
+  userDropped(event: CdkDragDrop<User[]>, group: userGroup) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      copyArrayItem(event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex);
+      this.addUserInGroup(group.id, event.item.data);
+    }
+  }
+
+  addUserInGroup(groupId: string, user: User): void {
+    let json = {
+      'V_DELETED_ID_ARRAY': '',
+      'V_ADDED_ID_ARRAY': groupId + '',
+      'SELECTED_ENTITY': ['USER'],
+      'SELECTED_ENTITY_ID': user.id.split(' '),
+      'V_EFF_STRT_DT_TM': [new Date(Date.now())],
+      'V_EFF_END_DT_TM': [new Date(Date.now() + this.userAdminService.controlVariables.effectiveEndDate)],
+      'REST_Service': ['User_Group'],
+      'Verb': ['POST']
+    };
+    this.store.dispatch(new fromUserMembership.addUserMembership(json));
   }
 
 }
