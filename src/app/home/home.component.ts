@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Injectable } from '@angular/core';
 import { MatIconRegistry } from "@angular/material/icon";
 import { DomSanitizer } from "@angular/platform-browser";
@@ -10,6 +10,7 @@ import { environment } from '../../environments/environment';
 import { ApiService } from '../service/api/api.service';
 import { StorageSessionService } from '../services/storage-session.service';
 import { UserService } from '../core/user.service';
+import { OptionalValuesService } from '../services/optional-values.service';
 
 @Injectable()
 @Component({
@@ -39,7 +40,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     private userIdle: UserIdleService,
     private storageSessionService: StorageSessionService,
     private apiService: ApiService,
-    private userService:UserService
+    private userService: UserService,
+    private optionalService: OptionalValuesService,
   ) {
     //--------------------Workflow Profile---------------------
     this.matIconRegistry.addSvgIcon(
@@ -154,6 +156,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     );
   }
 
+  @HostListener('window:beforeunload') goToPage() {
+    this.userIdle.resetTimer();
+    this.useTimeout = true;
+    this.apiService.refreshToken();
+  }
   ngOnInit() {
     this.userIdle.startWatching();
     this.userIdle.onTimerStart().subscribe((count) => {
@@ -167,7 +174,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           } else if (result === 'logout') {
             this.userIdle.resetTimer();
             this.useTimeout = false;
-            this.apiService.logout();
+            this.apiService.logout('LOGOUT');
             this.logout();
           }
         });
@@ -175,6 +182,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
     this.userIdle.onTimeout().subscribe(() => {
       if (this.useTimeout) {
+        this.apiService.logout('TIMEOUT');
         this.logout();
       }
       this.useTimeout = false;
@@ -200,9 +208,15 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.dialogRef.close();
     }
     this.userService.clear();
+    this.optionalService.applicationOptionalValue.next(null);
+    this.optionalService.processOptionalValue.next(null);
+    this.optionalService.serviceOptionalValue.next(null);
+    this.optionalService.applicationArray = [];
+    this.optionalService.serviceArray = [];
+    this.optionalService.processArray = [];
     //this.storageSessionService.ClearSession('email');
     //this.storageSessionService.ClearSession('agency');
-    this.router.navigateByUrl('/', {skipLocationChange:true});
+    this.router.navigateByUrl('/', { skipLocationChange: true });
   }
 }
 

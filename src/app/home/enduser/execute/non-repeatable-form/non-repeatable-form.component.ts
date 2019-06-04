@@ -49,6 +49,8 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
   desktopView: boolean = true;
   @ViewChild('nrpForm') nrpForm: any;
   navigationSubscription;
+  private apiUrlGetSecure = this.apiService.endPoints.secure;
+
   constructor(
     public StorageSessionService: StorageSessionService,
     public app: HomeComponent,
@@ -150,6 +152,16 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     // }
   }
 
+  Update_value(v: any, n: any) { //v=value and n=paramter name
+    if (this.V_TABLE_NAME.length && this.V_TABLE_NAME != '') {
+      {
+        this.apiService.requestSecureApi(this.apiUrlGetSecure + 'V_Table_Name=' + this.V_TABLE_NAME + '&V_SCHEMA_NAME=' + this.V_SCHEMA_NAME + '&V_SRVC_CD=' + this.V_SRVC_CD + '&V_PRCS_ID=' + this.V_PRCS_ID + '&V_SRC_CD=' + this.V_SRC_CD + '&V_USR_NM=' + this.V_USR_NM + '&Field_Names=["' + n + '"]&Field_Values=["' + v + '"]&REST_Service=Forms_Record&Verb=PATCH', 'get').subscribe(
+          res => {
+          }
+        );
+      }
+    }
+  }
   prepareFieldValues() {
     let values = [];
     for (let i = 0; i < this.RVP_Keys.length; i++) {
@@ -173,10 +185,10 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     let body_FORMrec = {
       "Field_Names": this.Field_Names,
       "Field_Values": this.prepareFieldValues(),
-      "V_Table_Name": this.PVP['V_Table_Name'][0],
-      "V_Schema_Name": this.PVP['V_Schema_Name'][0],
-      "V_Key_Names": this.PVP['V_Key_Names'][0],
-      "V_Key_Values": this.PVP['V_Key_Values'][0],
+      "V_Table_Name": this.PVP['V_Table_Name'] ? this.PVP['V_Table_Name'][0] : '',
+      "V_Schema_Name": this.PVP['V_Schema_Name'] ? this.PVP['V_Schema_Name'][0] : '',
+      "V_Key_Names": this.PVP['V_Key_Names'] ? this.PVP['V_Key_Names'][0] : '',
+      "V_Key_Values": this.PVP['V_Key_Values'] ? this.PVP['V_Key_Values'][0] : '',
       "V_SRVC_CD": this.V_SRVC_CD,
       "V_USR_NM": this.V_USR_NM,
       "V_SRC_CD": this.V_SRC_CD,

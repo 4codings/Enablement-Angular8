@@ -5,6 +5,9 @@ import { environment } from '../environments/environment';
 import { Subscription } from 'rxjs';
 import { UserService } from './core/user.service';
 import { OptionalValuesService } from './services/optional-values.service';
+import { ApiService } from './service/api/api.service';
+import { MatDialog } from '@angular/material';
+import { KeepAliveDialog } from './home/home.component';
 
 declare var $;
 
@@ -15,26 +18,17 @@ declare var $;
 })
 export class AppComponent implements OnInit {
   title = 'enablement';
+  private dialogRef = null;
 
   constructor(
     // private /api: ApiSdkService,
     private userService: UserService,
     private optionalService: OptionalValuesService,
     private router: Router,
+    private apiService: ApiService,
+    private dialog: MatDialog,
   ) {
   }
-
-  @HostListener('window:beforeunload') goToPage() {
-    this.optionalService.applicationOptionalValue.next(null);
-    this.optionalService.processOptionalValue.next(null);
-    this.optionalService.serviceOptionalValue.next(null);
-    this.optionalService.applicationArray = [];
-    this.optionalService.serviceArray = [];
-    this.optionalService.processArray = [];
-    this.userService.clear();
-    this.router.navigate(['/'], { skipLocationChange: true });
-  }
-
 
   ngOnInit(): void {
     // this.api.http.apiUrl = environment.apiUrl;

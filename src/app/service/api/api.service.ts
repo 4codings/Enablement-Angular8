@@ -89,11 +89,16 @@ export class ApiService {
 		).subscribe();
 	}
 
-	public logout() {
+	public logout(comment) {
 		this.setAuthHeader();
 		this.http.post(
 			this.endPoints.logout,
-			{ V_USR_NM: JSON.parse(sessionStorage.getItem('u')).USR_NM },
+			{
+				V_USR_NM: JSON.parse(sessionStorage.getItem('u')).USR_NM,
+				V_SRC_ID: JSON.parse(sessionStorage.getItem('u')).V_SRC_ID,
+				V_ACTN_NM: 'LOGOUT',
+				V_COMMNT: comment
+			},
 			{ headers: this.authHeader }
 		).subscribe();
 	}
@@ -117,12 +122,12 @@ export class ApiService {
 	// 	this.setAuthHeader();
 	// 	return this.http.get<User[]>('https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=USER&V_SRC_CD=uttra.24&REST_Service=Masters&Verb=GET');
 	// }
-	
+
 	setHeaders() {
 		const headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		//headers.append('Access-Control-Allow-Origin', '*');
-        headers.append('Authorization', `Bearer ${JSON.parse(sessionStorage.getItem('u')).TOKEN}`)
+		headers.append('Authorization', `Bearer ${JSON.parse(sessionStorage.getItem('u')).TOKEN}`)
 		const options = new RequestOptions({ headers: headers });
 		return options;
 	}

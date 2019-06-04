@@ -26,184 +26,200 @@
                 <div *ngFor="let label of RVP_labels;let i = index" style="display:inline-block;"
                   [style.width.%]="formWidth[label]" [style.marginLeft.%]="margin"
                   [ngClass]="configService.getFieldClass(label)">
-                  <h4 style="text-align:center;margin-bottom: 0px;" *ngIf="iter===0">
-                    <label class="f_label f_inp">{{RVP_placeholder[i]}}<span
-                        *ngIf="configService.isFieldMendatory(label)">*</span></label>
-                    <mat-icon *ngIf="FLD_HLP_TXT[i] !== null" matTooltip="{{FLD_HLP_TXT[i]}}" class="field-help"
-                      matTooltipPosition="after">help</mat-icon>
-                    <!-- <mat-icon *ngIf="configService.getFieldTooltip(label)!=null"
+                  <ng-container *ngIf="!configService.isFieldHidden(label)">
+                    <h4 style="text-align:center;margin-bottom: 0px;" *ngIf="iter===0">
+                      <label class="f_label f_inp">{{RVP_placeholder[i]}}<span
+                          *ngIf="configService.isFieldMendatory(label)">*</span></label>
+                      <mat-icon *ngIf="FLD_HLP_TXT[i] !== null" matTooltip="{{FLD_HLP_TXT[i]}}" class="field-help"
+                        matTooltipPosition="after">help</mat-icon>
+                      <!-- <mat-icon *ngIf="configService.getFieldTooltip(label)!=null"
                       [matTooltip]="configService.getFieldTooltip(label)" class="field-help">help
                     </mat-icon> -->
-                  </h4>
-                  <br *ngIf="iter>0" />
-                  <ng-container *ngIf="iter>0 && DSPLY_FLD[i]">
-                    <ng-container [ngSwitch]="fieldType[label]">
-                      <ng-container *ngSwitchCase="'date'">
-                        <mat-form-field class="form_input">
-                          <input #name="ngModel" [required]="configService.isFieldMendatory()"
-                            [disabled]="configService.isFieldDisabled()" [name]="'field_' + label + iter"
-                            [value]="input[label][iter]" [(ngModel)]="input[label][iter]" matInput
-                            [matDatepicker]="picker" class="f_inp">
-                          <mat-datepicker-toggle matSuffix [for]="picker">
-                          </mat-datepicker-toggle>
-                          <mat-datepicker #picker></mat-datepicker>
-                        </mat-form-field>
-                        <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
-                          {{configService.getFieldInValidMsg(name, label)}}
-                        </div>
-                      </ng-container>
-                      <ng-container *ngSwitchCase="'time'">
-                        <mat-form-field class="form_input">
-                          <input #name="ngModel" [required]="configService.isFieldMendatory()"
-                            [readonly]="configService.isFieldDisabled()" matInput [type]="fieldType[label]"
-                            [name]="'field_' + label + iter" [value]="input[label][iter]"
-                            [(ngModel)]="input[label][iter]" class="f_inp">
-                        </mat-form-field>
-                        <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
-                          {{configService.getFieldInValidMsg(name, label)}}
-                        </div>
-                      </ng-container>
-                      <ng-container *ngSwitchCase="'datetime'">
-                        <mat-form-field class="form_input" style="background-color: #f4f6f7">
-                          <input #name="ngModel" [required]="configService.isFieldMendatory()"
-                            [disabled]="configService.isFieldDisabled()" matInput [name]="'field_' + label + iter"
-                            [value]="input[label][iter]" [(ngModel)]="input[label][iter]" [owlDateTimeTrigger]="fdate"
-                            [owlDateTime]="fdate">
-                          <owl-date-time [attr.id]="label"></owl-date-time>
-                        </mat-form-field>
-                        <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
-                          {{configService.getFieldInValidMsg(name, label)}}
-                        </div>
-                      </ng-container>
-                      <ng-container *ngSwitchCase="'password'">
-                        <mat-form-field class="form_input">
-                          <input matInput #name="ngModel" [required]="configService.isFieldMendatory(label)"
-                            [readonly]="isDisabled[iter] || configService.isFieldDisabled(label)"
-                            [type]="fieldType[label]" [name]="'field_' + label + iter" [value]="input[label][iter]"
-                            [(ngModel)]="input[label][iter]" #name="ngModel" class="f_inp">
-                        </mat-form-field>
-                        <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
-                          {{configService.getFieldInValidMsg(name, label)}}
-                        </div>
-                      </ng-container>
-                      <ng-container *ngSwitchCase="'Radio Button'">
-                        <mat-form-field class="form_input form_list">
-                          <input matInput style="display: none">
-                          <mat-radio-group [(ngModel)]="input[label][iter]"
-                            [required]="configService.isFieldMendatory(label)" #name="ngModel"
-                            [disabled]="isDisabled[iter] || configService.isFieldDisabled(label)">
-                            <mat-radio-button style="background-color: #f4f6f7" [value]="listOption"
-                              *ngFor="let listOption of options[label]">
-                              {{listOption}}
-                            </mat-radio-button>
-                          </mat-radio-group>
-                        </mat-form-field>
-                        <div [style.visibility]=" configService.isFieldInvalid(name) ? 'visible': 'hidden'">
-                          {{configService.getFieldInValidMsg(name, label)}}
-                        </div>
-                      </ng-container>
-                      <ng-container *ngSwitchCase="'Checkbox'">
-                        <mat-form-field class="form_input form_list">
-                          <input matInput style="display: none">
-                          <mat-selection-list [(ngModel)]="input[label][iter]"
-                            [required]="configService.isFieldMendatory(label)" #name="ngModel"
-                            [disabled]="isDisabled[iter] || configService.isFieldDisabled(label)">
-                            <mat-list-option checkboxPosition="before" [value]="listOption"
-                              *ngFor="let listOption of options[label]">
-                              {{listOption}}
-                            </mat-list-option>
-                          </mat-selection-list>
-                        </mat-form-field>
-                        <div [style.visibility]=" configService.isFieldInvalid(name) ? 'visible': 'hidden'">
-                          {{configService.getFieldInValidMsg(name, label)}}
-                        </div>
-                      </ng-container>
-                      <ng-container *ngSwitchCase="'Text Area'">
-                        <mat-form-field class="form_input">
-                          <textarea [required]="configService.isFieldMendatory(label)" matInput
-                            [readonly]="isDisabled[iter] || configService.isFieldDisabled(label)"
-                            [name]="'field_' + label + iter" [maxLength]="configService.getFieldMaxLength(label)"
-                            (value)="input[label][iter]" (click)="getDropDownListValue(label)"
-                            [(ngModel)]="input[label][iter]" class="f_inp" #name="ngModel">
+                    </h4>
+                    <br *ngIf="iter>0" />
+                    <ng-container *ngIf="iter>0 && DSPLY_FLD[i]">
+                      <ng-container [ngSwitch]="fieldType[label]">
+                        <ng-container *ngSwitchCase="'date'">
+                          <mat-form-field class="form_input">
+                            <input #name="ngModel" [required]="configService.isFieldMendatory()"
+                              [disabled]="configService.isFieldDisabled()" [name]="'field_' + label + iter"
+                              [value]="input[label][iter]" [(ngModel)]="input[label][iter]" matInput
+                              [matDatepicker]="picker" class="f_inp"
+                              (keyup)="Update_value(input[label][iter],label,iter)">
+                            <mat-datepicker-toggle matSuffix [for]="picker">
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                          </mat-form-field>
+                          <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
+                            {{configService.getFieldInValidMsg(name, label)}}
+                          </div>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'time'">
+                          <mat-form-field class="form_input">
+                            <input #name="ngModel" [required]="configService.isFieldMendatory()"
+                              [readonly]="configService.isFieldDisabled()" matInput [type]="fieldType[label]"
+                              [name]="'field_' + label + iter" [value]="input[label][iter]"
+                              [(ngModel)]="input[label][iter]" class="f_inp"
+                              (change)="Update_value($event.target.value,label,iter)">
+                          </mat-form-field>
+                          <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
+                            {{configService.getFieldInValidMsg(name, label)}}
+                          </div>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'datetime'">
+                          <mat-form-field class="form_input" style="background-color: #f4f6f7">
+                            <input #name="ngModel" [required]="configService.isFieldMendatory()"
+                              [disabled]="configService.isFieldDisabled()" matInput [name]="'field_' + label + iter"
+                              [value]="input[label][iter]" [(ngModel)]="input[label][iter]" [owlDateTimeTrigger]="fdate"
+                              [owlDateTime]="fdate" (change)="Update_value($event.target.value,label,iter)">
+                            <owl-date-time [attr.id]="label"></owl-date-time>
+                          </mat-form-field>
+                          <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
+                            {{configService.getFieldInValidMsg(name, label)}}
+                          </div>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'password'">
+                          <mat-form-field class="form_input">
+                            <input matInput #name="ngModel" [required]="configService.isFieldMendatory(label)"
+                              [readonly]="isDisabled[iter] || configService.isFieldDisabled(label)"
+                              [type]="fieldType[label]" [name]="'field_' + label + iter" [value]="input[label][iter]"
+                              [(ngModel)]="input[label][iter]" #name="ngModel" class="f_inp"
+                              (change)="Update_value($event.target.value,label,iter)">
+                          </mat-form-field>
+                          <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
+                            {{configService.getFieldInValidMsg(name, label)}}
+                          </div>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'Radio Button'">
+                          <mat-form-field class="form_input form_list">
+                            <input matInput style="display: none">
+                            <mat-radio-group [(ngModel)]="input[label][iter]"
+                              [required]="configService.isFieldMendatory(label)" #name="ngModel"
+                              [disabled]="isDisabled[iter] || configService.isFieldDisabled(label)"
+                              (ngModelChange)="Update_value(input[label][iter],label,iter)">
+                              <mat-radio-button style="background-color: #f4f6f7" [value]="listOption"
+                                *ngFor="let listOption of options[label]">
+                                {{listOption}}
+                              </mat-radio-button>
+                            </mat-radio-group>
+                          </mat-form-field>
+                          <div [style.visibility]=" configService.isFieldInvalid(name) ? 'visible': 'hidden'">
+                            {{configService.getFieldInValidMsg(name, label)}}
+                          </div>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'Checkbox'">
+                          <mat-form-field class="form_input form_list">
+                            <input matInput style="display: none">
+                            <mat-selection-list [(ngModel)]="input[label][iter]"
+                              [required]="configService.isFieldMendatory(label)" #name="ngModel"
+                              [disabled]="isDisabled[iter] || configService.isFieldDisabled(label)"
+                              (ngModelChange)="Update_value(input[label][iter],label,iter)">
+                              <mat-list-option checkboxPosition="before" [value]="listOption"
+                                *ngFor="let listOption of options[label]">
+                                {{listOption}}
+                              </mat-list-option>
+                            </mat-selection-list>
+                          </mat-form-field>
+                          <div [style.visibility]=" configService.isFieldInvalid(name) ? 'visible': 'hidden'">
+                            {{configService.getFieldInValidMsg(name, label)}}
+                          </div>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'Text Area'">
+                          <mat-form-field class="form_input">
+                            <textarea [required]="configService.isFieldMendatory(label)" matInput
+                              [readonly]="isDisabled[iter] || configService.isFieldDisabled(label)"
+                              [name]="'field_' + label + iter" [maxLength]="configService.getFieldMaxLength(label)"
+                              (value)="input[label][iter]" (click)="getDropDownListValue(label)"
+                              [(ngModel)]="input[label][iter]" class="f_inp" #name="ngModel"
+                              (change)="Update_value($event.target.value,label,iter)">
 													  </textarea>
-                        </mat-form-field>
-                        <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
-                          {{configService.getFieldInValidMsg(name, label)}}
-                        </div>
-                      </ng-container>
-                      <ng-container *ngSwitchCase="configService.getFieldTypeForChange(fieldType[label])">
-                        <mat-form-field class="form_input">
-                          <input matInput [required]="configService.isFieldMendatory(label)"
-                            maxlength="configService.getMaxLengthForField(fieldType[label])"
-                            [name]="'field_' + label + iter" (value)="input[label][iter]"
-                            (change)="configService.transformFieldValueOnChange($event,label)"
-                            [(ngModel)]="input[label][iter]" class="f_inp" #name="ngModel">
-                          <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
-                            <mat-option style="text-align:center;"
-                              *ngFor="let item of searchResult | myfilter:FilterAutoValue" [value]="item">
-                              {{ item }}
-                            </mat-option>
-                          </mat-autocomplete>
-                        </mat-form-field>
-                        <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
-                          {{configService.getFieldInValidMsg(name, label)}}
-                        </div>
-                      </ng-container>
-                      <ng-container *ngSwitchCase="'Zip'">
-                        <mat-form-field class="form_input">
-                          <input type="text" pattern="^[0-9]{5}?$" [required]="configService.isFieldMendatory(label)"
-                            maxlength="5" matInput [readonly]="isDisabled[iter] || configService.isFieldDisabled(label)"
-                            [name]="'field_' + label + iter" (value)="input[label][iter]" [matAutocomplete]="auto"
-                            (click)="getDropDownListValue(label)" [(ngModel)]="input[label][iter]" class="f_inp"
-                            #name="ngModel">
+                          </mat-form-field>
+                          <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
+                            {{configService.getFieldInValidMsg(name, label)}}
+                          </div>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="configService.getFieldTypeForChange(fieldType[label])">
+                          <mat-form-field class="form_input">
+                            <input matInput [required]="configService.isFieldMendatory(label)"
+                              maxlength="configService.getMaxLengthForField(fieldType[label])"
+                              [name]="'field_' + label + iter" (value)="input[label][iter]"
+                              (change)="configService.transformFieldValueOnChange($event,label)"
+                              (change)="Update_value($event.target.value,label,iter)" [(ngModel)]="input[label][iter]"
+                              class="f_inp" #name="ngModel">
+                            <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
+                              <mat-option style="text-align:center;"
+                                (click)="Update_value(input[label][iter] ,label,iter)"
+                                *ngFor="let item of searchResult | myfilter:FilterAutoValue" [value]="item">
+                                {{ item }}
+                              </mat-option>
+                            </mat-autocomplete>
+                          </mat-form-field>
+                          <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
+                            {{configService.getFieldInValidMsg(name, label)}}
+                          </div>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'Zip'">
+                          <mat-form-field class="form_input">
+                            <input type="text" pattern="^[0-9]{5}?$" [required]="configService.isFieldMendatory(label)"
+                              maxlength="5" matInput
+                              [readonly]="isDisabled[iter] || configService.isFieldDisabled(label)"
+                              [name]="'field_' + label + iter" (value)="input[label][iter]" [matAutocomplete]="auto"
+                              (click)="getDropDownListValue(label)" [(ngModel)]="input[label][iter]" class="f_inp"
+                              #name="ngModel" (key)="Update_value($event.target.value,label,iter)">
 
-                          <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
-                            <mat-option style="text-align:center;"
-                              *ngFor="let item of searchResult | myfilter:FilterAutoValue" [value]="item">
-                              {{ item }}
-                            </mat-option>
-                          </mat-autocomplete>
-                        </mat-form-field>
-                        <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
-                          {{configService.getFieldInValidMsg(name, label)}}
-                        </div>
-                      </ng-container>
-                      <ng-container *ngSwitchCase="'Email'">
-                        <mat-form-field class="form_input">
-                          <input type="email" [required]="configService.isFieldMendatory(label)" matInput
-                            [readonly]="isDisabled[iter] || configService.isFieldDisabled(label)"
-                            [name]="'field_' + label + iter" (value)="input[label][iter]" [matAutocomplete]="auto"
-                            (click)="getDropDownListValue(label)" [(ngModel)]="input[label][iter]" class="f_inp"
-                            #name="ngModel" email="true" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}">
+                            <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
+                              <mat-option style="text-align:center;"
+                                (click)="Update_value(input[label][iter] ,label,iter)"
+                                *ngFor="let item of searchResult | myfilter:FilterAutoValue" [value]="item">
+                                {{ item }}
+                              </mat-option>
+                            </mat-autocomplete>
+                          </mat-form-field>
+                          <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
+                            {{configService.getFieldInValidMsg(name, label)}}
+                          </div>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'Email'">
+                          <mat-form-field class="form_input">
+                            <input type="email" [required]="configService.isFieldMendatory(label)" matInput
+                              [readonly]="isDisabled[iter] || configService.isFieldDisabled(label)"
+                              [name]="'field_' + label + iter" (value)="input[label][iter]" [matAutocomplete]="auto"
+                              (click)="getDropDownListValue(label)" [(ngModel)]="input[label][iter]" class="f_inp"
+                              #name="ngModel" email="true" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}"
+                              (change)="Update_value($event.target.value,label,iter)">
 
-                          <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
-                            <mat-option style="text-align:center;"
-                              *ngFor="let item of searchResult | myfilter:FilterAutoValue" [value]="item">
-                              {{ item }}
-                            </mat-option>
-                          </mat-autocomplete>
-                        </mat-form-field>
-                        <div [style.visibility]=" configService.isFieldInvalid(name) ? 'visible': 'hidden'">
-                          {{configService.getFieldInValidMsg(name, label)}}
-                        </div>
-                      </ng-container>
-                      <ng-container *ngSwitchDefault>
-                        <mat-form-field class="form_input">
-                          <input matInput type="text" [name]="'field_' + label + iter"
-                            [required]="configService.isFieldMendatory(label)" #name="ngModel"
-                            [readonly]="isDisabled[iter] || configService.isFieldDisabled(label)"
-                            [maxLength]="configService.getFieldMaxLength(label)" class="form-input"
-                            [matAutocomplete]="auto" class="f_inp" [(ngModel)]="input[label][iter]">
-                          <mat-autocomplete #auto="matAutocomplete">
-                            <mat-option style="text-align:center;" *ngFor="let option of options[label]"
-                              [value]="option">
-                              {{option}}
-                            </mat-option>
-                          </mat-autocomplete>
-                        </mat-form-field>
-                        <div [style.visibility]=" configService.isFieldInvalid(name) ? 'visible': 'hidden'">
-                          {{configService.getFieldInValidMsg(name, label)}}
-                        </div>
+                            <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
+                              <mat-option style="text-align:center;"
+                                (click)="Update_value(input[label][iter] ,label,iter)"
+                                *ngFor="let item of searchResult | myfilter:FilterAutoValue" [value]="item">
+                                {{ item }}
+                              </mat-option>
+                            </mat-autocomplete>
+                          </mat-form-field>
+                          <div [style.visibility]=" configService.isFieldInvalid(name) ? 'visible': 'hidden'">
+                            {{configService.getFieldInValidMsg(name, label)}}
+                          </div>
+                        </ng-container>
+                        <ng-container *ngSwitchDefault>
+                          <mat-form-field class="form_input">
+                            <input matInput type="text" [name]="'field_' + label + iter"
+                              [required]="configService.isFieldMendatory(label)" #name="ngModel"
+                              [readonly]="isDisabled[iter] || configService.isFieldDisabled(label)"
+                              (change)="Update_value(input[label][iter] ,label,iter)"
+                              [maxLength]="configService.getFieldMaxLength(label)" class="form-input"
+                              [matAutocomplete]="auto" class="f_inp" [(ngModel)]="input[label][iter]">
+                            <mat-autocomplete #auto="matAutocomplete">
+                              <mat-option style="text-align:center;"
+                                (click)="Update_value(input[label][iter] ,label,iter)"
+                                *ngFor="let option of options[label]" [value]="option">
+                                {{option}}
+                              </mat-option>
+                            </mat-autocomplete>
+                          </mat-form-field>
+                          <div [style.visibility]=" configService.isFieldInvalid(name) ? 'visible': 'hidden'">
+                            {{configService.getFieldInValidMsg(name, label)}}
+                          </div>
+                        </ng-container>
                       </ng-container>
                     </ng-container>
                   </ng-container>
@@ -213,7 +229,8 @@
                     <mat-icon style="color:red;font-size: larger;font-weight: bold;">add</mat-icon>
                   </button>
                   <br />
-                  <button mat-icon-button (click)="editTick_click(iter)" *ngIf="iter>0 && V_UPDATE==='Y'">
+                  <button mat-icon-button (click)="editTick_click(iter)"
+                    *ngIf="iter>0 && V_UPDATE==='Y' && edit_or_done[iter] === 'done'">
                     <mat-icon style="color:blue;font-size: larger;">{{edit_or_done[iter]}}
                     </mat-icon>
                   </button>

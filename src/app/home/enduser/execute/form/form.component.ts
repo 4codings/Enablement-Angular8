@@ -193,7 +193,7 @@ export class FormComponent implements OnInit {
       } else {
         this.DSPLY_FLD[i] = false;
       }
-      if(this.FLD_HLP_TXT[i] === "''"){
+      if (this.FLD_HLP_TXT[i] === "''") {
         this.FLD_HLP_TXT[i] = null;
       }
     }
@@ -295,9 +295,12 @@ export class FormComponent implements OnInit {
       if (this.V_TABLE_NAME == null) {
         this.V_TABLE_NAME = '';
       }
-      (this.V_TABLE_NAME);
     } else {
       this.V_TABLE_NAME = '';
+    }
+    if ('V_ID' in this.PVP) {
+      this.V_ID = this.PVP['V_ID'];
+      console.log('V_ID', this.V_ID);
     }
     if ('V_Schema_Name' in this.PVP) {
       this.V_SCHEMA_NAME = this.PVP['V_Schema_Name'][0];
