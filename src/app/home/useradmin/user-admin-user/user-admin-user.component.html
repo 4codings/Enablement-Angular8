@@ -78,13 +78,13 @@
 
 		<strong>{{Label['available_user']}}</strong>
 		<mat-list *ngIf="desktopView" class="scroll">
-			<mat-list-item class="list_item"  *ngFor="let user of users$ | async; let i = index;" [class.active]="i == selecteduser" (click)="getUserDetails(user); selected(i); selectedId(user.id)">
+			<mat-list-item class="list_item"  *ngFor="let user of users$ | async; let i = index;" [class.active]="i == selecteduser" (click)="onUserSelect(user, i)">
         <div>{{user.V_USR_NM}}</div>
       </mat-list-item>
 		</mat-list>
 		<mat-form-field *ngIf="mobileView" style="width:100%;text-align: center;" [floatLabel]="'never'">
 			<mat-select style="margin-top:10px;" placeholder="--Select--">
-        <mat-option style="text-align:center;"  *ngFor="let user of users$ | async; let i = index;" [class.active]="i == selecteduser" (click)="getUserDetails(user); selected(i)">
+        <mat-option style="text-align:center;"  *ngFor="let user of users$ | async; let i = index;" [class.active]="i == selecteduser" (click)="onUserSelect(user , i)">
           {{user.V_USR_NM}}
         </mat-option>
 			</mat-select>

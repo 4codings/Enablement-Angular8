@@ -36,14 +36,24 @@ export function userMemberShipReducer(state = initialState, action: UserMemberSh
             loading: false,
             loaded: true
         });
-
         case UserMemberShipActions.GET_USER_MEMBERSHIP_FAIL:
         return {
             ...state,
             loading: false,
             error: action.payload
         };
-
+      case UserMemberShipActions.ADD_USER_MEMBERSHIP_SUCCESS:
+        return adapter.addOne(action.payload, {
+          ...state,
+          loading: false,
+          loaded: true
+        });
+      case UserMemberShipActions.ADD_USER_MEMBERSHIP_FAIL:
+        return {
+          ...state,
+          loading: false,
+          error: action.payload
+        };
         default:
             return state;
     }

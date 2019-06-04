@@ -1,18 +1,18 @@
-import { Component, OnInit, HostListener } from '@angular/core';
-import { NoAuthDataService } from 'src/app/services/no-auth-data.service';
+import {Component, OnInit, HostListener} from '@angular/core';
+import {NoAuthDataService} from 'src/app/services/no-auth-data.service';
 
 import * as usreActions from '../../../store/user-admin/user/user.action';
-import { Store, select } from '@ngrx/store';
-import { AppState } from 'src/app/app.state';
-import { User } from '../../../store/user-admin/user/user.model';
+import {Store, select} from '@ngrx/store';
+import {AppState} from 'src/app/app.state';
+import {User} from '../../../store/user-admin/user/user.model';
 import * as userSelectors from '../../../store/user-admin/user/user.selectors';
-import { Observable } from 'rxjs';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import {Observable} from 'rxjs';
+import {FormGroup, FormControl, Validators} from '@angular/forms';
 
-import { filter } from 'rxjs/operators';
+import {filter} from 'rxjs/operators';
 import {AddUser, UpdateUser} from '../../../store/user-admin/user/user.action';
-import { UserAdminService } from 'src/app/services/user-admin.service';
-import { UseradminService } from 'src/app/services/useradmin.service2';
+import {UserAdminService} from 'src/app/services/user-admin.service';
+import {UseradminService} from 'src/app/services/useradmin.service2';
 
 @Component({
   selector: 'app-user-admin-user',
@@ -26,7 +26,7 @@ export class UserAdminUserComponent implements OnInit {
     V_USR_DSC: '',
     V_STS: ''
   };
-  
+
   emailMessage;
 
   public users$: Observable<User[]>;
@@ -62,7 +62,7 @@ export class UserAdminUserComponent implements OnInit {
   public screenWidth = 0;
   public mobileView = false;
   public desktopView = true;
-  
+
   @HostListener('window:resize', ['$event'])
   onResize(event?) {
     this.screenHeight = window.innerHeight;
@@ -79,7 +79,7 @@ export class UserAdminUserComponent implements OnInit {
   constructor(
     public noAuthData: NoAuthDataService,
     protected store: Store<AppState>,
-    protected userAdminService:UseradminService
+    protected userAdminService: UseradminService
   ) {
     // Label get service
     this.noAuthData.getJSON().subscribe(data => {
@@ -115,6 +115,7 @@ export class UserAdminUserComponent implements OnInit {
     this.user.V_STS = user.V_STS;
     // this.addBtn = true;
   }
+
   availableGroupValueChange(usr) {
     // debugger
     this.users$.subscribe(data => {
@@ -151,7 +152,7 @@ export class UserAdminUserComponent implements OnInit {
   }
 
   addUser() {
-    
+
     const data = {
       V_USR_NM: this.user.V_USR_NM,
       V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
@@ -169,7 +170,7 @@ export class UserAdminUserComponent implements OnInit {
       V_STS: this.user.V_STS,
       REST_Service: 'User',
       Verb: 'PATCH',
-      id : this.selectedid
+      id: this.selectedid
     };
     this.store.dispatch(new UpdateUser(data));
   }
@@ -209,7 +210,7 @@ export class UserAdminUserComponent implements OnInit {
 
   public descModelChanged() {
     if (this.clonedDesc !== this.user.V_USR_DSC) {
-      if(this.nameChanged == false) {
+      if (this.nameChanged == false) {
         this.descChanged = true;
         this.updateBtn = true;
       }
@@ -270,12 +271,23 @@ export class UserAdminUserComponent implements OnInit {
           //this.getUser();
           this.store.dispatch(new usreActions.getUser(this.V_SRC_CD_DATA));
         }, 3000);
-    },
+      },
       error => {
         console.error(error);
 
       }
     );
+  }
+
+  onUserSelect(user, index): void {
+    if (this.mobileView) {
+      this.getUserDetails(user);
+      this.selected(index);
+    } else {
+      this.getUserDetails(user);
+      this.selected(index);
+      this.selectedId(user.id);
+    }
   }
 
 }

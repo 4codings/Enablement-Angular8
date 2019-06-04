@@ -126,7 +126,7 @@ export class AuthorizeroleComponent implements OnInit {
         role.V_AUTH_ID.forEach(AUTH_ID => {
           this.authData.forEach(auth => {
               if(AUTH_ID == auth.V_AUTH_ID) {
-                authRelation.push({id:auth.id, is_selected_role:true});
+                authRelation.push({id:auth.id, is_selected_role:true, is_selected:true});
               }
           });
         });
@@ -150,7 +150,7 @@ export class AuthorizeroleComponent implements OnInit {
         role.V_AUTH_ID.forEach(AUTH_ID => {
           this.authData.forEach(auth => {
               if(AUTH_ID == auth.V_AUTH_ID) {
-                authRelation.push({id:auth.id, is_selected_role:true});
+                authRelation.push({id:auth.id, is_selected_role:true, is_selected:true});
               }
           });
         });
@@ -191,7 +191,7 @@ export class AuthorizeroleComponent implements OnInit {
         auth.V_ROLE_ID.forEach(ROLE_ID => {
           this.roleData.forEach(role => {
               if(ROLE_ID == role.V_ROLE_ID) {
-                roleRelation.push({id:role.id, is_selected_auth:true});
+                roleRelation.push({id:role.id, is_selected_auth:true, is_selected:true});
               }
           });
         });
@@ -215,7 +215,7 @@ export class AuthorizeroleComponent implements OnInit {
         auth.V_ROLE_ID.forEach(ROLE_ID => {
           this.roleData.forEach(role => {
               if(ROLE_ID == role.V_ROLE_ID) {
-                roleRelation.push({id:role.id, is_selected_auth:true});
+                roleRelation.push({id:role.id, is_selected_auth:true, is_selected:true});
               }
           });
         });
@@ -376,7 +376,7 @@ export class AuthorizeroleComponent implements OnInit {
     auth.V_AUTH_ID.forEach(AUTH_ID => {
       this.authData.forEach(auth => {
           if(AUTH_ID == auth.V_AUTH_ID) {
-            authRelation.push({id:auth.id, is_selected_role:true, is_selected:false});
+            authRelation.push({id:auth.id, is_selected_role:true, is_selected:true});
           }
       });
     });

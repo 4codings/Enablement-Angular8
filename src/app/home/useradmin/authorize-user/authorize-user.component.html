@@ -17,22 +17,29 @@
                 (click)="onAddGroupBtnClick()"><mat-icon>add_circle</mat-icon></button>
       </div>
       <mat-divider></mat-divider>
-      <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="16px">
+      <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="16px" cdkDropListGroup>
         <div *ngFor="let currGroup of groups | groupType:selectedGroupType.key" class="tile-container">
           <div class="container-header">{{currGroup.V_USR_GRP_CD}} - {{currGroup.V_USR_GRP_ID}}</div>
-          <div class="tiles-wrapper" fxLayout="row wrap">
+          <div class="tiles-wrapper" fxLayout="row wrap"
+               cdkDropList
+               [cdkDropListData]="userGroupMap.get(currGroup.id)"
+               (cdkDropListDropped)="userDropped($event, currGroup)"
+               cdkDropListOrientation="horizontal">
             <div class="tile"
                  matRipple
+                 cdkDrag
+                 [cdkDragData]="currUser"
                  [matTooltip]="currUser.V_USR_NM"
                  *ngFor="let currUser of userGroupMap.get(currGroup.id)"
                  [class.active]="currUser == selectedUser"
                  [class.highlight]="highlightedUsers.isSelected(currUser)"
+                 (dblclick)="onUserTileDoubleClick(currUser)"
                  (click)="onUserTileClick(currUser)">
               <div>User</div>
               <div>{{currUser.V_USR_ID}}</div>
               <div class="ellipsis-text"><strong>{{currUser.V_USR_NM?.split('@')[0]}}</strong></div>
             </div>
-            <div class="tile add-new-tile" (click)="onAddUserTileClick(currGroup.id)" matTooltip="Add User" matRipple>
+            <div class="tile add-new-tile" cdkDrag [cdkDragDisabled]="true" (click)="onAddUserTileClick(currGroup.id)" matTooltip="Add User" matRipple>
               <mat-icon>add_circle</mat-icon>
             </div>
           </div>
