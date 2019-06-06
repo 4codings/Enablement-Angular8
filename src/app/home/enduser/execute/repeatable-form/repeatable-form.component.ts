@@ -259,12 +259,15 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     // var Field_Values_Ar = []
     console.log('RVP_labels', this.RVP_labels);
     n = n.split(" ").join("_")
-    var Field_Names_Ar = ('"`' + n + '`"');
-    var Field_Values_Ar = ('"' + "'" + v + "'" + '"');
+    // var Field_Names_Ar = ('"`' + n + '`"');
+    // var Field_Values_Ar = ('"' + "'" + v + "'" + '"');
+
+    var Field_Names_Ar = n;
+    var Field_Values_Ar = v;
 
     if (this.V_TABLE_NAME.length && this.V_TABLE_NAME != '' && this.V_ID[iter - 1] != undefined) {
       {
-        this.apiService.requestSecureApi(this.apiUrlGetSecure + 'V_ID=' + this.V_ID[iter - 1] + '&V_Table_Name=' + this.V_TABLE_NAME + '&V_SCHEMA_NAME=' + this.V_SCHEMA_NAME + '&V_SRVC_CD=' + this.V_SRVC_CD + '&V_PRCS_ID=' + this.V_PRCS_ID + '&V_SRC_CD=' + this.V_SRC_CD + '&V_USR_NM=' + this.V_USR_NM + '&Field_Names=' + Field_Names_Ar + '&Field_Values=' + Field_Values_Ar + '&REST_Service=Forms_Record&Verb=PATCH', 'get').subscribe(
+        this.apiService.requestSecureApi(this.apiUrlGetSecure + 'V_ID=' + this.V_ID[iter - 1] + '&V_Table_Name=' + this.V_TABLE_NAME + '&V_Schema_Name=' + this.V_SCHEMA_NAME + '&V_SRVC_CD=' + this.V_SRVC_CD + '&V_PRCS_ID=' + this.V_PRCS_ID + '&V_SRC_CD=' + this.V_SRC_CD + '&V_USR_NM=' + this.V_USR_NM + '&Field_Names=' + Field_Names_Ar + '&Field_Values=' + Field_Values_Ar + '&REST_Service=Forms_Record&Verb=PATCH', 'get').subscribe(
           res => {
           }
         );
