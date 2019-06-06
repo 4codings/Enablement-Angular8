@@ -32,7 +32,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     // this.api.http.apiUrl = environment.apiUrl;
-    this.router.navigateByUrl('/user', { skipLocationChange: true });
     if (environment.production) {
       $(document).keydown(function (e) {
         if (e.which === 123) {

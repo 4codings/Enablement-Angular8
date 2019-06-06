@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router'
+import { Router, NavigationEnd } from '@angular/router'
 import { HttpClient } from '@angular/common/http';
+import { filter, take } from 'rxjs/operators';
+
 import { StorageSessionService } from 'src/app/services/storage-session.service';
 import { Globals } from 'src/app/services/globals';
 
@@ -12,9 +15,12 @@ import { Globals } from 'src/app/services/globals';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor(private router: Router, private StorageSessionService: StorageSessionService, private globals: Globals,
+  constructor(
+    private router: Router,
+    private StorageSessionService: StorageSessionService,
+    private globals: Globals,
+    private location: Location,
     public toastr: ToastrService,
-
     private http: HttpClient
   ) {
 
@@ -72,6 +78,11 @@ export class ProfileComponent implements OnInit {
     //this.router.navigateByUrl(e);
   }
   ngOnInit() {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      take(1)
+    )
+    .subscribe(() => this.location.replaceState(''));
     this.chooworkingProfile();
     this.redirectingToUserProfile();
     // let url:string="user";
