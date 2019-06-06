@@ -1669,9 +1669,9 @@ export class ExecuteComponent implements OnInit, OnDestroy {
       this.getAppCode();
     }
     //-----------------------------for checking the role cd
-    this.roll.getRollCd().subscribe(
+    this.roll.getRollCd().then(
       res => {
-        this.Roll_cd = res['ROLE_CD'];
+        this.Roll_cd = res;
 
         const l = this.Roll_cd.length;
         const ex_btn1: any[] = [];
