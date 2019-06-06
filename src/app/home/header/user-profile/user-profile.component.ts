@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { Router, NavigationEnd, Event } from '@angular/router'
-import { HttpClient } from '@angular/common/http';
-import { StorageSessionService } from 'src/app/services/storage-session.service';
-import { Globals } from 'src/app/services/globals';
+import { Router } from '@angular/router';
+
+import { RollserviceService } from 'src/app/services/rollservice.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -13,47 +12,33 @@ import { Globals } from 'src/app/services/globals';
 export class UserProfileComponent implements OnInit {
   
   public selectedProfile = '';
-
-  constructor(private router: Router, private StorageSessionService: StorageSessionService, private globals: Globals,
-    public toastr: ToastrService,
-
-    private http: HttpClient
-  ) {
-
-
-  }
-  domain_name = this.globals.domain_name;
   options = [];
   optionSelected: string = "";
-  chooworkingProfile() {
-    const data = {
-      agency : JSON.parse(sessionStorage.getItem('u')).SRC_CD,
-      V_USR_NM: JSON.parse(sessionStorage.getItem('u')).USR_NM
-    };
-    this.http.get<data>("https://" + this.domain_name + "/rest/v1/secured?V_SRC_CD=" + data.agency + "&V_USR_NM=" + data.V_USR_NM + "&REST_Service=UserRoles&Verb=GET").subscribe(
-      data => {
-        // (data);
-        if (data.ROLE_CD) {
-          for (let i = 0; i < data.ROLE_CD.length; i++) {
-            // (data.ROLE_CD[i]);
-            if (data.ROLE_CD[i] == "Developer Role") {
-              this.options.push("Developer");
-            } else if (data.ROLE_CD[i] == "End User Role") {
-              this.options.push("End_User");
-            } else if (data.ROLE_CD[i] == 'System Admin Role') {
-              this.options.push("System_Admin");
-            } else if (data.ROLE_CD[i] == 'Finance Role') {
-              this.options.push("Cost");
-            }
-            else if (data.ROLE_CD[i] == 'IT Asset Role') {
-              this.options.push("Assets");
-            } else if (data.ROLE_CD[i] == 'User Admin Role') {
-              this.options.push("User_Admin");
-            }
 
-          }
+  constructor(
+    private router: Router,
+    private rollserviceService: RollserviceService,
+    public toastr: ToastrService
+  ) { }
+
+  chooworkingProfile() {
+    this.rollserviceService.getRollCd().then((res) => {
+      for (let i = 0; i < res.length; i++) {
+        if (res[i] == "Developer Role") {
+          this.options.push("Developer");
+        } else if (res[i] == "End User Role") {
+          this.options.push("End_User");
+        } else if (res[i] == 'System Admin Role') {
+          this.options.push("System_Admin");
+        } else if (res[i] == 'Finance Role') {
+          this.options.push("Cost");
+        } else if (res[i] == 'IT Asset Role') {
+          this.options.push("Assets");
+        } else if (res[i] == 'User Admin Role') {
+          this.options.push("User_Admin");
         }
-      });
+      }
+    });
   }
 
   //Selected option in the profile section
@@ -81,8 +66,3 @@ export class UserProfileComponent implements OnInit {
   }
 
 }
-
-export interface data {
-  ROLE_CD: string[];
-}
-
