@@ -563,7 +563,7 @@ export class SchdActnComponent implements OnInit, AfterViewInit, OnDestroy {
 
     (this.form_dl_data);
     this.storageSessionService.setSession('Exe_data', this.form_dl_data[0]);
-    this.router.navigateByUrl('repeat');
+    this.router.navigateByUrl('repeat', {skipLocationChange: true});
 
 
   }

@@ -1,6 +1,6 @@
-import {Component, Inject, OnInit, ViewChild} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {UserFormComponent} from '../user-form/user-form.component';
-import {Store} from '@ngrx/store';
+import {select, Store} from '@ngrx/store';
 import {AppState} from '../../../../app.state';
 import * as userActions from '../../../../store/user-admin/user/user.action';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
@@ -10,15 +10,24 @@ import {UseradminService} from '../../../../services/useradmin.service2';
 import {User} from '../../../../store/user-admin/user/user.model';
 import * as userGroupActions from '../../../../store/user-admin/user-group/usergroup.action';
 import {take} from 'rxjs/operators';
+import {Observable, Subscription} from 'rxjs';
+import * as userSelectors from '../../../../store/user-admin/user/user.selectors';
+import * as usreActions from '../../../../store/user-admin/user/user.action';
+import {UserListComponent} from '../user-list/user-list.component';
 
 @Component({
   selector: 'app-add-user',
   templateUrl: './add-user.component.html',
   styleUrls: ['./add-user.component.scss']
 })
-export class AddUserComponent implements OnInit {
-
+export class AddUserComponent implements OnInit, OnDestroy {
+  selectedView: 'selectUser' | 'addNewUser' = 'selectUser';
+  selectedUser: User;
+  users$: Observable<User[]>;
+  actionSubscription: Subscription;
+  userAlreadyExist: boolean = false;
   @ViewChild(UserFormComponent) userForm: UserFormComponent;
+  @ViewChild(UserListComponent) userList: UserListComponent;
 
   constructor(private store: Store<AppState>,
               private userAdminService: UseradminService,
@@ -29,7 +38,12 @@ export class AddUserComponent implements OnInit {
 
   ngOnInit() {
     this.userAdminService.getControlVariables();
-    this.actions$.pipe(ofType(userActions.ADD_USER_SUCCESS),take(1)).subscribe((result:any) => {
+    const V_SRC_CD_DATA = {
+      V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
+    };
+    this.store.dispatch(new usreActions.getUser(V_SRC_CD_DATA));
+    this.users$ = this.store.pipe(select(userSelectors.selectAllUsers));
+    this.actionSubscription = this.actions$.pipe(ofType(userActions.ADD_USER_SUCCESS), take(1)).subscribe((result: any) => {
       console.log(result);
       this.addUserInGroup(this.data.groupId, result.payload[0]);
     });
@@ -40,9 +54,22 @@ export class AddUserComponent implements OnInit {
   }
 
   onBtnAddClick(): void {
-    if (this.userForm.isValid()) {
-      const userData = this.userForm.getValue();
-      this.store.dispatch(new AddUser(userData));
+    switch (this.selectedView) {
+      case 'selectUser':
+        if (this.userList) {
+          this.addUserInGroup(this.data.groupId, this.selectedUser);
+        }
+        break;
+      case 'addNewUser':
+        if (this.userForm.isValid()) {
+          const userData = this.userForm.getValue();
+          this.userAlreadyExist = this.userForm.hasUser(userData.V_USR_NM);
+          if(this.userAlreadyExist){
+            return;
+          }
+          this.store.dispatch(new AddUser(userData));
+        }
+        break;
     }
   }
 
@@ -66,6 +93,14 @@ export class AddUserComponent implements OnInit {
     }, err => {
       console.log(err);
     });
+  }
+
+  onUserSelect(user: User): void {
+    this.selectedUser = user;
+  }
+
+  ngOnDestroy(): void {
+    this.actionSubscription ? this.actionSubscription.unsubscribe() : '';
   }
 
 }

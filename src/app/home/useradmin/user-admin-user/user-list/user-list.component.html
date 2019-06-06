@@ -1,0 +1,6 @@
+<mat-list class="scroll">
+  <mat-list-item class="list_item" *ngFor="let user of users"
+                 [class.active]="user == selectedUser" (click)="onUserSelect(user)">
+    <div>{{user.V_USR_NM}}</div>
+  </mat-list-item>
+</mat-list>
