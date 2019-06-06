@@ -255,11 +255,12 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
   }
 
   Update_value(v: any, n: any, iter) { //v=value and n=paramter name
-    var Field_Names_Ar = [];
-    var Field_Values_Ar = [];
-
-    Field_Names_Ar.push("`" + n + "`");
-    Field_Values_Ar.push("'" + v + "'");
+    // var Field_Names_Ar = [];
+    // var Field_Values_Ar = []
+    console.log('RVP_labels', this.RVP_labels);
+    n = n.split(" ").join("_")
+    var Field_Names_Ar = ('"`' + n + '`"');
+    var Field_Values_Ar = ('"' + "'" + v + "'" + '"');
 
     if (this.V_TABLE_NAME.length && this.V_TABLE_NAME != '' && this.V_ID[iter - 1] != undefined) {
       {

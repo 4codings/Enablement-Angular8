@@ -153,11 +153,9 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
   }
 
   Update_value(v: any, n: any) { //v=value and n=paramter name
-    var Field_Names_Ar = [];
-    var Field_Values_Ar = [];
-
-    Field_Names_Ar.push("`" + n + "`");
-    Field_Values_Ar.push("'" + v + "'");
+    n = n.split(" ").join("_")
+    var Field_Names_Ar = ('"`' + n + '`"');
+    var Field_Values_Ar = ('"' + "'" + v + "'" + '"');
 
     if (this.V_TABLE_NAME.length && this.V_TABLE_NAME != '') {
       {
