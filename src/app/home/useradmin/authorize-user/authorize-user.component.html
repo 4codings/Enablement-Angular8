@@ -33,7 +33,7 @@
                  *ngFor="let currUser of userGroupMap.get(currGroup.id)"
                  [class.active]="currUser == selectedUser"
                  [class.highlight]="highlightedUsers.isSelected(currUser)"
-                 (dblclick)="onUserTileDoubleClick(currUser)"
+                 (contextmenu)="openContextmenu($event, currUser)"
                  (click)="onUserTileClick(currUser)">
               <div>User</div>
               <div>{{currUser.V_USR_ID}}</div>
@@ -79,4 +79,9 @@
       </div>
     </div>
   </div>
+</div>
+
+<div fxLayout="column" fxLayoutAlign="start stretch" class="context-menu" #contextMenu *ngIf="contextMenuActive" [ngStyle]="contextMenuStyle">
+  <button mat-button class="menu-item" (click)="onContextMenuEditBtnClick()">Edit</button>
+  <button mat-button class="many-item">Delete</button>
 </div>

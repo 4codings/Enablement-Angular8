@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {NoAuthDataService} from '../../../services/no-auth-data.service';
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../../../app.state';
@@ -30,6 +30,9 @@ import {authorizationTypeOptions, groupTypeOptions} from '../useradmin.constants
 import {CdkDragDrop, copyArrayItem, moveItemInArray} from '@angular/cdk/drag-drop';
 import {Actions, ofType} from '@ngrx/effects';
 import * as fromUserMembership from '../../../store/user-admin/user-membership/usermembership.action';
+import {EditUserComponent} from '../user-admin-user/edit-user/edit-user.component';
+
+declare var jQuery: any;
 
 @Component({
   selector: 'app-authorize-user',
@@ -62,6 +65,17 @@ export class AuthorizeUserComponent implements OnInit {
   authorizationTypeOptions = authorizationTypeOptions;
   selectedAuthType = this.authorizationTypeOptions[0];
 
+  @ViewChild('contextMenu') set contextMenu(value: ElementRef) {
+    if (value) {
+      let menu: HTMLDivElement = value.nativeElement;
+      menu.addEventListener('mousedown', ev => ev.stopImmediatePropagation());
+    }
+  }
+
+  contextMenuStyle: any;
+  contextMenuActive: boolean = false;
+  contextMenuData: User | AuthorizationData;
+
   constructor(
     public noAuthData: NoAuthDataService,
     private store: Store<AppState>,
@@ -77,6 +91,11 @@ export class AuthorizeUserComponent implements OnInit {
   }
 
   ngOnInit() {
+    document.addEventListener('mousedown', event => {
+      this.contextMenuActive = false;
+      this.contextMenuData = null;
+    });
+
     this.userAdminService.getControlVariables();
     this.V_SRC_CD_DATA = {
       V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
@@ -102,7 +121,8 @@ export class AuthorizeUserComponent implements OnInit {
       this.users = result[0];
       // TODO : @hiren check if constants are define for Group type
       this.groups = result[1];
-      this.roles = result[2];
+      this.roles = this.getRolesAssociatedWithGroups(this.groups, result[2]);
+      console.log(this.roles);
       this.authorizations = result[3];
       this.prepareUserGroupMap();
       this.prepareAuthRoleMap();
@@ -125,6 +145,19 @@ export class AuthorizeUserComponent implements OnInit {
         this.setSelectedAuth(newAuth);
       }
     }
+  }
+
+  getRolesAssociatedWithGroups(allGroup: userGroup[], allRoles: userRole[]): userRole[] {
+    const roleIdMap = new Map<string, userRole>();
+    allGroup.forEach(group => {
+      group.V_ROLE_ID.forEach(roleId => {
+        let roleObj = this.getDataObjById(roleId, allRoles);
+        if (roleObj) {
+          roleIdMap.set(`${roleId}`, roleObj);
+        }
+      });
+    });
+    return Array.from(roleIdMap.values());
   }
 
   prepareUserGroupMap(): void {
@@ -170,7 +203,7 @@ export class AuthorizeUserComponent implements OnInit {
     }
   }
 
-  onUserTileDoubleClick(user: User): void{
+  onUserTileDoubleClick(user: User): void {
     this.onAddUserTileClick(null);
   }
 
@@ -234,11 +267,25 @@ export class AuthorizeUserComponent implements OnInit {
   }
 
   onAddUserTileClick(groupId: string): void {
-    const dialogRef = this.dialog.open(AddEditUserComponent,
+    const dialogRef = this.dialog.open(AddUserComponent,
       {
         panelClass: 'app-dialog',
         width: '600px',
         data: {groupId: groupId}
+      });
+    dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
+      if (flag) {
+        this.store.dispatch(new usreActions.getUser(this.V_SRC_CD_DATA));
+      }
+    });
+  }
+
+  onEditUserTileClick(user: User): void {
+    const dialogRef = this.dialog.open(EditUserComponent,
+      {
+        panelClass: 'app-dialog',
+        width: '600px',
+        data: {user: user}
       });
     dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
       if (flag) {
@@ -311,6 +358,23 @@ export class AuthorizeUserComponent implements OnInit {
       'Verb': ['POST']
     };
     this.store.dispatch(new fromUserMembership.addUserMembership(json));
+  }
+
+  openContextmenu(event: MouseEvent, data?: any) {
+    event.preventDefault();
+    if (data) {
+      this.contextMenuData = data;
+    }
+    this.contextMenuStyle = {
+      top: `${event.clientY}px`,
+      left: `${event.clientX}px`,
+    };
+    this.contextMenuActive = true;
+  }
+
+  onContextMenuEditBtnClick(): void {
+    this.contextMenuActive = false;
+    this.onEditUserTileClick(<User> this.contextMenuData);
   }
 
 }

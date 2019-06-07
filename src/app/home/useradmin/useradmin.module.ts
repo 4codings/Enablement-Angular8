@@ -49,6 +49,7 @@ import { AddEditUserComponent } from './user-admin-user/add-edit-user/add-edit-u
 import { AddEditAuthorizeComponent } from './authorize/add-edit-authorize/add-edit-authorize.component';
 import { GroupTypePipe } from './user-admin-group/group-type.pipe';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import { UserListComponent } from './user-admin-user/user-list/user-list.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +74,8 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     AddEditRoleComponent,
     AddEditUserComponent,
     AddEditAuthorizeComponent,
-    GroupTypePipe
+    GroupTypePipe,
+    UserListComponent
   ],
   imports: [
     MatIconModule,

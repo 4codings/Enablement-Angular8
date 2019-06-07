@@ -158,16 +158,16 @@
             {{authorize.V_EXE_TYP}}
           </span>
           <span *ngIf="matRadioBtn.value === 'ARTIFACT' ">
-            {{authorize.V_AUTH_DSC}}
+            {{authorize.V_AUTH_CD}}
           </span>
           <span *ngIf="matRadioBtn.value === 'SERVER'">
-            {{authorize.V_AUTH_DSC}}
+            {{authorize.V_AUTH_CD}}
           </span>
           <span *ngIf="matRadioBtn.value === 'PLATFORM'">
-            {{authorize.V_AUTH_DSC}}
+            {{authorize.V_AUTH_CD}}
           </span>
           <span *ngIf="matRadioBtn.value === 'SLA'">
-            {{authorize.V_AUTH_DSC}}
+            {{authorize.V_AUTH_CD}}
           </span>
         </td>
         <td *ngIf="matRadioBtn.value === 'PROCESS' ||matRadioBtn.value === 'SERVICE' || matRadioBtn.value === 'EXE' ">
@@ -176,14 +176,14 @@
             {{authorize.V_AUTH_CD}}
           </span>
           <span *ngIf="matRadioBtn.value === 'SERVICE'">
-            {{authorize.V_PRCS_CD}}
+            {{authorize.V_AUTH_DSC}}
           </span>
           <!-- <span *ngIf="matRadioBtn.value === 'ARTIFACT' ">
             {{authorize.V_AUTH_DSC}}
           </span> -->
         </td>
         <td *ngIf="matRadioBtn.value === 'SERVICE'">
-          {{authorize.V_AUTH_DSC}}
+          {{authorize.V_AUTH_CD}}
         </td>
         <td>
           <mat-checkbox class="example-margin" (change)="onPermissionChange(authorize,'V_CREATE')"

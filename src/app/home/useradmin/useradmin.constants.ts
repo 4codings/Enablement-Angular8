@@ -1,9 +1,9 @@
 export const userStatusConstants = {
-  ACTIVE: 'active',
-  TERMINATED: 'terminated',
-  VACATION: 'vacation',
-  LEAVE: 'leave',
-  UNAVAILABLE: 'unavailable',
+  ACTIVE: 'ACTIVE',
+  TERMINATED: 'TERMINATED',
+  VACATION: 'VACATION',
+  LEAVE: 'LEAVE',
+  UNAVAILABLE: 'UNAVAILABLE',
 };
 
 export const userStatusOptions: { key: string, label: string }[] = [

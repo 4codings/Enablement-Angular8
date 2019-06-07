@@ -11,6 +11,7 @@ import {userStatusConstants, userStatusOptions} from '../../useradmin.constants'
 export class UserFormComponent implements OnInit, OnChanges {
 
   @Input() user: User;
+  @Input() users: User[];
 
   userForm: FormGroup;
   userStatusOptions = userStatusOptions;
@@ -39,22 +40,27 @@ export class UserFormComponent implements OnInit, OnChanges {
       V_USR_NM: user.V_USR_NM,
       V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
       V_USR_DSC: user.V_USR_DSC,
-      V_STS: user.V_STS != '' ? user.V_STS : 'Active',
+      V_STS: user.V_STS != '' ? user.V_STS : userStatusConstants.ACTIVE,
     });
+    this.userForm.get('V_USR_NM').disable({onlySelf: true, emitEvent: false});
   }
 
   isValid(): boolean {
     return this.userForm.valid;
   }
 
-  getValue(): any{
+  getValue(): any {
     const formValue = this.userForm.value;
     return {
       V_USR_NM: formValue.V_USR_NM,
       V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
       V_USR_DSC: formValue.V_USR_DSC,
-      V_STS: formValue.V_STS != '' ? formValue.V_STS : 'Active',
-    }
+      V_STS: formValue.V_STS != '' ? formValue.V_STS : userStatusConstants.ACTIVE,
+    };
+  }
+
+  hasUser(userName: string): boolean {
+    return !!this.users.filter(user => user.V_USR_NM.toLowerCase() === userName.toLowerCase()).length;
   }
 
 }
