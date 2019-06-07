@@ -63,4 +63,8 @@ import { DeleteConfirmComponent } from './execute/delete-confirm/delete-confirm.
   ],
   entryComponents: [DialogScheduleComponent, DialogChartsComponent, DeleteConfirmComponent]
 })
-export class EnduserModule { }
+export class EnduserModule {
+  constructor(){
+    console.log("EnduserModule => ");
+  }
+}

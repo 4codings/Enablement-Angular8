@@ -104,4 +104,7 @@ import { UserListComponent } from './user-admin-user/user-list/user-list.compone
   entryComponents: [AddUserComponent, AddGroupComponent, EditUserComponent, EditGroupComponent, AddEditRoleComponent, AddEditUserComponent, AddEditAuthorizeComponent]
 })
 export class UseradminModule {
+  constructor(){
+    console.log("UseradminModule => ");
+  }
 }

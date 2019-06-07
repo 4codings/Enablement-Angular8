@@ -17,4 +17,8 @@ import { FormsModule } from '@angular/forms';
     FormsModule
   ]
 })
-export class DeveloperModule { }
+export class DeveloperModule {
+  constructor(){
+    console.log("DeveloperModule => ");
+  }
+}

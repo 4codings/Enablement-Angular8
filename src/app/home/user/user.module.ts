@@ -26,4 +26,8 @@ import { HeaderModule } from '../header/header.module';
     EffectsModule.forFeature([UserEffects, UserGroupEffects, UserRoleEffects, UserMembershipEffects]),
   ]
 })
-export class UserModule { }
+export class UserModule {
+  constructor(){
+    console.log("UserModule => ");
+  }
+}

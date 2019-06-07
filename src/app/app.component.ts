@@ -28,6 +28,9 @@ export class AppComponent implements OnInit {
     private apiService: ApiService,
     private dialog: MatDialog,
   ) {
+    router.events.subscribe(next => {
+      console.log("Router Event => ", next)
+    });
   }
 
   ngOnInit(): void {

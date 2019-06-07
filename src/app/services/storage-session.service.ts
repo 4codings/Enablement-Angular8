@@ -83,7 +83,7 @@ export class StorageSessionService {
       // __________________________________________
       session_check() {
         if (this.CheckSessionNull('agency') && this.CheckSessionNull('email')) {
-      this.router.navigateByUrl('login', {skipLocationChange: true});
+      this.router.navigateByUrl('login');
 
       } else {
         // this.getSession('V_USR_NM');

@@ -26,4 +26,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     ReactiveFormsModule.withConfig({ warnOnNgModelWithFormControl: 'never' })
   ]
 })
-export class SystemAdminModule { }
+export class SystemAdminModule {
+  constructor(){
+    console.log("SystemAdminModule => ");
+  }
+}
