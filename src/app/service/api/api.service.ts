@@ -95,7 +95,7 @@ export class ApiService {
 			this.endPoints.logout,
 			{
 				V_USR_NM: JSON.parse(sessionStorage.getItem('u')).USR_NM,
-				V_SRC_ID: JSON.parse(sessionStorage.getItem('u')).V_SRC_ID,
+				V_SRC_ID: JSON.parse(sessionStorage.getItem('u')).SRC_ID,
 				V_ACTN_NM: 'LOGOUT',
 				V_COMMNT: comment
 			},
