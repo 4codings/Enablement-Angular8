@@ -1,161 +1,152 @@
 import * as UserGroupActions from './usergroup.action';
-import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
-import { userGroup } from './usergroup.model';
+import {EntityState, EntityAdapter, createEntityAdapter} from '@ngrx/entity';
+import {userGroup} from './usergroup.model';
 
 export interface UserGroupState extends EntityState<userGroup> {
-    selectedUserGroupId: number | null;
-    loading: boolean;
-    loaded: boolean;
-    error: string;
+  selectedUserGroupId: number | null;
+  loading: boolean;
+  loaded: boolean;
+  error: string;
 }
 
 export const adapter: EntityAdapter<userGroup> = createEntityAdapter<userGroup>();
 
 
 export const initialState: UserGroupState = adapter.getInitialState({
-    selectedUserGroupId: null,
-    loading: false,
-    loaded: false,
-    error: ''
-  });
+  selectedUserGroupId: null,
+  loading: false,
+  loaded: false,
+  error: ''
+});
 
 export function userGroupReducer(state = initialState, action: UserGroupActions.Actions): UserGroupState {
 
-    switch (action.type) {
+  switch (action.type) {
 
-        case UserGroupActions.GET_USER_GROUP:
-        return {
-            ...state,
-            loading: true,
-            loaded: false
-        };
+    case UserGroupActions.GET_USER_GROUP:
+      return {
+        ...state,
+        loading: true,
+        loaded: false
+      };
 
-        case UserGroupActions.GET_USER_GROUP_SUCCESS:
-        return adapter.addAll(action.payload, {
-            ...state,
-            loading: false,
-            loaded: true
-        });
+    case UserGroupActions.GET_USER_GROUP_SUCCESS:
+      return adapter.addAll(action.payload, {
+        ...state,
+        loading: false,
+        loaded: true
+      });
 
-        case UserGroupActions.GET_USER_GROUP_FAIL:
-        return {
-            ...state,
-            loading: false,
-            error: action.payload
-        };
+    case UserGroupActions.GET_USER_GROUP_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload
+      };
 
-        case UserGroupActions.ADD_USER_GROUP:
-        return {
-            ...state,
-            loading: true,
-            loaded: false
-        };
+    case UserGroupActions.ADD_USER_GROUP:
+      return {
+        ...state,
+        loading: true,
+        loaded: false
+      };
 
-        case UserGroupActions.ADD_USER_GROUP_SUCCESS:
-        return adapter.addOne(action.payload[0], {
-            ...state,
-            loading: false,
-            loaded: true
-        });
+    case UserGroupActions.ADD_USER_GROUP_SUCCESS:
+      return adapter.addOne(action.payload[0], {
+        ...state,
+        loading: false,
+        loaded: true
+      });
 
-        case UserGroupActions.ADD_USER_GROUP_FAIL:
-        return {
-            ...state,
-            loading: false,
-            error: action.payload
-        };
-        
-        case UserGroupActions.UPDATE_USER_GROUP:
-        return {
-            ...state,
-            loading: true,
-            loaded: false
-        };
+    case UserGroupActions.ADD_USER_GROUP_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload
+      };
 
-        case UserGroupActions.UPDATE_USER_GROUP_SUCCESS:
-        return adapter.upsertOne(action.payload, {
-            ...state,
-            loading: false,
-            loaded: true
-        });
+    case UserGroupActions.UPDATE_USER_GROUP:
+      return {
+        ...state,
+        loading: true,
+        loaded: false
+      };
 
-        case UserGroupActions.UPDATE_USER_GROUP_FAIL:
-        return {
-            ...state,
-            loading: false,
-            error: action.payload
-        };
-        
-        case UserGroupActions.DELETE_USER_GROUP:
-        return {
-            ...state,
-            loading: true,
-            loaded: false
-        };
+    case UserGroupActions.UPDATE_USER_GROUP_SUCCESS:
+      return adapter.upsertOne(action.payload, {
+        ...state,
+        loading: false,
+        loaded: true
+      });
 
-        case UserGroupActions.DELETE_USER_GROUP_SUCCESS:
-        if(action.res[0].RESULT == "USER GROUP DELETED SUCCESSFULLY") {
-            return adapter.removeOne(action.payload.id, {
-                ...state,
-                loading: false,
-                loaded: true
-            });
-        } else {
-           return {
-            ...state,
-            loading: false,
-            loaded: true
-           }
-        }
+    case UserGroupActions.UPDATE_USER_GROUP_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload
+      };
 
-        case UserGroupActions.DELETE_USER_GROUP_FAIL:
-        return {
-            ...state,
-            loading: false,
-            error: action.payload
-        };
+    case UserGroupActions.DELETE_USER_GROUP:
+      return {
+        ...state,
+        loading: true,
+        loaded: false
+      };
 
-        case UserGroupActions.SELECT_USER_GROUP_RELATION:
-        return adapter.upsertMany(action.payload, {
-            ...state,
-            loading: false,
-            loaded: true
-        });
+    case UserGroupActions.DELETE_USER_GROUP_SUCCESS:
+      return adapter.removeOne(action.payload.id, {
+        ...state,
+        loading: false,
+        loaded: true
+      });
+    case UserGroupActions.DELETE_USER_GROUP_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload
+      };
 
-        case UserGroupActions.REMOVE_SELECTED_USER_GROUP_RELATION:
-        return adapter.upsertMany(action.payload, {
-            ...state,
-            loading: false,
-            loaded: true
-        });
-        
-        case UserGroupActions.CHECKED_USER_GROUP:
-        return adapter.upsertOne(action.payload, {
-            ...state,
-            loading: false,
-            loaded: true
-        });
+    case UserGroupActions.SELECT_USER_GROUP_RELATION:
+      return adapter.upsertMany(action.payload, {
+        ...state,
+        loading: false,
+        loaded: true
+      });
 
-        case UserGroupActions.SELECT_GROUP_ID:
-        return {
-            ...state,
-            selectedUserGroupId: action.payload
-        }; 
+    case UserGroupActions.REMOVE_SELECTED_USER_GROUP_RELATION:
+      return adapter.upsertMany(action.payload, {
+        ...state,
+        loading: false,
+        loaded: true
+      });
 
-        case UserGroupActions.REMOVE_GROUP_ID:
-        return {
-            ...state,
-            selectedUserGroupId: null
-        };
+    case UserGroupActions.CHECKED_USER_GROUP:
+      return adapter.upsertOne(action.payload, {
+        ...state,
+        loading: false,
+        loaded: true
+      });
 
-        case UserGroupActions.UPDATE_USER_IDS:
-        return adapter.upsertOne(action.payload, {
-            ...state
-        });
+    case UserGroupActions.SELECT_GROUP_ID:
+      return {
+        ...state,
+        selectedUserGroupId: action.payload
+      };
 
-        default:
-            return state;
-    }
+    case UserGroupActions.REMOVE_GROUP_ID:
+      return {
+        ...state,
+        selectedUserGroupId: null
+      };
+
+    case UserGroupActions.UPDATE_USER_IDS:
+      return adapter.upsertOne(action.payload, {
+        ...state
+      });
+
+    default:
+      return state;
+  }
 }
 
 export const getSelectedUserGroupId = (state: UserGroupState) => state.selectedUserGroupId;

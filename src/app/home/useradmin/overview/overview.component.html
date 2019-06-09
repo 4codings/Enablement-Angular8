@@ -1,0 +1,127 @@
+<div class="auth-user-wrapper" fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="8px">
+  <div fxLayout="row" fxLayoutGap="8px" class="content-wrapper">
+    <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="50" fxLayoutGap="8px">
+      <div fxLayoutAlign="space-between center">
+        <div style="padding-left: 8px">Groups</div>
+        <div>
+          <span>Group Type : </span>
+          <button mat-button [matMenuTriggerFor]="groupTypeMenu">{{selectedGroupType.label}}
+            <mat-icon matSuffix>arrow_drop_down</mat-icon>
+          </button>
+          <mat-menu #groupTypeMenu="matMenu">
+            <button mat-menu-item *ngFor="let item of groupTypeOptions"
+                    (click)="selectedGroupType = item">{{item.label}}</button>
+          </mat-menu>
+        </div>
+        <button mat-icon-button class="add-btn"
+                matTooltip="Add Group"
+                (click)="onAddGroupBtnClick()">
+          <mat-icon>add_circle</mat-icon>
+        </button>
+      </div>
+      <mat-divider></mat-divider>
+      <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="16px" cdkDropListGroup>
+        <div *ngFor="let currGroup of groups | groupType:selectedGroupType.key" class="tile-container">
+          <div class="container-header" fxLayoutAlign="space-between center">
+            <span class="container-title">{{currGroup.V_USR_GRP_CD}} - {{currGroup.V_USR_GRP_ID}}</span>
+            <div class="container-actions">
+              <button mat-icon-button matTooltip="delete group" (click)="onBtnDeleteGroupClick(currGroup)">
+                <mat-icon>delete</mat-icon>
+              </button>
+              <button mat-icon-button matTooltip="edit group" (click)="onBtnEditGroupClick(currGroup)">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="tiles-wrapper" fxLayout="row wrap"
+               cdkDropList
+               [cdkDropListData]="userGroupMap.get(currGroup.id)"
+               (cdkDropListDropped)="userDropped($event, currGroup)"
+               cdkDropListOrientation="horizontal">
+            <div class="tile"
+                 matRipple
+                 cdkDrag
+                 [cdkDragData]="currUser"
+                 [matTooltip]="currUser.V_USR_NM"
+                 *ngFor="let currUser of userGroupMap.get(currGroup.id)"
+                 [class.active]="currUser == selectedUser"
+                 [class.highlight]="highlightedUsers.isSelected(currUser)"
+                 (contextmenu)="openUserContextMenu($event, currUser)"
+                 (click)="onUserTileClick(currUser)">
+              <div>User</div>
+              <div>{{currUser.V_USR_ID}}</div>
+              <div class="ellipsis-text"><strong>{{currUser.V_USR_NM?.split('@')[0]}}</strong></div>
+            </div>
+            <div class="tile add-new-tile" cdkDrag [cdkDragDisabled]="true" (click)="onAddUserTileClick(currGroup.id)"
+                 matTooltip="Add User" matRipple>
+              <mat-icon>add_circle</mat-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <mat-divider [vertical]="true"></mat-divider>
+    <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="50" fxLayoutGap="8px">
+      <div fxLayoutAlign="space-between center">
+        <div style="padding-left: 8px">Roles</div>
+        <div>
+          <span>Authorization Type : </span>
+          <button mat-button [matMenuTriggerFor]="authTypeMenu">{{selectedAuthType.label}}
+            <mat-icon matSuffix>arrow_drop_down</mat-icon>
+          </button>
+          <mat-menu #authTypeMenu="matMenu">
+            <button mat-menu-item *ngFor="let item of authorizationTypeOptions"
+                    (click)="selectedAuthType = item">{{item.label}}</button>
+          </mat-menu>
+        </div>
+        <button mat-icon-button matTooltip="Add Role" class="add-btn" (click)="onAddRoleBtnClick()">
+          <mat-icon>add_circle</mat-icon>
+        </button>
+      </div>
+      <mat-divider></mat-divider>
+      <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="16px" cdkDropListGroup>
+        <div *ngFor="let currRole of roles" class="tile-container">
+          <div class="container-header" fxLayoutAlign="space-between center">
+            <span class="container-title">{{currRole.V_ROLE_CD}} - {{currRole.V_ROLE_ID}}</span>
+            <div class="container-actions">
+              <button mat-icon-button matTooltip="delete group" (click)="onBtnDeleteRoleClick(currRole)">
+                <mat-icon>delete</mat-icon>
+              </button>
+              <button mat-icon-button matTooltip="edit group" (click)="onBtnEditRoleClick(currRole)">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="tiles-wrapper" fxLayout="row wrap"
+               cdkDropList
+               [cdkDropListData]="authRoleMap.get(currRole.id)"
+               (cdkDropListDropped)="authDropped($event, currRole)"
+               cdkDropListOrientation="horizontal">
+            <div class="tile"
+                 cdkDrag
+                 [cdkDragData]="currAuth"
+                 *ngFor="let currAuth of authRoleMap.get(currRole.id) | authType: selectedAuthType.key"
+                 (contextmenu)="openAuthContextMenu($event, currAuth)"
+                 [class.active]="currAuth == selectedAuth"
+                 [class.highlight]="highlightedAuths.isSelected(currAuth)"
+                 (click)="onAuthTileClick(currAuth)">
+              <div>Auth</div>
+              <div><strong>{{currAuth.V_AUTH_ID}}</strong></div>
+            </div>
+            <div class="tile add-new-tile" (click)="onAddAuthBtnClick(currRole.id)" matTooltip="Add Auth" matRipple>
+              <mat-icon>add_circle</mat-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div fxLayout="column" fxLayoutAlign="start stretch" class="context-menu" #contextMenu *ngIf="contextMenuActive"
+     [ngStyle]="contextMenuStyle">
+  <button mat-button *ngIf="contextMenuFor == 'user'" class="menu-item" (click)="onContextMenuEditBtnClick()">Edit</button>
+  <button mat-button *ngIf="contextMenuFor == 'user'" class="many-item">Delete</button>
+  <button mat-button *ngIf="contextMenuFor == 'auth'" class="menu-item">Edit</button>
+  <button mat-button *ngIf="contextMenuFor == 'auth'" class="many-item">Delete</button>
+</div>

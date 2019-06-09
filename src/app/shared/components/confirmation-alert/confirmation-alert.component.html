@@ -1,13 +1,13 @@
 <div class="dialog-wrapper" fxLayoutGap="8px" fxLayout="column" fxLayoutAlign="start stretch">
   <div class="dialog-header content-wrapper">
-    Edit Group
+    <span [innerHTML]="title"></span>
   </div>
   <mat-divider></mat-divider>
   <div class="dialog-body content-wrapper">
-    <app-group-form [group]="group"></app-group-form>
+    <span [innerHTML]="message"></span>
   </div>
   <div class="dialog-footer content-wrapper" fxLayoutAlign="end center" fxLayoutGap="8px">
-    <button mat-button (click)="onBtnCancelClick()">Cancel</button>
-    <button mat-flat-button color="primary" (click)="onBtnUpdateClick()">Update</button>
+    <button mat-button (click)="onNoBtnClick()">{{noBtnText}}</button>
+    <button mat-flat-button color="primary" (click)="onYesBtnClick()">{{yesBtnText}}</button>
   </div>
 </div>

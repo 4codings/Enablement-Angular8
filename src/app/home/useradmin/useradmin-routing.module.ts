@@ -10,7 +10,7 @@ import { AssignroleComponent } from './assignrole/assignrole.component';
 import { AuthorizeroleComponent } from './authorizerole/authorizerole.component';
 import { AuthComponent } from 'src/app/auth/auth.component';
 import { AuthorizeComponent } from './authorize/authorize.component';
-import {AuthorizeUserComponent} from './authorize-user/authorize-user.component';
+import {OverviewComponent} from './overview/overview.component';
 
 
 const routes: Routes = [
@@ -27,7 +27,7 @@ const routes: Routes = [
             {path: 'Membership', component: MembershipComponent},
             {path: 'Assignrole', component: AssignroleComponent},
             {path: 'Authorizerole', component: AuthorizeroleComponent},
-            {path: 'UserAuth', component: AuthorizeUserComponent},
+            {path: 'UserAuth', component: OverviewComponent},
         ]
     }
 ];

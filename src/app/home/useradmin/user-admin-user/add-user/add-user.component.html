@@ -8,8 +8,8 @@
       <mat-radio-button value="selectUser">Select User</mat-radio-button>
       <mat-radio-button value="addNewUser">Add New User</mat-radio-button>
     </mat-radio-group>
-    <app-user-list *ngIf="selectedView == 'selectUser'" [users]="users$ | async" (userSelectEvent)="onUserSelect($event)"></app-user-list>
-    <app-user-form *ngIf="selectedView == 'addNewUser'" [users]="users$ | async"></app-user-form>
+    <app-user-list *ngIf="selectedView == 'selectUser'" [users]="allUsers" (userSelectEvent)="onUserSelect($event)"></app-user-list>
+    <app-user-form *ngIf="selectedView == 'addNewUser'" [users]="allUsers"></app-user-form>
   </div>
   <div class="dialog-footer content-wrapper" fxLayoutAlign="end center" fxLayoutGap="8px">
     <div fxFlex fxLayoutAlign="start center" style="color: #DD312E" *ngIf="userAlreadyExist">User already exist</div>

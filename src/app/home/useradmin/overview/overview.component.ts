@@ -1,11 +1,11 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {NoAuthDataService} from '../../../services/no-auth-data.service';
-import {select, Store} from '@ngrx/store';
+import {Action, select, Store} from '@ngrx/store';
 import {AppState} from '../../../app.state';
 import {UseradminService} from '../../../services/useradmin.service2';
 import * as usreActions from '../../../store/user-admin/user/user.action';
 import * as userSelectors from '../../../store/user-admin/user/user.selectors';
-import {Observable, zip} from 'rxjs';
+import {Observable, Subscription, zip} from 'rxjs';
 import {User} from '../../../store/user-admin/user/user.model';
 import {userGroup} from '../../../store/user-admin/user-group/usergroup.model';
 import * as userGroupActions from '../../../store/user-admin/user-group/usergroup.action';
@@ -31,15 +31,29 @@ import {CdkDragDrop, copyArrayItem, moveItemInArray} from '@angular/cdk/drag-dro
 import {Actions, ofType} from '@ngrx/effects';
 import * as fromUserMembership from '../../../store/user-admin/user-membership/usermembership.action';
 import {EditUserComponent} from '../user-admin-user/edit-user/edit-user.component';
+import {EditGroupComponent} from '../user-admin-group/edit-group/edit-group.component';
+import {DeleteUserGroup} from '../../../store/user-admin/user-group/usergroup.action';
+import {ConfirmationAlertComponent} from '../../../shared/components/confirmation-alert/confirmation-alert.component';
+import {AddRoleComponent} from '../role/add-role/add-role.component';
+import {EditRoleComponent} from '../role/edit-role/edit-role.component';
+import {RollserviceService} from '../../../services/rollservice.service';
 
 declare var jQuery: any;
 
 @Component({
-  selector: 'app-authorize-user',
-  templateUrl: './authorize-user.component.html',
-  styleUrls: ['./authorize-user.component.scss']
+  selector: 'app-overview',
+  templateUrl: './overview.component.html',
+  styleUrls: ['./overview.component.scss']
 })
-export class AuthorizeUserComponent implements OnInit {
+export class OverviewComponent implements OnInit, OnDestroy {
+
+
+  allUsers: User[] = [];
+  allGroups: userGroup[] = [];
+  allRoles: userRole[] = [];
+  allAuthorizations: AuthorizationData[];
+
+
   Label: any[] = [];
   public V_SRC_CD_DATA;
   public users$: Observable<User[]>;
@@ -64,6 +78,7 @@ export class AuthorizeUserComponent implements OnInit {
   selectedGroupType = this.groupTypeOptions[0];
   authorizationTypeOptions = authorizationTypeOptions;
   selectedAuthType = this.authorizationTypeOptions[0];
+  subscriptions: Subscription[] = [];
 
   @ViewChild('contextMenu') set contextMenu(value: ElementRef) {
     if (value) {
@@ -75,11 +90,14 @@ export class AuthorizeUserComponent implements OnInit {
   contextMenuStyle: any;
   contextMenuActive: boolean = false;
   contextMenuData: User | AuthorizationData;
+  contextMenuFor: 'user' | 'auth';
+
 
   constructor(
     public noAuthData: NoAuthDataService,
     private store: Store<AppState>,
     private userAdminService: UseradminService,
+    private roleService: RollserviceService,
     private dialog: MatDialog,
     private actions$: Actions
   ) {
@@ -91,9 +109,11 @@ export class AuthorizeUserComponent implements OnInit {
   }
 
   ngOnInit() {
+
     document.addEventListener('mousedown', event => {
       this.contextMenuActive = false;
       this.contextMenuData = null;
+      this.contextMenuFor = null;
     });
 
     this.userAdminService.getControlVariables();
@@ -109,20 +129,26 @@ export class AuthorizeUserComponent implements OnInit {
     this.roles$ = this.store.pipe(select(userRoleSelectors.selectAllUserRoles));
     this.authData$ = this.store.pipe(select(authSelectors.selectAllAutorizationvalues));
     this.getAllData();
-    this.actions$.pipe(ofType(fromUserMembership.ADD_USER_MEMBERSHIP_SUCCESS)).subscribe(
-      (action: fromUserMembership.addUserMembershipSuccess) => {
+    this.subscriptions.push(this.actions$.pipe(ofType(
+      fromUserMembership.ADD_USER_MEMBERSHIP_SUCCESS)).subscribe(
+      (action: Action) => {
         this.store.dispatch(new userGroupActions.getUserGroup(this.V_SRC_CD_DATA));
       }
-    );
+    ));
   }
 
   getAllData() {
     combineLatest(this.users$, this.groups$, this.roles$, this.authData$).subscribe(result => {
+
+      this.allUsers = result[0];
+      this.allGroups = result[1];
+      this.allRoles = result[2];
+      this.allAuthorizations = result[3];
+
       this.users = result[0];
       // TODO : @hiren check if constants are define for Group type
       this.groups = result[1];
       this.roles = this.getRolesAssociatedWithGroups(this.groups, result[2]);
-      console.log(this.roles);
       this.authorizations = result[3];
       this.prepareUserGroupMap();
       this.prepareAuthRoleMap();
@@ -150,12 +176,14 @@ export class AuthorizeUserComponent implements OnInit {
   getRolesAssociatedWithGroups(allGroup: userGroup[], allRoles: userRole[]): userRole[] {
     const roleIdMap = new Map<string, userRole>();
     allGroup.forEach(group => {
-      group.V_ROLE_ID.forEach(roleId => {
-        let roleObj = this.getDataObjById(roleId, allRoles);
-        if (roleObj) {
-          roleIdMap.set(`${roleId}`, roleObj);
-        }
-      });
+      if (group.V_ROLE_ID) {
+        group.V_ROLE_ID.forEach(roleId => {
+          let roleObj = this.getDataObjById(roleId, allRoles);
+          if (roleObj) {
+            roleIdMap.set(`${roleId}`, roleObj);
+          }
+        });
+      }
     });
     return Array.from(roleIdMap.values());
   }
@@ -271,7 +299,7 @@ export class AuthorizeUserComponent implements OnInit {
       {
         panelClass: 'app-dialog',
         width: '600px',
-        data: {groupId: groupId}
+        data: {groupId: groupId, allUsers: this.allUsers}
       });
     dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
       if (flag) {
@@ -298,7 +326,8 @@ export class AuthorizeUserComponent implements OnInit {
     const dialogRef = this.dialog.open(AddGroupComponent,
       {
         width: '600px',
-        panelClass: 'app-dialog'
+        panelClass: 'app-dialog',
+        data: {allGroups: this.allGroups}
       });
     dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
       if (flag) {
@@ -308,14 +337,53 @@ export class AuthorizeUserComponent implements OnInit {
   }
 
   onAddRoleBtnClick(): void {
-    const dialogRef = this.dialog.open(AddEditRoleComponent,
+    const dialogRef = this.dialog.open(AddRoleComponent,
       {
         width: '600px',
-        panelClass: 'app-dialog'
+        panelClass: 'app-dialog',
+        data: {allRoles: this.allRoles}
+      });
+    dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
+      if (flag) {
+        this.store.dispatch(new userGroupActions.getUserGroup(this.V_SRC_CD_DATA));
+      }
+    });
+  }
+
+  onBtnEditRoleClick(role: userRole): void {
+    const dialogRef = this.dialog.open(EditRoleComponent,
+      {
+        panelClass: 'app-dialog',
+        width: '600px',
+        data: {role: role}
       });
     dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
       if (flag) {
         this.store.dispatch(new userRoleActions.getUserRole(this.V_SRC_CD_DATA));
+      }
+    });
+  }
+
+  onBtnDeleteRoleClick(role: userRole): void {
+    const data = {
+      V_ROLE_CD: role.V_ROLE_CD,
+      V_ROLE_DSC: role.V_ROLE_DSC,
+      V_USR_NM: JSON.parse(sessionStorage.getItem('u')).USR_NM,
+      V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
+      REST_Service: 'Role',
+      Verb: 'DELETE',
+      id: role.id
+    };
+    const dialogRef = this.dialog.open(ConfirmationAlertComponent,
+      {
+        panelClass: 'app-dialog',
+        width: '600px',
+      });
+    dialogRef.componentInstance.title = `Delete Role - ${role.V_ROLE_CD}`;
+    dialogRef.componentInstance.message = `Are you sure, you want to delete role <strong>${role.V_ROLE_CD}</strong>?`;
+    dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
+      if (flag) {
+        this.store.dispatch(new userRoleActions.DeleteUserRole(data));
       }
     });
   }
@@ -360,6 +428,49 @@ export class AuthorizeUserComponent implements OnInit {
     this.store.dispatch(new fromUserMembership.addUserMembership(json));
   }
 
+  authDropped(event: CdkDragDrop<AuthorizationData[]>, role: userRole) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      copyArrayItem(event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex);
+      this.assignAuthToRole(role.id, event.item.data);
+    }
+  }
+
+  assignAuthToRole(roleId: string, auth: AuthorizationData): void {
+    if (!auth) {
+      return;
+    }
+    let json = {
+      'V_DELETED_ID_ARRAY': '',
+      'V_ADDED_ID_ARRAY': auth.id,
+      'SELECTED_ENTITY': ['ROLE'],
+      'SELECTED_ENTITY_ID': [roleId],
+      'V_EFF_STRT_DT_TM': [new Date(Date.now())],
+      'V_EFF_END_DT_TM': [new Date(Date.now() + this.userAdminService.controlVariables.effectiveEndDate)],
+      'REST_Service': ['Role_Auth'],
+      'Verb': ['POST']
+    };
+    this.roleService.assignAuthToRole(json).subscribe(res => {
+      this.store.dispatch(new authActions.getAuth(this.V_SRC_CD_DATA));
+    }, err => {
+      console.log(err);
+    });
+  }
+
+  openUserContextMenu(event: MouseEvent, data?: any): void {
+    this.contextMenuFor = 'user';
+    this.openContextmenu(event, data);
+  }
+
+  openAuthContextMenu(event: MouseEvent, data?: any): void {
+    this.contextMenuFor = 'auth';
+    this.openContextmenu(event, data);
+  }
+
   openContextmenu(event: MouseEvent, data?: any) {
     event.preventDefault();
     if (data) {
@@ -375,6 +486,54 @@ export class AuthorizeUserComponent implements OnInit {
   onContextMenuEditBtnClick(): void {
     this.contextMenuActive = false;
     this.onEditUserTileClick(<User> this.contextMenuData);
+  }
+
+  onBtnDeleteGroupClick(group: userGroup): void {
+    const data = {
+      V_USR_GRP_CD: group.V_USR_GRP_CD,
+      V_USR_GRP_DSC: group.V_USR_GRP_DSC,
+      V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
+      V_GRP_TYP: 'Group',
+      V_EFF_STRT_DT_TM: new Date(group.V_EFF_STRT_DT_TM),
+      V_EFF_END_DT_TM: new Date(group.V_EFF_END_DT_TM),
+      V_USR_NM: JSON.parse(sessionStorage.getItem('u')).USR_NM,
+      REST_Service: 'Group',
+      Verb: 'PATCH',
+      id: group.id
+    };
+
+    const dialogRef = this.dialog.open(ConfirmationAlertComponent,
+      {
+        panelClass: 'app-dialog',
+        width: '600px',
+      });
+    dialogRef.componentInstance.title = `Delete Group - ${group.V_USR_GRP_CD}`;
+    dialogRef.componentInstance.message = `Are you sure, you want to delete group <strong>${group.V_USR_GRP_CD}</strong>?`;
+    dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
+      if (flag) {
+        this.store.dispatch(new DeleteUserGroup(data));
+      }
+    });
+  }
+
+  onBtnEditGroupClick(group: userGroup): void {
+    const dialogRef = this.dialog.open(EditGroupComponent,
+      {
+        panelClass: 'app-dialog',
+        width: '600px',
+        data: {group: group}
+      });
+    dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
+      if (flag) {
+        this.store.dispatch(new userGroupActions.getUserGroup(this.V_SRC_CD_DATA));
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscriptions && this.subscriptions.length) {
+      this.subscriptions.forEach(sub => sub.unsubscribe());
+    }
   }
 
 }

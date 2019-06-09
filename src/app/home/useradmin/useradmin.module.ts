@@ -36,8 +36,8 @@ import {HeaderModule} from '../header/header.module';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {MatIconModule} from '@angular/material/icon';
 import {SharedModule} from 'src/app/shared/shared.module';
-import {AuthorizeUserComponent} from './authorize-user/authorize-user.component';
-import {AuthTypePipe} from './authorize-user/auth-type.pipe';
+import {OverviewComponent} from './overview/overview.component';
+import {AuthTypePipe} from './overview/auth-type.pipe';
 import {UserFormComponent} from './user-admin-user/user-form/user-form.component';
 import {AddUserComponent} from './user-admin-user/add-user/add-user.component';
 import {EditUserComponent} from './user-admin-user/edit-user/edit-user.component';
@@ -45,11 +45,14 @@ import {GroupFormComponent} from './user-admin-group/group-form/group-form.compo
 import {AddGroupComponent} from './user-admin-group/add-group/add-group.component';
 import {EditGroupComponent} from './user-admin-group/edit-group/edit-group.component';
 import {AddEditRoleComponent} from './role/add-edit-role/add-edit-role.component';
-import { AddEditUserComponent } from './user-admin-user/add-edit-user/add-edit-user.component';
-import { AddEditAuthorizeComponent } from './authorize/add-edit-authorize/add-edit-authorize.component';
-import { GroupTypePipe } from './user-admin-group/group-type.pipe';
+import {AddEditUserComponent} from './user-admin-user/add-edit-user/add-edit-user.component';
+import {AddEditAuthorizeComponent} from './authorize/add-edit-authorize/add-edit-authorize.component';
+import {GroupTypePipe} from './user-admin-group/group-type.pipe';
 import {DragDropModule} from '@angular/cdk/drag-drop';
-import { UserListComponent } from './user-admin-user/user-list/user-list.component';
+import {UserListComponent} from './user-admin-user/user-list/user-list.component';
+import {RoleFormComponent} from './role/role-form/role-form.component';
+import {AddRoleComponent} from './role/add-role/add-role.component';
+import {EditRoleComponent} from './role/edit-role/edit-role.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +66,7 @@ import { UserListComponent } from './user-admin-user/user-list/user-list.compone
     UserAdminNavComponent,
     UserAdminGroupComponent,
     AuthorizeComponent,
-    AuthorizeUserComponent,
+    OverviewComponent,
     AuthTypePipe,
     UserFormComponent,
     AddUserComponent,
@@ -75,7 +78,10 @@ import { UserListComponent } from './user-admin-user/user-list/user-list.compone
     AddEditUserComponent,
     AddEditAuthorizeComponent,
     GroupTypePipe,
-    UserListComponent
+    UserListComponent,
+    RoleFormComponent,
+    AddRoleComponent,
+    EditRoleComponent
   ],
   imports: [
     MatIconModule,
@@ -101,10 +107,19 @@ import { UserListComponent } from './user-admin-user/user-list/user-list.compone
     MatRippleModule,
     DragDropModule,
   ],
-  entryComponents: [AddUserComponent, AddGroupComponent, EditUserComponent, EditGroupComponent, AddEditRoleComponent, AddEditUserComponent, AddEditAuthorizeComponent]
+  entryComponents: [
+    AddUserComponent,
+    AddGroupComponent,
+    EditUserComponent,
+    EditGroupComponent,
+    AddEditRoleComponent,
+    AddEditUserComponent,
+    AddEditAuthorizeComponent,
+    AddRoleComponent,
+    EditRoleComponent]
 })
 export class UseradminModule {
-  constructor(){
-    console.log("UseradminModule => ");
+  constructor() {
+    console.log('UseradminModule => ');
   }
 }

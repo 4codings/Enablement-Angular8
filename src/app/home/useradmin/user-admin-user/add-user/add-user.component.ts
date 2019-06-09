@@ -10,10 +10,10 @@ import {UseradminService} from '../../../../services/useradmin.service2';
 import {User} from '../../../../store/user-admin/user/user.model';
 import * as userGroupActions from '../../../../store/user-admin/user-group/usergroup.action';
 import {take} from 'rxjs/operators';
-import {Observable, Subscription} from 'rxjs';
 import * as userSelectors from '../../../../store/user-admin/user/user.selectors';
 import * as usreActions from '../../../../store/user-admin/user/user.action';
 import {UserListComponent} from '../user-list/user-list.component';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-add-user',
@@ -23,9 +23,9 @@ import {UserListComponent} from '../user-list/user-list.component';
 export class AddUserComponent implements OnInit, OnDestroy {
   selectedView: 'selectUser' | 'addNewUser' = 'selectUser';
   selectedUser: User;
-  users$: Observable<User[]>;
   actionSubscription: Subscription;
   userAlreadyExist: boolean = false;
+  allUsers: User[] = [];
   @ViewChild(UserFormComponent) userForm: UserFormComponent;
   @ViewChild(UserListComponent) userList: UserListComponent;
 
@@ -41,8 +41,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
     const V_SRC_CD_DATA = {
       V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
     };
-    this.store.dispatch(new usreActions.getUser(V_SRC_CD_DATA));
-    this.users$ = this.store.pipe(select(userSelectors.selectAllUsers));
+    this.allUsers = this.data.allUsers;
     this.actionSubscription = this.actions$.pipe(ofType(userActions.ADD_USER_SUCCESS), take(1)).subscribe((result: any) => {
       console.log(result);
       this.addUserInGroup(this.data.groupId, result.payload[0]);
@@ -56,7 +55,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
   onBtnAddClick(): void {
     switch (this.selectedView) {
       case 'selectUser':
-        if (this.userList) {
+        if (this.userList && this.selectedUser) {
           this.addUserInGroup(this.data.groupId, this.selectedUser);
         }
         break;
