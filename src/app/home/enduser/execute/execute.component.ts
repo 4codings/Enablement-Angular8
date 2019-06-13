@@ -1101,7 +1101,7 @@ export class ExecuteComponent implements OnInit, OnDestroy {
               this.repeatCallTable(true);
             } else if (this.report.RESULT == 'TABLE') {
 
-              this.router.navigateByUrl('ReportTable', { skipLocationChange: true });
+              this.router.navigateByUrl('/End_User/ReportTable', { skipLocationChange: true });
             } else if (this.report.RESULT[0] == 'INPUT_ARTFCT_TASK') {
 
               this.router.navigateByUrl('/End_User/InputArtForm', { skipLocationChange: true });
