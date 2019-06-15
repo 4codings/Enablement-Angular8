@@ -11,14 +11,15 @@ export class GroupFormComponent implements OnInit, OnChanges {
 
   @Input() group: userGroup;
   @Input() groups: userGroup[];
+  @Input() controlVariables: any;
   form: FormGroup;
 
   constructor() {
     this.form = new FormGroup({
       V_USR_GRP_CD: new FormControl('', Validators.required),
       V_USR_GRP_DSC: new FormControl('', Validators.required),
-      V_EFF_STRT_DT_TM: new FormControl('', Validators.required),
-      V_EFF_END_DT_TM: new FormControl('', Validators.required),
+      V_EFF_STRT_DT_TM: new FormControl(new Date(), Validators.required),
+      V_EFF_END_DT_TM: new FormControl(new Date(), Validators.required),
     });
   }
 
@@ -29,6 +30,9 @@ export class GroupFormComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.hasOwnProperty('group')) {
       this.setFormValue(this.group);
+    }
+    if (changes.hasOwnProperty('controlVariables') && !this.group) {
+      this.form.get('V_EFF_END_DT_TM').setValue(new Date(Date.now() + this.controlVariables.effectiveEndDate));
     }
   }
 
@@ -46,7 +50,7 @@ export class GroupFormComponent implements OnInit, OnChanges {
     return this.form.valid;
   }
 
-  hasGroup(groupName: string): boolean{
+  hasGroup(groupName: string): boolean {
     return !!this.groups.filter(grp => grp.V_USR_GRP_CD.toLowerCase() === groupName.toLowerCase()).length;
   }
 

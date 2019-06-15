@@ -4,7 +4,7 @@
   </div>
   <mat-divider></mat-divider>
   <div class="dialog-body content-wrapper">
-    <app-group-form [group]="group"></app-group-form>
+    <app-group-form [group]="group" [controlVariables]="data?.controlVariables"></app-group-form>
   </div>
   <div class="dialog-footer content-wrapper" fxLayoutAlign="end center" fxLayoutGap="8px">
     <button mat-button (click)="onBtnCancelClick()">Cancel</button>

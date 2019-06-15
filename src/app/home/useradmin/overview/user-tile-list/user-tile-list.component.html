@@ -1,0 +1,30 @@
+<div class="tiles-wrapper" fxLayout="row wrap"
+     cdkDropList
+     [cdkDropListData]="users"
+     (cdkDropListDropped)="userDropped($event)"
+     cdkDropListOrientation="horizontal">
+  <div class="tile"
+       matRipple
+       cdkDrag
+       [cdkDragData]="currUser"
+       [matTooltip]="currUser.V_USR_NM"
+       *ngFor="let currUser of users"
+       [class.active]="currUser == selectedUser"
+       [class.highlight]="highlightedUsers.isSelected(currUser)"
+       (contextmenu)="openContextmenu($event, currUser)"
+       (mousedown)="onTileMouseDownEventHandler($event)"
+       (click)="onUserTileClick(currUser)">
+    <div>User</div>
+    <div>{{currUser.V_USR_ID}}</div>
+    <div class="ellipsis-text"><strong>{{currUser.V_USR_NM?.split('@')[0]}}</strong></div>
+  </div>
+  <div class="tile add-new-tile" cdkDrag [cdkDragDisabled]="true" (click)="onAddUserTileClick()"
+       matTooltip="Add User" matRipple>
+    <mat-icon>add_circle</mat-icon>
+  </div>
+</div>
+<div fxLayout="column" fxLayoutAlign="start stretch" class="context-menu" #contextMenu *ngIf="contextMenuActive"
+     [ngStyle]="contextMenuStyle">
+  <button mat-button class="menu-item" (click)="onContextMenuEditUserBtnClick()">Edit</button>
+  <button mat-button class="many-item" (click)="onContextMenuDeleteUserBtnClick()">Delete</button>
+</div>

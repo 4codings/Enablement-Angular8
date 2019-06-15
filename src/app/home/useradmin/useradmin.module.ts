@@ -53,6 +53,12 @@ import {UserListComponent} from './user-admin-user/user-list/user-list.component
 import {RoleFormComponent} from './role/role-form/role-form.component';
 import {AddRoleComponent} from './role/add-role/add-role.component';
 import {EditRoleComponent} from './role/edit-role/edit-role.component';
+import { GroupListComponent } from './overview/group-list/group-list.component';
+import { SingleGroupComponent } from './overview/single-group/single-group.component';
+import { UserTileListComponent } from './overview/user-tile-list/user-tile-list.component';
+import { RoleListComponent } from './overview/role-list/role-list.component';
+import { SingleRoleComponent } from './overview/single-role/single-role.component';
+import { AuthTileListComponent } from './overview/auth-tile-list/auth-tile-list.component';
 
 @NgModule({
   declarations: [
@@ -81,7 +87,13 @@ import {EditRoleComponent} from './role/edit-role/edit-role.component';
     UserListComponent,
     RoleFormComponent,
     AddRoleComponent,
-    EditRoleComponent
+    EditRoleComponent,
+    GroupListComponent,
+    SingleGroupComponent,
+    UserTileListComponent,
+    RoleListComponent,
+    SingleRoleComponent,
+    AuthTileListComponent,
   ],
   imports: [
     MatIconModule,

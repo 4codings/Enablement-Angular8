@@ -29,7 +29,7 @@ export class EditGroupComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.actionSubscription = this.actions$.pipe(ofType(userGroupActions.UPDATE_USER_GROUP_SUCCESS), take(1)).subscribe((result:any) => {
+    this.actionSubscription = this.actions$.pipe(ofType(userGroupActions.UPDATE_USER_GROUP_SUCCESS), take(1)).subscribe((result: any) => {
       this.dialogRef.close(true);
     });
   }
@@ -47,9 +47,9 @@ export class EditGroupComponent implements OnInit {
         V_USR_GRP_CD: this.group.V_USR_GRP_CD,
         V_USR_NM: JSON.parse(sessionStorage.getItem('u')).USR_NM,
         REST_Service: 'Group',
-        V_GRP_TYP: 'Group',
-        Verb : 'PATCH',
-        id:this.group.id
+        V_GRP_TYP: this.group.V_GRP_TYP,
+        Verb: 'PATCH',
+        id: this.group.id
       };
       this.store.dispatch(new UpdateUserGroup(data));
     }

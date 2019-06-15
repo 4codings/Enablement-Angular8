@@ -1,0 +1,16 @@
+<div class="tile-container">
+  <div class="container-header" fxLayoutAlign="space-between center">
+    <span class="container-title">{{role.V_ROLE_CD}} - {{role.V_ROLE_ID}}</span>
+    <div class="container-actions">
+      <button mat-icon-button matTooltip="delete group" (click)="onBtnDeleteRoleClick(role)">
+        <mat-icon>delete</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="edit group" (click)="onBtnEditRoleClick(role)">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
+  </div>
+  <app-auth-tile-list [auths]="auths"
+                      (addAuthEvent)="onAddAuthEventHandler($event)"
+                      (deleteAuthEvent)="onDeleteAuthEventHandler($event)"></app-auth-tile-list>
+</div>
