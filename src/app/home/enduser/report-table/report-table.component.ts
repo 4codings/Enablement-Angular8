@@ -64,13 +64,13 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     this.Table_of_Data = this.dataStored.getCookies('report_table')['RESULT'];
     //(this.dataStored.getCookies('report_table'));
     this.SRVC_CD = this.dataStored.getCookies('report_table')['SRVC_CD'][0];
-    this.SRVC_ID = this.dataStored.getCookies('report_table')['SRVC_ID'][0];
+    // this.SRVC_ID = this.dataStored.getCookies('report_table')['SRVC_ID'][0];
     this.Table_of_Data1 = this.dataStored.getCookies('report_table')['LOG_VAL'];
     this.iddata.push(this.dataStored.getCookies('iddata'));
     this.PRCS_TXN_ID = this.dataStored.getCookies('executeresdata')['V_PRCS_TXN_ID'];
-    this.APP_ID = this.dataStored.getCookies('iddata')['V_APP_ID'][0];
-    this.PRCS_ID = this.dataStored.getCookies('iddata')['V_PRCS_ID'][0];
-    this.SRC_ID = this.dataStored.getCookies('iddata')['V_SRC_ID'][0];
+    this.APP_ID = this.dataStored.getCookies('report_table')['APP_ID'][0];
+    this.PRCS_ID = this.dataStored.getCookies('report_table')['PRCS_ID'][0];
+    this.SRC_ID = this.dataStored.getCookies('report_table')['SRC_ID'][0];
 
     //(JSON.parse(this.Table_of_Data1[0]));
 
