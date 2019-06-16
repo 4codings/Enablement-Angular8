@@ -27,7 +27,6 @@ export class SingleGroupComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.overviewService.userGroupMap$.pipe(takeUntil(this.unsubscribeAll)).subscribe(flag => {
-      console.log('single group flag => ', flag);
       if (flag) {
         this.users = this.overviewService.userGroupMap.get(this.group.id);
       }
@@ -55,7 +54,6 @@ export class SingleGroupComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('single group destroyed');
     this.unsubscribeAll.next(true);
     this.unsubscribeAll.complete();
   }

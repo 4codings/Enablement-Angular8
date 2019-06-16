@@ -8,7 +8,7 @@
       <div fxFlex="100">
         <mat-radio-group #matRadioBtn="matRadioGroup" (change)="onItemSelect($event)" [(ngModel)]="radioSelected"
                          fxLayout="row" fxLayoutAlign="space-between center">
-          <mat-radio-button *ngFor="let item of radioList" [value]="item">
+          <mat-radio-button [disabled]="isEditMode" *ngFor="let item of radioList" [value]="item">
             {{item}}
           </mat-radio-button>
         </mat-radio-group>
@@ -41,7 +41,7 @@
             </div>
             <div>
               <mat-form-field>
-                <input matInput name="app" (change)="onAppSelect($event.target.value)" [matAutocomplete]="auto">
+                <input matInput name="app" [disabled]="isEditMode" [value]="authValueObj?.V_APP_CD" (change)="onAppSelect($event.target.value)" [matAutocomplete]="auto">
                 <mat-autocomplete #auto="matAutocomplete">
                   <mat-option style="text-align:center;" (click)="onAppSelect(app)" *ngFor="let app of applicationValues"
                               [value]="app">
@@ -78,7 +78,7 @@
           </div>
           <div>
             <mat-form-field>
-                <input matInput name="app" (change)="onProcessSelect($event.target.value)" [matAutocomplete]="auto">
+                <input matInput name="app" [disabled]="isEditMode" [value]="authValueObj?.V_PRCS_CD" (change)="onProcessSelect($event.target.value)" [matAutocomplete]="auto">
                 <mat-autocomplete #auto="matAutocomplete">
                   <mat-option style="text-align:center;" (click)="onProcessSelect(process)"
                               *ngFor="let process of processValues" [value]="process">
@@ -103,7 +103,7 @@
           <div><strong>Service</strong></div>
            <div>
              <mat-form-field>
-                <input matInput name="app" (change)="onServiceSelect($event.target.value)" [matAutocomplete]="auto">
+                <input matInput name="app" [disabled]="isEditMode" [value]="authValueObj.V_AUTH_CD" (change)="onServiceSelect($event.target.value)" [matAutocomplete]="auto">
                 <mat-autocomplete #auto="matAutocomplete">
                   <mat-option style="text-align:center;" (click)="onServiceSelect(service)"
                               *ngFor="let service of serviceValues" [value]="service">
@@ -154,7 +154,8 @@
   </div>
   <div class="dialog-footer content-wrapper" fxLayoutAlign="end center" fxLayoutGap="8px">
     <button mat-button (click)="onBtnCancelClick()">Cancel</button>
-    <button mat-flat-button color="primary" (click)="onAddSubmit()">Add</button>
+    <button mat-flat-button color="primary" *ngIf="!isEditMode" (click)="onAddSubmit()">Add</button>
+    <button mat-flat-button color="primary" *ngIf="isEditMode" (click)="onUpdateBtnSubmit()">Update</button>
   </div>
 </div>
 

@@ -31,9 +31,12 @@ export class AuthTileListComponent implements OnInit {
   contextMenuStyle: any;
   contextMenuActive: boolean = false;
   unsubscribeAll: Subject<boolean> = new Subject<boolean>();
+  selectedAuthType: { key: string, label: string };
 
   constructor(public overviewService: OverviewService) {
     this.overviewService.selectedAuth$.pipe(takeUntil(this.unsubscribeAll)).subscribe(auth => this.selectedAuth = auth);
+    this.overviewService.selectedAuthType$.pipe(takeUntil(this.unsubscribeAll)).subscribe(type => this.selectedAuthType = type);
+    this.overviewService.highlightedAuths$.pipe(takeUntil(this.unsubscribeAll)).subscribe(auths => this.highlightedAuths = auths);
   }
 
   ngOnInit() {
@@ -89,9 +92,9 @@ export class AuthTileListComponent implements OnInit {
 
   onAuthTileClick(auth: AuthorizationData): void {
     if (this.selectedAuth == auth) {
-      this.overviewService.selectAuth(null);
       this.overviewService.resetSelection();
     } else {
+      this.overviewService.resetSelection();
       this.overviewService.selectAuth(auth);
       this.overviewService.highlightUsers(auth);
     }

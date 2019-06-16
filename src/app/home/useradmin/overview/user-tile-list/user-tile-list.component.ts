@@ -38,6 +38,7 @@ export class UserTileListComponent implements OnInit, OnDestroy {
 
   constructor(public overviewService: OverviewService) {
     this.overviewService.selectedUser$.pipe(takeUntil(this.unsubscribeAll)).subscribe(user => this.selectedUser = user);
+    this.overviewService.highlightedUsers$.pipe(takeUntil(this.unsubscribeAll)).subscribe(users => this.highlightedUsers = users);
   }
 
   ngOnInit() {
@@ -93,9 +94,9 @@ export class UserTileListComponent implements OnInit, OnDestroy {
 
   onUserTileClick(user: User): void {
     if (this.selectedUser == user) {
-      this.overviewService.selectUser(null);
       this.overviewService.resetSelection();
     } else {
+      this.overviewService.resetSelection();
       this.overviewService.selectUser(user);
       this.overviewService.highlightAuthorizations(user);
     }

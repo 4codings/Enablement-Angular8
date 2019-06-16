@@ -224,10 +224,10 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
       if (this.filteredAuthValues.length) {
         this.applicationValues = [];
         this.filteredAuthValues.forEach((ele: any) => {
-          if (this.applicationValues.length && (this.applicationValues.indexOf(ele.V_AUTH_DSC) > -1)) {
+          if (this.applicationValues.length && (this.applicationValues.indexOf(ele.V_AUTH_CD) > -1)) {
 
           } else {
-            this.applicationValues.push(ele.V_AUTH_DSC);
+            this.applicationValues.push(ele.V_AUTH_CD);
           }
         });
       } else {
@@ -243,10 +243,10 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
           } else {
             this.applicationValues.push(ele.V_EXE_TYP);
           }
-          if (this.processValues.length && this.processValues.indexOf(ele.V_AUTH_DSC) > -1) {
+          if (this.processValues.length && this.processValues.indexOf(ele.V_AUTH_CD) > -1) {
 
           } else {
-            this.processValues.push(ele.V_AUTH_DSC);
+            this.processValues.push(ele.V_AUTH_CD);
           }
         });
       } else {

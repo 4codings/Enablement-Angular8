@@ -8,7 +8,7 @@
        cdkDrag
        [cdkDragData]="currAuth"
        [matTooltip]="currAuth.V_AUTH_CD"
-       *ngFor="let currAuth of auths"
+       *ngFor="let currAuth of auths | authType: selectedAuthType?.key"
        [class.active]="currAuth == selectedAuth"
        [class.highlight]="highlightedAuths.isSelected(currAuth)"
        (contextmenu)="openContextmenu($event, currAuth)"

@@ -1,18 +1,18 @@
 <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="100" fxLayoutGap="8px">
   <div fxLayoutAlign="space-between center">
-    <div style="padding-left: 8px">Groups</div>
+    <div style="padding-left: 8px">Roles</div>
     <div>
-      <span>Group Type : </span>
+      <span>Auth Type : </span>
       <button mat-button [matMenuTriggerFor]="groupTypeMenu">{{selectedAuthType.label}}
         <mat-icon matSuffix>arrow_drop_down</mat-icon>
       </button>
       <mat-menu #groupTypeMenu="matMenu">
         <button mat-menu-item *ngFor="let item of authorizationTypeOptions"
-                (click)="selectedAuthType = item">{{item.label}}</button>
+                (click)="selectAuthType(item)">{{item.label}}</button>
       </mat-menu>
     </div>
     <button mat-icon-button class="add-btn"
-            matTooltip="Add Group"
+            matTooltip="Add Role"
             (click)="onAddRoleBtnClick()">
       <mat-icon>add_circle</mat-icon>
     </button>

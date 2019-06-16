@@ -1,7 +1,33 @@
 <div class="auth-user-wrapper" fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="8px">
+  <div class="content-wrapper" fxLayoutAlign="start center" fxLayoutGap="8px">
+    <button mat-raised-button [matMenuTriggerFor]="uploadMenu">
+      Upload
+      <mat-icon matSuffix>cloud_upload</mat-icon>
+    </button>
+    <button mat-raised-button [matMenuTriggerFor]="downloadMenu">
+      Download
+      <mat-icon matSuffix>cloud_download</mat-icon>
+    </button>
+    <div>
+      <mat-menu #uploadMenu="matMenu">
+        <button mat-menu-item (click)="onFileUploadBtnClick('Upload_User_File')">Users</button>
+        <button mat-menu-item (click)="onFileUploadBtnClick('Upload_Group_File')">Group</button>
+        <button mat-menu-item (click)="onFileUploadBtnClick('Upload_Role_File')">Role</button>
+      </mat-menu>
+      <mat-menu #downloadMenu="matMenu">
+        <button mat-menu-item (click)="downloadFile('UserDL.xlsx')">Users</button>
+        <button mat-menu-item (click)="downloadFile('GroupDL.xlsx')">Group</button>
+        <button mat-menu-item (click)="downloadFile('RoleDL.xlsx')">Role</button>
+      </mat-menu>
+    </div>
+  </div>
   <div fxLayout="row" fxLayoutGap="8px" class="content-wrapper">
     <app-group-list fxFlex="50"></app-group-list>
     <mat-divider [vertical]="true"></mat-divider>
     <app-role-list fxFlex="50"></app-role-list>
   </div>
 </div>
+
+<input type="file" (change)="onFileSelectEvent($event, 'UserDL.xlsx', 'user')" name="Upload_User_File" id="Upload_User_File" style="display:none"/>
+<input type="file" (change)="onFileSelectEvent($event, 'GroupDL.xlsx', 'usr_grp')" name="Upload_Group_File" id="Upload_Group_File" style="display:none"/>
+<input type="file" (change)="onFileSelectEvent($event, 'RoleDL.xlsx', 'role')" name="Upload_Role_File" id="Upload_Role_File" style="display:none"/>

@@ -22,7 +22,6 @@ export class SingleRoleComponent implements OnInit {
 
   ngOnInit() {
     this.overviewService.authRoleMap$.pipe(takeUntil(this.unsubscribeAll)).subscribe(flag => {
-      console.log('single role flag => ', flag);
       if (flag) {
         this.auths = this.overviewService.authRoleMap.get(this.role.id);
       }
@@ -50,7 +49,6 @@ export class SingleRoleComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    console.log('single role destroyed');
     this.unsubscribeAll.next(true);
     this.unsubscribeAll.complete();
   }

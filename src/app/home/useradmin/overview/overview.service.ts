@@ -28,8 +28,10 @@ import {DeleteUserGroup} from '../../../store/user-admin/user-group/usergroup.ac
 import {AddRoleComponent} from '../role/add-role/add-role.component';
 import {EditRoleComponent} from '../role/edit-role/edit-role.component';
 import {AddEditAuthorizeComponent} from '../authorize/add-edit-authorize/add-edit-authorize.component';
-import {CdkDragDrop, copyArrayItem, moveItemInArray} from '@angular/cdk/drag-drop';
 import {RollserviceService} from '../../../services/rollservice.service';
+import {authorizationTypeOptions} from '../useradmin.constants';
+import {Actions, ofType} from '@ngrx/effects';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 @Injectable()
 export class OverviewService implements OnDestroy {
@@ -47,6 +49,9 @@ export class OverviewService implements OnDestroy {
   highlightedUsers: SelectionModel<User> = new SelectionModel<User>(true);
   highlightedAuths: SelectionModel<AuthorizationData> = new SelectionModel<AuthorizationData>(true);
 
+  highlightedUsers$: BehaviorSubject<SelectionModel<User>> = new BehaviorSubject<SelectionModel<User>>(this.highlightedUsers);
+  highlightedAuths$: BehaviorSubject<SelectionModel<AuthorizationData>> = new BehaviorSubject<SelectionModel<AuthorizationData>>(this.highlightedAuths);
+
   userGroupMap: Map<string, User[]> = new Map();
   authRoleMap: Map<string, AuthorizationData[]> = new Map();
 
@@ -61,6 +66,9 @@ export class OverviewService implements OnDestroy {
   userGroupMap$ = this.userGroupMapStream.asObservable();
   authRoleMap$ = this.authRoleMapStream.asObservable();
 
+  selectedAuthType = authorizationTypeOptions[0];
+  selectedAuthType$: BehaviorSubject<{ key: string, label: string }> = new BehaviorSubject<{ key: string, label: string }>(this.selectedAuthType);
+
   unsubscribeAll: Subject<boolean> = new Subject<boolean>();
 
   V_SRC_CD_DATA: any;
@@ -68,6 +76,7 @@ export class OverviewService implements OnDestroy {
   constructor(private store: Store<AppState>,
               private userAdminService: UseradminService,
               private roleService: RollserviceService,
+              private actions: Actions,
               private dialog: MatDialog) {
     this.V_SRC_CD_DATA = {
       V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
@@ -82,13 +91,15 @@ export class OverviewService implements OnDestroy {
     const roles$ = this.store.pipe(select(userRoleSelectors.selectAllUserRoles));
     const authData$ = this.store.pipe(select(authSelectors.selectAllAutorizationvalues));
     this.getAllData(users$, groups$, roles$, authData$);
-    console.log('Overview Service Created');
+    this.actions.pipe(ofType(fromUserMembership.ADD_USER_MEMBERSHIP_SUCCESS), takeUntil(this.unsubscribeAll)).subscribe(action => {
+      this.store.dispatch(new userGroupActions.getUserGroup(this.V_SRC_CD_DATA));
+    });
   }
 
   getAllData(users$: Observable<User[]>, groups$: Observable<userGroup[]>, roles$: Observable<userRole[]>, authData$: Observable<AuthorizationData[]>) {
     combineLatest(users$, groups$).pipe(takeUntil(this.unsubscribeAll)).subscribe(result => {
-      this.allUsers = result[0];
-      this.allGroups = result[1];
+      this.allUsers = result[0] ? result[0].sort(this.sortById) : result[0];
+      this.allGroups = result[1] ? result[1].sort(this.sortById) : result[1];
 
       this.users$.next(this.allUsers);
       this.groups$.next(this.allGroups);
@@ -99,8 +110,8 @@ export class OverviewService implements OnDestroy {
       console.log('http error => ', error);
     });
     combineLatest(roles$, authData$).pipe(takeUntil(this.unsubscribeAll)).subscribe(result => {
-      this.allRoles = result[0];
-      this.allAuthorizations = result[1];
+      this.allRoles = result[0] ? result[0].sort(this.sortById) : result[0];
+      this.allAuthorizations = result[1] ? result[1].sort(this.sortById) : result[1];
 
       this.roles$.next(this.allRoles);
       this.authData$.next(this.allAuthorizations);
@@ -111,6 +122,16 @@ export class OverviewService implements OnDestroy {
       console.log('http error => ', error);
     });
   }
+
+  sortById(a, b) {
+    if (a.id > b.id) {
+      return 1;
+    } else if (a.id < b.id) {
+      return -1;
+    } else {
+      return 0;
+    }
+  };
 
   updateSelectedDataObjRef(): void {
     if (this.selectedUser) {
@@ -153,7 +174,6 @@ export class OverviewService implements OnDestroy {
       }
       this.userGroupMap.set(group.id, groupUsers);
     });
-    console.log('user group map');
     this.userGroupMapStream.next(true);
   }
 
@@ -204,6 +224,7 @@ export class OverviewService implements OnDestroy {
           const auths = this.authRoleMap.get(roleId + '');
           if (auths) {
             this.highlightedAuths.select(...auths);
+            this.highlightedAuths$.next(this.highlightedAuths);
           }
         });
       }
@@ -218,6 +239,7 @@ export class OverviewService implements OnDestroy {
           const users = this.userGroupMap.get(groupId + '');
           if (users) {
             this.highlightedUsers.select(...users);
+            this.highlightedUsers$.next(this.highlightedUsers);
           }
         });
       }
@@ -229,6 +251,10 @@ export class OverviewService implements OnDestroy {
     this.selectedUser = null;
     this.highlightedUsers.clear();
     this.highlightedAuths.clear();
+    this.selectedUser$.next(this.selectedUser);
+    this.selectedAuth$.next(this.selectedAuth);
+    this.highlightedUsers$.next(this.highlightedUsers);
+    this.highlightedAuths$.next(this.highlightedAuths);
   }
 
   selectUser(user: User): void {
@@ -376,12 +402,12 @@ export class OverviewService implements OnDestroy {
       });
     dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
       if (flag) {
-        //this.store.dispatch(new userRoleActions.getUserRole(this.V_SRC_CD_DATA));
+        this.store.dispatch(new userRoleActions.getUserRole(this.V_SRC_CD_DATA));
       }
     });
   }
 
-  deleteRole(role: userRole): void{
+  deleteRole(role: userRole): void {
     const data = {
       V_ROLE_CD: role.V_ROLE_CD,
       V_ROLE_DSC: role.V_ROLE_DSC,
@@ -414,13 +440,23 @@ export class OverviewService implements OnDestroy {
       });
     dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
       if (flag) {
-        //this.store.dispatch(new authActions.getAuth(this.V_SRC_CD_DATA));
+        this.store.dispatch(new userRoleActions.getUserRole(this.V_SRC_CD_DATA));
       }
     });
   }
 
-  openEditAuthDialog(auth: AuthorizationData): void{
-
+  openEditAuthDialog(auth: AuthorizationData): void {
+    const dialogRef = this.dialog.open(AddEditAuthorizeComponent,
+      {
+        width: '700px',
+        panelClass: 'app-dialog',
+        data: {auth: auth}
+      });
+    dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
+      if (flag) {
+        this.store.dispatch(new userRoleActions.getUserRole(this.V_SRC_CD_DATA));
+      }
+    });
   }
 
   assignAuthToRole(roleId: string, auth: AuthorizationData): void {
@@ -438,13 +474,13 @@ export class OverviewService implements OnDestroy {
       'Verb': ['POST']
     };
     this.roleService.assignAuthToRole(json).subscribe(res => {
-      this.store.dispatch(new authActions.getAuth(this.V_SRC_CD_DATA));
+      this.store.dispatch(new userRoleActions.getUserRole(this.V_SRC_CD_DATA));
     }, err => {
       console.log(err);
     });
   }
 
-  deleteAuthFromRole(role: userRole, auth: AuthorizationData): void{
+  deleteAuthFromRole(role: userRole, auth: AuthorizationData): void {
     const dialogRef = this.dialog.open(ConfirmationAlertComponent,
       {
         panelClass: 'app-dialog',
@@ -465,7 +501,7 @@ export class OverviewService implements OnDestroy {
           'Verb': ['POST']
         };
         this.roleService.assignAuthToRole(json).subscribe(res => {
-          this.store.dispatch(new authActions.getAuth(this.V_SRC_CD_DATA));
+          this.store.dispatch(new userRoleActions.getUserRole(this.V_SRC_CD_DATA));
         }, err => {
           console.log(err);
         });
@@ -473,8 +509,29 @@ export class OverviewService implements OnDestroy {
     });
   }
 
+  uploadFile(event: any, fileName: string, moduleName: string) {
+    const fileList: FileList = event.target.files;
+    (fileList.item(0));
+    this.userAdminService.fileUpload(fileList.item(0), fileName, moduleName).subscribe(
+      res => {
+        (res);
+        setTimeout(() => {
+          //this.getUser();
+          this.store.dispatch(new usreActions.getUser(this.V_SRC_CD_DATA));
+        }, 3000);
+      },
+      error => {
+        console.error(error);
+
+      }
+    );
+  }
+
+  downloadFile(fileName: any) {
+    this.userAdminService.downloadFile(fileName);
+  }
+
   ngOnDestroy(): void {
-    console.log('Overview Service Destroyed');
     this.users$.complete();
     this.groups$.complete();
     this.roles$.complete();
@@ -483,7 +540,10 @@ export class OverviewService implements OnDestroy {
     this.authRoleMapStream.complete();
     this.selectedUser$.complete();
     this.selectedAuth$.complete();
+    this.selectedAuthType$.complete();
     this.unsubscribeAll.next(true);
+    this.highlightedAuths$.complete();
+    this.highlightedUsers$.complete();
     this.unsubscribeAll.complete();
   }
 

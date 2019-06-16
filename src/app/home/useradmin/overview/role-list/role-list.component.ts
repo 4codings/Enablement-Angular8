@@ -27,6 +27,7 @@ export class RoleListComponent implements OnInit {
     this.overviewService.roles$.pipe(takeUntil(this.unsubscribeAll)).subscribe(roles => {
       this.roles = roles;
     });
+    this.overviewService.selectedAuthType$.pipe(takeUntil(this.unsubscribeAll)).subscribe(type => this.selectedAuthType = type);
   }
 
   ngOnInit() {
@@ -34,6 +35,10 @@ export class RoleListComponent implements OnInit {
     this.V_SRC_CD_DATA = {
       V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
     };
+  }
+
+  selectAuthType(authType): void {
+    this.overviewService.selectedAuthType$.next(authType);
   }
 
   onAddRoleBtnClick(): void {
