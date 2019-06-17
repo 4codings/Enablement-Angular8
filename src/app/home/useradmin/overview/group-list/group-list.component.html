@@ -1,14 +1,13 @@
 <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="100" fxLayoutGap="8px">
   <div fxLayoutAlign="space-between center">
-    <div style="padding-left: 8px">Groups</div>
-    <div>
-      <span>Group Type : </span>
+    <div style="padding-left: 8px">
+      <span>Groups : </span>
       <button mat-button [matMenuTriggerFor]="groupTypeMenu">{{selectedGroupType.label}}
         <mat-icon matSuffix>arrow_drop_down</mat-icon>
       </button>
       <mat-menu #groupTypeMenu="matMenu">
         <button mat-menu-item *ngFor="let item of groupTypeOptions"
-                (click)="selectedGroupType = item">{{item.label}}</button>
+                (click)="changeGroupType(item)">{{item.label}}</button>
       </mat-menu>
     </div>
     <button mat-icon-button class="add-btn"

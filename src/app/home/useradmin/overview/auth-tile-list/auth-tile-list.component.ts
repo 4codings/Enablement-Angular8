@@ -5,6 +5,7 @@ import {OverviewService} from '../overview.service';
 import {takeUntil} from 'rxjs/operators';
 import {CdkDragDrop, copyArrayItem, moveItemInArray} from '@angular/cdk/drag-drop';
 import {AuthorizationData} from '../../../../store/user-admin/user-authorization/authorization.model';
+import {environment} from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-auth-tile-list',
@@ -16,7 +17,7 @@ export class AuthTileListComponent implements OnInit {
   @Input() selectedAuth: AuthorizationData;
   @Input() highlightedAuths: SelectionModel<AuthorizationData> = new SelectionModel<AuthorizationData>(true, []);
   @Input() controlVariables: any;
-
+  environment = environment;
   @Output() addAuthEvent: EventEmitter<AuthorizationData> = new EventEmitter<AuthorizationData>();
   @Output() deleteAuthEvent: EventEmitter<AuthorizationData> = new EventEmitter<AuthorizationData>();
 

@@ -29,7 +29,7 @@ import {AddRoleComponent} from '../role/add-role/add-role.component';
 import {EditRoleComponent} from '../role/edit-role/edit-role.component';
 import {AddEditAuthorizeComponent} from '../authorize/add-edit-authorize/add-edit-authorize.component';
 import {RollserviceService} from '../../../services/rollservice.service';
-import {authorizationTypeOptions} from '../useradmin.constants';
+import {authorizationTypeOptions, groupTypeOptions} from '../useradmin.constants';
 import {Actions, ofType} from '@ngrx/effects';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
@@ -66,8 +66,11 @@ export class OverviewService implements OnDestroy {
   userGroupMap$ = this.userGroupMapStream.asObservable();
   authRoleMap$ = this.authRoleMapStream.asObservable();
 
-  selectedAuthType = authorizationTypeOptions[0];
+  selectedAuthType = authorizationTypeOptions[1];
   selectedAuthType$: BehaviorSubject<{ key: string, label: string }> = new BehaviorSubject<{ key: string, label: string }>(this.selectedAuthType);
+
+  selectedGroupType = groupTypeOptions[3];
+  selectedGroupType$: BehaviorSubject<{ key: string, label: string }> = new BehaviorSubject<{ key: string, label: string }>(this.selectedGroupType);
 
   unsubscribeAll: Subject<boolean> = new Subject<boolean>();
 
@@ -100,7 +103,6 @@ export class OverviewService implements OnDestroy {
     combineLatest(users$, groups$).pipe(takeUntil(this.unsubscribeAll)).subscribe(result => {
       this.allUsers = result[0] ? result[0].sort(this.sortById) : result[0];
       this.allGroups = result[1] ? result[1].sort(this.sortById) : result[1];
-
       this.users$.next(this.allUsers);
       this.groups$.next(this.allGroups);
 
@@ -124,14 +126,25 @@ export class OverviewService implements OnDestroy {
   }
 
   sortById(a, b) {
-    if (a.id > b.id) {
+    if (+a.id > +b.id) {
       return 1;
-    } else if (a.id < b.id) {
+    } else if (+a.id < +b.id) {
       return -1;
     } else {
       return 0;
     }
   };
+
+  selectGroupType(type): void {
+    this.selectedGroupType = type;
+    this.selectedGroupType$.next(this.selectedGroupType);
+  }
+
+
+  selectAuthType(type): void {
+    this.selectedAuthType = type;
+    this.selectedAuthType$.next(this.selectedAuthType);
+  }
 
   updateSelectedDataObjRef(): void {
     if (this.selectedUser) {
@@ -224,11 +237,13 @@ export class OverviewService implements OnDestroy {
           const auths = this.authRoleMap.get(roleId + '');
           if (auths) {
             this.highlightedAuths.select(...auths);
-            this.highlightedAuths$.next(this.highlightedAuths);
           }
         });
       }
     });
+    this.highlightedAuths$.next(this.highlightedAuths);
+    this.sortDataByPriority(this.allRoles, this.highlightedAuths.selected, 'V_ROLE_ID');
+    this.roles$.next([...this.allRoles]);
   }
 
   highlightUsers(auth: AuthorizationData): void {
@@ -239,11 +254,13 @@ export class OverviewService implements OnDestroy {
           const users = this.userGroupMap.get(groupId + '');
           if (users) {
             this.highlightedUsers.select(...users);
-            this.highlightedUsers$.next(this.highlightedUsers);
           }
         });
       }
     });
+    this.highlightedUsers$.next(this.highlightedUsers);
+    this.sortDataByPriority(this.allGroups, this.highlightedUsers.selected, 'V_USR_GRP_ID');
+    this.groups$.next([...this.allGroups]);
   }
 
   resetSelection() {
@@ -255,6 +272,33 @@ export class OverviewService implements OnDestroy {
     this.selectedAuth$.next(this.selectedAuth);
     this.highlightedUsers$.next(this.highlightedUsers);
     this.highlightedAuths$.next(this.highlightedAuths);
+  }
+
+  sortDataByPriority(dataToSort: any[], dataToCompare: any[], dataField: string): void {
+    let tempData;
+    for (let i = 0; dataToSort && i < dataToSort.length - 1; i++) {
+      for (let j = i + 1; dataToSort && j < dataToSort.length; j++) {
+        let a = false;
+        let b = false;
+        for (let currData of dataToCompare) {
+          if (currData[dataField] && currData[dataField].indexOf(+dataToSort[j].id) > -1) {
+            a = true;
+            break;
+          }
+        }
+        for (let currData of dataToCompare) {
+          if (currData[dataField] && currData[dataField].indexOf(+dataToSort[i].id) > -1) {
+            b = true;
+            break;
+          }
+        }
+        if (a && !b) {
+          tempData = dataToSort[j];
+          dataToSort[j] = dataToSort[i];
+          dataToSort[i] = tempData;
+        }
+      }
+    }
   }
 
   selectUser(user: User): void {

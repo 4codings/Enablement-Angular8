@@ -18,16 +18,15 @@ export class GroupListComponent implements OnInit, OnDestroy {
   groups: userGroup[];
   @Input() controlVariables: any;
   groupTypeOptions = groupTypeOptions;
-  selectedGroupType = this.groupTypeOptions[0];
+  selectedGroupType;
   V_SRC_CD_DATA: any;
   unsubscribeAll: Subject<boolean> = new Subject<boolean>();
 
   constructor(private dialog: MatDialog,
               private userAdminService: UseradminService,
               public overviewService: OverviewService) {
-    this.overviewService.groups$.pipe(takeUntil(this.unsubscribeAll)).subscribe(groups => {
-      this.groups = groups;
-    });
+    this.overviewService.groups$.pipe(takeUntil(this.unsubscribeAll)).subscribe(groups => this.groups = groups);
+    this.overviewService.selectedGroupType$.pipe(takeUntil(this.unsubscribeAll)).subscribe(type => this.selectedGroupType = type);
   }
 
   ngOnInit() {
@@ -39,6 +38,10 @@ export class GroupListComponent implements OnInit, OnDestroy {
 
   onAddGroupBtnClick(): void {
     this.overviewService.openAddGroupDialog();
+  }
+
+  changeGroupType(type): void {
+    this.overviewService.selectGroupType(type);
   }
 
   ngOnDestroy(): void {

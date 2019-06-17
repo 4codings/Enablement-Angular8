@@ -38,7 +38,7 @@ export class RoleListComponent implements OnInit {
   }
 
   selectAuthType(authType): void {
-    this.overviewService.selectedAuthType$.next(authType);
+    this.overviewService.selectAuthType(authType);
   }
 
   onAddRoleBtnClick(): void {

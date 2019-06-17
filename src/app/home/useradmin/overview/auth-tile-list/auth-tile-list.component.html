@@ -15,7 +15,7 @@
        (mousedown)="onTileMouseDownEventHandler($event)"
        (click)="onAuthTileClick(currAuth)">
     <div>Auth</div>
-    <div>{{currAuth.V_AUTH_ID}}</div>
+    <div *ngIf="!environment.production">{{currAuth.V_AUTH_ID}}</div>
     <div class="ellipsis-text"><strong>{{currAuth.V_AUTH_CD}}</strong></div>
   </div>
   <div class="tile add-new-tile" cdkDrag [cdkDragDisabled]="true" (click)="onAddAuthTileClick()"

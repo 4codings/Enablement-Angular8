@@ -9,6 +9,7 @@ import {take, takeUntil} from 'rxjs/operators';
 import * as usreActions from '../../../../store/user-admin/user/user.action';
 import {OverviewService} from '../overview.service';
 import {Observable, Subject} from 'rxjs';
+import {environment} from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-user-tile-list',
@@ -20,7 +21,7 @@ export class UserTileListComponent implements OnInit, OnDestroy {
   @Input() selectedUser: User;
   @Input() highlightedUsers: SelectionModel<User> = new SelectionModel<User>(true, []);
   @Input() controlVariables: any;
-
+  environment = environment;
   @Output() addUserEvent: EventEmitter<User> = new EventEmitter<User>();
   @Output() deleteUserEvent: EventEmitter<User> = new EventEmitter<User>();
 

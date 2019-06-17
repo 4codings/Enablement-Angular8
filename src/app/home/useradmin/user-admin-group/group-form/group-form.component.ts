@@ -17,7 +17,7 @@ export class GroupFormComponent implements OnInit, OnChanges {
   constructor() {
     this.form = new FormGroup({
       V_USR_GRP_CD: new FormControl('', Validators.required),
-      V_USR_GRP_DSC: new FormControl('', Validators.required),
+      V_USR_GRP_DSC: new FormControl(''),
       V_EFF_STRT_DT_TM: new FormControl(new Date(), Validators.required),
       V_EFF_END_DT_TM: new FormControl(new Date(), Validators.required),
     });
