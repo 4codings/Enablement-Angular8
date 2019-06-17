@@ -1,7 +1,8 @@
 <div class="app-form-wrapper">
-  <form [formGroup]="form">
+  <form [formGroup]="form" fxLayout="column" fxLayoutGap="8px">
     <mat-form-field>
-      <input type="text" matInput placeholder="Name" formControlName="V_ROLE_CD">
+      <input type="text" matInput placeholder="Name" formControlName="V_ROLE_CD" cdkFocusInitial>
+      <mat-error *ngIf="form.get('V_ROLE_CD').errors?.roleError">Role already exist.</mat-error>
     </mat-form-field>
     <mat-form-field>
       <input type="text" matInput placeholder="Description" formControlName="V_ROLE_DSC">

@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {User} from '../../../../store/user-admin/user/user.model';
 import {userStatusConstants, userStatusOptions} from '../../useradmin.constants';
 
@@ -18,7 +18,7 @@ export class UserFormComponent implements OnInit, OnChanges {
 
   constructor() {
     this.userForm = new FormGroup({
-      V_USR_NM: new FormControl('', Validators.required),
+      V_USR_NM: new FormControl('', [Validators.required]),
       V_SRC_CD: new FormControl(JSON.parse(sessionStorage.getItem('u')).SRC_CD, [Validators.required]),
       V_USR_DSC: new FormControl(''),
       V_STS: new FormControl(userStatusConstants.ACTIVE, Validators.required),
@@ -32,6 +32,9 @@ export class UserFormComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.hasOwnProperty('user')) {
       this.setFormValue(this.user);
+    }
+    if (changes.hasOwnProperty('users')) {
+      this.userForm.get('V_USR_NM').setValidators([Validators.required, userNameValidator(this.users)]);
     }
   }
 
@@ -63,15 +66,17 @@ export class UserFormComponent implements OnInit, OnChanges {
     return !!this.users.filter(user => user.V_USR_NM.toLowerCase() === userName.toLowerCase()).length;
   }
 
-  userNameValidator(ctrl: AbstractControl): any{
-    if(this.hasUser(ctrl.value)){
+}
+
+export function userNameValidator(allUsers: User[]): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    if (allUsers && control.value && (!!allUsers.filter(user => user.V_USR_NM.toLowerCase() === control.value.toLowerCase()).length)) {
       return {
         userError: {
           userName: true
         }
-      }
+      };
     }
     return null;
-  }
-
+  };
 }

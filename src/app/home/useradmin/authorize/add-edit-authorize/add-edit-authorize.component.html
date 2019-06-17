@@ -1,6 +1,7 @@
 <div class="dialog-wrapper" fxLayoutGap="8px" fxLayout="column" fxLayoutAlign="start stretch">
-  <div class="dialog-header content-wrapper">
-    Add Authorization
+  <div class="dialog-header content-wrapper" fxLayoutAlign="space-between center">
+    <span>{{isEditMode ? 'Edit ' : 'Add '}}Authorization</span>
+    <button mat-icon-button (click)="onBtnCancelClick()"><mat-icon>close</mat-icon></button>
   </div>
   <mat-divider></mat-divider>
   <div class="dialog-body content-wrapper app-form-wrapper">
@@ -41,7 +42,7 @@
             </div>
             <div>
               <mat-form-field>
-                <input matInput name="app" [disabled]="isEditMode" [value]="authValueObj?.V_APP_CD" (change)="onAppSelect($event.target.value)" [matAutocomplete]="auto">
+                <input matInput name="app" [disabled]="isEditMode" [value]="authValueObj?.V_APP_CD ? authValueObj?.V_APP_CD : ''" (change)="onAppSelect($event.target.value)" [matAutocomplete]="auto" cdkFocusInitial>
                 <mat-autocomplete #auto="matAutocomplete">
                   <mat-option style="text-align:center;" (click)="onAppSelect(app)" *ngFor="let app of applicationValues"
                               [value]="app">
@@ -78,7 +79,7 @@
           </div>
           <div>
             <mat-form-field>
-                <input matInput name="app" [disabled]="isEditMode" [value]="authValueObj?.V_PRCS_CD" (change)="onProcessSelect($event.target.value)" [matAutocomplete]="auto">
+                <input matInput name="app" [disabled]="isEditMode" [value]="authValueObj?.V_PRCS_CD ? authValueObj?.V_PRCS_CD : ''" (change)="onProcessSelect($event.target.value)" [matAutocomplete]="auto">
                 <mat-autocomplete #auto="matAutocomplete">
                   <mat-option style="text-align:center;" (click)="onProcessSelect(process)"
                               *ngFor="let process of processValues" [value]="process">
@@ -103,7 +104,7 @@
           <div><strong>Service</strong></div>
            <div>
              <mat-form-field>
-                <input matInput name="app" [disabled]="isEditMode" [value]="authValueObj.V_AUTH_CD" (change)="onServiceSelect($event.target.value)" [matAutocomplete]="auto">
+                <input matInput name="app" [disabled]="isEditMode" [value]="authValueObj.V_AUTH_CD ? authValueObj.V_AUTH_CD : ''" (change)="onServiceSelect($event.target.value)" [matAutocomplete]="auto">
                 <mat-autocomplete #auto="matAutocomplete">
                   <mat-option style="text-align:center;" (click)="onServiceSelect(service)"
                               *ngFor="let service of serviceValues" [value]="service">
@@ -153,7 +154,6 @@
     </div>
   </div>
   <div class="dialog-footer content-wrapper" fxLayoutAlign="end center" fxLayoutGap="8px">
-    <button mat-button (click)="onBtnCancelClick()">Cancel</button>
     <button mat-flat-button color="primary" *ngIf="!isEditMode" (click)="onAddSubmit()">Add</button>
     <button mat-flat-button color="primary" *ngIf="isEditMode" (click)="onUpdateBtnSubmit()">Update</button>
   </div>

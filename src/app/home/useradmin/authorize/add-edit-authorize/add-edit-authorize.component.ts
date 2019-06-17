@@ -41,6 +41,9 @@ export class AddEditAuthorizeComponent extends AuthorizeComponent implements OnI
 
   ngOnInit() {
     super.ngOnInit();
+    if (this.isEditMode) {
+      this.radioSelected = this.authValueObj.V_AUTH_TYP;
+    }
     this.userAdminService.getControlVariables();
   }
 

@@ -1,6 +1,7 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {userGroup} from '../../../../store/user-admin/user-group/usergroup.model';
+import {User} from '../../../../store/user-admin/user/user.model';
 
 @Component({
   selector: 'app-group-form',
@@ -34,6 +35,9 @@ export class GroupFormComponent implements OnInit, OnChanges {
     if (changes.hasOwnProperty('controlVariables') && !this.group) {
       this.form.get('V_EFF_END_DT_TM').setValue(new Date(Date.now() + this.controlVariables.effectiveEndDate));
     }
+    if (changes.hasOwnProperty('groups')) {
+      this.form.get('V_USR_GRP_CD').setValidators([Validators.required, groupNameValidator(this.groups)]);
+    }
   }
 
   setFormValue(group: userGroup): void {
@@ -64,4 +68,17 @@ export class GroupFormComponent implements OnInit, OnChanges {
     };
   }
 
+}
+
+export function groupNameValidator(allGroups: userGroup[]): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    if (allGroups && control.value && (!!allGroups.filter(user => user.V_USR_GRP_CD.toLowerCase() === control.value.toLowerCase()).length)) {
+      return {
+        groupError: {
+          groupName: true
+        }
+      };
+    }
+    return null;
+  };
 }

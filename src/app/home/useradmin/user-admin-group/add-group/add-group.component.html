@@ -1,6 +1,7 @@
 <div class="dialog-wrapper" fxLayoutGap="8px" fxLayout="column" fxLayoutAlign="start stretch">
-  <div class="dialog-header content-wrapper">
-    Add Group
+  <div class="dialog-header content-wrapper" fxLayoutAlign="space-between center">
+    <span>Add Group</span>
+    <button mat-icon-button (click)="onBtnCancelClick()"><mat-icon>close</mat-icon></button>
   </div>
   <mat-divider></mat-divider>
   <div class="dialog-body content-wrapper">
@@ -8,7 +9,6 @@
   </div>
   <div class="dialog-footer content-wrapper" fxLayoutAlign="end center" fxLayoutGap="8px">
     <div fxFlex fxLayoutAlign="start center" style="color: #DD312E" *ngIf="groupAlreadyExist">Group already exist</div>
-    <button mat-button (click)="onBtnCancelClick()">Cancel</button>
     <button mat-flat-button color="primary" (click)="onBtnAddClick()">Add</button>
   </div>
 </div>
