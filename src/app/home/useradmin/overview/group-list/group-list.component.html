@@ -1,0 +1,25 @@
+<div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="100" fxLayoutGap="8px">
+  <div fxLayoutAlign="space-between center">
+    <div style="padding-left: 8px">
+      <span>Groups : </span>
+      <button mat-button [matMenuTriggerFor]="groupTypeMenu">{{selectedGroupType.label}}
+        <mat-icon matSuffix>arrow_drop_down</mat-icon>
+      </button>
+      <mat-menu #groupTypeMenu="matMenu">
+        <button mat-menu-item *ngFor="let item of groupTypeOptions"
+                (click)="changeGroupType(item)">{{item.label}}</button>
+      </mat-menu>
+    </div>
+    <button mat-icon-button class="add-btn"
+            matTooltip="Add Group"
+            (click)="onAddGroupBtnClick()">
+      <mat-icon>add_circle</mat-icon>
+    </button>
+  </div>
+  <mat-divider></mat-divider>
+  <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="16px" cdkDropListGroup>
+    <app-single-group *ngFor="let currGroup of groups | groupType:selectedGroupType.key"
+                      [group]="currGroup"
+                      [controlVariables]="controlVariables"></app-single-group>
+  </div>
+</div>

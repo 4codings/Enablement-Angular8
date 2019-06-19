@@ -26,12 +26,12 @@ export const authorizationTypeConstants = {
 
 export const authorizationTypeOptions: { key: string, label: string }[] = [
   {key: '', label: 'ALL'},
-  {key: authorizationTypeConstants.PROCESS, label: 'PROCESS'},
-  {key: authorizationTypeConstants.SERVICE, label: 'SERVICE'},
-  {key: authorizationTypeConstants.EXE, label: 'EXE'},
-  {key: authorizationTypeConstants.ARTIFACT, label: 'ARTIFACT'},
-  {key: authorizationTypeConstants.PLATFORM, label: 'PLATFORM'},
-  {key: authorizationTypeConstants.SERVER, label: 'SERVER'},
+  {key: authorizationTypeConstants.PROCESS, label: 'Process'},
+  {key: authorizationTypeConstants.SERVICE, label: 'Service'},
+  {key: authorizationTypeConstants.EXE, label: 'Exe'},
+  {key: authorizationTypeConstants.ARTIFACT, label: 'Artifact'},
+  {key: authorizationTypeConstants.PLATFORM, label: 'Platform'},
+  {key: authorizationTypeConstants.SERVER, label: 'Server'},
   {key: authorizationTypeConstants.SLA, label: 'SLA'},
 ];
 
@@ -43,9 +43,9 @@ export const groupTypeConstant = {
 
 export const groupTypeOptions: {key: string, label: string}[] = [
   {key: '', label: 'ALL'},
-  {key: groupTypeConstant.SCREEN, label: 'SCREEN'},
-  {key: groupTypeConstant.PROFILE, label: 'PROFILE'},
-  {key: groupTypeConstant.CUSTOM, label: 'CUSTOM'}
+  {key: groupTypeConstant.SCREEN, label: 'Screen'},
+  {key: groupTypeConstant.PROFILE, label: 'Profile'},
+  {key: groupTypeConstant.CUSTOM, label: 'Custom'}
 ];
 
 

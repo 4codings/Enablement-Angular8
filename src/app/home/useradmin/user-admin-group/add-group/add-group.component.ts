@@ -27,6 +27,7 @@ export class AddGroupComponent implements OnInit, OnDestroy {
               private actions$: Actions,
               private dialogRef: MatDialogRef<AddGroupComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
+    console.log(data);
   }
 
   ngOnInit() {

@@ -40,6 +40,12 @@
   padding: 8px;
   background-color: #e5e5e5;
   border-radius: 5px;
+   > button{
+     color: #999999;
+     .mat-icon{
+       color: #999999;
+     }
+  }
 }
 
 .dialog-wrapper {

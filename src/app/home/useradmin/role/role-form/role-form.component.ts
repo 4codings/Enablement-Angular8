@@ -1,6 +1,7 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {userRole} from '../../../../store/user-admin/user-role/userrole.model';
+import {User} from '../../../../store/user-admin/user/user.model';
 
 @Component({
   selector: 'app-role-form',
@@ -28,6 +29,9 @@ export class RoleFormComponent implements OnInit, OnChanges {
     if (changes.hasOwnProperty('role')) {
       this.setFormValue(this.role);
     }
+    if (changes.hasOwnProperty('roles')) {
+      this.form.get('V_ROLE_CD').setValidators([Validators.required, roleNameValidator(this.roles)]);
+    }
   }
 
   setFormValue(role: userRole): void {
@@ -53,4 +57,17 @@ export class RoleFormComponent implements OnInit, OnChanges {
       V_ROLE_DSC: formValue.V_ROLE_DSC,
     };
   }
+}
+
+export function roleNameValidator(allRoles: userRole[]): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    if (allRoles && control.value && (!!allRoles.filter(role => role.V_ROLE_CD.toLowerCase() === control.value.toLowerCase()).length)) {
+      return {
+        roleError: {
+          roleName: true
+        }
+      };
+    }
+    return null;
+  };
 }

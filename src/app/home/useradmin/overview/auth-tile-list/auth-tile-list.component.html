@@ -1,0 +1,30 @@
+<div class="tiles-wrapper" fxLayout="row wrap"
+     cdkDropList
+     [cdkDropListData]="auths"
+     (cdkDropListDropped)="authDropped($event)"
+     cdkDropListOrientation="horizontal">
+  <div class="tile"
+       matRipple
+       cdkDrag
+       [cdkDragData]="currAuth"
+       [matTooltip]="currAuth.V_AUTH_CD"
+       *ngFor="let currAuth of auths | authType: selectedAuthType?.key"
+       [class.active]="currAuth == selectedAuth"
+       [class.highlight]="highlightedAuths.isSelected(currAuth)"
+       (contextmenu)="openContextmenu($event, currAuth)"
+       (mousedown)="onTileMouseDownEventHandler($event)"
+       (click)="onAuthTileClick(currAuth)">
+    <div>Auth</div>
+    <div *ngIf="!environment.production">{{currAuth.V_AUTH_ID}}</div>
+    <div class="ellipsis-text"><strong>{{currAuth.V_AUTH_CD}}</strong></div>
+  </div>
+  <div class="tile add-new-tile" cdkDrag [cdkDragDisabled]="true" (click)="onAddAuthTileClick()"
+       matTooltip="Add Auth" matRipple>
+    <mat-icon>add_circle</mat-icon>
+  </div>
+</div>
+<div fxLayout="column" fxLayoutAlign="start stretch" class="context-menu" #contextMenu *ngIf="contextMenuActive"
+     [ngStyle]="contextMenuStyle">
+  <button mat-button class="menu-item" (click)="onContextMenuEditAuthBtnClick()">Edit</button>
+  <button mat-button class="many-item" (click)="onContextMenuDeleteAuthBtnClick()">Delete</button>
+</div>
