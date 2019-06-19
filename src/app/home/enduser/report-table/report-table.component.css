@@ -1,10 +1,11 @@
-div.mat-expansion-panel-content:not(.mat-expanded) {
+/* div.mat-expansion-panel-content:not(.mat-expanded) {
   height: 0px !important;
   visibility: hidden !important;
 }
 ::ng-deep .mat-elevation-z8{
   margin-top:46px;
 }
+
 
 .mat-expansion-panel-header  {
   height: 46px;
@@ -176,4 +177,11 @@ div.color-picker{
   cursor: pointer;
   justify-content: center;
 }
+} */
+table {
+  width: 100%;
+}
+
+th.mat-sort-header {
+  color: black;
 }

@@ -51,58 +51,68 @@
     <div fxLayout="row" fxLayoutAlign="space-evenly">
       <mat-radio-group style="margin-left: 20px">
         <mat-radio-button (click)="showhide('showtable');" value="showtable"></mat-radio-button>
-        <mat-radio-button (click)="showhide('showchart');" value="showchart" style="padding:0 31px 0 36px"></mat-radio-button>
+        <mat-radio-button (click)="showhide('showchart');" value="showchart" style="padding:0 31px 0 36px">
+        </mat-radio-button>
         <mat-radio-button checked="true" (click)="showhide('showboth');" value="showboth"></mat-radio-button>
       </mat-radio-group>
     </div>
   </div>
 </div>
-
 <!-- ________________________________________________________________________ -->
-<div flex fxLayout="row" class="example-container mat-elevation-z8" fxShow="true" fxHide.xs="true" style="position: relative;"
-  *ngIf="disptable">
-  <mat-card id="mat_card_">
-    <mat-card-content>
+<div class="mat-elevation-z8" fxShow="true" fxHide.xs="true" *ngIf="disptable">
+  <!-- <mat-card id="mat_card_">
+    <mat-card-content> -->
 
-      <mat-table #table [dataSource]="dataSource" matSort>
+  <table mat-table [dataSource]="dataSource" matSort>
 
-
-        <ng-container *ngFor="let a of columnsToDisplay" matColumnDef="{{a}}">
+    <ng-container *ngFor="let a of columnsToDisplay" matColumnDef="{{a}}">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="{{helpertext[a]}}" matTooltipPosition='above'>
+        {{a}}<mat-icon class="del_icon" (click)="showhidecol(a)">delete_forever</mat-icon>
+      </th>
+      <td mat-cell *matCellDef="let myData"> {{myData[a+""]}} </td>
+    </ng-container>
+    <!-- <ng-container *ngFor="let a of columnsToDisplay" matColumnDef="{{a}}">
           <div>
             <mat-header-cell matTooltip="{{helpertext[a]}}" matTooltipPosition='above' *matHeaderCellDef mat-sort-header> {{a}}
               <mat-icon class="del_icon" (click)="showhidecol(a)">delete_forever</mat-icon>
             </mat-header-cell>
           </div>
           <mat-cell *matCellDef="let myData"> {{myData[a+""]}} </mat-cell>
-        </ng-container>
+        </ng-container> -->
 
-
-        <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
-        <mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></mat-row>
-      </mat-table>
-    </mat-card-content>
-  </mat-card>
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay;"></tr>
+    <!-- <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+        <mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></mat-row> -->
+  </table>
+  <!-- </mat-card-content>
+  </mat-card> -->
 </div>
 
-<div class="example-container mat-elevation-z8" fxHide="true" fxShow.xs="true" *ngIf="disptable">
-  <mat-card id="mat_card_">
-    <mat-card-content>
-      <mat-table #table [dataSource]="dataSource" matSort>
-        <ng-container *ngFor="let a of columnsToDisplay" matColumnDef="{{a}}" [style.display]="show(a)">
+<div class="mat-elevation-z8" fxHide="true" fxShow.xs="true" *ngIf="disptable">
+  <!-- <mat-card id="mat_card_">
+    <mat-card-content> -->
+  <table mat-table [dataSource]="dataSource" matSort>
+    <ng-container *ngFor="let a of columnsToDisplay" matColumnDef="{{a}}">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{a}}</th>
+      <td mat-cell *matCellDef="let myData"> {{myData[a+""]}} </td>
+    </ng-container>
+    <!-- <ng-container *ngFor="let a of columnsToDisplay" matColumnDef="{{a}}" [style.display]="show(a)">
           <div>
             <mat-header-cell matTooltip="{{helpertext[a]}}" matTooltipPosition='after' *matHeaderCellDef mat-sort-header> {{a}}
               <mat-icon class="del_icon" (click)="showhidecol(a)">delete_forever</mat-icon>
             </mat-header-cell>
           </div>
           <mat-cell *matCellDef="let myData"> {{myData[a+""]}} </mat-cell>
-        </ng-container>
+        </ng-container> -->
 
-
-        <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
-        <mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></mat-row>
-      </mat-table>
-    </mat-card-content>
-  </mat-card>
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay;"></tr>
+    <!-- <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+        <mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></mat-row> -->
+  </table>
+  <!-- </mat-card-content>
+  </mat-card> -->
 </div>
 <!-- </div> 
            </div>
@@ -119,8 +129,9 @@
           Line Chart
         </ng-template>
         <div>
-          <canvas baseChart *ngIf="lineChartData" [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
-            [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType">
+          <canvas baseChart *ngIf="lineChartData" [datasets]="lineChartData" [labels]="lineChartLabels"
+            [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend"
+            [chartType]="lineChartType">
           </canvas>
         </div>
       </mat-tab>
@@ -131,8 +142,8 @@
           Bar Chart
         </ng-template>
         <div>
-          <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [colors]="barChartColors"
-            [legend]="barChartLegend" [chartType]="barChartType">
+          <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+            [colors]="barChartColors" [legend]="barChartLegend" [chartType]="barChartType">
           </canvas>
         </div>
       </mat-tab>
@@ -181,8 +192,9 @@
                   <br>
 
                   <div fxLayoutAlign="center center">
-                    <input class="colorselector" [(value)]="_backgroundColor" [style.background]="_backgroundColor" [(colorPicker)]="_backgroundColor"
-                      [cpAlphaChannel]="'always'" [cpOutputFormat]="'rgba'" [cpOKButton]="true" [cpCancelButton]="true" [cpSaveClickOutside]="true"
+                    <input class="colorselector" [(value)]="_backgroundColor" [style.background]="_backgroundColor"
+                      [(colorPicker)]="_backgroundColor" [cpAlphaChannel]="'always'" [cpOutputFormat]="'rgba'"
+                      [cpOKButton]="true" [cpCancelButton]="true" [cpSaveClickOutside]="true"
                       [cpOKButtonClass]="'btn btn-primary btn-xs'" [cpCancelButtonClass]="'btn btn-primary btn-xs'" />
                   </div>
                 </div>
@@ -191,9 +203,10 @@
                   <div fxFlex="50">Border Color</div>
                   <br>
                   <div fxLayoutAlign="center center">
-                    <input class="colorselector" [(value)]="_borderColor" [style.background]="_borderColor" [(colorPicker)]="_borderColor" [cpAlphaChannel]="'always'"
-                      [cpOutputFormat]="'rgba'" [cpOKButton]="true" [cpCancelButton]="true" [cpSaveClickOutside]="true" [cpOKButtonClass]="'btn btn-primary btn-xs'"
-                      [cpCancelButtonClass]="'btn btn-primary btn-xs'" />
+                    <input class="colorselector" [(value)]="_borderColor" [style.background]="_borderColor"
+                      [(colorPicker)]="_borderColor" [cpAlphaChannel]="'always'" [cpOutputFormat]="'rgba'"
+                      [cpOKButton]="true" [cpCancelButton]="true" [cpSaveClickOutside]="true"
+                      [cpOKButtonClass]="'btn btn-primary btn-xs'" [cpCancelButtonClass]="'btn btn-primary btn-xs'" />
                   </div>
                 </div>
                 <div fxFlex="5"></div>
@@ -237,45 +250,54 @@
               <div fxFlex="27">
                 <mat-form-field style="width:100%">
                   <mat-select placeholder="Animations" [(value)]="_animations">
-                    <mat-option style="text-align:center;"  value="linear"> linear </mat-option>
-                    <mat-option style="text-align:center;"  value="easeInQuad"> easeInQuad </mat-option>
-                    <mat-option style="text-align:center;"  value="easeOutQuad"> easeOutQuad </mat-option>
-                    <mat-option style="text-align:center;"  value="easeInOutQuad"> easeInOutQuad </mat-option>
-                    <mat-option style="text-align:center;"  value="easeInCubic"> easeInCubic </mat-option>
-                    <mat-option style="text-align:center;"  value="easeOutCubic"> easeOutCubic </mat-option>
-                    <mat-option style="text-align:center;"  value="easeInQuad"> easeInQuad </mat-option>
-                    <mat-option style="text-align:center;"  value="easeOutQuad"> easeOutQuad </mat-option>
-                    <mat-option style="text-align:center;"  value="easeInQuart"> easeInQuart </mat-option>
-                    <mat-option style="text-align:center;"  value="easeOutQuart"> easeOutQuart </mat-option>
-                    <mat-option style="text-align:center;"  value="easeInSine"> easeInSine </mat-option>
-                    <mat-option style="text-align:center;"  value="easeOutSine"> easeOutSine </mat-option>
-                    <mat-option style="text-align:center;"  value="easeInElastic"> easeInElastic </mat-option>
-                    <mat-option style="text-align:center;"  value="easeInBack"> easeInBack </mat-option>
-                    <mat-option style="text-align:center;"  value="easeOutBack"> easeOutBack </mat-option>
+                    <mat-option style="text-align:center;" value="linear"> linear </mat-option>
+                    <mat-option style="text-align:center;" value="easeInQuad"> easeInQuad </mat-option>
+                    <mat-option style="text-align:center;" value="easeOutQuad"> easeOutQuad </mat-option>
+                    <mat-option style="text-align:center;" value="easeInOutQuad"> easeInOutQuad </mat-option>
+                    <mat-option style="text-align:center;" value="easeInCubic"> easeInCubic </mat-option>
+                    <mat-option style="text-align:center;" value="easeOutCubic"> easeOutCubic </mat-option>
+                    <mat-option style="text-align:center;" value="easeInQuad"> easeInQuad </mat-option>
+                    <mat-option style="text-align:center;" value="easeOutQuad"> easeOutQuad </mat-option>
+                    <mat-option style="text-align:center;" value="easeInQuart"> easeInQuart </mat-option>
+                    <mat-option style="text-align:center;" value="easeOutQuart"> easeOutQuart </mat-option>
+                    <mat-option style="text-align:center;" value="easeInSine"> easeInSine </mat-option>
+                    <mat-option style="text-align:center;" value="easeOutSine"> easeOutSine </mat-option>
+                    <mat-option style="text-align:center;" value="easeInElastic"> easeInElastic </mat-option>
+                    <mat-option style="text-align:center;" value="easeInBack"> easeInBack </mat-option>
+                    <mat-option style="text-align:center;" value="easeOutBack"> easeOutBack </mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
               <div fxFlex="9"></div>
               <div fxFlex="27">
                 <mat-form-field style="width:100%;cursor: pointer;">
-                  <input matInput placeholder="Point Style" [(ngModel)]="_pointstyle" [matAutocomplete]="auto1" class="autosel">
+                  <input matInput placeholder="Point Style" [(ngModel)]="_pointstyle" [matAutocomplete]="auto1"
+                    class="autosel">
                   <mat-autocomplete #auto1="matAutocomplete">
-                    <mat-option style="text-align:center;"  value="circle">
-                      <mat-icon>fiber_manual_record</mat-icon> Circle </mat-option>
-                    <mat-option style="text-align:center;"  value="triangle">
-                      <mat-icon>change_history</mat-icon> Triangle </mat-option>
-                    <mat-option style="text-align:center;"  value="rect">
-                      <mat-icon>crop_7_5</mat-icon> Rectangle </mat-option>
-                    <mat-option style="text-align:center;"  value="rectRounded">
-                      <mat-icon>check_box_outline_blank</mat-icon> RectRounded </mat-option>
-                    <mat-option style="text-align:center;"  value="rectRot">
-                      <mat-icon>layers</mat-icon>RectRot </mat-option>
-                    <mat-option style="text-align:center;"  value="cross">
-                      <mat-icon>add</mat-icon> Cross </mat-option>
-                    <mat-option style="text-align:center;"  value="crossRot">
-                      <mat-icon>clear</mat-icon> CrossRot </mat-option>
-                    <mat-option style="text-align:center;"  value="star">
-                      <mat-icon>ac_unit</mat-icon> Star </mat-option>
+                    <mat-option style="text-align:center;" value="circle">
+                      <mat-icon>fiber_manual_record</mat-icon> Circle
+                    </mat-option>
+                    <mat-option style="text-align:center;" value="triangle">
+                      <mat-icon>change_history</mat-icon> Triangle
+                    </mat-option>
+                    <mat-option style="text-align:center;" value="rect">
+                      <mat-icon>crop_7_5</mat-icon> Rectangle
+                    </mat-option>
+                    <mat-option style="text-align:center;" value="rectRounded">
+                      <mat-icon>check_box_outline_blank</mat-icon> RectRounded
+                    </mat-option>
+                    <mat-option style="text-align:center;" value="rectRot">
+                      <mat-icon>layers</mat-icon>RectRot
+                    </mat-option>
+                    <mat-option style="text-align:center;" value="cross">
+                      <mat-icon>add</mat-icon> Cross
+                    </mat-option>
+                    <mat-option style="text-align:center;" value="crossRot">
+                      <mat-icon>clear</mat-icon> CrossRot
+                    </mat-option>
+                    <mat-option style="text-align:center;" value="star">
+                      <mat-icon>ac_unit</mat-icon> Star
+                    </mat-option>
                   </mat-autocomplete>
                   <mat-icon style="vertical-align: middle" matSuffix>arrow_drop_down</mat-icon>
                 </mat-form-field>
@@ -283,12 +305,15 @@
               <div fxFlex="9"></div>
               <div fxFlex="27">
                 <mat-form-field style="width:100%;cursor: pointer;">
-                  <input matInput placeholder="Line Style" [(ngModel)]="_linestyle" [matAutocomplete]="auto" class="autosel">
+                  <input matInput placeholder="Line Style" [(ngModel)]="_linestyle" [matAutocomplete]="auto"
+                    class="autosel">
                   <mat-autocomplete #auto="matAutocomplete">
-                    <mat-option style="text-align:center;"  value="solid">
-                      <mat-icon>remove</mat-icon>Solid</mat-option>
-                    <mat-option style="text-align:center;"  value="dashed">
-                      <mat-icon>more_horiz</mat-icon>Dashed</mat-option>
+                    <mat-option style="text-align:center;" value="solid">
+                      <mat-icon>remove</mat-icon>Solid
+                    </mat-option>
+                    <mat-option style="text-align:center;" value="dashed">
+                      <mat-icon>more_horiz</mat-icon>Dashed
+                    </mat-option>
                   </mat-autocomplete>
                   <mat-icon style="vertical-align: middle" matSuffix>arrow_drop_down</mat-icon>
                 </mat-form-field>
@@ -353,7 +378,8 @@
               <div fxFlex="23">
                 <mat-form-field style="width:100%">
                   <mat-select placeholder="Select X-axis" [(value)]="_xaxis_sel">
-                    <mat-option style="text-align:center;"  *ngFor="let items of columnsToDisplay" value="{{items}}"> {{items}} </mat-option>
+                    <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" value="{{items}}">
+                      {{items}} </mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
@@ -361,7 +387,8 @@
               <div fxFlex="23">
                 <mat-form-field style="width:100%">
                   <mat-select placeholder="Select Y-axis-1" [(value)]="_yaxis1_sel">
-                    <mat-option style="text-align:center;"  *ngFor="let items of columnsToDisplay" value="{{items}}"> {{items}} </mat-option>
+                    <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" value="{{items}}">
+                      {{items}} </mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
@@ -369,7 +396,8 @@
               <div fxFlex="23">
                 <mat-form-field style="width:100%">
                   <mat-select placeholder="Select Y-axis-2" [(value)]="_yaxis2_sel">
-                    <mat-option style="text-align:center;"  *ngFor="let items of columnsToDisplay" value="{{items}}"> {{items}} </mat-option>
+                    <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" value="{{items}}">
+                      {{items}} </mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
@@ -377,7 +405,8 @@
               <div fxFlex="23">
                 <mat-form-field style="width:100%">
                   <mat-select placeholder="Select Y-axis Callback" [(value)]="_yaxisCB">
-                    <mat-option style="text-align:center;"  *ngFor="let items of yaxiscallbacks" value="{{items}}"> {{items}} </mat-option>
+                    <mat-option style="text-align:center;" *ngFor="let items of yaxiscallbacks" value="{{items}}">
+                      {{items}} </mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
@@ -413,8 +442,10 @@
 <div flex fxLayout="row" fxLayoutAlign="center">
 
   <button mat-raised-button (click)="Redirect_to_user()" style="background-color: rgba(187, 38, 38, 0.700);">
-    <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>Exit</button>
+    <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>Exit
+  </button>
   <div fxFlex="5"></div>
   <button mat-raised-button style="background-color: rgba(65, 204, 65, 0.700);" (click)="ExecuteAgain()">
-    <mat-icon style="vertical-align: middle;margin-right: 5px">done_all</mat-icon>Next</button>
+    <mat-icon style="vertical-align: middle;margin-right: 5px">done_all</mat-icon>Next
+  </button>
 </div>

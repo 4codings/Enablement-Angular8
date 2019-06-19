@@ -12,7 +12,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {
   MatListModule, MatIconModule, MatCardModule, MatInputModule, MatRadioModule, MatButtonModule,
   MatFormFieldControl, MatFormFieldModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule,
-  MatCheckboxModule, MatAutocompleteModule
+  MatCheckboxModule, MatAutocompleteModule, MatSortModule
 } from '@angular/material';
 import {MatTableModule} from '@angular/material/table';
 import {OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
@@ -49,6 +49,7 @@ import {ConfirmationAlertComponent} from './components/confirmation-alert/confir
     MatRadioModule,
     MatAutocompleteModule,
     MatTableModule,
+    MatSortModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     MatSliderModule,
@@ -90,6 +91,7 @@ import {ConfirmationAlertComponent} from './components/confirmation-alert/confir
     MatRadioModule,
     MatAutocompleteModule,
     MatTableModule,
+    MatSortModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     MatSliderModule,
