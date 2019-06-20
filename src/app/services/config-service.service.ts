@@ -721,6 +721,7 @@ export class ConfigServiceService {
   getchartstyling(V_APP_ID, V_PRCS_ID, V_SRC_ID) {
     // return this.http.get(this.apiUrlGet + "V_USR_NM=" + this.V_USR_NM + "&V_SRC_ID=" + V_SRC_ID + "&V_APP_ID=" + V_APP_ID + "&V_PRCS_ID=" + V_PRCS_ID + "&REST_Service=User_Preference&Verb=GET" );
     // secure
+    console.log(this.apiUrlGetSecure + "V_USR_NM=" + this.V_USR_NM + "&V_SRC_ID=" + V_SRC_ID + "&V_APP_ID=" + V_APP_ID + "&V_PRCS_ID=" + V_PRCS_ID + "&REST_Service=User_Preference&Verb=GET");
     return this.http.get(this.apiUrlGetSecure + "V_USR_NM=" + this.V_USR_NM + "&V_SRC_ID=" + V_SRC_ID + "&V_APP_ID=" + V_APP_ID + "&V_PRCS_ID=" + V_PRCS_ID + "&REST_Service=User_Preference&Verb=GET", this.apiService.setHeaders());
   }
 

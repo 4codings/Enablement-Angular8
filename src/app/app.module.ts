@@ -19,7 +19,7 @@ import { HttpInterceptorsService } from './services/http-interceptors.service';
 import { LocalStorageService, SessionStorageService, CookiesStorageService, SharedStorageService } from 'ngx-store';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { UserIdleModule } from 'angular-user-idle';
-
+import { ChartsModule } from 'ng2-charts-x';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -36,6 +36,7 @@ import { UserIdleModule } from 'angular-user-idle';
     AuthModule,
     HomeModule,
     HttpClientModule,
+    ChartsModule,
     DeviceDetectorModule.forRoot(),
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([]),

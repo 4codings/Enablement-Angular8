@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ColorPickerModule} from 'ngx-color-picker';
-import {ChartsModule} from 'ng2-charts';
+import {ChartsModule} from 'ng2-charts-x';
 
 import {FormErrorMsgComponent} from './components/form-error-msg/form-error-msg.component';
 import {NoDataMsgComponent} from './components/no-data-msg/no-data-msg.component';

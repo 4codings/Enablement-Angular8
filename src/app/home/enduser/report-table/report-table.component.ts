@@ -36,8 +36,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     private apiService: ApiService
   ) { }
   pointer = 0;
-  V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
-  V_USR_NM:string=JSON.parse(sessionStorage.getItem('u')).USR_NM;
+  V_SRC_CD: string = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+  V_USR_NM: string = JSON.parse(sessionStorage.getItem('u')).USR_NM;
   Exe_data = this.dataStored.getSession("Exe_data");
   iddata: any[] = [];
   Table_of_Data: any[];
@@ -56,9 +56,10 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   Table_of_Data5: any;
   helpertext = {};
   tabledata = {};
-  showchoice: string = "showboth";
   dispchart: boolean;
   disptable: boolean;
+  Select_show_option: any = ["Table", "Charts", "Both"];
+  show_choice = "Table";
   getReportData() {
 
     this.Table_of_Data = this.dataStored.getCookies('report_table')['RESULT'];
@@ -84,18 +85,19 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
     //this.updatechart();
     this.cd.detectChanges();
+    
   }
   showhide(abc) {
     switch (abc) {
-      case 'showtable':
+      case 'Table':
         this.disptable = true;
         this.dispchart = false;
         break;
-      case 'showchart':
+      case 'Charts':
         this.disptable = false;
         this.dispchart = true;
         break;
-      case 'showboth':
+      case 'Both':
         this.disptable = true;
         this.dispchart = true;
         break;
@@ -153,14 +155,12 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   public lineChartColors: Array<any> = [];
   public lineChartData: Array<any> = this.chartdata;
   public lineChartLabels: Array<any> = this.chartlabels;
-  public lineChartLegend: boolean = true;
   public lineChartType: string = 'line';
   public lineChartOptions: any;
   // Bar Chart Configuration
   public barChartOptions: any;
   public barChartLabels: string[] = this.chartlabels;
   public barChartType: string = 'bar';
-  public barChartLegend: boolean = true;
   public barChartData: Array<any> = this.chartdata;
   public barChartColors: Array<any> = [];
   // Pie Chart Configuration
@@ -257,6 +257,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         }]
       },
       legend: {
+        display:true,
         labels: {
           usePointStyle: true
         }
@@ -362,8 +363,10 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
       scaleShowVerticalLines: false,
       responsive: true,
       legend: {
+        display:true,
         labels: {
-          usePointStyle: true
+          usePointStyle: true,
+          fontColor: 'black'
         }
       },
       elements:
@@ -451,7 +454,9 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         pointHoverBorderColor: this._borderColor
       }
     ];
-    //(this.yaxis_data1);
+    console.log(this.yaxis_data1);
+    console.log(this.yaxis_data2);
+    
     this.barChartData[0].data = this.yaxis_data1;
     this.barChartData[1].data = this.yaxis_data2;
     this.barChartData[0].label = this._yaxis1_sel;
@@ -473,6 +478,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
       res => {
         (res.json());
         var result = res.json();
+        console.log(result);
         var name = result.PRF_NM;
         var value = result.PRF_VAL;
         this.V_PRF_NM = name;
@@ -494,6 +500,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         this._linestyle == "dashed" ? this._borderdash = [5, 5] : this._borderdash = [];
         this.updatechart();
       }
+      
     );
   }
 
@@ -520,14 +527,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     }
   }
   ngOnInit() {
-    //this.price = await this.data.getPrice(this.currency);
-    this.dispchart = true;
-    this.disptable = true;
     this.getReportData();
-
-
     this.Table_of_Data3 = this.Table_of_Data2[0];
-
 
     this.Table_of_Data5 = JSON.parse(this.Table_of_Data1[0]);
     //(this.Table_of_Data5);
@@ -566,7 +567,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
       //(this.Table_of_Data4);
     }
 
-    for (let j = 0; j <= this.columnsToDisplay.length; j++) {
+    // for (let j = 0; j <= this.columnsToDisplay.length; j++) {
       // insecure
       // this.http.get<data>(this.apiService.endPoints.insecure + "FieldName=" + this.columnsToDisplay[j] + "&REST_Service=Field_Description&Verb=GET")
       //   .subscribe(res => {
@@ -579,19 +580,20 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
       //     }
       //   })
       // secure
-      this.https.get(this.apiService.endPoints.secure + "FieldName=" + this.columnsToDisplay[j] + "&REST_Service=Field_Description&Verb=GET", this.apiService.setHeaders())
-        .subscribe(res => {
-          var data: data = res.json();
-          var name = data.Field_Name;
-          var tip = data.Description_Text;
-          var i;
-          for (i = 0; i < tip.length; i++) {
-            this.helpertext[name[i]] = tip[i];
-          }
-        })
+    //   this.https.get(this.apiService.endPoints.secure + "FieldName=" + this.columnsToDisplay[j] + "&REST_Service=Field_Description&Verb=GET", this.apiService.setHeaders())
+    //     .subscribe(res => {
+    //       var data: data = res.json();
+    //       var name = data.Field_Name;
+    //       var tip = data.Description_Text;
+    //       var i;
+    //       for (i = 0; i < tip.length; i++) {
+    //         this.helpertext[name[i]] = tip[i];
+    //       }
+    //     })
 
-    }
-    this.getchartstyling();
+    // }
+    this.showhide('Table');
+    //this.getchartstyling();
   }
 
   ExecuteAgain() {
@@ -625,7 +627,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     this.endUserService.processCancel(this.SRVC_ID, this.PRCS_TXN_ID, this.globals.Report.TEMP_UNIQUE_ID[0]).subscribe(
       res => {
         // console.log('Response:\n', res);
-        this.route.navigateByUrl('End_User',{ skipLocationChange: true });
+        this.route.navigateByUrl('End_User', { skipLocationChange: true });
       });
   }
 

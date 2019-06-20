@@ -44,23 +44,18 @@
 <div fxLayout="row" fxLayoutAlign="center center">
   <div fxLayout="column" style="width:230px">
     <div fxLayout="row" fxLayoutAlign="space-evenly">
-      <label>Table</label>
-      <label>Charts</label>
-      <label>Both</label>
-    </div>
-    <div fxLayout="row" fxLayoutAlign="space-evenly">
-      <mat-radio-group style="margin-left: 20px">
-        <mat-radio-button (click)="showhide('showtable');" value="showtable"></mat-radio-button>
-        <mat-radio-button (click)="showhide('showchart');" value="showchart" style="padding:0 31px 0 36px">
-        </mat-radio-button>
-        <mat-radio-button checked="true" (click)="showhide('showboth');" value="showboth"></mat-radio-button>
-      </mat-radio-group>
+        <mat-radio-group [(ngModel)]="show_choice" fxLayout="row">
+            <mat-radio-button style="margin-left:15px;" (click)="showhide(cn);" *ngFor="let cn of Select_show_option"
+                [value]="cn">
+                {{cn}}
+            </mat-radio-button>
+        </mat-radio-group>
     </div>
   </div>
 </div>
 <!-- ________________________________________________________________________ -->
 <div class="mat-elevation-z8" fxShow="true" fxHide.xs="true" *ngIf="disptable">
-  <!-- <mat-card id="mat_card_">
+  <!-- <mat-card id="mat_card">
     <mat-card-content> -->
 
   <table mat-table [dataSource]="dataSource" matSort>
@@ -129,9 +124,8 @@
           Line Chart
         </ng-template>
         <div>
-          <canvas baseChart *ngIf="lineChartData" [datasets]="lineChartData" [labels]="lineChartLabels"
-            [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend"
-            [chartType]="lineChartType">
+          <canvas baseChart *ngIf="lineChartData" [data]="lineChartData" [labels]="lineChartLabels"
+            [options]="lineChartOptions" [colors]="lineChartColors" [chartType]="lineChartType">
           </canvas>
         </div>
       </mat-tab>
@@ -142,8 +136,8 @@
           Bar Chart
         </ng-template>
         <div>
-          <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
-            [colors]="barChartColors" [legend]="barChartLegend" [chartType]="barChartType">
+          <canvas baseChart *ngIf="barChartData" [data]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+            [colors]="barChartColors" [chartType]="barChartType">
           </canvas>
         </div>
       </mat-tab>
@@ -173,7 +167,6 @@
           <mat-icon class="example-tab-icon">settings</mat-icon>
           Customize
         </ng-template>
-
         <mat-accordion class="example-headers-align">
           <mat-expansion-panel>
             <mat-expansion-panel-header>
@@ -184,7 +177,6 @@
                 Customize Line chart here..
               </mat-panel-description>
             </mat-expansion-panel-header>
-
             <div flex fxLayout="row" fxLayoutAlign="flex-start" fxLayout.lt-sm="column">
               <div fxFlex="100%" fxLayout="column" fxLayout.lt-sm="row">
                 <div fxLayout="row" fxLayout.lt-sm="column">
@@ -374,6 +366,7 @@
                 Customize Scales here..
               </mat-panel-description>
             </mat-expansion-panel-header>
+
             <div flex fxLayout="row" fxLayoutAlign="center" fxLayout.lt-sm="column">
               <div fxFlex="23">
                 <mat-form-field style="width:100%">
@@ -431,8 +424,8 @@
             <mat-action-row>
               <button mat-button (click)="updatechart();">Update</button>
             </mat-action-row>
-          </mat-expansion-panel>
-
+          
+            </mat-expansion-panel>
         </mat-accordion>
       </mat-tab>
     </mat-tab-group>
@@ -446,6 +439,6 @@
   </button>
   <div fxFlex="5"></div>
   <button mat-raised-button style="background-color: rgba(65, 204, 65, 0.700);" (click)="ExecuteAgain()">
-    <mat-icon style="vertical-align: middle;margin-right: 5px">done_all</mat-icon>Next
+    <mat-icon style="vertical-align: middle;margin-right: 5px">done_all</mat-icon>Submit
   </button>
 </div>
