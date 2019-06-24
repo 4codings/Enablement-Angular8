@@ -124,7 +124,7 @@
           Line Chart
         </ng-template>
         <div>
-          <canvas baseChart *ngIf="lineChartData" [data]="lineChartData" [labels]="lineChartLabels"
+          <canvas baseChart *ngIf="lineChartData" [datasets]="lineChartData" [labels]="lineChartLabels"
             [options]="lineChartOptions" [colors]="lineChartColors" [chartType]="lineChartType">
           </canvas>
         </div>
@@ -136,7 +136,7 @@
           Bar Chart
         </ng-template>
         <div>
-          <canvas baseChart *ngIf="barChartData" [data]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+          <canvas baseChart *ngIf="barChartData" [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
             [colors]="barChartColors" [chartType]="barChartType">
           </canvas>
         </div>
@@ -148,7 +148,7 @@
           Pie Chart
         </ng-template>
 
-        <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType">
+        <canvas baseChart [datasets]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType">
         </canvas>
       </mat-tab>
 
@@ -158,7 +158,7 @@
           Doughnut Chart
         </ng-template>
 
-        <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType">
+        <canvas baseChart [datasets]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType">
         </canvas>
       </mat-tab>
 
@@ -167,7 +167,8 @@
           <mat-icon class="example-tab-icon">settings</mat-icon>
           Customize
         </ng-template>
-        <mat-accordion class="example-headers-align">
+        <mat-accordion multi=true>
+            
           <mat-expansion-panel>
             <mat-expansion-panel-header>
               <mat-panel-title>
@@ -177,6 +178,7 @@
                 Customize Line chart here..
               </mat-panel-description>
             </mat-expansion-panel-header>
+            <ng-template matExpansionPanelContent>
             <div flex fxLayout="row" fxLayoutAlign="flex-start" fxLayout.lt-sm="column">
               <div fxFlex="100%" fxLayout="column" fxLayout.lt-sm="row">
                 <div fxLayout="row" fxLayout.lt-sm="column">
@@ -323,6 +325,7 @@
             <mat-action-row>
               <button mat-button (click)="setchartstyling();updateLineChart();">Update</button>
             </mat-action-row>
+            </ng-template>
           </mat-expansion-panel>
           <mat-expansion-panel>
             <mat-expansion-panel-header>
@@ -333,7 +336,6 @@
                 Customize Bar chart here..
               </mat-panel-description>
             </mat-expansion-panel-header>
-
           </mat-expansion-panel>
           <mat-expansion-panel>
             <mat-expansion-panel-header>
