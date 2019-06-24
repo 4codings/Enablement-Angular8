@@ -12,6 +12,7 @@ import { InputArtComponent } from './execute/Input_Art/InputArt.component';
 import { RepeatableFormComponent } from './execute/repeatable-form/repeatable-form.component';
 import { NonRepeatableFormComponent } from './execute/non-repeatable-form/non-repeatable-form.component';
 import { ReportTableComponent } from './report-table/report-table.component';
+import { ProcessDesignComponent } from './process-design/process-design.component';
 
 const routes: Routes = [{
   path: '',
@@ -23,6 +24,7 @@ const routes: Routes = [{
     { path: 'Exception', component: ExceptionComponent },
     { path: 'ScheduleAction', component: SchdActnComponent },
     { path: 'Process', component: ProcessComponent },
+    { path: 'Design', component: ProcessDesignComponent },
     { path: 'Orchestrate', component: OrchestrateComponent },
     { path: 'Dashboard', component: DashboardComponent },
   ]

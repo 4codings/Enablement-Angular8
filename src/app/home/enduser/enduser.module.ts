@@ -28,6 +28,7 @@ import { DialogChartsComponent } from './report-table/dialog-charts/dialog-chart
 import { MyFilterPipe, SplitLastPipe } from './execute/MyFilterPipe ';
 import { MyFilterPipe1 } from './schd-actn/myFilterPipe1';
 import { DeleteConfirmComponent } from './execute/delete-confirm/delete-confirm.component';
+import { ProcessDesignComponent } from './process-design/process-design.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { DeleteConfirmComponent } from './execute/delete-confirm/delete-confirm.
     RepeatableFormComponent,
     ReportTableComponent,
     DialogChartsComponent,
-    DeleteConfirmComponent
+    DeleteConfirmComponent,
+    ProcessDesignComponent
   ],
   imports: [
     CommonModule,
