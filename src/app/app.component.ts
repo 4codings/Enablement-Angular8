@@ -9,8 +9,6 @@ import { ApiService } from './service/api/api.service';
 import { MatDialog } from '@angular/material';
 import { KeepAliveDialog } from './home/home.component';
 
-declare var $;
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -33,12 +31,12 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     // this.api.http.apiUrl = environment.apiUrl;
     if (environment.production) {
-      $(document).keydown(function (e) {
+      document.addEventListener('keydown', (e) => {
         if (e.which === 123) {
           return false;
         }
       });
-      $(document).bind("contextmenu", function (e) {
+      document.addEventListener('contextmenu', e => {
         e.preventDefault();
       });
       this.initHomeRedirect();
