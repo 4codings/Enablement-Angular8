@@ -23,6 +23,7 @@ export class ApiService {
 		secure: `${this.securedApiUrl}/secured?`,
 		insecureProcessReport: `${this.insecureUrl}/Process/Report`,
 		secureProcessReport: `${this.securedApiUrl}/secured/Process/Report`,
+		secureProcessReportSubmit: `${this.securedApiUrl}/secured/Process/ReportSubmit`,
 		secureProcessStart: `${this.securedApiUrl}/secured/Process/Start`,
 		insecureProcessStart: `${this.insecureUrl}/Process/Start`,
 		secureFormSubmit: `${this.securedApiUrl}/secured/FormSubmit`,

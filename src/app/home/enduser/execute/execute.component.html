@@ -309,13 +309,13 @@
 
   <div fxFlex="100" class="parent">
 
-    <button mat-raised-button mat-button color="primary" [disabled]="!Execute_Now_btn" (click)="add();Execute_Now()">
+    <button mat-raised-button color="primary" [disabled]="!Execute_Now_btn" (click)="add();Execute_Now()">
       <mat-icon class="iconmod">play_arrow</mat-icon>Execute Now
     </button>
 
     &nbsp;&nbsp;
 
-    <button mat-raised-button mat-button color="primary" [disabled]="!Schedule_btn"
+    <button mat-raised-button color="primary" [disabled]="!Schedule_btn"
       (click)="add();repeatURL();openEmojiDialog()">
       <mat-icon class="iconmod">schedule</mat-icon>Execute Later
     </button>
