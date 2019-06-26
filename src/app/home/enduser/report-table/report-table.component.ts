@@ -10,6 +10,7 @@ import { Globals2 } from 'src/app/service/globals';
 import { EndUserService } from 'src/app/services/EndUser-service';
 import { ApiService } from 'src/app/service/api/api.service';
 import { StorageSessionService } from 'src/app/services/storage-session.service';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-report-table',
@@ -19,6 +20,7 @@ import { StorageSessionService } from 'src/app/services/storage-session.service'
 })
 
 export class ReportTableComponent implements OnInit, AfterViewInit {
+  myControl = new FormControl();
   columnsToDisplayKeys: string[];
   domain_name = this.globals.domain_name;
   private aptUrlPost_report = "https://" + this.domain_name + "/rest/Process/Report";
@@ -60,6 +62,9 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   disptable: boolean;
   Select_show_option: any = ["Table", "Charts", "Both"];
   show_choice = "Table";
+  selectedchart = "linechart_sel";
+  selectedcustomize = "";
+
   getReportData() {
 
     this.Table_of_Data = this.dataStored.getCookies('report_table')['RESULT'];
