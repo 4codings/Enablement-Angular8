@@ -31,7 +31,7 @@
     "angular-file": "^1.0.2",
     "angular-user-idle": "^2.1.2",
     "angular2-ladda": "^2.0.1",
-    "bpmn-js": "^3.4.3",
+    "bpmn-js": "^4.0.0-beta.6",
     "bpmn-js-properties-panel": "^0.31.0",
     "chart.js": "^2.8.0",
     "chartjs-plugin-annotation": "^0.5.7",
