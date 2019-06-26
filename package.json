@@ -51,6 +51,7 @@
     "ngx-loading": "^3.0.1",
     "ngx-store": "^2.1.0",
     "ngx-toastr": "^10.0.2",
+    "ngx-treeview": "^6.0.2",
     "npm": "^6.9.0",
     "rxjs": "^6.4.0",
     "rxjs-compat": "^6.4.0",
