@@ -44,15 +44,321 @@
 <div fxLayout="row" fxLayoutAlign="center center">
   <div fxLayout="column" style="width:230px">
     <div fxLayout="row" fxLayoutAlign="space-evenly">
-        <mat-radio-group [(ngModel)]="show_choice" fxLayout="row">
-            <mat-radio-button style="margin-left:15px;" (click)="showhide(cn);" *ngFor="let cn of Select_show_option"
-                [value]="cn">
-                {{cn}}
-            </mat-radio-button>
-        </mat-radio-group>
+      <mat-radio-group [(ngModel)]="show_choice" fxLayout="row">
+        <mat-radio-button style="margin-left:10px;margin-right:10px;" (click)="showhide(cn);"
+          *ngFor="let cn of Select_show_option" [value]="cn">
+          {{cn}}
+        </mat-radio-button>
+      </mat-radio-group>
     </div>
   </div>
 </div>
+
+<!-- --------------------Chart------------------------- -->
+<div fxLayout="column" fxLayoutAlign="center" *ngIf="dispchart">
+  <div style="justify-content: center">
+    <mat-form-field>
+      <mat-label>Select chart type</mat-label>
+      <mat-select [(value)]="selectedchart">
+        <mat-option value="">None</mat-option>
+        <mat-option value="linechart_sel">Line Chart</mat-option>
+        <mat-option value="barchart_sel">Bar Chart</mat-option>
+        <mat-option value="piechart_sel">Pie Chart</mat-option>
+        <mat-option value="doughnutchart_sel">Doughnut Chart</mat-option>
+        <mat-option value="ganttchart_sel">Gantt Chart</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div flex fxFlex="10"></div>
+    <mat-form-field>
+      <mat-label>Settings</mat-label>
+      <mat-select [(value)]="selectedcustomize">
+        <mat-option value="">None</mat-option>
+        <mat-option value="managedata_sel">
+          Manage datasets
+        </mat-option>
+        <mat-option value="customizechart_sel">
+          Customize charts
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div flex fxLayout="row" fxFlex="75" style="justify-content: center">
+    <!-- <mat-tab-group>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="example-tab-icon">show_chart</mat-icon>
+          Line Chart
+        </ng-template> -->
+    <div *ngIf="selectedchart === 'linechart_sel'">
+      <canvas baseChart *ngIf="lineChartData" [datasets]="lineChartData" [labels]="lineChartLabels"
+        [options]="lineChartOptions" [colors]="lineChartColors" [chartType]="lineChartType">
+      </canvas>
+    </div>
+    <!-- </mat-tab>
+
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="example-tab-icon">bar_chart</mat-icon>
+          Bar Chart
+        </ng-template> -->
+    <div *ngIf="selectedchart === 'barchart_sel'">
+      <canvas baseChart *ngIf="barChartData" [datasets]="barChartData" [labels]="barChartLabels"
+        [options]="barChartOptions" [colors]="barChartColors" [chartType]="barChartType">
+      </canvas>
+    </div>
+    <!-- </mat-tab>
+
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="example-tab-icon">pie_chart</mat-icon>
+          Pie Chart
+        </ng-template> -->
+    <div *ngIf="selectedchart === 'piechart_sel'">
+      <canvas baseChart [datasets]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType">
+      </canvas>
+    </div>
+    <!-- </mat-tab>
+
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="example-tab-icon">donut_large</mat-icon>
+          Doughnut Chart
+        </ng-template> -->
+    <div *ngIf="selectedchart === 'doughnutchart_sel'">
+      <canvas baseChart [datasets]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType">
+      </canvas>
+    </div>
+  </div>
+    <!-- </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="example-tab-icon">donut_large</mat-icon>
+          Scale Options
+        </ng-template> -->
+    <div *ngIf="selectedcustomize === 'managedata_sel'">
+      <div flex fxFlex="75" fxLayout="row" fxLayoutAlign="center" fxLayout.lt-sm="column">
+        <div fxFlex="23">
+          <mat-form-field style="width:100%">
+            <mat-select placeholder="Select X-axis" [(value)]="_xaxis_sel">
+              <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" value="{{items}}">
+                {{items}} </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div fxFlex="4"></div>
+        <div fxFlex="23">
+          <mat-form-field style="width:100%">
+            <mat-select placeholder="Select Y-axis-1" [(value)]="_yaxis1_sel">
+              <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" value="{{items}}">
+                {{items}} </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div fxFlex="4"></div>
+        <div fxFlex="23">
+          <mat-form-field style="width:100%">
+            <mat-select placeholder="Select Y-axis-2" [(value)]="_yaxis2_sel">
+              <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" value="{{items}}">
+                {{items}} </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div fxFlex="4"></div>
+        <div fxFlex="23">
+          <form>
+            <mat-form-field style="width:100%">
+              <input type="text" placeholder="Unit of measure" matInput [formControl]="myControl"
+                [matAutocomplete]="auto" [(value)]="_yaxisCB">
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let option of yaxiscallbacks" value="{{option}}">
+                  {{option}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </form>
+        </div>
+      </div>
+      <div flex fxFlex="75" fxLayout="row" style="justify-content: center">
+        <mat-form-field fxFlex="15">
+          <input matInput type="number" placeholder="Static Min" min=0 [(ngModel)]="_yaxismin">
+        </mat-form-field>
+        <div fxFlex="5"></div>
+        <mat-form-field fxFlex="15">
+          <input matInput type="number" placeholder="Static Max" min=0 [(ngModel)]="_yaxismax">
+        </mat-form-field>
+        <div fxFlex="5"></div>
+        <mat-form-field fxFlex="15">
+          <input matInput type="number" placeholder="Y-Step Size" min=0 [(ngModel)]="_yaxisstepSize">
+        </mat-form-field>
+        <div fxFlex="5"></div>
+        <div fxFlex="20" fxLayoutAlign="center center">
+          <mat-slide-toggle color="primary" [(ngModel)]="_yaxisAutoskip">Y-Autoskip</mat-slide-toggle>
+        </div>
+        <br>
+        <button mat-raised-button color="primary" (click)="updatechart();">Update</button>
+      </div>
+    </div>
+    <!-- </mat-tab>
+       <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="example-tab-icon">settings</mat-icon>
+          Customize
+        </ng-template>
+        <mat-accordion multi=true>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <strong> Line/Bar Chart</strong>
+              </mat-panel-title>
+              <mat-panel-description>
+                Customize chart options here..
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <ng-template matExpansionPanelContent> -->
+    <div *ngIf="selectedcustomize === 'customizechart_sel'">
+      <div flex fxLayout="row" fxLayoutAlign="flex-start" fxLayout.lt-sm="column">
+        <div fxFlex="100%" fxLayout="column" fxLayout.lt-sm="row">
+          <div fxLayout="row" fxLayout.lt-sm="column">
+            <div fxFlex="50">Background Color</div>
+            <br>
+
+            <div fxLayoutAlign="center center">
+              <input class="colorselector" [(value)]="_backgroundColor" [style.background]="_backgroundColor"
+                [(colorPicker)]="_backgroundColor" [cpAlphaChannel]="'always'" [cpOutputFormat]="'rgba'"
+                [cpOKButton]="true" [cpCancelButton]="true" [cpSaveClickOutside]="true"
+                [cpOKButtonClass]="'btn btn-primary btn-xs'" [cpCancelButtonClass]="'btn btn-primary btn-xs'" />
+            </div>
+          </div>
+          <div fxFlex="5"></div>
+          <div fxLayout="row" fxLayout.lt-sm="column">
+            <div fxFlex="50">Border Color</div>
+            <br>
+            <div fxLayoutAlign="center center">
+              <input class="colorselector" [(value)]="_borderColor" [style.background]="_borderColor"
+                [(colorPicker)]="_borderColor" [cpAlphaChannel]="'always'" [cpOutputFormat]="'rgba'" [cpOKButton]="true"
+                [cpCancelButton]="true" [cpSaveClickOutside]="true" [cpOKButtonClass]="'btn btn-primary btn-xs'"
+                [cpCancelButtonClass]="'btn btn-primary btn-xs'" />
+            </div>
+          </div>
+          <div fxFlex="5"></div>
+          <div fxLayout="row" fxLayout.lt-sm="column">
+            <div fxFlex="50">Fill Background</div>
+            <br>
+
+            <div fxLayoutAlign="center center">
+              <mat-slide-toggle class="example-margin" color="primary" [(ngModel)]="_fill"></mat-slide-toggle>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div fxFlex="100%" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="center center">
+          <div fxLayout="column" style="text-align:center">
+            <div fxLayoutAlign="center">Line Tension</div>
+            <div>
+              <mat-button-toggle-group [(value)]="_linetension">
+                <mat-button-toggle value="none">None</mat-button-toggle>
+                <mat-button-toggle value="mild">Mild</mat-button-toggle>
+                <mat-button-toggle value="full">Full</mat-button-toggle>
+              </mat-button-toggle-group>
+            </div>
+          </div>
+          <div fxFlex="5" style="width: 100%"></div>
+          <br>
+          <div fxLayout="column" style="text-align:center">
+            <div fxLayoutAlign="center">Point Size</div>
+            <div>
+              <mat-button-toggle-group [(value)]="_pointradius">
+                <mat-button-toggle value="small">Small</mat-button-toggle>
+                <mat-button-toggle value="normal">Normal</mat-button-toggle>
+                <mat-button-toggle value="large">Large</mat-button-toggle>
+              </mat-button-toggle-group>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div fxFlex="75" flex fxLayout="row" fxLayoutAlign="center" fxLayout.lt-sm="column">
+        <div fxFlex="27">
+          <mat-form-field style="width:100%">
+            <mat-select placeholder="Animations" [(value)]="_animations">
+              <mat-option style="text-align:center;" value="linear"> linear </mat-option>
+              <mat-option style="text-align:center;" value="easeInOutQuad"> easeInOutQuad </mat-option>
+              <mat-option style="text-align:center;" value="easeInCubic"> easeInCubic </mat-option>
+              <mat-option style="text-align:center;" value="easeOutCubic"> easeOutCubic </mat-option>
+              <mat-option style="text-align:center;" value="easeInQuad"> easeInQuad </mat-option>
+              <mat-option style="text-align:center;" value="easeOutQuad"> easeOutQuad </mat-option>
+              <mat-option style="text-align:center;" value="easeInQuart"> easeInQuart </mat-option>
+              <mat-option style="text-align:center;" value="easeOutQuart"> easeOutQuart </mat-option>
+              <mat-option style="text-align:center;" value="easeInSine"> easeInSine </mat-option>
+              <mat-option style="text-align:center;" value="easeOutSine"> easeOutSine </mat-option>
+              <mat-option style="text-align:center;" value="easeInElastic"> easeInElastic </mat-option>
+              <mat-option style="text-align:center;" value="easeInBack"> easeInBack </mat-option>
+              <mat-option style="text-align:center;" value="easeOutBack"> easeOutBack </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div fxFlex="9"></div>
+        <div fxFlex="27">
+          <mat-form-field style="width:100%;cursor: pointer;">
+            <input matInput placeholder="Point Style" [(ngModel)]="_pointstyle" [matAutocomplete]="auto1"
+              class="autosel">
+            <mat-autocomplete #auto1="matAutocomplete">
+              <mat-option style="text-align:center;" value="circle">
+                <mat-icon>fiber_manual_record</mat-icon> Circle
+              </mat-option>
+              <mat-option style="text-align:center;" value="triangle">
+                <mat-icon>change_history</mat-icon> Triangle
+              </mat-option>
+              <mat-option style="text-align:center;" value="rect">
+                <mat-icon>crop_7_5</mat-icon> Rectangle
+              </mat-option>
+              <mat-option style="text-align:center;" value="rectRounded">
+                <mat-icon>check_box_outline_blank</mat-icon> RectRounded
+              </mat-option>
+              <mat-option style="text-align:center;" value="rectRot">
+                <mat-icon>layers</mat-icon>RectRot
+              </mat-option>
+              <mat-option style="text-align:center;" value="cross">
+                <mat-icon>add</mat-icon> Cross
+              </mat-option>
+              <mat-option style="text-align:center;" value="crossRot">
+                <mat-icon>clear</mat-icon> CrossRot
+              </mat-option>
+              <mat-option style="text-align:center;" value="star">
+                <mat-icon>ac_unit</mat-icon> Star
+              </mat-option>
+            </mat-autocomplete>
+            <mat-icon style="vertical-align: middle" matSuffix>arrow_drop_down</mat-icon>
+          </mat-form-field>
+        </div>
+        <div fxFlex="9"></div>
+        <div fxFlex="27">
+          <mat-form-field style="width:100%;cursor: pointer;">
+            <input matInput placeholder="Line Style" [(ngModel)]="_linestyle" [matAutocomplete]="auto" class="autosel">
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option style="text-align:center;" value="solid">
+                <mat-icon>remove</mat-icon>Solid
+              </mat-option>
+              <mat-option style="text-align:center;" value="dashed">
+                <mat-icon>more_horiz</mat-icon>Dashed
+              </mat-option>
+            </mat-autocomplete>
+            <mat-icon style="vertical-align: middle" matSuffix>arrow_drop_down</mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+      <!-- <mat-action-row> -->
+      <button mat-raised-button color="primary" (click)="setchartstyling();updatechart();">Update</button>
+    </div>
+    <!-- </mat-action-row>
+            </ng-template>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </mat-tab>
+    </mat-tab-group> -->
+</div>
+<!-- --------------------Chart------------------------- -->
+
 <!-- ________________________________________________________________________ -->
 <div class="mat-elevation-z8" fxShow="true" fxHide.xs="true" *ngIf="disptable">
   <!-- <mat-card id="mat_card">
@@ -114,326 +420,6 @@
         </div>
       </div> 
     </div>  -->
-<!-- --------------------Chart------------------------- -->
-<div flex fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="center" *ngIf="dispchart">
-  <div fxFlex="75">
-    <mat-tab-group>
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <mat-icon class="example-tab-icon">show_chart</mat-icon>
-          Line Chart
-        </ng-template>
-        <div>
-          <canvas baseChart *ngIf="lineChartData" [datasets]="lineChartData" [labels]="lineChartLabels"
-            [options]="lineChartOptions" [colors]="lineChartColors" [chartType]="lineChartType">
-          </canvas>
-        </div>
-      </mat-tab>
-
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <mat-icon class="example-tab-icon">bar_chart</mat-icon>
-          Bar Chart
-        </ng-template>
-        <div>
-          <canvas baseChart *ngIf="barChartData" [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
-            [colors]="barChartColors" [chartType]="barChartType">
-          </canvas>
-        </div>
-      </mat-tab>
-
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <mat-icon class="example-tab-icon">pie_chart</mat-icon>
-          Pie Chart
-        </ng-template>
-
-        <canvas baseChart [datasets]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType">
-        </canvas>
-      </mat-tab>
-
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <mat-icon class="example-tab-icon">donut_large</mat-icon>
-          Doughnut Chart
-        </ng-template>
-
-        <canvas baseChart [datasets]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType">
-        </canvas>
-      </mat-tab>
-
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <mat-icon class="example-tab-icon">settings</mat-icon>
-          Customize
-        </ng-template>
-        <mat-accordion multi=true>
-            
-          <mat-expansion-panel>
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                <strong> Line Chart</strong>
-              </mat-panel-title>
-              <mat-panel-description>
-                Customize Line chart here..
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-            <ng-template matExpansionPanelContent>
-            <div flex fxLayout="row" fxLayoutAlign="flex-start" fxLayout.lt-sm="column">
-              <div fxFlex="100%" fxLayout="column" fxLayout.lt-sm="row">
-                <div fxLayout="row" fxLayout.lt-sm="column">
-                  <div fxFlex="50">Background Color</div>
-                  <br>
-
-                  <div fxLayoutAlign="center center">
-                    <input class="colorselector" [(value)]="_backgroundColor" [style.background]="_backgroundColor"
-                      [(colorPicker)]="_backgroundColor" [cpAlphaChannel]="'always'" [cpOutputFormat]="'rgba'"
-                      [cpOKButton]="true" [cpCancelButton]="true" [cpSaveClickOutside]="true"
-                      [cpOKButtonClass]="'btn btn-primary btn-xs'" [cpCancelButtonClass]="'btn btn-primary btn-xs'" />
-                  </div>
-                </div>
-                <div fxFlex="5"></div>
-                <div fxLayout="row" fxLayout.lt-sm="column">
-                  <div fxFlex="50">Border Color</div>
-                  <br>
-                  <div fxLayoutAlign="center center">
-                    <input class="colorselector" [(value)]="_borderColor" [style.background]="_borderColor"
-                      [(colorPicker)]="_borderColor" [cpAlphaChannel]="'always'" [cpOutputFormat]="'rgba'"
-                      [cpOKButton]="true" [cpCancelButton]="true" [cpSaveClickOutside]="true"
-                      [cpOKButtonClass]="'btn btn-primary btn-xs'" [cpCancelButtonClass]="'btn btn-primary btn-xs'" />
-                  </div>
-                </div>
-                <div fxFlex="5"></div>
-                <div fxLayout="row" fxLayout.lt-sm="column">
-                  <div fxFlex="50">Fill Background</div>
-                  <br>
-
-                  <div fxLayoutAlign="center center">
-                    <mat-slide-toggle class="example-margin" color="primary" [(ngModel)]="_fill"></mat-slide-toggle>
-                  </div>
-                </div>
-              </div>
-              <br>
-              <div fxFlex="100%" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="center center">
-                <div fxLayout="column" style="text-align:center">
-                  <div fxLayoutAlign="center">Line Tension</div>
-                  <div>
-                    <mat-button-toggle-group [(value)]="_linetension">
-                      <mat-button-toggle value="none">None</mat-button-toggle>
-                      <mat-button-toggle value="mild">Mild</mat-button-toggle>
-                      <mat-button-toggle value="full">Full</mat-button-toggle>
-                    </mat-button-toggle-group>
-                  </div>
-                </div>
-                <div fxFlex="5" style="width: 100%"></div>
-                <br>
-                <div fxLayout="column" style="text-align:center">
-                  <div fxLayoutAlign="center">Point Size</div>
-                  <div>
-                    <mat-button-toggle-group [(value)]="_pointradius">
-                      <mat-button-toggle value="small">Small</mat-button-toggle>
-                      <mat-button-toggle value="normal">Normal</mat-button-toggle>
-                      <mat-button-toggle value="large">Large</mat-button-toggle>
-                    </mat-button-toggle-group>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <br>
-            <div flex fxLayout="row" fxLayoutAlign="center" fxLayout.lt-sm="column">
-              <div fxFlex="27">
-                <mat-form-field style="width:100%">
-                  <mat-select placeholder="Animations" [(value)]="_animations">
-                    <mat-option style="text-align:center;" value="linear"> linear </mat-option>
-                    <mat-option style="text-align:center;" value="easeInQuad"> easeInQuad </mat-option>
-                    <mat-option style="text-align:center;" value="easeOutQuad"> easeOutQuad </mat-option>
-                    <mat-option style="text-align:center;" value="easeInOutQuad"> easeInOutQuad </mat-option>
-                    <mat-option style="text-align:center;" value="easeInCubic"> easeInCubic </mat-option>
-                    <mat-option style="text-align:center;" value="easeOutCubic"> easeOutCubic </mat-option>
-                    <mat-option style="text-align:center;" value="easeInQuad"> easeInQuad </mat-option>
-                    <mat-option style="text-align:center;" value="easeOutQuad"> easeOutQuad </mat-option>
-                    <mat-option style="text-align:center;" value="easeInQuart"> easeInQuart </mat-option>
-                    <mat-option style="text-align:center;" value="easeOutQuart"> easeOutQuart </mat-option>
-                    <mat-option style="text-align:center;" value="easeInSine"> easeInSine </mat-option>
-                    <mat-option style="text-align:center;" value="easeOutSine"> easeOutSine </mat-option>
-                    <mat-option style="text-align:center;" value="easeInElastic"> easeInElastic </mat-option>
-                    <mat-option style="text-align:center;" value="easeInBack"> easeInBack </mat-option>
-                    <mat-option style="text-align:center;" value="easeOutBack"> easeOutBack </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-              <div fxFlex="9"></div>
-              <div fxFlex="27">
-                <mat-form-field style="width:100%;cursor: pointer;">
-                  <input matInput placeholder="Point Style" [(ngModel)]="_pointstyle" [matAutocomplete]="auto1"
-                    class="autosel">
-                  <mat-autocomplete #auto1="matAutocomplete">
-                    <mat-option style="text-align:center;" value="circle">
-                      <mat-icon>fiber_manual_record</mat-icon> Circle
-                    </mat-option>
-                    <mat-option style="text-align:center;" value="triangle">
-                      <mat-icon>change_history</mat-icon> Triangle
-                    </mat-option>
-                    <mat-option style="text-align:center;" value="rect">
-                      <mat-icon>crop_7_5</mat-icon> Rectangle
-                    </mat-option>
-                    <mat-option style="text-align:center;" value="rectRounded">
-                      <mat-icon>check_box_outline_blank</mat-icon> RectRounded
-                    </mat-option>
-                    <mat-option style="text-align:center;" value="rectRot">
-                      <mat-icon>layers</mat-icon>RectRot
-                    </mat-option>
-                    <mat-option style="text-align:center;" value="cross">
-                      <mat-icon>add</mat-icon> Cross
-                    </mat-option>
-                    <mat-option style="text-align:center;" value="crossRot">
-                      <mat-icon>clear</mat-icon> CrossRot
-                    </mat-option>
-                    <mat-option style="text-align:center;" value="star">
-                      <mat-icon>ac_unit</mat-icon> Star
-                    </mat-option>
-                  </mat-autocomplete>
-                  <mat-icon style="vertical-align: middle" matSuffix>arrow_drop_down</mat-icon>
-                </mat-form-field>
-              </div>
-              <div fxFlex="9"></div>
-              <div fxFlex="27">
-                <mat-form-field style="width:100%;cursor: pointer;">
-                  <input matInput placeholder="Line Style" [(ngModel)]="_linestyle" [matAutocomplete]="auto"
-                    class="autosel">
-                  <mat-autocomplete #auto="matAutocomplete">
-                    <mat-option style="text-align:center;" value="solid">
-                      <mat-icon>remove</mat-icon>Solid
-                    </mat-option>
-                    <mat-option style="text-align:center;" value="dashed">
-                      <mat-icon>more_horiz</mat-icon>Dashed
-                    </mat-option>
-                  </mat-autocomplete>
-                  <mat-icon style="vertical-align: middle" matSuffix>arrow_drop_down</mat-icon>
-                </mat-form-field>
-              </div>
-              <!-- <div fxFlex="27">
-                <mat-form-field style="width:100%">
-                    <mat-select placeholder="Line Style" [(value)]="_linestyle" >
-                      <mat-option style="text-align:center;"  value="solid"><mat-icon>remove</mat-icon>Solid </mat-option>
-                      <mat-option style="text-align:center;"  value="dashed"><mat-icon>more_horiz</mat-icon> Dashed  </mat-option>
-                      
-                    </mat-select>
-                  </mat-form-field>
-            </div> -->
-            </div>
-            <mat-action-row>
-              <button mat-button (click)="setchartstyling();updateLineChart();">Update</button>
-            </mat-action-row>
-            </ng-template>
-          </mat-expansion-panel>
-          <mat-expansion-panel>
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                <strong> Bar Chart</strong>
-              </mat-panel-title>
-              <mat-panel-description>
-                Customize Bar chart here..
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-          </mat-expansion-panel>
-          <mat-expansion-panel>
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                <strong> Pie Chart</strong>
-              </mat-panel-title>
-              <mat-panel-description>
-                Customize Pie chart here..
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-
-          </mat-expansion-panel>
-          <mat-expansion-panel>
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                <strong> Doughnut Chart</strong>
-              </mat-panel-title>
-              <mat-panel-description>
-                Customize Doughnut chart here..
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-
-          </mat-expansion-panel>
-          <mat-expansion-panel>
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                <strong> Scale Options</strong>
-              </mat-panel-title>
-              <mat-panel-description>
-                Customize Scales here..
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-
-            <div flex fxLayout="row" fxLayoutAlign="center" fxLayout.lt-sm="column">
-              <div fxFlex="23">
-                <mat-form-field style="width:100%">
-                  <mat-select placeholder="Select X-axis" [(value)]="_xaxis_sel">
-                    <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" value="{{items}}">
-                      {{items}} </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-              <div fxFlex="4"></div>
-              <div fxFlex="23">
-                <mat-form-field style="width:100%">
-                  <mat-select placeholder="Select Y-axis-1" [(value)]="_yaxis1_sel">
-                    <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" value="{{items}}">
-                      {{items}} </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-              <div fxFlex="4"></div>
-              <div fxFlex="23">
-                <mat-form-field style="width:100%">
-                  <mat-select placeholder="Select Y-axis-2" [(value)]="_yaxis2_sel">
-                    <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" value="{{items}}">
-                      {{items}} </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-              <div fxFlex="4"></div>
-              <div fxFlex="23">
-                <mat-form-field style="width:100%">
-                  <mat-select placeholder="Select Y-axis Callback" [(value)]="_yaxisCB">
-                    <mat-option style="text-align:center;" *ngFor="let items of yaxiscallbacks" value="{{items}}">
-                      {{items}} </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-            </div>
-            <div flex fxLayout="row" style="justify-content: center">
-              <mat-form-field fxFlex="15">
-                <input matInput type="number" placeholder="Static Min" min=0 [(ngModel)]="_yaxismin">
-              </mat-form-field>
-              <div fxFlex="5"></div>
-              <mat-form-field fxFlex="15">
-                <input matInput type="number" placeholder="Static Max" min=0 [(ngModel)]="_yaxismax">
-              </mat-form-field>
-              <div fxFlex="5"></div>
-              <mat-form-field fxFlex="15">
-                <input matInput type="number" placeholder="Y-Step Size" min=0 [(ngModel)]="_yaxisstepSize">
-              </mat-form-field>
-              <div fxFlex="5"></div>
-              <div fxFlex="15" fxLayoutAlign="center center">
-                <mat-slide-toggle color="primary" [(ngModel)]="_yaxisAutoskip">Y-Autoskip</mat-slide-toggle>
-              </div>
-            </div>
-            <mat-action-row>
-              <button mat-button (click)="updatechart();">Update</button>
-            </mat-action-row>
-          
-            </mat-expansion-panel>
-        </mat-accordion>
-      </mat-tab>
-    </mat-tab-group>
-  </div>
-</div>
-<!-- --------------------Chart------------------------- -->
 <div flex fxLayout="row" fxLayoutAlign="center">
 
   <button mat-raised-button (click)="Redirect_to_user()" style="background-color: rgba(187, 38, 38, 0.700);">

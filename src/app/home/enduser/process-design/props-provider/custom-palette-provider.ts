@@ -12,15 +12,6 @@ export class CustomPaletteProvider implements IPaletteProvider {
   }
 
   getPaletteEntries() {
-    return {
-      save: {
-        group: 'tools',
-        className: ['fa-save', 'fa'],
-        title: 'TEST',
-        action: {
-          click: () => console.log('TEST Action clicked! Elementfactory: ', this.elementFactory)
-        }
-      }
-    };
+    return {};
   }
 }

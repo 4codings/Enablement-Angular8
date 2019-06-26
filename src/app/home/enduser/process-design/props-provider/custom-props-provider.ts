@@ -8,23 +8,6 @@ export class CustomPropsProvider implements IPropertiesProvider {
   }
 
   getTabs(element) {
-    return this.bpmnPropertiesProvider.getTabs(element)
-      .concat({
-        id: 'custom',
-        label: this.translate('Custom'),
-        groups: [
-          {
-            id: 'customText',
-            label: this.translate('customText'),
-            entries: [
-              EntryFactory.textBox({
-                id: 'custom',
-                label: this.translate('customText'),
-                modelProperty: 'customText'
-              }),
-            ]
-          }
-        ]
-      });
+    return this.bpmnPropertiesProvider.getTabs(element);
   }
 }

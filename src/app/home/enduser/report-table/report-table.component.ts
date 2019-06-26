@@ -10,6 +10,7 @@ import { Globals2 } from 'src/app/service/globals';
 import { EndUserService } from 'src/app/services/EndUser-service';
 import { ApiService } from 'src/app/service/api/api.service';
 import { StorageSessionService } from 'src/app/services/storage-session.service';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-report-table',
@@ -19,6 +20,7 @@ import { StorageSessionService } from 'src/app/services/storage-session.service'
 })
 
 export class ReportTableComponent implements OnInit, AfterViewInit {
+  myControl = new FormControl();
   columnsToDisplayKeys: string[];
   domain_name = this.globals.domain_name;
   private aptUrlPost_report = "https://" + this.domain_name + "/rest/Process/Report";
@@ -38,7 +40,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   pointer = 0;
   V_SRC_CD: string = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
   V_USR_NM: string = JSON.parse(sessionStorage.getItem('u')).USR_NM;
-  Exe_data = this.dataStored.getSession("Exe_data");
+  Exe_data = this.dataStored.getCookies("executedata");
   iddata: any[] = [];
   Table_of_Data: any[];
   Table_of_Data1: any[];
@@ -60,6 +62,9 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   disptable: boolean;
   Select_show_option: any = ["Table", "Charts", "Both"];
   show_choice = "Table";
+  selectedchart = "linechart_sel";
+  selectedcustomize = "";
+
   getReportData() {
 
     this.Table_of_Data = this.dataStored.getCookies('report_table')['RESULT'];
@@ -131,7 +136,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   lineten: number = 0;
   pointrad: number = 8;
   chartlabels = [];
-  chartdata = [
+  linedata = [
     {
       data: this.yaxis_data1,
       label: this._yaxis1_sel,
@@ -140,20 +145,14 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
       pointRadius: this.pointrad,
       pointStyle: this._pointstyle,
       yAxisID: 'y-1'
-    },
-    {
-      label: this._yaxis2_sel,
-      fill: this._fill,
-      borderDash: this._borderdash,
-      pointRadius: this.pointrad,
-      pointStyle: this._pointstyle,
-      data: this.yaxis_data2,
-      yAxisID: 'y-2'
     }
   ];
+  bardata = [{data: this.yaxis_data1,label: this._yaxis1_sel}];
+  piedata = [{data:this.yaxis_data1,labels:this._yaxis1_sel}];
+  doughnutdata = [{data:this.yaxis_data1,labels:this._yaxis1_sel}];
   // Line Chart Configuration
   public lineChartColors: Array<any> = [];
-  public lineChartData: Array<any> = this.chartdata;
+  public lineChartData: Array<any> = this.linedata;
   public lineChartLabels: Array<any> = this.chartlabels;
   public lineChartType: string = 'line';
   public lineChartOptions: any;
@@ -161,27 +160,23 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   public barChartOptions: any;
   public barChartLabels: string[] = this.chartlabels;
   public barChartType: string = 'bar';
-  public barChartData: Array<any> = this.chartdata;
+  public barChartData: Array<any> = this.bardata;
   public barChartColors: Array<any> = [];
   // Pie Chart Configuration
   public pieChartLabels: string[] = this.chartlabels;
-  public pieChartData: Array<any> = this.chartdata;
+  public pieChartData: Array<any> = this.piedata;
   public pieChartType: string = 'pie';
 
   // Doughnut Chart Configuration
   public doughnutChartLabels: string[] = this.chartlabels;
-  public doughnutChartData: Array<any> = this.chartdata;
+  public doughnutChartData: Array<any> = this.doughnutdata;
   public doughnutChartType: string = 'doughnut';
 
   //_________________________CHART FUNCTIONS________________________________________
   updateLineChart() {
     var unit = this._yaxisCB;
-
+    this.lineChartLabels = this.Table_of_Data5[this._xaxis_sel];
     this.yaxis_data1 = this.Table_of_Data5[this._yaxis1_sel].map(Number);
-    if(this._yaxis2_sel != undefined && this._yaxis2_sel != "")
-    {
-      this.yaxis_data2 = this.Table_of_Data5[this._yaxis2_sel].map(Number);
-    }
     switch (this._linetension) {
       case 'none': this.lineten = 0;
         break;
@@ -203,6 +198,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         break;
     }
     this._linestyle == "dashed" ? this._borderdash = [5, 5] : this._borderdash = [];
+    // 1 Y-axis data config
     this.lineChartColors = [
       {
         backgroundColor: this._backgroundColor,
@@ -210,14 +206,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         pointBackgroundColor: this._borderColor,
         pointBorderColor: '#fff',
         pointHoverBorderColor: this._borderColor,
-        pointHoverBackgroundColor: '#fff',
-      },
-      {
-        backgroundColor: "rgba(154,67,208,0.38)",
-        borderColor: "violet",
-        pointBackgroundColor: "rgba(154,67,208,0.38)",
-        pointBorderColor: '#fff',
-        pointHoverBorderColor: "violet",
         pointHoverBackgroundColor: '#fff',
       }
     ];
@@ -319,48 +307,46 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
             labelString: this._yaxis1_sel,
             fontColor: this._borderColor
           }
-          //labelString: 'Ultimate Contract Value'}
-        }
-        //  {
-        //   type: 'linear',
-        //   display: true,
-        //   position: 'right',
-        //   id: 'y-2',
-        //   scaleLabel: {
-        //     display: true,
-        //     labelString: this._yaxis2_sel,
-        //     fontColor: "blue"
-        //   },
-        //   beginAtZero: true,
-        //   // grid line settings
-        //   gridLines: {
-        //     drawOnChartArea: false, // only want the grid lines for one axis to show up
-        //   },
-        //   ticks: {
-        //     fontcolor: "blue",
-        //     beginAtZero: true,
-        //     callback: function (label) {
-        //       if (label > 1000) {
-        //         return (label / 1000);
-        //       }
-        //       else {
-        //         return  unit+ " " + label + " k";
-        //       }
-        //     }
-        //   },
-        // }
-        ]
+        }]
       }
     };
     this.lineChartData[0].fill = this._fill;
-    
     this.lineChartData[0].borderDash = this._borderdash;
     this.lineChartData[0].pointRadius = this.pointrad;
     this.lineChartData[0].pointStyle = this._pointstyle;   
     this.lineChartData[0].data = this.yaxis_data1;   
     this.lineChartData[0].label = this._yaxis1_sel;
+    // 2 Y-axis data config
     if(this._yaxis2_sel != undefined && this._yaxis2_sel != "")
     {
+      this.yaxis_data2 = this.Table_of_Data5[this._yaxis2_sel].map(Number);
+      if(this.yaxis_data2 != null && this.lineChartData[1] == undefined)
+    {
+      this.lineChartData.push({
+        label: "",
+        fill: false,
+        borderDash: [],
+        pointRadius: "",
+        pointStyle: "",
+        data: [],
+        yAxisID: 'y-2'
+      });
+      this.lineChartData[1].fill = this._fill;
+      this.lineChartData[1].borderDash = this._borderdash;
+      this.lineChartData[1].pointRadius = this.pointrad;
+      this.lineChartData[1].pointStyle = this._pointstyle;
+      this.lineChartData[1].data = this.yaxis_data2;
+      this.lineChartData[1].label = this._yaxis2_sel;
+
+      this.lineChartColors.push({
+        backgroundColor: "rgba(154,67,208,0.38)",
+        borderColor: "violet",
+        pointBackgroundColor: "rgba(154,67,208,0.38)",
+        pointBorderColor: '#fff',
+        pointHoverBorderColor: "violet",
+        pointHoverBackgroundColor: '#fff',
+      });
+      
       this.lineChartOptions.scales.yAxes.push({
           type: 'linear',
           display: true,
@@ -369,7 +355,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
           scaleLabel: {
             display: true,
             labelString: this._yaxis2_sel,
-            fontColor: "blue"
+            fontColor: "violet"
           },
           beginAtZero: true,
           // grid line settings
@@ -377,7 +363,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
             drawOnChartArea: false, // only want the grid lines for one axis to show up
           },
           ticks: {
-            fontcolor: "blue",
+            fontColor: "violet",
             beginAtZero: true,
             callback: function (label) {
               if (label > 1000) {
@@ -389,25 +375,22 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
             }
           }
       });
-      this.lineChartData[1].fill = this._fill;
-      this.lineChartData[1].borderDash = this._borderdash;
-      this.lineChartData[1].pointRadius = this.pointrad;
-      this.lineChartData[1].pointStyle = this._pointstyle;
-      this.lineChartData[1].data = this.yaxis_data2;
-      this.lineChartData[1].label = this._yaxis2_sel;
+
+      }
     }
-    this.lineChartLabels = this.Table_of_Data5[this._xaxis_sel];
+    // 3 Y-axis data config
+    // 4 Y-axis data config
   }
   updateBarChart() {
     var unit = this._yaxisCB;
+    this.barChartLabels = this.Table_of_Data5[this._xaxis_sel];
     this.barChartOptions = {
       scaleShowVerticalLines: false,
       responsive: true,
       legend: {
         display:true,
         labels: {
-          usePointStyle: true,
-          fontColor: 'black'
+          usePointStyle: true
         }
       },
       elements:
@@ -448,7 +431,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
             max: this._yaxismax,
             stepSize: this._yaxisstepSize,
             autoSkip: this._yaxisAutoskip,
-
+            fontColor: this._borderColor,
             beginAtZero: true,
             callback: function (label) {
 
@@ -458,32 +441,18 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
               else {
                 return (unit+ " " +label);
               }
-            },
+            }
           },
           scaleLabel: {
             display: true,
             labelString: this._yaxis1_sel,
+            fontColor: this._borderColor 
           }
         }
-        // , {
-        //   type: 'linear',
-        //   display: true,
-        //   position: 'right',
-        //   id: 'y-2',
-        //   scaleLabel: {
-        //     display: true,
-        //     labelString: this._yaxis2_sel,
-        //   },
-        //   beginAtZero: true,
-        //   // grid line settings
-        //   gridLines: {
-        //     drawOnChartArea: false, // only want the grid lines for one axis to show up
-        //   }
-        // }
         ]
       }
     };
-    
+    // 1 Y-axis data config
     this.barChartColors = [
       {
         backgroundColor: this._backgroundColor,
@@ -492,23 +461,31 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         pointBorderColor: '#fff',
         pointHoverBorderColor: this._borderColor,
         pointHoverBackgroundColor: '#fff'
-      },
-      {
+      }
+    ];
+    this.barChartData[0].data = this.yaxis_data1;
+    this.barChartData[0].label = this._yaxis1_sel;
+    // 2 Y-axis data config
+    if(this._yaxis2_sel != undefined && this._yaxis2_sel != "")
+    {
+      this.yaxis_data2 = this.Table_of_Data5[this._yaxis2_sel].map(Number);
+      if(this.yaxis_data2 != null && this.barChartData[1] == undefined)
+    {
+      this.barChartData.push({
+        data: [],
+        label: ""
+      });
+      this.barChartData[1].data = this.yaxis_data2;
+      this.barChartData[1].label = this._yaxis2_sel;
+      this.barChartColors.push({
         backgroundColor: "rgba(154,67,208,0.38)",
         borderColor: "violet",
         pointBackgroundColor: "rgba(154,67,208,0.38)",
         pointBorderColor: '#fff',
         pointHoverBorderColor: "violet",
         pointHoverBackgroundColor: '#fff',
-      }
-    ];
-    console.log(this.yaxis_data1);
-    console.log(this.yaxis_data2);
-    
-    this.barChartData[0].data = this.yaxis_data1;
-    this.barChartData[0].label = this._yaxis1_sel;
-    if(this._yaxis2_sel != undefined && this._yaxis2_sel != "")
-    {
+      });
+
       this.barChartOptions.scales.yAxes.push(
         {
           position: 'right',
@@ -516,6 +493,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
           display: true,
           id: 'y-2',
           ticks: {
+            fontColor: "violet",
             stepSize: this._yaxisstepSize,
             autoSkip: this._yaxisAutoskip,
             beginAtZero: true,
@@ -532,32 +510,36 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
           scaleLabel: {
             display: true,
             labelString: this._yaxis2_sel,
+            fontColor: "violet"
           }
       }
     );
-    this.barChartData[1].data = this.yaxis_data2;
-    this.barChartData[1].label = this._yaxis2_sel;
     }
-    this.barChartLabels = this.Table_of_Data5[this._xaxis_sel];
+  }
+    // 3 Y-axis data config
+    // 4 Y-axis data config
   }
 
   updatePieChart() {
+
     this.pieChartData[0].data = this.yaxis_data1;   
-    this.pieChartData[0].label = this._yaxis1_sel;    
+    this.pieChartData[0].labels = this._yaxis1_sel;    
     if(this._yaxis2_sel != undefined && this._yaxis2_sel != "")
     {
+      this.pieChartData.push({data:[],labels:[]});
       this.pieChartData[1].data = this.yaxis_data2;
-      this.pieChartData[1].label = this._yaxis2_sel;
+      this.pieChartData[1].labels = this._yaxis2_sel;
     }
     this.pieChartLabels = this.Table_of_Data5[this._xaxis_sel];
   }
   updateDoughnutChart() {
     this.doughnutChartData[0].data = this.yaxis_data1;   
-    this.doughnutChartData[0].label = this._yaxis1_sel;    
+    this.doughnutChartData[0].labels = this._yaxis1_sel;    
     if(this._yaxis2_sel != undefined && this._yaxis2_sel != "")
     {
+      this.doughnutChartData.push({data:[],labels:[]});
       this.doughnutChartData[1].data = this.yaxis_data2;
-      this.doughnutChartData[1].label = this._yaxis2_sel;
+      this.doughnutChartData[1].labels = this._yaxis2_sel;
     }
     this.doughnutChartLabels = this.Table_of_Data5[this._xaxis_sel];
   }
@@ -747,10 +729,11 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   Execute_res_data: any[];
   progress: boolean = false;
   Execute_Now() {
+    console.log(this.Exe_data);
     this.progress = true;
     let body = {
-      "V_APP_CD": this.Exe_data['APP_CD'].toString(),
-      "V_PRCS_CD": this.Exe_data['PRC_CD'].toString(),
+      "V_APP_CD": this.Exe_data['SL_APP_CD'].toString(),
+      "V_PRCS_CD": this.Exe_data['SL_PRC_CD'].toString(),
       "V_SRVC_CD": 'START',
       "V_SRC_CD": this.V_SRC_CD,
       "V_USR_NM": this.V_USR_NM
@@ -773,11 +756,11 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     this.https.post(this.apiService.endPoints.secureProcessReport, body, this.apiService.setHeaders()).subscribe(
       res => {
 
-        //(res.json());
+        console.log(res.json());
         this.Execute_res_data = res.json();
         //(this.Execute_res_data);
 
-        this.GenerateReportTable();
+        //this.GenerateReportTable();
       }
     );
   }
@@ -785,6 +768,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     //("in GenerateReportTable");
 
     //"&V_DSPLY_WAIT_SEC=100&V_MNL_WAIT_SEC=180&REST_Service=Report&Verb=GET
+    console.log(this.globalUser.currentUser);
     let body = {
       V_SRC_ID: this.Execute_res_data['V_SRC_ID'],
       // 10th April
