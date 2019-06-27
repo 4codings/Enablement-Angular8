@@ -116,12 +116,14 @@ export class FormComponent implements OnInit {
       this.ctrl_variables = res;
       // console.log(res);
     });
+    this.Form_Data = [];
     this.Form_Data = this.StorageSessionService.getCookies('report_table');
     // console.log('this.Form_date', this.Form_Data);
     this.configService.prepareAndGetFieldConfigurations(this.Form_Data, true);
     this.RVP_Keys = [];
     this.RVP_Values = []
     this.RVP_labels = [];
+    this.RVP_placeholder = [];
     this.PVP = JSON.parse(this.Form_Data['PVP'][0]);
     this.srvc_cd_sl = this.Form_Data['SRVC_CD'][0];
     (this.PVP);
@@ -206,6 +208,7 @@ export class FormComponent implements OnInit {
 
   setField_RVP(): any {
     //------------Getting RVP Data--------------//
+    this.RVP_Data = [];
     this.RVP_Data = this.Form_Data['RVP'];
     // 10th April removed call
     // if (this.V_TABLE_NAME.length > 0) {
@@ -213,6 +216,7 @@ export class FormComponent implements OnInit {
     // }
     ("Field Data 1:");
     (JSON.parse(this.RVP_Data));
+    this.RVP_DataObj = [];
     this.RVP_DataObj = JSON.parse(this.RVP_Data);
     this.updateInitialFieldNameAndValues();
   }
@@ -358,7 +362,10 @@ export class FormComponent implements OnInit {
         if (res['RESULT'] == 'INPUT_ARTFCT_TASK') {
           this.router.navigate(['/End_User/InputArtForm'], { skipLocationChange: true });
         } else if (res['RESULT'][0] == 'NONREPEATABLE_MANUAL_TASK') {
-          this.router.navigate(['/End_User/NonRepeatForm'], { skipLocationChange: true });
+          this.router.navigate(['/End_User/NonRepeatForm'], {
+            skipLocationChange: true,
+            queryParams: { refresh: new Date().getTime() }
+          });
         } else if (res['RESULT'][0] == 'REPEATABLE_MANUAL_TASK') {
           this.router.navigate(['/End_User/RepeatForm'], { skipLocationChange: true });
         } if (res['RESULT'] == 'TABLE') {

@@ -1110,7 +1110,9 @@ export class ExecuteComponent implements OnInit, OnDestroy {
 
               if (this.report.RESULT[0] == 'NONREPEATABLE_MANUAL_TASK') {
                 // non-Repeatable NonRepeatForm
-                this.router.navigateByUrl('/End_User/NonRepeatForm', { skipLocationChange: true });
+                this.router.navigateByUrl('/End_User/NonRepeatForm', {
+                  queryParams: { refresh: new Date().getTime() }, skipLocationChange: true
+                });
                 //this.router.navigateByUrl('Forms', { skipLocationChange: true });
 
               } else if (this.report.RESULT[0] == 'REPEATABLE_MANUAL_TASK') {
