@@ -1028,7 +1028,7 @@ export class ExecuteComponent implements OnInit, OnDestroy {
       this.GenerateReportTable();
     } else {
       this.repeat = 0;
-      this.router.navigate(["/End_User/Execute"], { skipLocationChange: true });
+      this.router.navigate(["/End_User/Execute"], { queryParams: { page: 1 }, skipLocationChange: true });
     }
   }
 
