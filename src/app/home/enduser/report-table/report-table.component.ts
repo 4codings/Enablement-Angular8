@@ -727,10 +727,10 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   }
   //__________________________________________________________
   Execute_res_data: any[];
-  progress: boolean = false;
+  // progress: boolean = false;
   Execute_Now() {
     console.log(this.Exe_data);
-    this.progress = true;
+    // this.progress = true;
     let body = {
       "V_APP_CD": this.Exe_data['SL_APP_CD'].toString(),
       "V_PRCS_CD": this.Exe_data['SL_PRC_CD'].toString(),
@@ -759,8 +759,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         console.log(res.json());
         this.Execute_res_data = res.json();
         //(this.Execute_res_data);
-
-        //this.GenerateReportTable();
+        // this.GenerateReportTable();
+        this.route.navigateByUrl('End_User', { skipLocationChange: true });
       }
     );
   }
@@ -803,7 +803,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
 
         }
       );
-    this.progress = false;
+    // this.progress = false;
     this.getReportData();
   }
   dialogOpen = false;
