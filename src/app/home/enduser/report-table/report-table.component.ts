@@ -212,32 +212,32 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     this.lineChartOptions = {
       responsive: true,
       annotation: {
-        drawTime: 'afterDatasetsDraw',
-        events: ['click'],
-        annotations: [{
-          type: 'line',
-          id: 'vline',
-          mode: 'vertical',
-          scaleID: 'x-axis-0',
-          value: "Jan-2018",
-          borderColor: 'rgba(0, 255, 0, 0.6)',
-          borderWidth: 1,
-          label: {
-            backgroundColor: 'rgba(0,0,0,0.5)',
-            fontFamily: "sans-serif",
-            fontSize: 12,
-            fontStyle: "bold",
-            fontColor: "#fff",
-            xPadding: 6,
-            yPadding: 6,
-            cornerRadius: 6,
-            xAdjust: 0,
-            yAdjust: 0,
-            enabled: true,
-            position: "center",
-            content: "Spend Plan Raised alot"
-          }
-        }]
+        // drawTime: 'afterDatasetsDraw',
+        // events: ['click'],
+        // annotations: [{
+        //   type: 'line',
+        //   id: 'vline',
+        //   mode: 'vertical',
+        //   scaleID: 'x-axis-0',
+        //   value: "Jan-2018",
+        //   borderColor: 'rgba(0, 255, 0, 0.6)',
+        //   borderWidth: 1,
+        //   label: {
+        //     backgroundColor: 'rgba(0,0,0,0.5)',
+        //     fontFamily: "sans-serif",
+        //     fontSize: 12,
+        //     fontStyle: "bold",
+        //     fontColor: "#fff",
+        //     xPadding: 6,
+        //     yPadding: 6,
+        //     cornerRadius: 6,
+        //     xAdjust: 0,
+        //     yAdjust: 0,
+        //     enabled: true,
+        //     position: "center",
+        //     content: "Spend Plan Raised alot"
+        //   }
+        // }]
       },
       legend: {
         display:true,
@@ -274,7 +274,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
           scaleLabel: {
             display: true,
             labelString: this._xaxis_sel
-            //labelString: 'PIID'
           },
           display: true
         }],
@@ -727,10 +726,10 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   }
   //__________________________________________________________
   Execute_res_data: any[];
-  progress: boolean = false;
+  // progress: boolean = false;
   Execute_Now() {
     console.log(this.Exe_data);
-    this.progress = true;
+    // this.progress = true;
     let body = {
       "V_APP_CD": this.Exe_data['SL_APP_CD'].toString(),
       "V_PRCS_CD": this.Exe_data['SL_PRC_CD'].toString(),
@@ -759,8 +758,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         console.log(res.json());
         this.Execute_res_data = res.json();
         //(this.Execute_res_data);
-
-        //this.GenerateReportTable();
+        // this.GenerateReportTable();
+        this.route.navigateByUrl('End_User', { skipLocationChange: true });
       }
     );
   }
@@ -803,7 +802,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
 
         }
       );
-    this.progress = false;
+    // this.progress = false;
     this.getReportData();
   }
   dialogOpen = false;
