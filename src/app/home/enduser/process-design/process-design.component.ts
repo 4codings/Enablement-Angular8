@@ -20,11 +20,11 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   private modeler: any;
   private url: string;
   private user: any;
-  private applicationProcessObservable$: Subscription;
-  private applicationProcessValuesObservable: ApplicationProcessObservable[] = [];
-  private appProcessList = [];
-  private item: TreeviewItem[] = [];
-  private chilItem: TreeviewItem[] = [];
+  applicationProcessObservable$: Subscription;
+  applicationProcessValuesObservable: ApplicationProcessObservable[] = [];
+  appProcessList = [];
+  item: TreeviewItem[] = [];
+  chilItem: TreeviewItem[] = [];
   config = TreeviewConfig.create({
     hasAllCheckBox: false,
     hasFilter: true,
