@@ -11,6 +11,7 @@ export class OptionalValuesService implements OnDestroy {
   applicationOptionalValue: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   processOptionalValue: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   serviceOptionalValue: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  applicationProcessValue: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   V_SRC_CD: string;
   V_USR_NM: string;
   application_id: any;
@@ -18,6 +19,7 @@ export class OptionalValuesService implements OnDestroy {
   applicationArray = [];
   processArray = [];
   serviceArray = [];
+  applicationProcessArray = [];
 
   private apiUrlGet = this.apiService.endPoints.insecure;
   constructor(private http: HttpClient, private apiService: ApiService) {
@@ -109,6 +111,14 @@ export class OptionalValuesService implements OnDestroy {
         });
     }
   }
+  getApplicationProcessOptionalValue(data) {
+    if (data.length) {
+      data.forEach(ele => {
+        this.applicationProcessArray.push({ 'app': ele.APP_CD, 'process': ele.PRCS_CD.split(",") });
+      })
+      this.applicationProcessValue.next(this.applicationProcessArray);
+    }
+  }
 }
 export class ProcessObservable {
   app: any;
@@ -120,4 +130,9 @@ export class ServiceObservable {
   process: any;
   service: any;
   data: any;
+}
+
+export class ApplicationProcessObservable {
+  app: any;
+  process: any;
 }

@@ -5,6 +5,10 @@ import { Modeler, PropertiesPanelModule, InjectionNames, OriginalPropertiesProvi
 import { CustomPropsProvider } from './props-provider/custom-props-provider';
 import { CustomPaletteProvider } from './props-provider/custom-palette-provider';
 import { Globals } from 'src/app/services/globals';
+import { EndUserService } from 'src/app/services/EndUser-service';
+import { OptionalValuesService, ApplicationProcessObservable } from 'src/app/services/optional-values.service';
+import { Subscription } from 'rxjs';
+import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
 
 @Component({
   selector: 'app-process-design',
@@ -16,12 +20,42 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   private modeler: any;
   private url: string;
   private user: any;
-
+  private applicationProcessObservable$: Subscription;
+  private applicationProcessValuesObservable: ApplicationProcessObservable[] = [];
+  private appProcessList = [];
+  private item: TreeviewItem[] = [];
+  private chilItem: TreeviewItem[] = [];
+  config = TreeviewConfig.create({
+    hasAllCheckBox: false,
+    hasFilter: true,
+    hasCollapseExpand: true,
+    decoupleChildFromParent: false,
+    maxHeight: 400
+  });
   constructor(
     private httpClient: HttpClient,
-    private globals: Globals
-  ) { }
+    private globals: Globals,
+    private endUserService: EndUserService,
+    private optionalService: OptionalValuesService
+  ) {
+    this.applicationProcessObservable$ = this.optionalService.applicationProcessValue.subscribe(data => {
+      if (data != null) {
+        this.applicationProcessValuesObservable = data;
+        if (this.applicationProcessValuesObservable.length) {
+          this.appProcessList = [];
+          this.appProcessList = data;
+          this.generateTreeItem();
+        }
+      }
+    });
+  }
 
+  onFilterChange(value: string) {
+    // console.log('filter:', value);
+  }
+  onSelectedChange(value) {
+    // console.log('onSelectedChange:', value);
+  }
   ngOnInit() {
     this.url = `https://${this.globals.domain_name + this.globals.Path + this.globals.version}/securedJSON`;
     this.user = JSON.parse(sessionStorage.getItem('u'));
@@ -116,9 +150,11 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       },
       this.handleError
     );
+    this.getApplicationProcess();
   }
 
   ngOnDestroy() {
+    this.applicationProcessObservable$.unsubscribe();
     if (this.modeler) {
       this.modeler.destroy();
     }
@@ -129,5 +165,37 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       console.error(err);
     }
   }
+  generateTreeItem() {
+    this.item = [];
+    if (this.appProcessList.length) {
+      this.appProcessList.forEach(ele => {
 
+        if (ele.process.length) {
+          this.chilItem = [];
+          ele.process.forEach(eleProcess => {
+            let childTreeObj = new TreeviewItem({ text: eleProcess.replace(/'/g, ""), value: eleProcess.replace(/'/g, "") });
+            this.chilItem.push(childTreeObj)
+          })
+        };
+        let treeObj = new TreeviewItem({
+          text: ele.app, value: ele.app, collapsed: true, children: this.chilItem
+        });
+        this.item.push(treeObj);
+      })
+    }
+  }
+  getApplicationProcess() {
+    this.endUserService.getApplicationAndProcess().subscribe(res => {
+      if (res) {
+        console.log('res', res.json());
+        let data = res.json();
+        if (data.length) {
+          this.optionalService.getApplicationProcessOptionalValue(data);
+        }
+      }
+    })
+  }
+  onMenu(item) {
+
+  }
 }

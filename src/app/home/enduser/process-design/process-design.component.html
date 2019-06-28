@@ -1,5 +1,41 @@
+<ng-template #itemTemplate let-item="item" let-onCollapseExpand="onCollapseExpand"
+  let-onCheckedChange="onCheckedChange">
+  <div class="form-inline row-item">
+    <i *ngIf="item.children" (click)="onCollapseExpand()" aria-hidden="true" class="fa"
+      [class.fa-caret-right]="item.collapsed" [class.fa-caret-down]="!item.collapsed"></i>
+    <div class="form-check">
+      <!-- <input type="checkbox" class="form-check-input" [(ngModel)]="item.checked" (ngModelChange)="onCheckedChange()"
+        [disabled]="item.disabled" [indeterminate]="item.indeterminate" /> -->
+      <label class="form-check-label" (click)="item.checked = !item.checked; onCheckedChange()">
+        {{item.text}}
+      </label>
+      <label class="form-check-label">
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item>
+            <span>Add</span>
+          </button>
+          <button mat-menu-item>
+            <span>Edit</span>
+          </button>
+          <button mat-menu-item>
+            <span>Delete</span>
+          </button>
+        </mat-menu>
+        <!-- <i class="fa fa-menu" aria-hidden="true" title="Remove" (click)="onMenu(item)"></i> -->
+      </label>
+    </div>
+  </div>
+</ng-template>
 <div #canvas id="canvas-bpmn"></div>
-<div class="modeler">
-  <div id="canvas"></div>
-  <div id="properties"></div>
+<div fxLayout="row" class="modeler">
+  <div fxFlex="20">
+    <ngx-treeview [config]="config" [items]="item" [itemTemplate]="itemTemplate"
+      (selectedChange)="onSelectedChange($event)" (filterChange)="onFilterChange($event)">
+    </ngx-treeview>
+  </div>
+  <div fxFlex="60" id="canvas"></div>
+  <div fxFlex="20" id="properties"></div>
 </div>
