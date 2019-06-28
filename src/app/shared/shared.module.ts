@@ -28,6 +28,7 @@ import {SplitLastPipe, MyFilterPipe} from '../home/enduser/execute/MyFilterPipe 
 import {MyFilterPipe1} from '../home/enduser/schd-actn/myFilterPipe1';
 import {MatMenuModule} from '@angular/material/menu';
 import {ConfirmationAlertComponent} from './components/confirmation-alert/confirmation-alert.component';
+import { TreeviewModule } from 'ngx-treeview';
 
 @NgModule({
   imports: [
@@ -62,7 +63,8 @@ import {ConfirmationAlertComponent} from './components/confirmation-alert/confir
     MatSlideToggleModule,
     MatButtonToggleModule,
     MatSnackBarModule,
-    MatMenuModule
+    MatMenuModule,
+    TreeviewModule.forRoot(),
   ],
   declarations: [
     FormErrorMsgComponent,
@@ -108,7 +110,8 @@ import {ConfirmationAlertComponent} from './components/confirmation-alert/confir
     MyFilterPipe1,
     SplitLastPipe,
     MatMenuModule,
-    ConfirmationAlertComponent
+    ConfirmationAlertComponent,
+    TreeviewModule
   ]
 })
 export class SharedModule {
