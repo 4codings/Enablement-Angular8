@@ -371,16 +371,22 @@ export class FormComponent implements OnInit {
         this.StorageSessionService.setCookies('report_table', res);
         // // console.log('setCookies');
         if (res['RESULT'] == 'INPUT_ARTFCT_TASK') {
-          this.router.navigate(['/End_User/InputArtForm'], { skipLocationChange: true });
+          this.router.navigate(['/End_User/InputArtForm'], {
+            skipLocationChange: true, queryParams: { page: 1 }
+          });
         } else if (res['RESULT'][0] == 'NONREPEATABLE_MANUAL_TASK') {
           this.router.navigate(['/End_User/NonRepeatForm'], {
             skipLocationChange: true,
-            queryParams: { refresh: new Date().getTime() }
+            queryParams: { page: 1 }
           });
         } else if (res['RESULT'][0] == 'REPEATABLE_MANUAL_TASK') {
-          this.router.navigate(['/End_User/RepeatForm'], { skipLocationChange: true });
+          this.router.navigate(['/End_User/RepeatForm'], {
+            skipLocationChange: true, queryParams: { page: 1 }
+          });
         } else if (res['RESULT'] == 'TABLE') {
-          this.router.navigate(['/End_User/ReportTable'], { skipLocationChange: true });
+          this.router.navigate(['/End_User/ReportTable'], {
+            skipLocationChange: true, queryParams: { page: 1 }
+          });
         } else {
           this.repeatCallTable(true);
         }
@@ -428,19 +434,25 @@ export class FormComponent implements OnInit {
               this.repeatCallTable(true);
             } else if (this.report.RESULT == 'TABLE') {
 
-              this.router.navigateByUrl('/End_User/ReportTable', { skipLocationChange: true });
+              this.router.navigateByUrl('/End_User/ReportTable', {
+                skipLocationChange: true, queryParams: { page: 1 }
+              });
             } else if (this.report.RESULT[0] == 'INPUT_ARTFCT_TASK') {
 
-              this.router.navigateByUrl('/End_User/InputArtForm', { skipLocationChange: true });
+              this.router.navigateByUrl('/End_User/InputArtForm', {
+                skipLocationChange: true, queryParams: { page: 1 }
+              });
 
             } else if (CommonUtils.isValidValue(this.report.V_EXE_CD)) {
 
               if (this.report.RESULT[0] == 'NONREPEATABLE_MANUAL_TASK') {
                 this.router.navigateByUrl('/End_User/NonRepeatForm', {
-                  queryParams: { refresh: new Date().getTime() }, skipLocationChange: true
+                  queryParams: { page: 1 }, skipLocationChange: true
                 });
               } else if (this.report.RESULT[0] == 'REPEATABLE_MANUAL_TASK') {
-                this.router.navigateByUrl('/End_User/RepeatForm', { skipLocationChange: true });
+                this.router.navigateByUrl('/End_User/RepeatForm', {
+                  skipLocationChange: true, queryParams: { page: 1 }
+                });
               }
             } else {
               this.repeatCallTable(true);

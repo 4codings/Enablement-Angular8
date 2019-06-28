@@ -89,14 +89,6 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     }
   }
   ngOnInit() {
-    this.activatedRoute.queryParamMap.subscribe((paramMap: ParamMap) => {
-      const refresh = paramMap.get('refresh');
-      if (refresh) {
-        this.registerDataChangeHandler(this.updateInput.bind(this));
-        this.getFormData();
-        this.updateInput();
-      }
-    });
     this.screenHeight = window.innerHeight;
     this.screenWidth = window.innerWidth;
     if (this.screenWidth <= 900) {
