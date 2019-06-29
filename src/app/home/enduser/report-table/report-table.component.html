@@ -84,60 +84,27 @@
   </div>
 </div>
 <br>
-<div *ngIf="dispchart" >
-  <!-- <mat-tab-group>
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <mat-icon class="example-tab-icon">show_chart</mat-icon>
-          Line Chart
-        </ng-template> -->
+<div class="chartstyle" *ngIf="dispchart">
   <div *ngIf="selectedchart === 'linechart_sel'">
     <canvas baseChart *ngIf="lineChartData" [datasets]="lineChartData" [labels]="lineChartLabels"
       [options]="lineChartOptions" [colors]="lineChartColors" [chartType]="lineChartType">
     </canvas>
   </div>
-  <!-- </mat-tab>
-
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <mat-icon class="example-tab-icon">bar_chart</mat-icon>
-          Bar Chart
-        </ng-template> -->
   <div *ngIf="selectedchart === 'barchart_sel'">
     <canvas baseChart *ngIf="barChartData" [datasets]="barChartData" [labels]="barChartLabels"
       [options]="barChartOptions" [colors]="barChartColors" [chartType]="barChartType">
     </canvas>
   </div>
-  <!-- </mat-tab>
-
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <mat-icon class="example-tab-icon">pie_chart</mat-icon>
-          Pie Chart
-        </ng-template> -->
   <div *ngIf="selectedchart === 'piechart_sel'">
     <canvas baseChart [datasets]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType">
     </canvas>
   </div>
-  <!-- </mat-tab>
-
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <mat-icon class="example-tab-icon">donut_large</mat-icon>
-          Doughnut Chart
-        </ng-template> -->
-  <div *ngIf="selectedchart === 'doughnutchart_sel'">
+<div *ngIf="selectedchart === 'doughnutchart_sel'">
     <canvas baseChart [datasets]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType">
     </canvas>
   </div>
 </div>
 <br>
-<!-- </mat-tab>
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <mat-icon class="example-tab-icon">donut_large</mat-icon>
-          Scale Options
-        </ng-template> -->
 <div fxLayout="column" fxLayoutAlign="space-around center" *ngIf="dispchart">
   <div fxLayoutAlign="space-around center" fxLayout="column" *ngIf="selectedcustomize === 'managedata_sel'">
     <div fxLayout="column" fxLayout.lt-sm="row">
@@ -145,6 +112,7 @@
         <div fxFlex="23">
           <mat-form-field style="width:100%">
             <mat-select placeholder="Select X-axis" [(value)]="_xaxis_sel">
+              <mat-option style ="text-align: center;   height: 25px;   color: black; " value="">None</mat-option>
               <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" value="{{items}}">
                 {{items}} </mat-option>
             </mat-select>
@@ -154,6 +122,7 @@
         <div fxFlex="23">
           <mat-form-field style="width:100%">
             <mat-select placeholder="Select Y-axis-1" [(value)]="_yaxis1_sel">
+              <mat-option style ="text-align: center;   height: 25px;   color: black; " value="">None</mat-option>
               <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" value="{{items}}">
                 {{items}} </mat-option>
             </mat-select>
@@ -163,6 +132,7 @@
         <div fxFlex="23">
           <mat-form-field style="width:100%">
             <mat-select placeholder="Select Y-axis-2" [(value)]="_yaxis2_sel">
+              <mat-option style ="text-align: center;   height: 25px;   color: black; " value="">None</mat-option>
               <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" value="{{items}}">
                 {{items}} </mat-option>
             </mat-select>
@@ -173,8 +143,9 @@
           <form>
             <mat-form-field style="width:100%">
               <input type="text" placeholder="Unit of measure" matInput [formControl]="myControl"
-                [matAutocomplete]="auto" [(value)]="_yaxisCB">
+                [matAutocomplete]="auto" [(ngModel)]="_yaxisCB">
               <mat-autocomplete #auto="matAutocomplete">
+                <mat-option style ="text-align: center;   height: 25px;   color: black; " value="">None</mat-option>
                 <mat-option *ngFor="let option of yaxiscallbacks" value="{{option}}">
                   {{option}}
                 </mat-option>
@@ -205,23 +176,6 @@
     <br>
     <button mat-raised-button color="primary" (click)="updatechart();">Update</button>
   </div>
-  <!-- </mat-tab>
-       <mat-tab>
-        <ng-template mat-tab-label>
-          <mat-icon class="example-tab-icon">settings</mat-icon>
-          Customize
-        </ng-template>
-        <mat-accordion multi=true>
-          <mat-expansion-panel>
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                <strong> Line/Bar Chart</strong>
-              </mat-panel-title>
-              <mat-panel-description>
-                Customize chart options here..
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-            <ng-template matExpansionPanelContent> -->
   <div fxLayout="column" fxLayoutAlign="space-around center" *ngIf="selectedcustomize === 'customizechart_sel'">
     <div fxLayout="row">
       <div fxLayout="column">
@@ -347,17 +301,9 @@
         </mat-form-field>
       </div>
     </div>
-    <!-- <mat-action-row> -->
     <br>
     <button mat-raised-button color="primary" (click)="setchartstyling();updatechart();">Update</button>
   </div>
-
-  <!-- </mat-action-row>
-            </ng-template>
-          </mat-expansion-panel>
-        </mat-accordion>
-      </mat-tab>
-    </mat-tab-group> -->
 </div>
 <!-- --------------------Chart------------------------- -->
 
