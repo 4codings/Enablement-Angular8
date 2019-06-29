@@ -9,6 +9,7 @@ import { EndUserService } from 'src/app/services/EndUser-service';
 import { OptionalValuesService, ApplicationProcessObservable } from 'src/app/services/optional-values.service';
 import { Subscription } from 'rxjs';
 import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
+import { RollserviceService } from 'src/app/services/rollservice.service';
 
 @Component({
   selector: 'app-process-design',
@@ -32,11 +33,27 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     decoupleChildFromParent: false,
     maxHeight: 400
   });
+  parentMenuItems = [
+    { item: 'Add Process', value: 'Add', havePermission: 1 },
+    { item: 'Import Process', value: 'Import', havePermission: 1 },
+    { item: 'Delete Application', value: 'Delete', havePermission: 1 }];
+  childrenMenuItems = [
+    { item: 'Run', value: 'Run', havePermission: 1 },
+    { item: 'Edit', value: 'Edit', havePermission: 1 },
+    { item: 'Delete', value: 'Delete', havePermission: 1 },
+    { item: 'Schedule', value: 'Schedule', havePermission: 0 },
+    { item: 'Monitor', value: 'Monitor', havePermission: 0 },
+    { item: 'Approve', value: 'Approve', havePermission: 0 },
+    { item: 'Resolve', value: 'Resolve', havePermission: 0 }];
+  roleObservable$: Subscription;
+  roleValues;
+
   constructor(
     private httpClient: HttpClient,
     private globals: Globals,
     private endUserService: EndUserService,
-    private optionalService: OptionalValuesService
+    private optionalService: OptionalValuesService,
+    private roleService: RollserviceService
   ) {
     this.applicationProcessObservable$ = this.optionalService.applicationProcessValue.subscribe(data => {
       if (data != null) {
@@ -45,6 +62,31 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.appProcessList = [];
           this.appProcessList = data;
           this.generateTreeItem();
+        }
+      }
+    });
+    this.roleObservable$ = this.roleService.roleValue.subscribe(data => {
+      if (data != null) {
+        this.roleValues = data;
+        if (this.roleValues.length) {
+          this.roleValues.forEach(ele => {
+            switch (ele) {
+              case 'Enablement Workflow Schedule Role':
+                this.childrenMenuItems[3].havePermission = 1;
+                break;
+              case 'Enablement Workflow Dashboard Role':
+                this.childrenMenuItems[4].havePermission = 1;
+                break;
+              case 'Enablement Workflow MyTask Role':
+                this.childrenMenuItems[5].havePermission = 1;
+                break;
+              case 'Enablement Workflow Exception Role':
+                this.childrenMenuItems[6].havePermission = 1;
+                break;
+              default:
+                break;
+            }
+          })
         }
       }
     });
@@ -155,6 +197,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.applicationProcessObservable$.unsubscribe();
+    this.roleObservable$.unsubscribe();
     if (this.modeler) {
       this.modeler.destroy();
     }
@@ -195,7 +238,53 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       }
     })
   }
-  onMenu(item) {
 
+  onTitleClick(value) {
+
+  }
+  onParentMenuItemClick(actionValue, parentValue) {
+    alert(parentValue)
+    switch (actionValue) {
+      case 'Add': {
+        break;
+      }
+      case 'Import': {
+        break;
+      }
+      case 'Delete': {
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+  onChildMenuItemClick(actionValue, childValue) {
+    switch (actionValue) {
+      case 'Run': {
+        break;
+      }
+      case 'Edit': {
+        break;
+      }
+      case 'Delete': {
+        break;
+      }
+      case 'Schedule': {
+        break;
+      }
+      case 'Monitor': {
+        break;
+      }
+      case 'Approve': {
+        break;
+      }
+      case 'Resolve': {
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 }

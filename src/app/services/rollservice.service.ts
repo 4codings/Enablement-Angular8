@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Globals} from './globals';
-import {Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Globals } from './globals';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +13,7 @@ export class RollserviceService {
   agency = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
   V_USR_NM: string = JSON.parse(sessionStorage.getItem('u')).USR_NM;
   Roll_cd: any;
+  roleValue: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   constructor(
     private http: HttpClient,
@@ -28,6 +29,7 @@ export class RollserviceService {
         ).subscribe(
           (result: any) => {
             this.Roll_cd = result.ROLE_CD || [];
+            this.roleValue.next(this.Roll_cd);
             resolve(this.Roll_cd);
           }
         );
@@ -42,7 +44,7 @@ export class RollserviceService {
   }
 
   assignAuthToRole(data: any): Observable<any> {
-   return  this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', data);
+    return this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', data);
   }
 
 }
