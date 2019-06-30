@@ -4,7 +4,7 @@ import { AppComponent } from '../../../../app.component';
 
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http'
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, ParamMap, ActivatedRouteSnapshot, ActivatedRoute } from '@angular/router';
 import * as dateFormat from 'dateformat';
 import { HostListener, ChangeDetectorRef, ViewChild } from "@angular/core";
 import { MatTableDataSource } from '@angular/material';
@@ -63,6 +63,7 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     public apiService: ApiService,
     public configService: ConfigServiceService,
     private endUserService: EndUserService,
+    private activatedRoute: ActivatedRoute
   ) {
     super(StorageSessionService, http, https, router, globals, app, cdr, apiService, globalUser, configService);
     // 10th April
@@ -125,7 +126,8 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     (this.rows);
 
     for (let i = 0; i < this.RVP_labels.length; i++) {
-      this.input[this.RVP_labels[i]] = this.RVP_DataObj[this.RVP_labels[i].split(" ").join("_")][0];
+      // join("_")
+      this.input[this.RVP_labels[i]] = this.RVP_DataObj[this.RVP_labels[i].split(" ").join(" ")][0];
     }
     this.cdr.detectChanges();
     var key_array = Object.keys(this.RVP_DataObj)

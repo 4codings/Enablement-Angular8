@@ -15,8 +15,10 @@ import { Globals2 } from '../service/globals';
 export class EndUserService {
     private baseUrl: string = this.apiService.endPoints.insecure;
     private baseSecureUrl: string = this.apiService.endPoints.secure;
+    private baseSecureJsonUrl: string = this.apiService.endPoints.securedJSON;
     // private V_SRC_CD: string = this.storage.getSession("agency");
     // private V_USR_NM: string = this.storage.getSession("email");
+    V_SRC_ID: string = JSON.parse(sessionStorage.getItem('u')).SRC_ID;
     V_SRC_CD: string = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
     V_USR_NM: string = JSON.parse(sessionStorage.getItem('u')).USR_NM;
     private ResetOptimised: boolean = false;
@@ -84,12 +86,16 @@ export class EndUserService {
     processCancel(V_SRVC_ID, V_PRCS_TXN_ID, V_UNIQUE_ID) {
         ('process Cancel call');
 
-        const url = `https://${this.globals.domain_name + this.globals.Path}/v${this.globals.Version}/securedJSON?V_SRC_ID=${V_SRVC_ID}&V_USR_ID=${JSON.parse(sessionStorage.getItem('u')).USR_ID}&V_PRCS_TXN_ID=${V_PRCS_TXN_ID}&V_UNIQUE_ID=${V_UNIQUE_ID}&REST_Service=ProcessEnd&Verb=DELETE`;
+        const url = `https://${this.globals.domain_name + this.globals.Path}/v${this.globals.Version}/securedJSON?V_SRC_ID=${this.V_SRC_ID}&V_USR_ID=${JSON.parse(sessionStorage.getItem('u')).USR_ID}&V_PRCS_TXN_ID=${V_PRCS_TXN_ID}&V_UNIQUE_ID=${V_UNIQUE_ID}&REST_Service=ProcessEnd&Verb=DELETE`;
 
         const headers = new Headers({
             Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('u')).TOKEN}`
         });
         const options = new RequestOptions({ headers: headers });
         return this.http.delete(url, options);
+    }
+
+    getApplicationAndProcess() {
+        return this.http.get(this.baseSecureJsonUrl + "V_SRC_CD=" + this.V_SRC_CD + "&V_USR_NM=" + this.V_USR_NM + "&REST_Service=ApplicationProcesses&Verb=GET", this.apiService.setHeaders());
     }
 }

@@ -1,7 +1,7 @@
-div.mat-expansion-panel-content:not(.mat-expanded) {
-  height: 0px !important;
-  visibility: hidden !important;
-}
+// div.mat-expansion-panel-content:not(.mat-expanded) {
+//   height: 0px !important;
+//   visibility: hidden !important;
+// }
 ::ng-deep .mat-elevation-z8 {
   margin-top: 46px;
 }
@@ -116,7 +116,7 @@ del_icon:hover {
   margin-right: -50%;
 }
 .mat-header-cell {
-  display: block !important;
+  // display: block !important;
   height: 48px;
 
   padding: 10px;

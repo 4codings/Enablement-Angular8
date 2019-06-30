@@ -1,0 +1,46 @@
+<ng-template #itemTemplate let-item="item" let-onCollapseExpand="onCollapseExpand"
+  let-onCheckedChange="onCheckedChange">
+  <div class="form-inline row-item">
+    <i *ngIf="item.children" (click)="onCollapseExpand()" aria-hidden="true" class="fa"
+      [class.fa-caret-right]="item.collapsed" [class.fa-caret-down]="!item.collapsed"></i>
+    <div class="form-check">
+      <label class="form-check-label" (click)="onTitleClick(item)">
+        {{item.text}}
+      </label>
+      <label *ngIf="item.children" class="form-check-label">
+        <button mat-icon-button [matMenuTriggerFor]="parentMenu" aria-label="Example icon-button with a menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #parentMenu="matMenu">
+          <div *ngFor="let pitem of parentMenuItems">
+            <button (click)="onParentMenuItemClick(pitem.value,item.value)" *ngIf="pitem.havePermission" mat-menu-item>
+              <span>{{pitem.item}}</span>
+            </button>
+          </div>
+        </mat-menu>
+      </label>
+      <label *ngIf="!item.children" class="form-check-label">
+        <button mat-icon-button [matMenuTriggerFor]="childMenu" aria-label="Example icon-button with a menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #childMenu="matMenu">
+          <div *ngFor="let citem of childrenMenuItems">
+            <button (click)="onChildMenuItemClick(citem.value,item.value)" *ngIf="citem.havePermission" mat-menu-item>
+              <span *ngIf="citem.havePermission">{{citem.item}}</span>
+            </button>
+          </div>
+        </mat-menu>
+      </label>
+    </div>
+  </div>
+</ng-template>
+<div #canvas id="canvas-bpmn"></div>
+<div fxLayout="row" class="modeler">
+  <div fxFlex="20">
+    <ngx-treeview [config]="config" [items]="item" [itemTemplate]="itemTemplate"
+      (selectedChange)="onSelectedChange($event)" (filterChange)="onFilterChange($event)">
+    </ngx-treeview>
+  </div>
+  <div fxFlex="60" id="canvas"></div>
+  <div fxFlex="20" id="properties"></div>
+</div>

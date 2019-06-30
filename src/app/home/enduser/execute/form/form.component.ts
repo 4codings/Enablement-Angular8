@@ -18,7 +18,12 @@ import { ApiService } from 'src/app/service/api/api.service';
 import { HomeComponent } from 'src/app/home/home.component';
 import { StorageSessionService } from 'src/app/services/storage-session.service';
 import { Globals2 } from 'src/app/service/globals';
-
+export class ReportData {
+  public RESULT: string;
+  public V_EXE_CD: string[];
+  constructor() {
+  }
+}
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
@@ -73,6 +78,7 @@ export class FormComponent implements OnInit {
   version = this.globals.version;
   public apiUrlGet = this.apiService.endPoints.insecure;
   public apiUrlGetSecured = this.apiService.endPoints.secure;
+  private aptUrlPost_report_new = this.apiService.endPoints.secureProcessReport;
   public dataChangeHandler: any;
   V_SRC_CD: string = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
   V_USR_NM: string = JSON.parse(sessionStorage.getItem('u')).USR_NM;
@@ -108,6 +114,10 @@ export class FormComponent implements OnInit {
   V_APP_CD: string = '';
   V_PRCS_CD: string = '';
   Initial_record: any = {};
+  check_data = {};
+  repeat = 0;
+  Execute_res_data: any;
+  public report: ReportData = new ReportData;
 
   ngOnInit() {
   }
@@ -116,12 +126,14 @@ export class FormComponent implements OnInit {
       this.ctrl_variables = res;
       // console.log(res);
     });
+    this.Form_Data = [];
     this.Form_Data = this.StorageSessionService.getCookies('report_table');
     // console.log('this.Form_date', this.Form_Data);
     this.configService.prepareAndGetFieldConfigurations(this.Form_Data, true);
     this.RVP_Keys = [];
     this.RVP_Values = []
     this.RVP_labels = [];
+    this.RVP_placeholder = [];
     this.PVP = JSON.parse(this.Form_Data['PVP'][0]);
     this.srvc_cd_sl = this.Form_Data['SRVC_CD'][0];
     (this.PVP);
@@ -206,6 +218,7 @@ export class FormComponent implements OnInit {
 
   setField_RVP(): any {
     //------------Getting RVP Data--------------//
+    this.RVP_Data = [];
     this.RVP_Data = this.Form_Data['RVP'];
     // 10th April removed call
     // if (this.V_TABLE_NAME.length > 0) {
@@ -213,6 +226,7 @@ export class FormComponent implements OnInit {
     // }
     ("Field Data 1:");
     (JSON.parse(this.RVP_Data));
+    this.RVP_DataObj = [];
     this.RVP_DataObj = JSON.parse(this.RVP_Data);
     this.updateInitialFieldNameAndValues();
   }
@@ -345,7 +359,8 @@ export class FormComponent implements OnInit {
       // (timeout);
       if (timeout && this.ctrl_variables.call_repeat_on_TIMEOUT) {
         this.app.fromNonRepForm = true;
-        this.router.navigate(["/End_User/Execute"], { skipLocationChange: true });
+        // this.router.navigate(["/End_User/Execute"], { skipLocationChange: true });
+        this.repeatCallTable(true);
       } else if (res['RESULT'][0] === 'SUCCESS' || res['RESULT'][0] === 'COMPLETED') {
         this.router.navigate(["/End_User/Execute"], { skipLocationChange: true });
       } else {
@@ -356,18 +371,99 @@ export class FormComponent implements OnInit {
         this.StorageSessionService.setCookies('report_table', res);
         // // console.log('setCookies');
         if (res['RESULT'] == 'INPUT_ARTFCT_TASK') {
-          this.router.navigate(['/End_User/InputArtForm'], { skipLocationChange: true });
+          this.router.navigate(['/End_User/InputArtForm'], {
+            skipLocationChange: true, queryParams: { page: 1 }
+          });
         } else if (res['RESULT'][0] == 'NONREPEATABLE_MANUAL_TASK') {
-          this.router.navigate(['/End_User/NonRepeatForm'], { skipLocationChange: true });
+          this.router.navigate(['/End_User/NonRepeatForm'], {
+            skipLocationChange: true,
+            queryParams: { page: 1 }
+          });
         } else if (res['RESULT'][0] == 'REPEATABLE_MANUAL_TASK') {
-          this.router.navigate(['/End_User/RepeatForm'], { skipLocationChange: true });
-        } if (res['RESULT'] == 'TABLE') {
-          this.router.navigate(['/End_User/ReportTable'], { skipLocationChange: true });
+          this.router.navigate(['/End_User/RepeatForm'], {
+            skipLocationChange: true, queryParams: { page: 1 }
+          });
+        } else if (res['RESULT'] == 'TABLE') {
+          this.router.navigate(['/End_User/ReportTable'], {
+            skipLocationChange: true, queryParams: { page: 1 }
+          });
+        } else {
+          this.repeatCallTable(true);
         }
       }
     }
   }
 
+  repeatCallTable(data: any): void {
+    if (data && this.repeat < this.ctrl_variables.repeat_count) {
+      this.repeat++;
+      this.GenerateReportTable();
+    } else {
+      this.repeat = 0;
+      this.router.navigate(["/End_User/Execute"], { skipLocationChange: true });
+    }
+  }
+  GenerateReportTable() {
+    if (!this.app.loadingCharts)
+      this.app.loadingCharts = true;
+    if (this.app.fromNonRepForm) {
+      this.app.fromNonRepForm = false;
+      this.Execute_res_data = this.StorageSessionService.getCookies('executeresdata');
+    }
+    const body = {
+      V_SRC_ID: this.Execute_res_data['V_SRC_ID'],
+      V_PRCS_TXN_ID: this.Execute_res_data['V_PRCS_TXN_ID'],
+      V_USR_ID: JSON.parse(sessionStorage.getItem('u')).USR_ID,
+      REST_Service: 'Report',
+      Verb: 'POST'
+    };
+
+    // secure
+
+    this.https.post(this.aptUrlPost_report_new, body, this.apiService.setHeaders())
+      .subscribe(
+        (res: any) => {
+          if (res._body !== '{}') {
+            this.globals.Report = JSON.parse(res._body)
+            this.StorageSessionService.setCookies('report_table', res.json());
+            this.check_data = res.json();
+            this.app.loadingCharts = false;
+            this.report = res.json();
+            var timeout = res.json().RESULT.toString().substring(0, 7) == "TIMEOUT";
+            if (timeout && this.ctrl_variables.call_repeat_on_TIMEOUT) {
+              this.repeatCallTable(true);
+            } else if (this.report.RESULT == 'TABLE') {
+
+              this.router.navigateByUrl('/End_User/ReportTable', {
+                skipLocationChange: true, queryParams: { page: 1 }
+              });
+            } else if (this.report.RESULT[0] == 'INPUT_ARTFCT_TASK') {
+
+              this.router.navigateByUrl('/End_User/InputArtForm', {
+                skipLocationChange: true, queryParams: { page: 1 }
+              });
+
+            } else if (CommonUtils.isValidValue(this.report.V_EXE_CD)) {
+
+              if (this.report.RESULT[0] == 'NONREPEATABLE_MANUAL_TASK') {
+                this.router.navigateByUrl('/End_User/NonRepeatForm', {
+                  queryParams: { page: 1 }, skipLocationChange: true
+                });
+              } else if (this.report.RESULT[0] == 'REPEATABLE_MANUAL_TASK') {
+                this.router.navigateByUrl('/End_User/RepeatForm', {
+                  skipLocationChange: true, queryParams: { page: 1 }
+                });
+              }
+            } else {
+              this.repeatCallTable(true);
+            }
+            this.StorageSessionService.setCookies('App_Prcs', { 'V_APP_CD': this.SL_APP_CD, 'V_PRCS_CD': this.SL_PRC_CD });
+          } else {
+            this.router.navigate(['End_User/Execute'], { queryParams: { page: 1 }, skipLocationChange: true });
+          }
+        }
+      );
+  }
   set_fieldWidth(): any {
     //--------Setting MAX_COL_PER_PAGE as width---------//
     var allWidths = this.Form_Data["MAX_COL_PER_PAGE"][0].split(",");

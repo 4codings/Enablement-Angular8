@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ColorPickerModule} from 'ngx-color-picker';
-import {ChartsModule} from 'ng2-charts';
+import {ChartsModule} from 'ng2-charts-x';
 
 import {FormErrorMsgComponent} from './components/form-error-msg/form-error-msg.component';
 import {NoDataMsgComponent} from './components/no-data-msg/no-data-msg.component';
@@ -12,7 +12,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {
   MatListModule, MatIconModule, MatCardModule, MatInputModule, MatRadioModule, MatButtonModule,
   MatFormFieldControl, MatFormFieldModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule,
-  MatCheckboxModule, MatAutocompleteModule
+  MatCheckboxModule, MatAutocompleteModule, MatSortModule
 } from '@angular/material';
 import {MatTableModule} from '@angular/material/table';
 import {OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
@@ -28,6 +28,7 @@ import {SplitLastPipe, MyFilterPipe} from '../home/enduser/execute/MyFilterPipe 
 import {MyFilterPipe1} from '../home/enduser/schd-actn/myFilterPipe1';
 import {MatMenuModule} from '@angular/material/menu';
 import {ConfirmationAlertComponent} from './components/confirmation-alert/confirmation-alert.component';
+import { TreeviewModule } from 'ngx-treeview';
 
 @NgModule({
   imports: [
@@ -49,6 +50,7 @@ import {ConfirmationAlertComponent} from './components/confirmation-alert/confir
     MatRadioModule,
     MatAutocompleteModule,
     MatTableModule,
+    MatSortModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     MatSliderModule,
@@ -61,7 +63,8 @@ import {ConfirmationAlertComponent} from './components/confirmation-alert/confir
     MatSlideToggleModule,
     MatButtonToggleModule,
     MatSnackBarModule,
-    MatMenuModule
+    MatMenuModule,
+    TreeviewModule.forRoot(),
   ],
   declarations: [
     FormErrorMsgComponent,
@@ -90,6 +93,7 @@ import {ConfirmationAlertComponent} from './components/confirmation-alert/confir
     MatRadioModule,
     MatAutocompleteModule,
     MatTableModule,
+    MatSortModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     MatSliderModule,
@@ -106,7 +110,8 @@ import {ConfirmationAlertComponent} from './components/confirmation-alert/confir
     MyFilterPipe1,
     SplitLastPipe,
     MatMenuModule,
-    ConfirmationAlertComponent
+    ConfirmationAlertComponent,
+    TreeviewModule
   ]
 })
 export class SharedModule {

@@ -1028,7 +1028,7 @@ export class ExecuteComponent implements OnInit, OnDestroy {
       this.GenerateReportTable();
     } else {
       this.repeat = 0;
-      this.router.navigate(["/End_User/Execute"], { skipLocationChange: true });
+      this.router.navigate(["/End_User/Execute"], { queryParams: { page: 1 }, skipLocationChange: true });
     }
   }
 
@@ -1110,7 +1110,9 @@ export class ExecuteComponent implements OnInit, OnDestroy {
 
               if (this.report.RESULT[0] == 'NONREPEATABLE_MANUAL_TASK') {
                 // non-Repeatable NonRepeatForm
-                this.router.navigateByUrl('/End_User/NonRepeatForm', { skipLocationChange: true });
+                this.router.navigateByUrl('/End_User/NonRepeatForm', {
+                  queryParams: { refresh: new Date().getTime() }, skipLocationChange: true
+                });
                 //this.router.navigateByUrl('Forms', { skipLocationChange: true });
 
               } else if (this.report.RESULT[0] == 'REPEATABLE_MANUAL_TASK') {

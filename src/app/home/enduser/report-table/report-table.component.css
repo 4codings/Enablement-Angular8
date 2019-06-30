@@ -1,10 +1,16 @@
-div.mat-expansion-panel-content:not(.mat-expanded) {
+.chartstyle{
+  position: relative;
+  height:40vh;
+  width:80vw
+}
+/* div.mat-expansion-panel-content:not(.mat-expanded) {
   height: 0px !important;
   visibility: hidden !important;
 }
 ::ng-deep .mat-elevation-z8{
   margin-top:46px;
 }
+
 
 .mat-expansion-panel-header  {
   height: 46px;
@@ -59,7 +65,7 @@ background-color: rgb(141, 136, 173);
   
 }
 .mat-header-row {
-      height: 46px;
+  height: 46px;
   background-color: rgb(95, 95, 95)
 }
 .mat-row{
@@ -176,4 +182,11 @@ div.color-picker{
   cursor: pointer;
   justify-content: center;
 }
+} */
+table {
+  width: 100%;
+}
+
+th.mat-sort-header {
+  color: black;
 }
