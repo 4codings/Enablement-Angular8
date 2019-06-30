@@ -53,6 +53,10 @@ export class SingleGroupComponent implements OnInit, OnDestroy {
     this.overviewService.deleteUserFromGroup(this.group, user);
   }
 
+  onBtnAssignRoleClick(group: userGroup): void {
+    this.overviewService.openAssignRoleToGroupDialog(group);
+  }
+
   ngOnDestroy(): void {
     this.unsubscribeAll.next(true);
     this.unsubscribeAll.complete();

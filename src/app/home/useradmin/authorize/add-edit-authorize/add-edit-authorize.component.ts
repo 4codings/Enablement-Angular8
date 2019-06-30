@@ -22,6 +22,8 @@ import {AuthorizationData} from '../../../../store/user-admin/user-authorization
 })
 export class AddEditAuthorizeComponent extends AuthorizeComponent implements OnInit {
   isEditMode = false;
+  selectedView: 'selectAuth' | 'addNewAuth' = 'selectAuth';
+  selectedAuth: AuthorizationData;
 
   constructor(public noAuthData: NoAuthDataService,
               private userAdminService: UseradminService,
@@ -34,6 +36,7 @@ export class AddEditAuthorizeComponent extends AuthorizeComponent implements OnI
     super(noAuthData, store, optionalService, http, apiServcie);
     if (data.auth) {
       this.isEditMode = true;
+      this.selectedView = 'addNewAuth';
       this.authValueObj = data.auth;
       this.radioSelected = this.authValueObj.V_AUTH_TYP;
     }
@@ -48,32 +51,38 @@ export class AddEditAuthorizeComponent extends AuthorizeComponent implements OnI
   }
 
   onAddSubmit() {
-    const data = this.authValueObj;
-    let body = {
-      'V_AUTH_DSC': data.V_AUTH_DSC,
-      'V_AUTH_CD': data.V_AUTH_CD,
-      'V_AUTH_TYP': this.radioSelected,
-      'V_SRC_CD': this.V_SRC_CD_DATA.V_SRC_CD,
-      'V_APP_CD': data.V_APP_CD,
-      'V_PRCS_CD': data.V_PRCS_CD,
-      'V_EXE_TYP': data.V_EXE_TYP,
-      'V_READ': data.V_READ,
-      'V_UPDATE': data.V_UPDATE,
-      'V_DELETE': data.V_DELETE,
-      'V_CREATE': data.V_CREATE,
-      'V_EXECUTE': data.V_EXECUTE,
-      'V_USR_NM': this.optionalService.V_USR_NM,
-      'V_COMMNT': '',
-      'REST_Service': 'Auth',
-      'Verb': 'POST'
-    };
-    this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', body).subscribe(res => {
-        this.addFlag = false;
-        this.assignAuthToRole(this.data.roleId, res[0] ? res[0].id + '' : '');
-      },
-      err => {
-        console.log('Error in form record post request:\n' + err);
-      });
+    if (this.selectedView == 'addNewAuth') {
+      const data = this.authValueObj;
+      let body = {
+        'V_AUTH_DSC': data.V_AUTH_DSC,
+        'V_AUTH_CD': data.V_AUTH_CD,
+        'V_AUTH_TYP': this.radioSelected,
+        'V_SRC_CD': this.V_SRC_CD_DATA.V_SRC_CD,
+        'V_APP_CD': data.V_APP_CD,
+        'V_PRCS_CD': data.V_PRCS_CD,
+        'V_EXE_TYP': data.V_EXE_TYP,
+        'V_READ': data.V_READ,
+        'V_UPDATE': data.V_UPDATE,
+        'V_DELETE': data.V_DELETE,
+        'V_CREATE': data.V_CREATE,
+        'V_EXECUTE': data.V_EXECUTE,
+        'V_USR_NM': this.optionalService.V_USR_NM,
+        'V_COMMNT': '',
+        'REST_Service': 'Auth',
+        'Verb': 'POST'
+      };
+      this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', body).subscribe(res => {
+          this.addFlag = false;
+          this.assignAuthToRole(this.data.roleId, res[0] ? res[0].id + '' : '');
+        },
+        err => {
+          console.log('Error in form record post request:\n' + err);
+        });
+    } else if (this.selectedView == 'selectAuth') {
+      if (this.selectedAuth) {
+        this.assignAuthToRole(this.data.roleId, this.selectedAuth.V_AUTH_ID);
+      }
+    }
   }
 
   onBtnCancelClick() {
@@ -131,6 +140,10 @@ export class AddEditAuthorizeComponent extends AuthorizeComponent implements OnI
 
   ngOnDestroy() {
     super.ngOnDestroy();
+  }
+
+  onAuthSelect(auth: AuthorizationData): void {
+    this.selectedAuth = auth;
   }
 
 }

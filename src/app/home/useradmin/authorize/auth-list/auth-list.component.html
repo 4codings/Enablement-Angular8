@@ -1,0 +1,6 @@
+<mat-list class="scroll">
+  <mat-list-item class="list_item" *ngFor="let auth of auths"
+                 [class.active]="auth == selectedAuth" (click)="onAuthSelect(auth)">
+    <div>{{auth.V_AUTH_CD}}</div>
+  </mat-list-item>
+</mat-list>

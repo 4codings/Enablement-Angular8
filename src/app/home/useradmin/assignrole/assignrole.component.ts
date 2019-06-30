@@ -71,8 +71,8 @@ export class AssignroleComponent implements OnInit, OnDestroy {
 
   constructor(
     public noAuthData: NoAuthDataService,
-    private store: Store<AppState>,
-    private http:HttpClient
+    protected store: Store<AppState>,
+    protected http:HttpClient
   ) { }
 
   ngOnInit() {
@@ -286,13 +286,7 @@ export class AssignroleComponent implements OnInit, OnDestroy {
         }
       });
     }
-
-    if(is_selectedExist.length) {
-      return false;
-    } else {
-      return true;
-    }
-    
+    return !is_selectedExist.length;
   }
 
   submitAssignRole() {
@@ -324,7 +318,7 @@ export class AssignroleComponent implements OnInit, OnDestroy {
         "V_EFF_END_DT_TM":[this.end_date],
         "REST_Service":["Group_Role"],
         "Verb":["POST"]
-      }
+      };
       
       this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', json).subscribe(res => {
         this.updateGroupStateAdded(res[0]);
@@ -361,7 +355,7 @@ export class AssignroleComponent implements OnInit, OnDestroy {
         "V_EFF_END_DT_TM":[this.end_date],
         "REST_Service":["Group_Role"],
         "Verb":["POST"]
-      }
+      };
       
       this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', json).subscribe(res => {
         this.updateRoleStateAdded(res[0]);
@@ -370,7 +364,6 @@ export class AssignroleComponent implements OnInit, OnDestroy {
         console.log(err);
       });
     }
-    
   }
 
   updateGroupStateAdded(user) {

@@ -59,6 +59,8 @@ import { UserTileListComponent } from './overview/user-tile-list/user-tile-list.
 import { RoleListComponent } from './overview/role-list/role-list.component';
 import { SingleRoleComponent } from './overview/single-role/single-role.component';
 import { AuthTileListComponent } from './overview/auth-tile-list/auth-tile-list.component';
+import { AuthListComponent } from './authorize/auth-list/auth-list.component';
+import { AssignRoleModalComponent } from './assignrole/assign-role-modal/assign-role-modal.component';
 
 @NgModule({
   declarations: [
@@ -94,6 +96,8 @@ import { AuthTileListComponent } from './overview/auth-tile-list/auth-tile-list.
     RoleListComponent,
     SingleRoleComponent,
     AuthTileListComponent,
+    AuthListComponent,
+    AssignRoleModalComponent,
   ],
   imports: [
     MatIconModule,
@@ -128,7 +132,8 @@ import { AuthTileListComponent } from './overview/auth-tile-list/auth-tile-list.
     AddEditUserComponent,
     AddEditAuthorizeComponent,
     AddRoleComponent,
-    EditRoleComponent]
+    EditRoleComponent,
+    AssignRoleModalComponent],
 })
 export class UseradminModule {
   constructor() {

@@ -6,6 +6,7 @@
   <div class="tile"
        matRipple
        cdkDrag
+       cdkDropListSortingDisabled
        [cdkDragData]="currAuth"
        [matTooltip]="currAuth.V_AUTH_CD"
        *ngFor="let currAuth of auths | authType: selectedAuthType?.key"
@@ -14,8 +15,8 @@
        (contextmenu)="openContextmenu($event, currAuth)"
        (mousedown)="onTileMouseDownEventHandler($event)"
        (click)="onAuthTileClick(currAuth)">
-    <div>Auth</div>
-    <div *ngIf="!environment.production">{{currAuth.V_AUTH_ID}}</div>
+    <mat-icon class="tile-icon">lock</mat-icon>
+<!--    <div *ngIf="!environment.production">{{currAuth.V_AUTH_ID}}</div>-->
     <div class="ellipsis-text"><strong>{{currAuth.V_AUTH_CD}}</strong></div>
   </div>
   <div class="tile add-new-tile" cdkDrag [cdkDragDisabled]="true" (click)="onAddAuthTileClick()"

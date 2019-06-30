@@ -72,29 +72,39 @@
         justify-content: center;
         align-items: center;
         cursor: pointer;
-        background-color: #f2f2f2;
-        transition: box-shadow 400ms cubic-bezier(.165, .84, .44, 1);
+        background-color: #F2F2F4;
+        transition: box-shadow 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
         box-shadow: none;
         border-radius: 3px;
+         color: #999 !important;
 
         &:hover {
-          box-shadow: 0 2px 6px rgba(47, 51, 55, 0.1);
+          box-shadow: 0 0 6px rgba(47, 51, 55, 0.1);
         }
 
         &.active {
-          background-color: #008abc !important;
-          color: #ffffff;
+          border-color: #008abc ;
+          background-color: #F2F2F4 !important;
+          .tile-icon {
+            color: #008abc !important;
+          }
         }
 
         &.highlight {
-          background-color: #ffa500 !important;
-          color: #ffffff;
+          border-color: #ffa500 ;
+          .tile-icon {
+            color: #ffa500 !important;
+          }
         }
 
         &.add-new-tile {
           color: #999999;
           border-style: dashed;
           background-color: transparent;
+        }
+
+        .tile-icon {
+          color: #999;
         }
       }
     }

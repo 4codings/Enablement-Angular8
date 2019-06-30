@@ -32,6 +32,7 @@ import {RollserviceService} from '../../../services/rollservice.service';
 import {authorizationTypeOptions, groupTypeOptions} from '../useradmin.constants';
 import {Actions, ofType} from '@ngrx/effects';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {AssignRoleModalComponent} from '../assignrole/assign-role-modal/assign-role-modal.component';
 
 @Injectable()
 export class OverviewService implements OnDestroy {
@@ -75,7 +76,6 @@ export class OverviewService implements OnDestroy {
   unsubscribeAll: Subject<boolean> = new Subject<boolean>();
 
   V_SRC_CD_DATA: any;
-
   constructor(private store: Store<AppState>,
               private userAdminService: UseradminService,
               private roleService: RollserviceService,
@@ -573,6 +573,21 @@ export class OverviewService implements OnDestroy {
 
   downloadFile(fileName: any) {
     this.userAdminService.downloadFile(fileName);
+  }
+
+  openAssignRoleToGroupDialog(group: userGroup): void {
+    const dialogRef = this.dialog.open(AssignRoleModalComponent,
+      {
+        width: '600px',
+        panelClass: 'app-dialog',
+        data: {group: group, roles: this.allRoles, controlVariables: this.userAdminService.controlVariables}
+      });
+    dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
+      if (flag) {
+        this.store.dispatch(new userGroupActions.getUserGroup(this.V_SRC_CD_DATA));
+        this.store.dispatch(new userRoleActions.getUserRole(this.V_SRC_CD_DATA));
+      }
+    });
   }
 
   ngOnDestroy(): void {

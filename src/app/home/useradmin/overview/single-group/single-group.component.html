@@ -1,12 +1,15 @@
 <div class="tile-container">
   <div class="container-header" fxLayoutAlign="space-between center">
-    <span class="container-title">{{group.V_USR_GRP_CD}} - {{group.V_USR_GRP_ID}}</span>
+    <span class="container-title">{{group.V_USR_GRP_CD}}</span>
     <div class="container-actions">
       <button mat-icon-button matTooltip="delete group" (click)="onBtnDeleteGroupClick(group)">
         <mat-icon>delete</mat-icon>
       </button>
       <button mat-icon-button matTooltip="edit group" (click)="onBtnEditGroupClick(group)">
         <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="assign role" (click)="onBtnAssignRoleClick(group)">
+        <mat-icon>link</mat-icon>
       </button>
     </div>
   </div>
