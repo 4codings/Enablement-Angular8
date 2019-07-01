@@ -83,8 +83,8 @@
     </mat-form-field>
   </div>
 </div>
-<br>
-<div class="chartstyle" *ngIf="dispchart">
+<div style="width: 75%" *ngIf="dispchart">
+  <br>
   <div *ngIf="selectedchart === 'linechart_sel'">
     <canvas baseChart *ngIf="lineChartData" [datasets]="lineChartData" [labels]="lineChartLabels"
       [options]="lineChartOptions" [colors]="lineChartColors" [chartType]="lineChartType">
@@ -99,20 +99,20 @@
     <canvas baseChart [datasets]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType">
     </canvas>
   </div>
-<div *ngIf="selectedchart === 'doughnutchart_sel'">
+  <div *ngIf="selectedchart === 'doughnutchart_sel'">
     <canvas baseChart [datasets]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType">
     </canvas>
   </div>
 </div>
-<br>
 <div fxLayout="column" fxLayoutAlign="space-around center" *ngIf="dispchart">
+  <br>
   <div fxLayoutAlign="space-around center" fxLayout="column" *ngIf="selectedcustomize === 'managedata_sel'">
     <div fxLayout="column" fxLayout.lt-sm="row">
       <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="center">
         <div fxFlex="23">
           <mat-form-field style="width:100%">
             <mat-select placeholder="Select X-axis" [(value)]="_xaxis_sel">
-              <mat-option style ="text-align: center;   height: 25px;   color: black; " value="">None</mat-option>
+              <mat-option style="text-align: center;   height: 25px;   color: black; " value="">None</mat-option>
               <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" value="{{items}}">
                 {{items}} </mat-option>
             </mat-select>
@@ -121,22 +121,23 @@
         <div fxFlex="4"></div>
         <div fxFlex="23">
           <mat-form-field style="width:100%">
-            <mat-select placeholder="Select Y-axis-1" [(value)]="_yaxis1_sel">
-              <mat-option style ="text-align: center;   height: 25px;   color: black; " value="">None</mat-option>
-              <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" value="{{items}}">
+            <mat-select placeholder="Select Y-axis-1" multiple [(value)]="_yaxis_sel">
+              <mat-option style="text-align: center;   height: 25px;   color: black; " value="">None</mat-option>
+              <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" [value]="items">
                 {{items}} </mat-option>
             </mat-select>
           </mat-form-field>
         </div>
         <div fxFlex="4"></div>
         <div fxFlex="23">
-          <mat-form-field style="width:100%">
+          <button mat-raised-button (click)="hey();">click me</button>
+          <!-- <mat-form-field style="width:100%">
             <mat-select placeholder="Select Y-axis-2" [(value)]="_yaxis2_sel">
               <mat-option style ="text-align: center;   height: 25px;   color: black; " value="">None</mat-option>
               <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" value="{{items}}">
                 {{items}} </mat-option>
             </mat-select>
-          </mat-form-field>
+          </mat-form-field> -->
         </div>
         <div fxFlex="4"></div>
         <div fxFlex="23">
@@ -145,7 +146,7 @@
               <input type="text" placeholder="Unit of measure" matInput [formControl]="myControl"
                 [matAutocomplete]="auto" [(ngModel)]="_yaxisCB">
               <mat-autocomplete #auto="matAutocomplete">
-                <mat-option style ="text-align: center;   height: 25px;   color: black; " value="">None</mat-option>
+                <mat-option style="text-align: center;   height: 25px;   color: black; " value="">None</mat-option>
                 <mat-option *ngFor="let option of yaxiscallbacks" value="{{option}}">
                   {{option}}
                 </mat-option>
@@ -311,7 +312,6 @@
 <div class="mat-elevation-z8" fxShow="true" fxHide.xs="true" *ngIf="disptable">
   <!-- <mat-card id="mat_card">
     <mat-card-content> -->
-
   <table mat-table [dataSource]="dataSource" matSort>
 
     <ng-container *ngFor="let a of columnsToDisplay" matColumnDef="{{a}}">
@@ -363,11 +363,16 @@
   <!-- </mat-card-content>
   </mat-card> -->
 </div>
-<!-- </div> 
-           </div>
-        </div>
-      </div> 
-    </div>  -->
+<br>
+<div *ngIf="disptable" style="width: 100%">
+  <mat-label>  Hidden Columns : </mat-label>
+  <mat-chip-list style="width: 100%">
+    <mat-chip *ngFor="let item of hiddencols" [removable]="removable" (removed)="remove(item)">
+      {{item}}
+      <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+    </mat-chip>
+  </mat-chip-list>
+</div>
 <br>
 <div flex fxLayout="row" fxLayoutAlign="center">
 
