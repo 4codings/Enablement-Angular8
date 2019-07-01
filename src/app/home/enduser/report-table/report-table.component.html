@@ -163,7 +163,7 @@
       </div>
     </div>
     <br>
-    <button mat-raised-button color="primary" (click)="updatechart();">Update</button>
+    <button mat-raised-button color="primary" (click)="setchartstyling();updatechart();">Update</button>
   </div>
   <div fxLayout="column" fxLayoutAlign="space-around center" *ngIf="selectedcustomize === 'customizechart_sel'">
     <div fxLayout="row">
@@ -352,10 +352,10 @@
   </mat-card> -->
 </div>
 <br>
-<div *ngIf="disptable" style="width: 100%">
+<div *ngIf="disptable && hiddencols.length > 0" style="width: 100%">
   <mat-label>  Hidden Columns : </mat-label>
   <mat-chip-list style="width: 100%">
-    <mat-chip *ngFor="let item of hiddencols" [removable]="removable" (removed)="remove(item)">
+    <mat-chip color="primary" *ngFor="let item of hiddencols" [removable]="removable" (removed)="remove(item)">
       {{item}}
       <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
     </mat-chip>

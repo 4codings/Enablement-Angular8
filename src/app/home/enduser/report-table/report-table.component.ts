@@ -698,6 +698,10 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         var a = this.userprefs['hiddencolname'].toString();
         this.hiddencols = a.split(',');
         for(let i=0;i<this.hiddencols.length;i++){
+          if(this.hiddencols.includes("")){
+            var emptyindex = this.columnsToDisplay.indexOf(this.hiddencols[""]);
+            this.hiddencols.splice(emptyindex,1);
+          }
         var index = this.columnsToDisplay.indexOf(this.hiddencols[i]);
         if (index > -1) {
           this.columnsToDisplay.splice(index, 1);
