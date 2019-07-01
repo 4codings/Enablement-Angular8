@@ -1,6 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+import { saveAs } from 'file-saver';
+import { ToastrService } from 'ngx-toastr';
 import { Modeler, PropertiesPanelModule, InjectionNames, OriginalPropertiesProvider, OriginalPaletteProvider } from './bpmn-js';
 import { CustomPropsProvider } from './props-provider/custom-props-provider';
 import { CustomPaletteProvider } from './props-provider/custom-palette-provider';
@@ -18,9 +20,13 @@ import { RollserviceService } from 'src/app/services/rollservice.service';
 })
 export class ProcessDesignComponent implements OnInit, OnDestroy {
 
+  public opened: boolean;
   private modeler: any;
   private url: string;
   private user: any;
+  private bpmnTemplate: any;
+  @ViewChild('file')
+  private file: any;
   applicationProcessObservable$: Subscription;
   applicationProcessValuesObservable: ApplicationProcessObservable[] = [];
   appProcessList = [];
@@ -50,6 +56,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
 
   constructor(
     private httpClient: HttpClient,
+    private toastrService: ToastrService,
     private globals: Globals,
     private endUserService: EndUserService,
     private optionalService: OptionalValuesService,
@@ -95,16 +102,18 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   onFilterChange(value: string) {
     // console.log('filter:', value);
   }
+
   onSelectedChange(value) {
     // console.log('onSelectedChange:', value);
   }
+
   ngOnInit() {
     this.url = `https://${this.globals.domain_name + this.globals.Path + this.globals.version}/securedJSON`;
     this.user = JSON.parse(sessionStorage.getItem('u'));
     this.modeler = new Modeler({
       container: '#canvas',
       width: '100%',
-      height: '600px',
+      height: '400px',
       additionalModules: [
         PropertiesPanelModule,
         { [InjectionNames.bpmnPropertiesProvider]: ['type', OriginalPropertiesProvider.propertiesProvider[1]] },
@@ -141,57 +150,50 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         }
       }
     });
-    this.httpClient.get('/assets/bpmn/newDiagram.bpmn', {
-      headers: { observe: 'response' }, responseType: 'text'
-    }).subscribe(
-      (x: any) => {
-        this.modeler.importXML(x, this.handleError);
-        const eventBus = this.modeler.get('eventBus');
-        if (eventBus) {
-          eventBus.on('element.changed', ($event) => {
-            if ($event && $event.element && ['bpmn:Process', 'label'].indexOf($event.element.type) === -1) {
-              if ($event.element.type === 'bpmn:SequenceFlow') {
-                const data: any = {
-                  REST_Service: 'Orchetration',
-                  RESULT: '@RESULT',
-                  V_APP_CD: 'Marketing',
-                  V_CONT_ON_ERR_FLG: 'N',
-                  V_PRCS_CD: '',
-                  V_PRDCR_APP_CD: 'Marketing',
-                  V_PRDCR_PRCS_CD: 'Email DHS POC',
-                  V_PRDCR_SRC_CD: this.user.SRC_CD,
-                  V_PRDCR_SRVC_CD: $event.element.businessObject.sourceRef.id,
-                  V_SRC_CD: this.user.SRC_CD,
-                  V_SRVC_CD: $event.element.businessObject.targetRef.id,
-                  V_USR_NM: this.user.USR_NM,
-                  Verb: 'PUT'
-                };
-                this.httpClient.put(this.url, data).subscribe();
-              } else {
-                const data: any = {
-                  REST_Service: 'Service',
-                  V_APP_CD: 'Marketing',
-                  V_CREATE: 'Y',
-                  V_DELETE: 'Y',
-                  V_EXECUTE: 'Y',
-                  V_PRCS_CD: 'Email DHS POC',
-                  V_READ: 'Y',
-                  V_ROLE_CD: 'Program Assessment Role',
-                  V_SRC_CD: this.user.SRC_CD,
-                  V_SRVC_CD: $event.element.businessObject.name,
-                  V_SRVC_DSC: '',
-                  V_UPDATE: 'Y',
-                  V_USR_NM: this.user.USR_NM,
-                  Verb: 'PUT'
-                };
-                this.httpClient.post(this.url, data).subscribe();
-              }
-            }
-          });
+    this.newBpmn();
+    const eventBus = this.modeler.get('eventBus');
+    if (eventBus) {
+      eventBus.on('element.changed', ($event) => {
+        if ($event && $event.element && ['bpmn:Process', 'label'].indexOf($event.element.type) === -1) {
+          if ($event.element.type === 'bpmn:SequenceFlow') {
+            const data: any = {
+              REST_Service: 'Orchetration',
+              RESULT: '@RESULT',
+              V_APP_CD: 'Marketing',
+              V_CONT_ON_ERR_FLG: 'N',
+              V_PRCS_CD: '',
+              V_PRDCR_APP_CD: 'Marketing',
+              V_PRDCR_PRCS_CD: 'Email DHS POC',
+              V_PRDCR_SRC_CD: this.user.SRC_CD,
+              V_PRDCR_SRVC_CD: $event.element.businessObject.sourceRef.id,
+              V_SRC_CD: this.user.SRC_CD,
+              V_SRVC_CD: $event.element.businessObject.targetRef.id,
+              V_USR_NM: this.user.USR_NM,
+              Verb: 'PUT'
+            };
+            this.httpClient.put(this.url, data).subscribe();
+          } else {
+            const data: any = {
+              REST_Service: 'Service',
+              V_APP_CD: 'Marketing',
+              V_CREATE: 'Y',
+              V_DELETE: 'Y',
+              V_EXECUTE: 'Y',
+              V_PRCS_CD: 'Email DHS POC',
+              V_READ: 'Y',
+              V_ROLE_CD: 'Program Assessment Role',
+              V_SRC_CD: this.user.SRC_CD,
+              V_SRVC_CD: $event.element.businessObject.name,
+              V_SRVC_DSC: '',
+              V_UPDATE: 'Y',
+              V_USR_NM: this.user.USR_NM,
+              Verb: 'PUT'
+            };
+            this.httpClient.post(this.url, data).subscribe();
+          }
         }
-      },
-      this.handleError
-    );
+      });
+    }
     this.getApplicationProcess();
   }
 
@@ -203,11 +205,54 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     }
   }
 
+  openBpmn($event) {
+    if ($event && $event.target && $event.target.files) {
+      const fr: FileReader = new FileReader();
+      fr.onloadend = () => {
+        this.modeler.importXML(fr.result, this.handleError.bind(this));
+        if (this.file && this.file.nativeElement) {
+          this.file.nativeElement.value = '';
+        }
+      }
+      fr.readAsText($event.target.files[0]);
+    }
+  }
+
+  newBpmn() {
+    if (this.bpmnTemplate) {
+      this.modeler.importXML(this.bpmnTemplate, this.handleError.bind(this));
+    } else {
+      this.httpClient.get('/assets/bpmn/newDiagram.bpmn', {
+        headers: { observe: 'response' }, responseType: 'text'
+      }).subscribe(
+        (x: any) => {
+          this.modeler.importXML(x, this.handleError.bind(this));
+          this.bpmnTemplate = x;
+        },
+        this.handleError.bind(this)
+      );
+    }
+  }
+
+  downloadBpmn() {
+    this.modeler.saveXML((err: any, xml: any) => {
+      saveAs(new Blob([xml], { type: 'text/xml' }), 'diagram.bpmn');
+    });
+  }
+
+  downloadSvgBpmn() {
+    this.modeler.saveSVG((err: any, svg: any) => {
+      saveAs(new Blob([svg], { type: 'image/svg+xml' }), 'diagram.svg');
+    });
+  }
+
   handleError(err: any) {
     if (err) {
+      this.toastrService.error(err);
       console.error(err);
     }
   }
+
   generateTreeItem() {
     this.item = [];
     if (this.appProcessList.length) {
@@ -230,7 +275,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   getApplicationProcess() {
     this.endUserService.getApplicationAndProcess().subscribe(res => {
       if (res) {
-        console.log('res', res.json());
         let data = res.json();
         if (data.length) {
           this.optionalService.getApplicationProcessOptionalValue(data);

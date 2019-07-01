@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModalModule } from 'ngx-bootstrap/modal';
 
 import { EnduserRoutingModule } from './enduser-routing.module';
@@ -32,14 +32,14 @@ import { ProcessDesignComponent } from './process-design/process-design.componen
 
 @NgModule({
   declarations: [
-    EnduserComponent, 
-    ExecuteComponent, 
-    MytaskComponent, 
-    ExceptionComponent, 
-    SchdActnComponent, 
-    ProcessComponent, 
-    OrchestrateComponent, 
-    DashboardComponent, 
+    EnduserComponent,
+    ExecuteComponent,
+    MytaskComponent,
+    ExceptionComponent,
+    SchdActnComponent,
+    ProcessComponent,
+    OrchestrateComponent,
+    DashboardComponent,
     UsernavbarComponent,
     RepeatAfterComponent,
     FormComponent,
@@ -59,14 +59,14 @@ import { ProcessDesignComponent } from './process-design/process-design.componen
     SharedModule,
     HeaderModule,
     FormsModule,
-    ReactiveFormsModule.withConfig({warnOnNgModelWithFormControl: 'never'}),
+    ReactiveFormsModule.withConfig({ warnOnNgModelWithFormControl: 'never' }),
     NgbModule,
     ModalModule.forRoot(),
   ],
   entryComponents: [DialogScheduleComponent, DialogChartsComponent, DeleteConfirmComponent]
 })
 export class EnduserModule {
-  constructor(){
+  constructor() {
     console.log("EnduserModule => ");
   }
 }
