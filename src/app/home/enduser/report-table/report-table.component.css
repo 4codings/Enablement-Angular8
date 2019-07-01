@@ -1,7 +1,5 @@
-.chartstyle{
-  position: relative;
-  height:40vh;
-  width:80vw
+.example-chip-list {
+  width: 100%;
 }
 /* div.mat-expansion-panel-content:not(.mat-expanded) {
   height: 0px !important;

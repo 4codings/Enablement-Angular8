@@ -29,6 +29,7 @@ import {MyFilterPipe1} from '../home/enduser/schd-actn/myFilterPipe1';
 import {MatMenuModule} from '@angular/material/menu';
 import {ConfirmationAlertComponent} from './components/confirmation-alert/confirmation-alert.component';
 import { TreeviewModule } from 'ngx-treeview';
+import {MatChipsModule} from '@angular/material/chips';
 
 @NgModule({
   imports: [
@@ -40,6 +41,7 @@ import { TreeviewModule } from 'ngx-treeview';
     FlexLayoutModule,
     MatTooltipModule,
     MatListModule,
+    MatChipsModule,
     MatInputModule,
     MatButtonModule,
     MatFormFieldModule,
@@ -93,6 +95,7 @@ import { TreeviewModule } from 'ngx-treeview';
     MatRadioModule,
     MatAutocompleteModule,
     MatTableModule,
+    MatChipsModule,
     MatSortModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
