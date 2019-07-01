@@ -35,12 +35,56 @@
   </div>
 </ng-template>
 <div #canvas id="canvas-bpmn"></div>
-<div fxLayout="row" class="modeler">
+<div fxLayout="row">
   <div fxFlex="20">
     <ngx-treeview [config]="config" [items]="item" [itemTemplate]="itemTemplate"
       (selectedChange)="onSelectedChange($event)" (filterChange)="onFilterChange($event)">
     </ngx-treeview>
   </div>
-  <div fxFlex="60" id="canvas"></div>
-  <div fxFlex="20" id="properties"></div>
+  <div fxFlex="80">
+    <mat-sidenav-container>
+      <mat-sidenav-content>
+        <div fxLayout="row">
+          <div fxFlex="95" id="canvas"></div>
+          <div fxFlex="5" class="toggle">
+            <a href="javascript:void(0)" matTooltip="{{opened ? 'Hide properties' : 'Show properties'}}"
+              (click)="sidenav.toggle()">
+              <mat-icon aria-hidden="false">{{opened ? 'arrow_right' : 'arrow_left'}}</mat-icon>
+            </a>
+          </div>
+        </div>
+        <div class="import-export">
+          <mat-list class="button-wrapper" fxLayout>
+            <mat-list-item fxFlex>
+              <a matTooltip="Open BPMN diagram from local file system">
+                <mat-icon aria-hidden="false">folder_open</mat-icon>
+              </a>
+            </mat-list-item>
+            <mat-divider fxFlex [vertical]="true"></mat-divider>
+            <mat-list-item fxFlex>
+              <a matTooltip="Create new BPMN diagram">
+                <mat-icon aria-hidden="false">add_circle</mat-icon>
+              </a>
+            </mat-list-item>
+          </mat-list>
+          <mat-list class="button-wrapper" fxLayout>
+            <mat-list-item fxFlex>
+              <a matTooltip="Download BPMN diagram">
+                <mat-icon aria-hidden="false">archive</mat-icon>
+              </a>
+            </mat-list-item>
+            <mat-divider fxFlex [vertical]="true"></mat-divider>
+            <mat-list-item fxFlex>
+              <a matTooltip="Download as SVG image">
+                <mat-icon aria-hidden="false">image</mat-icon>
+              </a>
+            </mat-list-item>
+          </mat-list>
+        </div>
+      </mat-sidenav-content>
+      <mat-sidenav #sidenav position="end" mode="side" [(opened)]="opened">
+        <div id="properties"></div>
+      </mat-sidenav>
+    </mat-sidenav-container>
+  </div>
 </div>

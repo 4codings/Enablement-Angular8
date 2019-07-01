@@ -1,10 +1,35 @@
 #properties {
-  position: absolute;
-  top: 90px;
-  bottom: 0;
-  right: 0;
-  width: 260px;
-  z-index: 10;
-  border-left: 1px solid #ccc;
-  overflow: auto;
+  min-width: 250px;
+}
+
+.toggle {
+  text-align: end;
+
+  a {
+    color: inherit;
+  }
+}
+
+.toggle,
+.import-export {
+  button {
+    min-width: 0;
+    padding: 0;
+  }
+}
+
+.import-export {
+  padding: 20px;
+  display: inline-flex;
+
+  .button-wrapper {
+    border-radius: 2px;
+    border: solid 1px #E0E0E0;
+    height: 40px;
+    margin-right: 20px;
+  }
+
+  .mat-divider {
+    height: 80%;
+  }
 }

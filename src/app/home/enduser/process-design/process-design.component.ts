@@ -18,6 +18,7 @@ import { RollserviceService } from 'src/app/services/rollservice.service';
 })
 export class ProcessDesignComponent implements OnInit, OnDestroy {
 
+  public opened: boolean;
   private modeler: any;
   private url: string;
   private user: any;
