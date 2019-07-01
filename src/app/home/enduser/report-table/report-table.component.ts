@@ -44,11 +44,11 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
 
   remove(item: string): void {
     const index = this.hiddencols.indexOf(item);
-
     if (index >= 0) {
       this.hiddencols.splice(index, 1);
       this.columnsToDisplay.splice(0, 0, item);
     }
+    this.sethiddencolsconfig();
   }
 
   pointer = 0;
@@ -126,14 +126,12 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   yaxiscallbacks = ['$', '£', '€', '₹', 'm', 'km', 'k', 'gm', 'kg', 's'];
   V_PRF_NM = [];
   V_PRF_VAL = [];
-  chartconfig = {};
-  // _yaxismin = 0;
-  // _yaxismax = null;
+  userprefs = {};
+  hiddencolsconfig = {};
   _yaxisstepSize = null;
   _yaxisAutoskip: boolean = false;
   _xaxis_sel = "";
   _yaxis_sel = [];
-  // _yaxis2_sel = "";
   _yaxisCB = '';
   yaxis_data = [];
   // yaxis_data2 = [];
@@ -631,17 +629,17 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         this.V_PRF_VAL = value;
         for (let i = 0; i < name.length; i++) {
 
-          this.chartconfig[name[i]] = value[i];
+          this.userprefs[name[i]] = value[i];
         }
 
-        this._backgroundColor = this.chartconfig['backgroundcolor'];
-        this._borderColor = this.chartconfig['bordercolor'];
-        this._fill = this.chartconfig['fill'];
-        this._pointstyle = this.chartconfig['pointstyle'];
-        this._linetension = this.chartconfig['linetension'];
-        this._animations = this.chartconfig['animations'];
-        this._pointradius = this.chartconfig['pointradius'];
-        this._linestyle = this.chartconfig['linestyle'];
+        this._backgroundColor = this.userprefs['backgroundcolor'];
+        this._borderColor = this.userprefs['bordercolor'];
+        this._fill = this.userprefs['fill'];
+        this._pointstyle = this.userprefs['pointstyle'];
+        this._linetension = this.userprefs['linetension'];
+        this._animations = this.userprefs['animations'];
+        this._pointradius = this.userprefs['pointradius'];
+        this._linestyle = this.userprefs['linestyle'];
         this._fill.toString().toUpperCase() == "TRUE" ? this._fill = true : this._fill = false;
         this._linestyle == "dashed" ? this._borderdash = [5, 5] : this._borderdash = [];
         this.updatechart();
@@ -651,25 +649,62 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   }
   //__________________________Set Chart Styling_________________________________
   setchartstyling() {
-    this.chartconfig['backgroundcolor'] = this._backgroundColor;
-    this.chartconfig['bordercolor'] = this._borderColor;
-    this.chartconfig['fill'] = this._fill.toString().toLocaleUpperCase();
-    this.chartconfig['pointstyle'] = this._pointstyle;
-    this.chartconfig['linetension'] = this._linetension;
-    this.chartconfig['animations'] = this._animations;
-    this.chartconfig['pointradius'] = this._pointradius;
-    this.chartconfig['linestyle'] = this._linestyle;
+    this.userprefs['backgroundcolor'] = this._backgroundColor;
+    this.userprefs['bordercolor'] = this._borderColor;
+    this.userprefs['fill'] = this._fill.toString().toLocaleUpperCase();
+    this.userprefs['pointstyle'] = this._pointstyle;
+    this.userprefs['linetension'] = this._linetension;
+    this.userprefs['animations'] = this._animations;
+    this.userprefs['pointradius'] = this._pointradius;
+    this.userprefs['linestyle'] = this._linestyle;
 
-    this.V_PRF_NM = Object.keys(this.chartconfig);
-    this.V_PRF_VAL = Object.values(this.chartconfig);
-    //(this.V_PRF_NM);
-    //(this.V_PRF_VAL);
+    this.V_PRF_NM = Object.keys(this.userprefs);
+    this.V_PRF_VAL = Object.values(this.userprefs);
     for (let j = 0; j < this.V_PRF_NM.length; j++) {
       this.data.setchartstyling(this.APP_ID, this.PRCS_ID, this.SRC_ID, this.V_PRF_NM[j], this.V_PRF_VAL[j]).subscribe(
         () => {
           //(res);
         });
     }
+  }
+  sethiddencolsconfig(){
+    if(this.hiddencols.length > 0){
+    var abc = this.hiddencols.toString();
+    this.userprefs['hiddencolname'] = abc;
+    this.V_PRF_NM = Object.keys(this.userprefs);
+    this.V_PRF_VAL = Object.values(this.userprefs);
+    for (let j = 0; j < this.V_PRF_NM.length; j++) {
+      this.data.setchartstyling(this.APP_ID, this.PRCS_ID, this.SRC_ID, this.V_PRF_NM[j], this.V_PRF_VAL[j]).subscribe(
+        () => {
+          //(res);
+        });
+    }
+    }
+  }
+  gethiddencolsconfig(){
+    this.data.getchartstyling(this.APP_ID, this.PRCS_ID, this.SRC_ID).subscribe(
+      res => {
+        (res.json());
+        var result = res.json();
+        console.log(result);
+        var name = result.PRF_NM;
+        var value = result.PRF_VAL;
+        this.V_PRF_NM = name;
+        this.V_PRF_VAL = value;
+        for (let i = 0; i < name.length; i++) {
+
+          this.userprefs[name[i]] = value[i];
+        }
+        console.log(this.userprefs);
+        var a = this.userprefs['hiddencolname'].toString();
+        this.hiddencols = a.split(',');
+        for(let i=0;i<this.hiddencols.length;i++){
+        var index = this.columnsToDisplay.indexOf(this.hiddencols[i]);
+        if (index > -1) {
+          this.columnsToDisplay.splice(index, 1);
+        }
+      }
+    });
   }
   ngOnInit() {
     this.getReportData();
@@ -737,7 +772,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
 
     // }
     this.showhide('Table');
-    //this.getchartstyling();
+    this.gethiddencolsconfig();
   }
 
   ExecuteAgain() {
@@ -784,6 +819,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         this.columnsToDisplay.splice(index, 1);
       }
     }
+    this.sethiddencolsconfig();
     //(this.columnsToDisplay);
   }
   //__________________________________________________________
