@@ -254,7 +254,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         }
       }
     }
-    if (this._yaxismax == null || this._yaxismax == undefined) {
+    if (this._yaxismax == null || this._yaxismax == undefined || this._yaxismax == -Infinity) {
       this._yaxismax = Math.max.apply(null, this.yaxis_data[0]);
     }
     this.lineChartOptions = {
@@ -375,7 +375,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
           ticks: {
             fontColor: this.lineChartColors[i].borderColor,
             min: this._yaxismin,
-            max: Math.max.apply(null, this.yaxis_data[i]),
+            max: this._yaxismax,
             stepSize: this._yaxisstepSize,
             autoSkip: this._yaxisAutoskip,
             beginAtZero: true,
@@ -391,9 +391,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         };
       }
     }
-    console.log(this._yaxismax);
-  }
-  hey(){
     console.log(this._yaxismax);
   }
   updateBarChart() {
