@@ -139,6 +139,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   _borderColor = "rgba(44,191,206,1)";
   _fill: boolean = false;
   _borderdash = [];
+  _gridlinedash = [];
   _pointstyle = "rectRot";
   _linetension = "none";
   _animations = "easeInOutQuad";
@@ -277,7 +278,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         break;
     }
     this._linestyle == "dashed" ? this._borderdash = [5, 5] : this._borderdash = [];
-
+    this._gridborder == true ? this._gridlinedash = [10, 10] : this._gridlinedash = [];
     this.lineChartLabels = this.Table_of_Data5[this._xaxis_sel];
     if (this._yaxis_sel != []) {
       // this.yaxis_data = this.Table_of_Data5[this._yaxis1_sel].map(Number);
@@ -384,12 +385,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
           },
           gridLines: {
             drawOnChartAdrawBorder: false,
-            borderDash: function(){
-              if(this._gridborder == true)
-              return [5,5];
-              else
-              return [];
-            },
+            borderDash: this._gridlinedash,
             lineWidth: this._gridlinewidth
           },
           ticks: {
@@ -512,12 +508,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
           id: 'y-1',
           gridLines: {
             drawOnChartAdrawBorder: false,
-            borderDash: function(){
-              if(this._gridborder == true)
-              return [5,5];
-              else
-              return [];
-            },
+            borderDash: this._gridlinedash,
             lineWidth: this._gridlinewidth
           },
           ticks: {
@@ -642,6 +633,10 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         this._linestyle = this.userprefs['linestyle'];
         this._fill.toString().toUpperCase() == "TRUE" ? this._fill = true : this._fill = false;
         this._linestyle == "dashed" ? this._borderdash = [5, 5] : this._borderdash = [];
+        this._gridborder.toString().toLocaleUpperCase()=="TRUE" ? this._gridborder = true : this._gridborder = false;
+        this._gridlinewidth = this.userprefs['linewidth'];
+        this._yaxisAutoskip.toString().toUpperCase() == "TRUE" ? this._yaxisAutoskip = true : this._yaxisAutoskip = false;
+
         this.updatechart();
       }
 
@@ -657,6 +652,10 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     this.userprefs['animations'] = this._animations;
     this.userprefs['pointradius'] = this._pointradius;
     this.userprefs['linestyle'] = this._linestyle;
+    this.userprefs['gridlinedashed'] = this._gridborder.toString().toLocaleUpperCase();
+    this.userprefs['linewidth'] = this._gridlinewidth;
+    this.userprefs['yautoskip'] = this._yaxisAutoskip.toString().toLocaleUpperCase();
+
 
     this.V_PRF_NM = Object.keys(this.userprefs);
     this.V_PRF_VAL = Object.values(this.userprefs);
@@ -668,7 +667,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     }
   }
   sethiddencolsconfig(){
-    if(this.hiddencols.length > 0){
+    if(this.hiddencols.length > -1){
     var abc = this.hiddencols.toString();
     this.userprefs['hiddencolname'] = abc;
     this.V_PRF_NM = Object.keys(this.userprefs);
