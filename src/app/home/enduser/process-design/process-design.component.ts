@@ -3,11 +3,10 @@ import { HttpClient } from '@angular/common/http';
 
 import { saveAs } from 'file-saver';
 import { ToastrService } from 'ngx-toastr';
-import { Modeler, PropertiesPanelModule, InjectionNames, OriginalPropertiesProvider, OriginalPaletteProvider } from './bpmn-js';
-import { CustomPropsProvider } from './props-provider/custom-props-provider';
-import { CustomPaletteProvider } from './props-provider/custom-palette-provider';
+import { Modeler, PropertiesPanelModule, OriginalPropertiesProvider, CamundaResources } from './bpmn-js';
 import { Globals } from 'src/app/services/globals';
 import { EndUserService } from 'src/app/services/EndUser-service';
+import { UseradminService } from 'src/app/services/useradmin.service2';
 import { OptionalValuesService, ApplicationProcessObservable } from 'src/app/services/optional-values.service';
 import { Subscription } from 'rxjs';
 import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
@@ -25,6 +24,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   private url: string;
   private user: any;
   private bpmnTemplate: any;
+  private flows = {};
   @ViewChild('file')
   private file: any;
   applicationProcessObservable$: Subscription;
@@ -59,6 +59,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     private toastrService: ToastrService,
     private globals: Globals,
     private endUserService: EndUserService,
+    private useradminService: UseradminService,
     private optionalService: OptionalValuesService,
     private roleService: RollserviceService
   ) {
@@ -113,41 +114,16 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.modeler = new Modeler({
       container: '#canvas',
       width: '100%',
-      height: '400px',
+      height: '500px',
       additionalModules: [
         PropertiesPanelModule,
-        { [InjectionNames.bpmnPropertiesProvider]: ['type', OriginalPropertiesProvider.propertiesProvider[1]] },
-        { [InjectionNames.propertiesProvider]: ['type', CustomPropsProvider] },
-        { [InjectionNames.originalPaletteProvider]: ['type', OriginalPaletteProvider] },
-        { [InjectionNames.paletteProvider]: ['type', CustomPaletteProvider] },
+        OriginalPropertiesProvider
       ],
       propertiesPanel: {
         parent: '#properties'
       },
       moddleExtension: {
-        custom: {
-          name: 'customModdle',
-          prefix: 'custom',
-          xml: {
-            tagAlias: 'lowerCase'
-          },
-          associations: [],
-          types: [
-            {
-              'name': 'ExtUserTask',
-              'extends': [
-                'bpmn:UserTask'
-              ],
-              'properties': [
-                {
-                  'name': 'worklist',
-                  'isAttr': true,
-                  'type': 'String'
-                }
-              ]
-            },
-          ]
-        }
+        camunda: CamundaResources
       }
     });
     this.newBpmn();
@@ -155,42 +131,70 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     if (eventBus) {
       eventBus.on('element.changed', ($event) => {
         if ($event && $event.element && ['bpmn:Process', 'label'].indexOf($event.element.type) === -1) {
+          const businessObject = $event.element.businessObject;
+          const sourceId = businessObject && businessObject.sourceRef ? businessObject.sourceRef.id : '';
+          const targetId = businessObject && businessObject.targetRef ? businessObject.targetRef.id : '';
+          const objectId = businessObject ? businessObject.id : '';
+          const vAppCd = 'V_APP_CD';
+          const vPrcsCd = 'V_PRCS_CD';
           if ($event.element.type === 'bpmn:SequenceFlow') {
             const data: any = {
               REST_Service: 'Orchetration',
               RESULT: '@RESULT',
-              V_APP_CD: 'Marketing',
+              V_APP_CD: vAppCd,
               V_CONT_ON_ERR_FLG: 'N',
-              V_PRCS_CD: '',
-              V_PRDCR_APP_CD: 'Marketing',
-              V_PRDCR_PRCS_CD: 'Email DHS POC',
+              V_PRCS_CD: vPrcsCd,
+              V_PRDCR_APP_CD: vAppCd,
+              V_PRDCR_PRCS_CD: vPrcsCd,
               V_PRDCR_SRC_CD: this.user.SRC_CD,
-              V_PRDCR_SRVC_CD: $event.element.businessObject.sourceRef.id,
+              V_PRDCR_SRVC_CD: sourceId,
               V_SRC_CD: this.user.SRC_CD,
-              V_SRVC_CD: $event.element.businessObject.targetRef.id,
+              V_SRVC_CD: targetId,
               V_USR_NM: this.user.USR_NM,
               Verb: 'PUT'
             };
-            this.httpClient.put(this.url, data).subscribe();
+            if (!this.flows) {
+              this.flows = {};
+            }
+            this.flows[targetId] = data;
           } else {
             const data: any = {
               REST_Service: 'Service',
-              V_APP_CD: 'Marketing',
+              V_APP_CD: vAppCd,
               V_CREATE: 'Y',
               V_DELETE: 'Y',
               V_EXECUTE: 'Y',
-              V_PRCS_CD: 'Email DHS POC',
+              V_PRCS_CD: vPrcsCd,
               V_READ: 'Y',
               V_ROLE_CD: 'Program Assessment Role',
               V_SRC_CD: this.user.SRC_CD,
-              V_SRVC_CD: $event.element.businessObject.name,
+              V_SRVC_CD: objectId,
               V_SRVC_DSC: '',
               V_UPDATE: 'Y',
               V_USR_NM: this.user.USR_NM,
               Verb: 'PUT'
             };
-            this.httpClient.post(this.url, data).subscribe();
+            this.httpClient.post(this.url, data).subscribe(() => {
+              if (objectId && this.flows[objectId]) {
+                this.httpClient.put(this.url, this.flows[objectId]).subscribe(() => {
+                  delete this.flows[objectId];
+                });
+              }
+            });
           }
+          this.modeler.saveXML((err: any, xml: any) => {
+            if (xml) {
+              const formData: FormData = new FormData();
+              formData.append('FileInfo', JSON.stringify({
+                File_Path: `/opt/tomcat/webapps/${this.useradminService.reduceFilePath(this.user.SRC_CD)}/${vAppCd}/`,
+                File_Name: `${vPrcsCd}.bpmn`,
+                V_SRC_CD: this.user.SRC_CD,
+                USR_NM: this.user.USR_NM
+              }));
+              formData.append('Source_File', new File([xml], `${vPrcsCd}.bpmn`, { type: 'text/xml' }));
+              this.httpClient.put(`https://${this.globals.domain}/FileAPIs/api/file/v1/upload`, formData).subscribe();
+            }
+          });
         }
       });
     }
