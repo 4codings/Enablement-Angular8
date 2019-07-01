@@ -127,8 +127,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   V_PRF_NM = [];
   V_PRF_VAL = [];
   chartconfig = {};
-  _yaxismin = 0;
-  _yaxismax = null;
+  // _yaxismin = 0;
+  // _yaxismax = null;
   _yaxisstepSize = null;
   _yaxisAutoskip: boolean = false;
   _xaxis_sel = "";
@@ -149,29 +149,86 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   lineten: number = 0;
   pointrad: number = 8;
   chartlabels = [];
-  linedata = [{ data: this.yaxis_data[0], label: this._yaxis_sel }];
-  bardata = [{ data: this.yaxis_data[0], label: this._yaxis_sel }];
-  piedata = [{ data: this.yaxis_data[0], labels: this._yaxis_sel }];
-  doughnutdata = [{ data: this.yaxis_data[0], labels: this._yaxis_sel }];
+  _gridborder: boolean = false;
+  _gridlinewidth: number = 1;
+  chartcolors = [{
+    backgroundColor: this._backgroundColor,
+    borderColor: this._borderColor,
+    pointBackgroundColor: this._borderColor,
+    pointBorderColor: '#fff',
+    pointHoverBorderColor: this._borderColor,
+    pointHoverBackgroundColor: '#fff',
+  },
+  {
+    backgroundColor: "rgba(154,67,208,0.48)",
+    borderColor: "violet",
+    pointBackgroundColor: "rgba(154,67,208,0.48)",
+    pointBorderColor: '#fff',
+    pointHoverBorderColor: "violet",
+    pointHoverBackgroundColor: '#fff'
+  },
+  {
+    backgroundColor: "rgba(255,0,0,0.48)",
+    borderColor: "red",
+    pointBackgroundColor: "rgba(255,0,0,0.48)",
+    pointBorderColor: '#fff',
+    pointHoverBorderColor: "red",
+    pointHoverBackgroundColor: '#fff'
+  },
+  {
+    backgroundColor: "rgba(255,255,0,0.48)",
+    borderColor: "yellow",
+    pointBackgroundColor: "rgba(255,255,0,0.48)",
+    pointBorderColor: '#fff',
+    pointHoverBorderColor: "yellow",
+    pointHoverBackgroundColor: '#fff'
+  },
+  {
+    backgroundColor: "rgba(0,128,0,0.48)",
+    borderColor: "green",
+    pointBackgroundColor: "rgba(0,128,0,0.48)",
+    pointBorderColor: '#fff',
+    pointHoverBorderColor: "green",
+    pointHoverBackgroundColor: '#fff'
+  },
+  {
+    backgroundColor: "rgba(255,165,0,0.48)",
+    borderColor: "orange",
+    pointBackgroundColor: "rgba(255,165,0,0.48)",
+    pointBorderColor: '#fff',
+    pointHoverBorderColor: "orange",
+    pointHoverBackgroundColor: '#fff'
+  },
+  {
+    backgroundColor: "rgba(255,127,80,0.48)",
+    borderColor: "coral",
+    pointBackgroundColor: "rgba(255,127,80,0.48)",
+    pointBorderColor: '#fff',
+    pointHoverBorderColor: "coral",
+    pointHoverBackgroundColor: '#fff'
+  },
+  {
+    backgroundColor: "rgba(112, 128, 144,0.48)",
+    borderColor: "slategrey",
+    pointBackgroundColor: "rgba(112, 128, 144,0.48)",
+    pointBorderColor: '#fff',
+    pointHoverBorderColor: "slategrey",
+    pointHoverBackgroundColor: '#fff'
+  },
+  {
+    backgroundColor: "rgba(106,90,205,0.48)",
+    borderColor: "slateblue",
+    pointBackgroundColor: "rgba(106,90,205,0.48)",
+    pointBorderColor: '#fff',
+    pointHoverBorderColor: "slateblue",
+    pointHoverBackgroundColor: '#fff'
+  }];
+  linedata = [{ data: [10,20,30,40,50], label: ["sample 1","sample 2","sample 3","sample 4","sample 5"] }];
+  bardata = [{ data: [10,20,30,40,50], label: ["sample 1","sample 2","sample 3","sample 4","sample 5"] }];
+  piedata = [{ data: [10,20,30,40,50], labels: ["sample 1","sample 2","sample 3","sample 4","sample 5"] }];
+  doughnutdata = [{ data: [10,20,30,40,50], labels: ["sample 1","sample 2","sample 3","sample 4","sample 5"] }];
   // Line Chart Configuration
-  public lineChartColors: Array<any> = [
-    {
-      backgroundColor: this._backgroundColor,
-      borderColor: this._borderColor,
-      pointBackgroundColor: this._borderColor,
-      pointBorderColor: '#fff',
-      pointHoverBorderColor: this._borderColor,
-      pointHoverBackgroundColor: '#fff',
-    },
-    {
-      backgroundColor: "rgba(154,67,208,0.38)",
-      borderColor: "violet",
-      pointBackgroundColor: "rgba(154,67,208,0.38)",
-      pointBorderColor: '#fff',
-      pointHoverBorderColor: "violet",
-      pointHoverBackgroundColor: '#fff'
-    }
-  ];;
+  public lineChartColors = this.chartcolors;
   public lineChartData: Array<any> = this.linedata;
   public lineChartLabels: Array<any> = this.chartlabels;
   public lineChartType: string = 'line';
@@ -181,22 +238,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   public barChartLabels: string[] = this.chartlabels;
   public barChartType: string = 'bar';
   public barChartData: Array<any> = this.bardata;
-  public barChartColors: Array<any> = [{
-    backgroundColor: this._backgroundColor,
-    borderColor: this._borderColor,
-    pointBackgroundColor: this._borderColor,
-    pointBorderColor: '#fff',
-    pointHoverBorderColor: this._borderColor,
-    pointHoverBackgroundColor: '#fff'
-  },
-  {
-    backgroundColor: "rgba(154,67,208,0.38)",
-    borderColor: "violet",
-    pointBackgroundColor: "rgba(154,67,208,0.38)",
-    pointBorderColor: '#fff',
-    pointHoverBorderColor: "violet",
-    pointHoverBackgroundColor: '#fff',
-  }];
+  public barChartColors = this.chartcolors;
+    
   // Pie Chart Configuration
   public pieChartLabels: string[] = this.chartlabels;
   public pieChartData: Array<any> = this.piedata;
@@ -237,7 +280,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     }
     this._linestyle == "dashed" ? this._borderdash = [5, 5] : this._borderdash = [];
 
-
     this.lineChartLabels = this.Table_of_Data5[this._xaxis_sel];
     if (this._yaxis_sel != []) {
       // this.yaxis_data = this.Table_of_Data5[this._yaxis1_sel].map(Number);
@@ -254,11 +296,13 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         }
       }
     }
-    if (this._yaxismax == null || this._yaxismax == undefined || this._yaxismax == -Infinity) {
-      this._yaxismax = Math.max.apply(null, this.yaxis_data[0]);
-    }
+    // if (this._yaxismax == null || this._yaxismax == undefined || this._yaxismax == -Infinity) {
+    //   this._yaxismax = Math.max.apply(null, this.yaxis_data[0]);
+    // }
     this.lineChartOptions = {
       responsive: true,
+      stacked: false,
+      hoverMode: 'index',
       annotation: {
         // drawTime: 'afterDatasetsDraw',
         // events: ['click'],
@@ -328,7 +372,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         yAxes: Array<any>()
       }
     };
-    for (let i = 0; i < this.barChartData.length; i++) {
+    for (let i = 0; i < this.lineChartData.length; i++) {
       if (i == 0) {
         this.lineChartOptions.scales.yAxes[i] = {
           position: 'left',
@@ -340,10 +384,20 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
             labelString: this._yaxis_sel[i],
             fontColor: this.lineChartColors[i].borderColor
           },
+          gridLines: {
+            drawOnChartAdrawBorder: false,
+            borderDash: function(){
+              if(this._gridborder == true)
+              return [5,5];
+              else
+              return [];
+            },
+            lineWidth: this._gridlinewidth
+          },
           ticks: {
             fontColor: this.lineChartColors[i].borderColor,
-            min: this._yaxismin,
-            max: this._yaxismax,
+            // min: this._yaxismin,
+            // max: this._yaxismax,
             stepSize: this._yaxisstepSize,
             autoSkip: this._yaxisAutoskip,
             beginAtZero: true,
@@ -359,7 +413,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         };
       }
       if (i > 0) {
-        this.lineChartOptions.scales.yAxes[i] = {
+        this.lineChartOptions.scales.yAxes.push({
           position: 'right',
           type: 'linear',
           display: true,
@@ -374,8 +428,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
           },
           ticks: {
             fontColor: this.lineChartColors[i].borderColor,
-            min: this._yaxismin,
-            max: this._yaxismax,
+            // min: this._yaxismin,
+            // max: this._yaxismax,
             stepSize: this._yaxisstepSize,
             autoSkip: this._yaxisAutoskip,
             beginAtZero: true,
@@ -388,10 +442,9 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
               }
             }
           }
-        };
+        });
       }
     }
-    console.log(this._yaxismax);
   }
   updateBarChart() {
     var unit = this._yaxisCB;
@@ -459,9 +512,19 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
           type: 'linear',
           display: true,
           id: 'y-1',
+          gridLines: {
+            drawOnChartAdrawBorder: false,
+            borderDash: function(){
+              if(this._gridborder == true)
+              return [5,5];
+              else
+              return [];
+            },
+            lineWidth: this._gridlinewidth
+          },
           ticks: {
-            min: this._yaxismin,
-            max: this._yaxismax,
+            // min: this._yaxismin,
+            // max: this._yaxismax,
             stepSize: this._yaxisstepSize,
             autoSkip: this._yaxisAutoskip,
             fontColor: this.barChartColors[0].borderColor,
@@ -493,10 +556,10 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
             drawOnChartArea: false, // only want the grid lines for one axis to show up
           },
           ticks: {
-            min: this._yaxismin,
-            max: this._yaxismax,
-            stepSize: this._yaxisstepSize,
-            autoSkip: this._yaxisAutoskip,
+            // min: this._yaxismin,
+            // max: this._yaxismax,
+            // stepSize: this._yaxisstepSize,
+            // autoSkip: this._yaxisAutoskip,
             fontColor: this.barChartColors[i].borderColor,
             beginAtZero: true,
             callback: function (label) {

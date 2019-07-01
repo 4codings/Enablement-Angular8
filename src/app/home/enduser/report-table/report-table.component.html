@@ -111,7 +111,7 @@
       <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="center">
         <div fxFlex="23">
           <mat-form-field style="width:100%">
-            <mat-select placeholder="Select X-axis" [(value)]="_xaxis_sel">
+            <mat-select placeholder="Select X-axis Dataset" [(value)]="_xaxis_sel">
               <mat-option style="text-align: center;   height: 25px;   color: black; " value="">None</mat-option>
               <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" value="{{items}}">
                 {{items}} </mat-option>
@@ -121,7 +121,7 @@
         <div fxFlex="4"></div>
         <div fxFlex="23">
           <mat-form-field style="width:100%">
-            <mat-select placeholder="Select Y-axis-1" multiple [(value)]="_yaxis_sel">
+            <mat-select placeholder="Select Y-axis Dataset" multiple [(value)]="_yaxis_sel">
               <mat-option style="text-align: center;   height: 25px;   color: black; " value="">None</mat-option>
               <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" [value]="items">
                 {{items}} </mat-option>
@@ -145,20 +145,20 @@
         </div>
       </div>
       <div style="width: 30px"></div>
-      <div fxLayout="row" fxLayout.lt-sm="column" style="justify-content: center">
-        <mat-form-field fxFlex="15">
-          <input matInput type="number" placeholder="Static Min" min=0 [(ngModel)]="_yaxismin">
-        </mat-form-field>
-        <div fxFlex="5"></div>
-        <mat-form-field fxFlex="15">
-          <input matInput type="number" placeholder="Static Max" min=0 [(ngModel)]="_yaxismax">
-        </mat-form-field>
-        <div fxFlex="5"></div>
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="center center" style="justify-content: center">
         <mat-form-field fxFlex="15">
           <input matInput type="number" placeholder="Y-Step Size" min=0 [(ngModel)]="_yaxisstepSize">
         </mat-form-field>
         <div fxFlex="5"></div>
-        <div fxFlex="20" fxLayoutAlign="center center">
+        <mat-form-field fxFlex="15">
+          <input matInput type="number" placeholder="Grid line width" min=1 [(ngModel)]="_gridlinewidth">
+        </mat-form-field>
+        <div fxFlex="5"></div>
+        <div fxFlex="25">
+          <mat-slide-toggle color="primary" [(ngModel)]="_gridborder">Dashed Grid</mat-slide-toggle>
+        </div>
+        <div fxFlex="5"></div>
+        <div fxFlex="25">
           <mat-slide-toggle color="primary" [(ngModel)]="_yaxisAutoskip">Y-Autoskip</mat-slide-toggle>
         </div>
       </div>
