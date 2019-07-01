@@ -3,9 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { saveAs } from 'file-saver';
 import { ToastrService } from 'ngx-toastr';
-import { Modeler, PropertiesPanelModule, InjectionNames, OriginalPropertiesProvider, OriginalPaletteProvider } from './bpmn-js';
-import { CustomPropsProvider } from './props-provider/custom-props-provider';
-import { CustomPaletteProvider } from './props-provider/custom-palette-provider';
+import { Modeler, PropertiesPanelModule, OriginalPropertiesProvider, CamundaResources } from './bpmn-js';
 import { Globals } from 'src/app/services/globals';
 import { EndUserService } from 'src/app/services/EndUser-service';
 import { OptionalValuesService, ApplicationProcessObservable } from 'src/app/services/optional-values.service';
@@ -113,41 +111,16 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.modeler = new Modeler({
       container: '#canvas',
       width: '100%',
-      height: '400px',
+      height: '500px',
       additionalModules: [
         PropertiesPanelModule,
-        { [InjectionNames.bpmnPropertiesProvider]: ['type', OriginalPropertiesProvider.propertiesProvider[1]] },
-        { [InjectionNames.propertiesProvider]: ['type', CustomPropsProvider] },
-        { [InjectionNames.originalPaletteProvider]: ['type', OriginalPaletteProvider] },
-        { [InjectionNames.paletteProvider]: ['type', CustomPaletteProvider] },
+        OriginalPropertiesProvider
       ],
       propertiesPanel: {
         parent: '#properties'
       },
       moddleExtension: {
-        custom: {
-          name: 'customModdle',
-          prefix: 'custom',
-          xml: {
-            tagAlias: 'lowerCase'
-          },
-          associations: [],
-          types: [
-            {
-              'name': 'ExtUserTask',
-              'extends': [
-                'bpmn:UserTask'
-              ],
-              'properties': [
-                {
-                  'name': 'worklist',
-                  'isAttr': true,
-                  'type': 'String'
-                }
-              ]
-            },
-          ]
-        }
+        camunda: CamundaResources
       }
     });
     this.newBpmn();
