@@ -44,16 +44,16 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     { item: 'Import Process', value: 'Import', havePermission: 1 },
     { item: 'Delete Application', value: 'Delete', havePermission: 1 }];
   childrenMenuItems = [
-    { item: 'Run', value: 'Run', havePermission: 1 },
-    { item: 'Edit', value: 'Edit', havePermission: 1 },
-    { item: 'Delete', value: 'Delete', havePermission: 1 },
+    { item: 'Run', value: 'Run', havePermission: 0 },
+    { item: 'Edit', value: 'Edit', havePermission: 0 },
+    { item: 'Delete', value: 'Delete', havePermission: 0 },
     { item: 'Schedule', value: 'Schedule', havePermission: 0 },
     { item: 'Monitor', value: 'Monitor', havePermission: 0 },
     { item: 'Approve', value: 'Approve', havePermission: 0 },
     { item: 'Resolve', value: 'Resolve', havePermission: 0 }];
   roleObservable$: Subscription;
   roleValues;
-
+  childobj = {};
   constructor(
     private httpClient: HttpClient,
     private toastrService: ToastrService,
@@ -265,6 +265,41 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             this.chilItem.push(childTreeObj)
           })
         };
+        if (ele.auth.length) {
+          ele.auth.forEach((eleauth, index) => {
+            eleauth = eleauth.replace(/'/g, "");
+            let process = ele.process[index];
+            if (eleauth.indexOf(process.replace(/'/g, "")) > -1) {
+              let copyChildrenMenuItems = [];
+              copyChildrenMenuItems = [...this.childrenMenuItems];
+              let i = eleauth.indexOf(process.replace(/'/g, "")) + process.replace(/'/g, "").length;
+              let subString = eleauth.substring(i).split(';');
+              if (subString.length) {
+                subString.forEach(ele => {
+                  let authSubStr = ele.split('-');
+                  switch (authSubStr[0]) {
+                    case 'EXECUTE': {
+                      copyChildrenMenuItems[0].havePermission = authSubStr[1] === 'Y' ? 1 : 0;
+                      break;
+                    }
+                    case 'UPDATE': {
+                      copyChildrenMenuItems[1].havePermission = authSubStr[1] === 'Y' ? 1 : 0;
+                      break;
+                    }
+                    case 'DELETE': {
+                      copyChildrenMenuItems[2].havePermission = authSubStr[1] === 'Y' ? 1 : 0;
+                      break;
+                    }
+                    default: break;
+                  }
+                })
+              }
+              process = process.replace(/'/g, "");
+              this.childobj[process] = copyChildrenMenuItems;
+
+            }
+          })
+        };
         let treeObj = new TreeviewItem({
           text: ele.app, value: ele.app, collapsed: true, children: this.chilItem
         });
@@ -287,7 +322,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
 
   }
   onParentMenuItemClick(actionValue, parentValue) {
-    alert(parentValue)
     switch (actionValue) {
       case 'Add': {
         break;
