@@ -34,7 +34,6 @@
     </div>
   </div>
 </ng-template>
-<div #canvas id="canvas-bpmn"></div>
 <div fxLayout="row">
   <div fxFlex="20">
     <ngx-treeview [config]="config" [items]="item" [itemTemplate]="itemTemplate"
@@ -56,26 +55,27 @@
         <div class="import-export">
           <mat-list class="button-wrapper" fxLayout>
             <mat-list-item fxFlex>
-              <a matTooltip="Open BPMN diagram from local file system">
+              <input [hidden]="true" #file type="file" accept=".bpmn" (change)="openBpmn($event)" />
+              <a matTooltip="Open BPMN diagram from local file system" (click)="file.click()">
                 <mat-icon aria-hidden="false">folder_open</mat-icon>
               </a>
             </mat-list-item>
             <mat-divider fxFlex [vertical]="true"></mat-divider>
             <mat-list-item fxFlex>
-              <a matTooltip="Create new BPMN diagram">
+              <a matTooltip="Create new BPMN diagram" (click)="newBpmn()">
                 <mat-icon aria-hidden="false">add_circle</mat-icon>
               </a>
             </mat-list-item>
           </mat-list>
           <mat-list class="button-wrapper" fxLayout>
             <mat-list-item fxFlex>
-              <a matTooltip="Download BPMN diagram">
+              <a matTooltip="Download BPMN diagram" (click)="downloadBpmn()">
                 <mat-icon aria-hidden="false">archive</mat-icon>
               </a>
             </mat-list-item>
             <mat-divider fxFlex [vertical]="true"></mat-divider>
             <mat-list-item fxFlex>
-              <a matTooltip="Download as SVG image">
+              <a matTooltip="Download as SVG image" (click)="downloadSvgBpmn()">
                 <mat-icon aria-hidden="false">image</mat-icon>
               </a>
             </mat-list-item>
