@@ -192,7 +192,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                 USR_NM: this.user.USR_NM
               }));
               formData.append('Source_File', new File([xml], `${vPrcsCd}.bpmn`, { type: 'text/xml' }));
-              this.httpClient.put(`https://${this.globals.domain}/FileAPIs/api/file/v1/upload`, formData).subscribe();
+              this.httpClient.post(`https://${this.globals.domain}/FileAPIs/api/file/v1/upload`, formData).subscribe();
             }
           });
         }
