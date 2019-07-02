@@ -27,6 +27,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   private flows = {};
   @ViewChild('file')
   private file: any;
+  private currentXml: any;
+  private uploadLocked: boolean;
   applicationProcessObservable$: Subscription;
   applicationProcessValuesObservable: ApplicationProcessObservable[] = [];
   appProcessList = [];
@@ -176,25 +178,18 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             };
             this.httpClient.post(this.url, data).subscribe(() => {
               if (objectId && this.flows[objectId]) {
+                this.uploadLocked = true;
                 this.httpClient.put(this.url, this.flows[objectId]).subscribe(() => {
                   delete this.flows[objectId];
-                });
+                  this.upload(vAppCd, vPrcsCd);
+                  this.uploadLocked = false;
+                }, () => this.uploadLocked = false);
               }
             });
           }
-          this.modeler.saveXML((err: any, xml: any) => {
-            if (xml) {
-              const formData: FormData = new FormData();
-              formData.append('FileInfo', JSON.stringify({
-                File_Path: `/opt/tomcat/webapps/${this.useradminService.reduceFilePath(this.user.SRC_CD)}/${vAppCd}/`,
-                File_Name: `${vPrcsCd}.bpmn`,
-                V_SRC_CD: this.user.SRC_CD,
-                USR_NM: this.user.USR_NM
-              }));
-              formData.append('Source_File', new File([xml], `${vPrcsCd}.bpmn`, { type: 'text/xml' }));
-              this.httpClient.post(`https://${this.globals.domain}/FileAPIs/api/file/v1/upload`, formData).subscribe();
-            }
-          });
+          setTimeout(() => {
+            this.upload(vAppCd, vPrcsCd);
+          }, 2000);
         }
       });
     }
@@ -206,6 +201,25 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.roleObservable$.unsubscribe();
     if (this.modeler) {
       this.modeler.destroy();
+    }
+  }
+
+  upload(vAppCd, vPrcsCd) {
+    if (!this.uploadLocked) {
+      this.modeler.saveXML((err: any, xml: any) => {
+        if (xml !== this.currentXml) {
+          const formData: FormData = new FormData();
+          formData.append('FileInfo', JSON.stringify({
+            File_Path: `/opt/tomcat/webapps/${this.useradminService.reduceFilePath(this.user.SRC_CD)}/${vAppCd}/`,
+            File_Name: `${vPrcsCd}.bpmn`,
+            V_SRC_CD: this.user.SRC_CD,
+            USR_NM: this.user.USR_NM
+          }));
+          formData.append('Source_File', new File([xml], `${vPrcsCd}.bpmn`, { type: 'text/xml' }));
+          this.httpClient.post(`https://${this.globals.domain}/FileAPIs/api/file/v1/upload`, formData).subscribe();
+        }
+        this.currentXml = xml;
+      });
     }
   }
 
