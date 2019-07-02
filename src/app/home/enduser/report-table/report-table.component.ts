@@ -44,11 +44,11 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
 
   remove(item: string): void {
     const index = this.hiddencols.indexOf(item);
-
     if (index >= 0) {
       this.hiddencols.splice(index, 1);
       this.columnsToDisplay.splice(0, 0, item);
     }
+    this.sethiddencolsconfig();
   }
 
   pointer = 0;
@@ -126,14 +126,12 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   yaxiscallbacks = ['$', '£', '€', '₹', 'm', 'km', 'k', 'gm', 'kg', 's'];
   V_PRF_NM = [];
   V_PRF_VAL = [];
-  chartconfig = {};
-  _yaxismin = 0;
-  _yaxismax = null;
+  userprefs = {};
+  hiddencolsconfig = {};
   _yaxisstepSize = null;
   _yaxisAutoskip: boolean = false;
   _xaxis_sel = "";
   _yaxis_sel = [];
-  // _yaxis2_sel = "";
   _yaxisCB = '';
   yaxis_data = [];
   // yaxis_data2 = [];
@@ -141,6 +139,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   _borderColor = "rgba(44,191,206,1)";
   _fill: boolean = false;
   _borderdash = [];
+  _gridlinedash = [];
   _pointstyle = "rectRot";
   _linetension = "none";
   _animations = "easeInOutQuad";
@@ -149,29 +148,86 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   lineten: number = 0;
   pointrad: number = 8;
   chartlabels = [];
-  linedata = [{ data: this.yaxis_data[0], label: this._yaxis_sel }];
-  bardata = [{ data: this.yaxis_data[0], label: this._yaxis_sel }];
-  piedata = [{ data: this.yaxis_data[0], labels: this._yaxis_sel }];
-  doughnutdata = [{ data: this.yaxis_data[0], labels: this._yaxis_sel }];
+  _gridborder: boolean = false;
+  _gridlinewidth: number = 1;
+  chartcolors = [{
+    backgroundColor: this._backgroundColor,
+    borderColor: this._borderColor,
+    pointBackgroundColor: this._borderColor,
+    pointBorderColor: '#fff',
+    pointHoverBorderColor: this._borderColor,
+    pointHoverBackgroundColor: '#fff',
+  },
+  {
+    backgroundColor: "rgba(154,67,208,0.48)",
+    borderColor: "violet",
+    pointBackgroundColor: "rgba(154,67,208,0.48)",
+    pointBorderColor: '#fff',
+    pointHoverBorderColor: "violet",
+    pointHoverBackgroundColor: '#fff'
+  },
+  {
+    backgroundColor: "rgba(255,0,0,0.48)",
+    borderColor: "red",
+    pointBackgroundColor: "rgba(255,0,0,0.48)",
+    pointBorderColor: '#fff',
+    pointHoverBorderColor: "red",
+    pointHoverBackgroundColor: '#fff'
+  },
+  {
+    backgroundColor: "rgba(255,255,0,0.48)",
+    borderColor: "yellow",
+    pointBackgroundColor: "rgba(255,255,0,0.48)",
+    pointBorderColor: '#fff',
+    pointHoverBorderColor: "yellow",
+    pointHoverBackgroundColor: '#fff'
+  },
+  {
+    backgroundColor: "rgba(0,128,0,0.48)",
+    borderColor: "green",
+    pointBackgroundColor: "rgba(0,128,0,0.48)",
+    pointBorderColor: '#fff',
+    pointHoverBorderColor: "green",
+    pointHoverBackgroundColor: '#fff'
+  },
+  {
+    backgroundColor: "rgba(255,165,0,0.48)",
+    borderColor: "orange",
+    pointBackgroundColor: "rgba(255,165,0,0.48)",
+    pointBorderColor: '#fff',
+    pointHoverBorderColor: "orange",
+    pointHoverBackgroundColor: '#fff'
+  },
+  {
+    backgroundColor: "rgba(255,127,80,0.48)",
+    borderColor: "coral",
+    pointBackgroundColor: "rgba(255,127,80,0.48)",
+    pointBorderColor: '#fff',
+    pointHoverBorderColor: "coral",
+    pointHoverBackgroundColor: '#fff'
+  },
+  {
+    backgroundColor: "rgba(112, 128, 144,0.48)",
+    borderColor: "slategrey",
+    pointBackgroundColor: "rgba(112, 128, 144,0.48)",
+    pointBorderColor: '#fff',
+    pointHoverBorderColor: "slategrey",
+    pointHoverBackgroundColor: '#fff'
+  },
+  {
+    backgroundColor: "rgba(106,90,205,0.48)",
+    borderColor: "slateblue",
+    pointBackgroundColor: "rgba(106,90,205,0.48)",
+    pointBorderColor: '#fff',
+    pointHoverBorderColor: "slateblue",
+    pointHoverBackgroundColor: '#fff'
+  }];
+  linedata = [{ data: [10,20,30,40,50], label: ["sample 1","sample 2","sample 3","sample 4","sample 5"] }];
+  bardata = [{ data: [10,20,30,40,50], label: ["sample 1","sample 2","sample 3","sample 4","sample 5"] }];
+  piedata = [{ data: [10,20,30,40,50], labels: ["sample 1","sample 2","sample 3","sample 4","sample 5"] }];
+  doughnutdata = [{ data: [10,20,30,40,50], labels: ["sample 1","sample 2","sample 3","sample 4","sample 5"] }];
   // Line Chart Configuration
-  public lineChartColors: Array<any> = [
-    {
-      backgroundColor: this._backgroundColor,
-      borderColor: this._borderColor,
-      pointBackgroundColor: this._borderColor,
-      pointBorderColor: '#fff',
-      pointHoverBorderColor: this._borderColor,
-      pointHoverBackgroundColor: '#fff',
-    },
-    {
-      backgroundColor: "rgba(154,67,208,0.38)",
-      borderColor: "violet",
-      pointBackgroundColor: "rgba(154,67,208,0.38)",
-      pointBorderColor: '#fff',
-      pointHoverBorderColor: "violet",
-      pointHoverBackgroundColor: '#fff'
-    }
-  ];;
+  public lineChartColors = this.chartcolors;
   public lineChartData: Array<any> = this.linedata;
   public lineChartLabels: Array<any> = this.chartlabels;
   public lineChartType: string = 'line';
@@ -181,22 +237,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   public barChartLabels: string[] = this.chartlabels;
   public barChartType: string = 'bar';
   public barChartData: Array<any> = this.bardata;
-  public barChartColors: Array<any> = [{
-    backgroundColor: this._backgroundColor,
-    borderColor: this._borderColor,
-    pointBackgroundColor: this._borderColor,
-    pointBorderColor: '#fff',
-    pointHoverBorderColor: this._borderColor,
-    pointHoverBackgroundColor: '#fff'
-  },
-  {
-    backgroundColor: "rgba(154,67,208,0.38)",
-    borderColor: "violet",
-    pointBackgroundColor: "rgba(154,67,208,0.38)",
-    pointBorderColor: '#fff',
-    pointHoverBorderColor: "violet",
-    pointHoverBackgroundColor: '#fff',
-  }];
+  public barChartColors = this.chartcolors;
+    
   // Pie Chart Configuration
   public pieChartLabels: string[] = this.chartlabels;
   public pieChartData: Array<any> = this.piedata;
@@ -236,8 +278,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         break;
     }
     this._linestyle == "dashed" ? this._borderdash = [5, 5] : this._borderdash = [];
-
-
+    this._gridborder == true ? this._gridlinedash = [10, 10] : this._gridlinedash = [];
     this.lineChartLabels = this.Table_of_Data5[this._xaxis_sel];
     if (this._yaxis_sel != []) {
       // this.yaxis_data = this.Table_of_Data5[this._yaxis1_sel].map(Number);
@@ -254,11 +295,13 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         }
       }
     }
-    if (this._yaxismax == null || this._yaxismax == undefined) {
-      this._yaxismax = Math.max.apply(null, this.yaxis_data[0]);
-    }
+    // if (this._yaxismax == null || this._yaxismax == undefined || this._yaxismax == -Infinity) {
+    //   this._yaxismax = Math.max.apply(null, this.yaxis_data[0]);
+    // }
     this.lineChartOptions = {
       responsive: true,
+      stacked: false,
+      hoverMode: 'index',
       annotation: {
         // drawTime: 'afterDatasetsDraw',
         // events: ['click'],
@@ -328,7 +371,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         yAxes: Array<any>()
       }
     };
-    for (let i = 0; i < this.barChartData.length; i++) {
+    for (let i = 0; i < this.lineChartData.length; i++) {
       if (i == 0) {
         this.lineChartOptions.scales.yAxes[i] = {
           position: 'left',
@@ -340,10 +383,15 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
             labelString: this._yaxis_sel[i],
             fontColor: this.lineChartColors[i].borderColor
           },
+          gridLines: {
+            drawOnChartAdrawBorder: false,
+            borderDash: this._gridlinedash,
+            lineWidth: this._gridlinewidth
+          },
           ticks: {
             fontColor: this.lineChartColors[i].borderColor,
-            min: this._yaxismin,
-            max: this._yaxismax,
+            // min: this._yaxismin,
+            // max: this._yaxismax,
             stepSize: this._yaxisstepSize,
             autoSkip: this._yaxisAutoskip,
             beginAtZero: true,
@@ -359,7 +407,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         };
       }
       if (i > 0) {
-        this.lineChartOptions.scales.yAxes[i] = {
+        this.lineChartOptions.scales.yAxes.push({
           position: 'right',
           type: 'linear',
           display: true,
@@ -374,8 +422,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
           },
           ticks: {
             fontColor: this.lineChartColors[i].borderColor,
-            min: this._yaxismin,
-            max: Math.max.apply(null, this.yaxis_data[i]),
+            // min: this._yaxismin,
+            // max: this._yaxismax,
             stepSize: this._yaxisstepSize,
             autoSkip: this._yaxisAutoskip,
             beginAtZero: true,
@@ -388,13 +436,9 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
               }
             }
           }
-        };
+        });
       }
     }
-    console.log(this._yaxismax);
-  }
-  hey(){
-    console.log(this._yaxismax);
   }
   updateBarChart() {
     var unit = this._yaxisCB;
@@ -462,9 +506,14 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
           type: 'linear',
           display: true,
           id: 'y-1',
+          gridLines: {
+            drawOnChartAdrawBorder: false,
+            borderDash: this._gridlinedash,
+            lineWidth: this._gridlinewidth
+          },
           ticks: {
-            min: this._yaxismin,
-            max: this._yaxismax,
+            // min: this._yaxismin,
+            // max: this._yaxismax,
             stepSize: this._yaxisstepSize,
             autoSkip: this._yaxisAutoskip,
             fontColor: this.barChartColors[0].borderColor,
@@ -496,10 +545,10 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
             drawOnChartArea: false, // only want the grid lines for one axis to show up
           },
           ticks: {
-            min: this._yaxismin,
-            max: this._yaxismax,
-            stepSize: this._yaxisstepSize,
-            autoSkip: this._yaxisAutoskip,
+            // min: this._yaxismin,
+            // max: this._yaxismax,
+            // stepSize: this._yaxisstepSize,
+            // autoSkip: this._yaxisAutoskip,
             fontColor: this.barChartColors[i].borderColor,
             beginAtZero: true,
             callback: function (label) {
@@ -571,19 +620,23 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         this.V_PRF_VAL = value;
         for (let i = 0; i < name.length; i++) {
 
-          this.chartconfig[name[i]] = value[i];
+          this.userprefs[name[i]] = value[i];
         }
 
-        this._backgroundColor = this.chartconfig['backgroundcolor'];
-        this._borderColor = this.chartconfig['bordercolor'];
-        this._fill = this.chartconfig['fill'];
-        this._pointstyle = this.chartconfig['pointstyle'];
-        this._linetension = this.chartconfig['linetension'];
-        this._animations = this.chartconfig['animations'];
-        this._pointradius = this.chartconfig['pointradius'];
-        this._linestyle = this.chartconfig['linestyle'];
+        this._backgroundColor = this.userprefs['backgroundcolor'];
+        this._borderColor = this.userprefs['bordercolor'];
+        this._fill = this.userprefs['fill'];
+        this._pointstyle = this.userprefs['pointstyle'];
+        this._linetension = this.userprefs['linetension'];
+        this._animations = this.userprefs['animations'];
+        this._pointradius = this.userprefs['pointradius'];
+        this._linestyle = this.userprefs['linestyle'];
         this._fill.toString().toUpperCase() == "TRUE" ? this._fill = true : this._fill = false;
         this._linestyle == "dashed" ? this._borderdash = [5, 5] : this._borderdash = [];
+        this._gridborder.toString().toLocaleUpperCase()=="TRUE" ? this._gridborder = true : this._gridborder = false;
+        this._gridlinewidth = this.userprefs['linewidth'];
+        this._yaxisAutoskip.toString().toUpperCase() == "TRUE" ? this._yaxisAutoskip = true : this._yaxisAutoskip = false;
+
         this.updatechart();
       }
 
@@ -591,25 +644,70 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   }
   //__________________________Set Chart Styling_________________________________
   setchartstyling() {
-    this.chartconfig['backgroundcolor'] = this._backgroundColor;
-    this.chartconfig['bordercolor'] = this._borderColor;
-    this.chartconfig['fill'] = this._fill.toString().toLocaleUpperCase();
-    this.chartconfig['pointstyle'] = this._pointstyle;
-    this.chartconfig['linetension'] = this._linetension;
-    this.chartconfig['animations'] = this._animations;
-    this.chartconfig['pointradius'] = this._pointradius;
-    this.chartconfig['linestyle'] = this._linestyle;
+    this.userprefs['backgroundcolor'] = this._backgroundColor;
+    this.userprefs['bordercolor'] = this._borderColor;
+    this.userprefs['fill'] = this._fill.toString().toLocaleUpperCase();
+    this.userprefs['pointstyle'] = this._pointstyle;
+    this.userprefs['linetension'] = this._linetension;
+    this.userprefs['animations'] = this._animations;
+    this.userprefs['pointradius'] = this._pointradius;
+    this.userprefs['linestyle'] = this._linestyle;
+    this.userprefs['gridlinedashed'] = this._gridborder.toString().toLocaleUpperCase();
+    this.userprefs['linewidth'] = this._gridlinewidth;
+    this.userprefs['yautoskip'] = this._yaxisAutoskip.toString().toLocaleUpperCase();
 
-    this.V_PRF_NM = Object.keys(this.chartconfig);
-    this.V_PRF_VAL = Object.values(this.chartconfig);
-    //(this.V_PRF_NM);
-    //(this.V_PRF_VAL);
+
+    this.V_PRF_NM = Object.keys(this.userprefs);
+    this.V_PRF_VAL = Object.values(this.userprefs);
     for (let j = 0; j < this.V_PRF_NM.length; j++) {
       this.data.setchartstyling(this.APP_ID, this.PRCS_ID, this.SRC_ID, this.V_PRF_NM[j], this.V_PRF_VAL[j]).subscribe(
         () => {
           //(res);
         });
     }
+  }
+  sethiddencolsconfig(){
+    if(this.hiddencols.length > -1){
+    var abc = this.hiddencols.toString();
+    this.userprefs['hiddencolname'] = abc;
+    this.V_PRF_NM = Object.keys(this.userprefs);
+    this.V_PRF_VAL = Object.values(this.userprefs);
+    for (let j = 0; j < this.V_PRF_NM.length; j++) {
+      this.data.setchartstyling(this.APP_ID, this.PRCS_ID, this.SRC_ID, this.V_PRF_NM[j], this.V_PRF_VAL[j]).subscribe(
+        () => {
+          //(res);
+        });
+    }
+    }
+  }
+  gethiddencolsconfig(){
+    this.data.getchartstyling(this.APP_ID, this.PRCS_ID, this.SRC_ID).subscribe(
+      res => {
+        (res.json());
+        var result = res.json();
+        console.log(result);
+        var name = result.PRF_NM;
+        var value = result.PRF_VAL;
+        this.V_PRF_NM = name;
+        this.V_PRF_VAL = value;
+        for (let i = 0; i < name.length; i++) {
+
+          this.userprefs[name[i]] = value[i];
+        }
+        console.log(this.userprefs);
+        var a = this.userprefs['hiddencolname'].toString();
+        this.hiddencols = a.split(',');
+        for(let i=0;i<this.hiddencols.length;i++){
+          if(this.hiddencols.includes("")){
+            var emptyindex = this.columnsToDisplay.indexOf(this.hiddencols[""]);
+            this.hiddencols.splice(emptyindex,1);
+          }
+        var index = this.columnsToDisplay.indexOf(this.hiddencols[i]);
+        if (index > -1) {
+          this.columnsToDisplay.splice(index, 1);
+        }
+      }
+    });
   }
   ngOnInit() {
     this.getReportData();
@@ -677,7 +775,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
 
     // }
     this.showhide('Table');
-    //this.getchartstyling();
+    this.gethiddencolsconfig();
   }
 
   ExecuteAgain() {
@@ -724,6 +822,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         this.columnsToDisplay.splice(index, 1);
       }
     }
+    this.sethiddencolsconfig();
     //(this.columnsToDisplay);
   }
   //__________________________________________________________
