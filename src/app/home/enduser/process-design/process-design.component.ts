@@ -21,6 +21,7 @@ import { RollserviceService } from 'src/app/services/rollservice.service';
 export class ProcessDesignComponent implements OnInit, OnDestroy {
 
   public opened: boolean;
+  public treeopened: boolean = true;
   private modeler: any;
   private url: string;
   private user: any;
@@ -40,9 +41,11 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     maxHeight: 400
   });
   parentMenuItems = [
-    { item: 'Add Process', value: 'Add', havePermission: 1 },
-    { item: 'Import Process', value: 'Import', havePermission: 1 },
-    { item: 'Delete Application', value: 'Delete', havePermission: 1 }];
+    { item: 'Create Process', value: 'Add', havePermission: 0 },
+    { item: 'Open Process', value: 'Import', havePermission: 0 },
+    { item: 'Save BPNM', value: 'BPNM', havePermission: 0 },
+    { item: 'Save SVG', value: 'SVG', havePermission: 0 },
+    { item: 'Delete Application', value: 'Delete', havePermission: 0 }];
   childrenMenuItems = [
     { item: 'Run', value: 'Run', havePermission: 0 },
     { item: 'Edit', value: 'Edit', havePermission: 0 },
@@ -54,6 +57,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   roleObservable$: Subscription;
   roleValues;
   childobj = {};
+  parentobj = {};
   constructor(
     private httpClient: HttpClient,
     private toastrService: ToastrService,
@@ -89,6 +93,12 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                 break;
               case 'Enablement Workflow Exception Role':
                 this.childrenMenuItems[6].havePermission = 1;
+                break;
+              case 'Enablement Workflow Process Role':
+                this.parentMenuItems[0].havePermission = 1;
+                this.parentMenuItems[1].havePermission = 1;
+                this.parentMenuItems[2].havePermission = 1;
+                this.parentMenuItems[3].havePermission = 1;
                 break;
               default:
                 break;
@@ -266,6 +276,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           })
         };
         if (ele.auth.length) {
+          let deleteCount = 0;
           ele.auth.forEach((eleauth, index) => {
             eleauth = eleauth.replace(/'/g, "");
             let process = ele.process[index];
@@ -287,6 +298,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                       break;
                     }
                     case 'DELETE': {
+                      if (authSubStr[1] === 'Y') {
+                        deleteCount++;
+                      }
                       copyChildrenMenuItems[2].havePermission = authSubStr[1] === 'Y' ? 1 : 0;
                       break;
                     }
@@ -296,9 +310,16 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
               }
               process = process.replace(/'/g, "");
               this.childobj[process] = copyChildrenMenuItems;
-
             }
           })
+          let copyParentrenMenuItems = [];
+          copyParentrenMenuItems = [...this.parentMenuItems];
+          if (deleteCount == ele.auth.length) {
+            copyParentrenMenuItems[4].havePermission = 1;
+          } else {
+            copyParentrenMenuItems[4].havePermission = 0;
+          }
+          this.parentobj[ele.app] = copyParentrenMenuItems;
         };
         let treeObj = new TreeviewItem({
           text: ele.app, value: ele.app, collapsed: true, children: this.chilItem

@@ -12,7 +12,7 @@
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #parentMenu="matMenu">
-          <div *ngFor="let pitem of parentMenuItems">
+          <div *ngFor="let pitem of parentobj[item.text]">
             <button (click)="onParentMenuItemClick(pitem.value,item.value)" *ngIf="pitem.havePermission" mat-menu-item>
               <span>{{pitem.item}}</span>
             </button>
