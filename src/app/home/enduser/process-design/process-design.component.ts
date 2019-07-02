@@ -123,9 +123,14 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.url = `https://${this.globals.domain_name + this.globals.Path + this.globals.version}/securedJSON`;
     this.user = JSON.parse(sessionStorage.getItem('u'));
+    
+    this.getApplicationProcess();
+  }
+
+  ngAfterViewInit(){
     this.modeler = new Modeler({
       container: '#canvas',
-      width: '100%',
+      width: '90%',
       height: '500px',
       additionalModules: [
         PropertiesPanelModule,
@@ -203,7 +208,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         }
       });
     }
-    this.getApplicationProcess();
   }
 
   ngOnDestroy() {

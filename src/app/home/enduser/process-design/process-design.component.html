@@ -35,17 +35,25 @@
   </div>
 </ng-template>
 <div fxLayout="row">
-  <div fxFlex="20">
-    <ngx-treeview [config]="config" [items]="item" [itemTemplate]="itemTemplate"
-      (selectedChange)="onSelectedChange($event)" (filterChange)="onFilterChange($event)">
-    </ngx-treeview>
-  </div>
-  <div fxFlex="80">
-    <mat-sidenav-container>
-      <mat-sidenav-content>
+  <mat-sidenav-container fxFlex="100">
+    <mat-sidenav #treesidenav mode="side" [opened]="true" style="min-width:280px">
+      <ngx-treeview [config]="config" [items]="item" [itemTemplate]="itemTemplate"
+        (selectedChange)="onSelectedChange($event)" (filterChange)="onFilterChange($event)">
+      </ngx-treeview>
+    </mat-sidenav>
+    <div fxFlex="100">
+      <section>
         <div fxLayout="row">
-          <div fxFlex="95" id="canvas"></div>
-          <div fxFlex="5" class="toggle">
+          <div fxFlex="20px" class="toggle">
+            <a href="javascript:void(0)" matTooltip="{{treesidenav.opened ? 'Hide Application' : 'Show Application'}}"
+              (click)="treesidenav.toggle()">
+              <mat-icon aria-hidden="false">{{treesidenav.opened ? 'arrow_left' : 'arrow_right'}}</mat-icon>
+            </a>
+          </div>
+          <div fxFlex fxLayout="row">
+            <div fxFlex="100" id="canvas"></div>
+          </div>
+          <div fxFlex="20px" class="toggle">
             <a href="javascript:void(0)" matTooltip="{{opened ? 'Hide properties' : 'Show properties'}}"
               (click)="sidenav.toggle()">
               <mat-icon aria-hidden="false">{{opened ? 'arrow_right' : 'arrow_left'}}</mat-icon>
@@ -81,10 +89,10 @@
             </mat-list-item>
           </mat-list>
         </div>
-      </mat-sidenav-content>
-      <mat-sidenav #sidenav position="end" mode="side" [(opened)]="opened">
-        <div id="properties"></div>
-      </mat-sidenav>
-    </mat-sidenav-container>
-  </div>
+      </section>
+    </div>
+    <mat-sidenav #sidenav position="end" mode="side" [(opened)]="opened">
+      <div id="properties"></div>
+    </mat-sidenav>
+  </mat-sidenav-container>
 </div>
