@@ -11,6 +11,8 @@ import { OptionalValuesService, ApplicationProcessObservable } from 'src/app/ser
 import { Subscription } from 'rxjs';
 import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
 import { RollserviceService } from 'src/app/services/rollservice.service';
+import { ApiService } from 'src/app/service/api/api.service';
+import { Http } from '@angular/http';
 
 @Component({
   selector: 'app-process-design',
@@ -23,6 +25,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   public treeopened: boolean = true;
   private modeler: any;
   private url: string;
+  private downloadUrl: string;
   private user: any;
   private bpmnTemplate: any;
   private flows = {};
@@ -60,14 +63,19 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   roleValues;
   childobj = {};
   parentobj = {};
+  selectedApp = '';
+  selectedPrcoess = '';
+
   constructor(
     private httpClient: HttpClient,
+    private http: Http,
     private toastrService: ToastrService,
     private globals: Globals,
     private endUserService: EndUserService,
     private useradminService: UseradminService,
     private optionalService: OptionalValuesService,
-    private roleService: RollserviceService
+    private roleService: RollserviceService,
+    private apiService: ApiService
   ) {
     this.applicationProcessObservable$ = this.optionalService.applicationProcessValue.subscribe(data => {
       if (data != null) {
@@ -112,18 +120,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     });
   }
 
-  onFilterChange(value: string) {
-    // console.log('filter:', value);
-  }
-
-  onSelectedChange(value) {
-    // console.log('onSelectedChange:', value);
-  }
-
   ngOnInit() {
     this.url = `https://${this.globals.domain_name + this.globals.Path + this.globals.version}/securedJSON`;
     this.user = JSON.parse(sessionStorage.getItem('u'));
-
+    this.downloadUrl = this.apiService.endPoints.downloadFile;
     this.getApplicationProcess();
   }
 
@@ -140,7 +140,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         parent: '#properties'
       }
     });
-    this.newBpmn();
+    // this.newBpmn();
     const eventBus = this.modeler.get('eventBus');
     if (eventBus) {
       eventBus.on('element.changed', ($event) => {
@@ -149,8 +149,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           const sourceId = businessObject && businessObject.sourceRef ? businessObject.sourceRef.id : '';
           const targetId = businessObject && businessObject.targetRef ? businessObject.targetRef.id : '';
           const objectId = businessObject ? businessObject.id : '';
-          const vAppCd = 'V_APP_CD';
-          const vPrcsCd = 'V_PRCS_CD';
+          // const vAppCd = 'V_APP_CD';
+          // const vPrcsCd = 'V_PRCS_CD';
+          const vAppCd = this.selectedApp;
+          const vPrcsCd = this.selectedPrcoess;
           if ($event.element.type === 'bpmn:SequenceFlow') {
             const data: any = {
               REST_Service: 'Orchetration',
@@ -263,15 +265,15 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     }
   }
 
-  downloadBpmn() {
+  downloadBpmn(processName) {
     this.modeler.saveXML((err: any, xml: any) => {
-      saveAs(new Blob([xml], { type: 'text/xml' }), 'diagram.bpmn');
+      saveAs(new Blob([xml], { type: 'text/xml' }), processName + '.bpmn');
     });
   }
 
-  downloadSvgBpmn() {
+  downloadSvgBpmn(processName) {
     this.modeler.saveSVG((err: any, svg: any) => {
-      saveAs(new Blob([svg], { type: 'image/svg+xml' }), 'diagram.svg');
+      saveAs(new Blob([svg], { type: 'image/svg+xml' }), processName + '.svg');
     });
   }
 
@@ -282,6 +284,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     }
   }
 
+  // storing text as process name and value as application name for child tree view item 
+  // to get application and process name both when clicked on child item
   generateTreeItem() {
     this.item = [];
     if (this.appProcessList.length) {
@@ -290,7 +294,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         if (ele.process.length) {
           this.chilItem = [];
           ele.process.forEach(eleProcess => {
-            let childTreeObj = new TreeviewItem({ text: eleProcess.replace(/'/g, ""), value: eleProcess.replace(/'/g, "") });
+            let childTreeObj = new TreeviewItem({ text: eleProcess.replace(/'/g, ""), value: ele.app });
             this.chilItem.push(childTreeObj)
           })
         };
@@ -358,15 +362,33 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     })
   }
 
-  onTitleClick(value) {
-
+  onTitleClick(item) {
+    if (!item.children) {
+      const data: any = {
+        File_Path: '/opt/tomcat/webapps/' + this.user.SRC_CD + '/' + item.value + '/' + item.text + '.bpnm',
+        File_Name: item.text + '.bpnm'
+      };
+      console.log('data', data)
+      this.http.post(this.downloadUrl, data, this.apiService.setHeaders()).subscribe(res => {
+        console.log(res);
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(res.blob());
+        a.download = item.text + '.bpnm';
+        // start download
+        a.click();
+      });
+    }
   }
   onParentMenuItemClick(actionValue, parentValue) {
+    this.selectedApp = parentValue;
     switch (actionValue) {
       case 'Add': {
+        this.newBpmn();
         break;
       }
       case 'Import': {
+        let ele = document.getElementById('file');
+        ele.click();
         break;
       }
       case 'Delete': {
@@ -378,6 +400,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     }
   }
   onChildMenuItemClick(actionValue, childValue) {
+    this.selectedApp = childValue.value;
+    this.selectedPrcoess = childValue.text;
     switch (actionValue) {
       case 'Run': {
         break;
@@ -401,11 +425,11 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         break;
       }
       case 'BPNM': {
-        this.downloadBpmn();
+        this.downloadBpmn(this.selectedPrcoess);
         break;
       }
       case 'SVG': {
-        this.downloadSvgBpmn();
+        this.downloadSvgBpmn(this.selectedPrcoess);
         break;
       }
       default: {

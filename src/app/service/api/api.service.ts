@@ -15,7 +15,7 @@ export class ApiService {
 	private authHeader: HttpHeaders;
 	public insecureUrl = 'https://' + this.globalUrl.domain + this.globalUrl.suffix + this.globalUrl.Path;
 	public securedApiUrl = 'https://' + this.globalUrl.domain + this.globalUrl.suffix + this.globalUrl.Path + this.globalUrl.version;
-
+	public fileUrl = 'https://' + this.globalUrl.domain + '/FileAPIs/api/file' + this.globalUrl.version;
 	public readonly endPoints = {
 		// Authentications
 		login: `${this.apiURL}/`,
@@ -32,7 +32,7 @@ export class ApiService {
 		logout: `${this.insecureUrl}/logout`,
 		deleteArtifact: `${this.insecureUrl}/Artifact/DeleteArtifact?`,
 		securedJSON: `${this.securedApiUrl}/securedJSON?`,
-
+		downloadFile: `${this.fileUrl}/download`
 	}
 
 	constructor(private http: HttpClient, private globals: Globals2, private globalUrl: Globals,

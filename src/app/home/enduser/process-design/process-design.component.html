@@ -25,7 +25,7 @@
         </button>
         <mat-menu #childMenu="matMenu">
           <div *ngFor="let citem of childobj[item.text]">
-            <button (click)="onChildMenuItemClick(citem.value,item.value)" *ngIf="citem.havePermission" mat-menu-item>
+            <button (click)="onChildMenuItemClick(citem.value,item)" *ngIf="citem.havePermission" mat-menu-item>
               <span *ngIf="citem.havePermission">{{citem.item}}</span>
             </button>
           </div>
@@ -37,8 +37,8 @@
 <div fxLayout="row">
   <mat-sidenav-container fxFlex="100">
     <mat-sidenav #treesidenav mode="side" [opened]="true" style="min-width:280px">
-      <ngx-treeview [config]="config" [items]="item" [itemTemplate]="itemTemplate"
-        (selectedChange)="onSelectedChange($event)" (filterChange)="onFilterChange($event)">
+      <ngx-treeview [config]="config" [items]="item" [itemTemplate]="itemTemplate">
+        <!-- (selectedChange)="onSelectedChange($event)" (filterChange)="onFilterChange($event)" -->
       </ngx-treeview>
     </mat-sidenav>
     <div fxFlex="100">
@@ -63,7 +63,7 @@
         <div class="import-export">
           <mat-list class="button-wrapper" fxLayout>
             <mat-list-item fxFlex>
-              <input [hidden]="true" #file type="file" accept=".bpmn" (change)="openBpmn($event)" />
+              <input id="file" [hidden]="true" #file type="file" accept=".bpmn" (change)="openBpmn($event)" />
               <a matTooltip="Open BPMN diagram from local file system" (click)="file.click()">
                 <mat-icon aria-hidden="false">folder_open</mat-icon>
               </a>
