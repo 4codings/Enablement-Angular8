@@ -43,10 +43,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     maxHeight: 400
   });
   parentMenuItems = [
-    { item: 'Create Process', value: 'Add', havePermission: 0 },
-    { item: 'Open Process', value: 'Import', havePermission: 0 },
-    { item: 'Save BPNM', value: 'BPNM', havePermission: 0 },
-    { item: 'Save SVG', value: 'SVG', havePermission: 0 },
+    { item: 'Add Process', value: 'Add', havePermission: 0 },
+    { item: 'Open a Process', value: 'Import', havePermission: 0 },
     { item: 'Delete Application', value: 'Delete', havePermission: 0 }];
   childrenMenuItems = [
     { item: 'Run', value: 'Run', havePermission: 0 },
@@ -55,7 +53,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     { item: 'Schedule', value: 'Schedule', havePermission: 0 },
     { item: 'Monitor', value: 'Monitor', havePermission: 0 },
     { item: 'Approve', value: 'Approve', havePermission: 0 },
-    { item: 'Resolve', value: 'Resolve', havePermission: 0 }];
+    { item: 'Resolve', value: 'Resolve', havePermission: 0 },
+    { item: 'Download BPNM', value: 'BPNM', havePermission: 0 },
+    { item: 'Download SVG', value: 'SVG', havePermission: 0 }];
   roleObservable$: Subscription;
   roleValues;
   childobj = {};
@@ -100,8 +100,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
               case 'Enablement Workflow Process Role':
                 this.parentMenuItems[0].havePermission = 1;
                 this.parentMenuItems[1].havePermission = 1;
-                this.parentMenuItems[2].havePermission = 1;
-                this.parentMenuItems[3].havePermission = 1;
+                this.childrenMenuItems[7].havePermission = 1;
+                this.childrenMenuItems[8].havePermission = 1;
                 break;
               default:
                 break;
@@ -123,11 +123,11 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.url = `https://${this.globals.domain_name + this.globals.Path + this.globals.version}/securedJSON`;
     this.user = JSON.parse(sessionStorage.getItem('u'));
-    
+
     this.getApplicationProcess();
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     this.modeler = new Modeler({
       container: '#canvas',
       width: '90%',
@@ -337,9 +337,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           let copyParentrenMenuItems = [];
           copyParentrenMenuItems = [...this.parentMenuItems];
           if (deleteCount == ele.auth.length) {
-            copyParentrenMenuItems[4].havePermission = 1;
+            copyParentrenMenuItems[2].havePermission = 1;
           } else {
-            copyParentrenMenuItems[4].havePermission = 0;
+            copyParentrenMenuItems[2].havePermission = 0;
           }
           this.parentobj[ele.app] = copyParentrenMenuItems;
         };
@@ -401,6 +401,14 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         break;
       }
       case 'Resolve': {
+        break;
+      }
+      case 'BPNM': {
+        this.downloadBpmn();
+        break;
+      }
+      case 'SVG': {
+        this.downloadSvgBpmn();
         break;
       }
       default: {
