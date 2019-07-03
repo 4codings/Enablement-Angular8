@@ -18,6 +18,7 @@
     <mat-icon class="tile-icon">lock</mat-icon>
 <!--    <div *ngIf="!environment.production">{{currAuth.V_AUTH_ID}}</div>-->
     <div class="ellipsis-text"><strong>{{currAuth.V_AUTH_CD}}</strong></div>
+    <div class="ellipsis-text"><strong>{{currAuth.V_AUTH_CD.split(';')[1].trim()}}</strong></div>
   </div>
   <div class="tile add-new-tile" cdkDrag [cdkDragDisabled]="true" (click)="onAddAuthTileClick()"
        matTooltip="Add Auth" matRipple>

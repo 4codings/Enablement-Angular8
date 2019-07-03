@@ -33,6 +33,7 @@ import {authorizationTypeOptions, groupTypeOptions} from '../useradmin.constants
 import {Actions, ofType} from '@ngrx/effects';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {AssignRoleModalComponent} from '../assignrole/assign-role-modal/assign-role-modal.component';
+import {AssignGroupModalComponent} from '../assignrole/assign-group-modal/assign-group-modal.component';
 
 @Injectable()
 export class OverviewService implements OnDestroy {
@@ -480,7 +481,7 @@ export class OverviewService implements OnDestroy {
       {
         width: '700px',
         panelClass: 'app-dialog',
-        data: {roleId: roleId}
+        data: {roleId: roleId, authType: this.selectedAuthType.key}
       });
     dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
       if (flag) {
@@ -581,6 +582,21 @@ export class OverviewService implements OnDestroy {
         width: '600px',
         panelClass: 'app-dialog',
         data: {group: group, roles: this.allRoles, controlVariables: this.userAdminService.controlVariables}
+      });
+    dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
+      if (flag) {
+        this.store.dispatch(new userGroupActions.getUserGroup(this.V_SRC_CD_DATA));
+        this.store.dispatch(new userRoleActions.getUserRole(this.V_SRC_CD_DATA));
+      }
+    });
+  }
+
+  openAssignGroupToRoleDialog(role: userRole): void {
+    const dialogRef = this.dialog.open(AssignGroupModalComponent,
+      {
+        width: '600px',
+        panelClass: 'app-dialog',
+        data: {role: role, groups: this.allGroups, controlVariables: this.userAdminService.controlVariables}
       });
     dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
       if (flag) {
