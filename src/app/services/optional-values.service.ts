@@ -113,8 +113,9 @@ export class OptionalValuesService implements OnDestroy {
   }
   getApplicationProcessOptionalValue(data) {
     if (data.length) {
+      this.applicationProcessArray = [];
       data.forEach(ele => {
-        this.applicationProcessArray.push({ 'app': ele.APP_CD, 'process': ele.PRCS_CD.split(",") });
+        this.applicationProcessArray.push({ 'app': ele.APP_CD, 'process': ele.PRCS_CD.split(","), 'auth': ele.PRCS_AUTH.split(",") });
       })
       this.applicationProcessValue.next(this.applicationProcessArray);
     }

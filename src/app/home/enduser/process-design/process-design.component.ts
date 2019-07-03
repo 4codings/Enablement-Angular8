@@ -1,15 +1,18 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { Modeler, PropertiesPanelModule, InjectionNames, OriginalPropertiesProvider, OriginalPaletteProvider } from './bpmn-js';
-import { CustomPropsProvider } from './props-provider/custom-props-provider';
-import { CustomPaletteProvider } from './props-provider/custom-palette-provider';
+import { saveAs } from 'file-saver';
+import { ToastrService } from 'ngx-toastr';
+import { Modeler, PropertiesPanelModule, OriginalPropertiesProvider } from './bpmn-js';
 import { Globals } from 'src/app/services/globals';
 import { EndUserService } from 'src/app/services/EndUser-service';
+import { UseradminService } from 'src/app/services/useradmin.service2';
 import { OptionalValuesService, ApplicationProcessObservable } from 'src/app/services/optional-values.service';
 import { Subscription } from 'rxjs';
 import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
 import { RollserviceService } from 'src/app/services/rollservice.service';
+import { ApiService } from 'src/app/service/api/api.service';
+import { Http } from '@angular/http';
 
 @Component({
   selector: 'app-process-design',
@@ -18,9 +21,18 @@ import { RollserviceService } from 'src/app/services/rollservice.service';
 })
 export class ProcessDesignComponent implements OnInit, OnDestroy {
 
+  public opened: boolean;
+  public treeopened: boolean = true;
   private modeler: any;
   private url: string;
+  private downloadUrl: string;
   private user: any;
+  private bpmnTemplate: any;
+  private flows = {};
+  @ViewChild('file')
+  private file: any;
+  private currentXml: any;
+  private uploadLocked: boolean;
   applicationProcessObservable$: Subscription;
   applicationProcessValuesObservable: ApplicationProcessObservable[] = [];
   appProcessList = [];
@@ -34,26 +46,36 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     maxHeight: 400
   });
   parentMenuItems = [
-    { item: 'Add Process', value: 'Add', havePermission: 1 },
-    { item: 'Import Process', value: 'Import', havePermission: 1 },
-    { item: 'Delete Application', value: 'Delete', havePermission: 1 }];
+    { item: 'Add Process', value: 'Add', havePermission: 0 },
+    { item: 'Open a Process', value: 'Import', havePermission: 0 },
+    { item: 'Delete Application', value: 'Delete', havePermission: 0 }];
   childrenMenuItems = [
-    { item: 'Run', value: 'Run', havePermission: 1 },
-    { item: 'Edit', value: 'Edit', havePermission: 1 },
-    { item: 'Delete', value: 'Delete', havePermission: 1 },
+    { item: 'Run', value: 'Run', havePermission: 0 },
+    { item: 'Edit', value: 'Edit', havePermission: 0 },
+    { item: 'Delete', value: 'Delete', havePermission: 0 },
     { item: 'Schedule', value: 'Schedule', havePermission: 0 },
     { item: 'Monitor', value: 'Monitor', havePermission: 0 },
     { item: 'Approve', value: 'Approve', havePermission: 0 },
-    { item: 'Resolve', value: 'Resolve', havePermission: 0 }];
+    { item: 'Resolve', value: 'Resolve', havePermission: 0 },
+    { item: 'Download BPNM', value: 'BPNM', havePermission: 0 },
+    { item: 'Download SVG', value: 'SVG', havePermission: 0 }];
   roleObservable$: Subscription;
   roleValues;
+  childobj = {};
+  parentobj = {};
+  selectedApp = '';
+  selectedPrcoess = '';
 
   constructor(
     private httpClient: HttpClient,
+    private http: Http,
+    private toastrService: ToastrService,
     private globals: Globals,
     private endUserService: EndUserService,
+    private useradminService: UseradminService,
     private optionalService: OptionalValuesService,
-    private roleService: RollserviceService
+    private roleService: RollserviceService,
+    private apiService: ApiService
   ) {
     this.applicationProcessObservable$ = this.optionalService.applicationProcessValue.subscribe(data => {
       if (data != null) {
@@ -83,6 +105,12 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
               case 'Enablement Workflow Exception Role':
                 this.childrenMenuItems[6].havePermission = 1;
                 break;
+              case 'Enablement Workflow Process Role':
+                this.parentMenuItems[0].havePermission = 1;
+                this.parentMenuItems[1].havePermission = 1;
+                this.childrenMenuItems[7].havePermission = 1;
+                this.childrenMenuItems[8].havePermission = 1;
+                break;
               default:
                 break;
             }
@@ -92,107 +120,93 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     });
   }
 
-  onFilterChange(value: string) {
-    // console.log('filter:', value);
-  }
-  onSelectedChange(value) {
-    // console.log('onSelectedChange:', value);
-  }
   ngOnInit() {
     this.url = `https://${this.globals.domain_name + this.globals.Path + this.globals.version}/securedJSON`;
     this.user = JSON.parse(sessionStorage.getItem('u'));
+    this.downloadUrl = this.apiService.endPoints.downloadFile;
+    this.getApplicationProcess();
+  }
+
+  ngAfterViewInit() {
     this.modeler = new Modeler({
       container: '#canvas',
-      width: '100%',
-      height: '600px',
+      width: '90%',
+      height: '500px',
       additionalModules: [
         PropertiesPanelModule,
-        { [InjectionNames.bpmnPropertiesProvider]: ['type', OriginalPropertiesProvider.propertiesProvider[1]] },
-        { [InjectionNames.propertiesProvider]: ['type', CustomPropsProvider] },
-        { [InjectionNames.originalPaletteProvider]: ['type', OriginalPaletteProvider] },
-        { [InjectionNames.paletteProvider]: ['type', CustomPaletteProvider] },
+        OriginalPropertiesProvider
       ],
       propertiesPanel: {
         parent: '#properties'
-      },
-      moddleExtension: {
-        custom: {
-          name: 'customModdle',
-          prefix: 'custom',
-          xml: {
-            tagAlias: 'lowerCase'
-          },
-          associations: [],
-          types: [
-            {
-              'name': 'ExtUserTask',
-              'extends': [
-                'bpmn:UserTask'
-              ],
-              'properties': [
-                {
-                  'name': 'worklist',
-                  'isAttr': true,
-                  'type': 'String'
-                }
-              ]
-            },
-          ]
-        }
       }
     });
-    this.httpClient.get('/assets/bpmn/newDiagram.bpmn', {
-      headers: { observe: 'response' }, responseType: 'text'
-    }).subscribe(
-      (x: any) => {
-        this.modeler.importXML(x, this.handleError);
-        const eventBus = this.modeler.get('eventBus');
-        if (eventBus) {
-          eventBus.on('element.changed', ($event) => {
-            if ($event && $event.element && ['bpmn:Process', 'label'].indexOf($event.element.type) === -1) {
-              if ($event.element.type === 'bpmn:SequenceFlow') {
-                const data: any = {
-                  REST_Service: 'Orchetration',
-                  RESULT: '@RESULT',
-                  V_APP_CD: 'Marketing',
-                  V_CONT_ON_ERR_FLG: 'N',
-                  V_PRCS_CD: '',
-                  V_PRDCR_APP_CD: 'Marketing',
-                  V_PRDCR_PRCS_CD: 'Email DHS POC',
-                  V_PRDCR_SRC_CD: this.user.SRC_CD,
-                  V_PRDCR_SRVC_CD: $event.element.businessObject.sourceRef.id,
-                  V_SRC_CD: this.user.SRC_CD,
-                  V_SRVC_CD: $event.element.businessObject.targetRef.id,
-                  V_USR_NM: this.user.USR_NM,
-                  Verb: 'PUT'
-                };
-                this.httpClient.put(this.url, data).subscribe();
-              } else {
-                const data: any = {
-                  REST_Service: 'Service',
-                  V_APP_CD: 'Marketing',
-                  V_CREATE: 'Y',
-                  V_DELETE: 'Y',
-                  V_EXECUTE: 'Y',
-                  V_PRCS_CD: 'Email DHS POC',
-                  V_READ: 'Y',
-                  V_ROLE_CD: 'Program Assessment Role',
-                  V_SRC_CD: this.user.SRC_CD,
-                  V_SRVC_CD: $event.element.businessObject.name,
-                  V_SRVC_DSC: '',
-                  V_UPDATE: 'Y',
-                  V_USR_NM: this.user.USR_NM,
-                  Verb: 'PUT'
-                };
-                this.httpClient.post(this.url, data).subscribe();
-              }
+    // this.newBpmn();
+    const eventBus = this.modeler.get('eventBus');
+    if (eventBus) {
+      eventBus.on('element.changed', ($event) => {
+        if ($event && $event.element && ['bpmn:Process', 'label'].indexOf($event.element.type) === -1) {
+          const businessObject = $event.element.businessObject;
+          const sourceId = businessObject && businessObject.sourceRef ? businessObject.sourceRef.id : '';
+          const targetId = businessObject && businessObject.targetRef ? businessObject.targetRef.id : '';
+          const objectId = businessObject ? businessObject.id : '';
+          // const vAppCd = 'V_APP_CD';
+          // const vPrcsCd = 'V_PRCS_CD';
+          const vAppCd = this.selectedApp;
+          const vPrcsCd = this.selectedPrcoess;
+          if ($event.element.type === 'bpmn:SequenceFlow') {
+            const data: any = {
+              REST_Service: 'Orchetration',
+              RESULT: '@RESULT',
+              V_APP_CD: vAppCd,
+              V_CONT_ON_ERR_FLG: 'N',
+              V_PRCS_CD: vPrcsCd,
+              V_PRDCR_APP_CD: vAppCd,
+              V_PRDCR_PRCS_CD: vPrcsCd,
+              V_PRDCR_SRC_CD: this.user.SRC_CD,
+              V_PRDCR_SRVC_CD: sourceId,
+              V_SRC_CD: this.user.SRC_CD,
+              V_SRVC_CD: targetId,
+              V_USR_NM: this.user.USR_NM,
+              Verb: 'PUT'
+            };
+            if (!this.flows) {
+              this.flows = {};
             }
-          });
+            this.flows[targetId] = data;
+          } else {
+            const data: any = {
+              REST_Service: 'Service',
+              V_APP_CD: vAppCd,
+              V_CREATE: 'Y',
+              V_DELETE: 'Y',
+              V_EXECUTE: 'Y',
+              V_PRCS_CD: vPrcsCd,
+              V_READ: 'Y',
+              V_ROLE_CD: 'Program Assessment Role',
+              V_SRC_CD: this.user.SRC_CD,
+              V_SRVC_CD: objectId,
+              V_SRVC_DSC: '',
+              V_UPDATE: 'Y',
+              V_USR_NM: this.user.USR_NM,
+              Verb: 'PUT'
+            };
+            this.httpClient.post(this.url, data).subscribe(() => {
+              if (objectId && this.flows[objectId]) {
+                this.uploadLocked = true;
+                this.httpClient.put(this.url, this.flows[objectId]).subscribe(() => {
+                  delete this.flows[objectId];
+                  this.upload(vAppCd, vPrcsCd);
+                  this.uploadLocked = false;
+                }, () => this.uploadLocked = false);
+              }
+            });
+          }
+          setTimeout(() => {
+            this.upload(vAppCd, vPrcsCd);
+          }, 2000);
         }
-      },
-      this.handleError
-    );
-    this.getApplicationProcess();
+      });
+    }
   }
 
   ngOnDestroy() {
@@ -203,11 +217,75 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     }
   }
 
+  upload(vAppCd, vPrcsCd) {
+    if (!this.uploadLocked) {
+      this.modeler.saveXML((err: any, xml: any) => {
+        if (xml !== this.currentXml) {
+          const formData: FormData = new FormData();
+          formData.append('FileInfo', JSON.stringify({
+            File_Path: `/opt/tomcat/webapps/${this.useradminService.reduceFilePath(this.user.SRC_CD)}/${vAppCd}/`,
+            File_Name: `${vPrcsCd}.bpmn`,
+            V_SRC_CD: this.user.SRC_CD,
+            USR_NM: this.user.USR_NM
+          }));
+          formData.append('Source_File', new File([xml], `${vPrcsCd}.bpmn`, { type: 'text/xml' }));
+          this.httpClient.post(`https://${this.globals.domain}/FileAPIs/api/file/v1/upload`, formData).subscribe();
+        }
+        this.currentXml = xml;
+      });
+    }
+  }
+
+  openBpmn($event) {
+    if ($event && $event.target && $event.target.files) {
+      const fr: FileReader = new FileReader();
+      fr.onloadend = () => {
+        this.modeler.importXML(fr.result, this.handleError.bind(this));
+        if (this.file && this.file.nativeElement) {
+          this.file.nativeElement.value = '';
+        }
+      }
+      fr.readAsText($event.target.files[0]);
+    }
+  }
+
+  newBpmn() {
+    if (this.bpmnTemplate) {
+      this.modeler.importXML(this.bpmnTemplate, this.handleError.bind(this));
+    } else {
+      this.httpClient.get('/assets/bpmn/newDiagram.bpmn', {
+        headers: { observe: 'response' }, responseType: 'text'
+      }).subscribe(
+        (x: any) => {
+          this.modeler.importXML(x, this.handleError.bind(this));
+          this.bpmnTemplate = x;
+        },
+        this.handleError.bind(this)
+      );
+    }
+  }
+
+  downloadBpmn(processName) {
+    this.modeler.saveXML((err: any, xml: any) => {
+      saveAs(new Blob([xml], { type: 'text/xml' }), processName + '.bpmn');
+    });
+  }
+
+  downloadSvgBpmn(processName) {
+    this.modeler.saveSVG((err: any, svg: any) => {
+      saveAs(new Blob([svg], { type: 'image/svg+xml' }), processName + '.svg');
+    });
+  }
+
   handleError(err: any) {
     if (err) {
+      this.toastrService.error(err);
       console.error(err);
     }
   }
+
+  // storing text as process name and value as application name for child tree view item 
+  // to get application and process name both when clicked on child item
   generateTreeItem() {
     this.item = [];
     if (this.appProcessList.length) {
@@ -216,9 +294,55 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         if (ele.process.length) {
           this.chilItem = [];
           ele.process.forEach(eleProcess => {
-            let childTreeObj = new TreeviewItem({ text: eleProcess.replace(/'/g, ""), value: eleProcess.replace(/'/g, "") });
+            let childTreeObj = new TreeviewItem({ text: eleProcess.replace(/'/g, ""), value: ele.app });
             this.chilItem.push(childTreeObj)
           })
+        };
+        if (ele.auth.length) {
+          let deleteCount = 0;
+          ele.auth.forEach((eleauth, index) => {
+            eleauth = eleauth.replace(/'/g, "");
+            let process = ele.process[index];
+            if (eleauth.indexOf(process.replace(/'/g, "")) > -1) {
+              let copyChildrenMenuItems = [];
+              copyChildrenMenuItems = [...this.childrenMenuItems];
+              let i = eleauth.indexOf(process.replace(/'/g, "")) + process.replace(/'/g, "").length;
+              let subString = eleauth.substring(i).split(';');
+              if (subString.length) {
+                subString.forEach(ele => {
+                  let authSubStr = ele.split('-');
+                  switch (authSubStr[0]) {
+                    case 'EXECUTE': {
+                      copyChildrenMenuItems[0].havePermission = authSubStr[1] === 'Y' ? 1 : 0;
+                      break;
+                    }
+                    case 'UPDATE': {
+                      copyChildrenMenuItems[1].havePermission = authSubStr[1] === 'Y' ? 1 : 0;
+                      break;
+                    }
+                    case 'DELETE': {
+                      if (authSubStr[1] === 'Y') {
+                        deleteCount++;
+                      }
+                      copyChildrenMenuItems[2].havePermission = authSubStr[1] === 'Y' ? 1 : 0;
+                      break;
+                    }
+                    default: break;
+                  }
+                })
+              }
+              process = process.replace(/'/g, "");
+              this.childobj[process] = copyChildrenMenuItems;
+            }
+          })
+          let copyParentrenMenuItems = [];
+          copyParentrenMenuItems = [...this.parentMenuItems];
+          if (deleteCount == ele.auth.length) {
+            copyParentrenMenuItems[2].havePermission = 1;
+          } else {
+            copyParentrenMenuItems[2].havePermission = 0;
+          }
+          this.parentobj[ele.app] = copyParentrenMenuItems;
         };
         let treeObj = new TreeviewItem({
           text: ele.app, value: ele.app, collapsed: true, children: this.chilItem
@@ -230,7 +354,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   getApplicationProcess() {
     this.endUserService.getApplicationAndProcess().subscribe(res => {
       if (res) {
-        console.log('res', res.json());
         let data = res.json();
         if (data.length) {
           this.optionalService.getApplicationProcessOptionalValue(data);
@@ -239,16 +362,33 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     })
   }
 
-  onTitleClick(value) {
-
+  onTitleClick(item) {
+    if (!item.children) {
+      const data: any = {
+        File_Path: '/opt/tomcat/webapps/' + this.user.SRC_CD + '/' + item.value + '/' + item.text + '.bpnm',
+        File_Name: item.text + '.bpnm'
+      };
+      console.log('data', data)
+      this.http.post(this.downloadUrl, data, this.apiService.setHeaders()).subscribe(res => {
+        console.log(res);
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(res.blob());
+        a.download = item.text + '.bpnm';
+        // start download
+        a.click();
+      });
+    }
   }
   onParentMenuItemClick(actionValue, parentValue) {
-    alert(parentValue)
+    this.selectedApp = parentValue;
     switch (actionValue) {
       case 'Add': {
+        this.newBpmn();
         break;
       }
       case 'Import': {
+        let ele = document.getElementById('file');
+        ele.click();
         break;
       }
       case 'Delete': {
@@ -260,6 +400,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     }
   }
   onChildMenuItemClick(actionValue, childValue) {
+    this.selectedApp = childValue.value;
+    this.selectedPrcoess = childValue.text;
     switch (actionValue) {
       case 'Run': {
         break;
@@ -280,6 +422,14 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         break;
       }
       case 'Resolve': {
+        break;
+      }
+      case 'BPNM': {
+        this.downloadBpmn(this.selectedPrcoess);
+        break;
+      }
+      case 'SVG': {
+        this.downloadSvgBpmn(this.selectedPrcoess);
         break;
       }
       default: {

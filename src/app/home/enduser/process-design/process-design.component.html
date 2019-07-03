@@ -12,7 +12,7 @@
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #parentMenu="matMenu">
-          <div *ngFor="let pitem of parentMenuItems">
+          <div *ngFor="let pitem of parentobj[item.text]">
             <button (click)="onParentMenuItemClick(pitem.value,item.value)" *ngIf="pitem.havePermission" mat-menu-item>
               <span>{{pitem.item}}</span>
             </button>
@@ -24,8 +24,8 @@
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #childMenu="matMenu">
-          <div *ngFor="let citem of childrenMenuItems">
-            <button (click)="onChildMenuItemClick(citem.value,item.value)" *ngIf="citem.havePermission" mat-menu-item>
+          <div *ngFor="let citem of childobj[item.text]">
+            <button (click)="onChildMenuItemClick(citem.value,item)" *ngIf="citem.havePermission" mat-menu-item>
               <span *ngIf="citem.havePermission">{{citem.item}}</span>
             </button>
           </div>
@@ -34,13 +34,65 @@
     </div>
   </div>
 </ng-template>
-<div #canvas id="canvas-bpmn"></div>
-<div fxLayout="row" class="modeler">
-  <div fxFlex="20">
-    <ngx-treeview [config]="config" [items]="item" [itemTemplate]="itemTemplate"
-      (selectedChange)="onSelectedChange($event)" (filterChange)="onFilterChange($event)">
-    </ngx-treeview>
-  </div>
-  <div fxFlex="60" id="canvas"></div>
-  <div fxFlex="20" id="properties"></div>
+<div fxLayout="row">
+  <mat-sidenav-container fxFlex="100">
+    <mat-sidenav #treesidenav mode="side" [opened]="true" style="min-width:280px">
+      <ngx-treeview [config]="config" [items]="item" [itemTemplate]="itemTemplate">
+        <!-- (selectedChange)="onSelectedChange($event)" (filterChange)="onFilterChange($event)" -->
+      </ngx-treeview>
+    </mat-sidenav>
+    <div fxFlex="100">
+      <section>
+        <div fxLayout="row">
+          <div fxFlex="20px" class="toggle">
+            <a href="javascript:void(0)" matTooltip="{{treesidenav.opened ? 'Hide Application' : 'Show Application'}}"
+              (click)="treesidenav.toggle()">
+              <mat-icon aria-hidden="false">{{treesidenav.opened ? 'arrow_left' : 'arrow_right'}}</mat-icon>
+            </a>
+          </div>
+          <div fxFlex fxLayout="row">
+            <div fxFlex="100" id="canvas"></div>
+          </div>
+          <div fxFlex="20px" class="toggle">
+            <a href="javascript:void(0)" matTooltip="{{opened ? 'Hide properties' : 'Show properties'}}"
+              (click)="sidenav.toggle()">
+              <mat-icon aria-hidden="false">{{opened ? 'arrow_right' : 'arrow_left'}}</mat-icon>
+            </a>
+          </div>
+        </div>
+        <div class="import-export">
+          <mat-list class="button-wrapper" fxLayout>
+            <mat-list-item fxFlex>
+              <input id="file" [hidden]="true" #file type="file" accept=".bpmn" (change)="openBpmn($event)" />
+              <a matTooltip="Open BPMN diagram from local file system" (click)="file.click()">
+                <mat-icon aria-hidden="false">folder_open</mat-icon>
+              </a>
+            </mat-list-item>
+            <mat-divider fxFlex [vertical]="true"></mat-divider>
+            <mat-list-item fxFlex>
+              <a matTooltip="Create new BPMN diagram" (click)="newBpmn()">
+                <mat-icon aria-hidden="false">add_circle</mat-icon>
+              </a>
+            </mat-list-item>
+          </mat-list>
+          <mat-list class="button-wrapper" fxLayout>
+            <mat-list-item fxFlex>
+              <a matTooltip="Download BPMN diagram" (click)="downloadBpmn()">
+                <mat-icon aria-hidden="false">archive</mat-icon>
+              </a>
+            </mat-list-item>
+            <mat-divider fxFlex [vertical]="true"></mat-divider>
+            <mat-list-item fxFlex>
+              <a matTooltip="Download as SVG image" (click)="downloadSvgBpmn()">
+                <mat-icon aria-hidden="false">image</mat-icon>
+              </a>
+            </mat-list-item>
+          </mat-list>
+        </div>
+      </section>
+    </div>
+    <mat-sidenav #sidenav position="end" mode="side" [(opened)]="opened">
+      <div id="properties"></div>
+    </mat-sidenav>
+  </mat-sidenav-container>
 </div>

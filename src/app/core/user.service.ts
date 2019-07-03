@@ -36,8 +36,8 @@ export class UserService {
     }
 
     clear() {
-        sessionStorage.removeItem('u');
-        localStorage.removeItem('u');
+        sessionStorage.clear();
+        localStorage.clear();
         this.store.dispatch(new usreLoginActions.clearUserInfo());
         this.detail.next(this.getDetailFromStorage());
     }
