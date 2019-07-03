@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { saveAs } from 'file-saver';
 import { ToastrService } from 'ngx-toastr';
-import { Modeler, PropertiesPanelModule, OriginalPropertiesProvider, CamundaResources } from './bpmn-js';
+import { Modeler, PropertiesPanelModule, OriginalPropertiesProvider } from './bpmn-js';
 import { Globals } from 'src/app/services/globals';
 import { EndUserService } from 'src/app/services/EndUser-service';
 import { UseradminService } from 'src/app/services/useradmin.service2';
@@ -138,9 +138,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       ],
       propertiesPanel: {
         parent: '#properties'
-      },
-      moddleExtension: {
-        camunda: CamundaResources
       }
     });
     this.newBpmn();
