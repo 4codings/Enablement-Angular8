@@ -77,13 +77,13 @@
           </mat-list>
           <mat-list class="button-wrapper" fxLayout>
             <mat-list-item fxFlex>
-              <a matTooltip="Download BPMN diagram" (click)="downloadBpmn()">
+              <a matTooltip="Download BPMN diagram" (click)="downloadBpmn('diagram')">
                 <mat-icon aria-hidden="false">archive</mat-icon>
               </a>
             </mat-list-item>
             <mat-divider fxFlex [vertical]="true"></mat-divider>
             <mat-list-item fxFlex>
-              <a matTooltip="Download as SVG image" (click)="downloadSvgBpmn()">
+              <a matTooltip="Download as SVG image" (click)="downloadSvgBpmn('diagram')">
                 <mat-icon aria-hidden="false">image</mat-icon>
               </a>
             </mat-list-item>
