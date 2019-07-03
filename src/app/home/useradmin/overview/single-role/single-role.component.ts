@@ -4,6 +4,7 @@ import {OverviewService} from '../overview.service';
 import {takeUntil} from 'rxjs/operators';
 import {userRole} from '../../../../store/user-admin/user-role/userrole.model';
 import {AuthorizationData} from '../../../../store/user-admin/user-authorization/authorization.model';
+import {userGroup} from '../../../../store/user-admin/user-group/usergroup.model';
 
 @Component({
   selector: 'app-single-role',
@@ -46,6 +47,10 @@ export class SingleRoleComponent implements OnInit {
 
   onDeleteAuthEventHandler(auth: AuthorizationData): void {
     this.overviewService.deleteAuthFromRole(this.role, auth);
+  }
+
+  onBtnAssignGroupClick(role: userRole): void {
+    this.overviewService.openAssignGroupToRoleDialog(role);
   }
 
   ngOnDestroy(): void {

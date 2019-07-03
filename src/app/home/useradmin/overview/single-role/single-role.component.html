@@ -8,6 +8,9 @@
       <button mat-icon-button matTooltip="edit role" (click)="onBtnEditRoleClick(role)">
         <mat-icon>edit</mat-icon>
       </button>
+      <button mat-icon-button matTooltip="assign role" (click)="onBtnAssignGroupClick(role)">
+        <mat-icon>link</mat-icon>
+      </button>
     </div>
   </div>
   <app-auth-tile-list [auths]="auths"
