@@ -144,6 +144,11 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     const eventBus = this.modeler.get('eventBus');
     if (eventBus) {
       eventBus.on('element.changed', ($event) => {
+        if (['bpmn:Process'].indexOf($event.element.type) > -1) {
+          this.selectedPrcoess = $event.element.id;
+        } else {
+          this.selectedPrcoess = 'newProcess';
+        }
         if ($event && $event.element && ['bpmn:Process', 'label'].indexOf($event.element.type) === -1) {
           const businessObject = $event.element.businessObject;
           const sourceId = businessObject && businessObject.sourceRef ? businessObject.sourceRef.id : '';
@@ -250,6 +255,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
 
   newBpmn() {
+    this.opened = true;
     if (this.bpmnTemplate) {
       this.modeler.importXML(this.bpmnTemplate, this.handleError.bind(this));
     } else {
@@ -368,6 +374,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         File_Path: '/opt/tomcat/webapps/' + this.user.SRC_CD + '/' + item.value + '/' + item.text + '.bpnm',
         File_Name: item.text + '.bpnm'
       };
+      // this.newBpmn();
       console.log('data', data)
       this.http.post(this.downloadUrl, data, this.apiService.setHeaders()).subscribe(res => {
         console.log(res);
