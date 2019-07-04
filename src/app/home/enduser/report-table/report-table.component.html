@@ -83,7 +83,7 @@
     </mat-form-field>
   </div>
 </div>
-<div style="width: 75%" *ngIf="dispchart">
+<div style="width: 100%" *ngIf="dispchart">
   <br>
   <div *ngIf="selectedchart === 'linechart_sel'">
     <canvas baseChart *ngIf="lineChartData" [datasets]="lineChartData" [labels]="lineChartLabels"
