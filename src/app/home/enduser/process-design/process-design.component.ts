@@ -370,20 +370,20 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
 
   onTitleClick(item) {
     if (!item.children) {
-      const data: any = {
-        File_Path: '/opt/tomcat/webapps/' + this.user.SRC_CD + '/' + item.value + '/' + item.text + '.bpnm',
+      const formData: FormData = new FormData();
+      formData.append('FileInfo', JSON.stringify({
+        File_Path: '/opt/tomcat/webapps/' + this.user.SRC_CD + '/' + item.value + '/',
         File_Name: item.text + '.bpnm'
-      };
-      // this.newBpmn();
-      console.log('data', data)
-      this.http.post(this.downloadUrl, data, this.apiService.setHeaders()).subscribe(res => {
-        console.log(res);
-        var a = document.createElement('a');
-        a.href = URL.createObjectURL(res.blob());
-        a.download = item.text + '.bpnm';
-        // start download
-        a.click();
-      });
+      }));
+      this.http.post(this.downloadUrl, formData, this.apiService.setHeaders())
+        .subscribe(
+          (res: any) => {
+            console.log(res);
+            this.modeler.importXML(res, this.handleError.bind(this));
+            this.bpmnTemplate = res;
+          },
+          this.handleError.bind(this)
+        );
     }
   }
   onParentMenuItemClick(actionValue, parentValue) {
