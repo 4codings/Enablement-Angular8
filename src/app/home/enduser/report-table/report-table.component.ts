@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, ViewChild, ChangeDetectorRef, ViewEnc
 import { Http } from '@angular/http';
 import { Router } from '@angular/router'
 import { MatTableDataSource, MatSort, MatDialog } from '@angular/material';
-import { HttpClient } from '@angular/common/http';
+import * as ChartAnnotation from 'chartjs-plugin-annotation';
 import { DialogChartsComponent } from './dialog-charts/dialog-charts.component';
 import { ConfigServiceService } from 'src/app/services/config-service.service';
 import { Globals } from 'src/app/services/globals';
@@ -302,34 +302,36 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
       responsive: true,
       stacked: false,
       hoverMode: 'index',
+      // plugins:{
       annotation: {
-        // drawTime: 'afterDatasetsDraw',
-        // events: ['click'],
-        // annotations: [{
-        //   type: 'line',
-        //   id: 'vline',
-        //   mode: 'vertical',
-        //   scaleID: 'x-axis-0',
-        //   value: "Jan-2018",
-        //   borderColor: 'rgba(0, 255, 0, 0.6)',
-        //   borderWidth: 1,
-        //   label: {
-        //     backgroundColor: 'rgba(0,0,0,0.5)',
-        //     fontFamily: "sans-serif",
-        //     fontSize: 12,
-        //     fontStyle: "bold",
-        //     fontColor: "#fff",
-        //     xPadding: 6,
-        //     yPadding: 6,
-        //     cornerRadius: 6,
-        //     xAdjust: 0,
-        //     yAdjust: 0,
-        //     enabled: true,
-        //     position: "center",
-        //     content: "Spend Plan Raised alot"
-        //   }
-        // }]
-      },
+        drawTime: 'afterDatasetsDraw',
+        events: ['click'],
+        annotations: [{
+          type: 'line',
+          id: 'vline',
+          mode: 'horizontal',
+          scaleID: 'y-1',
+          value: "1000000",
+          borderColor: 'rgba(0, 255, 0, 0.6)',
+          borderWidth: 1,
+          label: {
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            fontFamily: "sans-serif",
+            fontSize: 12,
+            fontStyle: "bold",
+            fontColor: "#fff",
+            xPadding: 6,
+            yPadding: 6,
+            cornerRadius: 6,
+            xAdjust: 0,
+            yAdjust: 0,
+            enabled: true,
+            position: "center",
+            content: "Spend Plan Raised alot"
+          }
+        }]
+      // }
+    },
       legend: {
         display: true,
         labels: {
@@ -338,11 +340,11 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
       },
       elements:
       {
-        point: {
+      point: {
           pointStyle: this._pointstyle
         },
-        line: { tension: this.lineten },
-        animation: {
+      line: { tension: this.lineten },
+      animation: {
           duration: 3000,
           easing: this._animations
         }
@@ -362,6 +364,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
           ticks: {
             autoSkip: false
           },
+          id: 'x-1',
           scaleLabel: {
             display: true,
             labelString: this._xaxis_sel
