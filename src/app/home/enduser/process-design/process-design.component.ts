@@ -13,6 +13,7 @@ import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
 import { RollserviceService } from 'src/app/services/rollservice.service';
 import { ApiService } from 'src/app/service/api/api.service';
 import { Http } from '@angular/http';
+import { IFormFieldConfig, ConfigServiceService } from 'src/app/services/config-service.service';
 
 @Component({
   selector: 'app-process-design',
@@ -65,6 +66,17 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   parentobj = {};
   selectedApp = '';
   selectedPrcoess = '';
+  selectedService = '';
+  Label: any[] = [];
+  resFormData: any;
+  form_Data_Keys = [];
+  form_Data_Values = [];
+  form_Data_labels = [];
+  form_result = {};
+  fieldConfig: { [key: string]: IFormFieldConfig } = {};
+  options: any = {};
+  ResetOptimised = false;
+  FilterAutoValue: any;
 
   constructor(
     private httpClient: HttpClient,
@@ -75,7 +87,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     private useradminService: UseradminService,
     private optionalService: OptionalValuesService,
     private roleService: RollserviceService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private data: ConfigServiceService,
   ) {
     this.applicationProcessObservable$ = this.optionalService.applicationProcessValue.subscribe(data => {
       if (data != null) {
@@ -121,7 +134,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.url = `https://${this.globals.domain_name + this.globals.Path + this.globals.version}/securedJSON`;
+    this.data.getJSON().subscribe(data => {
+      this.Label = data.json();
+    });
+    this.url = this.apiService.endPoints.securedJSON;
     this.user = JSON.parse(sessionStorage.getItem('u'));
     this.downloadUrl = this.apiService.endPoints.downloadFile;
     this.getApplicationProcess();
@@ -370,6 +386,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
 
   onTitleClick(item) {
     if (!item.children) {
+      this.selectedApp = item.value;
+      this.selectedPrcoess = item.text;
       const formData: FormData = new FormData();
       formData.append('FileInfo', JSON.stringify({
         File_Path: '/opt/tomcat/webapps/' + this.user.SRC_CD + '/' + item.value + '/',
@@ -384,6 +402,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           },
           this.handleError.bind(this)
         );
+      this.Execute_AP_PR();
     }
   }
   onParentMenuItemClick(actionValue, parentValue) {
@@ -399,6 +418,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         break;
       }
       case 'Delete': {
+        this.deleteApplication();
         break;
       }
       default: {
@@ -443,5 +463,67 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         break;
       }
     }
+  }
+  deleteApplication() {
+    if (this.selectedApp !== '' || this.selectedApp !== null) {
+      this.http.delete(this.url + 'V_APP_CD=' + this.selectedApp + '&V_SRC_CD=' + this.user.SRC_CD + '&V_USR_NM=' + this.user.USR_NM + '&REST_Service=Application&Verb=DELETE')
+        .subscribe((res: any) => {
+          let index = this.optionalService.applicationProcessArray.indexOf(this.selectedApp);
+          this.optionalService.applicationProcessArray.splice(index, 1);
+          this.optionalService.applicationProcessValue.next(this.optionalService.applicationProcessArray);
+          this.selectedApp = '';
+          this.selectedPrcoess = '';
+        },
+          this.handleError.bind(this))
+    }
+  }
+  Execute_AP_PR() {
+    this.resFormData = [];
+    let FormData: any[];
+    // secure
+    this.apiService.requestSecureApi(this.apiService.endPoints.secure + 'V_APP_CD=' + this.selectedApp + '&V_PRCS_CD=' + this.selectedPrcoess + '&V_SRC_CD=' + this.user.SRC_CD + '&ResetOptimised=' + this.ResetOptimised + '&Lazyload=false' + '&REST_Service=ProcessParameters&Verb=GET', 'get').subscribe(
+      res => {
+        FormData = res.json();
+        const ref = { disp_dyn_param: false };
+        const got_res = this.data.exec_schd_restCall(FormData, ref);
+        this.form_result = got_res.Result;
+        this.resFormData = got_res.Data;
+        // this.k = got_res.K;
+        this.fieldConfig = this.data.prepareAndGetFieldConfigurations(FormData);
+        this.form_Data_Keys = [];
+        this.form_Data_Values = [];
+        this.form_Data_labels = [];
+        this.labels_toShow();
+        for (let i = 0; i < this.form_Data_Keys.length; i++) {
+          if (this.resFormData[i].name === this.form_Data_labels[i] && this.resFormData[i].hasOptions && this.resFormData[i].hasOptions === 'Y') {
+            this.getOptional_values(this.form_Data_Keys[i], this.form_Data_labels[i]);
+          }
+        }
+      });
+  }
+  labels_toShow(): any {
+    this.form_Data_Keys = Object.keys(this.form_result);
+    for (let i = 0; i < this.form_Data_Keys.length; i++) {
+      this.form_Data_Values.push(this.form_result[this.form_Data_Keys[i]]);
+      this.form_Data_labels.push(this.form_Data_Keys[i]);
+    }
+  }
+
+  getOptional_values(V_PARAM_NM, display_label) {
+    const secureUrl = this.apiService.endPoints.secure + 'V_SRC_CD=' + this.user.SRC_CD + '&V_APP_CD=' + this.selectedApp + '&V_PRCS_CD=' + this.selectedPrcoess + '&V_PARAM_NM=' + V_PARAM_NM + '&V_SRVC_CD=' + this.selectedService + '&REST_Service=ProcessParametersOptions&Verb=GET';
+    const secure_encoded_url = encodeURI(secureUrl);
+    this.http.get(secure_encoded_url, this.apiService.setHeaders()).subscribe(
+      res => {
+        const resData = res.json();
+        this.options[display_label] = resData[V_PARAM_NM];
+      });
+  }
+
+  Update_value(v: any, n: any) { //v=value and n=paramter name
+    this.FilterAutoValue = v;
+    this.apiService.requestSecureApi(this.url + 'V_APP_CD=' + this.selectedApp + '&V_PRCS_CD=' + this.selectedPrcoess + '&V_SRC_CD=' + this.user.SRC_CD + '&V_USR_NM=' + this.user.USR_NM + '&V_PARAM_NM=' + n + '&V_PARAM_VAL=' + v + '&REST_Service=ProcessParameters&Verb=PATCH', 'get').subscribe(
+      res => {
+      }
+    );
   }
 }
