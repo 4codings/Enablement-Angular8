@@ -426,7 +426,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         File_Path: '/opt/tomcat/webapps/' + this.user.SRC_CD + '/' + item.value + '/',
         File_Name: item.text + '.bpnm'
       }));
-      this.http.post(this.downloadUrl, formData, this.apiService.setHeaders())
+      this.http.post(this.downloadUrl, formData, this.apiService.setHeadersForBlob())
         .subscribe(
           (res: any) => {
             console.log(res);

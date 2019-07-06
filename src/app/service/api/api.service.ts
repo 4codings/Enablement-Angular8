@@ -4,7 +4,7 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Globals2 } from '../globals';
 import { Observable } from 'rxjs';
 import { Globals } from 'src/app/services/globals';
-import { Http, RequestOptions, Headers } from '@angular/http';
+import { Http, RequestOptions, Headers, ResponseContentType } from '@angular/http';
 
 @Injectable({
 	providedIn: 'root'
@@ -132,6 +132,12 @@ export class ApiService {
 		const options = new RequestOptions({ headers: headers });
 		return options;
 	}
+	setHeadersForBlob() {
+		const headers = new Headers();
+		headers.append('Authorization', `Bearer ${JSON.parse(sessionStorage.getItem('u')).TOKEN}`);
+		const options = new RequestOptions({headers: headers, responseType: ResponseContentType.Blob});
+		return options;
+	  }
 }
 
 export enum RequestTypes {
