@@ -10,7 +10,8 @@ import { Globals2 } from 'src/app/service/globals';
 import { EndUserService } from 'src/app/services/EndUser-service';
 import { ApiService } from 'src/app/service/api/api.service';
 import { StorageSessionService } from 'src/app/services/storage-session.service';
-import { FormControl } from '@angular/forms'
+import { FormControl } from '@angular/forms';
+import * as pluginAnnotations from 'chartjs-plugin-annotation';
 import { BaseChartDirective } from 'ng2-charts-x';
 
 @Component({
@@ -20,7 +21,6 @@ import { BaseChartDirective } from 'ng2-charts-x';
   encapsulation: ViewEncapsulation.None
 })
 export class ReportTableComponent implements OnInit, AfterViewInit {
-  @ViewChild(BaseChartDirective) chart: BaseChartDirective;
 
   removable = true;
 
@@ -30,6 +30,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   columnsToDisplayKeys: string[];
   domain_name = this.globals.domain_name;
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(BaseChartDirective, { }) chart: BaseChartDirective;
+
   constructor(private dataStored: StorageSessionService,
     private https: Http,
     private route: Router,
@@ -76,7 +78,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   disptable: boolean;
   Select_show_option: any = ["Table", "Charts", "Both"];
   show_choice = "Table";
-  selectedchart = "";
+  selectedchart = [];
   selectedcustomize = "";
 
   getReportData() {
@@ -101,7 +103,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
 
     this.dataSource.sort = this.sort;
-    //this.updatechart();
     this.cd.detectChanges();
 
   }
@@ -134,7 +135,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   _yaxis_sel = [];
   _yaxisCB = '';
   yaxis_data = [];
-  // yaxis_data2 = [];
   _backgroundColor = "rgba(34,181,306,0.2)";
   _borderColor = "rgba(44,191,206,1)";
   _fill: boolean = false;
@@ -232,6 +232,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   public lineChartLabels: Array<any> = this.chartlabels;
   public lineChartType: string = 'line';
   public lineChartOptions: any;
+  public lineChartPlugins = [pluginAnnotations];
   // Bar Chart Configuration
   public barChartOptions: any;
   public barChartLabels: string[] = this.chartlabels;
@@ -303,35 +304,25 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
       stacked: false,
       hoverMode: 'index',
       // plugins:{
-      annotation: {
-        drawTime: 'afterDatasetsDraw',
-        events: ['click'],
-        annotations: [{
-          type: 'line',
-          id: 'vline',
-          mode: 'horizontal',
-          scaleID: 'y-1',
-          value: "1000000",
-          borderColor: 'rgba(0, 255, 0, 0.6)',
-          borderWidth: 1,
-          label: {
-            backgroundColor: 'rgba(0,0,0,0.5)',
-            fontFamily: "sans-serif",
-            fontSize: 12,
-            fontStyle: "bold",
-            fontColor: "#fff",
-            xPadding: 6,
-            yPadding: 6,
-            cornerRadius: 6,
-            xAdjust: 0,
-            yAdjust: 0,
-            enabled: true,
-            position: "center",
-            content: "Spend Plan Raised alot"
-          }
-        }]
+        annotation: {
+          drawTime: 'afterDatasetsDraw',
+          annotations: [{
+              type: 'line',
+              drawTime: 'afterDraw',
+              mode: 'vertical',
+              scaleID: 'x-1',
+              value: '10',
+              borderColor: 'green',
+              borderWidth: 1,
+              label: {
+                  enabled: true,
+                  position: "center",
+                  content: "Hey"
+              }
+          }]
+      }
       // }
-    },
+    ,
       legend: {
         display: true,
         labels: {
@@ -752,7 +743,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
       //(this.Table_of_Data4);
     }
 
-    // for (let j = 0; j <= this.columnsToDisplay.length; j++) {
+    for (let j = 0; j <= this.columnsToDisplay.length; j++) {
     // insecure
     // this.http.get<data>(this.apiService.endPoints.insecure + "FieldName=" + this.columnsToDisplay[j] + "&REST_Service=Field_Description&Verb=GET")
     //   .subscribe(res => {
@@ -765,19 +756,22 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     //     }
     //   })
     // secure
-    //   this.https.get(this.apiService.endPoints.secure + "FieldName=" + this.columnsToDisplay[j] + "&REST_Service=Field_Description&Verb=GET", this.apiService.setHeaders())
-    //     .subscribe(res => {
-    //       var data: data = res.json();
-    //       var name = data.Field_Name;
-    //       var tip = data.Description_Text;
-    //       var i;
-    //       for (i = 0; i < tip.length; i++) {
-    //         this.helpertext[name[i]] = tip[i];
-    //       }
-    //     })
+      this.https.get(this.apiService.endPoints.secure + "FieldName=" + this.columnsToDisplay[j] + "&REST_Service=Field_Description&Verb=GET", this.apiService.setHeaders())
+        .subscribe(res => {
+          var data: data = res.json();
+          var name = data.Field_Name;
+          var tip = data.Description_Text;
+          var i;
+          for (i = 0; i < tip.length; i++) {
+            this.helpertext[name[i]] = tip[i];
+          }
+        })
 
-    // }
+    }
     this.showhide('Table');
+    // let namedChartAnnotation = ChartAnnotation;
+    // namedChartAnnotation["id"]="annotation";
+    // Chart.pluginService.register( namedChartAnnotation);
     this.gethiddencolsconfig();
   }
 
