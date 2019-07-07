@@ -478,7 +478,7 @@ export class ConfigServiceService {
   // }
 
   getAddMachineDetails(PLF_CD) {
-    return this.http.get(this.apiUrlGet + "V_PLATFORM_CD=" + PLF_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=Machine_Detail&Verb=GET");
+    // return this.http.get(this.apiUrlGet + "V_PLATFORM_CD=" + PLF_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=Machine_Detail&Verb=GET");
 
     // secure
     return this.http.get(this.apiUrlGetSecure + "V_PLATFORM_CD=" + PLF_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=Machine_Detail&Verb=GET", this.apiService.setHeaders());

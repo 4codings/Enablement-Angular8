@@ -9,6 +9,7 @@ import { DeploymentComponent } from './deployment/deployment.component';
 import { ConnectionComponent } from './connection/connection.component';
 import { MachineComponent } from './machine/machine.component';
 import { MachinespecsComponent } from './machinespecs/machinespecs.component';
+import { OverviewComponent } from './overview/overview.component';
 
 const routes: Routes = [{
     path: '', component: SystemAdminComponent,
@@ -22,6 +23,7 @@ const routes: Routes = [{
       { path: 'Machine', component: MachineComponent },
       { path: 'Machinespecs', component: MachinespecsComponent },
       { path: 'Platform', component: PlatformComponent },
+      { path: 'SystemOverView', component: OverviewComponent }
     ]
 }];
 
