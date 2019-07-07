@@ -56,4 +56,8 @@ export class SingleExeComponent implements OnInit {
     });
   }
 
+  onBtnAssignRoleClick(exeType) {
+
+  }
+
 }
