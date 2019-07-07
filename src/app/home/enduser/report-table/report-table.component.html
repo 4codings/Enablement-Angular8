@@ -6,7 +6,7 @@
   <p>1 BTC = {{ price }} {{ currency }}</p>
 </div> -->
 <!-- _____________________Toggle Between charts and table___________________ -->
-<div fxHide="true" fxShow.gt-sm="true">
+<!-- <div fxHide="true" fxShow.gt-sm="true">
   <div flex fxLayout="row">
     <div fxFlex="32"></div>
 
@@ -40,7 +40,7 @@
     </mat-label>
     <div fxFlex="32"></div>
   </div>
-</div>
+</div> -->
 <div fxLayout="row" fxLayoutAlign="center center">
   <div fxLayout="column" style="width:230px">
     <div fxLayout="row" fxLayoutAlign="space-evenly">
@@ -53,14 +53,12 @@
     </div>
   </div>
 </div>
-
 <!-- --------------------Chart------------------------- -->
 <div fxLayout="column" fxLayoutAlign="space-around center" *ngIf="dispchart">
   <div fxFlex="70" fxLayoutAlign="space-around center">
     <mat-form-field fxFlex="45">
       <mat-label>Select chart type</mat-label>
-      <mat-select [(value)]="selectedchart">
-        <mat-option value="">None</mat-option>
+      <mat-select multiple [(value)]="selectedchart">
         <mat-option value="linechart_sel">Line Chart</mat-option>
         <mat-option value="barchart_sel">Bar Chart</mat-option>
         <mat-option value="piechart_sel">Pie Chart</mat-option>
@@ -83,23 +81,23 @@
     </mat-form-field>
   </div>
 </div>
-<div style="width: 75%" *ngIf="dispchart">
+<div style="flex-wrap: wrap" fxLayoutGap="10px" *ngIf="dispchart">
   <br>
-  <div *ngIf="selectedchart === 'linechart_sel'">
+  <div fxFlex="50%" fxFlex.lt-sm="100%" *ngIf="selectedchart.includes('linechart_sel')">
     <canvas baseChart *ngIf="lineChartData" [datasets]="lineChartData" [labels]="lineChartLabels"
       [options]="lineChartOptions" [colors]="lineChartColors" [chartType]="lineChartType">
     </canvas>
   </div>
-  <div *ngIf="selectedchart === 'barchart_sel'">
+  <div fxFlex="50%" fxFlex.lt-sm="100%" *ngIf="selectedchart.includes('barchart_sel')">
     <canvas baseChart *ngIf="barChartData" [datasets]="barChartData" [labels]="barChartLabels"
       [options]="barChartOptions" [colors]="barChartColors" [chartType]="barChartType">
     </canvas>
   </div>
-  <div *ngIf="selectedchart === 'piechart_sel'">
+  <div fxFlex="50%" fxFlex.lt-sm="100%" *ngIf="selectedchart.includes('piechart_sel')">
     <canvas baseChart [datasets]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType">
     </canvas>
   </div>
-  <div *ngIf="selectedchart === 'doughnutchart_sel'">
+  <div fxFlex="50%" fxFlex.lt-sm="100%" *ngIf="selectedchart.includes('doughnutchart_sel')">
     <canvas baseChart [datasets]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType">
     </canvas>
   </div>
@@ -331,7 +329,10 @@
     <mat-card-content> -->
   <table mat-table [dataSource]="dataSource" matSort>
     <ng-container *ngFor="let a of columnsToDisplay" matColumnDef="{{a}}">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{a}}</th>
+      <!-- <th mat-header-cell *matHeaderCellDef mat-sort-header> {{a}}</th> -->
+      <th mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="{{helpertext[a]}}" matTooltipPosition='above'>
+        {{a}}<mat-icon class="del_icon" (click)="showhidecol(a)">delete_forever</mat-icon>
+      </th>
       <td mat-cell *matCellDef="let myData"> {{myData[a+""]}} </td>
     </ng-container>
     <!-- <ng-container *ngFor="let a of columnsToDisplay" matColumnDef="{{a}}" [style.display]="show(a)">
@@ -351,8 +352,8 @@
   <!-- </mat-card-content>
   </mat-card> -->
 </div>
-<br>
 <div *ngIf="disptable && hiddencols.length > 0" style="width: 100%">
+  <br>
   <mat-label>  Hidden Columns : </mat-label>
   <mat-chip-list style="width: 100%">
     <mat-chip color="primary" *ngFor="let item of hiddencols" [removable]="removable" (removed)="remove(item)">
@@ -363,7 +364,6 @@
 </div>
 <br>
 <div flex fxLayout="row" fxLayoutAlign="center">
-
   <button mat-raised-button (click)="Redirect_to_user()" style="background-color: rgba(187, 38, 38, 0.700);">
     <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>Exit
   </button>

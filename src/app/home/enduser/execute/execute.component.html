@@ -204,7 +204,7 @@
                     #name="ngModel">
                   <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
                     <mat-option (click)="Update_value(pr.value ,pr.placeholder)" style="text-align:center;"
-                      *ngFor="let option of options[pr.name]" [value]="option">
+                      *ngFor="let option of options[pr.name]| myfilter:FilterAutoValue" [value]="option">
                       {{option}}
                     </mat-option>
                     <!-- <mat-option style="text-align:center;" (click)="Update_value(pr.value ,pr.placeholder)" *ngFor="let item of searchResult | myfilter:FilterAutoValue"
@@ -226,7 +226,7 @@
 
                   <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
                     <mat-option style="text-align:center;" (click)="Update_value(pr.value ,pr.placeholder)"
-                      *ngFor="let option of options[pr.name]" [value]="option">
+                      *ngFor="let option of options[pr.name]| myfilter:FilterAutoValue" [value]="option">
                       {{option}}
                     </mat-option>
                     <!-- <mat-option style="text-align:center;" (click)="Update_value(pr.value ,pr.placeholder)" *ngFor="let item of searchResult | myfilter:FilterAutoValue"
@@ -249,7 +249,7 @@
 
                   <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
                     <mat-option style="text-align:center;" (click)="Update_value(pr.value ,pr.placeholder)"
-                      *ngFor="let option of options[pr.name]" [value]="option">
+                      *ngFor="let option of options[pr.name]| myfilter:FilterAutoValue" [value]="option">
                       {{option}}
                     </mat-option>
                     <!-- <mat-option style="text-align:center;" (click)="Update_value(pr.value ,pr.placeholder)" *ngFor="let item of searchResult | myfilter:FilterAutoValue"
@@ -270,7 +270,7 @@
                     class="f_inp">
                   <mat-autocomplete #auto="matAutocomplete">
                     <mat-option style="text-align:center;" (click)="Update_value(pr.value ,pr.placeholder)"
-                      *ngFor="let option of options[pr.name]" [value]="option">
+                      *ngFor="let option of options[pr.name]| myfilter:FilterAutoValue" [value]="option">
                       {{option}}
                     </mat-option>
                     <!-- <mat-option style="text-align:center;" (click)="Update_value(pr.value ,pr.placeholder)" *ngFor="let item of searchResult | myfilter:FilterAutoValue"
@@ -315,8 +315,7 @@
 
     &nbsp;&nbsp;
 
-    <button mat-raised-button color="primary" [disabled]="!Schedule_btn"
-      (click)="add();repeatURL();openEmojiDialog()">
+    <button mat-raised-button color="primary" [disabled]="!Schedule_btn" (click)="add();repeatURL();openEmojiDialog()">
       <mat-icon class="iconmod">schedule</mat-icon>Execute Later
     </button>
 
