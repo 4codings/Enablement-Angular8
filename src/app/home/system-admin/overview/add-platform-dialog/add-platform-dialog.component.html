@@ -1,0 +1,35 @@
+<!-- <h1 mat-dialog-title>Hi {{data.name}}</h1>
+<div mat-dialog-content>
+  <p>What's your favorite animal?</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="data.platform_des" cdkFocusInitial>Ok</button>
+</div> -->
+<div class="dialog-wrapper" fxLayoutGap="8px" fxLayout="column" fxLayoutAlign="start stretch">
+  <div class="dialog-header content-wrapper" fxLayoutAlign="space-between center">
+    <span>Add Platform</span>
+    <button mat-icon-button (click)="onBtnCancelClick()"><mat-icon>close</mat-icon></button>
+  </div>
+  <mat-divider></mat-divider>
+  <div class="dialog-body content-wrapper">
+      <strong>
+          <label style="text-align:center;width:100%;">Platform</label>
+        </strong>
+        <mat-form-field style="width:100%;">
+          <textarea matInput [(ngModel)]="data.platform_des"></textarea>
+        </mat-form-field>
+        <br />
+        <strong>
+          <label style="text-align:center;width:100%;">Description</label>
+        </strong>
+        <mat-form-field style="width:100%;">
+          <textarea matInput [(ngModel)]="data.platform_des">
+    
+                    </textarea>
+        </mat-form-field>
+  </div>
+  <div class="dialog-footer content-wrapper" fxLayoutAlign="end center" fxLayoutGap="8px">
+    <button mat-flat-button color="primary" (click)="onBtnAddClick()">Add</button>
+  </div>
+</div>
