@@ -4,8 +4,6 @@ import _BpmnPropertiesProvider from 'bpmn-js-properties-panel/lib/provider/bpmn'
 import _EntryFactory from 'bpmn-js-properties-panel/lib/factory/EntryFactory';
 import _PaletteProvider from 'bpmn-js/lib/features/palette/PaletteProvider';
 
-import * as _MagicModdleDescriptor from 'bpmn-js-properties-panel/lib/descriptors/magic.json'
-
 export const InjectionNames = {
   eventBus: 'eventBus',
   bpmnFactory: 'bpmnFactory',
@@ -22,7 +20,7 @@ export const PropertiesPanelModule = _PropertiesPanelModule;
 export const EntryFactory = _EntryFactory;
 export const OriginalPaletteProvider = _PaletteProvider;
 export const OriginalPropertiesProvider = _BpmnPropertiesProvider;
-export const MagicModdleDescriptor = _MagicModdleDescriptor;
+
 export interface IPaletteProvider {
   getPaletteEntries(): any;
 }

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { saveAs } from 'file-saver';
 import { ToastrService } from 'ngx-toastr';
-import { Modeler, PropertiesPanelModule, OriginalPropertiesProvider, OriginalPaletteProvider, MagicModdleDescriptor, InjectionNames } from './bpmn-js';
+import { Modeler, PropertiesPanelModule, OriginalPropertiesProvider, InjectionNames } from './bpmn-js';
 import { Globals } from 'src/app/services/globals';
 import { EndUserService } from 'src/app/services/EndUser-service';
 import { UseradminService } from 'src/app/services/useradmin.service2';
@@ -22,7 +22,6 @@ import { CommonUtils } from 'src/app/common/utils';
 import * as Chart from 'chart.js';
 
 import {CustomPropsProvider} from './props-provider/CustomPropsProvider';
-import { CustomPaletteProvider } from './props-provider/CustomPaletteProvider ';
 
 export class ReportData {
   public RESULT: string;
@@ -188,18 +187,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         PropertiesPanelModule,
         OriginalPropertiesProvider,
 
-      // Re-use original bpmn-properties-module, see CustomPropsProvider
       {[InjectionNames.bpmnPropertiesProvider]: ['type', OriginalPropertiesProvider.propertiesProvider[1]]},
       {[InjectionNames.propertiesProvider]: ['type', CustomPropsProvider]},
-
-      // Re-use original palette, see CustomPaletteProvider
-      {[InjectionNames.originalPaletteProvider]: ['type', OriginalPaletteProvider]},
-      {[InjectionNames.paletteProvider]: ['type', CustomPaletteProvider]},
-
       ],
-      moddleExtensions: {
-        magic: MagicModdleDescriptor
-      },
       propertiesPanel: {
         parent: '#properties'
       }
