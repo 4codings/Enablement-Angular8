@@ -323,26 +323,31 @@
             <mat-tab label="Properties">
               <mat-checkbox>Display Output</mat-checkbox>
               <mat-checkbox>Summary Output</mat-checkbox>
-              <mat-checkbox>Service Active</mat-checkbox>
-              <mat-form-field>
-                <input matInput [matDatepicker]="dp_startDate" placeholder="Start Date" >
-                  <mat-datepicker-toggle matSuffix [for]="dp_startDate"></mat-datepicker-toggle>
-                  <mat-datepicker #dp_startDate startView="multi-year"></mat-datepicker>
+              <mat-checkbox [(ngModel)]="isServiceActive" (change)="serviceActiveSelected($event.checked)" >Service Active</mat-checkbox>
+              <div *ngIf="isServiceActive">
+                <label>Start Date</label>
+                <mat-form-field class="form_input">
+                  <input matInput [value] = "currentDate"
+                    [owlDateTimeTrigger]="startDate" [owlDateTime]="startDate">
+                  <owl-date-time #startDate></owl-date-time>
                 </mat-form-field>
-                <mat-form-field>
-                    <input matInput [matDatepicker]="dp_endDate" placeholder="End Date" >
-                      <mat-datepicker-toggle matSuffix [for]="dp_endDate"></mat-datepicker-toggle>
-                      <mat-datepicker #dp_startDate startView="multi-year"></mat-datepicker>
+                <label>End Date</label>
+                <mat-form-field class="form_input">
+                  <input matInput [value] = "afterFiveDays"
+                    [owlDateTimeTrigger]="endDate" [owlDateTime]="endDate">
+                  <owl-date-time #endDate></owl-date-time>
                 </mat-form-field>
+               </div> 
                 <mat-form-field class="example-full-width">
                     <label>Notification Email </label>
-                    <input matInput value="abc@xyz.com">
+                    <input type="email" matInput [value]="user.USR_NM" 
+                    pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}">
                   </mat-form-field>   
                   <mat-radio-group [(ngModel)]="async_sync">
-                      <mat-radio-button value="1">Asynchronous</mat-radio-button>
-                      <mat-radio-button value="2">Synchronous</mat-radio-button>
+                      <mat-radio-button value="async">Asynchronous</mat-radio-button>
+                      <mat-radio-button value="sync">Synchronous</mat-radio-button>
                   </mat-radio-group> 
-                  <div *ngIf="async_sync==='2'">
+                  <div *ngIf="async_sync==='sync'">
                       <mat-form-field>
                           <div fxLayout="row">
                               <input matInput type="number" value=300> 
@@ -359,11 +364,11 @@
 
                   <label>Restorability</label>
                   <mat-radio-group [(ngModel)]="restorability">
-                    <mat-radio-button value="1">None</mat-radio-button>
-                    <mat-radio-button value="2">Manual</mat-radio-button>
-                    <mat-radio-button value="3">Auto</mat-radio-button>
+                    <mat-radio-button value="none">None</mat-radio-button>
+                    <mat-radio-button value="manual">Manual</mat-radio-button>
+                    <mat-radio-button value="auto">Auto</mat-radio-button>
                   </mat-radio-group> 
-                  <div *ngIf="restorability==='3'">
+                  <div *ngIf="restorability==='auto'">
                       <mat-form-field>
                           <div fxLayout="row">
                               <input matInput type="number" value=3> 
@@ -379,11 +384,11 @@
                   </div>
                   <label>Instances</label>
                   <mat-radio-group [(ngModel)]="instances">
-                      <mat-radio-button value="1">Single</mat-radio-button>
-                      <mat-radio-button value="2">Unlimited</mat-radio-button>
-                      <mat-radio-button value="3">Limited</mat-radio-button>
+                      <mat-radio-button value="single">Single</mat-radio-button>
+                      <mat-radio-button value="unlimited">Unlimited</mat-radio-button>
+                      <mat-radio-button value="limited">Limited</mat-radio-button>
                   </mat-radio-group>
-                  <div *ngIf="instances==='3'">
+                  <div *ngIf="instances==='limited'">
                       <mat-form-field>
                           <div fxLayout="row">
                               <input matInput type="number" value=100> 

@@ -114,15 +114,21 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   executablesData = [];
 
   //property panel property tabs variables
-  async_sync: string;
-  restorability: string;
-  instances : string;
+  async_sync: string = "sync";
+  restorability: string = "auto";
+  instances : string = "unlimited";
+  isServiceActive : Boolean = true;
+  isSynchronousActive : Boolean = true;
 
   //property panel general tab variables
   generalId : String;
 
   executableOutput : string;
   executableDesc : string;
+
+  currentDate : any = new Date();
+  todaysDate : any = new Date();
+  afterFiveDays : any = new Date(this.todaysDate.setDate(this.currentDate.getDate()+5));
 
   constructor(
     private httpClient: HttpClient,
@@ -631,6 +637,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       this.getInputOutputForSelctedExecutable();
   }
   
+  serviceActiveSelected(value : Boolean){
+    this.isServiceActive = value;
+  }
+
   GenerateReportTable() {
     if (!this.app.loadingCharts)
       this.app.loadingCharts = true;
