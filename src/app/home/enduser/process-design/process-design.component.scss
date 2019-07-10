@@ -32,4 +32,14 @@
   .mat-divider {
     height: 80%;
   }
+
+}
+
+:host /deep/ .mat-tab-label{
+  padding: 0 15px;
+  min-width: 60px;
+}
+
+:host /deep/ .mat-input-element{
+  text-align: center
 }

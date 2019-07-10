@@ -1,9 +1,9 @@
-import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy,ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { saveAs } from 'file-saver';
 import { ToastrService } from 'ngx-toastr';
-import { Modeler, PropertiesPanelModule, OriginalPropertiesProvider } from './bpmn-js';
+import { Modeler, PropertiesPanelModule, OriginalPropertiesProvider, InjectionNames } from './bpmn-js';
 import { Globals } from 'src/app/services/globals';
 import { EndUserService } from 'src/app/services/EndUser-service';
 import { UseradminService } from 'src/app/services/useradmin.service2';
@@ -20,6 +20,8 @@ import { HomeComponent } from '../../home.component';
 import { Router } from '@angular/router';
 import { CommonUtils } from 'src/app/common/utils';
 import * as Chart from 'chart.js';
+
+import {CustomPropsProvider} from './props-provider/CustomPropsProvider';
 
 export class ReportData {
   public RESULT: string;
@@ -104,6 +106,32 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   ColorBar = [];
   ColorBar_border = [];
 
+  //For property panel
+  propertyPanelAllTabsData : any;
+  executableTypesData = [];
+  selectedExecutableType : string;
+  selectedExecutable : string;
+  executablesData = [];
+
+  //property panel property tabs variables
+  async_sync: string = "sync";
+  restorability: string = "auto";
+  instances : string = "unlimited";
+  isServiceActive : Boolean = true;
+  isSynchronousActive : Boolean = true;
+
+  //property panel general tab variables
+  generalId : String;
+
+  executableOutput : string;
+  executableDesc : string;
+
+  currentDate : any = new Date();
+  todaysDate : any = new Date();
+  afterFiveDays : any = new Date(this.todaysDate.setDate(this.currentDate.getDate()+5));
+
+  userEmail : String;
+
   constructor(
     private httpClient: HttpClient,
     private http: Http,
@@ -174,6 +202,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.user = JSON.parse(sessionStorage.getItem('u'));
     this.downloadUrl = this.apiService.endPoints.downloadFile;
     this.getApplicationProcess();
+    this.userEmail = this.user.USR_NM;
   }
 
   ngAfterViewInit() {
@@ -183,20 +212,30 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       height: '500px',
       additionalModules: [
         PropertiesPanelModule,
-        OriginalPropertiesProvider
-      ],
-      propertiesPanel: {
-        parent: '#properties'
-      }
+        OriginalPropertiesProvider,
+
+      {[InjectionNames.bpmnPropertiesProvider]: ['type', OriginalPropertiesProvider.propertiesProvider[1]]},
+      {[InjectionNames.propertiesProvider]: ['type', CustomPropsProvider]},
+      ]
+      // ,
+      // propertiesPanel: {
+      //   parent: '#properties'
+      // }
     });
     // this.newBpmn();
     const eventBus = this.modeler.get('eventBus');
     if (eventBus) {
+
+      eventBus.on('element.click', ($event) => {
+        this.generalId=$event.element.id;
+      }),
       eventBus.on('element.changed', ($event) => {
         if (['bpmn:Process'].indexOf($event.element.type) > -1) {
           this.selectedPrcoess = $event.element.id;
+          this.generalId = this.selectedPrcoess;
         } else {
           this.selectedPrcoess = 'newProcess';
+          this.generalId = this.selectedPrcoess;
         }
         if ($event && $event.element && ['bpmn:Process', 'label'].indexOf($event.element.type) === -1) {
           const businessObject = $event.element.businessObject;
@@ -223,6 +262,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
               V_USR_NM: this.user.USR_NM,
               Verb: 'PUT'
             };
+            
+            this.generalId = targetId;
+            this.getAllTabs(targetId);
+
             if (!this.flows) {
               this.flows = {};
             }
@@ -244,6 +287,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
               V_USR_NM: this.user.USR_NM,
               Verb: 'PUT'
             };
+
+            this.generalId = objectId;
+            this.getAllTabs(objectId);
+
             this.httpClient.post(this.url, data).subscribe(() => {
               if (objectId && this.flows[objectId]) {
                 this.uploadLocked = true;
@@ -443,6 +490,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     switch (actionValue) {
       case 'Add': {
         this.newBpmn();
+        this.generalId = "newProcess";
         break;
       }
       case 'Import': {
@@ -531,6 +579,71 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         });
     }
   }
+    // Added for property panel related tabs
+    getAllTabs(selService : any){
+  
+      this.endUserService.getAllTabs(this.selectedApp, this.selectedPrcoess, selService)
+        .subscribe(res => {
+          if(res){
+            this.propertyPanelAllTabsData = res.json();
+          }
+        });
+
+        this.getAllExecutableTypes();
+    }
+
+    // Added for property panel related tabs
+    getAllExecutableTypes(){
+      this.endUserService.getAllExecutableTypes()
+        .subscribe(res => {
+          if(res){
+            this.executableTypesData = []; //clearning off old data if any
+            res.json().forEach(element => {
+              this.executableTypesData.push(element.EXE_TYP);
+          });
+          }
+        });
+    }
+
+    getExecutablesForSelctedExecutableType(){
+      this.endUserService.getExecutablesForSelctedExecutableType(this.selectedExecutableType)
+        .subscribe(res => {
+          if(res){
+            this.executablesData = []; //clearning off old data if any
+            res.json().forEach(element => {
+              this.executablesData.push(element.EXE_CD);
+          });
+          }
+      });
+    }
+
+    getInputOutputForSelctedExecutable(){
+      this.endUserService.getInputOutputForSelctedExecutable(this.selectedExecutableType, this.selectedExecutable)
+        .subscribe(res => {
+          if(res){
+              let result = res.json();
+              this.executableOutput = result[0]["EXE_OUT_PARAMS"];
+              this.executableDesc = result[0]["EXE_DSC"];
+          }
+      });
+    }
+
+  //selected executable type from UI
+  updateselectedExecutableType(value : string){
+      this.selectedExecutableType = value;
+      this.getExecutablesForSelctedExecutableType();
+  }
+
+  //selected executable type from UI
+  updateselectedExecutable(value : string){
+      this.selectedExecutable = value;
+      this.getInputOutputForSelctedExecutable();
+  }
+  
+  serviceActiveSelected(value : Boolean){
+    this.isServiceActive = value;
+  }
+
   GenerateReportTable() {
     if (!this.app.loadingCharts)
       this.app.loadingCharts = true;
