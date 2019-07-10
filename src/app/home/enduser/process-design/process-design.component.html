@@ -261,7 +261,138 @@
       </section>
     </div>
     <mat-sidenav #sidenav position="end" mode="side" [(opened)]="opened">
-      <div id="properties"></div>
+      <div id="properties">
+          <label><b> {{ generalId }} </b></label>
+          <mat-tab-group mat-align-tabs="start">
+          <mat-tab label="General">
+              <label><i>General</i></label>
+              <mat-form-field class="example-full-width">
+                <textarea matInput placeholder="Id" [(ngModel)]="generalId" ></textarea>
+              </mat-form-field>
+              <mat-form-field class="example-full-width">
+                <textarea matInput placeholder=" Name "></textarea>
+              </mat-form-field>
+              <mat-checkbox>Executable</mat-checkbox>
+              <mat-divider></mat-divider>
+              <label><i>Documentation</i></label>
+              <mat-form-field class="example-full-width">
+                <textarea matInput placeholder="Element Documentation "></textarea>
+              </mat-form-field>
+            </mat-tab>
+
+            <mat-tab label="Enable">
+                <label><i>Enable</i></label>
+                <mat-form-field>
+                    <label>Executable Types </label>
+                    <mat-select (selectionChange)="updateselectedExecutableType($event.value)">
+                        <mat-option *ngFor="let exeType of executableTypesData " 
+                                [value]="exeType">
+                            {{ exeType}}
+                        </mat-option>
+                      </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <label>Executables</label>
+                    <mat-select (selectionChange)="updateselectedExecutable($event.value)">
+                        <mat-option *ngFor="let executable of executablesData " 
+                                [value]="executable">
+                            {{ executable}}
+                        </mat-option>
+                      </mat-select>      
+                </mat-form-field>
+                <mat-form-field class="example-full-width">
+                  <label>Executable Input</label>
+                  <input matInput>
+                </mat-form-field>    
+                <mat-form-field class="example-full-width">
+                    <label>Executable Output</label>
+                    <input matInput disabled [(ngModel)]="executableOutput"> 
+                  </mat-form-field>    
+                  <mat-form-field class="example-full-width">
+                      <label>Executable Description</label>
+                      <input matInput disabled [(ngModel)]="executableDesc">
+                  </mat-form-field>    
+                  <label>
+                    <b>Platform</b>
+                  </label>
+                  <label>
+                      <b><small>Mysql</small></b>
+                  </label>
+            </mat-tab> 
+
+            <mat-tab label="Properties">
+              <mat-checkbox>Display Output</mat-checkbox>
+              <mat-checkbox>Summary Output</mat-checkbox>
+              <mat-checkbox>Service Active</mat-checkbox>
+              <mat-form-field>
+                <input matInput [matDatepicker]="dp_startDate" placeholder="Start Date" >
+                  <mat-datepicker-toggle matSuffix [for]="dp_startDate"></mat-datepicker-toggle>
+                  <mat-datepicker #dp_startDate startView="multi-year"></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput [matDatepicker]="dp_endDate" placeholder="End Date" >
+                      <mat-datepicker-toggle matSuffix [for]="dp_endDate"></mat-datepicker-toggle>
+                      <mat-datepicker #dp_startDate startView="multi-year"></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field class="example-full-width">
+                    <label>Notification Email </label>
+                    <input matInput value="abc@xyz.com">
+                  </mat-form-field>   
+                  <mat-radio-group [(ngModel)]="async_sync">
+                      <mat-radio-button value="1">Asynchronous</mat-radio-button>
+                      <mat-radio-button value="2">Synchronous</mat-radio-button>
+                  </mat-radio-group> 
+                  <div *ngIf="async_sync==='2'">
+                      <mat-form-field>
+                          <div fxLayout="row">
+                              <input matInput type="number" value=300> 
+                              <label>Seconds</label>
+                          </div>
+                      </mat-form-field>
+                      <mat-form-field>
+                          <div fxLayout="row">
+                              <label>Priority</label>
+                              <input matInput type="number" value=3>
+                          </div>
+                      </mat-form-field>
+                  </div>
+
+                  <label>Restorability</label>
+                  <mat-radio-group [(ngModel)]="restorability">
+                    <mat-radio-button value="1">None</mat-radio-button>
+                    <mat-radio-button value="2">Manual</mat-radio-button>
+                    <mat-radio-button value="3">Auto</mat-radio-button>
+                  </mat-radio-group> 
+                  <div *ngIf="restorability==='3'">
+                      <mat-form-field>
+                          <div fxLayout="row">
+                              <input matInput type="number" value=3> 
+                              <label>Attemps</label>
+                          </div>
+                      </mat-form-field>
+                      <mat-form-field>
+                          <div fxLayout="row">
+                              <input matInput type="number" value=30> 
+                              <label>Seconds</label>
+                          </div>
+                      </mat-form-field>
+                  </div>
+                  <label>Instances</label>
+                  <mat-radio-group [(ngModel)]="instances">
+                      <mat-radio-button value="1">Single</mat-radio-button>
+                      <mat-radio-button value="2">Unlimited</mat-radio-button>
+                      <mat-radio-button value="3">Limited</mat-radio-button>
+                  </mat-radio-group>
+                  <div *ngIf="instances==='3'">
+                      <mat-form-field>
+                          <div fxLayout="row">
+                              <input matInput type="number" value=100> 
+                          </div>
+                      </mat-form-field>
+                  </div>
+            </mat-tab>
+          </mat-tab-group>
+      </div>
     </mat-sidenav>
   </mat-sidenav-container>
 </div>
