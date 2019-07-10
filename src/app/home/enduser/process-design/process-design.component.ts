@@ -130,6 +130,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   todaysDate : any = new Date();
   afterFiveDays : any = new Date(this.todaysDate.setDate(this.currentDate.getDate()+5));
 
+  userEmail : String;
+
   constructor(
     private httpClient: HttpClient,
     private http: Http,
@@ -200,6 +202,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.user = JSON.parse(sessionStorage.getItem('u'));
     this.downloadUrl = this.apiService.endPoints.downloadFile;
     this.getApplicationProcess();
+    this.userEmail = this.user.USR_NM;
   }
 
   ngAfterViewInit() {
