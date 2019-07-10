@@ -15,15 +15,19 @@ import { MachinespecsComponent } from './machinespecs/machinespecs.component';
 import { HeaderModule } from '../header/header.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { OverviewComponent } from './overview/overview.component';
-import { PlatformsListComponent } from './overview/platforms-list/platforms-list.component';
 import { MachinesListComponent } from './overview/machines-list/machines-list.component';
 import { SingleExeComponent } from './overview/single-exe/single-exe.component';
 import { ExeTileListComponent } from './overview/exe-tile-list/exe-tile-list.component';
 import { AddPlatformDialogComponent } from './overview/add-platform-dialog/add-platform-dialog.component';
 import { EditExeTypeDialogComponent } from './overview/dialogs/edit-exe-type-dialog/edit-exe-type-dialog.component';
+import { ExeTypesListComponent } from './overview/exe-types-list/exe-types-list.component';
+import { SingleMachineComponent } from './overview/single-machine/single-machine.component';
+import { MachineTileListComponent } from './overview/machine-tile-list/machine-tile-list.component';
+import { FilterExetypePipe } from './overview/pipes/filter-exetype.pipe';
+import { FilterMachinesPipe } from './overview/pipes/filter-machines.pipe';
 
 @NgModule({
-  declarations: [SystemAdminComponent, PlatformComponent, ConnectionComponent, DeployStatusComponent, DeploymentComponent, DeploymentsnavbarComponent, InstallComponent, MachineComponent, MachineconnectionComponent, MachinespecsComponent, OverviewComponent, PlatformsListComponent, MachinesListComponent, SingleExeComponent, ExeTileListComponent, AddPlatformDialogComponent, EditExeTypeDialogComponent],
+  declarations: [SystemAdminComponent, PlatformComponent, ConnectionComponent, DeployStatusComponent, DeploymentComponent, DeploymentsnavbarComponent, InstallComponent, MachineComponent, MachineconnectionComponent, MachinespecsComponent, OverviewComponent, MachinesListComponent, SingleExeComponent, ExeTileListComponent, AddPlatformDialogComponent, EditExeTypeDialogComponent, ExeTypesListComponent, SingleMachineComponent, MachineTileListComponent, FilterExetypePipe, FilterMachinesPipe],
   imports: [
     CommonModule,
     SystemAdminRoutingModule,

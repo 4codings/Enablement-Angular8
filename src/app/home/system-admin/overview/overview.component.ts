@@ -10,7 +10,8 @@ import {Subject} from 'rxjs';
 export class OverviewComponent implements OnDestroy {
 
   unsubscribeAll: Subject<boolean> = new Subject<boolean>();
-  selectedPlatFormType: string = 'All';
+  selectedExeType: string = 'All';
+  selectedMachineType: string = 'All';
 
   constructor() {}
 
@@ -26,8 +27,12 @@ export class OverviewComponent implements OnDestroy {
     //this.overviewService.uploadFile(event, filename, moduleName);
   }
   
-  selectedPlatform(type) {
-    this.selectedPlatFormType = type;
+  selectedExe(type) {
+    this.selectedExeType = type;
+  }
+
+  selectedMachine(type) {
+     this.selectedMachineType = type
   }
 
   ngOnDestroy(): void {
