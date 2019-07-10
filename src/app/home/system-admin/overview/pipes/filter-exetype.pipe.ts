@@ -7,9 +7,9 @@ export class FilterExetypePipe implements PipeTransform {
 
   transform(value: any, args?: any): any {
       if(!value)return null;
-      if(!args)return value;
+      if(!args.EXE_TYP)return value;
 
-      args = args.toLowerCase();
+      args = args.EXE_TYP.toLowerCase();
       if(args == 'all') {
         return value;
       } else {

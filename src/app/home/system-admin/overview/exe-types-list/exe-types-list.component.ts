@@ -19,7 +19,7 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
   V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
   public exes;
   public allExes = [];
-  public selectedExeType= "All";
+  public selectedExeType= {EXE_TYP:"All"};
   unsubscribeAll: Subject<boolean> = new Subject<boolean>();
   exeTypeOptions;
   @Output() selectedExe: EventEmitter<any> = new EventEmitter();
