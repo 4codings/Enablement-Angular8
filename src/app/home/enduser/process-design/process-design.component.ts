@@ -228,6 +228,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
 
       eventBus.on('element.click', ($event) => {
         this.generalId=$event.element.id;
+        this.getAllTabs(this.generalId);
       }),
       eventBus.on('element.changed', ($event) => {
         if (['bpmn:Process'].indexOf($event.element.type) > -1) {
