@@ -629,7 +629,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     }
 
   //selected executable type from UI
-  updateselectedExecutableType(value : string){
+  updateselectedExecutableType(value : any){
       this.selectedExecutableType = value;
       this.getExecutablesForSelctedExecutableType();
   }
