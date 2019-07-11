@@ -1,3 +1,23 @@
-<p>
-  machines-list works!
-</p>
+<div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="100" fxLayoutGap="8px">
+  <div fxLayoutAlign="space-between center">
+    <div style="padding-left: 8px">
+      <span>Machines : </span>
+      <button mat-button [matMenuTriggerFor]="machineTypeMenu">{{selectedMachineType}}
+        <mat-icon matSuffix>arrow_drop_down</mat-icon>
+      </button>
+      <mat-menu #machineTypeMenu="matMenu">
+        <button mat-menu-item *ngFor="let item of machineTypeOptions"
+                (click)="changeMachineType(item)">{{item.V_PLATFORM_CD}}</button>
+      </mat-menu>
+    </div>
+    <button mat-icon-button class="add-btn"
+            matTooltip="Add Machines"
+            (click)="onAddMachineBtnClick()">
+      <mat-icon>add_circle</mat-icon>
+    </button>
+  </div>
+  <mat-divider></mat-divider>
+  <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="16px" cdkDropListGroup>
+    <app-single-machine *ngFor="let currMachine of connections | filterMachines:selectedMachineType" [machineData]="currMachine"></app-single-machine>
+  </div>
+</div>
