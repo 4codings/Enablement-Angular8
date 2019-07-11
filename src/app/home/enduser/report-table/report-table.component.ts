@@ -71,6 +71,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   PRCS_TXN_ID = "";
   F1: any[];
   ArraData: any = [];
+  hiddencolsflag: any =[];
   Table_of_Data5: any;
   helpertext = {};
   tabledata = {};
@@ -84,7 +85,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   getReportData() {
 
     this.Table_of_Data = this.dataStored.getCookies('report_table')['RESULT'];
-    //(this.dataStored.getCookies('report_table'));
+
     this.SRVC_CD = this.dataStored.getCookies('report_table')['SRVC_CD'][0];
     // this.SRVC_ID = this.dataStored.getCookies('report_table')['SRVC_ID'][0];
     this.Table_of_Data1 = this.dataStored.getCookies('report_table')['LOG_VAL'];
@@ -95,8 +96,21 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     this.SRC_ID = this.dataStored.getCookies('report_table')['SRC_ID'][0];
 
     //(JSON.parse(this.Table_of_Data1[0]));
-
     this.columnsToDisplay = Object.keys(JSON.parse(this.Table_of_Data1[0]));
+
+    this.hiddencolsflag = this.dataStored.getCookies('report_table')['HIDDEN'];
+    var a = this.hiddencolsflag[0];
+    var outputstr= a.replace(/'/g,'');
+    outputstr.replace(/\s+/g, '-');
+    this.hiddencolsflag = outputstr.split(",");
+    for(let i=0;i< this.hiddencolsflag.length;i++){
+      this.hiddencolsflag[i]= this.hiddencolsflag[i].toString().trim();
+    }
+    for(let j=0;j<this.columnsToDisplay.length;j++){
+      if(this.hiddencolsflag[j] != undefined && this.hiddencolsflag[j].toString().trim() == "Y"){
+        this.columnsToDisplay.splice(j,1);
+      }
+    }
   }
   dataSource = new MatTableDataSource(this.Table_of_Data4);
   columnsToDisplay = [];
@@ -744,18 +758,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     }
 
     for (let j = 0; j <= this.columnsToDisplay.length; j++) {
-    // insecure
-    // this.http.get<data>(this.apiService.endPoints.insecure + "FieldName=" + this.columnsToDisplay[j] + "&REST_Service=Field_Description&Verb=GET")
-    //   .subscribe(res => {
-
-    //     var name = res.Field_Name;
-    //     var tip = res.Description_Text;
-    //     var i;
-    //     for (i = 0; i < tip.length; i++) {
-    //       this.helpertext[name[i]] = tip[i];
-    //     }
-    //   })
-    // secure
       this.https.get(this.apiService.endPoints.secure + "FieldName=" + this.columnsToDisplay[j] + "&REST_Service=Field_Description&Verb=GET", this.apiService.setHeaders())
         .subscribe(res => {
           var data: data = res.json();
@@ -769,9 +771,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
 
     }
     this.showhide('Table');
-    // let namedChartAnnotation = ChartAnnotation;
-    // namedChartAnnotation["id"]="annotation";
-    // Chart.pluginService.register( namedChartAnnotation);
     this.gethiddencolsconfig();
   }
 
@@ -820,7 +819,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
       }
     }
     this.sethiddencolsconfig();
-    //(this.columnsToDisplay);
   }
   //__________________________________________________________
   Execute_res_data: any[];
@@ -837,34 +835,16 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
 
     };
 
-    // insecure
-    // this.https.post(this.apiService.endPoints.insecureProcessReport, body).subscribe(
-    //   res => {
-
-    //     //(res.json());
-    //     this.Execute_res_data = res.json();
-    //     //(this.Execute_res_data);
-
-    //     this.GenerateReportTable();
-    //   }
-    // );
-
-    // secure
     this.https.post(this.apiService.endPoints.secureProcessReport, body, this.apiService.setHeaders()).subscribe(
       res => {
 
         console.log(res.json());
         this.Execute_res_data = res.json();
-        //(this.Execute_res_data);
-        // this.GenerateReportTable();
         this.route.navigateByUrl('End_User', { skipLocationChange: true });
       }
     );
   }
   GenerateReportTable() {
-    //("in GenerateReportTable");
-
-    //"&V_DSPLY_WAIT_SEC=100&V_MNL_WAIT_SEC=180&REST_Service=Report&Verb=GET
     console.log(this.globalUser.currentUser);
     let body = {
       V_SRC_ID: this.Execute_res_data['V_SRC_ID'],
