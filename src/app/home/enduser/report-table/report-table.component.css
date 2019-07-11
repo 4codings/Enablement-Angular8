@@ -1,11 +1,10 @@
 .example-chip-list {
   width: 100%;
 }
-.dashboard{
-  flex-direction: row;
-  box-sizing: border-box;
+div.dashboard.ng-star-inserted {
   display: flex;
   flex-wrap: wrap !important; 
+  flex-flow: wrap;
 }
 /* div.mat-expansion-panel-content:not(.mat-expanded) {
   height: 0px !important;

@@ -87,7 +87,7 @@
     <canvas baseChart *ngIf="lineChartData" [datasets]="lineChartData" [labels]="lineChartLabels"
       [options]="lineChartOptions" [colors]="lineChartColors" [chartType]="lineChartType">
     </canvas>
-    <div fxLayout="row" fxLayoutAlign="space-around center">
+    <div fxLayout="row" fxLayoutAlign="center center">
     <div fxFlex="23">
       <mat-form-field style="width:100%">
         <mat-select placeholder="Select X-axis Dataset" (selectionChange)="updateLineChart()" [(value)]="_xaxis_sel_line">
@@ -127,7 +127,7 @@
     <canvas baseChart *ngIf="barChartData" [datasets]="barChartData" [labels]="barChartLabels"
       [options]="barChartOptions" [colors]="barChartColors" [chartType]="barChartType">
     </canvas>
-    <div fxLayout="row" fxLayoutAlign="space-around center">
+    <div fxLayout="row" fxLayoutAlign="center center">
       <div fxFlex="23">
         <mat-form-field style="width:100%">
           <mat-select placeholder="Select X-axis Dataset" (selectionChange)="updateBarChart()" [(value)]="_xaxis_sel_bar">
@@ -166,7 +166,7 @@
   <div fxLayout="column" fxFlex="50%" fxFlex.lt-sm="100%" *ngIf="selectedchart.includes('piechart_sel')">
     <canvas baseChart [datasets]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType">
     </canvas>
-    <div fxLayout="row" fxLayoutAlign="space-around center">
+    <div fxLayout="row" fxLayoutAlign="center center">
       <div fxFlex="23">
         <mat-form-field style="width:100%">
           <mat-select placeholder="Select X-axis Dataset" (selectionChange)="updatePieChart()" [(value)]="_xaxis_sel_pie">
@@ -205,7 +205,7 @@
   <div fxLayout="column" fxFlex="50%" fxFlex.lt-sm="100%" *ngIf="selectedchart.includes('doughnutchart_sel')">
     <canvas baseChart [datasets]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType">
     </canvas>
-    <div fxLayout="row" fxLayoutAlign="space-around center">
+    <div fxLayout="row" fxLayoutAlign="center center">
       <div fxFlex="23">
         <mat-form-field style="width:100%">
           <mat-select placeholder="Select X-axis Dataset" (selectionChange)="updateDoughnutChart()" [(value)]="_xaxis_sel_doughnut">
