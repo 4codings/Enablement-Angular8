@@ -1,7 +1,7 @@
 .example-chip-list {
   width: 100%;
 }
-div.dashboard.ng-star-inserted {
+.dashboard {
   display: flex;
   flex-wrap: wrap !important; 
   flex-flow: wrap;
