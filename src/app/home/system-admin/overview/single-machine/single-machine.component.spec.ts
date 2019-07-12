@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PlatformsListComponent } from './platforms-list.component';
+import { SingleMachineComponent } from './single-machine.component';
 
-describe('PlatformsListComponent', () => {
-  let component: PlatformsListComponent;
-  let fixture: ComponentFixture<PlatformsListComponent>;
+describe('SingleMachineComponent', () => {
+  let component: SingleMachineComponent;
+  let fixture: ComponentFixture<SingleMachineComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PlatformsListComponent ]
+      declarations: [ SingleMachineComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PlatformsListComponent);
+    fixture = TestBed.createComponent(SingleMachineComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

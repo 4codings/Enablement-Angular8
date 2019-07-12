@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { saveAs } from 'file-saver';
@@ -106,6 +106,33 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   ColorBar = [];
   ColorBar_border = [];
   V_OLD_PRCS_CD = '';
+
+  //For property panel
+  propertyPanelAllTabsData: any;
+  executableTypesData = [];
+  selectedExecutableType: string;
+  selectedExecutable: string;
+  executablesData = [];
+
+  //property panel property tabs variables
+  async_sync: string = "sync";
+  restorability: string = "auto";
+  instances: string = "unlimited";
+  isServiceActive: Boolean = true;
+  isSynchronousActive: Boolean = true;
+
+  //property panel general tab variables
+  generalId: String;
+
+  executableOutput: string;
+  executableDesc: string;
+
+  currentDate: any = new Date();
+  todaysDate: any = new Date();
+  afterFiveDays: any = new Date(this.todaysDate.setDate(this.currentDate.getDate() + 5));
+
+  userEmail: String;
+
   constructor(
     private httpClient: HttpClient,
     private http: Http,
@@ -176,6 +203,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.user = JSON.parse(sessionStorage.getItem('u'));
     this.downloadUrl = this.apiService.endPoints.downloadFile;
     this.getApplicationProcess();
+    this.userEmail = this.user.USR_NM;
   }
 
   ngAfterViewInit() {
@@ -189,86 +217,102 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
 
         { [InjectionNames.bpmnPropertiesProvider]: ['type', OriginalPropertiesProvider.propertiesProvider[1]] },
         { [InjectionNames.propertiesProvider]: ['type', CustomPropsProvider] },
-      ],
-      propertiesPanel: {
-        parent: '#properties'
-      }
+      ]
+      // ,
+      // propertiesPanel: {
+      //   parent: '#properties'
+      // }
     });
     // this.newBpmn();
     const eventBus = this.modeler.get('eventBus');
     if (eventBus) {
-      eventBus.on('element.changed', ($event) => {
-        console.log('$event.element', $event.element);
-        if (['bpmn:Process'].indexOf($event.element.type) > -1) {
-          this.selectedPrcoess = $event.element.id;
-          this.updateProcess();
-        } else {
-          this.selectedPrcoess = 'newProcess';
-          this.V_OLD_PRCS_CD = this.selectedPrcoess;
-          this.addProcess();
-        }
-        if ($event && $event.element && ['bpmn:Process', 'label'].indexOf($event.element.type) === -1) {
-          const businessObject = $event.element.businessObject;
-          const sourceId = businessObject && businessObject.sourceRef ? businessObject.sourceRef.id : '';
-          const targetId = businessObject && businessObject.targetRef ? businessObject.targetRef.id : '';
-          const objectId = businessObject ? businessObject.id : '';
-          // const vAppCd = 'V_APP_CD';
-          // const vPrcsCd = 'V_PRCS_CD';
-          const vAppCd = this.selectedApp;
-          const vPrcsCd = this.selectedPrcoess;
-          if ($event.element.type === 'bpmn:SequenceFlow') {
-            const data: any = {
-              REST_Service: 'Orchetration',
-              RESULT: '@RESULT',
-              V_APP_CD: vAppCd,
-              V_CONT_ON_ERR_FLG: 'N',
-              V_PRCS_CD: vPrcsCd,
-              V_PRDCR_APP_CD: vAppCd,
-              V_PRDCR_PRCS_CD: vPrcsCd,
-              V_PRDCR_SRC_CD: this.user.SRC_CD,
-              V_PRDCR_SRVC_CD: sourceId,
-              V_SRC_CD: this.user.SRC_CD,
-              V_SRVC_CD: targetId,
-              V_USR_NM: this.user.USR_NM,
-              Verb: 'PUT'
-            };
-            if (!this.flows) {
-              this.flows = {};
-            }
-            this.flows[targetId] = data;
+
+      eventBus.on('element.click', ($event) => {
+        this.generalId = $event.element.id;
+        this.getAllTabs(this.generalId);
+      }),
+        eventBus.on('element.changed', ($event) => {
+          console.log('$event.element', $event.element);
+          if (['bpmn:Process'].indexOf($event.element.type) > -1) {
+            this.selectedPrcoess = $event.element.id;
+            this.updateProcess();
+            this.generalId = this.selectedPrcoess;
           } else {
-            const data: any = {
-              REST_Service: 'Service',
-              V_APP_CD: vAppCd,
-              V_CREATE: 'Y',
-              V_DELETE: 'Y',
-              V_EXECUTE: 'Y',
-              V_PRCS_CD: vPrcsCd,
-              V_READ: 'Y',
-              V_ROLE_CD: 'Program Assessment Role',
-              V_SRC_CD: this.user.SRC_CD,
-              V_SRVC_CD: objectId,
-              V_SRVC_DSC: '',
-              V_UPDATE: 'Y',
-              V_USR_NM: this.user.USR_NM,
-              Verb: 'PUT'
-            };
-            this.httpClient.post(this.url, data).subscribe(() => {
-              if (objectId && this.flows[objectId]) {
-                this.uploadLocked = true;
-                this.httpClient.put(this.url, this.flows[objectId]).subscribe(() => {
-                  delete this.flows[objectId];
-                  this.upload(vAppCd, vPrcsCd);
-                  this.uploadLocked = false;
-                }, () => this.uploadLocked = false);
-              }
-            });
+            this.selectedPrcoess = 'newProcess';
+            // this.V_OLD_PRCS_CD = this.selectedPrcoess;
+            // this.addProcess();
+            this.generalId = this.selectedPrcoess;
           }
-          setTimeout(() => {
-            this.upload(vAppCd, vPrcsCd);
-          }, 2000);
-        }
-      });
+          if ($event && $event.element && ['bpmn:Process', 'label'].indexOf($event.element.type) === -1) {
+            const businessObject = $event.element.businessObject;
+            const sourceId = businessObject && businessObject.sourceRef ? businessObject.sourceRef.id : '';
+            const targetId = businessObject && businessObject.targetRef ? businessObject.targetRef.id : '';
+            const objectId = businessObject ? businessObject.id : '';
+            // const vAppCd = 'V_APP_CD';
+            // const vPrcsCd = 'V_PRCS_CD';
+            const vAppCd = this.selectedApp;
+            const vPrcsCd = this.selectedPrcoess;
+            if ($event.element.type === 'bpmn:SequenceFlow') {
+              const data: any = {
+                REST_Service: 'Orchetration',
+                RESULT: '@RESULT',
+                V_APP_CD: vAppCd,
+                V_CONT_ON_ERR_FLG: 'N',
+                V_PRCS_CD: vPrcsCd,
+                V_PRDCR_APP_CD: vAppCd,
+                V_PRDCR_PRCS_CD: vPrcsCd,
+                V_PRDCR_SRC_CD: this.user.SRC_CD,
+                V_PRDCR_SRVC_CD: sourceId,
+                V_SRC_CD: this.user.SRC_CD,
+                V_SRVC_CD: targetId,
+                V_USR_NM: this.user.USR_NM,
+                Verb: 'PUT'
+              };
+
+              this.generalId = targetId;
+              this.getAllTabs(targetId);
+
+              if (!this.flows) {
+                this.flows = {};
+              }
+              this.flows[targetId] = data;
+            } else {
+              const data: any = {
+                REST_Service: 'Service',
+                V_APP_CD: vAppCd,
+                V_CREATE: 'Y',
+                V_DELETE: 'Y',
+                V_EXECUTE: 'Y',
+                V_PRCS_CD: vPrcsCd,
+                V_READ: 'Y',
+                V_ROLE_CD: 'Program Assessment Role',
+                V_SRC_CD: this.user.SRC_CD,
+                V_SRVC_CD: objectId,
+                V_SRVC_DSC: '',
+                V_UPDATE: 'Y',
+                V_USR_NM: this.user.USR_NM,
+                Verb: 'PUT'
+              };
+
+              this.generalId = objectId;
+              this.getAllTabs(objectId);
+
+              this.httpClient.post(this.url, data).subscribe(() => {
+                if (objectId && this.flows[objectId]) {
+                  this.uploadLocked = true;
+                  this.httpClient.put(this.url, this.flows[objectId]).subscribe(() => {
+                    delete this.flows[objectId];
+                    this.upload(vAppCd, vPrcsCd);
+                    this.uploadLocked = false;
+                  }, () => this.uploadLocked = false);
+                }
+              });
+            }
+            setTimeout(() => {
+              this.upload(vAppCd, vPrcsCd);
+            }, 2000);
+          }
+        });
     }
   }
 
@@ -485,6 +529,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     switch (actionValue) {
       case 'Add': {
         this.newBpmn();
+        this.generalId = "newProcess";
         break;
       }
       case 'Import': {
@@ -573,6 +618,71 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         });
     }
   }
+  // Added for property panel related tabs
+  getAllTabs(selService: any) {
+
+    this.endUserService.getAllTabs(this.selectedApp, this.selectedPrcoess, selService)
+      .subscribe(res => {
+        if (res) {
+          this.propertyPanelAllTabsData = res.json();
+        }
+      });
+
+    this.getAllExecutableTypes();
+  }
+
+  // Added for property panel related tabs
+  getAllExecutableTypes() {
+    this.endUserService.getAllExecutableTypes()
+      .subscribe(res => {
+        if (res) {
+          this.executableTypesData = []; //clearning off old data if any
+          res.json().forEach(element => {
+            this.executableTypesData.push(element.EXE_TYP);
+          });
+        }
+      });
+  }
+
+  getExecutablesForSelctedExecutableType() {
+    this.endUserService.getExecutablesForSelctedExecutableType(this.selectedExecutableType)
+      .subscribe(res => {
+        if (res) {
+          this.executablesData = []; //clearning off old data if any
+          res.json().forEach(element => {
+            this.executablesData.push(element.EXE_CD);
+          });
+        }
+      });
+  }
+
+  getInputOutputForSelctedExecutable() {
+    this.endUserService.getInputOutputForSelctedExecutable(this.selectedExecutableType, this.selectedExecutable)
+      .subscribe(res => {
+        if (res) {
+          let result = res.json();
+          this.executableOutput = result[0]["EXE_OUT_PARAMS"];
+          this.executableDesc = result[0]["EXE_DSC"];
+        }
+      });
+  }
+
+  //selected executable type from UI
+  updateselectedExecutableType(value: any) {
+    this.selectedExecutableType = value;
+    this.getExecutablesForSelctedExecutableType();
+  }
+
+  //selected executable type from UI
+  updateselectedExecutable(value: string) {
+    this.selectedExecutable = value;
+    this.getInputOutputForSelctedExecutable();
+  }
+
+  serviceActiveSelected(value: Boolean) {
+    this.isServiceActive = value;
+  }
+
   GenerateReportTable() {
     if (!this.app.loadingCharts)
       this.app.loadingCharts = true;

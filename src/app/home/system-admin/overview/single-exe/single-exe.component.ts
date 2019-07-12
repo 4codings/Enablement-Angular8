@@ -12,22 +12,17 @@ import { ConfirmationAlertComponent } from 'src/app/shared/components/confirmati
 export class SingleExeComponent implements OnInit {
 
   @Input() exeType;
-  @Input() allExes;
-  public exes = [];
+  @Input() exes;
+  
   V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
   V_USR_NM:string=JSON.parse(sessionStorage.getItem('u')).USR_NM;
 
   constructor(private http:HttpClient, public dialog: MatDialog) { }
 
   ngOnInit() {
-    // this.http.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_SRC_CD="+this.V_SRC_CD+"&V_EXE_TYP="+this.exeType.EXE_TYP+"&V_USR_NM="+this.V_USR_NM+"&REST_Service=UsersExe&Verb=GET").subscribe(res => {
-    //   //console.log(res);
-    //   this.exes = res;
+    // this.exes = this.allExes.filter(item => {
+    //     return item.V_EXE_TYP == this.exeType.EXE_TYP;
     // });
-    this.exes = this.allExes.filter(item => {
-      return item.V_EXE_TYP == this.exeType.EXE_TYP;
-    });
-
   }
 
   onBtnDeleteExeClick(exe) {

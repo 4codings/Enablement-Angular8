@@ -32,4 +32,81 @@
   .mat-divider {
     height: 80%;
   }
+
+}
+
+:host /deep/ .mat-tab-label{
+  padding: 0 15px;
+  min-width: 60px;
+}
+ 
+:host /deep/ label {
+  text-align: center;
+  margin : 2px 2px
+}
+
+:host /deep/ select{
+  width : 178px;
+}
+
+:host /deep/ textarea {
+  width : 178px;
+  height : 80px;
+}
+
+:host /deep/ .oneSpace {
+  padding-top : 3px;
+  padding-bottom : 0px;
+}
+
+:host /deep/ .spaceDiv {
+  padding-top : 10px;
+  padding-bottom : 8px;
+}
+
+:host /deep/ #seconds {
+  width : 50px;
+}
+
+:host /deep/ #seconds_label {
+  width : 100px;
+}
+
+:host /deep/ #priority {
+  align-content : right;
+  width : 50px;
+}
+
+:host /deep/ #priority_label {
+  text-align: left;
+  width : 80px;
+}
+
+:host /deep/ .row1 {
+  margin-left : 0px;
+}
+
+:host /deep/ .mat-input-element, input {
+  text-align: center
+}
+
+:host /deep/ .mat-tab-body-content{
+  padding: 30px 45px;
+}
+
+:host /deep/ .generalTabV{
+  padding-top : 2px;
+  padding-bottom : 0px;
+}
+
+:host /deep/.chosen-container.chosen-container-single {
+  width: 300px !important; /* or any value that fits your needs */
+}
+
+:host /deep/ .mat-form-field-appearance-legacy .mat-form-field-infix {
+  padding: 1px;
+  padding-top: 1px;
+  padding-right: 0px;
+  padding-bottom: 1px;
+  padding-left: 0px;
 }

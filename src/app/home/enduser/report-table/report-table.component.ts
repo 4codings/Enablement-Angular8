@@ -26,7 +26,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
 
   hiddencols: string[] = [];
 
-  myControl = new FormControl();
+  // myControl = new FormControl();
   columnsToDisplayKeys: string[];
   domain_name = this.globals.domain_name;
   @ViewChild(MatSort) sort: MatSort;
@@ -71,6 +71,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   PRCS_TXN_ID = "";
   F1: any[];
   ArraData: any = [];
+  hiddencolsflag: any =[];
   Table_of_Data5: any;
   helpertext = {};
   tabledata = {};
@@ -84,7 +85,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   getReportData() {
 
     this.Table_of_Data = this.dataStored.getCookies('report_table')['RESULT'];
-    //(this.dataStored.getCookies('report_table'));
+
     this.SRVC_CD = this.dataStored.getCookies('report_table')['SRVC_CD'][0];
     // this.SRVC_ID = this.dataStored.getCookies('report_table')['SRVC_ID'][0];
     this.Table_of_Data1 = this.dataStored.getCookies('report_table')['LOG_VAL'];
@@ -95,8 +96,21 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     this.SRC_ID = this.dataStored.getCookies('report_table')['SRC_ID'][0];
 
     //(JSON.parse(this.Table_of_Data1[0]));
-
     this.columnsToDisplay = Object.keys(JSON.parse(this.Table_of_Data1[0]));
+
+    this.hiddencolsflag = this.dataStored.getCookies('report_table')['HIDDEN'];
+    var a = this.hiddencolsflag[0];
+    var outputstr= a.replace(/'/g,'');
+    outputstr.replace(/\s+/g, '-');
+    this.hiddencolsflag = outputstr.split(",");
+    for(let i=0;i< this.hiddencolsflag.length;i++){
+      this.hiddencolsflag[i]= this.hiddencolsflag[i].toString().trim();
+    }
+    for(let j=0;j<this.columnsToDisplay.length;j++){
+      if(this.hiddencolsflag[j] != undefined && this.hiddencolsflag[j].toString().trim() == "Y"){
+        this.columnsToDisplay.splice(j,1);
+      }
+    }
   }
   dataSource = new MatTableDataSource(this.Table_of_Data4);
   columnsToDisplay = [];
@@ -131,10 +145,23 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   hiddencolsconfig = {};
   _yaxisstepSize = null;
   _yaxisAutoskip: boolean = false;
-  _xaxis_sel = "";
-  _yaxis_sel = [];
-  _yaxisCB = '';
-  yaxis_data = [];
+  _xaxis_sel_line = "";
+  _yaxis_sel_line = [];
+  _yaxisCB_line = '';
+  yaxis_data_line = [];
+  _xaxis_sel_bar = "";
+  _yaxis_sel_bar = [];
+  _yaxisCB_bar = '';
+  yaxis_data_bar = [];
+  _xaxis_sel_pie = "";
+  _yaxis_sel_pie = [];
+  _yaxisCB_pie = '';
+  yaxis_data_pie = [];
+  _xaxis_sel_doughnut = "";
+  _yaxis_sel_doughnut = [];
+  _yaxisCB_doughnut = '';
+  yaxis_data_doughnut = [];
+  
   _backgroundColor = "rgba(34,181,306,0.2)";
   _borderColor = "rgba(44,191,206,1)";
   _fill: boolean = false;
@@ -222,10 +249,17 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     pointHoverBorderColor: "slateblue",
     pointHoverBackgroundColor: '#fff'
   }];
-  linedata = [{ data: [10,20,30,40,50], label: ["sample 1","sample 2","sample 3","sample 4","sample 5"] }];
-  bardata = [{ data: [10,20,30,40,50], label: ["sample 1","sample 2","sample 3","sample 4","sample 5"] }];
-  piedata = [{ data: [10,20,30,40,50], labels: ["sample 1","sample 2","sample 3","sample 4","sample 5"] }];
-  doughnutdata = [{ data: [10,20,30,40,50], labels: ["sample 1","sample 2","sample 3","sample 4","sample 5"] }];
+  linedata = [{ 
+  data: [10,25,31,19,42], 
+  label: ["Sample Dataset"],
+  fill: this._fill,
+  borderDash: this._borderdash,
+  pointRadius: this.pointrad,
+  pointStyle: this._pointstyle,
+  yAxisID: "y-1" }];
+  bardata = [{ data: [10,20,30,40,50], label: ["Sample Dataset"] }];
+  piedata = [{ data: [10,20,30,40,50], labels: ["Sample Dataset"] }];
+  doughnutdata = [{ data: [10,20,30,40,50], labels: ["Sample Dataset"] }];
   // Line Chart Configuration
   public lineChartColors = this.chartcolors;
   public lineChartData: Array<any> = this.linedata;
@@ -252,10 +286,10 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
 
   //_________________________CHART FUNCTIONS________________________________________
   updateLineChart() {
-    var unit = this._yaxisCB;
-    this.lineChartData = [];
-    this.lineChartLabels = [];
-    this.yaxis_data = [];
+    var unit = this._yaxisCB_line;
+    // this.lineChartData = [];
+    // this.lineChartLabels = [];
+    this.yaxis_data_line = [];
     this.lineChartOptions = null;
 
     switch (this._linetension) {
@@ -280,21 +314,25 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     }
     this._linestyle == "dashed" ? this._borderdash = [5, 5] : this._borderdash = [];
     this._gridborder == true ? this._gridlinedash = [10, 10] : this._gridlinedash = [];
-    this.lineChartLabels = this.Table_of_Data5[this._xaxis_sel];
-    if (this._yaxis_sel != []) {
+    this.lineChartLabels = this.Table_of_Data5[this._xaxis_sel_line];
+
+    if (this._yaxis_sel_line != []) {
       // this.yaxis_data = this.Table_of_Data5[this._yaxis1_sel].map(Number);
-      for (let i = 0; i < this._yaxis_sel.length; i++) {
-        this.yaxis_data[i] = this.Table_of_Data5[this._yaxis_sel[i]].map(Number);
+      for (let i = 0; i < this._yaxis_sel_line.length; i++) {
+        this.yaxis_data_line[i] = this.Table_of_Data5[this._yaxis_sel_line[i]].map(Number);
         this.lineChartData[i] = {
-          label: this._yaxis_sel[i],
+          label: this._yaxis_sel_line[i],
           fill: this._fill,
           borderDash: this._borderdash,
           pointRadius: this.pointrad,
           pointStyle: this._pointstyle,
-          data: this.yaxis_data[i],
+          data: this.yaxis_data_line[i],
           yAxisID: "y-".concat((i + 1).toString())
         }
       }
+    }
+    else{
+      this.lineChartData = this.linedata;
     }
     // if (this._yaxismax == null || this._yaxismax == undefined || this._yaxismax == -Infinity) {
     //   this._yaxismax = Math.max.apply(null, this.yaxis_data[0]);
@@ -336,7 +374,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         },
       line: { tension: this.lineten },
       animation: {
-          duration: 3000,
+          duration: 4000,
           easing: this._animations
         }
       },
@@ -358,7 +396,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
           id: 'x-1',
           scaleLabel: {
             display: true,
-            labelString: this._xaxis_sel
+            labelString: this._xaxis_sel_line
           },
           display: true
         }],
@@ -374,7 +412,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
           id: 'y-1',
           scaleLabel: {
             display: true,
-            labelString: this._yaxis_sel[i],
+            labelString: this._yaxis_sel_line[i],
             fontColor: this.lineChartColors[i].borderColor
           },
           gridLines: {
@@ -408,7 +446,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
           id: "y-".concat((i + 1).toString()),
           scaleLabel: {
             display: true,
-            labelString: this._yaxis_sel[i],
+            labelString: this._yaxis_sel_line[i],
             fontColor: this.lineChartColors[i].borderColor
           },
           gridLines: {
@@ -435,23 +473,26 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     }
   }
   updateBarChart() {
-    var unit = this._yaxisCB;
-    this.barChartData = [];
-    this.barChartLabels = [];
+    var unit = this._yaxisCB_bar;
+    // this.barChartData = [];
+    // this.barChartLabels = [];
     this.barChartOptions = null;
 
-    if (this._yaxis_sel != []) {
-      for (let i = 0; i < this._yaxis_sel.length; i++) {
-        this.yaxis_data[i] = this.Table_of_Data5[this._yaxis_sel[i]].map(Number);
+    if (this._yaxis_sel_bar != []) {
+      for (let i = 0; i < this._yaxis_sel_bar.length; i++) {
+        this.yaxis_data_bar[i] = this.Table_of_Data5[this._yaxis_sel_bar[i]].map(Number);
         this.barChartData[i] = {
           label: "",
           data: Array<any>()
         }
-        this.barChartData[i].data = this.yaxis_data[i];
-        this.barChartData[i].label = this._yaxis_sel[i];
+        this.barChartData[i].data = this.yaxis_data_bar[i];
+        this.barChartData[i].label = this._yaxis_sel_bar[i];
         console.log(this.barChartData[i]);
 
       }
+    }
+    else{
+      this.barChartData = this.bardata;
     }
     this.barChartOptions = {
       scaleShowVerticalLines: false,
@@ -486,7 +527,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
           },
           scaleLabel: {
             display: true,
-            labelString: this._xaxis_sel
+            labelString: this._xaxis_sel_bar
           },
           display: true
         }],
@@ -524,7 +565,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
           },
           scaleLabel: {
             display: true,
-            labelString: this._yaxis_sel[0],
+            labelString: this._yaxis_sel_bar[0],
             fontColor: this.barChartColors[0].borderColor
           }
         };
@@ -557,43 +598,43 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
           },
           scaleLabel: {
             display: true,
-            labelString: this._yaxis_sel[i],
+            labelString: this._yaxis_sel_bar[i],
             fontColor: this.barChartColors[i].borderColor
           }
         };
       }
     }
-    this.barChartLabels = this.Table_of_Data5[this._xaxis_sel];
+    this.barChartLabels = this.Table_of_Data5[this._xaxis_sel_bar];
   }
   updatePieChart() {
-    this.pieChartData = [];
-    this.pieChartLabels = [];
+    // this.pieChartData = [];
+    // this.pieChartLabels = [];
 
-    if (this._yaxis_sel != []) {
-      for (let i = 0; i < this._yaxis_sel.length; i++) {
-        this.yaxis_data[i] = this.Table_of_Data5[this._yaxis_sel[i]].map(Number);
+    if (this._yaxis_sel_pie != []) {
+      for (let i = 0; i < this._yaxis_sel_pie.length; i++) {
+        this.yaxis_data_pie[i] = this.Table_of_Data5[this._yaxis_sel_pie[i]].map(Number);
         this.pieChartData.push({
-          labels: this._yaxis_sel[i],
-          data: this.yaxis_data[i]
+          labels: this._yaxis_sel_pie[i],
+          data: this.yaxis_data_pie[i]
         })
       }
     }
-    this.pieChartLabels = this.Table_of_Data5[this._xaxis_sel];
+    this.pieChartLabels = this.Table_of_Data5[this._xaxis_sel_pie];
   }
   updateDoughnutChart() {
-    this.doughnutChartData = [];
-    this.doughnutChartLabels = [];
+    // this.doughnutChartData = [];
+    // this.doughnutChartLabels = [];
 
-    if (this._yaxis_sel != []) {
-      for (let i = 0; i < this._yaxis_sel.length; i++) {
-        this.yaxis_data[i] = this.Table_of_Data5[this._yaxis_sel[i]].map(Number);
+    if (this._yaxis_sel_doughnut != []) {
+      for (let i = 0; i < this._yaxis_sel_doughnut.length; i++) {
+        this.yaxis_data_doughnut[i] = this.Table_of_Data5[this._yaxis_sel_doughnut[i]].map(Number);
         this.doughnutChartData.push({
-          labels: this._yaxis_sel[i],
-          data: this.yaxis_data[i]
+          labels: this._yaxis_sel_doughnut[i],
+          data: this.yaxis_data_doughnut[i]
         })
       }
     }
-    this.doughnutChartLabels = this.Table_of_Data5[this._xaxis_sel];
+    this.doughnutChartLabels = this.Table_of_Data5[this._xaxis_sel_doughnut];
   }
   updatechart() {
     this.updateLineChart();
@@ -616,14 +657,21 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
 
           this.userprefs[name[i]] = value[i];
         }
-
+        if(this.userprefs['backgroundcolor']!=undefined)
         this._backgroundColor = this.userprefs['backgroundcolor'];
+        if(this.userprefs['bordercolor']!=undefined)
         this._borderColor = this.userprefs['bordercolor'];
+        if(this.userprefs['fill']!=undefined)
         this._fill = this.userprefs['fill'];
+        if(this.userprefs['pointstyle']!=undefined)
         this._pointstyle = this.userprefs['pointstyle'];
+        if(this.userprefs['linetension']!=undefined)
         this._linetension = this.userprefs['linetension'];
+        if(this.userprefs['animations']!=undefined)
         this._animations = this.userprefs['animations'];
+        if(this.userprefs['pointradius']!=undefined)
         this._pointradius = this.userprefs['pointradius'];
+        if(this.userprefs['linestyle']!=undefined)
         this._linestyle = this.userprefs['linestyle'];
         this._fill.toString().toUpperCase() == "TRUE" ? this._fill = true : this._fill = false;
         this._linestyle == "dashed" ? this._borderdash = [5, 5] : this._borderdash = [];
@@ -689,6 +737,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
           this.userprefs[name[i]] = value[i];
         }
         console.log(this.userprefs);
+        if(this.userprefs['hiddencolname']!=undefined){
         var a = this.userprefs['hiddencolname'].toString();
         this.hiddencols = a.split(',');
         for(let i=0;i<this.hiddencols.length;i++){
@@ -701,8 +750,9 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
           this.columnsToDisplay.splice(index, 1);
         }
       }
+    }
     });
-  }
+}
   ngOnInit() {
     this.getReportData();
     this.Table_of_Data3 = this.Table_of_Data2[0];
@@ -744,18 +794,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     }
 
     for (let j = 0; j <= this.columnsToDisplay.length; j++) {
-    // insecure
-    // this.http.get<data>(this.apiService.endPoints.insecure + "FieldName=" + this.columnsToDisplay[j] + "&REST_Service=Field_Description&Verb=GET")
-    //   .subscribe(res => {
-
-    //     var name = res.Field_Name;
-    //     var tip = res.Description_Text;
-    //     var i;
-    //     for (i = 0; i < tip.length; i++) {
-    //       this.helpertext[name[i]] = tip[i];
-    //     }
-    //   })
-    // secure
       this.https.get(this.apiService.endPoints.secure + "FieldName=" + this.columnsToDisplay[j] + "&REST_Service=Field_Description&Verb=GET", this.apiService.setHeaders())
         .subscribe(res => {
           var data: data = res.json();
@@ -769,9 +807,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
 
     }
     this.showhide('Table');
-    // let namedChartAnnotation = ChartAnnotation;
-    // namedChartAnnotation["id"]="annotation";
-    // Chart.pluginService.register( namedChartAnnotation);
     this.gethiddencolsconfig();
   }
 
@@ -820,7 +855,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
       }
     }
     this.sethiddencolsconfig();
-    //(this.columnsToDisplay);
   }
   //__________________________________________________________
   Execute_res_data: any[];
@@ -837,34 +871,16 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
 
     };
 
-    // insecure
-    // this.https.post(this.apiService.endPoints.insecureProcessReport, body).subscribe(
-    //   res => {
-
-    //     //(res.json());
-    //     this.Execute_res_data = res.json();
-    //     //(this.Execute_res_data);
-
-    //     this.GenerateReportTable();
-    //   }
-    // );
-
-    // secure
     this.https.post(this.apiService.endPoints.secureProcessReport, body, this.apiService.setHeaders()).subscribe(
       res => {
 
         console.log(res.json());
         this.Execute_res_data = res.json();
-        //(this.Execute_res_data);
-        // this.GenerateReportTable();
         this.route.navigateByUrl('End_User', { skipLocationChange: true });
       }
     );
   }
   GenerateReportTable() {
-    //("in GenerateReportTable");
-
-    //"&V_DSPLY_WAIT_SEC=100&V_MNL_WAIT_SEC=180&REST_Service=Report&Verb=GET
     console.log(this.globalUser.currentUser);
     let body = {
       V_SRC_ID: this.Execute_res_data['V_SRC_ID'],

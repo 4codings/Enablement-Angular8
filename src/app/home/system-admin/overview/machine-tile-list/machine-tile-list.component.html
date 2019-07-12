@@ -31,15 +31,16 @@
 <div class="tiles-wrapper" fxLayout="row wrap">
   <div class="tile"
        matRipple
-       [matTooltip]="currExe.V_EXE_CD"
-       *ngFor="let currExe of exes"
-       (click)="onUserTileClick(currExe)">
-       <mat-icon class="iconmod shwmaticon">developer_mode</mat-icon>
-   <!-- <div>{{currExe.EXE_CD}}</div> -->
-    <div class="ellipsis-text"><strong>{{currExe.V_EXE_CD?.split('@')[0]}}</strong></div>
+       [matTooltip]="currConn.V_CXN_CD"
+       *ngFor="let currConn of connectionList"
+       (click)="onUserTileClick(currConn)">
+    <!-- <mat-icon class="tile-icon">person</mat-icon> -->
+    <mat-icon class="iconmod shwmaticon">insert_link</mat-icon>
+   <!-- <div>{{currConn.EXE_CD}}</div> -->
+    <div class="ellipsis-text"><strong>{{currConn.V_CXN_CD}}</strong></div>
   </div>
-  <div class="tile add-new-tile" (click)="onAddExeTileClick()"
-       matTooltip="Add Exe" matRipple>
+  <div class="tile add-new-tile" (click)="onAddConnTileClick()"
+       matTooltip="Add Connection" matRipple>
     <mat-icon>add_circle</mat-icon>
   </div>
 </div>

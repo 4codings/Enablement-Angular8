@@ -1,0 +1,17 @@
+<div class="tile-container">
+  <div class="container-header" fxLayoutAlign="space-between center">
+    <span class="container-title">{{machineData.V_PLATFORM_CD}}</span>
+    <div class="container-actions">
+      <button mat-icon-button matTooltip="delete exetype" (click)="onBtnDeleteMachineClick(machineData)">
+        <mat-icon>delete</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="edit exetype" (click)="onBtnEditMachineClick(machineData)">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="assign" (click)="onBtnAssignRoleClick(machineData)">
+        <mat-icon>link</mat-icon>
+      </button>
+    </div>
+  </div>
+  <app-machine-tile-list [connectionList]="machineData.V_CXN"></app-machine-tile-list>
+</div>
