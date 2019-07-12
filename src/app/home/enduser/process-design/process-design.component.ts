@@ -21,7 +21,7 @@ import { Router } from '@angular/router';
 import { CommonUtils } from 'src/app/common/utils';
 import * as Chart from 'chart.js';
 
-import {CustomPropsProvider} from './props-provider/CustomPropsProvider';
+import { CustomPropsProvider } from './props-provider/CustomPropsProvider';
 
 export class ReportData {
   public RESULT: string;
@@ -105,7 +105,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   Colorpie_boder = [];
   ColorBar = [];
   ColorBar_border = [];
-
+  V_OLD_PRCS_CD = '';
   constructor(
     private httpClient: HttpClient,
     private http: Http,
@@ -187,8 +187,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         PropertiesPanelModule,
         OriginalPropertiesProvider,
 
-      {[InjectionNames.bpmnPropertiesProvider]: ['type', OriginalPropertiesProvider.propertiesProvider[1]]},
-      {[InjectionNames.propertiesProvider]: ['type', CustomPropsProvider]},
+        { [InjectionNames.bpmnPropertiesProvider]: ['type', OriginalPropertiesProvider.propertiesProvider[1]] },
+        { [InjectionNames.propertiesProvider]: ['type', CustomPropsProvider] },
       ],
       propertiesPanel: {
         parent: '#properties'
@@ -198,10 +198,14 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     const eventBus = this.modeler.get('eventBus');
     if (eventBus) {
       eventBus.on('element.changed', ($event) => {
+        console.log('$event.element', $event.element);
         if (['bpmn:Process'].indexOf($event.element.type) > -1) {
           this.selectedPrcoess = $event.element.id;
+          this.updateProcess();
         } else {
           this.selectedPrcoess = 'newProcess';
+          this.V_OLD_PRCS_CD = this.selectedPrcoess;
+          this.addProcess();
         }
         if ($event && $event.element && ['bpmn:Process', 'label'].indexOf($event.element.type) === -1) {
           const businessObject = $event.element.businessObject;
@@ -276,6 +280,36 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     }
   }
 
+  updateProcess() {
+    const body = {
+      'V_APP_CD': this.selectedApp,
+      'V_OLD_PRCS_CD': this.V_OLD_PRCS_CD,
+      'V_NEW_PRCS_CD': this.selectedPrcoess,
+      'V_PRCS_DSC': this.selectedPrcoess,
+      'REST_Service': 'UpdateProcess',
+      'V_SRC_CD': this.user.SRC_CD,
+      'V_USR_NM': this.user.USR_NM,
+      "Verb": "PUT"
+    };
+    this.http.post(this.apiService.endPoints.secure, body, this.apiService.setHeaders())
+      .subscribe(res => {
+      });
+  }
+
+  addProcess() {
+    const body = {
+      'V_APP_CD': this.selectedApp,
+      'V_PRCS_CD': this.selectedPrcoess,
+      'REST_Service': 'NewProcess',
+      'V_SRC_CD': this.user.SRC_CD,
+      'V_USR_NM': this.user.USR_NM,
+      "Verb": "POST"
+    };
+    this.http.post(this.apiService.endPoints.secure, body, this.apiService.setHeaders())
+      .subscribe(res => {
+      });
+  }
+
   upload(vAppCd, vPrcsCd) {
     if (!this.uploadLocked) {
       this.modeler.saveXML((err: any, xml: any) => {
@@ -319,6 +353,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         (x: any) => {
           this.modeler.importXML(x, this.handleError.bind(this));
           this.bpmnTemplate = x;
+          this.selectedPrcoess = 'newProcess';
+          this.V_OLD_PRCS_CD = this.selectedPrcoess;
+          this.addProcess();
         },
         this.handleError.bind(this)
       );
