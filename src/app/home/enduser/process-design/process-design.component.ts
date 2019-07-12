@@ -80,7 +80,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   childobj = {};
   parentobj = {};
   selectedApp = '';
-  selectedPrcoess = '';
+  selectedPrcoess: string = '';
   selectedService = '';
   Label: any[] = [];
   resFormData: any;
@@ -105,7 +105,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   Colorpie_boder = [];
   ColorBar = [];
   ColorBar_border = [];
-  V_OLD_PRCS_CD = '';
+  V_OLD_PRCS_CD: string = '';
 
   //For property panel
   propertyPanelAllTabsData: any;
@@ -122,8 +122,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   isSynchronousActive: Boolean = true;
 
   //property panel general tab variables
-  generalId: String;
-
+  generalId: string;
+  processName: string = '';
+  processDocumentation: string = '';
   executableOutput: string;
   executableDesc: string;
 
@@ -131,7 +132,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   todaysDate: any = new Date();
   afterFiveDays: any = new Date(this.todaysDate.setDate(this.currentDate.getDate() + 5));
 
-  userEmail: String;
+  userEmail: string;
 
   constructor(
     private httpClient: HttpClient,
@@ -226,24 +227,17 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     // this.newBpmn();
     const eventBus = this.modeler.get('eventBus');
     if (eventBus) {
-
       eventBus.on('element.click', ($event) => {
+        console.log('element.click')
+
         this.generalId = $event.element.id;
         this.getAllTabs(this.generalId);
       }),
         eventBus.on('element.changed', ($event) => {
-          console.log('$event.element', $event.element);
-          if (['bpmn:Process'].indexOf($event.element.type) > -1) {
-            this.selectedPrcoess = $event.element.id;
-            this.updateProcess();
-            this.generalId = this.selectedPrcoess;
-          } else {
-            this.selectedPrcoess = 'newProcess';
-            // this.V_OLD_PRCS_CD = this.selectedPrcoess;
-            // this.addProcess();
-            this.generalId = this.selectedPrcoess;
-          }
+          console.log('element.changed')
+
           if ($event && $event.element && ['bpmn:Process', 'label'].indexOf($event.element.type) === -1) {
+            console.log('fsd')
             const businessObject = $event.element.businessObject;
             const sourceId = businessObject && businessObject.sourceRef ? businessObject.sourceRef.id : '';
             const targetId = businessObject && businessObject.targetRef ? businessObject.targetRef.id : '';
@@ -325,11 +319,12 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
 
   updateProcess() {
+    this.selectedPrcoess = this.generalId;
     const body = {
       'V_APP_CD': this.selectedApp,
       'V_OLD_PRCS_CD': this.V_OLD_PRCS_CD,
       'V_NEW_PRCS_CD': this.selectedPrcoess,
-      'V_PRCS_DSC': this.selectedPrcoess,
+      'V_PRCS_DSC': this.processDocumentation,
       'REST_Service': 'UpdateProcess',
       'V_SRC_CD': this.user.SRC_CD,
       'V_USR_NM': this.user.USR_NM,
@@ -337,6 +332,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     };
     this.http.post(this.apiService.endPoints.secure, body, this.apiService.setHeaders())
       .subscribe(res => {
+        if (res) {
+          this.getApplicationProcess();
+        }
       });
   }
 
@@ -351,6 +349,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     };
     this.http.post(this.apiService.endPoints.secure, body, this.apiService.setHeaders())
       .subscribe(res => {
+        if (res) {
+          this.getApplicationProcess();
+        }
       });
   }
 
@@ -388,6 +389,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
 
   newBpmn() {
     this.opened = true;
+    this.selectedPrcoess = 'newProcess';
+    this.V_OLD_PRCS_CD = this.selectedPrcoess;
+    this.addProcess();
     if (this.bpmnTemplate) {
       this.modeler.importXML(this.bpmnTemplate, this.handleError.bind(this));
     } else {
@@ -397,9 +401,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         (x: any) => {
           this.modeler.importXML(x, this.handleError.bind(this));
           this.bpmnTemplate = x;
-          this.selectedPrcoess = 'newProcess';
-          this.V_OLD_PRCS_CD = this.selectedPrcoess;
-          this.addProcess();
         },
         this.handleError.bind(this)
       );
@@ -559,6 +560,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         break;
       }
       case 'Delete': {
+        this.onDeleteProcess();
         break;
       }
       case 'Schedule': {
@@ -584,6 +586,19 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       default: {
         break;
       }
+    }
+  }
+  onDeleteProcess() {
+    if (this.selectedPrcoess !== '' || this.selectedPrcoess !== null) {
+      this.http.delete(this.apiService.endPoints.securedJSON + 'V_APP_CD=' + this.selectedApp + '&V_PRCS_CD=' + this.selectedPrcoess + '&V_SRC_CD=' + this.user.SRC_CD + '&V_USR_NM=' + this.user.USR_NM + '&REST_Service=Process&Verb=DELETE')
+        .subscribe(res => {
+          this.selectedApp = '';
+          this.selectedPrcoess = '';
+          this.generalId = '';
+          this.processName = '';
+          this.processDocumentation = '';
+          this.getApplicationProcess();
+        })
     }
   }
   add() {
