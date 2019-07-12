@@ -81,7 +81,10 @@
     </mat-form-field>
   </div>
 </div>
-<div class="dashboard" *ngIf="dispchart">
+<div style="display: flex;
+max-width: fit-content;
+flex-wrap: wrap !important; 
+flex-flow: wrap;" fxLayoutGap="10" *ngIf="dispchart">
   <br>
   <div fxLayout="column" fxFlex="50%" fxFlex.lt-sm="100%" *ngIf="selectedchart.includes('linechart_sel')">
     <canvas baseChart *ngIf="lineChartData" [datasets]="lineChartData" [labels]="lineChartLabels"

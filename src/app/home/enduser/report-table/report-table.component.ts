@@ -374,7 +374,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         },
       line: { tension: this.lineten },
       animation: {
-          duration: 3000,
+          duration: 4000,
           easing: this._animations
         }
       },
