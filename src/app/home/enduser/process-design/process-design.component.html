@@ -37,9 +37,20 @@
 <div fxLayout="row">
   <mat-sidenav-container fxFlex="100">
     <mat-sidenav #treesidenav mode="side" [opened]="true" style="min-width:280px">
-      <ngx-treeview [config]="config" [items]="item" [itemTemplate]="itemTemplate">
-        <!-- (selectedChange)="onSelectedChange($event)" (filterChange)="onFilterChange($event)" -->
-      </ngx-treeview>
+      <div flex fxLayout="column">
+        <div fxFlex="100">
+          <ngx-treeview [config]="config" [items]="item" [itemTemplate]="itemTemplate">
+            <!-- (selectedChange)="onSelectedChange($event)" (filterChange)="onFilterChange($event)" -->
+          </ngx-treeview>
+        </div>
+        <hr>
+        <div fxFlex="100" class="parent">
+          <button mat-raised-button (click)="addApplication()">
+            Add Application
+          </button>
+        </div>
+        <hr>
+      </div>
     </mat-sidenav>
     <div fxFlex="100">
       <section>
@@ -270,22 +281,22 @@
           <mat-tab label="General">
             <div class="generalTabV">
               <label>{{Label['ID']}} </label>
-              <input (change)="updateProcess()" [(ngModel)]="generalId">
+              <input id="processId" (change)="onInputChange()" [(ngModel)]="generalId">
             </div>
             <div class="oneSpace"></div>
             <div class="generalTabV">
               <label>{{Label['NAME']}} </label>
-              <input (change)="updateProcess()" [(ngModel)]="processName">
+              <input [(ngModel)]="processName">
             </div>
             <div class="spaceDiv">
               <mat-divider></mat-divider>
             </div>
 
             <label><i> {{Label['DOCUMENTATION']}}</i></label>
-            <input (change)="updateProcess()" [(ngModel)]="processDocumentation">
+            <input (change)="onInputChange()" [(ngModel)]="documentation">
           </mat-tab>
 
-          <mat-tab label="Enable">
+          <mat-tab *ngIf="showAllTabFlag" label="Enable">
             <label>{{Label['EXECUTABLE_TYPES']}}</label>
             <select (change)="updateselectedExecutableType($event.target.value)">
               <option>{{Label['PLEASE_SELECT']}}</option>
@@ -321,7 +332,7 @@
             </label>
           </mat-tab>
 
-          <mat-tab label="Properties">
+          <mat-tab *ngIf="showAllTabFlag" label="Properties">
             <mat-checkbox>{{Label['DISPLAY_OUTPUT']}}</mat-checkbox>
             <mat-checkbox>{{Label['SUMMARY_OUTPUT']}}</mat-checkbox>
             <mat-checkbox [(ngModel)]="isServiceActive" (change)="serviceActiveSelected($event.checked)">

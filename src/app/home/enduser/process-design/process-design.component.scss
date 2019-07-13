@@ -9,7 +9,10 @@
     color: inherit;
   }
 }
-
+.parent {
+  text-align: center;
+  align-content: center;
+}
 .toggle,
 .import-export {
   button {

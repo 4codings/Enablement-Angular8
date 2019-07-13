@@ -45,6 +45,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   private user: any;
   private bpmnTemplate: any;
   private flows = {};
+  public showAllTabFlag = true;
   @ViewChild('file')
   private file: any;
   @ViewChild('processForm') processForm: any;
@@ -125,7 +126,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   //property panel general tab variables
   generalId: string;
   processName: string = '';
-  processDocumentation: string = '';
+  documentation: string = '';
   executableOutput: string;
   executableDesc: string;
 
@@ -216,7 +217,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       additionalModules: [
         PropertiesPanelModule,
         OriginalPropertiesProvider,
-
+        // { contextPad: ['value', null], contextPadProvider: ['value', null] },
         { [InjectionNames.bpmnPropertiesProvider]: ['type', OriginalPropertiesProvider.propertiesProvider[1]] },
         { [InjectionNames.propertiesProvider]: ['type', CustomPropsProvider] },
       ]
@@ -319,14 +320,27 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       this.modeler.destroy();
     }
   }
-
+  onInputChange() {
+    if (this.documentation == '') {
+      this.documentation = this.generalId;
+    }
+    if (this.processName == '') {
+      this.processName = this.generalId;
+    }
+    if (!this.showAllTabFlag) {
+      this.addApplicationOnBE();
+    } else {
+      this.updateProcess();
+    }
+  }
   updateProcess() {
+
     this.selectedPrcoess = this.generalId;
     const body = {
       'V_APP_CD': this.selectedApp,
       'V_OLD_PRCS_CD': this.V_OLD_PRCS_CD,
       'V_NEW_PRCS_CD': this.selectedPrcoess,
-      'V_PRCS_DSC': this.processDocumentation,
+      'V_PRCS_DSC': this.documentation,
       'REST_Service': 'UpdateProcess',
       'V_SRC_CD': this.user.SRC_CD,
       'V_USR_NM': this.user.USR_NM,
@@ -356,6 +370,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         if (res) {
           this.getApplicationProcess();
+          document.getElementById("processId").focus();
         }
       });
     setTimeout(() => {
@@ -396,7 +411,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
 
   newBpmn() {
-    this.opened = true;
     this.selectedPrcoess = 'newProcess';
     this.V_OLD_PRCS_CD = this.selectedPrcoess;
     this.addProcess();
@@ -433,7 +447,35 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       console.error(err);
     }
   }
-
+  addApplication() {
+    this.showRightIcon = true;
+    this.opened = true;
+    this.showAllTabFlag = false;
+    this.generalId = 'newApplication';
+    document.getElementById('processId').focus();
+  }
+  addApplicationOnBE() {
+    const body = {
+      V_APP_CD: this.generalId,
+      V_SRC_CD: this.user.SRC_CD,
+      V_APP_DSC: this.documentation,
+      V_USR_NM: this.user.USR_NM,
+      REST_Service: 'Application',
+      Verb: 'PUT'
+    };
+    this.httpClient.post(this.apiService.endPoints.securedJSON, body)
+      .subscribe(res => {
+        if (res) {
+          this.getApplicationProcess();
+          this.generalId = '';
+          this.processName = '';
+          this.documentation = '';
+          this.opened = false;
+          this.showAllTabFlag = true;
+          this.showRightIcon = false;
+        }
+      })
+  }
   // storing text as process name and value as application name for child tree view item 
   // to get application and process name both when clicked on child item
   generateTreeItem() {
@@ -514,6 +556,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
 
   onTitleClick(item) {
     this.showRightIcon = false;
+    this.opened = false;
     if (!item.children) {
       this.selectedApp = item.value;
       this.selectedPrcoess = item.text;
@@ -541,6 +584,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         this.newBpmn();
         this.generalId = "newProcess";
         this.showRightIcon = true;
+        this.opened = true;
         break;
       }
       case 'Import': {
@@ -568,6 +612,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       }
       case 'Edit': {
         this.showRightIcon = true;
+        this.opened = true;
         break;
       }
       case 'Delete': {
@@ -601,13 +646,13 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
   onDeleteProcess() {
     if (this.selectedPrcoess !== '' || this.selectedPrcoess !== null) {
-      this.http.delete(this.apiService.endPoints.securedJSON + 'V_APP_CD=' + this.selectedApp + '&V_PRCS_CD=' + this.selectedPrcoess + '&V_SRC_CD=' + this.user.SRC_CD + '&V_USR_NM=' + this.user.USR_NM + '&REST_Service=Process&Verb=DELETE')
+      this.httpClient.delete(this.apiService.endPoints.securedJSON + 'V_APP_CD=' + this.selectedApp + '&V_PRCS_CD=' + this.selectedPrcoess + '&V_SRC_CD=' + this.user.SRC_CD + '&V_USR_NM=' + this.user.USR_NM + '&REST_Service=Process&Verb=DELETE')
         .subscribe(res => {
           this.selectedApp = '';
           this.selectedPrcoess = '';
           this.generalId = '';
           this.processName = '';
-          this.processDocumentation = '';
+          this.documentation = '';
           this.getApplicationProcess();
         })
     }
@@ -805,7 +850,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
   deleteApplication() {
     if (this.selectedApp !== '' || this.selectedApp !== null) {
-      this.http.delete(this.url + 'V_APP_CD=' + this.selectedApp + '&V_SRC_CD=' + this.user.SRC_CD + '&V_USR_NM=' + this.user.USR_NM + '&REST_Service=Application&Verb=DELETE')
+      this.httpClient.delete(this.url + 'V_APP_CD=' + this.selectedApp + '&V_SRC_CD=' + this.user.SRC_CD + '&V_USR_NM=' + this.user.USR_NM + '&REST_Service=Application&Verb=DELETE')
         .subscribe((res: any) => {
           let index = this.optionalService.applicationProcessArray.indexOf(this.selectedApp);
           this.optionalService.applicationProcessArray.splice(index, 1);
