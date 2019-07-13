@@ -62,8 +62,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     maxHeight: 400
   });
   parentMenuItems = [
-    { item: 'Add Process', value: 'Add', havePermission: 0 },
-    { item: 'Open a Process', value: 'Import', havePermission: 0 },
+    { item: 'New Process', value: 'Add', havePermission: 0 },
+    { item: 'Open BPMN File', value: 'Import', havePermission: 0 },
     { item: 'Delete Application', value: 'Delete', havePermission: 0 }];
   childrenMenuItems = [
     { item: 'Run', value: 'Run', havePermission: 0 },
@@ -336,6 +336,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.getApplicationProcess();
         }
       });
+    setTimeout(() => {
+      this.upload(this.selectedApp, this.selectedPrcoess);
+    }, 2000);
   }
 
   addProcess() {
@@ -353,6 +356,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.getApplicationProcess();
         }
       });
+    setTimeout(() => {
+      this.upload(this.selectedApp, this.selectedPrcoess);
+    }, 2000);
   }
 
   upload(vAppCd, vPrcsCd) {
