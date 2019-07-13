@@ -230,13 +230,15 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     const eventBus = this.modeler.get('eventBus');
     if (eventBus) {
       eventBus.on('element.click', ($event) => {
-        console.log('element.click')
+        console.log('element.click', $event)
 
         this.generalId = $event.element.id;
-        this.getAllTabs(this.generalId);
+        if ($event && $event.element && ['bpmn:Task', 'bpmn:Event'].indexOf($event.element.type) > -1) {
+          this.getAllTabs(this.generalId);
+        }
       }),
         eventBus.on('element.changed', ($event) => {
-          console.log('element.changed')
+          console.log('element.changed', $event)
 
           if ($event && $event.element && ['bpmn:Process', 'label'].indexOf($event.element.type) === -1) {
             console.log('fsd')
@@ -356,7 +358,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       this.upload(this.selectedApp, this.selectedPrcoess);
     }, this.ctrl_variables.delay_timeout);
   }
-
+  getTaskTabsData() {
+  }
   addProcess() {
     const body = {
       'V_APP_CD': this.selectedApp,
@@ -489,7 +492,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             let childTreeObj = new TreeviewItem({ text: eleProcess.replace(/'/g, ""), value: ele.app });
             this.chilItem.push(childTreeObj)
           })
-        };
+        }
         if (ele.auth.length) {
           let deleteCount = 0;
           ele.auth.forEach((eleauth, index) => {
@@ -563,7 +566,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       const formData: FormData = new FormData();
       formData.append('FileInfo', JSON.stringify({
         File_Path: '/opt/tomcat/webapps/' + this.user.SRC_CD + '/' + item.value + '/',
-        File_Name: item.text + '.bpnm'
+        File_Name: item.text + '.bpmn'
       }));
       this.http.post(this.downloadUrl, formData, this.apiService.setHeadersForBlob())
         .subscribe(
@@ -574,6 +577,15 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           },
           this.handleError.bind(this)
         );
+      // this.httpClient.get('/assets/bpmn/diagram.bpmn', {
+      //   headers: { observe: 'response' }, responseType: 'text'
+      // }).subscribe(
+      //   (x: any) => {
+      //     this.modeler.importXML(x, this.handleError.bind(this));
+      //     this.bpmnTemplate = x;
+      //   },
+      //   this.handleError.bind(this)
+      // );
       this.Execute_AP_PR();
     }
   }
@@ -613,6 +625,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       case 'Edit': {
         this.showRightIcon = true;
         this.opened = true;
+        this.showAllTabFlag = true;
         break;
       }
       case 'Delete': {
@@ -691,11 +704,14 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
   // Added for property panel related tabs
   getAllTabs(selService: any) {
-
+    this.opened = true;
+    this.showAllTabFlag = true;
+    this.showRightIcon = true;
     this.endUserService.getAllTabs(this.selectedApp, this.selectedPrcoess, selService)
       .subscribe(res => {
         if (res) {
           this.propertyPanelAllTabsData = res.json();
+          console.log('data', this.propertyPanelAllTabsData);
         }
       });
 
@@ -1232,4 +1248,25 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   time_to_sec(time): any {
     return parseInt(time.substring(0, 2)) * 3600 + parseInt(time.substring(3, 5)) * 60 + (parseInt(time.substring(6)));
   }
+}
+export class PropertiesTabClass {
+  executable_type: any;
+  executables: any;
+  executable_input: any;
+  executable_output: any;
+  executable_dsc: any;
+  display_output: any = false;
+  summary_output: any = false;
+  service_active: any = true;;
+  start_date: any = new Date();
+  end_date: any = new Date(new Date().setDate(new Date().getDate() + 5));
+  notification_email: any;
+  priority: any = 3;
+  async_sync_seconds: any = 300;
+  async_sync: any = 'sync';
+  restorability: any = "auto";
+  instances: any = "unlimited";
+  restorability_seconds: any = 30;
+  attemps: any = 3;
+  instances_priority: any = 400;
 }
