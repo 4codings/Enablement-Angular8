@@ -704,7 +704,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     for (let j = 0; j < this.V_PRF_NM.length; j++) {
       this.data.setchartstyling(this.APP_ID, this.PRCS_ID, this.SRC_ID, this.V_PRF_NM[j], this.V_PRF_VAL[j]).subscribe(
         () => {
-          //(res);
+          
         });
     }
   }
