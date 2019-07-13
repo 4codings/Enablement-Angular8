@@ -38,6 +38,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
 
   public opened: boolean;
   public treeopened: boolean = true;
+  public showRightIcon = false;
   private modeler: any;
   private url: string;
   private downloadUrl: string;
@@ -248,17 +249,18 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             const vPrcsCd = this.selectedPrcoess;
             if ($event.element.type === 'bpmn:SequenceFlow') {
               const data: any = {
-                REST_Service: 'Orchetration',
-                RESULT: '@RESULT',
+                REST_Service: 'SequenceFlow',
                 V_APP_CD: vAppCd,
-                V_CONT_ON_ERR_FLG: 'N',
-                V_PRCS_CD: vPrcsCd,
                 V_PRDCR_APP_CD: vAppCd,
+                V_PRCS_CD: vPrcsCd,
                 V_PRDCR_PRCS_CD: vPrcsCd,
+                V_SRC_CD: this.user.SRC_CD,
                 V_PRDCR_SRC_CD: this.user.SRC_CD,
                 V_PRDCR_SRVC_CD: sourceId,
-                V_SRC_CD: this.user.SRC_CD,
                 V_SRVC_CD: targetId,
+                V_TRNSN_TYP: 'None',
+                V_TRNSN_CND: "",
+                V_CONT_ON_ERR_FLG: 'N',
                 V_USR_NM: this.user.USR_NM,
                 Verb: 'PUT'
               };
@@ -304,7 +306,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             }
             setTimeout(() => {
               this.upload(vAppCd, vPrcsCd);
-            }, 2000);
+            }, this.ctrl_variables.delay_timeout);
           }
         });
     }
@@ -338,7 +340,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       });
     setTimeout(() => {
       this.upload(this.selectedApp, this.selectedPrcoess);
-    }, 2000);
+    }, this.ctrl_variables.delay_timeout);
   }
 
   addProcess() {
@@ -358,7 +360,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       });
     setTimeout(() => {
       this.upload(this.selectedApp, this.selectedPrcoess);
-    }, 2000);
+    }, this.ctrl_variables.delay_timeout);
   }
 
   upload(vAppCd, vPrcsCd) {
@@ -511,6 +513,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
 
   onTitleClick(item) {
+    this.showRightIcon = false;
     if (!item.children) {
       this.selectedApp = item.value;
       this.selectedPrcoess = item.text;
@@ -537,6 +540,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       case 'Add': {
         this.newBpmn();
         this.generalId = "newProcess";
+        this.showRightIcon = true;
         break;
       }
       case 'Import': {
@@ -563,6 +567,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         break;
       }
       case 'Edit': {
+        this.showRightIcon = true;
         break;
       }
       case 'Delete': {

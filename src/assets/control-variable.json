@@ -9,5 +9,6 @@
   "repeat_count": 5,
   "message_access_denied": "Sorry, you do not have access to this form",
   "effectiveEndDate": 1.577e+11,
-  "noRole": "No Role has been assigned. Contact your system admin"
+  "noRole": "No Role has been assigned. Contact your system admin",
+  "delay_timeout": 2000
 }
