@@ -8,6 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class SingleMachineComponent implements OnInit {
 
   @Input() machineData;
+  @Input() machines;
   V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
   V_USR_NM:string=JSON.parse(sessionStorage.getItem('u')).USR_NM;
 
@@ -26,6 +27,10 @@ export class SingleMachineComponent implements OnInit {
 
   onBtnAssignRoleClick(exeType) {
 
+  }
+
+  selectedMachineTile(connection) {
+    console.log("connection", connection);
   }
 
 }

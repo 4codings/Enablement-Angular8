@@ -46,6 +46,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   private bpmnTemplate: any;
   private flows = {};
   public showAllTabFlag = true;
+  public showCondtionType = false;
   @ViewChild('file')
   private file: any;
   @ViewChild('processForm') processForm: any;
@@ -82,7 +83,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   childobj = {};
   parentobj = {};
   selectedApp = '';
-  selectedPrcoess: string = '';
+  selectedProcess: string = '';
   selectedService = '';
   Label: any[] = [];
   resFormData: any;
@@ -108,33 +109,52 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   ColorBar = [];
   ColorBar_border = [];
   V_OLD_PRCS_CD: string = '';
+  isApp = false;
+  isProcess = false;
+  isService = false;
 
+  sequenceConditionType = [];
+  sequenceCondition = '';
+  selectedConditionType = '';
   //For property panel
+
   propertyPanelAllTabsData: any;
   executableTypesData = [];
   selectedExecutableType: string;
   selectedExecutable: string;
+  executableInput: any;
+  executableOutput: string;
+  executableDesc: string;
   executablesData = [];
 
   //property panel property tabs variables
   async_sync: string = "sync";
   restorability: string = "auto";
   instances: string = "unlimited";
+  display_output: any = false;
+  summary_output: any = false;
   isServiceActive: Boolean = true;
   isSynchronousActive: Boolean = true;
+  priority: any = 3;
+  async_sync_seconds: any = 300;
+  restorability_seconds: any = 30;
+  attemps: any = 3;
+  instances_priority: any = 400;
 
   //property panel general tab variables
   generalId: string;
   processName: string = '';
   documentation: string = '';
-  executableOutput: string;
-  executableDesc: string;
+
 
   currentDate: any = new Date();
   todaysDate: any = new Date();
   afterFiveDays: any = new Date(this.todaysDate.setDate(this.currentDate.getDate() + 5));
 
   userEmail: string;
+  sequenceFlowsourceId: any;
+  sequenceFlowtargetId: any;
+  iconType = '';
 
   constructor(
     private httpClient: HttpClient,
@@ -231,16 +251,41 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     if (eventBus) {
       eventBus.on('element.click', ($event) => {
         console.log('element.click', $event)
-
+        this.isApp = false;
+        this.isProcess = false;
+        this.isService = true;
         this.generalId = $event.element.id;
         if ($event && $event.element && ['bpmn:Task', 'bpmn:Event'].indexOf($event.element.type) > -1) {
+          this.selectedService = this.generalId;
+          this.showAllTabFlag = true;
+          this.getAllTabs(this.generalId);
+        }
+        if ($event && $event.element && ['bpmn:SequenceFlow'].indexOf($event.element.type) > -1) {
+          this.iconType = '';
+          const businessObject = $event.element.businessObject;
+          this.sequenceFlowsourceId = businessObject && businessObject.sourceRef ? businessObject.sourceRef.id : '';
+          this.sequenceFlowtargetId = businessObject && businessObject.targetRef ? businessObject.targetRef.id : '';
+          this.iconType = $event.element.type;
+          this.showAllTabFlag = false;
+          this.showCondtionType = true;
+          this.getConditionType();
           this.getAllTabs(this.generalId);
         }
       }),
         eventBus.on('element.changed', ($event) => {
           console.log('element.changed', $event)
-
+          if ($event && $event.element && ['bpmn:Process', 'label'].indexOf($event.element.type) > -1) {
+            this.isApp = false;
+            this.isProcess = true;
+            this.isService = false;
+            this.showAllTabFlag = false;
+          }
           if ($event && $event.element && ['bpmn:Process', 'label'].indexOf($event.element.type) === -1) {
+            this.selectedService = this.generalId;
+            this.showAllTabFlag = true;
+            this.isApp = false;
+            this.isProcess = false;
+            this.isService = true;
             console.log('fsd')
             const businessObject = $event.element.businessObject;
             const sourceId = businessObject && businessObject.sourceRef ? businessObject.sourceRef.id : '';
@@ -249,7 +294,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             // const vAppCd = 'V_APP_CD';
             // const vPrcsCd = 'V_PRCS_CD';
             const vAppCd = this.selectedApp;
-            const vPrcsCd = this.selectedPrcoess;
+            const vPrcsCd = this.selectedProcess;
             if ($event.element.type === 'bpmn:SequenceFlow') {
               const data: any = {
                 REST_Service: 'SequenceFlow',
@@ -311,6 +356,16 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
               this.upload(vAppCd, vPrcsCd);
             }, this.ctrl_variables.delay_timeout);
           }
+        }),
+        eventBus.on('connection.remove', ($event) => {
+          console.log('connection.remove', $event);
+          this.isApp = false;
+          this.isProcess = false;
+          this.isService = true;
+          if ($event && $event.element && ['bpmn:SequenceFlow'].indexOf($event.element.type) > -1) {
+            let id = $event.element.id;
+            this.deleteService(id);
+          }
         });
     }
   }
@@ -329,19 +384,101 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     if (this.processName == '') {
       this.processName = this.generalId;
     }
-    if (!this.showAllTabFlag) {
+    if (this.isApp) {
       this.addApplicationOnBE();
-    } else {
+    }
+    if (this.isService) {
+      this.updatesequenceFlow();
+    }
+    if (this.isProcess) {
       this.updateProcess();
     }
   }
+  updatesequenceFlow() {
+    const vAppCd = this.selectedApp;
+    const vPrcsCd = this.selectedProcess;
+    const data: any = {
+      REST_Service: 'SequenceFlow',
+      V_APP_CD: vAppCd,
+      V_PRDCR_APP_CD: vAppCd,
+      V_PRCS_CD: vPrcsCd,
+      V_PRDCR_PRCS_CD: vPrcsCd,
+      V_SRC_CD: this.user.SRC_CD,
+      V_PRDCR_SRC_CD: this.user.SRC_CD,
+      V_PRDCR_SRVC_CD: this.sequenceFlowsourceId,
+      V_SRVC_CD: this.sequenceFlowtargetId,
+      V_TRNSN_TYP: 'None',
+      V_TRNSN_CND: "",
+      V_CONT_ON_ERR_FLG: 'N',
+      V_USR_NM: this.user.USR_NM,
+      Verb: 'PUT'
+    };
+    this.http.post(this.apiService.endPoints.securedJSON, data, this.apiService.setHeaders())
+      .subscribe(res => {
+        if (res) {
+          // this.getApplicationProcess();
+        }
+      });
+  }
+  updateService() {
+    this.selectedService = this.generalId;
+    if (this.instances === 'single') {
+      this.instances_priority = 1;
+    } else if (this.instances === 'unlimited') {
+      this.instances_priority = -1;
+    }
+    const body = {
+      'V_APP_CD': this.selectedApp,
+      'V_PRCS_CD': this.selectedProcess,
+      'V_SRVC_CD': this.selectedService,
+      'V_EXE_TYP': this.selectedExecutableType,
+      'V_EXE_CD': this.selectedExecutable,
+      'V_PARAM_NM_IN': this.executableInput,
+      'V_PARAM_NM_OUT': this.executableOutput,
+      'V_NOTIF_GRP': this.userEmail,
+      'V_RESTART_FLG': this.restorability === 'AUTO' || this.restorability === 'MANUAL' ? 'Y' : 'N',
+      'V_RSTN_TYP': this.restorability,
+      'V_MAX_ATTMPT': this.attemps,
+      'V_ATTMPT_DRTN_SEC': this.restorability_seconds,
+      'V_SLA_MTS': 60.00,
+      'V_PRIORITY': this.priority,
+      'V_SRVC_JOB_LMT': this.instances_priority,
+      'V_EFF_STRT_DT_TM': this.currentDate,
+      'V_EFF_END_DT_TM': this.afterFiveDays,
+      'V_DSPLY_OUTPUT': this.display_output,
+      'V_SRVC_ACTIVE_FLG': this.isServiceActive,
+      'V_ADD_TO_SMMRY_RESULT': this.summary_output,
+      'V_ICN_TYP': this.iconType,
+      'REST_Service': 'DefinedService',
+      'V_SRC_CD': this.user.SRC_CD,
+      'V_USR_NM': this.user.USR_NM,
+      "Verb": "PUT"
+    };
+    this.http.post(this.apiService.endPoints.secure, body, this.apiService.setHeaders())
+      .subscribe(res => {
+        if (res) {
+          // this.getApplicationProcess();
+        }
+      });
+    // setTimeout(() => {
+    //   this.upload(this.selectedApp, this.selectedProcess);
+    // }, this.ctrl_variables.delay_timeout);
+  }
+  deleteService(id) {
+    if (id !== '' || id !== null) {
+      this.httpClient.delete(this.apiService.endPoints.securedJSON + 'V_APP_CD=' + this.selectedApp + '&V_PRCS_CD=' + this.selectedProcess + 'V_SRVC_CD=' + id + '&V_SRC_CD=' + this.user.SRC_CD + '&V_USR_NM=' + this.user.USR_NM + '&REST_Service=Service&Verb=DELETE')
+        .subscribe(res => {
+          this.selectedService = '';
+        })
+    }
+  }
   updateProcess() {
-
-    this.selectedPrcoess = this.generalId;
+    this.showAllTabFlag = false;
+    this.selectedProcess = this.generalId;
     const body = {
       'V_APP_CD': this.selectedApp,
       'V_OLD_PRCS_CD': this.V_OLD_PRCS_CD,
-      'V_NEW_PRCS_CD': this.selectedPrcoess,
+      'V_NEW_PRCS_CD': this.selectedProcess,
       'V_PRCS_DSC': this.documentation,
       'REST_Service': 'UpdateProcess',
       'V_SRC_CD': this.user.SRC_CD,
@@ -355,15 +492,21 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         }
       });
     setTimeout(() => {
-      this.upload(this.selectedApp, this.selectedPrcoess);
+      this.upload(this.selectedApp, this.selectedProcess);
     }, this.ctrl_variables.delay_timeout);
   }
-  getTaskTabsData() {
+  getConditionType() {
+    this.http.get(this.apiService.endPoints.securedJSON + "V_PRDCR_SRC_CD" + '' + "&V_PRDCR_APP_CD" + this.user.USR_NM + "&V_PRDCR_PRCS_CD" + this.user.USR_NM + "&V_PRDCR_SRVC_CD" + this.user.USR_NM + "&V_USR_NM" + this.user.USR_NM + "&V_SRC_CD=" + this.user.SRC_CD + "&V_APP_CD=" + this.selectedApp + "&V_PRCS_CD=" + this.selectedProcess + "&V_SRVC_CD=" + this.selectedService + "&REST_Service=SequenceFlow" + "&Verb=GET", this.apiService.setHeaders())
+      .subscribe(res => {
+        if (res) {
+          console.log('data', res.json());
+        }
+      });
   }
   addProcess() {
     const body = {
       'V_APP_CD': this.selectedApp,
-      'V_PRCS_CD': this.selectedPrcoess,
+      'V_PRCS_CD': this.selectedProcess,
       'REST_Service': 'NewProcess',
       'V_SRC_CD': this.user.SRC_CD,
       'V_USR_NM': this.user.USR_NM,
@@ -376,9 +519,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           document.getElementById("processId").focus();
         }
       });
-    setTimeout(() => {
-      this.upload(this.selectedApp, this.selectedPrcoess);
-    }, this.ctrl_variables.delay_timeout);
+    // setTimeout(() => {
+    //   this.upload(this.selectedApp, this.selectedProcess);
+    // }, this.ctrl_variables.delay_timeout);
   }
 
   upload(vAppCd, vPrcsCd) {
@@ -414,22 +557,25 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
 
   newBpmn() {
-    this.selectedPrcoess = 'newProcess';
-    this.V_OLD_PRCS_CD = this.selectedPrcoess;
+    this.selectedProcess = 'newProcess';
+    this.V_OLD_PRCS_CD = this.selectedProcess;
+    this.documentation = '';
+    this.processName = '';
+    this.showAllTabFlag = false;
     this.addProcess();
-    if (this.bpmnTemplate) {
-      this.modeler.importXML(this.bpmnTemplate, this.handleError.bind(this));
-    } else {
-      this.httpClient.get('/assets/bpmn/newDiagram.bpmn', {
-        headers: { observe: 'response' }, responseType: 'text'
-      }).subscribe(
-        (x: any) => {
-          this.modeler.importXML(x, this.handleError.bind(this));
-          this.bpmnTemplate = x;
-        },
-        this.handleError.bind(this)
-      );
-    }
+    // if (this.bpmnTemplate) {
+    //   this.modeler.importXML(this.bpmnTemplate, this.handleError.bind(this));
+    // } else {
+    this.httpClient.get('/assets/bpmn/newDiagram.bpmn', {
+      headers: { observe: 'response' }, responseType: 'text'
+    }).subscribe(
+      (x: any) => {
+        this.modeler.importXML(x, this.handleError.bind(this));
+        this.bpmnTemplate = x;
+      },
+      this.handleError.bind(this)
+    );
+    // }
   }
 
   downloadBpmn(processName) {
@@ -451,6 +597,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     }
   }
   addApplication() {
+    this.isApp = true;
+    this.isProcess = false;
+    this.isService = false;
     this.showRightIcon = true;
     this.opened = true;
     this.showAllTabFlag = false;
@@ -485,7 +634,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.item = [];
     if (this.appProcessList.length) {
       this.appProcessList.forEach(ele => {
-
         if (ele.process.length) {
           this.chilItem = [];
           ele.process.forEach(eleProcess => {
@@ -532,12 +680,17 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           })
           let copyParentrenMenuItems = [];
           copyParentrenMenuItems = [...this.parentMenuItems];
-          if (deleteCount == ele.auth.length) {
+          if (ele.process[0] === 'NULL') {
             copyParentrenMenuItems[2].havePermission = 1;
+            this.parentobj[ele.app] = copyParentrenMenuItems;
           } else {
-            copyParentrenMenuItems[2].havePermission = 0;
+            if (deleteCount == ele.auth.length) {
+              copyParentrenMenuItems[2].havePermission = 1;
+            } else {
+              copyParentrenMenuItems[2].havePermission = 0;
+            }
+            this.parentobj[ele.app] = copyParentrenMenuItems;
           }
-          this.parentobj[ele.app] = copyParentrenMenuItems;
         };
         let treeObj = new TreeviewItem({
           text: ele.app, value: ele.app, collapsed: true, children: this.chilItem
@@ -556,13 +709,23 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       }
     })
   }
-
+  updateTabs() {
+    // if (this.isProcess) {
+    //   this.updateProcess();
+    // } else 
+    if (this.isService) {
+      this.updateService();
+    }
+  }
   onTitleClick(item) {
+    this.isApp = false;
+    this.isProcess = true;
+    this.isService = false;
     this.showRightIcon = false;
     this.opened = false;
     if (!item.children) {
       this.selectedApp = item.value;
-      this.selectedPrcoess = item.text;
+      this.selectedProcess = item.text;
       const formData: FormData = new FormData();
       formData.append('FileInfo', JSON.stringify({
         File_Path: '/opt/tomcat/webapps/' + this.user.SRC_CD + '/' + item.value + '/',
@@ -594,6 +757,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     switch (actionValue) {
       case 'Add': {
         this.newBpmn();
+        this.isApp = false;
+        this.isProcess = true;
+        this.isService = false;
         this.generalId = "newProcess";
         this.showRightIcon = true;
         this.opened = true;
@@ -615,7 +781,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
   onChildMenuItemClick(actionValue, childValue) {
     this.selectedApp = childValue.value;
-    this.selectedPrcoess = childValue.text;
+    this.selectedProcess = childValue.text;
     switch (actionValue) {
       case 'Run': {
         this.add();
@@ -625,7 +791,11 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       case 'Edit': {
         this.showRightIcon = true;
         this.opened = true;
-        this.showAllTabFlag = true;
+        this.showAllTabFlag = false;
+        this.isApp = false;
+        this.isProcess = true;
+        this.isService = false;
+        this.generalId = this.selectedProcess;
         break;
       }
       case 'Delete': {
@@ -645,11 +815,11 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         break;
       }
       case 'BPNM': {
-        this.downloadBpmn(this.selectedPrcoess);
+        this.downloadBpmn(this.selectedProcess);
         break;
       }
       case 'SVG': {
-        this.downloadSvgBpmn(this.selectedPrcoess);
+        this.downloadSvgBpmn(this.selectedProcess);
         break;
       }
       default: {
@@ -658,14 +828,20 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     }
   }
   onDeleteProcess() {
-    if (this.selectedPrcoess !== '' || this.selectedPrcoess !== null) {
-      this.httpClient.delete(this.apiService.endPoints.securedJSON + 'V_APP_CD=' + this.selectedApp + '&V_PRCS_CD=' + this.selectedPrcoess + '&V_SRC_CD=' + this.user.SRC_CD + '&V_USR_NM=' + this.user.USR_NM + '&REST_Service=Process&Verb=DELETE')
+    if (this.selectedProcess !== '' || this.selectedProcess !== null) {
+      this.httpClient.delete(this.apiService.endPoints.securedJSON + 'V_APP_CD=' + this.selectedApp + '&V_PRCS_CD=' + this.selectedProcess + '&V_SRC_CD=' + this.user.SRC_CD + '&V_USR_NM=' + this.user.USR_NM + '&REST_Service=Process&Verb=DELETE')
         .subscribe(res => {
           this.selectedApp = '';
-          this.selectedPrcoess = '';
+          this.selectedProcess = '';
           this.generalId = '';
           this.processName = '';
           this.documentation = '';
+          this.isApp = false;
+          this.isProcess = false;
+          this.isService = false;
+          this.showRightIcon = false;
+          this.opened = false;
+          this.modeler.importXML('<?xml version="1.0" encoding="UTF-8"?><bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="2.0.3"></bpmn:definitions>');
           this.getApplicationProcess();
         })
     }
@@ -682,7 +858,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     if (this.processForm.valid) {
       const body = {
         'V_APP_CD': this.selectedApp,
-        'V_PRCS_CD': this.selectedPrcoess,
+        'V_PRCS_CD': this.selectedProcess,
         'V_SRVC_CD': 'START',
         'V_SRC_CD': this.user.SRC_CD,
         'V_USR_NM': this.user.USR_NM
@@ -692,7 +868,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       this.http.post(this.apiService.endPoints.secureProcessStart, body, this.apiService.setHeaders())
         .subscribe(res => {
           // console.log('start');
-          this.executedata = { SL_APP_CD: this.selectedApp, SL_PRC_CD: this.selectedPrcoess };
+          this.executedata = { SL_APP_CD: this.selectedApp, SL_PRC_CD: this.selectedProcess };
 
           this.StorageSessionService.setCookies('executedata', this.executedata);
           this.Execute_res_data = res.json();
@@ -705,9 +881,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   // Added for property panel related tabs
   getAllTabs(selService: any) {
     this.opened = true;
-    this.showAllTabFlag = true;
     this.showRightIcon = true;
-    this.endUserService.getAllTabs(this.selectedApp, this.selectedPrcoess, selService)
+    this.endUserService.getAllTabs(this.selectedApp, this.selectedProcess, selService)
       .subscribe(res => {
         if (res) {
           this.propertyPanelAllTabsData = res.json();
@@ -765,7 +940,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.selectedExecutable = value;
     this.getInputOutputForSelctedExecutable();
   }
-
+  updatesequenceConditionType(value: any) {
+    this.selectedConditionType = value;
+    this.onInputChange();
+  }
   serviceActiveSelected(value: Boolean) {
     this.isServiceActive = value;
   }
@@ -817,7 +995,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             } else {
               this.repeatCallTable(true);
             }
-            this.StorageSessionService.setCookies('App_Prcs', { 'V_APP_CD': this.selectedApp, 'V_PRCS_CD': this.selectedPrcoess });
+            this.StorageSessionService.setCookies('App_Prcs', { 'V_APP_CD': this.selectedApp, 'V_PRCS_CD': this.selectedProcess });
           } else {
             this.router.navigate(['End_User/Execute'], { queryParams: { page: 1 }, skipLocationChange: true });
           }
@@ -868,11 +1046,12 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     if (this.selectedApp !== '' || this.selectedApp !== null) {
       this.httpClient.delete(this.url + 'V_APP_CD=' + this.selectedApp + '&V_SRC_CD=' + this.user.SRC_CD + '&V_USR_NM=' + this.user.USR_NM + '&REST_Service=Application&Verb=DELETE')
         .subscribe((res: any) => {
-          let index = this.optionalService.applicationProcessArray.indexOf(this.selectedApp);
-          this.optionalService.applicationProcessArray.splice(index, 1);
-          this.optionalService.applicationProcessValue.next(this.optionalService.applicationProcessArray);
           this.selectedApp = '';
-          this.selectedPrcoess = '';
+          this.selectedProcess = '';
+          this.isApp = false;
+          this.isProcess = false;
+          this.isService = false;
+          this.getApplicationProcess();
         },
           this.handleError.bind(this))
     }
@@ -881,7 +1060,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.resFormData = [];
     let FormData: any[];
     // secure
-    this.apiService.requestSecureApi(this.apiService.endPoints.secure + 'V_APP_CD=' + this.selectedApp + '&V_PRCS_CD=' + this.selectedPrcoess + '&V_SRC_CD=' + this.user.SRC_CD + '&ResetOptimised=' + this.ResetOptimised + '&Lazyload=false' + '&REST_Service=ProcessParameters&Verb=GET', 'get').subscribe(
+    this.apiService.requestSecureApi(this.apiService.endPoints.secure + 'V_APP_CD=' + this.selectedApp + '&V_PRCS_CD=' + this.selectedProcess + '&V_SRC_CD=' + this.user.SRC_CD + '&ResetOptimised=' + this.ResetOptimised + '&Lazyload=false' + '&REST_Service=ProcessParameters&Verb=GET', 'get').subscribe(
       res => {
         FormData = res.json();
         const ref = { disp_dyn_param: false };
@@ -910,7 +1089,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
 
   getOptional_values(V_PARAM_NM, display_label) {
-    const secureUrl = this.apiService.endPoints.secure + 'V_SRC_CD=' + this.user.SRC_CD + '&V_APP_CD=' + this.selectedApp + '&V_PRCS_CD=' + this.selectedPrcoess + '&V_PARAM_NM=' + V_PARAM_NM + '&V_SRVC_CD=' + this.selectedService + '&REST_Service=ProcessParametersOptions&Verb=GET';
+    const secureUrl = this.apiService.endPoints.secure + 'V_SRC_CD=' + this.user.SRC_CD + '&V_APP_CD=' + this.selectedApp + '&V_PRCS_CD=' + this.selectedProcess + '&V_PARAM_NM=' + V_PARAM_NM + '&V_SRVC_CD=' + this.selectedService + '&REST_Service=ProcessParametersOptions&Verb=GET';
     const secure_encoded_url = encodeURI(secureUrl);
     this.http.get(secure_encoded_url, this.apiService.setHeaders()).subscribe(
       res => {
@@ -921,7 +1100,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
 
   Update_value(v: any, n: any) { //v=value and n=paramter name
     this.FilterAutoValue = v;
-    this.apiService.requestSecureApi(this.url + 'V_APP_CD=' + this.selectedApp + '&V_PRCS_CD=' + this.selectedPrcoess + '&V_SRC_CD=' + this.user.SRC_CD + '&V_USR_NM=' + this.user.USR_NM + '&V_PARAM_NM=' + n + '&V_PARAM_VAL=' + v + '&REST_Service=ProcessParameters&Verb=PATCH', 'get').subscribe(
+    this.apiService.requestSecureApi(this.url + 'V_APP_CD=' + this.selectedApp + '&V_PRCS_CD=' + this.selectedProcess + '&V_SRC_CD=' + this.user.SRC_CD + '&V_USR_NM=' + this.user.USR_NM + '&V_PARAM_NM=' + n + '&V_PARAM_VAL=' + v + '&REST_Service=ProcessParameters&Verb=PATCH', 'get').subscribe(
       res => {
       }
     );
@@ -1248,25 +1427,4 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   time_to_sec(time): any {
     return parseInt(time.substring(0, 2)) * 3600 + parseInt(time.substring(3, 5)) * 60 + (parseInt(time.substring(6)));
   }
-}
-export class PropertiesTabClass {
-  executable_type: any;
-  executables: any;
-  executable_input: any;
-  executable_output: any;
-  executable_dsc: any;
-  display_output: any = false;
-  summary_output: any = false;
-  service_active: any = true;;
-  start_date: any = new Date();
-  end_date: any = new Date(new Date().setDate(new Date().getDate() + 5));
-  notification_email: any;
-  priority: any = 3;
-  async_sync_seconds: any = 300;
-  async_sync: any = 'sync';
-  restorability: any = "auto";
-  instances: any = "unlimited";
-  restorability_seconds: any = 30;
-  attemps: any = 3;
-  instances_priority: any = 400;
 }

@@ -1,7 +1,7 @@
 <div class="tile-container">
   <div class="container-header" fxLayoutAlign="space-between center">
     <span class="container-title">{{exeType.EXE_TYP}}</span>
-    <div class="container-actions">
+    <!-- <div class="container-actions">
       <button mat-icon-button matTooltip="delete exetype" (click)="onBtnDeleteExeClick(exeType)">
         <mat-icon>delete</mat-icon>
       </button>
@@ -11,8 +11,8 @@
       <button mat-icon-button matTooltip="assign" (click)="onBtnAssignRoleClick(exeType)">
         <mat-icon>link</mat-icon>
       </button>
-    </div>
+    </div> -->
   </div>
-  <app-exe-tile-list [exes]="exes"></app-exe-tile-list>
+  <app-exe-tile-list [exes]="exeType" (selectedExeTile)="selectedExeTile($event)"></app-exe-tile-list>
 </div>
 

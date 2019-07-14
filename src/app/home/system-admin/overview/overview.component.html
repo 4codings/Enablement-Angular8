@@ -22,9 +22,9 @@
     </div>
   </div>
   <div fxLayout="row" fxLayoutGap="8px" class="content-wrapper">
-    <app-exe-types-list [fxFlex]="selectedExeType == 'All' ? 50 : 100" (selectedExe)="selectedExe($event)"></app-exe-types-list>
-    <mat-divider [vertical]="true" *ngIf="selectedExeType == 'All'"></mat-divider>
-    <app-machines-list fxFlex="50" *ngIf="selectedExeType == 'All'" (selectedMachine)="selectedMachine($event)"></app-machines-list>
+    <app-exe-types-list [fxFlex]="50 " (selectedExe)="selectedExe($event)"></app-exe-types-list>
+    <mat-divider [vertical]="true"></mat-divider>
+    <app-machines-list fxFlex="50" (selectedMachine)="selectedMachine($event)"></app-machines-list>
   </div>
 </div>
 

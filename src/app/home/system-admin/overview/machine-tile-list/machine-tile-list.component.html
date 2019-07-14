@@ -1,39 +1,19 @@
-<!-- <div class="tiles-wrapper" fxLayout="row wrap"
-     cdkDropList
-     [cdkDropListData]="users"
-     (cdkDropListDropped)="userDropped($event)"
-     cdkDropListOrientation="horizontal">
+<div class="tiles-wrapper" fxLayout="row wrap"
+    cdkDropList
+    [cdkDropListData]="connectionList"
+    (cdkDropListDropped)="connectionDropped($event)"
+    cdkDropListOrientation="horizontal">
   <div class="tile"
        matRipple
        cdkDrag
-       [cdkDragData]="currUser"
-       [matTooltip]="currUser.V_USR_NM"
-       *ngFor="let currUser of exes"
-       [class.active]="currUser == selectedUser"
-       [class.highlight]="highlightedUsers.isSelected(currUser)"
-       (contextmenu)="openContextmenu($event, currUser)"
-       (mousedown)="onTileMouseDownEventHandler($event)"
-       (click)="onUserTileClick(currUser)">
-    <mat-icon class="tile-icon">person</mat-icon>
-   <div *ngIf="!environment.production">{{currUser.V_USR_ID}}</div>
-    <div class="ellipsis-text"><strong>{{currUser.V_USR_NM?.split('@')[0]}}</strong></div>
-  </div>
-  <div class="tile add-new-tile" cdkDrag [cdkDragDisabled]="true" (click)="onAddUserTileClick()"
-       matTooltip="Add User" matRipple>
-    <mat-icon>add_circle</mat-icon>
-  </div>
-</div>
-<div fxLayout="column" fxLayoutAlign="start stretch" class="context-menu" #contextMenu *ngIf="contextMenuActive"
-     [ngStyle]="contextMenuStyle">
-  <button mat-button class="menu-item" (click)="onContextMenuEditUserBtnClick()">Edit</button>
-  <button mat-button class="many-item" (click)="onContextMenuDeleteUserBtnClick()">Delete</button>
-</div> -->
-<div class="tiles-wrapper" fxLayout="row wrap">
-  <div class="tile"
-       matRipple
+       [cdkDragData]="currConn"
        [matTooltip]="currConn.V_CXN_CD"
        *ngFor="let currConn of connectionList"
-       (click)="onUserTileClick(currConn)">
+       [class.active]="currConn == selectedMachine"
+       [class.highlight]="currConn.V_CXN_TYP == selectedExe.V_EXE_TYP"
+       (contextmenu)="openContextmenu($event, currConn)"
+       (mousedown)="onTileMouseDownEventHandler($event)"
+       (click)="onConnectionTileClick(currConn)">
     <!-- <mat-icon class="tile-icon">person</mat-icon> -->
     <mat-icon class="iconmod shwmaticon">insert_link</mat-icon>
    <!-- <div>{{currConn.EXE_CD}}</div> -->
@@ -46,6 +26,6 @@
 </div>
 <!-- <div fxLayout="column" fxLayoutAlign="start stretch" class="context-menu" #contextMenu *ngIf="contextMenuActive"
      [ngStyle]="contextMenuStyle">
-  <button mat-button class="menu-item" (click)="onContextMenuEditUserBtnClick()">Edit</button>
-  <button mat-button class="many-item" (click)="onContextMenuDeleteUserBtnClick()">Delete</button>
+  <button mat-button class="menu-item" (click)="onContextMenuEditConnBtnClick()">Edit</button>
+  <button mat-button class="many-item" (click)="onContextMenuDeleteConnBtnClick()">Delete</button>
 </div>  -->

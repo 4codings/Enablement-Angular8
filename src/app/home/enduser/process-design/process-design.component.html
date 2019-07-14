@@ -3,7 +3,7 @@
   <div class="form-inline row-item">
     <i *ngIf="item.children" (click)="onCollapseExpand()" aria-hidden="true" class="fa"
       [class.fa-caret-right]="item.collapsed" [class.fa-caret-down]="!item.collapsed"></i>
-    <div class="form-check">
+    <div class="form-check" *ngIf="item.text!=='NULL'">
       <label class="form-check-label" (click)="onTitleClick(item)">
         {{item.text}}
       </label>
@@ -53,6 +53,10 @@
       </div>
     </mat-sidenav>
     <div fxFlex="100">
+      <div class="parent">
+        <h5 *ngIf="selectedApp!=''">{{selectedApp}}</h5>
+        <h5 *ngIf="selectedProcess!=''">{{selectedProcess}}</h5>
+      </div>
       <section>
         <div fxLayout="row">
           <div fxFlex="20px" class="toggle">
@@ -276,7 +280,7 @@
       <div id="properties">
 
         <label><b> {{ generalId }} </b></label>
-        <mat-tab-group mat-align-tabs="start">
+        <mat-tab-group mat-align-tabs="start" (selectedTabChange)="updateTabs()">
 
           <mat-tab label="General">
             <div class="generalTabV">
@@ -294,9 +298,28 @@
 
             <label><i> {{Label['DOCUMENTATION']}}</i></label>
             <input (change)="onInputChange()" [(ngModel)]="documentation">
+            <div *ngIf="showCondtionType">
+              <div class="spaceDiv">
+                <mat-divider></mat-divider>
+              </div>
+              <label>{{Label['CONDITION_TYPE']}}</label>
+              <select (change)="updatesequenceConditionType($event.target.value)">
+                <option>{{Label['PLEASE_SELECT']}}</option>
+                <option *ngFor="let condition of sequenceConditionType " [value]="condition">
+                  {{ condition}}
+                </option>
+              </select>
+              <div
+                *ngIf="selectedConditionType==='Simple Expression' || selectedConditionType==='Java Script'|| selectedConditionType==='Java'|| selectedConditionType==='Python'|| selectedConditionType==='SQL Statement'">
+                <div class="oneSpace"></div>
+                <label>{{Label['CONDITION']}}</label>
+                <textarea (change)="onInputChange()" [(ngModel)]="sequenceCondition"></textarea>
+              </div>
+            </div>
           </mat-tab>
 
           <mat-tab *ngIf="showAllTabFlag" label="Enable">
+
             <label>{{Label['EXECUTABLE_TYPES']}}</label>
             <select (change)="updateselectedExecutableType($event.target.value)">
               <option>{{Label['PLEASE_SELECT']}}</option>
@@ -314,7 +337,7 @@
             </select>
             <div class="oneSpace"></div>
             <label>{{Label['EXECUTABLE_INPUT']}}</label>
-            <input>
+            <input [(ngModel)]="executableInput">
             <div class="oneSpace"></div>
             <label>{{Label['EXECUTABLE_OUTPUT']}}</label>
             <input disabled [(ngModel)]="executableOutput">
@@ -324,12 +347,12 @@
             <div class="spaceDiv">
               <mat-divider></mat-divider>
             </div>
-            <label>
+            <!-- <label>
               <b>{{Label['PLATFORM']}}</b>
             </label>
             <label>
               {{Label['MYSQL']}}
-            </label>
+            </label> -->
           </mat-tab>
 
           <mat-tab *ngIf="showAllTabFlag" label="Properties">
@@ -341,12 +364,12 @@
             <div *ngIf="isServiceActive">
               <label>{{Label['START_DATE']}}</label>
               <mat-form-field class="form_input">
-                <input matInput [value]="currentDate" [owlDateTimeTrigger]="startDate" [owlDateTime]="startDate">
+                <input matInput [(ngModel)]="currentDate" [owlDateTimeTrigger]="startDate" [owlDateTime]="startDate">
                 <owl-date-time #startDate></owl-date-time>
               </mat-form-field>
               <label>{{Label['END_DATE']}}</label>
               <mat-form-field class="form_input">
-                <input matInput [value]="afterFiveDays" [owlDateTimeTrigger]="endDate" [owlDateTime]="endDate">
+                <input matInput [(ngModel)]="afterFiveDays" [owlDateTimeTrigger]="endDate" [owlDateTime]="endDate">
                 <owl-date-time #endDate></owl-date-time>
               </mat-form-field>
             </div>
@@ -355,7 +378,7 @@
             </div>
 
             <label>{{Label['NOTIFICATION_EMAIL']}} </label>
-            <input type="email" [value]="userEmail" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}">
+            <input type="email" [(ngModel)]="userEmail" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}">
 
             <div class="spaceDiv">
               <mat-divider></mat-divider>
@@ -367,13 +390,13 @@
             </mat-radio-group>
             <div *ngIf="async_sync==='sync'">
               <div class="row row1">
-                <input id="seconds" type="number" value=300>
+                <input id="seconds" type="number" [(ngModel)]="async_sync_seconds">
                 <label id="seconds_label">{{Label['SECONDS']}}</label>
               </div>
               <div class="oneSpace"></div>
               <div class="row row1">
                 <label id="priority_label">{{Label['PRIORITY']}}</label>
-                <input id="priority" type="number" value=3>
+                <input id="priority" type="number" [(ngModel)]="priority">
               </div>
             </div>
 
@@ -383,18 +406,18 @@
 
             <label>{{Label['RESTORABILITY']}}</label>
             <mat-radio-group [(ngModel)]="restorability">
-              <mat-radio-button value="none">{{Label['NONE']}}</mat-radio-button>
-              <mat-radio-button value="manual">{{Label['MANUAL']}}</mat-radio-button>
-              <mat-radio-button value="auto">{{Label['AUTO']}}</mat-radio-button>
+              <mat-radio-button value="NONE">{{Label['NONE']}}</mat-radio-button>
+              <mat-radio-button value="MANUAL">{{Label['MANUAL']}}</mat-radio-button>
+              <mat-radio-button value="AUTO">{{Label['AUTO']}}</mat-radio-button>
             </mat-radio-group>
-            <div *ngIf="restorability==='auto'">
+            <div *ngIf="restorability==='AUTO'">
               <div class="row row1">
-                <input id="seconds" type="number" value=3>
+                <input id="seconds" type="number" [(ngModel)]="attemps">
                 <label id="seconds_label">{{Label['ATTEMPS']}}</label>
               </div>
               <div class="oneSpace"></div>
               <div class="row row1">
-                <input id="seconds" type="number" value=30>
+                <input id="seconds" type="number" [(ngModel)]="restorability_seconds">
                 <label id="seconds_label">{{Label['SECONDS']}}</label>
               </div>
             </div>
@@ -410,7 +433,7 @@
               <div class="row row1">
                 <mat-radio-button value="limited">{{Label['LIMITED']}}</mat-radio-button>
                 <div *ngIf="instances==='limited'">
-                  <input id="priority" type="number" value=100>
+                  <input id="priority" type="number" [(ngModel)]="instances_priority">
                 </div>
               </div>
             </mat-radio-group>

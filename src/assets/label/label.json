@@ -128,5 +128,7 @@
   "INSTANCES": "Instances",
   "SINGLE": "Single",
   "UNLIMITED": "Unlimited",
-  "LIMITED": "Limited"
+  "LIMITED": "Limited",
+  "CONDITION_TYPE": "Condition Type",
+  "CONDITION": "Condition"
 }
