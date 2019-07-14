@@ -13,5 +13,5 @@
       </button>
     </div>
   </div>
-  <app-machine-tile-list [connectionList]="machineData.V_CXN"></app-machine-tile-list>
+  <app-machine-tile-list [connectionList]="machines" (selectedMachineTile)="selectedMachineTile($event)"></app-machine-tile-list>
 </div>

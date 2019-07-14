@@ -143,6 +143,7 @@ export class OverviewService implements OnDestroy {
 
 
   selectAuthType(type): void {
+    console.log("selectedAuthType",type)
     this.selectedAuthType = type;
     this.selectedAuthType$.next(this.selectedAuthType);
   }

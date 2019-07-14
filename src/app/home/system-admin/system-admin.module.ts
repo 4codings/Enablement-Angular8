@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 import { SystemAdminComponent } from './system-admin.component';
 import { PlatformComponent } from './platform/platform.component';
 import { SystemAdminRoutingModule } from './system-admin-routing.module';
@@ -25,18 +26,20 @@ import { SingleMachineComponent } from './overview/single-machine/single-machine
 import { MachineTileListComponent } from './overview/machine-tile-list/machine-tile-list.component';
 import { FilterExetypePipe } from './overview/pipes/filter-exetype.pipe';
 import { FilterMachinesPipe } from './overview/pipes/filter-machines.pipe';
+import { AddExeDialogComponent } from './overview/dialogs/add-exe-dialog/add-exe-dialog.component';
 
 @NgModule({
-  declarations: [SystemAdminComponent, PlatformComponent, ConnectionComponent, DeployStatusComponent, DeploymentComponent, DeploymentsnavbarComponent, InstallComponent, MachineComponent, MachineconnectionComponent, MachinespecsComponent, OverviewComponent, MachinesListComponent, SingleExeComponent, ExeTileListComponent, AddPlatformDialogComponent, EditExeTypeDialogComponent, ExeTypesListComponent, SingleMachineComponent, MachineTileListComponent, FilterExetypePipe, FilterMachinesPipe],
+  declarations: [SystemAdminComponent, PlatformComponent, ConnectionComponent, DeployStatusComponent, DeploymentComponent, DeploymentsnavbarComponent, InstallComponent, MachineComponent, MachineconnectionComponent, MachinespecsComponent, OverviewComponent, MachinesListComponent, SingleExeComponent, ExeTileListComponent, AddPlatformDialogComponent, EditExeTypeDialogComponent, ExeTypesListComponent, SingleMachineComponent, MachineTileListComponent, FilterExetypePipe, FilterMachinesPipe, AddExeDialogComponent],
   imports: [
     CommonModule,
     SystemAdminRoutingModule,
     SharedModule,
     HeaderModule,
     FormsModule,
+    DragDropModule,
     ReactiveFormsModule.withConfig({ warnOnNgModelWithFormControl: 'never' })
   ],
-  entryComponents: [AddPlatformDialogComponent, EditExeTypeDialogComponent]
+  entryComponents: [AddPlatformDialogComponent, EditExeTypeDialogComponent, AddExeDialogComponent]
 })
 export class SystemAdminModule {
   constructor(){
