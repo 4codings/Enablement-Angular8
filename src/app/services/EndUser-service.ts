@@ -102,29 +102,29 @@ export class EndUserService {
     /*
         To populate General, Enable and Properties tabs
     */
-    getAllTabs(application: string, process: string, srcCode: string){
-        return this.http.get(this.baseSecureJsonUrl + "V_SRC_CD=" + this.V_SRC_CD  + "&V_APP_CD=" + application +  "&V_PRCS_CD=" + process + "&V_SRVC_CD=" + srcCode + "&REST_Service=DefinedService" + "&Verb=GET", this.apiService.setHeaders());
+    getAllTabs(application: string, process: string, srcCode: string) {
+        return this.http.get(this.baseSecureJsonUrl + "V_SRC_CD=" + this.V_SRC_CD + "&V_APP_CD=" + application + "&V_PRCS_CD=" + process + "&V_SRVC_CD=" + srcCode + "&REST_Service=DefinedService" + "&Verb=GET", this.apiService.setHeaders());
     }
 
     /*
         To list all executable types
     */
-   getAllExecutableTypes(){
+    getAllExecutableTypes() {
         return this.http.get(this.baseSecureJsonUrl + "V_SRC_CD=" + this.V_SRC_CD + "&V_CD_TYP=EXE" + "&REST_Service=Masters" + "&Verb=GET", this.apiService.setHeaders());
-    }    
+    }
 
     /*
         To populate executable(s) based on selected executable type
     */
-   getExecutablesForSelctedExecutableType(executableType : String){
-        return this.http.get(this.baseSecureJsonUrl + "V_SRC_CD=" + this.V_SRC_CD + "&V_EXE_TYP="+ executableType +"&V_USR_NM=" +this.V_USR_NM + "&REST_Service=UsersExe&Verb=GET", this.apiService.setHeaders());
+    getExecutablesForSelctedExecutableType(executableType: String) {
+        return this.http.get(this.baseSecureJsonUrl + "V_SRC_CD=" + this.V_SRC_CD + "&V_EXE_TYP=" + executableType + "&V_USR_NM=" + this.V_USR_NM + "&REST_Service=UsersExe&Verb=GET", this.apiService.setHeaders());
     }
-    
+
     /*
         To fetch Input/Output for selected executable 
     */
-    getInputOutputForSelctedExecutable(executableType : String, executable : String){
+    getInputOutputForSelctedExecutable(executableType: String, executable: String) {
         // TODO V_UNIQUE_ID should be populated dynamically
-        return this.http.get(this.baseSecureJsonUrl + "V_UNIQUE_ID=" + "28190" + "&V_EXE_TYP="+ executableType + "&V_EXE_CD=" + executable + "&V_SRC_CD=" + this.V_SRC_CD +  "&V_USR_NM=" + this.V_USR_NM  +"&REST_Service=Exe&Verb=GET", this.apiService.setHeaders());
-    }        
+        return this.http.get(this.baseSecureJsonUrl + "V_UNIQUE_ID=" + "28190" + "&V_EXE_TYP=" + executableType + "&V_EXE_CD=" + executable + "&V_SRC_CD=" + this.V_SRC_CD + "&V_USR_NM=" + this.V_USR_NM + "&REST_Service=Exe&Verb=GET", this.apiService.setHeaders());
+    }
 }
