@@ -432,10 +432,10 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
             beginAtZero: true,
             callback: function (label) {
               if (label > 1000) {
-                return (label / 1000);
+                return unit + " " + label/1000 + " k";
               }
               else {
-                return unit + " " + label + " k";
+                return unit + " " + label;
               }
             }
           }
@@ -464,10 +464,10 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
             beginAtZero: true,
             callback: function (label) {
               if (label > 1000) {
-                return (label / 1000);
+                return unit + " " + label/1000 + " k";
               }
               else {
-                return unit + " " + label + " k";
+                return unit + " " + label;
               }
             }
           }
@@ -560,12 +560,11 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
             fontColor: this.barChartColors[0].borderColor,
             beginAtZero: true,
             callback: function (label) {
-
               if (label > 1000) {
-                return (label / 1000);
+                return unit + " " + label/1000 + " k";
               }
               else {
-                return (unit + " " + label);
+                return unit + " " + label;
               }
             }
           },
@@ -593,12 +592,11 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
             fontColor: this.barChartColors[i].borderColor,
             beginAtZero: true,
             callback: function (label) {
-
               if (label > 1000) {
-                return (label / 1000);
+                return unit + " " + label/1000 + " k";
               }
               else {
-                return (unit + " " + label);
+                return unit + " " + label;
               }
             }
           },
