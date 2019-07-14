@@ -9,7 +9,10 @@
     color: inherit;
   }
 }
-
+.parent {
+  text-align: center;
+  align-content: center;
+}
 .toggle,
 .import-export {
   button {
@@ -40,12 +43,27 @@
   min-width: 60px;
 }
 
-// :host /deep/ .djs-palette .djs-palette-entries {
-//   content: '';
-//   display: none;
-//   clear: both;
-// }
-:host /deep/ .bpmn-icon-hand-tool:before { content: '\e868';color: aqua; }
+:host /deep/ .bjs-container .djs-container .djs-palette .two-open {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  box-sizing: border-box;
+  width: 48px;
+}
+
+:host /deep/ .bjs-container .djs-container .djs-palette .hide {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  box-sizing: border-box;
+  width: 48px;
+  display: none;
+}
+
+:host /deep/ .bpmn-icon-hand-tool:before {
+  content: '\e868';
+  color: aqua;
+}
 
 :host /deep/ label {
   text-align: center;
