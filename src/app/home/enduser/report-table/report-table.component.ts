@@ -2,7 +2,6 @@ import { Component, OnInit, AfterViewInit, ViewChild, ChangeDetectorRef, ViewEnc
 import { Http } from '@angular/http';
 import { Router } from '@angular/router'
 import { MatTableDataSource, MatSort, MatDialog } from '@angular/material';
-import * as ChartAnnotation from 'chartjs-plugin-annotation';
 import { DialogChartsComponent } from './dialog-charts/dialog-charts.component';
 import { ConfigServiceService } from 'src/app/services/config-service.service';
 import { Globals } from 'src/app/services/globals';
@@ -10,7 +9,6 @@ import { Globals2 } from 'src/app/service/globals';
 import { EndUserService } from 'src/app/services/EndUser-service';
 import { ApiService } from 'src/app/service/api/api.service';
 import { StorageSessionService } from 'src/app/services/storage-session.service';
-import { FormControl } from '@angular/forms';
 import * as pluginAnnotations from 'chartjs-plugin-annotation';
 import { BaseChartDirective } from 'ng2-charts-x';
 
@@ -50,7 +48,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
       this.hiddencols.splice(index, 1);
       this.columnsToDisplay.splice(0, 0, item);
     }
-    this.sethiddencolsconfig();
+    this.settablepreferences();
   }
 
   pointer = 0;
@@ -129,13 +127,14 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
       case 'Charts':
         this.disptable = false;
         this.dispchart = true;
-        this.getchartstyling();
+        this.getchartpreferences();
         break;
       case 'Both':
         this.disptable = true;
         this.dispchart = true;
         break;
     }
+    this.settablepreferences();
   }
   //___________________________Chart configuration ______________________________________
   yaxiscallbacks = ['$', '£', '€', '₹', 'm', 'km', 'k', 'gm', 'kg', 's'];
@@ -172,6 +171,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   _animations = "easeInOutQuad";
   _pointradius = "normal";
   _linestyle = "solid";
+  _gridlinedash_= true;
   lineten: number = 0;
   pointrad: number = 8;
   chartlabels = ["Test 1","Test 2","Test 3","Test 4","Test 5"];
@@ -314,11 +314,10 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     }
     this._linestyle == "dashed" ? this._borderdash = [5, 5] : this._borderdash = [];
     this._gridborder == true ? this._gridlinedash = [10, 10] : this._gridlinedash = [];
-    console.log(this._xaxis_sel_line);
     this._xaxis_sel_line != "" ? this.lineChartLabels = this.Table_of_Data5[this._xaxis_sel_line]
     :this.lineChartLabels=this.chartlabels;
 
-    if (this._yaxis_sel_line != []) {
+    if (this._yaxis_sel_line != [] && this._yaxis_sel_line != undefined) {
       // this.yaxis_data = this.Table_of_Data5[this._yaxis1_sel].map(Number);
       for (let i = 0; i < this._yaxis_sel_line.length; i++) {
         this.yaxis_data_line[i] = this.Table_of_Data5[this._yaxis_sel_line[i]].map(Number);
@@ -483,7 +482,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     // this.barChartLabels = [];
     this.barChartOptions = null;
 
-    if (this._yaxis_sel_bar != []) {
+    if (this._yaxis_sel_bar != [] && this._yaxis_sel_bar != undefined) {
       for (let i = 0; i < this._yaxis_sel_bar.length; i++) {
         this.yaxis_data_bar[i] = this.Table_of_Data5[this._yaxis_sel_bar[i]].map(Number);
         this.barChartData[i] = {
@@ -615,7 +614,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     // this.pieChartData = [];
     // this.pieChartLabels = [];
 
-    if (this._yaxis_sel_pie != []) {
+    if (this._yaxis_sel_pie != [] && this._yaxis_sel_pie != undefined) {
       for (let i = 0; i < this._yaxis_sel_pie.length; i++) {
         this.yaxis_data_pie[i] = this.Table_of_Data5[this._yaxis_sel_pie[i]].map(Number);
         this.pieChartData.push({
@@ -631,7 +630,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     // this.doughnutChartData = [];
     // this.doughnutChartLabels = [];
 
-    if (this._yaxis_sel_doughnut != []) {
+    if (this._yaxis_sel_doughnut != [] && this._yaxis_sel_doughnut != undefined) {
       for (let i = 0; i < this._yaxis_sel_doughnut.length; i++) {
         this.yaxis_data_doughnut[i] = this.Table_of_Data5[this._yaxis_sel_doughnut[i]].map(Number);
         this.doughnutChartData.push({
@@ -649,20 +648,59 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     this.updatePieChart();
     this.updateDoughnutChart();
   }
-  //__________________________get chart styling________________________________
-  getchartstyling() {
-    this.data.getchartstyling(this.APP_ID, this.PRCS_ID, this.SRC_ID).subscribe(
-      res => {
-        (res.json());
-        var result = res.json();
-        var name = result.PRF_NM;
-        var value = result.PRF_VAL;
-        this.V_PRF_NM = name;
-        this.V_PRF_VAL = value;
-        for (let i = 0; i < name.length; i++) {
 
-          this.userprefs[name[i]] = value[i];
+  //__________________________Set Preferences_________________________________
+  setchartpreferences() {
+    this.userprefs['backgroundcolor'] = this._backgroundColor;
+    this.userprefs['bordercolor'] = this._borderColor;
+    this.userprefs['fill'] = this._fill.toString().toLocaleUpperCase();
+    this.userprefs['pointstyle'] = this._pointstyle;
+    this.userprefs['linetension'] = this._linetension;
+    this.userprefs['animations'] = this._animations;
+    this.userprefs['pointradius'] = this._pointradius;
+    this.userprefs['linestyle'] = this._linestyle;
+    this.userprefs['gridlinedashed'] = this._gridborder.toString().toLocaleUpperCase();
+    this.userprefs['linewidth'] = this._gridlinewidth;
+    this.userprefs['yautoskip'] = this._yaxisAutoskip.toString().toLocaleUpperCase();
+    this.userprefs['linexaxis'] = this._xaxis_sel_line;
+    this.userprefs['lineyaxis'] = this._yaxis_sel_line;
+    this.userprefs['barxaxis'] = this._xaxis_sel_bar;
+    this.userprefs['baryaxis'] = this._yaxis_sel_bar;
+    this.userprefs['piexaxis'] = this._xaxis_sel_pie;
+    this.userprefs['pieyaxis'] = this._yaxis_sel_pie;
+    this.userprefs['doughnutxaxis'] = this._xaxis_sel_doughnut;
+    this.userprefs['doughnutyaxis'] = this._yaxis_sel_doughnut;
+    this.userprefs['selectedchart'] = this.selectedchart;
+    console.log(this.userprefs);
+    this.V_PRF_NM = Object.keys(this.userprefs);
+    this.V_PRF_VAL = Object.values(this.userprefs);
+    for (let j = 0; j < this.V_PRF_NM.length; j++) {
+      this.data.setchartstyling(this.APP_ID, this.PRCS_ID, this.SRC_ID, this.V_PRF_NM[j], this.V_PRF_VAL[j]).subscribe(
+        () => {
+
+        });
+    }
+
+    
+  }
+  settablepreferences(){
+    if(this.hiddencols.length > -1){
+      var abc = this.hiddencols.toString();
+      this.userprefs['hiddencolname'] = abc;
+    }
+    this.userprefs['displaychoice'] = this.show_choice;
+      this.V_PRF_NM = Object.keys(this.userprefs);
+      this.V_PRF_VAL = Object.values(this.userprefs);
+      for (let j = 0; j < this.V_PRF_NM.length; j++) {
+        this.data.setchartstyling(this.APP_ID, this.PRCS_ID, this.SRC_ID, this.V_PRF_NM[j], this.V_PRF_VAL[j]).subscribe(
+          () => {
+            //(res);
+          });
         }
+  }
+
+  //__________________________Get Preferences________________________________
+  getchartpreferences() {
         if(this.userprefs['backgroundcolor']!=undefined)
         this._backgroundColor = this.userprefs['backgroundcolor'];
         if(this.userprefs['bordercolor']!=undefined)
@@ -679,68 +717,41 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         this._pointradius = this.userprefs['pointradius'];
         if(this.userprefs['linestyle']!=undefined)
         this._linestyle = this.userprefs['linestyle'];
+        if(this.userprefs['gridlinedashed']!=undefined)
+        this._gridborder = this.userprefs['gridlinedashed'];
+
         this._fill.toString().toUpperCase() == "TRUE" ? this._fill = true : this._fill = false;
         this._linestyle == "dashed" ? this._borderdash = [5, 5] : this._borderdash = [];
-        this._gridborder.toString().toLocaleUpperCase()=="TRUE" ? this._gridborder = true : this._gridborder = false;
+        this._gridborder.toString().toUpperCase()=="TRUE" ? this._gridborder = true : this._gridborder = false;
         this._gridlinewidth = this.userprefs['linewidth'];
         this._yaxisAutoskip.toString().toUpperCase() == "TRUE" ? this._yaxisAutoskip = true : this._yaxisAutoskip = false;
+        if(this.userprefs['linexaxis']!= undefined && this.userprefs['linexaxis']!="")
+        this._xaxis_sel_line = this.userprefs['linexaxis'];
+        if(this.userprefs['lineyaxis']!= undefined && this.userprefs['lineyaxis']!="")
+        this._yaxis_sel_line = this.userprefs['lineyaxis'].toString().split(',');
+        if(this.userprefs['barxaxis']!= undefined && this.userprefs['barxaxis']!="")
+        this._xaxis_sel_bar = this.userprefs['barxaxis'];
+        if(this.userprefs['baryaxis']!= undefined && this.userprefs['baryaxis']!="")
+        this._yaxis_sel_bar = this.userprefs['baryaxis'].toString().split(',');
+        if(this.userprefs['piexaxis']!= undefined && this.userprefs['piexaxis']!="")
+        this._xaxis_sel_pie = this.userprefs['piexaxis'];
+        if(this.userprefs['pieyaxis']!= undefined && this.userprefs['pieyaxis']!="")
+        this._yaxis_sel_pie = this.userprefs['pieyaxis'].toString().split(',');
+        if(this.userprefs['doughnutxaxis']!= undefined && this.userprefs['doughnutxaxis']!="")
+        this._xaxis_sel_doughnut = this.userprefs['doughnutxaxis'];
+        if(this.userprefs['doughnutyaxis']!= undefined && this.userprefs['doughnutyaxis']!="")
+        this._yaxis_sel_doughnut = this.userprefs['doughnutyaxis'].toString().split(',');
+
+        if(this.userprefs['selectedchart']!=undefined && this.userprefs['selectedchart']!="")
+        this.selectedchart = this.userprefs['selectedchart'].toString().split(',');
 
         this.updatechart();
-      }
-
-    );
   }
-  //__________________________Set Chart Styling_________________________________
-  setchartstyling() {
-    this.userprefs['backgroundcolor'] = this._backgroundColor;
-    this.userprefs['bordercolor'] = this._borderColor;
-    this.userprefs['fill'] = this._fill.toString().toLocaleUpperCase();
-    this.userprefs['pointstyle'] = this._pointstyle;
-    this.userprefs['linetension'] = this._linetension;
-    this.userprefs['animations'] = this._animations;
-    this.userprefs['pointradius'] = this._pointradius;
-    this.userprefs['linestyle'] = this._linestyle;
-    this.userprefs['gridlinedashed'] = this._gridborder.toString().toLocaleUpperCase();
-    this.userprefs['linewidth'] = this._gridlinewidth;
-    this.userprefs['yautoskip'] = this._yaxisAutoskip.toString().toLocaleUpperCase();
-
-
-    this.V_PRF_NM = Object.keys(this.userprefs);
-    this.V_PRF_VAL = Object.values(this.userprefs);
-    for (let j = 0; j < this.V_PRF_NM.length; j++) {
-      this.data.setchartstyling(this.APP_ID, this.PRCS_ID, this.SRC_ID, this.V_PRF_NM[j], this.V_PRF_VAL[j]).subscribe(
-        () => {
-
-        });
+  gettablepreferences(){
+    if(this.userprefs['displaychoice']!=undefined){
+    this.show_choice = this.userprefs['displaychoice'];
+    this.showhide(this.userprefs['displaychoice']) 
     }
-  }
-  sethiddencolsconfig(){
-    if(this.hiddencols.length > -1){
-    var abc = this.hiddencols.toString();
-    this.userprefs['hiddencolname'] = abc;
-    this.V_PRF_NM = Object.keys(this.userprefs);
-    this.V_PRF_VAL = Object.values(this.userprefs);
-    for (let j = 0; j < this.V_PRF_NM.length; j++) {
-      this.data.setchartstyling(this.APP_ID, this.PRCS_ID, this.SRC_ID, this.V_PRF_NM[j], this.V_PRF_VAL[j]).subscribe(
-        () => {
-          //(res);
-        });
-    }
-    }
-  }
-  gethiddencolsconfig(){
-    this.data.getchartstyling(this.APP_ID, this.PRCS_ID, this.SRC_ID).subscribe(
-      res => {
-        (res.json());
-        var result = res.json();
-        var name = result.PRF_NM;
-        var value = result.PRF_VAL;
-        this.V_PRF_NM = name;
-        this.V_PRF_VAL = value;
-        for (let i = 0; i < name.length; i++) {
-
-          this.userprefs[name[i]] = value[i];
-        }
         if(this.userprefs['hiddencolname']!=undefined){
         var a = this.userprefs['hiddencolname'].toString();
         this.hiddencols = a.split(',');
@@ -755,8 +766,27 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         }
       }
     }
-    });
-}
+  }
+  getpreferences(){
+    this.data.getchartstyling(this.APP_ID, this.PRCS_ID, this.SRC_ID).subscribe(
+      res => {
+        (res.json());
+        var result = res.json();
+        console.log(result);
+        
+        var name = result.PRF_NM;
+        var value = result.PRF_VAL;
+        this.V_PRF_NM = name;
+        this.V_PRF_VAL = value;
+        for (let i = 0; i < name.length; i++) {
+          this.userprefs[name[i]] = value[i];
+        }
+        this.gettablepreferences();
+        this.getchartpreferences();
+        console.log(this.userprefs);
+      });
+  }
+
   ngOnInit() {
     this.getReportData();
     this.Table_of_Data3 = this.Table_of_Data2[0];
@@ -810,8 +840,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         })
 
     }
-    this.showhide('Table');
-    this.gethiddencolsconfig();
+this.getpreferences();
   }
 
   ExecuteAgain() {
@@ -858,7 +887,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         this.columnsToDisplay.splice(index, 1);
       }
     }
-    this.sethiddencolsconfig();
+    this.settablepreferences();
   }
   //__________________________________________________________
   Execute_res_data: any[];

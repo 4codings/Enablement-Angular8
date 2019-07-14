@@ -59,11 +59,11 @@
     <mat-form-field fxFlex="45">
       <mat-label>Select chart type</mat-label>
       <mat-select multiple [(value)]="selectedchart">
-        <mat-option value="linechart_sel">Line Chart</mat-option>
-        <mat-option value="barchart_sel">Bar Chart</mat-option>
-        <mat-option value="piechart_sel">Pie Chart</mat-option>
-        <mat-option value="doughnutchart_sel">Doughnut Chart</mat-option>
-        <mat-option value="ganttchart_sel">Gantt Chart</mat-option>
+        <mat-option (click)="setchartpreferences();" value="linechart_sel">Line Chart</mat-option>
+        <mat-option (click)="setchartpreferences();" value="barchart_sel">Bar Chart</mat-option>
+        <mat-option (click)="setchartpreferences();" value="piechart_sel">Pie Chart</mat-option>
+        <mat-option (click)="setchartpreferences();" value="doughnutchart_sel">Doughnut Chart</mat-option>
+        <mat-option (click)="setchartpreferences();" value="ganttchart_sel">Gantt Chart</mat-option>
       </mat-select>
     </mat-form-field>
     <div fxFlex="10"></div>
@@ -93,7 +93,7 @@ flex-flow: wrap;" fxLayoutGap="10" *ngIf="dispchart">
     <div fxLayout="row" fxLayoutAlign="center center">
     <div fxFlex="23">
       <mat-form-field style="width:100%">
-        <mat-select placeholder="Select X-axis Dataset" (selectionChange)="updateLineChart()" [(value)]="_xaxis_sel_line">
+        <mat-select placeholder="Select X-axis Dataset" (selectionChange)="updateLineChart();setchartpreferences();" [(value)]="_xaxis_sel_line">
           <mat-option style="text-align: center;   height: 25px;   color: black; " value="">None</mat-option>
           <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" value="{{items}}">
             {{items}} </mat-option>
@@ -103,7 +103,7 @@ flex-flow: wrap;" fxLayoutGap="10" *ngIf="dispchart">
     <div fxFlex="4"></div>
     <div fxFlex="26">
       <mat-form-field style="width:100%">
-        <mat-select placeholder="Select Y-axis Dataset" (selectionChange)="updateLineChart()" multiple [(value)]="_yaxis_sel_line">
+        <mat-select placeholder="Select Y-axis Dataset" (selectionChange)="updateLineChart();setchartpreferences();" multiple [(value)]="_yaxis_sel_line">
           <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" [value]="items">
             {{items}} </mat-option>
         </mat-select>
@@ -113,11 +113,11 @@ flex-flow: wrap;" fxLayoutGap="10" *ngIf="dispchart">
     <div fxFlex="20">
       
         <mat-form-field style="width:100%">
-          <input type="text" placeholder="Unit of measure" (input)="updateLineChart()" matInput 
+          <input type="text" placeholder="Unit of measure" (input)="updateLineChart()" (blur)="setchartpreferences();" matInput 
             [matAutocomplete]="auto" [(ngModel)]="_yaxisCB_line">
           <mat-autocomplete #auto="matAutocomplete">
-            <mat-option (click)="updateLineChart()" style="text-align: center;height: 25px;color: black; " value="">None</mat-option>
-            <mat-option (click)="updateLineChart()" *ngFor="let option of yaxiscallbacks" value="{{option}}">
+            <mat-option (click)="updateLineChart();setchartpreferences();" style="text-align: center;height: 25px;color: black; " value="">None</mat-option>
+            <mat-option (click)="updateLineChart();setchartpreferences();" *ngFor="let option of yaxiscallbacks" value="{{option}}">
               {{option}}
             </mat-option>
           </mat-autocomplete>
@@ -133,7 +133,7 @@ flex-flow: wrap;" fxLayoutGap="10" *ngIf="dispchart">
     <div fxLayout="row" fxLayoutAlign="center center">
       <div fxFlex="23">
         <mat-form-field style="width:100%">
-          <mat-select placeholder="Select X-axis Dataset" (selectionChange)="updateBarChart()" [(value)]="_xaxis_sel_bar">
+          <mat-select placeholder="Select X-axis Dataset" (selectionChange)="updateBarChart();setchartpreferences();" [(value)]="_xaxis_sel_bar">
             <mat-option style="text-align: center;   height: 25px;   color: black; " value="">None</mat-option>
             <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" value="{{items}}">
               {{items}} </mat-option>
@@ -143,7 +143,7 @@ flex-flow: wrap;" fxLayoutGap="10" *ngIf="dispchart">
       <div fxFlex="4"></div>
       <div fxFlex="26">
         <mat-form-field style="width:100%">
-          <mat-select placeholder="Select Y-axis Dataset" (selectionChange)="updateBarChart()" multiple [(value)]="_yaxis_sel_bar">
+          <mat-select placeholder="Select Y-axis Dataset" (selectionChange)="updateBarChart();setchartpreferences();" multiple [(value)]="_yaxis_sel_bar">
             <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" [value]="items">
               {{items}} </mat-option>
           </mat-select>
@@ -153,11 +153,11 @@ flex-flow: wrap;" fxLayoutGap="10" *ngIf="dispchart">
       <div fxFlex="20">
         
           <mat-form-field style="width:100%">
-            <input type="text" placeholder="Unit of measure" (input)="updateBarChart()" matInput 
+            <input type="text" placeholder="Unit of measure" (input)="updateBarChart();setchartpreferences();" matInput 
               [matAutocomplete]="auto" [(ngModel)]="_yaxisCB_bar">
             <mat-autocomplete #auto="matAutocomplete">
-              <mat-option (click)="updateBarChart()" style="text-align: center;   height: 25px;   color: black; " value="">None</mat-option>
-              <mat-option (click)="updateBarChart()" *ngFor="let option of yaxiscallbacks" value="{{option}}">
+              <mat-option (click)="updateBarChart();setchartpreferences();" style="text-align: center;   height: 25px;   color: black; " value="">None</mat-option>
+              <mat-option (click)="updateBarChart();setchartpreferences();" *ngFor="let option of yaxiscallbacks" value="{{option}}">
                 {{option}}
               </mat-option>
             </mat-autocomplete>
@@ -172,7 +172,7 @@ flex-flow: wrap;" fxLayoutGap="10" *ngIf="dispchart">
     <div fxLayout="row" fxLayoutAlign="center center">
       <div fxFlex="23">
         <mat-form-field style="width:100%">
-          <mat-select placeholder="Select X-axis Dataset" (selectionChange)="updatePieChart()" [(value)]="_xaxis_sel_pie">
+          <mat-select placeholder="Select X-axis Dataset" (selectionChange)="updateBarChart();setchartpreferences();" [(value)]="_xaxis_sel_pie">
             <mat-option style="text-align: center;   height: 25px;   color: black; " value="">None</mat-option>
             <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" value="{{items}}">
               {{items}} </mat-option>
@@ -182,7 +182,7 @@ flex-flow: wrap;" fxLayoutGap="10" *ngIf="dispchart">
       <div fxFlex="4"></div>
       <div fxFlex="26">
         <mat-form-field style="width:100%">
-          <mat-select placeholder="Select Y-axis Dataset" (selectionChange)="updatePieChart()" multiple [(value)]="_yaxis_sel_pie">
+          <mat-select placeholder="Select Y-axis Dataset" (selectionChange)="updateBarChart();setchartpreferences();" multiple [(value)]="_yaxis_sel_pie">
             <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" [value]="items">
               {{items}} </mat-option>
           </mat-select>
@@ -192,11 +192,11 @@ flex-flow: wrap;" fxLayoutGap="10" *ngIf="dispchart">
       <div fxFlex="20">
         
           <mat-form-field style="width:100%">
-            <input type="text" placeholder="Unit of measure" (input)="updatePieChart()" matInput 
+            <input type="text" placeholder="Unit of measure" (input)="updateBarChart();setchartpreferences();" matInput 
               [matAutocomplete]="auto" [(ngModel)]="_yaxisCB_pie">
             <mat-autocomplete #auto="matAutocomplete">
-              <mat-option (click)="updatePieChart()" style="text-align: center;   height: 25px;   color: black; " value="">None</mat-option>
-              <mat-option (click)="updatePieChart()" *ngFor="let option of yaxiscallbacks" value="{{option}}">
+              <mat-option (click)="updateBarChart();setchartpreferences();" style="text-align: center;   height: 25px;   color: black; " value="">None</mat-option>
+              <mat-option (click)="updateBarChart();setchartpreferences();" *ngFor="let option of yaxiscallbacks" value="{{option}}">
                 {{option}}
               </mat-option>
             </mat-autocomplete>
@@ -211,7 +211,7 @@ flex-flow: wrap;" fxLayoutGap="10" *ngIf="dispchart">
     <div fxLayout="row" fxLayoutAlign="center center">
       <div fxFlex="23">
         <mat-form-field style="width:100%">
-          <mat-select placeholder="Select X-axis Dataset" (selectionChange)="updateDoughnutChart()" [(value)]="_xaxis_sel_doughnut">
+          <mat-select placeholder="Select X-axis Dataset" (selectionChange)="updateBarChart();setchartpreferences();" [(value)]="_xaxis_sel_doughnut">
             <mat-option style="text-align: center;   height: 25px;   color: black; " value="">None</mat-option>
             <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" value="{{items}}">
               {{items}} </mat-option>
@@ -221,7 +221,7 @@ flex-flow: wrap;" fxLayoutGap="10" *ngIf="dispchart">
       <div fxFlex="4"></div>
       <div fxFlex="26">
         <mat-form-field style="width:100%">
-          <mat-select placeholder="Select Y-axis Dataset" (selectionChange)="updateDoughnutChart()" multiple [(value)]="_yaxis_sel_doughnut">
+          <mat-select placeholder="Select Y-axis Dataset" (selectionChange)="updateBarChart();setchartpreferences();" multiple [(value)]="_yaxis_sel_doughnut">
             <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" [value]="items">
               {{items}} </mat-option>
           </mat-select>
@@ -231,11 +231,11 @@ flex-flow: wrap;" fxLayoutGap="10" *ngIf="dispchart">
       <div fxFlex="20">
         
           <mat-form-field style="width:100%">
-            <input type="text" placeholder="Unit of measure" (input)="updateDoughnutChart()" matInput 
+            <input type="text" placeholder="Unit of measure" (input)="updateBarChart();setchartpreferences();" matInput 
               [matAutocomplete]="auto" [(ngModel)]="_yaxisCB_doughnut">
             <mat-autocomplete #auto="matAutocomplete">
-              <mat-option (click)="updateDoughnutChart()" style="text-align: center;   height: 25px;   color: black; " value="">None</mat-option>
-              <mat-option (click)="updateDoughnutChart()" *ngFor="let option of yaxiscallbacks" value="{{option}}">
+              <mat-option (click)="updateBarChart();setchartpreferences();" style="text-align: center;   height: 25px;   color: black; " value="">None</mat-option>
+              <mat-option (click)="updateBarChart();setchartpreferences();" *ngFor="let option of yaxiscallbacks" value="{{option}}">
                 {{option}}
               </mat-option>
             </mat-autocomplete>
@@ -304,7 +304,7 @@ flex-flow: wrap;" fxLayoutGap="10" *ngIf="dispchart">
       </div>
     <!-- </div> -->
     <br>
-    <button mat-raised-button color="primary" (click)="setchartstyling();updatechart();">Update</button>
+    <button mat-raised-button color="primary" (click)="setchartpreferences();updatechart();">Update</button>
   </div>
   <div fxLayout="column" fxLayoutAlign="space-around center" *ngIf="selectedcustomize === 'customizechart_sel'">
     <div fxLayout="row">
@@ -432,7 +432,7 @@ flex-flow: wrap;" fxLayoutGap="10" *ngIf="dispchart">
       </div>
     </div>
     <br>
-    <button mat-raised-button color="primary" (click)="setchartstyling();updatechart();">Update</button>
+    <button mat-raised-button color="primary" (click)="setchartpreferences();updatechart();">Update</button>
   </div>
 </div>
 <!-- --------------------Chart------------------------- -->
