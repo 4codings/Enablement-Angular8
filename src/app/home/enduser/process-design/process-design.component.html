@@ -3,7 +3,7 @@
   <div class="form-inline row-item">
     <i *ngIf="item.children" (click)="onCollapseExpand()" aria-hidden="true" class="fa"
       [class.fa-caret-right]="item.collapsed" [class.fa-caret-down]="!item.collapsed"></i>
-    <div class="form-check">
+    <div class="form-check" *ngIf="item.text!=='NULL'">
       <label class="form-check-label" (click)="onTitleClick(item)">
         {{item.text}}
       </label>
@@ -37,11 +37,26 @@
 <div fxLayout="row">
   <mat-sidenav-container fxFlex="100">
     <mat-sidenav #treesidenav mode="side" [opened]="true" style="min-width:280px">
-      <ngx-treeview [config]="config" [items]="item" [itemTemplate]="itemTemplate">
-        <!-- (selectedChange)="onSelectedChange($event)" (filterChange)="onFilterChange($event)" -->
-      </ngx-treeview>
+      <div flex fxLayout="column">
+        <div fxFlex="100">
+          <ngx-treeview [config]="config" [items]="item" [itemTemplate]="itemTemplate">
+            <!-- (selectedChange)="onSelectedChange($event)" (filterChange)="onFilterChange($event)" -->
+          </ngx-treeview>
+        </div>
+        <hr>
+        <div fxFlex="100" class="parent">
+          <button mat-raised-button (click)="addApplication()">
+            Add Application
+          </button>
+        </div>
+        <hr>
+      </div>
     </mat-sidenav>
     <div fxFlex="100">
+      <div class="parent">
+        <h5 *ngIf="selectedApp!=''">{{selectedApp}}</h5>
+        <h5 *ngIf="selectedProcess!=''">{{selectedProcess}}</h5>
+      </div>
       <section>
         <div fxLayout="row">
           <div fxFlex="20px" class="toggle">
@@ -51,11 +66,12 @@
             </a>
           </div>
           <div fxFlex="100" fxLayout="column">
-            <div fxFlex="100" id="canvas"></div>
+            <div fxFlex="100" id="canvas">
+            </div>
             <div fxFlex="100">
               <div class="dynamicFormContent">
-                <h3 style="text-align: center;" *ngIf="resFormData!='' &&  resFormData!=undefined">
-                  {{Label['Parameters']}}</h3>
+                <!-- <h3 style="text-align: center;" *ngIf="resFormData!='' &&  resFormData!=undefined">
+                  {{Label['Parameters']}}</h3> -->
                 <div class="dynamicContent">
                   <form name="form" #processForm="ngForm" novalidate>
                     <div class="padding-input flexLeft" *ngFor="let pr of resFormData"
@@ -252,8 +268,8 @@
             </div>
           </div>
           <div fxFlex="20px" class="toggle">
-            <a href="javascript:void(0)" matTooltip="{{opened ? 'Hide properties' : 'Show properties'}}"
-              (click)="sidenav.toggle()">
+            <a *ngIf="showRightIcon" href="javascript:void(0)"
+              matTooltip="{{opened ? 'Hide properties' : 'Show properties'}}" (click)="sidenav.toggle()">
               <mat-icon aria-hidden="false">{{opened ? 'arrow_right' : 'arrow_left'}}</mat-icon>
             </a>
           </div>
@@ -263,150 +279,166 @@
     <mat-sidenav #sidenav position="end" mode="side" [(opened)]="opened">
       <div id="properties">
 
-          <label><b> {{ generalId }} </b></label>
-          <mat-tab-group mat-align-tabs="start">
+        <label><b> {{ generalId }} </b></label>
+        <mat-tab-group mat-align-tabs="start" (selectedTabChange)="updateTabs()">
 
           <mat-tab label="General">
-              <div class="generalTabV">
-                  <label>Id </label>
-                  <input [(ngModel)]="generalId" >
-              </div>
-              <div class="oneSpace"></div>
-              <div class="generalTabV">
-                  <label>Name </label>
-                  <input>
-              </div>
+            <div class="generalTabV">
+              <label>{{Label['ID']}} </label>
+              <input id="processId" (change)="onInputChange()" [(ngModel)]="generalId">
+            </div>
+            <div class="oneSpace"></div>
+            <div class="generalTabV">
+              <label>{{Label['NAME']}} </label>
+              <input [(ngModel)]="processName">
+            </div>
+            <div class="spaceDiv">
+              <mat-divider></mat-divider>
+            </div>
+
+            <label><i> {{Label['DOCUMENTATION']}}</i></label>
+            <input (change)="onInputChange()" [(ngModel)]="documentation">
+            <div *ngIf="showCondtionType">
               <div class="spaceDiv">
-                  <mat-divider></mat-divider>
+                <mat-divider></mat-divider>
               </div>
+              <label>{{Label['CONDITION_TYPE']}}</label>
+              <select (change)="updatesequenceConditionType($event.target.value)">
+                <option>{{Label['PLEASE_SELECT']}}</option>
+                <option *ngFor="let condition of sequenceConditionType " [value]="condition">
+                  {{ condition}}
+                </option>
+              </select>
+              <div
+                *ngIf="selectedConditionType==='Simple Expression' || selectedConditionType==='Java Script'|| selectedConditionType==='Java'|| selectedConditionType==='Python'|| selectedConditionType==='SQL Statement'">
+                <div class="oneSpace"></div>
+                <label>{{Label['CONDITION']}}</label>
+                <textarea (change)="onInputChange()" [(ngModel)]="sequenceCondition"></textarea>
+              </div>
+            </div>
+          </mat-tab>
 
-              <label><i>Documentation</i></label>
-              <input>
-            </mat-tab>
+          <mat-tab *ngIf="showAllTabFlag" label="Enable">
 
-            <mat-tab label="Enable">
-            <label>Executable Types </label>
+            <label>{{Label['EXECUTABLE_TYPES']}}</label>
             <select (change)="updateselectedExecutableType($event.target.value)">
-                <option>-- please select --</option>
-                <option *ngFor="let exeType of executableTypesData " 
-                        [value]="exeType">
-                    {{ exeType}}
-                </option>
-              </select>
-              <div class="oneSpace"></div>
-              <label>Executables</label>
-              <select (change)="updateselectedExecutable($event.target.value)">
-                <option>-- please select --</option>
-                <option *ngFor="let executable of executablesData " 
-                        [value]="executable">
-                    {{ executable}}
-                </option>
-              </select>
-              <div class="oneSpace"></div>
-              <label>Executable Input</label>
-              <input>
-              <div class="oneSpace"></div>
-              <label>Executable Output</label>
-              <input disabled [(ngModel)]="executableOutput"> 
-              <div class="oneSpace"></div>
-              <label>Executable Description</label>
-              <textarea disabled [(ngModel)]="executableDesc"></textarea>
-              <div class="spaceDiv">
-                  <mat-divider></mat-divider>
+              <option>{{Label['PLEASE_SELECT']}}</option>
+              <option *ngFor="let exeType of executableTypesData " [value]="exeType">
+                {{ exeType}}
+              </option>
+            </select>
+            <div class="oneSpace"></div>
+            <label>{{Label['EXECUTABLES']}}</label>
+            <select (change)="updateselectedExecutable($event.target.value)">
+              <option>{{Label['PLEASE_SELECT']}}</option>
+              <option *ngFor="let executable of executablesData " [value]="executable">
+                {{ executable}}
+              </option>
+            </select>
+            <div class="oneSpace"></div>
+            <label>{{Label['EXECUTABLE_INPUT']}}</label>
+            <input [(ngModel)]="executableInput">
+            <div class="oneSpace"></div>
+            <label>{{Label['EXECUTABLE_OUTPUT']}}</label>
+            <input disabled [(ngModel)]="executableOutput">
+            <div class="oneSpace"></div>
+            <label>{{Label['EXECUTABLE_DSC']}}</label>
+            <textarea disabled [(ngModel)]="executableDesc"></textarea>
+            <div class="spaceDiv">
+              <mat-divider></mat-divider>
+            </div>
+            <!-- <label>
+              <b>{{Label['PLATFORM']}}</b>
+            </label>
+            <label>
+              {{Label['MYSQL']}}
+            </label> -->
+          </mat-tab>
+
+          <mat-tab *ngIf="showAllTabFlag" label="Properties">
+            <mat-checkbox>{{Label['DISPLAY_OUTPUT']}}</mat-checkbox>
+            <mat-checkbox>{{Label['SUMMARY_OUTPUT']}}</mat-checkbox>
+            <mat-checkbox [(ngModel)]="isServiceActive" (change)="serviceActiveSelected($event.checked)">
+              {{Label['SERVICE_ACTIVE']}}
+            </mat-checkbox>
+            <div *ngIf="isServiceActive">
+              <label>{{Label['START_DATE']}}</label>
+              <mat-form-field class="form_input">
+                <input matInput [(ngModel)]="currentDate" [owlDateTimeTrigger]="startDate" [owlDateTime]="startDate">
+                <owl-date-time #startDate></owl-date-time>
+              </mat-form-field>
+              <label>{{Label['END_DATE']}}</label>
+              <mat-form-field class="form_input">
+                <input matInput [(ngModel)]="afterFiveDays" [owlDateTimeTrigger]="endDate" [owlDateTime]="endDate">
+                <owl-date-time #endDate></owl-date-time>
+              </mat-form-field>
+            </div>
+            <div class="spaceDiv">
+              <mat-divider></mat-divider>
+            </div>
+
+            <label>{{Label['NOTIFICATION_EMAIL']}} </label>
+            <input type="email" [(ngModel)]="userEmail" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}">
+
+            <div class="spaceDiv">
+              <mat-divider></mat-divider>
+            </div>
+
+            <mat-radio-group [(ngModel)]="async_sync">
+              <mat-radio-button value="async">{{Label['ASYNCHRONOUS']}}</mat-radio-button>
+              <mat-radio-button value="sync">{{Label['SYNCHORONOUS']}}</mat-radio-button>
+            </mat-radio-group>
+            <div *ngIf="async_sync==='sync'">
+              <div class="row row1">
+                <input id="seconds" type="number" [(ngModel)]="async_sync_seconds">
+                <label id="seconds_label">{{Label['SECONDS']}}</label>
               </div>
-              <label>
-                <b>Platform</b>
-              </label>
-              <label>
-                  Mysql
-              </label>
-            </mat-tab> 
-
-            <mat-tab label="Properties">
-              <mat-checkbox>Display Output</mat-checkbox>
-              <mat-checkbox>Summary Output</mat-checkbox>
-              <mat-checkbox [(ngModel)]="isServiceActive" (change)="serviceActiveSelected($event.checked)" >Service Active</mat-checkbox>
-              <div *ngIf="isServiceActive">
-                <label>Start Date</label>
-                <mat-form-field class="form_input">
-                  <input matInput [value] = "currentDate"
-                    [owlDateTimeTrigger]="startDate" [owlDateTime]="startDate">
-                  <owl-date-time #startDate></owl-date-time>
-                </mat-form-field>
-                <label>End Date</label>
-                <mat-form-field class="form_input">
-                  <input matInput [value] = "afterFiveDays"
-                    [owlDateTimeTrigger]="endDate" [owlDateTime]="endDate">
-                  <owl-date-time #endDate></owl-date-time>
-                </mat-form-field>
-               </div> 
-               <div class="spaceDiv">
-                  <mat-divider></mat-divider>
+              <div class="oneSpace"></div>
+              <div class="row row1">
+                <label id="priority_label">{{Label['PRIORITY']}}</label>
+                <input id="priority" type="number" [(ngModel)]="priority">
               </div>
-              
-               <label>Notification Email </label>
-               <input type="email" [value]="userEmail" 
-                  pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}">
+            </div>
 
-                  <div class="spaceDiv">
-                      <mat-divider></mat-divider>
-                  </div>
-            
-                  <mat-radio-group [(ngModel)]="async_sync">
-                      <mat-radio-button value="async">Asynchronous</mat-radio-button>
-                      <mat-radio-button value="sync">Synchronous</mat-radio-button>
-                  </mat-radio-group> 
-                  <div *ngIf="async_sync==='sync'">
-                    <div class="row row1">
-                        <input id="seconds" type="number" value=300> 
-                        <label id="seconds_label">Seconds</label>  
-                    </div>
-                    <div class="oneSpace"></div>
-                    <div class="row row1">
-                        <label id="priority_label">Priority</label>  
-                        <input id="priority" type="number" value=3> 
-                    </div>
-                  </div>
+            <div class="spaceDiv">
+              <mat-divider></mat-divider>
+            </div>
 
-                  <div class="spaceDiv">
-                      <mat-divider></mat-divider>
-                  </div>
+            <label>{{Label['RESTORABILITY']}}</label>
+            <mat-radio-group [(ngModel)]="restorability">
+              <mat-radio-button value="NONE">{{Label['NONE']}}</mat-radio-button>
+              <mat-radio-button value="MANUAL">{{Label['MANUAL']}}</mat-radio-button>
+              <mat-radio-button value="AUTO">{{Label['AUTO']}}</mat-radio-button>
+            </mat-radio-group>
+            <div *ngIf="restorability==='AUTO'">
+              <div class="row row1">
+                <input id="seconds" type="number" [(ngModel)]="attemps">
+                <label id="seconds_label">{{Label['ATTEMPS']}}</label>
+              </div>
+              <div class="oneSpace"></div>
+              <div class="row row1">
+                <input id="seconds" type="number" [(ngModel)]="restorability_seconds">
+                <label id="seconds_label">{{Label['SECONDS']}}</label>
+              </div>
+            </div>
 
-                  <label>Restorability</label>
-                  <mat-radio-group [(ngModel)]="restorability">
-                    <mat-radio-button value="none">None</mat-radio-button>
-                    <mat-radio-button value="manual">Manual</mat-radio-button>
-                    <mat-radio-button value="auto">Auto</mat-radio-button>
-                  </mat-radio-group> 
-                  <div *ngIf="restorability==='auto'">
-                          <div class="row row1">
-                              <input id="seconds" type="number" value=3> 
-                              <label id="seconds_label">Attemps</label>
-                          </div>
-                          <div class="oneSpace"></div>
-                          <div class="row row1">
-                              <input id="seconds" type="number" value=30> 
-                              <label  id="seconds_label">Seconds</label>
-                          </div>
-                  </div>
+            <div class="spaceDiv">
+              <mat-divider></mat-divider>
+            </div>
 
-                  <div class="spaceDiv">
-                      <mat-divider></mat-divider>
-                  </div>
-
-                  <label>Instances</label>
-                  <mat-radio-group [(ngModel)]="instances">
-                      <mat-radio-button value="single">Single</mat-radio-button>
-                      <mat-radio-button value="unlimited">Unlimited</mat-radio-button>
-                      <div class="row row1"> 
-                          <mat-radio-button value="limited">Limited</mat-radio-button>
-                          <div *ngIf="instances==='limited'">
-                            <input id="priority" type="number" value=100> 
-                          </div>    
-                      </div>
-                  </mat-radio-group>
-            </mat-tab>
-          </mat-tab-group>
+            <label>{{Label['INSTANCES']}}</label>
+            <mat-radio-group [(ngModel)]="instances">
+              <mat-radio-button value="single">{{Label['SINGLE']}}</mat-radio-button>
+              <mat-radio-button value="unlimited">{{Label['UNLIMITED']}}</mat-radio-button>
+              <div class="row row1">
+                <mat-radio-button value="limited">{{Label['LIMITED']}}</mat-radio-button>
+                <div *ngIf="instances==='limited'">
+                  <input id="priority" type="number" [(ngModel)]="instances_priority">
+                </div>
+              </div>
+            </mat-radio-group>
+          </mat-tab>
+        </mat-tab-group>
       </div>
     </mat-sidenav>
   </mat-sidenav-container>

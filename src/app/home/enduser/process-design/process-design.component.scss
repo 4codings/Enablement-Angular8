@@ -9,7 +9,10 @@
     color: inherit;
   }
 }
-
+.parent {
+  text-align: center;
+  align-content: center;
+}
 .toggle,
 .import-export {
   button {
@@ -35,72 +38,96 @@
 
 }
 
-:host /deep/ .mat-tab-label{
+:host /deep/ .mat-tab-label {
   padding: 0 15px;
   min-width: 60px;
 }
- 
-:host /deep/ label {
-  text-align: center;
-  margin : 2px 2px
+
+:host /deep/ .bjs-container .djs-container .djs-palette .two-open {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  box-sizing: border-box;
+  width: 48px;
 }
 
-:host /deep/ select{
-  width : 178px;
+:host /deep/ .bjs-container .djs-container .djs-palette .hide {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  box-sizing: border-box;
+  width: 48px;
+  display: none;
+}
+
+:host /deep/ .bpmn-icon-hand-tool:before {
+  content: '\e868';
+  color: aqua;
+}
+
+:host /deep/ label {
+  text-align: center;
+  margin: 2px 2px
+}
+
+:host /deep/ select {
+  width: 178px;
 }
 
 :host /deep/ textarea {
-  width : 178px;
-  height : 80px;
+  width: 178px;
+  height: 80px;
 }
 
 :host /deep/ .oneSpace {
-  padding-top : 3px;
-  padding-bottom : 0px;
+  padding-top: 3px;
+  padding-bottom: 0px;
 }
 
 :host /deep/ .spaceDiv {
-  padding-top : 10px;
-  padding-bottom : 8px;
+  padding-top: 10px;
+  padding-bottom: 8px;
 }
 
 :host /deep/ #seconds {
-  width : 50px;
+  width: 50px;
 }
 
 :host /deep/ #seconds_label {
-  width : 100px;
+  width: 100px;
 }
 
 :host /deep/ #priority {
-  align-content : right;
-  width : 50px;
+  align-content: right;
+  width: 50px;
 }
 
 :host /deep/ #priority_label {
   text-align: left;
-  width : 80px;
+  width: 80px;
 }
 
 :host /deep/ .row1 {
-  margin-left : 0px;
+  margin-left: 0px;
 }
 
-:host /deep/ .mat-input-element, input {
+:host /deep/ .mat-input-element,
+input {
   text-align: center
 }
 
-:host /deep/ .mat-tab-body-content{
+:host /deep/ .mat-tab-body-content {
   padding: 30px 45px;
 }
 
-:host /deep/ .generalTabV{
-  padding-top : 2px;
-  padding-bottom : 0px;
+:host /deep/ .generalTabV {
+  padding-top: 2px;
+  padding-bottom: 0px;
 }
 
 :host /deep/.chosen-container.chosen-container-single {
-  width: 300px !important; /* or any value that fits your needs */
+  width: 300px !important;
+  /* or any value that fits your needs */
 }
 
 :host /deep/ .mat-form-field-appearance-legacy .mat-form-field-infix {
