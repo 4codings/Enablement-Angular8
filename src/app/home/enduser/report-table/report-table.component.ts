@@ -491,8 +491,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         }
         this.barChartData[i].data = this.yaxis_data_bar[i];
         this.barChartData[i].label = this._yaxis_sel_bar[i];
-        console.log(this.barChartData[i]);
-
       }
     }
     else{
@@ -656,7 +654,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
       res => {
         (res.json());
         var result = res.json();
-        console.log(result);
         var name = result.PRF_NM;
         var value = result.PRF_VAL;
         this.V_PRF_NM = name;
@@ -735,7 +732,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
       res => {
         (res.json());
         var result = res.json();
-        console.log(result);
         var name = result.PRF_NM;
         var value = result.PRF_VAL;
         this.V_PRF_NM = name;
@@ -744,7 +740,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
 
           this.userprefs[name[i]] = value[i];
         }
-        console.log(this.userprefs);
         if(this.userprefs['hiddencolname']!=undefined){
         var a = this.userprefs['hiddencolname'].toString();
         this.hiddencols = a.split(',');
@@ -868,7 +863,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   Execute_res_data: any[];
   // progress: boolean = false;
   Execute_Now() {
-    console.log(this.Exe_data);
     // this.progress = true;
     let body = {
       "V_APP_CD": this.Exe_data['SL_APP_CD'].toString(),
@@ -881,15 +875,12 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
 
     this.https.post(this.apiService.endPoints.secureProcessReport, body, this.apiService.setHeaders()).subscribe(
       res => {
-
-        console.log(res.json());
         this.Execute_res_data = res.json();
         this.route.navigateByUrl('End_User', { skipLocationChange: true });
       }
     );
   }
   GenerateReportTable() {
-    console.log(this.globalUser.currentUser);
     let body = {
       V_SRC_ID: this.Execute_res_data['V_SRC_ID'],
       // 10th April
