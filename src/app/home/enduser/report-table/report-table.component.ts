@@ -174,7 +174,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   _linestyle = "solid";
   lineten: number = 0;
   pointrad: number = 8;
-  chartlabels = [];
+  chartlabels = ["Test 1","Test 2","Test 3","Test 4","Test 5"];
   _gridborder: boolean = false;
   _gridlinewidth: number = 1;
   chartcolors = [{
@@ -314,7 +314,9 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     }
     this._linestyle == "dashed" ? this._borderdash = [5, 5] : this._borderdash = [];
     this._gridborder == true ? this._gridlinedash = [10, 10] : this._gridlinedash = [];
-    this.lineChartLabels = this.Table_of_Data5[this._xaxis_sel_line];
+    console.log(this._xaxis_sel_line);
+    this._xaxis_sel_line != "" ? this.lineChartLabels = this.Table_of_Data5[this._xaxis_sel_line]
+    :this.lineChartLabels=this.chartlabels;
 
     if (this._yaxis_sel_line != []) {
       // this.yaxis_data = this.Table_of_Data5[this._yaxis1_sel].map(Number);
@@ -382,7 +384,10 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
       tooltips: {
         callbacks: {
           label: function (tooltipItems) {
+            if(unit == "₹" ||unit == "$" ||unit == "€" ||unit == "£")
             return (unit + " " + tooltipItems.yLabel.toString());
+            else
+            return (tooltipItems.yLabel.toString()+" "+ unit);
           }
         },
         mode: 'index',
@@ -429,10 +434,10 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
             beginAtZero: true,
             callback: function (label) {
               if (label > 1000) {
-                return (label / 1000);
+                return unit + " " + label/1000 + " k";
               }
               else {
-                return unit + " " + label + " k";
+                return unit + " " + label;
               }
             }
           }
@@ -461,10 +466,10 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
             beginAtZero: true,
             callback: function (label) {
               if (label > 1000) {
-                return (label / 1000);
+                return unit + " " + label/1000 + " k";
               }
               else {
-                return unit + " " + label + " k";
+                return unit + " " + label;
               }
             }
           }
@@ -487,8 +492,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         }
         this.barChartData[i].data = this.yaxis_data_bar[i];
         this.barChartData[i].label = this._yaxis_sel_bar[i];
-        console.log(this.barChartData[i]);
-
       }
     }
     else{
@@ -514,7 +517,10 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
       tooltips: {
         callbacks: {
           label: function (tooltipItems) {
+            if(unit == "₹" ||unit == "$" ||unit == "€" ||unit == "£")
             return (unit + " " + tooltipItems.yLabel.toString());
+            else
+            return (tooltipItems.yLabel.toString()+" "+ unit);
           }
         },
         mode: 'index',
@@ -554,12 +560,11 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
             fontColor: this.barChartColors[0].borderColor,
             beginAtZero: true,
             callback: function (label) {
-
               if (label > 1000) {
-                return (label / 1000);
+                return unit + " " + label/1000 + " k";
               }
               else {
-                return (unit + " " + label);
+                return unit + " " + label;
               }
             }
           },
@@ -587,12 +592,11 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
             fontColor: this.barChartColors[i].borderColor,
             beginAtZero: true,
             callback: function (label) {
-
               if (label > 1000) {
-                return (label / 1000);
+                return unit + " " + label/1000 + " k";
               }
               else {
-                return (unit + " " + label);
+                return unit + " " + label;
               }
             }
           },
@@ -604,7 +608,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         };
       }
     }
-    this.barChartLabels = this.Table_of_Data5[this._xaxis_sel_bar];
+    this._xaxis_sel_bar != "" ? this.barChartLabels = this.Table_of_Data5[this._xaxis_sel_bar]
+    :this.barChartLabels=this.chartlabels;
   }
   updatePieChart() {
     // this.pieChartData = [];
@@ -619,7 +624,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         })
       }
     }
-    this.pieChartLabels = this.Table_of_Data5[this._xaxis_sel_pie];
+    this._xaxis_sel_pie != "" ? this.pieChartLabels = this.Table_of_Data5[this._xaxis_sel_pie]
+    :this.pieChartLabels=this.chartlabels;
   }
   updateDoughnutChart() {
     // this.doughnutChartData = [];
@@ -634,7 +640,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         })
       }
     }
-    this.doughnutChartLabels = this.Table_of_Data5[this._xaxis_sel_doughnut];
+    this._xaxis_sel_doughnut != "" ? this.doughnutChartLabels = this.Table_of_Data5[this._xaxis_sel_doughnut]
+    :this.doughnutChartLabels=this.chartlabels;
   }
   updatechart() {
     this.updateLineChart();
@@ -648,7 +655,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
       res => {
         (res.json());
         var result = res.json();
-        console.log(result);
         var name = result.PRF_NM;
         var value = result.PRF_VAL;
         this.V_PRF_NM = name;
@@ -704,7 +710,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     for (let j = 0; j < this.V_PRF_NM.length; j++) {
       this.data.setchartstyling(this.APP_ID, this.PRCS_ID, this.SRC_ID, this.V_PRF_NM[j], this.V_PRF_VAL[j]).subscribe(
         () => {
-          
+
         });
     }
   }
@@ -727,7 +733,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
       res => {
         (res.json());
         var result = res.json();
-        console.log(result);
         var name = result.PRF_NM;
         var value = result.PRF_VAL;
         this.V_PRF_NM = name;
@@ -736,7 +741,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
 
           this.userprefs[name[i]] = value[i];
         }
-        console.log(this.userprefs);
         if(this.userprefs['hiddencolname']!=undefined){
         var a = this.userprefs['hiddencolname'].toString();
         this.hiddencols = a.split(',');
@@ -860,7 +864,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   Execute_res_data: any[];
   // progress: boolean = false;
   Execute_Now() {
-    console.log(this.Exe_data);
     // this.progress = true;
     let body = {
       "V_APP_CD": this.Exe_data['SL_APP_CD'].toString(),
@@ -873,15 +876,12 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
 
     this.https.post(this.apiService.endPoints.secureProcessReport, body, this.apiService.setHeaders()).subscribe(
       res => {
-
-        console.log(res.json());
         this.Execute_res_data = res.json();
         this.route.navigateByUrl('End_User', { skipLocationChange: true });
       }
     );
   }
   GenerateReportTable() {
-    console.log(this.globalUser.currentUser);
     let body = {
       V_SRC_ID: this.Execute_res_data['V_SRC_ID'],
       // 10th April
