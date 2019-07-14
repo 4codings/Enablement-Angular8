@@ -382,7 +382,10 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
       tooltips: {
         callbacks: {
           label: function (tooltipItems) {
+            if(unit == "₹" ||unit == "$" ||unit == "€" ||unit == "£")
             return (unit + " " + tooltipItems.yLabel.toString());
+            else
+            return (tooltipItems.yLabel.toString()+" "+ unit);
           }
         },
         mode: 'index',
@@ -514,7 +517,10 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
       tooltips: {
         callbacks: {
           label: function (tooltipItems) {
+            if(unit == "₹" ||unit == "$" ||unit == "€" ||unit == "£")
             return (unit + " " + tooltipItems.yLabel.toString());
+            else
+            return (tooltipItems.yLabel.toString()+" "+ unit);
           }
         },
         mode: 'index',
@@ -704,7 +710,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     for (let j = 0; j < this.V_PRF_NM.length; j++) {
       this.data.setchartstyling(this.APP_ID, this.PRCS_ID, this.SRC_ID, this.V_PRF_NM[j], this.V_PRF_VAL[j]).subscribe(
         () => {
-          
+
         });
     }
   }
