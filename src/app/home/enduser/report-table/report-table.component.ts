@@ -314,7 +314,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     }
     this._linestyle == "dashed" ? this._borderdash = [5, 5] : this._borderdash = [];
     this._gridborder == true ? this._gridlinedash = [10, 10] : this._gridlinedash = [];
-    this._xaxis_sel_line == undefined || this._xaxis_sel_line == "" ? this.lineChartLabels = this.Table_of_Data5[this._xaxis_sel_line]
+    console.log(this._xaxis_sel_line);
+    this._xaxis_sel_line != "" ? this.lineChartLabels = this.Table_of_Data5[this._xaxis_sel_line]
     :this.lineChartLabels=this.chartlabels;
 
     if (this._yaxis_sel_line != []) {
@@ -607,7 +608,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         };
       }
     }
-    this._xaxis_sel_bar == undefined || this._xaxis_sel_bar == "" ? this.barChartLabels = this.Table_of_Data5[this._xaxis_sel_bar]
+    this._xaxis_sel_bar != "" ? this.barChartLabels = this.Table_of_Data5[this._xaxis_sel_bar]
     :this.barChartLabels=this.chartlabels;
   }
   updatePieChart() {
@@ -623,7 +624,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         })
       }
     }
-    this._xaxis_sel_pie == undefined || this._xaxis_sel_pie == "" ? this.pieChartLabels = this.Table_of_Data5[this._xaxis_sel_pie]
+    this._xaxis_sel_pie != "" ? this.pieChartLabels = this.Table_of_Data5[this._xaxis_sel_pie]
     :this.pieChartLabels=this.chartlabels;
   }
   updateDoughnutChart() {
@@ -639,7 +640,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         })
       }
     }
-    this._xaxis_sel_doughnut == undefined || this._xaxis_sel_doughnut == "" ? this.doughnutChartLabels = this.Table_of_Data5[this._xaxis_sel_doughnut]
+    this._xaxis_sel_doughnut != "" ? this.doughnutChartLabels = this.Table_of_Data5[this._xaxis_sel_doughnut]
     :this.doughnutChartLabels=this.chartlabels;
   }
   updatechart() {
