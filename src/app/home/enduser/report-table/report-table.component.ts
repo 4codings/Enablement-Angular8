@@ -174,7 +174,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   _linestyle = "solid";
   lineten: number = 0;
   pointrad: number = 8;
-  chartlabels = [];
+  chartlabels = ["Test 1","Test 2","Test 3","Test 4","Test 5"];
   _gridborder: boolean = false;
   _gridlinewidth: number = 1;
   chartcolors = [{
@@ -314,7 +314,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     }
     this._linestyle == "dashed" ? this._borderdash = [5, 5] : this._borderdash = [];
     this._gridborder == true ? this._gridlinedash = [10, 10] : this._gridlinedash = [];
-    this.lineChartLabels = this.Table_of_Data5[this._xaxis_sel_line];
+    this._xaxis_sel_line == undefined ? this.lineChartLabels = this.Table_of_Data5[this._xaxis_sel_line]
+    :this.lineChartLabels=this.chartlabels;
 
     if (this._yaxis_sel_line != []) {
       // this.yaxis_data = this.Table_of_Data5[this._yaxis1_sel].map(Number);
@@ -608,7 +609,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         };
       }
     }
-    this.barChartLabels = this.Table_of_Data5[this._xaxis_sel_bar];
+    this._xaxis_sel_bar == undefined ? this.barChartLabels = this.Table_of_Data5[this._xaxis_sel_bar]
+    :this.barChartLabels=this.chartlabels;
   }
   updatePieChart() {
     // this.pieChartData = [];
@@ -623,7 +625,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         })
       }
     }
-    this.pieChartLabels = this.Table_of_Data5[this._xaxis_sel_pie];
+    this._xaxis_sel_pie == undefined ? this.pieChartLabels = this.Table_of_Data5[this._xaxis_sel_pie]
+    :this.pieChartLabels=this.chartlabels;
   }
   updateDoughnutChart() {
     // this.doughnutChartData = [];
@@ -638,7 +641,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         })
       }
     }
-    this.doughnutChartLabels = this.Table_of_Data5[this._xaxis_sel_doughnut];
+    this._xaxis_sel_doughnut == undefined ? this.doughnutChartLabels = this.Table_of_Data5[this._xaxis_sel_doughnut]
+    :this.doughnutChartLabels=this.chartlabels;
   }
   updatechart() {
     this.updateLineChart();
