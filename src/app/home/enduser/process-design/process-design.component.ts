@@ -146,7 +146,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   generalId: string;
   processName: string = '';
   documentation: string = '';
-
+  oldStateId: any;
 
   currentDate: any = new Date();
   todaysDate: any = new Date();
@@ -264,6 +264,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         this.isApp = false;
         this.isProcess = false;
         this.isService = true;
+        this.oldStateId = $event.element.id;
         this.generalId = $event.element.id;
         const businessObject = $event.element.businessObject;
         this.processName = businessObject.name ? businessObject.name : '';
@@ -402,6 +403,14 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     }
   }
   onInputChange() {
+    let elementRegistry = this.modeler.get('elementRegistry');
+    let element = elementRegistry.get(this.oldStateId);
+    console.log('element', element)
+    let modeling = this.modeler.get('modeling');
+    modeling.updateProperties(element, {
+      name: this.processName,
+      id: this.generalId,
+    });
     if (this.documentation == '') {
       this.documentation = this.generalId;
     }
