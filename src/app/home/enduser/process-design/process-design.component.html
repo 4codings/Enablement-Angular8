@@ -12,7 +12,7 @@
       </label>
       <label *ngIf="item.children" class="form-check-label">
         <button mat-icon-button [matMenuTriggerFor]="parentMenu" aria-label="Example icon-button with a menu">
-          <mat-icon>more_vert</mat-icon>
+          <mat-icon class="parent-color">more_vert</mat-icon>
         </button>
         <mat-menu #parentMenu="matMenu">
           <div *ngFor="let pitem of parentobj[item.text]">
@@ -24,7 +24,7 @@
       </label>
       <label *ngIf="!item.children" class="form-check-label">
         <button mat-icon-button [matMenuTriggerFor]="childMenu" aria-label="Example icon-button with a menu">
-          <mat-icon>more_vert</mat-icon>
+          <mat-icon class="child-color">more_vert</mat-icon>
         </button>
         <mat-menu #childMenu="matMenu">
           <div *ngFor="let citem of childobj[item.text]">
@@ -39,19 +39,16 @@
 </ng-template>
 <div fxLayout="row">
   <mat-sidenav-container fxFlex="100">
-    <mat-sidenav #treesidenav mode="side" [opened]="true" style="min-width:280px">
+    <mat-sidenav class="tree-bg-color" #treesidenav mode="side" [opened]="true" style="min-width:280px">
       <div flex fxLayout="column">
         <div fxFlex="100">
           <ngx-treeview [config]="config" [items]="item" [itemTemplate]="itemTemplate">
             <!-- (selectedChange)="onSelectedChange($event)" (filterChange)="onFilterChange($event)" -->
           </ngx-treeview>
         </div>
-        <hr>
-        <!-- class="parent" -->
-        <div fxFlex="100" >
-          <button mat-icon-button (click)="addApplication()">
-            <mat-icon>add</mat-icon>
-            <!-- Add Application -->
+        <div fxFlex="100">
+          <button mat-icon-button matTooltip="Add Application" (click)="addApplication()">
+            <mat-icon class="add-btn">add</mat-icon>
           </button>
         </div>
         <hr>
@@ -59,7 +56,7 @@
     </mat-sidenav>
     <div fxFlex="100">
       <div class="parent">
-        <h5 *ngIf="selectedApp!=''">{{selectedApp}}<h5 *ngIf="selectedProcess!=''">({{selectedProcess}})</h5>
+        <h5 *ngIf="selectedApp!=''">{{selectedApp}}<span *ngIf="selectedProcess!=''">({{selectedProcess}})</span>
         </h5>
       </div>
       <section>
@@ -281,7 +278,7 @@
         </div>
       </section>
     </div>
-    <mat-sidenav #sidenav position="end" mode="side" [(opened)]="opened">
+    <mat-sidenav class="properties-bg-color" #sidenav position="end" mode="side" [(opened)]="opened">
       <div id="properties">
 
         <label><b> {{ generalId }} </b></label>

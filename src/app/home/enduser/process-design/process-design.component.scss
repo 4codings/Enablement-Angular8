@@ -13,6 +13,7 @@
 .parent {
   text-align: center;
   align-content: center;
+  display: inline;
 }
 
 .parent-color {
@@ -21,6 +22,19 @@
 
 .child-color {
   color: darkolivegreen;
+}
+
+.tree-bg-color {
+  background-color: #dbe2f1;
+}
+
+.properties-bg-color {
+  background-color: #0000000d;
+}
+
+.add-btn {
+  font-size: 19px;
+  margin-left: -27px;
 }
 
 .toggle,

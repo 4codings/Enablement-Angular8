@@ -553,7 +553,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             USR_NM: this.user.USR_NM
           }));
           formData.append('Source_File', new File([xml], `${vPrcsCd}.bpmn`, { type: 'text/xml' }));
-          this.httpClient.post(`https://${this.globals.domain}/FileAPIs/api/file/v1/upload`, formData).subscribe();
+          this.http.post(`https://${this.globals.domain}/FileAPIs/api/file/v1/upload`, formData).subscribe();
         }
         this.currentXml = xml;
       });
@@ -749,12 +749,17 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         File_Path: '/opt/tomcat/webapps/' + this.user.SRC_CD + '/' + item.value + '/',
         File_Name: item.text + '.bpmn'
       }));
-      this.http.post(this.downloadUrl, formData, this.apiService.setHeadersForBlob())
+      this.http.post(this.downloadUrl, formData)
         .subscribe(
           (res: any) => {
-            console.log(res.json());
-            this.modeler.importXML(res.json(), this.handleError.bind(this));
-            this.bpmnTemplate = res.json();
+            if (res._body != "") {
+              this.modeler.importXML(res._body, this.handleError.bind(this));
+              this.bpmnTemplate = res._body;
+            } else {
+              let x = '<?xml version="1.0" encoding="UTF-8"?><bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="2.0.3"></bpmn:definitions>';
+              this.modeler.importXML(x);
+              this.bpmnTemplate = x;
+            }
           },
           this.handleError.bind(this)
         );
@@ -804,6 +809,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       case 'Run': {
         this.add();
         this.Execute_Now();
+        break;
+      }
+      case 'RunAt': {
         break;
       }
       case 'Edit': {
