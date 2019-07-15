@@ -734,9 +734,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       this.http.post(this.downloadUrl, formData, this.apiService.setHeadersForBlob())
         .subscribe(
           (res: any) => {
-            console.log(res);
-            this.modeler.importXML(res, this.handleError.bind(this));
-            this.bpmnTemplate = res;
+            console.log(res.json());
+            this.modeler.importXML(res.json(), this.handleError.bind(this));
+            this.bpmnTemplate = res.json();
           },
           this.handleError.bind(this)
         );
