@@ -4,7 +4,10 @@
     <i *ngIf="item.children" (click)="onCollapseExpand()" aria-hidden="true" class="fa"
       [class.fa-caret-right]="item.collapsed" [class.fa-caret-down]="!item.collapsed"></i>
     <div class="form-check" *ngIf="item.text!=='NULL'">
-      <label class="form-check-label" (click)="onTitleClick(item)">
+      <label *ngIf="item.children" class="form-check-label parent-color" (click)="onTitleClick(item)">
+        {{item.text}}
+      </label>
+      <label *ngIf="!item.children" class="form-check-label child-color" (click)="onTitleClick(item)">
         {{item.text}}
       </label>
       <label *ngIf="item.children" class="form-check-label">
@@ -44,9 +47,11 @@
           </ngx-treeview>
         </div>
         <hr>
-        <div fxFlex="100" class="parent">
-          <button mat-raised-button (click)="addApplication()">
-            Add Application
+        <!-- class="parent" -->
+        <div fxFlex="100" >
+          <button mat-icon-button (click)="addApplication()">
+            <mat-icon>add</mat-icon>
+            <!-- Add Application -->
           </button>
         </div>
         <hr>
@@ -54,8 +59,8 @@
     </mat-sidenav>
     <div fxFlex="100">
       <div class="parent">
-        <h5 *ngIf="selectedApp!=''">{{selectedApp}}</h5>
-        <h5 *ngIf="selectedProcess!=''">{{selectedProcess}}</h5>
+        <h5 *ngIf="selectedApp!=''">{{selectedApp}}<h5 *ngIf="selectedProcess!=''">({{selectedProcess}})</h5>
+        </h5>
       </div>
       <section>
         <div fxLayout="row">

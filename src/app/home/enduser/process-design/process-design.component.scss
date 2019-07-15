@@ -9,10 +9,20 @@
     color: inherit;
   }
 }
+
 .parent {
   text-align: center;
   align-content: center;
 }
+
+.parent-color {
+  color: darkblue;
+}
+
+.child-color {
+  color: darkolivegreen;
+}
+
 .toggle,
 .import-export {
   button {

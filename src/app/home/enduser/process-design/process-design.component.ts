@@ -17,7 +17,7 @@ import { IFormFieldConfig, ConfigServiceService } from 'src/app/services/config-
 import { StorageSessionService } from 'src/app/services/storage-session.service';
 import { EnduserComponent } from '../enduser.component';
 import { HomeComponent } from '../../home.component';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { CommonUtils } from 'src/app/common/utils';
 import * as Chart from 'chart.js';
 
@@ -70,6 +70,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     { item: 'Delete Application', value: 'Delete', havePermission: 0 }];
   childrenMenuItems = [
     { item: 'Run', value: 'Run', havePermission: 0 },
+    { item: 'Run At', value: 'RunAt', havePermission: 0 },
     { item: 'Edit', value: 'Edit', havePermission: 0 },
     { item: 'Delete', value: 'Delete', havePermission: 0 },
     { item: 'Schedule', value: 'Schedule', havePermission: 0 },
@@ -129,7 +130,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
 
   //property panel property tabs variables
   async_sync: string = "sync";
-  restorability: string = "auto";
+  restorability: string = "AUTO";
   instances: string = "unlimited";
   display_output: any = false;
   summary_output: any = false;
@@ -155,7 +156,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   sequenceFlowsourceId: any;
   sequenceFlowtargetId: any;
   iconType = '';
-
+  navigationSubscription;
   constructor(
     private httpClient: HttpClient,
     private http: Http,
@@ -189,28 +190,35 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.roleValues.forEach(ele => {
             switch (ele) {
               case 'Enablement Workflow Schedule Role':
-                this.childrenMenuItems[3].havePermission = 1;
-                break;
-              case 'Enablement Workflow Dashboard Role':
                 this.childrenMenuItems[4].havePermission = 1;
                 break;
-              case 'Enablement Workflow MyTask Role':
+              case 'Enablement Workflow Dashboard Role':
                 this.childrenMenuItems[5].havePermission = 1;
                 break;
-              case 'Enablement Workflow Exception Role':
+              case 'Enablement Workflow MyTask Role':
                 this.childrenMenuItems[6].havePermission = 1;
+                break;
+              case 'Enablement Workflow Exception Role':
+                this.childrenMenuItems[7].havePermission = 1;
                 break;
               case 'Enablement Workflow Process Role':
                 this.parentMenuItems[0].havePermission = 1;
                 this.parentMenuItems[1].havePermission = 1;
-                this.childrenMenuItems[7].havePermission = 1;
                 this.childrenMenuItems[8].havePermission = 1;
+                this.childrenMenuItems[9].havePermission = 1;
                 break;
               default:
                 break;
             }
           })
         }
+      }
+    });
+    this.navigationSubscription = this.router.events.subscribe((e: any) => {
+      if (e instanceof NavigationEnd) {
+        this.router.navigated = false;
+        window.scrollTo(0, 0);
+        this.ngOnInit();
       }
     });
   }
@@ -255,10 +263,19 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         this.isProcess = false;
         this.isService = true;
         this.generalId = $event.element.id;
-        if ($event && $event.element && ['bpmn:Task', 'bpmn:Event'].indexOf($event.element.type) > -1) {
+        if ($event && $event.element && ['bpmn:Task', 'bpmn:StartEvent', 'bpmn:EndEvent', 'bpmn:Event'].indexOf($event.element.type) > -1) {
           this.selectedService = this.generalId;
           this.showAllTabFlag = true;
+          this.showCondtionType = false;
           this.getAllTabs(this.generalId);
+        }
+        if ($event && $event.element && ['bpmn:Process', 'label'].indexOf($event.element.type) > -1) {
+          this.isApp = false;
+          this.isProcess = true;
+          this.isService = false;
+          this.showAllTabFlag = false;
+          this.showCondtionType = false;
+          this.generalId = this.selectedProcess;
         }
         if ($event && $event.element && ['bpmn:SequenceFlow'].indexOf($event.element.type) > -1) {
           this.iconType = '';
@@ -445,9 +462,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       'V_SRVC_JOB_LMT': this.instances_priority,
       'V_EFF_STRT_DT_TM': this.currentDate,
       'V_EFF_END_DT_TM': this.afterFiveDays,
-      'V_DSPLY_OUTPUT': this.display_output,
-      'V_SRVC_ACTIVE_FLG': this.isServiceActive,
-      'V_ADD_TO_SMMRY_RESULT': this.summary_output,
+      'V_DSPLY_OUTPUT': this.display_output ? 'Y' : 'N',
+      'V_SRVC_ACTIVE_FLG': this.isServiceActive ? 'Y' : 'N',
+      'V_ADD_TO_SMMRY_RESULT': this.summary_output ? 'Y' : 'N',
       'V_ICN_TYP': this.iconType,
       'REST_Service': 'DefinedService',
       'V_SRC_CD': this.user.SRC_CD,
@@ -657,17 +674,18 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                   switch (authSubStr[0]) {
                     case 'EXECUTE': {
                       copyChildrenMenuItems[0].havePermission = authSubStr[1] === 'Y' ? 1 : 0;
+                      copyChildrenMenuItems[1].havePermission = authSubStr[1] === 'Y' ? 1 : 0;
                       break;
                     }
                     case 'UPDATE': {
-                      copyChildrenMenuItems[1].havePermission = authSubStr[1] === 'Y' ? 1 : 0;
+                      copyChildrenMenuItems[2].havePermission = authSubStr[1] === 'Y' ? 1 : 0;
                       break;
                     }
                     case 'DELETE': {
                       if (authSubStr[1] === 'Y') {
                         deleteCount++;
                       }
-                      copyChildrenMenuItems[2].havePermission = authSubStr[1] === 'Y' ? 1 : 0;
+                      copyChildrenMenuItems[3].havePermission = authSubStr[1] === 'Y' ? 1 : 0;
                       break;
                     }
                     default: break;
@@ -731,24 +749,24 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         File_Path: '/opt/tomcat/webapps/' + this.user.SRC_CD + '/' + item.value + '/',
         File_Name: item.text + '.bpmn'
       }));
-      this.http.post(this.downloadUrl, formData, this.apiService.setHeadersForBlob())
-        .subscribe(
-          (res: any) => {
-            console.log(res);
-            this.modeler.importXML(res, this.handleError.bind(this));
-            this.bpmnTemplate = res;
-          },
-          this.handleError.bind(this)
-        );
-      // this.httpClient.get('/assets/bpmn/diagram.bpmn', {
-      //   headers: { observe: 'response' }, responseType: 'text'
-      // }).subscribe(
-      //   (x: any) => {
-      //     this.modeler.importXML(x, this.handleError.bind(this));
-      //     this.bpmnTemplate = x;
-      //   },
-      //   this.handleError.bind(this)
-      // );
+      // this.http.post(this.downloadUrl, formData, this.apiService.setHeadersForBlob())
+      //   .subscribe(
+      //     (res: any) => {
+      //       console.log(res);
+      //       this.modeler.importXML(res, this.handleError.bind(this));
+      //       this.bpmnTemplate = res;
+      //     },
+      //     this.handleError.bind(this)
+      //   );
+      this.httpClient.get('/assets/bpmn/diagram.bpmn', {
+        headers: { observe: 'response' }, responseType: 'text'
+      }).subscribe(
+        (x: any) => {
+          this.modeler.importXML(x, this.handleError.bind(this));
+          this.bpmnTemplate = x;
+        },
+        this.handleError.bind(this)
+      );
       this.Execute_AP_PR();
     }
   }
@@ -925,6 +943,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           let result = res.json();
           this.executableOutput = result[0]["EXE_OUT_PARAMS"];
           this.executableDesc = result[0]["EXE_DSC"];
+          this.executableInput = result[0]["EXE_SIGN"];
         }
       });
   }
@@ -997,7 +1016,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             }
             this.StorageSessionService.setCookies('App_Prcs', { 'V_APP_CD': this.selectedApp, 'V_PRCS_CD': this.selectedProcess });
           } else {
-            this.router.navigate(['End_User/Execute'], { queryParams: { page: 1 }, skipLocationChange: true });
+            this.router.navigate(['End_User/Design'], { queryParams: { page: 1 }, skipLocationChange: true });
           }
         }
       );
