@@ -292,7 +292,7 @@
             <div class="oneSpace"></div>
             <div class="generalTabV">
               <label>{{Label['NAME']}} </label>
-              <input [(ngModel)]="processName">
+              <input (change)="onInputChange()" [(ngModel)]="processName">
             </div>
             <div class="spaceDiv">
               <mat-divider></mat-divider>
@@ -349,7 +349,7 @@
             <div class="spaceDiv">
               <mat-divider></mat-divider>
             </div>
-           
+
           </mat-tab>
 
           <mat-tab *ngIf="showAllTabFlag" label="Properties">

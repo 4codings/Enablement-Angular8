@@ -277,7 +277,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.showCondtionType = false;
           this.getAllTabs(this.generalId);
         }
-        if ($event && $event.element && ['bpmn:Process', 'label'].indexOf($event.element.type) > -1) {
+        if ($event && $event.element && ['bpmn:Process'].indexOf($event.element.type) > -1) {
           this.isApp = false;
           this.isProcess = true;
           this.isService = false;
@@ -299,7 +299,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       }),
         eventBus.on('element.changed', ($event) => {
           console.log('element.changed', $event)
-          if ($event && $event.element && ['bpmn:Process', 'label'].indexOf($event.element.type) > -1) {
+          if ($event && $event.element && ['bpmn:Process'].indexOf($event.element.type) > -1) {
             this.isApp = false;
             this.isProcess = true;
             this.isService = false;
@@ -307,7 +307,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           }
           if ($event && $event.element && ['bpmn:Process', 'label'].indexOf($event.element.type) === -1) {
             this.selectedService = this.generalId;
-            this.showAllTabFlag = true;
             this.isApp = false;
             this.isProcess = false;
             this.isService = true;
@@ -321,6 +320,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             const vAppCd = this.selectedApp;
             const vPrcsCd = this.selectedProcess;
             if ($event.element.type === 'bpmn:SequenceFlow') {
+              this.showAllTabFlag = false;
               const data: any = {
                 REST_Service: 'SequenceFlow',
                 V_APP_CD: vAppCd,
@@ -346,6 +346,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
               }
               this.flows[targetId] = data;
             } else {
+              this.showAllTabFlag = true;
               const data: any = {
                 REST_Service: 'Service',
                 V_APP_CD: vAppCd,
@@ -411,6 +412,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       name: this.processName,
       id: this.generalId,
     });
+    this.oldStateId = this.generalId;
     if (this.documentation == '') {
       this.documentation = this.generalId;
     }
