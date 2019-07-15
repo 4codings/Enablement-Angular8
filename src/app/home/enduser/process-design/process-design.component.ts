@@ -258,11 +258,18 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     const eventBus = this.modeler.get('eventBus');
     if (eventBus) {
       eventBus.on('element.click', ($event) => {
+        this.processName = '';
+        this.documentation = '';
         console.log('element.click', $event)
         this.isApp = false;
         this.isProcess = false;
         this.isService = true;
         this.generalId = $event.element.id;
+        const businessObject = $event.element.businessObject;
+        this.processName = businessObject.name ? businessObject.name : '';
+        if (businessObject.documentation && businessObject.documentation.length) {
+          this.documentation = businessObject.documentation[0].text ? businessObject.documentation[0].text : '';
+        }
         if ($event && $event.element && ['bpmn:Task', 'bpmn:StartEvent', 'bpmn:EndEvent', 'bpmn:Event'].indexOf($event.element.type) > -1) {
           this.selectedService = this.generalId;
           this.showAllTabFlag = true;

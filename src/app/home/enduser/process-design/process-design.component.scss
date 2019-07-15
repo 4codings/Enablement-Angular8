@@ -84,10 +84,61 @@
   display: none;
 }
 
-:host /deep/ .bpmn-icon-hand-tool:before {
-  content: '\e868';
-  color: aqua;
+// :host /deep/ .bpmn-icon-hand-tool:before {
+//   content: '\e868';
+//   color: aqua;
+// }
+
+:host /deep/ .bpmn-icon-start-event-none:before {
+  content: '\e845';
+  color: green;
 }
+
+:host /deep/ .bpmn-icon-intermediate-event-none:before {
+  content: '\e82d';
+  color: yellow;
+}
+
+:host /deep/ .bpmn-icon-end-event-none:before {
+  content: '\e838';
+  color: red;
+}
+
+:host /deep/ .bpmn-icon-gateway-none:before {
+  content: '\e834';
+  color: yellow;
+}
+
+:host /deep/ .bpmn-icon-task:before {
+  content: '\e821';
+  color: yellow;
+}
+
+:host /deep/ .bpmn-icon-subprocess-expanded:before {
+  content: '\e820';
+  color: yellow;
+}
+
+:host /deep/ .bpmn-icon-data-store:before {
+  content: '\e84e';
+  color: yellow;
+}
+
+:host /deep/ .bpmn-icon-participant:before {
+  content: '\e85c';
+  color: yellow;
+}
+
+:host /deep/ .bpmn-icon-group:before {
+  content: '\e869';
+  color: yellow;
+}
+
+:host /deep/ .bpmn-icon-data-object:before {
+  content: '\e84b';
+  color: yellow;
+}
+
 
 :host /deep/ label {
   text-align: center;
