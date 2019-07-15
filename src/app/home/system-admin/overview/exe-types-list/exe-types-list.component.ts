@@ -19,7 +19,8 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
   V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
   public exes;
   public allExes = [];
-  public selectedExeType= {EXE_TYP:"All"};
+  public sortedAllExes = [];
+  public selectedExeType= {EXE_TYP:"E_REST"};
   unsubscribeAll: Subject<boolean> = new Subject<boolean>();
   exeTypeOptions;
   @Output() selectedExe: EventEmitter<any> = new EventEmitter();
@@ -53,6 +54,7 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
         })
         this.allExes.push({EXE_TYP: item.EXE_TYP, EXES:arr})
       });
+      this.sortedAllExes = this.allExes.sort((a,b) => (a.EXES.length > b.EXES.length) ? -1 : ((b.EXES.length > a.EXES.length) ? 1 : 0));
     }, err => {
        console.log(err);
     })

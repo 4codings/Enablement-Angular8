@@ -749,24 +749,24 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         File_Path: '/opt/tomcat/webapps/' + this.user.SRC_CD + '/' + item.value + '/',
         File_Name: item.text + '.bpmn'
       }));
-      // this.http.post(this.downloadUrl, formData, this.apiService.setHeadersForBlob())
-      //   .subscribe(
-      //     (res: any) => {
-      //       console.log(res);
-      //       this.modeler.importXML(res, this.handleError.bind(this));
-      //       this.bpmnTemplate = res;
-      //     },
-      //     this.handleError.bind(this)
-      //   );
-      this.httpClient.get('/assets/bpmn/diagram.bpmn', {
-        headers: { observe: 'response' }, responseType: 'text'
-      }).subscribe(
-        (x: any) => {
-          this.modeler.importXML(x, this.handleError.bind(this));
-          this.bpmnTemplate = x;
-        },
-        this.handleError.bind(this)
-      );
+      this.http.post(this.downloadUrl, formData, this.apiService.setHeadersForBlob())
+        .subscribe(
+          (res: any) => {
+            console.log(res.json());
+            this.modeler.importXML(res.json(), this.handleError.bind(this));
+            this.bpmnTemplate = res.json();
+          },
+          this.handleError.bind(this)
+        );
+      // this.httpClient.get('/assets/bpmn/diagram.bpmn', {
+      //   headers: { observe: 'response' }, responseType: 'text'
+      // }).subscribe(
+      //   (x: any) => {
+      //     this.modeler.importXML(x, this.handleError.bind(this));
+      //     this.bpmnTemplate = x;
+      //   },
+      //   this.handleError.bind(this)
+      // );
       this.Execute_AP_PR();
     }
   }

@@ -16,6 +16,7 @@ export class MachinesListComponent implements OnInit {
   V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
   public machines;
   public connections=[];
+  public sortedAllConnections = [];
   public selectedMachineType= "All";
   unsubscribeAll: Subject<boolean> = new Subject<boolean>();
   machineTypeOptions;
@@ -49,7 +50,8 @@ export class MachinesListComponent implements OnInit {
         let arr = res.filter(data => {
           return item.V_PLATFORM_ID == data.V_PLATFORM_ID
         })
-        this.connections.push({V_PLATFORM_CD: item.V_PLATFORM_CD, V_CXN:arr})
+        this.connections.push({V_PLATFORM_CD: item.V_PLATFORM_CD, V_CXN:arr});
+        this.sortedAllConnections = this.connections.sort((a,b) => (a.V_CXN.length > b.V_CXN.length) ? -1 : ((b.V_CXN.length > a.V_CXN.length) ? 1 : 0));
       });
     }, err => {
        console.log(err);

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material';
 import { EditExeTypeDialogComponent } from '../dialogs/edit-exe-type-dialog/edit-exe-type-dialog.component';
 import { ConfirmationAlertComponent } from 'src/app/shared/components/confirmation-alert/confirmation-alert.component';
+import { SystemAdminOverviewService } from '../system-admin-overview.service';
 
 @Component({
   selector: 'app-single-exe',
@@ -17,7 +18,7 @@ export class SingleExeComponent implements OnInit {
   V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
   V_USR_NM:string=JSON.parse(sessionStorage.getItem('u')).USR_NM;
 
-  constructor(private http:HttpClient, public dialog: MatDialog) { }
+  constructor(private http:HttpClient, public dialog: MatDialog, private systemOverview:SystemAdminOverviewService) { }
 
   ngOnInit() {
     // this.exes = this.allExes.filter(item => {
@@ -53,6 +54,11 @@ export class SingleExeComponent implements OnInit {
 
   onBtnAssignRoleClick(exeType) {
 
+  }
+
+  selectedExeTile(exe) {
+    console.log("parent", exe);
+    this.systemOverview.selectExe(exe);
   }
 
 }
