@@ -84,10 +84,10 @@
   display: none;
 }
 
-// :host /deep/ .bpmn-icon-hand-tool:before {
-//   content: '\e868';
-//   color: aqua;
-// }
+:host /deep/ .bpmn-icon-hand-tool:before {
+  content: '\e868';
+  color: rgb(230, 218, 171);
+}
 
 :host /deep/ .bpmn-icon-start-event-none:before {
   content: '\e845';
@@ -106,37 +106,37 @@
 
 :host /deep/ .bpmn-icon-gateway-none:before {
   content: '\e834';
-  color: yellow;
+  color: violet;
 }
 
 :host /deep/ .bpmn-icon-task:before {
   content: '\e821';
-  color: yellow;
+  color: blue;
 }
 
 :host /deep/ .bpmn-icon-subprocess-expanded:before {
   content: '\e820';
-  color: yellow;
+  color: rgb(0, 225, 255);
 }
 
 :host /deep/ .bpmn-icon-data-store:before {
   content: '\e84e';
-  color: yellow;
+  color: orange;
 }
 
 :host /deep/ .bpmn-icon-participant:before {
   content: '\e85c';
-  color: yellow;
+  color: pink;
 }
 
 :host /deep/ .bpmn-icon-group:before {
   content: '\e869';
-  color: yellow;
+  color: rgb(202, 111, 51);
 }
 
 :host /deep/ .bpmn-icon-data-object:before {
   content: '\e84b';
-  color: yellow;
+  color: rgb(146, 191, 250);
 }
 
 

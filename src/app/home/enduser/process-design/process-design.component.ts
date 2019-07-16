@@ -307,6 +307,12 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       }),
         eventBus.on('element.changed', ($event) => {
           console.log('element.changed', $event)
+          const businessObject = $event.element.businessObject;
+          this.processName = businessObject.name ? businessObject.name : '';
+          if (businessObject.documentation && businessObject.documentation.length) {
+            this.documentation = businessObject.documentation[0].text ? businessObject.documentation[0].text : '';
+          }
+          console.log('this.this.bpmntemplate', this.bpmnTemplate);
           if ($event && $event.element && ['bpmn:Process'].indexOf($event.element.type) > -1) {
             this.isApp = false;
             this.isProcess = true;
@@ -314,11 +320,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             this.showAllTabFlag = false;
           }
           if ($event && $event.element && ['bpmn:Process', 'label'].indexOf($event.element.type) === -1) {
-            const businessObject = $event.element.businessObject;
-            this.processName = businessObject.name ? businessObject.name : '';
-            if (businessObject.documentation && businessObject.documentation.length) {
-              this.documentation = businessObject.documentation[0].text ? businessObject.documentation[0].text : '';
-            }
             this.selectedService = this.generalId;
             this.isApp = false;
             this.isProcess = false;
@@ -413,6 +414,13 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     }
   }
   onInputChange() {
+    this.generalId = this.generalId.replace(new RegExp(' ', 'g'), '_');
+    if (this.documentation == '') {
+      this.documentation = this.generalId.replace(new RegExp('_', 'g'), ' ');
+    }
+    if (this.processName == '') {
+      this.processName = this.generalId.replace(new RegExp('_', 'g'), ' ');
+    }
     const name = this.processName;
     if (!this.isApp && this.oldStateId) {
       let elementRegistry = this.modeler.get('elementRegistry');
@@ -423,16 +431,11 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       modeling.updateProperties(element, {
         name: name,
         id: this.generalId,
-        documentation: doc
       });
       this.oldStateId = this.generalId;
     }
-    if (this.documentation == '') {
-      this.documentation = this.generalId;
-    }
-    if (this.processName == '') {
-      this.processName = this.generalId;
-    }
+    console.log('this.this.modeler', this.modeler);
+    console.log('this.this.bpmntemplate', this.bpmnTemplate);
     if (this.isApp) {
       this.addApplicationOnBE();
     }
@@ -532,9 +535,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.selectedProcess = this.generalId;
     const body = {
       'V_APP_CD': this.selectedApp,
-      'V_OLD_PRCS_CD': this.V_OLD_PRCS_CD,
-      'V_NEW_PRCS_CD': this.selectedProcess,
-      'V_PRCS_DSC': this.documentation,
+      'V_OLD_PRCS_CD': this.V_OLD_PRCS_CD.replace(new RegExp('_', 'g'), ' '),
+      'V_NEW_PRCS_CD': this.selectedProcess.replace(new RegExp('_', 'g'), ' '),
+      'V_PRCS_DSC': this.documentation.replace(new RegExp('_', 'g'), ' '),
       'REST_Service': 'UpdateProcess',
       'V_SRC_CD': this.user.SRC_CD,
       'V_USR_NM': this.user.USR_NM,
@@ -583,6 +586,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   upload(vAppCd, vPrcsCd) {
     if (!this.uploadLocked) {
       this.modeler.saveXML((err: any, xml: any) => {
+        console.log('xml', xml);
         if (xml !== this.currentXml) {
           const formData: FormData = new FormData();
           formData.append('FileInfo', JSON.stringify({
@@ -780,13 +784,14 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.isService = false;
     this.showRightIcon = false;
     this.opened = false;
+    this.V_OLD_PRCS_CD = item.text;
     if (!item.children) {
       this.selectedApp = item.value;
       this.selectedProcess = item.text;
       const formData: FormData = new FormData();
       formData.append('FileInfo', JSON.stringify({
         File_Path: '/opt/tomcat/webapps/' + this.user.SRC_CD + '/' + item.value + '/',
-        File_Name: item.text + '.bpmn'
+        File_Name: item.text.replace(new RegExp(' ', 'g'), '_') + '.bpmn'
       }));
       this.http.post(this.downloadUrl, formData)
         .subscribe(
@@ -795,9 +800,30 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
               this.modeler.importXML(res._body, this.handleError.bind(this));
               this.bpmnTemplate = res._body;
             } else {
-              let x = '<?xml version="1.0" encoding="UTF-8"?><bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="2.0.3"></bpmn:definitions>';
-              this.modeler.importXML(x);
-              this.bpmnTemplate = x;
+              // let x = '<?xml version="1.0" encoding="UTF-8"?><bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="2.0.3"></bpmn:definitions>';
+              // this.modeler.importXML(x);
+              // this.bpmnTemplate = x;
+              this.httpClient.get('/assets/bpmn/newDiagram.bpmn', {
+                headers: { observe: 'response' }, responseType: 'text'
+              }).subscribe(
+                (x: any) => {
+                  this.modeler.importXML(x, this.handleError.bind(this));
+                  this.bpmnTemplate = x;
+                  setTimeout(() => {
+                    let elementRegistry = this.modeler.get('elementRegistry');
+                    let element = elementRegistry.get('newProcess');
+                    console.log('element', element)
+                    let modeling = this.modeler.get('modeling');
+                    const doc = [{ 'text': this.documentation }];
+                    modeling.updateProperties(element, {
+                      name: this.selectedProcess,
+                      id: this.selectedProcess.replace(new RegExp(' ', 'g'), '_'),
+                    })
+                    document.getElementById("processId").focus();
+                  })
+                },
+                this.handleError.bind(this)
+              );
             }
           },
           this.handleError.bind(this)
