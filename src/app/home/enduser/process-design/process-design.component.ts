@@ -350,7 +350,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                 Verb: 'PUT'
               };
 
-              this.generalId = targetId;
+              // this.generalId = targetId;
               this.getAllTabs(targetId);
 
               if (!this.flows) {
@@ -376,7 +376,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                 Verb: 'PUT'
               };
 
-              this.generalId = objectId;
+              // this.generalId = objectId;
               this.getAllTabs(objectId);
 
               this.httpClient.post(this.url, data).subscribe(() => {
