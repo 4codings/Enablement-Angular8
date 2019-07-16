@@ -312,6 +312,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           if (businessObject.documentation && businessObject.documentation.length) {
             this.documentation = businessObject.documentation[0].text ? businessObject.documentation[0].text : '';
           }
+          this.generalId = $event.element.id;
           console.log('this.this.bpmntemplate', this.bpmnTemplate);
           if ($event && $event.element && ['bpmn:Process'].indexOf($event.element.type) > -1) {
             this.isApp = false;
@@ -331,7 +332,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             // const vAppCd = 'V_APP_CD';
             // const vPrcsCd = 'V_PRCS_CD';
             const vAppCd = this.selectedApp;
-            const vPrcsCd = this.selectedProcess;
+            const vPrcsCd = this.generalId;
             if ($event.element.type === 'bpmn:SequenceFlow') {
               // this.showAllTabFlag = false;
               const data: any = {
@@ -385,14 +386,14 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                   this.uploadLocked = true;
                   this.httpClient.put(this.url, this.flows[objectId]).subscribe(() => {
                     delete this.flows[objectId];
-                    this.upload(vAppCd, vPrcsCd);
+                    this.upload(vAppCd, this.selectedProcess);
                     this.uploadLocked = false;
                   }, () => this.uploadLocked = false);
                 }
               });
             }
             setTimeout(() => {
-              this.upload(vAppCd, vPrcsCd);
+              this.upload(vAppCd, this.selectedProcess);
             }, this.ctrl_variables.delay_timeout);
           }
         }),
@@ -585,6 +586,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
 
   upload(vAppCd, vPrcsCd) {
     if (!this.uploadLocked) {
+      vPrcsCd = vPrcsCd.replace(new RegExp(' ', 'g'), '_')
       this.modeler.saveXML((err: any, xml: any) => {
         console.log('xml', xml);
         if (xml !== this.currentXml) {
