@@ -62,7 +62,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     hasFilter: true,
     hasCollapseExpand: true,
     decoupleChildFromParent: false,
-    maxHeight: 400
+    maxHeight: 400,
+
   });
   parentMenuItems = [
     { item: 'New Process', value: 'Add', havePermission: 0 },
@@ -759,6 +760,15 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           text: ele.app, value: ele.app, collapsed: true, children: this.chilItem
         });
         this.item.push(treeObj);
+        this.item.sort((a, b) => {
+          if (a.text < b.text) {
+            return -1;
+          } else if (a.text > b.text) {
+            return 1;
+          } else {
+            return 0;
+          }
+        });
       })
     }
   }

@@ -1,18 +1,18 @@
 <ng-template #itemTemplate let-item="item" let-onCollapseExpand="onCollapseExpand"
   let-onCheckedChange="onCheckedChange">
   <div class="form-inline row-item">
-    <i *ngIf="item.children" (click)="onCollapseExpand()" aria-hidden="true" class="fa"
+    <i *ngIf="item.children" (click)="onCollapseExpand()" aria-hidden="true" class="fa caret-font"
       [class.fa-caret-right]="item.collapsed" [class.fa-caret-down]="!item.collapsed"></i>
     <div class="form-check" *ngIf="item.text!=='NULL'">
       <label *ngIf="item.children" class="form-check-label parent-color" (click)="onTitleClick(item)">
         {{item.text}}
       </label>
-      <label *ngIf="!item.children" class="form-check-label child-color" (click)="onTitleClick(item)">
+      <label *ngIf="!item.children" class="form-check-label child-color m-t--16" (click)="onTitleClick(item)">
         {{item.text}}
       </label>
       <label *ngIf="item.children" class="form-check-label">
         <button mat-icon-button [matMenuTriggerFor]="parentMenu" aria-label="Example icon-button with a menu">
-          <mat-icon class="parent-color">more_vert</mat-icon>
+          <mat-icon class="parent-color more-vert-font">more_vert</mat-icon>
         </button>
         <mat-menu #parentMenu="matMenu">
           <div *ngFor="let pitem of parentobj[item.text]">
@@ -22,9 +22,9 @@
           </div>
         </mat-menu>
       </label>
-      <label *ngIf="!item.children" class="form-check-label">
+      <label *ngIf="!item.children" class="form-check-label m-t--16">
         <button mat-icon-button [matMenuTriggerFor]="childMenu" aria-label="Example icon-button with a menu">
-          <mat-icon class="child-color">more_vert</mat-icon>
+          <mat-icon class="child-color more-vert-font">more_vert</mat-icon>
         </button>
         <mat-menu #childMenu="matMenu">
           <div *ngFor="let citem of childobj[item.text]">
@@ -48,7 +48,7 @@
         </div>
         <div fxFlex="100">
           <button mat-icon-button matTooltip="Add Application" (click)="addApplication()">
-            <mat-icon class="add-btn">add</mat-icon>
+            <mat-icon class="add-btn add-font">add</mat-icon>
           </button>
         </div>
         <hr>
@@ -56,7 +56,7 @@
     </mat-sidenav>
     <div fxFlex="100">
       <div class="parent">
-        <h5 *ngIf="selectedApp!=''">{{selectedApp}}<span *ngIf="selectedProcess!=''">({{selectedProcess}})</span>
+        <h5 class="parent-font" *ngIf="selectedApp!=''">{{selectedApp}}<span class="selected-process-font" *ngIf="selectedProcess!=''"> : {{selectedProcess}}</span>
         </h5>
       </div>
       <section>
@@ -286,20 +286,20 @@
 
           <mat-tab label="General">
             <div class="generalTabV">
-              <label>{{Label['ID']}} </label>
+              <label class="m-t-15">{{Label['ID']}} </label>
               <input id="processId" (change)="onInputChange()" [(ngModel)]="generalId">
             </div>
             <div class="oneSpace"></div>
             <div class="generalTabV">
-              <label>{{Label['NAME']}} </label>
+              <label class="m-t-15">{{Label['NAME']}} </label>
               <input (change)="onInputChange()" [(ngModel)]="processName">
             </div>
             <div class="spaceDiv">
               <mat-divider></mat-divider>
             </div>
 
-            <label><i> {{Label['DOCUMENTATION']}}</i></label>
-            <input (change)="onInputChange()" [(ngModel)]="documentation">
+            <label class="m-t-15">{{Label['DOCUMENTATION']}}</label>
+            <textarea (change)="onInputChange()" [(ngModel)]="documentation"></textarea>
             <div *ngIf="showCondtionType">
               <div class="spaceDiv">
                 <mat-divider></mat-divider>
@@ -339,10 +339,10 @@
             </select>
             <div class="oneSpace"></div>
             <label>{{Label['EXECUTABLE_INPUT']}}</label>
-            <input [(ngModel)]="executableInput">
+            <textarea [(ngModel)]="executableInput"></textarea>
             <div class="oneSpace"></div>
             <label>{{Label['EXECUTABLE_OUTPUT']}}</label>
-            <input disabled [(ngModel)]="executableOutput">
+            <textarea disabled [(ngModel)]="executableOutput"></textarea>
             <div class="oneSpace"></div>
             <label>{{Label['EXECUTABLE_DSC']}}</label>
             <textarea disabled [(ngModel)]="executableDesc"></textarea>
@@ -353,8 +353,8 @@
           </mat-tab>
 
           <mat-tab *ngIf="showAllTabFlag" label="Properties">
-            <mat-checkbox>{{Label['DISPLAY_OUTPUT']}}</mat-checkbox>
-            <mat-checkbox>{{Label['SUMMARY_OUTPUT']}}</mat-checkbox>
+            <mat-checkbox [(ngModel)]="display_output">{{Label['DISPLAY_OUTPUT']}}</mat-checkbox>
+            <mat-checkbox [(ngModel)]="summary_output">{{Label['SUMMARY_OUTPUT']}}</mat-checkbox>
             <mat-checkbox [(ngModel)]="isServiceActive" (change)="serviceActiveSelected($event.checked)">
               {{Label['SERVICE_ACTIVE']}}
             </mat-checkbox>

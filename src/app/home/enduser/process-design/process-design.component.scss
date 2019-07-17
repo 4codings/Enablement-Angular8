@@ -17,15 +17,22 @@
 }
 
 .parent-color {
-  color: darkblue;
+  color: #000;
 }
-
+.parent-font{
+  font-size: 14px;
+  font-weight: bold;
+}
+.selected-process-font {
+  font-weight: normal;
+}
 .child-color {
-  color: darkolivegreen;
+  color: #000;
+  font-weight: normal;
 }
 
 .tree-bg-color {
-  background-color: #dbe2f1;
+  background-color: #ededed;
 }
 
 .properties-bg-color {
@@ -65,6 +72,9 @@
 :host /deep/ .mat-tab-label {
   padding: 0 15px;
   min-width: 60px;
+  .mat-tab-label-content {
+    margin-bottom: -15px;
+  }
 }
 
 :host /deep/ .bjs-container .djs-container .djs-palette .two-open {
@@ -188,16 +198,20 @@
 
 :host /deep/ .mat-input-element,
 input {
-  text-align: center
+  text-align: center;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
 }
 
 :host /deep/ .mat-tab-body-content {
-  padding: 30px 45px;
+  padding: 0 45px;
 }
 
 :host /deep/ .generalTabV {
   padding-top: 2px;
   padding-bottom: 0px;
+}
+.m-t--16{
+  margin-top: -16px !important;
 }
 
 :host /deep/.chosen-container.chosen-container-single {
@@ -212,3 +226,19 @@ input {
   padding-bottom: 1px;
   padding-left: 0px;
 }
+.m-t-15 {
+  margin-top: 15px;
+}
+.caret-font{
+  font-size: 22px;
+  margin-left: 1.3rem;
+}
+.more-vert-font{
+  font-size: 19px;
+  margin-left: -25px;
+}
+.add-font{
+  margin-left: 0;
+  font-size: 22px;
+}
+
