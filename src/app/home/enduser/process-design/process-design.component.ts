@@ -270,7 +270,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         this.processName = '';
         this.documentation = '';
         this.iconType = '';
-        console.log('element.click', $event)
+        // console.log('element.click', $event)
         this.isApp = false;
         this.isProcess = false;
         this.isService = true;
@@ -307,14 +307,14 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         }
       }),
         eventBus.on('element.changed', ($event) => {
-          console.log('element.changed', $event)
+          // console.log('element.changed', $event)
           const businessObject = $event.element.businessObject;
           this.processName = businessObject.name ? businessObject.name : '';
           if (businessObject.documentation && businessObject.documentation.length) {
             this.documentation = businessObject.documentation[0].text ? businessObject.documentation[0].text : '';
           }
           this.generalId = $event.element.id;
-          console.log('this.this.bpmntemplate', this.bpmnTemplate);
+          // console.log('this.this.bpmntemplate', this.bpmnTemplate);
           if ($event && $event.element && ['bpmn:Process'].indexOf($event.element.type) > -1) {
             this.isApp = false;
             this.isProcess = true;
@@ -326,7 +326,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             this.isApp = false;
             this.isProcess = false;
             this.isService = true;
-            console.log('fsd')
             const sourceId = businessObject && businessObject.sourceRef ? businessObject.sourceRef.id : '';
             const targetId = businessObject && businessObject.targetRef ? businessObject.targetRef.id : '';
             const objectId = businessObject ? businessObject.id : '';
@@ -399,7 +398,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           }
         }),
         eventBus.on('connection.remove', ($event) => {
-          console.log('connection.remove', $event);
+          // console.log('connection.remove', $event);
           if ($event && $event.element && ['bpmn:SequenceFlow'].indexOf($event.element.type) > -1) {
             let id = $event.element.id;
             this.deleteService(id);
@@ -427,7 +426,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     if (!this.isApp && this.oldStateId) {
       let elementRegistry = this.modeler.get('elementRegistry');
       let element = elementRegistry.get(this.oldStateId);
-      console.log('element', element)
       let modeling = this.modeler.get('modeling');
       const doc = [{ 'text': this.documentation }];
       modeling.updateProperties(element, {
@@ -436,8 +434,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       });
       this.oldStateId = this.generalId;
     }
-    console.log('this.this.modeler', this.modeler);
-    console.log('this.this.bpmntemplate', this.bpmnTemplate);
     if (this.isApp) {
       this.addApplicationOnBE();
     }
@@ -560,7 +556,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.http.get(this.apiService.endPoints.securedJSON + "V_PRDCR_SRC_CD=" + this.user.SRC_CD + "&V_PRDCR_APP_CD=" + this.selectedApp + "&V_PRDCR_PRCS_CD=" + this.selectedProcess + "&V_PRDCR_SRVC_CD=" + this.sequenceFlowsourceId + "&V_USR_NM=" + this.user.USR_NM + "&V_SRC_CD=" + this.user.SRC_CD + "&V_APP_CD=" + this.selectedApp + "&V_PRCS_CD=" + this.selectedProcess + "&V_SRVC_CD=" + this.selectedService + "&REST_Service=SequenceFlow" + "&Verb=GET", this.apiService.setHeaders())
       .subscribe(res => {
         if (res) {
-          console.log('data', res.json());
           // this.sequenceConditionType = res.json();
         }
       });
@@ -590,7 +585,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     if (!this.uploadLocked) {
       vPrcsCd = vPrcsCd.replace(new RegExp(' ', 'g'), '_')
       this.modeler.saveXML((err: any, xml: any) => {
-        console.log('xml', xml);
         if (xml !== this.currentXml) {
           const formData: FormData = new FormData();
           formData.append('FileInfo', JSON.stringify({
@@ -825,7 +819,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                   setTimeout(() => {
                     let elementRegistry = this.modeler.get('elementRegistry');
                     let element = elementRegistry.get('newProcess');
-                    console.log('element', element)
                     let modeling = this.modeler.get('modeling');
                     const doc = [{ 'text': this.documentation }];
                     modeling.updateProperties(element, {
@@ -971,7 +964,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       Object.assign(body, this.ts);
       this.http.post(this.apiService.endPoints.secureProcessStart, body, this.apiService.setHeaders())
         .subscribe(res => {
-          // console.log('start');
           this.executedata = { SL_APP_CD: this.selectedApp, SL_PRC_CD: this.selectedProcess };
 
           this.StorageSessionService.setCookies('executedata', this.executedata);
@@ -990,7 +982,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         if (res) {
           this.propertyPanelAllTabsData = res.json();
-          console.log('data', this.propertyPanelAllTabsData);
         }
       });
 
