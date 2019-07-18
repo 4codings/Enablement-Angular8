@@ -414,3 +414,11 @@
 // 	   width:120px;
 //    }
 
+.stage-{
+  &hide .bjs-container .djs-container{
+    display: none;
+  }
+  &show .bjs-container .djs-container{
+    display: inherit;
+  }
+}
