@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { HttpClient } from '@angular/common/http';
+import { ConfigServiceService } from 'src/app/services/config-service.service';
 
 @Component({
   selector: 'app-add-exe-dialog',
@@ -8,23 +9,29 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./add-exe-dialog.component.scss']
 })
 export class AddExeDialogComponent implements OnInit {
-  F_EXE_CD:string;
-  F_EXE_DSC:string;
-  F_EXE_SIGN:string;
+  F_EXE_CD:string = '';
+  F_EXE_DSC:string = '';
+  F_EXE_SIGN:string = '';
   V_SRC_CD=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
   V_USR_NM=JSON.parse(sessionStorage.getItem('u')).USR_NM;
   F_EXE_OUT_PARAM:string;
   F_EXE_VRSN:string = "1.0";
   F_SYNC_FLG:string = "Y";
-  F_EXE_S_DLMTR:string;
-  F_EXE_E_DLMTR:string;
-  PLF_DSC:string;
+  F_EXE_S_DLMTR:string = '';
+  F_EXE_E_DLMTR:string = '';
+  PLF_DSC:string = '';
   ipart: boolean = false;
   opart: boolean = false;
+  PLF_TYPE=[];
+  PLF_CD:string = "Amazon";
 
-  constructor(public dialogRef: MatDialogRef<AddExeDialogComponent>,  @Inject(MAT_DIALOG_DATA) public data: any, private http:HttpClient) { }
+  constructor(public dialogRef: MatDialogRef<AddExeDialogComponent>,  @Inject(MAT_DIALOG_DATA) public data: any, private http:HttpClient, private config:ConfigServiceService) { }
 
   ngOnInit() {
+    this.config.getPlatformType().subscribe(res=>{this.PLF_TYPE=res.json();
+      (this.PLF_TYPE);
+      // this.PLF_CD=this.PLF_TYPE['SERVER_CD'];
+    });
   }
   
   onBtnCancelClick(): void {
@@ -46,12 +53,14 @@ export class AddExeDialogComponent implements OnInit {
     "V_USR_NM": this.V_USR_NM,
     "V_EXE_IN_ARTFCTS": this.ipart,
     "V_EXE_OUT_ARTFCTS":this.opart,
+    "V_SERVER_CD":this.PLF_CD,
     "V_COMMNT": '',
     "REST_Service":["Exe"],
     "Verb":["PUT"]
   }
     this.http.put('https://enablement.us/Enablement/rest/v1/securedJSON?', data).subscribe(res => {
       console.log("res",res);
+      this.dialogRef.close();
     }, err => {
   
     })

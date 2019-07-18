@@ -1,3 +1,100 @@
-<p>
-  edit-exe-type-dialog works!
-</p>
+<div class="dialog-wrapper" fxLayoutGap="8px" fxLayout="column" fxLayoutAlign="start stretch">
+  <div class="dialog-header content-wrapper" fxLayoutAlign="space-between center">
+    <span>Add Platform</span>
+    <button mat-icon-button (click)="onBtnCancelClick()"><mat-icon>close</mat-icon></button>
+  </div>
+  <mat-divider></mat-divider>
+  <br/>
+  <div class="dialog-body content-wrapper">
+        <div fxLayout="row" fxLayout.lt-sm="column">
+          <div fxFlex="48" class="mr-2">
+            <label item-width="100"><strong>Executable Name</strong></label>
+            <mat-form-field style="width:100%;">
+              <input matInput  [(ngModel)]="data.exeData.V_EXE_CD" name="exe" readonly/>
+            </mat-form-field>
+          </div>  
+          <div class="ml-2" fxFlex="48">  
+            <label item-width="100"><strong>Executable Description</strong></label>
+            <mat-form-field class="form_in" style="width:100%;">
+              <input matInput  [(ngModel)]="data.exeData.V_EXE_DSC" name="exedsc" value="" />
+            </mat-form-field>
+          </div>  
+        </div>  
+        <br />
+        <div fxLayout="row" fxLayout.lt-sm="column">
+          <div class="mr-2" fxFlex="48">
+            <label item-width="100"><strong>Input Parameters</strong></label>
+            <mat-form-field class="form_in" style="width:100%;">
+              <input matInput  [(ngModel)]="data.exeData.V_EXE_SIGN" name="Parameters" value="" />
+            </mat-form-field>
+          </div>
+          <!-- OUTPUT PARAMETERS -->
+          <div class="ml-2" fxFlex="48">  
+            <label item-width="100"><strong>Output Parameters</strong></label>
+            <mat-form-field class="form_in" style="width:100%;">
+              <input matInput  [(ngModel)]="data.exeData.V_EXE_OUT_PARAMS" name="outparam" />
+            </mat-form-field>
+          </div>  
+        </div>
+        <br/>
+        <!-- VERSION -->
+        <label item-width="100"><strong>Version</strong></label>
+        <mat-form-field class="form_in" style="width:100%;">
+          <input matInput [(ngModel)]="data.exeData.V_EXE_VRSN" name="version" />
+        </mat-form-field>
+        <br>
+        <!-- SYNCH ASYNCH -->
+        <mat-radio-group flex fxLayout="row" [(ngModel)]="data.exeData.V_SYNC_FLG" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="row" fxLayoutAlign="space-around center">
+          <mat-radio-button  value="Y">Synch</mat-radio-button>
+          <mat-radio-button  value="N">Asynch </mat-radio-button>
+        </mat-radio-group>
+        <!-- INPUT OUTPUT ARTIFACT -->
+        <br>
+        <!-- <div flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="row" fxLayoutAlign="space-around center">
+          <mat-checkbox [checked]="ipart">Input Artifact</mat-checkbox>
+          <mat-checkbox [checked]="opart">Output Artifact</mat-checkbox>
+        </div> -->
+      <br/>
+      <div fxLayout="row" fxLayout.lt-sm="column">
+        <div class="mr-2" fxFlex="48">
+          <!-- START DELIMITER -->
+          <label item-width="100"><strong>Start Delimiter</strong></label>
+          <mat-form-field class="form_in" style="width:100%;">
+            <input matInput [(ngModel)]="data.exeData.V_PARAM_DLMTR_STRT" name="startdelimiter" />
+          </mat-form-field>
+        </div>  
+        <div class="ml-2" fxFlex="48">
+          <!-- END DELIMITER -->
+          <label item-width="100"><strong>End Delimiter</strong></label>
+          <mat-form-field class="form_in" style="width:100%;">
+            <input matInput [(ngModel)]="data.exeData.V_PARAM_DLMTR_END" name="enddelimiter" />
+          </mat-form-field>
+        </div>  
+      </div>    
+      <br/>
+      <div fxLayout="row" fxLayout.lt-sm="column">
+        <!-- PLATFORM DESCRIPTION -->
+        <div class="mr-3" fxFlex="48">
+          <label item-width="100"><strong>Platform Description</strong></label>
+          <mat-form-field class="form_in" style="width:100%;">
+            <textarea matInput  [(ngModel)]="data.exeData.V_SERVER_DSC" name="PLF_DSC"></textarea>
+          </mat-form-field>
+        </div>
+        <!-- PLATFORM -->
+        <div class="ml-3 pt-3" fxFlex="50">
+          <label item-width="100"><strong>Platform</strong></label>
+          <mat-form-field class="form_in">
+            <mat-select [(ngModel)]="PLF_Data">
+              <mat-option style="text-align:center;" (click)=platformDescription() [value]="pf" *ngFor="let pf of PLF_TYPE['SERVER_CD']">
+                {{pf}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>    
+        
+  </div>
+  <div class="dialog-footer content-wrapper" fxLayoutAlign="end center" fxLayoutGap="8px">
+    <button mat-flat-button color="primary" (click)="onBtnUpdateClick()">Update</button>
+  </div>
+</div>

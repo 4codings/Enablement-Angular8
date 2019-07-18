@@ -27,9 +27,10 @@ import { MachineTileListComponent } from './overview/machine-tile-list/machine-t
 import { FilterExetypePipe } from './overview/pipes/filter-exetype.pipe';
 import { FilterMachinesPipe } from './overview/pipes/filter-machines.pipe';
 import { AddExeDialogComponent } from './overview/dialogs/add-exe-dialog/add-exe-dialog.component';
+import { AddConnectionDialogComponent } from './overview/dialogs/add-connection-dialog/add-connection-dialog.component';
 
 @NgModule({
-  declarations: [SystemAdminComponent, PlatformComponent, ConnectionComponent, DeployStatusComponent, DeploymentComponent, DeploymentsnavbarComponent, InstallComponent, MachineComponent, MachineconnectionComponent, MachinespecsComponent, OverviewComponent, MachinesListComponent, SingleExeComponent, ExeTileListComponent, AddPlatformDialogComponent, EditExeTypeDialogComponent, ExeTypesListComponent, SingleMachineComponent, MachineTileListComponent, FilterExetypePipe, FilterMachinesPipe, AddExeDialogComponent],
+  declarations: [SystemAdminComponent, PlatformComponent, ConnectionComponent, DeployStatusComponent, DeploymentComponent, DeploymentsnavbarComponent, InstallComponent, MachineComponent, MachineconnectionComponent, MachinespecsComponent, OverviewComponent, MachinesListComponent, SingleExeComponent, ExeTileListComponent, AddPlatformDialogComponent, EditExeTypeDialogComponent, ExeTypesListComponent, SingleMachineComponent, MachineTileListComponent, FilterExetypePipe, FilterMachinesPipe, AddExeDialogComponent, AddConnectionDialogComponent],
   imports: [
     CommonModule,
     SystemAdminRoutingModule,
@@ -39,7 +40,7 @@ import { AddExeDialogComponent } from './overview/dialogs/add-exe-dialog/add-exe
     DragDropModule,
     ReactiveFormsModule.withConfig({ warnOnNgModelWithFormControl: 'never' })
   ],
-  entryComponents: [AddPlatformDialogComponent, EditExeTypeDialogComponent, AddExeDialogComponent]
+  entryComponents: [AddPlatformDialogComponent, EditExeTypeDialogComponent, AddExeDialogComponent, AddConnectionDialogComponent]
 })
 export class SystemAdminModule {
   constructor(){

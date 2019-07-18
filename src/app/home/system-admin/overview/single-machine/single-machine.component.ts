@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { SystemAdminOverviewService } from '../system-admin-overview.service';
 
 @Component({
   selector: 'app-single-machine',
@@ -12,7 +13,7 @@ export class SingleMachineComponent implements OnInit {
   V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
   V_USR_NM:string=JSON.parse(sessionStorage.getItem('u')).USR_NM;
 
-  constructor() { }
+  constructor(private systemOverview:SystemAdminOverviewService) { }
 
   ngOnInit() {
   }
@@ -30,7 +31,8 @@ export class SingleMachineComponent implements OnInit {
   }
 
   selectedMachineTile(connection) {
-    console.log("connection", connection);
+    //console.log("connection", connection);
+    this.systemOverview.selectCxn(connection);
   }
 
 }

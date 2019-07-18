@@ -2,6 +2,8 @@ import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter }
 import { CdkDragDrop, moveItemInArray, copyArrayItem } from '@angular/cdk/drag-drop';
 import { SystemAdminOverviewService } from '../system-admin-overview.service';
 import { Subscription } from 'rxjs';
+import { AddConnectionDialogComponent } from '../dialogs/add-connection-dialog/add-connection-dialog.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-machine-tile-list',
@@ -13,10 +15,11 @@ export class MachineTileListComponent implements OnInit {
   contextMenuStyle: any;
   contextMenuActive: boolean = false;
   public selectedMachine;
-  public selectedExe = {};
+  public selectedExe;
   subscription: Subscription;
   @Output() selectedMachineTile = new EventEmitter();
   @Input() connectionList;
+  @Input() machineType;
   @ViewChild('contextMenu') set contextMenu(value: ElementRef) {
     if (value) {
       let menu: HTMLDivElement = value.nativeElement;
@@ -24,20 +27,35 @@ export class MachineTileListComponent implements OnInit {
     }
   }
 
-  constructor(private systemOverview:SystemAdminOverviewService) { }
+  constructor(private systemOverview:SystemAdminOverviewService, public dialog: MatDialog) { }
 
   ngOnInit() {
     //console.log(this.connectionList);
     this.subscription = this.systemOverview.selectedExe$.subscribe(data => {
-      console.log(data);
+      //console.log(data);
       if(data) {
-        this.selectedExe = data;
+        this.selectedMachine = null;
+        this.selectedExe = data.V_EXE_TYP;
+      } else {
+        this.selectedExe = '';
       }
-    })
+    });
+    document.addEventListener('mousedown', event => {
+      this.contextMenuActive = false;
+      this.contextMenuData = null;
+    });
   }
-
+  
   onAddConnTileClick() {
+    const dialogRef = this.dialog.open(AddConnectionDialogComponent, {
+      panelClass: 'app-dialog',
+      width: '600px',
+      data: {machineType:this.machineType}
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
 
   connectionDropped(event: CdkDragDrop<any[]>) {
@@ -54,14 +72,16 @@ export class MachineTileListComponent implements OnInit {
   }
 
   onConnectionTileClick(connection) {
-      if(this.selectedMachine === connection) {
-        this.selectedMachine = null;
-        this.selectedMachineTile.emit(this.selectedMachine);
-      } else {
-        this.selectedMachine = connection;
-        this.selectedMachineTile.emit(this.selectedMachine);
+    
+    if(this.selectedMachine === connection) {
+      this.selectedMachine = null;
+      this.selectedMachineTile.emit(this.selectedMachine);
+    } else {
+      this.selectedExe = '';
+      this.selectedMachine = connection;
+      this.selectedMachineTile.emit(this.selectedMachine);
     }
-  
+      
   }
 
   onTileMouseDownEventHandler(ev: MouseEvent): void {

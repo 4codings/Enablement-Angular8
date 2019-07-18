@@ -1,0 +1,38 @@
+.scroll {
+    height: 200px;
+    overflow-y: auto;
+    background-color: white;
+    border: 1px solid lightblue;
+  }
+  
+
+  .incwid {
+    width: 100%;
+  }
+  .mat-nav-list
+ {
+  display: block;
+  height: 28px;
+}
+.mat-list .mat-list-item , .mat-selection-list .mat-list-option
+{
+    display: block;
+    height: 30px;
+}
+.active{
+  background-color:rgba(0,0,0,0.7) !important;
+  color: white;
+}
+::ng-deep .mat-input-infix{
+  background: white;
+  border: 1px solid rgb(200,200,200);
+  border-radius:3px;
+}
+::ng-deep .mat-input-infix>textarea{text-align:center;
+  background: white!important;
+  border:none!important;
+  border-radius: 3px!important;
+}
+::ng-deep .mat-input-underline,.mat-form-field-underline{
+  display: none;
+}

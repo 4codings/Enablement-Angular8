@@ -10,7 +10,7 @@
        [matTooltip]="currConn.V_CXN_CD"
        *ngFor="let currConn of connectionList"
        [class.active]="currConn == selectedMachine"
-       [class.highlight]="currConn.V_CXN_TYP == selectedExe.V_EXE_TYP"
+       [class.highlight]="currConn.V_CXN_TYP == selectedExe"
        (contextmenu)="openContextmenu($event, currConn)"
        (mousedown)="onTileMouseDownEventHandler($event)"
        (click)="onConnectionTileClick(currConn)">
@@ -24,8 +24,8 @@
     <mat-icon>add_circle</mat-icon>
   </div>
 </div>
-<!-- <div fxLayout="column" fxLayoutAlign="start stretch" class="context-menu" #contextMenu *ngIf="contextMenuActive"
+<div fxLayout="column" fxLayoutAlign="start stretch" class="context-menu" #contextMenu *ngIf="contextMenuActive"
      [ngStyle]="contextMenuStyle">
   <button mat-button class="menu-item" (click)="onContextMenuEditConnBtnClick()">Edit</button>
   <button mat-button class="many-item" (click)="onContextMenuDeleteConnBtnClick()">Delete</button>
-</div>  -->
+</div> 
