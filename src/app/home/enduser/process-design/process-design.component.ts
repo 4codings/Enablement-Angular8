@@ -269,6 +269,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       eventBus.on('element.click', ($event) => {
         this.processName = '';
         this.documentation = '';
+        this.iconType = '';
         console.log('element.click', $event)
         this.isApp = false;
         this.isProcess = false;
@@ -276,6 +277,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         this.oldStateId = $event.element.id;
         this.generalId = $event.element.id;
         const businessObject = $event.element.businessObject;
+        this.iconType = $event.element.type;
         this.processName = businessObject.name ? businessObject.name : '';
         if (businessObject.documentation && businessObject.documentation.length) {
           this.documentation = businessObject.documentation[0].text ? businessObject.documentation[0].text : '';
@@ -295,11 +297,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.generalId = this.selectedProcess;
         }
         if ($event && $event.element && ['bpmn:SequenceFlow'].indexOf($event.element.type) > -1) {
-          this.iconType = '';
           const businessObject = $event.element.businessObject;
           this.sequenceFlowsourceId = businessObject && businessObject.sourceRef ? businessObject.sourceRef.id : '';
           this.sequenceFlowtargetId = businessObject && businessObject.targetRef ? businessObject.targetRef.id : '';
-          this.iconType = $event.element.type;
           this.showAllTabFlag = false;
           this.showCondtionType = true;
           this.getConditionType();
@@ -443,6 +443,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     }
     if (this.isService) {
       this.updatesequenceFlow();
+      this.updateService();
     }
     if (this.isProcess) {
       this.updateProcess();
@@ -556,11 +557,11 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     }, this.ctrl_variables.delay_timeout);
   }
   getConditionType() {
-    this.http.get(this.apiService.endPoints.securedJSON + "V_PRDCR_SRC_CD" + this.user.SRC_CD + "&V_PRDCR_APP_CD" + this.selectedApp + "&V_PRDCR_PRCS_CD" + this.selectedProcess + "&V_PRDCR_SRVC_CD" + this.selectedService + "&V_USR_NM" + this.user.USR_NM + "&V_SRC_CD=" + this.user.SRC_CD + "&V_APP_CD=" + this.selectedApp + "&V_PRCS_CD=" + this.selectedProcess + "&V_SRVC_CD=" + this.selectedService + "&REST_Service=SequenceFlow" + "&Verb=GET", this.apiService.setHeaders())
+    this.http.get(this.apiService.endPoints.securedJSON + "V_PRDCR_SRC_CD=" + this.user.SRC_CD + "&V_PRDCR_APP_CD=" + this.selectedApp + "&V_PRDCR_PRCS_CD=" + this.selectedProcess + "&V_PRDCR_SRVC_CD=" + this.sequenceFlowsourceId + "&V_USR_NM=" + this.user.USR_NM + "&V_SRC_CD=" + this.user.SRC_CD + "&V_APP_CD=" + this.selectedApp + "&V_PRCS_CD=" + this.selectedProcess + "&V_SRVC_CD=" + this.selectedService + "&REST_Service=SequenceFlow" + "&Verb=GET", this.apiService.setHeaders())
       .subscribe(res => {
         if (res) {
           console.log('data', res.json());
-          this.sequenceConditionType = res.json();
+          // this.sequenceConditionType = res.json();
         }
       });
   }
