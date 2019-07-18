@@ -11,11 +11,12 @@ import { ApiService } from 'src/app/service/api/api.service';
 import { StorageSessionService } from 'src/app/services/storage-session.service';
 import * as pluginAnnotations from 'chartjs-plugin-annotation';
 import { BaseChartDirective } from 'ng2-charts-x';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-report-table',
   templateUrl: './report-table.component.html',
-  // styleUrls: ['./report-table.component.css'],
+  styleUrls: ['./report-table.component.css'],
   encapsulation: ViewEncapsulation.None
 })
 export class ReportTableComponent implements OnInit, AfterViewInit {
@@ -50,7 +51,9 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     }
     this.settablepreferences();
   }
-
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.selectedchart, event.previousIndex, event.currentIndex);
+  }
   pointer = 0;
   V_SRC_CD: string = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
   V_USR_NM: string = JSON.parse(sessionStorage.getItem('u')).USR_NM;
