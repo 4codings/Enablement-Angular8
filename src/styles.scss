@@ -415,10 +415,10 @@
 //    }
 
 .stage-{
-  &hide .bjs-container .djs-container{
+  &hide .bjs-container .djs-container .djs-palette{
     display: none;
   }
-  &show .bjs-container .djs-container{
+  &show .bjs-container .djs-container .djs-palette{
     display: inherit;
   }
 }
