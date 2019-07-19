@@ -101,7 +101,7 @@
           <label item-width="100"><strong>Platform</strong></label>
           <mat-form-field class="form_in">
             <mat-select [(ngModel)]="PLF_CD">
-              <mat-option style="text-align:center;" [value]="pf" *ngFor="let pf of PLF_TYPE['SERVER_CD']">
+              <mat-option style="text-align:center;" [value]="pf" (click)="platformDescription()" *ngFor="let pf of PLF_TYPE['SERVER_CD']">
                 {{pf}}
               </mat-option>
             </mat-select>

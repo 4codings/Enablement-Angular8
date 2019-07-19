@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { EventEmitter } from '@angular/core';
 import { AddPlatformDialogComponent } from '../add-platform-dialog/add-platform-dialog.component';
+import { SystemAdminOverviewService } from '../system-admin-overview.service';
 
 @Component({
   selector: 'app-machines-list',
@@ -22,41 +23,44 @@ export class MachinesListComponent implements OnInit {
   machineTypeOptions;
   @Output() selectedMachine: EventEmitter<any> = new EventEmitter();
 
-  constructor(public dialog: MatDialog, private http:HttpClient) { }
+  constructor(public dialog: MatDialog, private http:HttpClient, private systemOverview:SystemAdminOverviewService) { }
 
   ngOnInit() {
-    this.getMachine();
-
+    //this.getMachine();
+    this.systemOverview.getMachine();
     this.http.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=MACHINES&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe(res => {
       this.machineTypeOptions = res;
       this.machineTypeOptions.push({V_PLATFORM_CD:"All"});
     }, err => {
-       console.log(err);
+      console.log(err);
+    });
+    this.systemOverview.getMachineConnection$.subscribe(res => {
+      this.sortedAllConnections = res;
     })
   }
 
-  getMachine() {
-    this.http.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=MACHINES&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe((res:any) => {
-      this.machines = res;
-      this.getAllMachineConnections();
-    }, err => {
-       console.log(err);
-    })
-  }
+  // getMachine() {
+  //   this.http.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=MACHINES&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe((res:any) => {
+  //     this.machines = res;
+  //     this.getAllMachineConnections();
+  //   }, err => {
+  //      console.log(err);
+  //   })
+  // }
 
-  getAllMachineConnections() {
-    this.http.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=CXNS&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe((res:any) => {
-      this.machines.forEach(item => {
-        let arr = res.filter(data => {
-          return item.V_PLATFORM_ID == data.V_PLATFORM_ID
-        })
-        this.connections.push({V_PLATFORM_CD: item.V_PLATFORM_CD, V_CXN:arr});
-        this.sortedAllConnections = this.connections.sort((a,b) => (a.V_CXN.length > b.V_CXN.length) ? -1 : ((b.V_CXN.length > a.V_CXN.length) ? 1 : 0));
-      });
-    }, err => {
-       console.log(err);
-    })
-  }
+  // getAllMachineConnections() {
+  //   this.http.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=CXNS&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe((res:any) => {
+  //     this.machines.forEach(item => {
+  //       let arr = res.filter(data => {
+  //         return item.V_PLATFORM_ID == data.V_PLATFORM_ID
+  //       })
+  //       this.connections.push({V_PLATFORM_CD: item.V_PLATFORM_CD, V_CXN:arr});
+  //       this.sortedAllConnections = this.connections.sort((a,b) => (a.V_CXN.length > b.V_CXN.length) ? -1 : ((b.V_CXN.length > a.V_CXN.length) ? 1 : 0));
+  //     });
+  //   }, err => {
+  //      console.log(err);
+  //   })
+  // }
 
   changeMachineType(type) {
     this.selectedMachineType = type.V_PLATFORM_CD;

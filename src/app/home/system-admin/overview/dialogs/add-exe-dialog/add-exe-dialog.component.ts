@@ -19,11 +19,12 @@ export class AddExeDialogComponent implements OnInit {
   F_SYNC_FLG:string = "Y";
   F_EXE_S_DLMTR:string = '';
   F_EXE_E_DLMTR:string = '';
-  PLF_DSC:string = '';
+  PLF_DSC:string = 'Apache Tomcat Web Server';
   ipart: boolean = false;
   opart: boolean = false;
   PLF_TYPE=[];
   PLF_CD:string = "Amazon";
+  PLF_DATA;
 
   constructor(public dialogRef: MatDialogRef<AddExeDialogComponent>,  @Inject(MAT_DIALOG_DATA) public data: any, private http:HttpClient, private config:ConfigServiceService) { }
 
@@ -36,6 +37,16 @@ export class AddExeDialogComponent implements OnInit {
   
   onBtnCancelClick(): void {
     this.dialogRef.close();
+  }
+
+  platformDescription(){
+    
+    this.config.getPlatformDescription(this.PLF_CD).subscribe(
+      res=>{
+        this.PLF_DATA=res.json();
+        (this.PLF_DATA);
+        this.PLF_DSC=this.PLF_DATA['SERVER_DSC'];
+      });
   }
 
   onBtnAddClick() {
@@ -60,7 +71,7 @@ export class AddExeDialogComponent implements OnInit {
   }
     this.http.put('https://enablement.us/Enablement/rest/v1/securedJSON?', data).subscribe(res => {
       console.log("res",res);
-      this.dialogRef.close();
+      this.dialogRef.close(true);
     }, err => {
   
     })

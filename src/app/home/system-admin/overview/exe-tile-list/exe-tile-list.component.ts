@@ -61,6 +61,11 @@ export class ExeTileListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
+      if(result) {
+        if(result) {
+          this.systemOverview.getExe();
+        }
+      }
     });
   }
 
@@ -133,8 +138,9 @@ export class ExeTileListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      // this.exes.EXES.splice(exeData.index, 1);
-    //TODO: logc to update exe in array
+      if(result) {
+        this.systemOverview.getExe();
+      }
     });
   }
 
@@ -152,7 +158,7 @@ export class ExeTileListComponent implements OnInit {
       if(result) {
         this.http.get('https://enablement.us/Enablement/rest/v1/securedJSON?V_EXE_TYP='+ exe.EXE_TYP + '&V_EXE_CD='+ exe.exeData.V_EXE_CD + '&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=Exe&Verb=DELETE').subscribe(res => {
           console.log("res",res);
-          this.exes.EXES.splice(exe.index, 1);
+          this.systemOverview.getExe();
         }, err => {
           console.log("err", err)
         }); 
