@@ -157,6 +157,7 @@
 
 :host /deep/ select {
   width: 178px;
+  height: 26px;
 }
 
 :host /deep/ textarea {
@@ -180,6 +181,7 @@
 
 :host /deep/ #seconds_label {
   width: 100px;
+  text-align: left
 }
 
 :host /deep/ #priority {
@@ -189,7 +191,7 @@
 
 :host /deep/ #priority_label {
   text-align: left;
-  width: 80px;
+  width: 100px;
 }
 
 :host /deep/ .row1 {
@@ -199,11 +201,13 @@
 :host /deep/ .mat-input-element,
 input {
   text-align: center;
+  width: 100%;
+  height: 25px;
   font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
 }
 
 :host /deep/ .mat-tab-body-content {
-  padding: 0 45px;
+  padding: 0 36px;
 }
 
 :host /deep/ .generalTabV {
@@ -241,4 +245,18 @@ input {
   margin-left: 0;
   font-size: 22px;
 }
-
+::ng-deep .mat-checkbox-inner-container {
+  background: #FFF;
+}
+.bg-white{
+  background: #FFF;
+}
+::ng-deep .mat-radio-outer-circle{
+  background: #FFF;
+}
+.w-100-p{
+  width: 100px !important;
+}
+.m-t-10{
+  margin-top: 10px;
+}
