@@ -1135,7 +1135,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       this.GenerateReportTable();
     } else {
       this.repeat = 0;
-      this.router.navigate(["/End_User/Execute"], { queryParams: { page: 1 }, skipLocationChange: true });
+      this.router.navigate(["/End_User/Design"], { queryParams: { page: 1 }, skipLocationChange: true });
     }
   }
   deleteApplication() {
