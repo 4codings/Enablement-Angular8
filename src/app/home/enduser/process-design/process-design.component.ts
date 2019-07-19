@@ -9,7 +9,7 @@ import { EndUserService } from 'src/app/services/EndUser-service';
 import { UseradminService } from 'src/app/services/useradmin.service2';
 import { OptionalValuesService, ApplicationProcessObservable } from 'src/app/services/optional-values.service';
 import { Subscription } from 'rxjs';
-import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
+import {TreeviewItem, TreeviewConfig, TreeviewI18nDefault, TreeviewI18n} from 'ngx-treeview';
 import { RollserviceService } from 'src/app/services/rollservice.service';
 import { ApiService } from 'src/app/service/api/api.service';
 import { Http } from '@angular/http';
@@ -32,7 +32,16 @@ export class ReportData {
 @Component({
   selector: 'app-process-design',
   templateUrl: './process-design.component.html',
-  styleUrls: ['./process-design.component.scss']
+  styleUrls: ['./process-design.component.scss'],
+  providers: [
+    {
+      provide: TreeviewI18n , useValue: Object.assign(new TreeviewI18nDefault(), {
+        getFilterPlaceholder(): string {
+          return 'Find Process';
+        }
+      })
+    }
+  ]
 })
 export class ProcessDesignComponent implements OnInit, OnDestroy {
 
