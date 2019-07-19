@@ -18,7 +18,7 @@ const routes: Routes = [{
   path: '',
   component: EnduserComponent,
   children: [
-    { path: '', redirectTo: 'Execute', pathMatch: 'full' },
+    { path: '', redirectTo: 'Design', pathMatch: 'full' },
     { path: 'Execute', component: ExecuteComponent },
     { path: 'Mytask', component: MytaskComponent },
     { path: 'Exception', component: ExceptionComponent },

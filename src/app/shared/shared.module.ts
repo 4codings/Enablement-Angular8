@@ -30,7 +30,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { ConfirmationAlertComponent } from './components/confirmation-alert/confirmation-alert.component';
 import { TreeviewModule } from 'ngx-treeview';
 import {MatChipsModule} from '@angular/material/chips';
-
+import {DragDropModule} from '@angular/cdk/drag-drop';
 @NgModule({
   imports: [
     CommonModule,
@@ -42,6 +42,7 @@ import {MatChipsModule} from '@angular/material/chips';
     FlexLayoutModule,
     MatTooltipModule,
     MatListModule,
+    DragDropModule,
     MatChipsModule,
     MatInputModule,
     MatButtonModule,
@@ -84,6 +85,7 @@ import {MatChipsModule} from '@angular/material/chips';
     NoDataMsgComponent,
     MatCardModule,
     MatIconModule,
+    DragDropModule,
     MatSidenavModule,
     MatDividerModule,
     FlexLayoutModule,

@@ -9,10 +9,41 @@
     color: inherit;
   }
 }
+
 .parent {
   text-align: center;
   align-content: center;
+  display: inline;
 }
+
+.parent-color {
+  color: #000;
+}
+.parent-font{
+  font-size: 14px;
+  font-weight: bold;
+}
+.selected-process-font {
+  font-weight: normal;
+}
+.child-color {
+  color: #000;
+  font-weight: normal;
+}
+
+.tree-bg-color {
+  background-color: #ededed;
+}
+
+.properties-bg-color {
+  background-color: #ededed;
+}
+
+.add-btn {
+  font-size: 19px;
+  margin-left: -27px;
+}
+
 .toggle,
 .import-export {
   button {
@@ -41,6 +72,9 @@
 :host /deep/ .mat-tab-label {
   padding: 0 15px;
   min-width: 60px;
+  .mat-tab-label-content {
+    margin-bottom: -15px;
+  }
 }
 
 :host /deep/ .bjs-container .djs-container .djs-palette .two-open {
@@ -62,8 +96,59 @@
 
 :host /deep/ .bpmn-icon-hand-tool:before {
   content: '\e868';
-  color: aqua;
+  color: rgb(230, 218, 171);
 }
+
+:host /deep/ .bpmn-icon-start-event-none:before {
+  content: '\e845';
+  color: green;
+}
+
+:host /deep/ .bpmn-icon-intermediate-event-none:before {
+  content: '\e82d';
+  color: yellow;
+}
+
+:host /deep/ .bpmn-icon-end-event-none:before {
+  content: '\e838';
+  color: red;
+}
+
+:host /deep/ .bpmn-icon-gateway-none:before {
+  content: '\e834';
+  color: violet;
+}
+
+:host /deep/ .bpmn-icon-task:before {
+  content: '\e821';
+  color: blue;
+}
+
+:host /deep/ .bpmn-icon-subprocess-expanded:before {
+  content: '\e820';
+  color: rgb(0, 225, 255);
+}
+
+:host /deep/ .bpmn-icon-data-store:before {
+  content: '\e84e';
+  color: orange;
+}
+
+:host /deep/ .bpmn-icon-participant:before {
+  content: '\e85c';
+  color: pink;
+}
+
+:host /deep/ .bpmn-icon-group:before {
+  content: '\e869';
+  color: rgb(202, 111, 51);
+}
+
+:host /deep/ .bpmn-icon-data-object:before {
+  content: '\e84b';
+  color: rgb(146, 191, 250);
+}
+
 
 :host /deep/ label {
   text-align: center;
@@ -72,6 +157,7 @@
 
 :host /deep/ select {
   width: 178px;
+  height: 26px;
 }
 
 :host /deep/ textarea {
@@ -95,6 +181,7 @@
 
 :host /deep/ #seconds_label {
   width: 100px;
+  text-align: left
 }
 
 :host /deep/ #priority {
@@ -104,7 +191,7 @@
 
 :host /deep/ #priority_label {
   text-align: left;
-  width: 80px;
+  width: 100px;
 }
 
 :host /deep/ .row1 {
@@ -113,16 +200,22 @@
 
 :host /deep/ .mat-input-element,
 input {
-  text-align: center
+  text-align: center;
+  width: 100%;
+  height: 25px;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
 }
 
 :host /deep/ .mat-tab-body-content {
-  padding: 30px 45px;
+  padding: 0 36px;
 }
 
 :host /deep/ .generalTabV {
   padding-top: 2px;
   padding-bottom: 0px;
+}
+.m-t--16{
+  margin-top: -16px !important;
 }
 
 :host /deep/.chosen-container.chosen-container-single {
@@ -136,4 +229,34 @@ input {
   padding-right: 0px;
   padding-bottom: 1px;
   padding-left: 0px;
+}
+.m-t-15 {
+  margin-top: 15px;
+}
+.caret-font{
+  font-size: 22px;
+  margin-left: 1.3rem;
+}
+.more-vert-font{
+  font-size: 19px;
+  margin-left: -25px;
+}
+.add-font{
+  margin-left: 0;
+  font-size: 22px;
+}
+::ng-deep .mat-checkbox-inner-container {
+  background: #FFF;
+}
+.bg-white{
+  background: #FFF;
+}
+::ng-deep .mat-radio-outer-circle{
+  background: #FFF;
+}
+.w-100-p{
+  width: 100px !important;
+}
+.m-t-10{
+  margin-top: 10px;
 }
