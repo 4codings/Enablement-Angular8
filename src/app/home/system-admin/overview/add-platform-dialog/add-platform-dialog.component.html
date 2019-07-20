@@ -1,35 +1,62 @@
-<!-- <h1 mat-dialog-title>Hi {{data.name}}</h1>
-<div mat-dialog-content>
-  <p>What's your favorite animal?</p>
+<div *ngIf="progress" id="overlay">
+  <mat-spinner></mat-spinner>
 </div>
-<div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">No Thanks</button>
-  <button mat-button [mat-dialog-close]="data.platform_des" cdkFocusInitial>Ok</button>
-</div> -->
-<div class="dialog-wrapper" fxLayoutGap="8px" fxLayout="column" fxLayoutAlign="start stretch">
-  <div class="dialog-header content-wrapper" fxLayoutAlign="space-between center">
-    <span>Add Platform</span>
-    <button mat-icon-button (click)="onBtnCancelClick()"><mat-icon>close</mat-icon></button>
+<div fxLayout="row" fxLayout.lt-sm="column">
+  <div fxFlex="26">
   </div>
-  <mat-divider></mat-divider>
-  <div class="dialog-body content-wrapper">
-      <strong>
-          <label style="text-align:center;width:100%;">Platform</label>
-        </strong>
-        <mat-form-field style="width:100%;">
-          <textarea matInput [(ngModel)]="data.platform_des"></textarea>
-        </mat-form-field>
-        <br />
-        <strong>
-          <label style="text-align:center;width:100%;">Description</label>
-        </strong>
-        <mat-form-field style="width:100%;">
-          <textarea matInput [(ngModel)]="data.platform_des">
-    
-                    </textarea>
-        </mat-form-field>
+  <div fxFlex="3"></div>
+  <div fxFlex="48">
+    <strong>
+      <label style="text-align:center;width:100%;">Platforms</label>
+    </strong>
+    <mat-list *ngIf="desktopView" class="scroll">
+      <mat-list-item class="list_item" *ngFor="let a of plat ; let i = index;" (click)="getplatformdesc(a);onpselect(i);" [class.active]="i == selectedplat">
+        <div>{{a}}</div>
+      </mat-list-item>
+    </mat-list>
+    <mat-form-field *ngIf="mobileView" style="width:100%;text-align: center;" [floatLabel]="'never'">
+      <mat-select style="margin-top:10px;" placeholder="--Select--">
+        <mat-option style="text-align:center;" *ngFor="let a of plat ; let i = index;" (click)="getplatformdesc(a);onpselect(i);"
+          [value]="a">{{a}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br />
+    <strong>
+      <label style="text-align:center;width:100%;">Platform</label>
+    </strong>
+    <mat-form-field style="width:100%;">
+      <textarea matInput [(ngModel)]="p_plat" (ngModelChange)="platFormChange()"></textarea>
+    </mat-form-field>
+    <br />
+    <strong>
+      <label style="text-align:center;width:100%;">Description</label>
+    </strong>
+    <mat-form-field style="width:100%;">
+      <textarea matInput [(ngModel)]="p_desc" (ngModelChange)="platFormDesChange()">
+
+                </textarea>
+    </mat-form-field>
   </div>
-  <div class="dialog-footer content-wrapper" fxLayoutAlign="end center" fxLayoutGap="8px">
-    <button mat-flat-button color="primary" (click)="onBtnAddClick()">Add</button>
+  <div fxFlex="3"></div>
+  <div fxFlex="26">
+
+  </div>
+</div>
+<div fxLayout="row" fxLayout.lt-sm="column">
+  <div fxFlex="30">
+
+  </div>
+  <div fxFlex="30" fxLayoutAlign="space-around center">
+    <!-- <button mat-raised-button color="secondary" (click)="dataplat()">
+      <mat-icon>cloud_upload</mat-icon> Data Load</button> -->
+    <button *ngIf="!isPlatformDesChange || isPlatformChange" [disabled]="!isPlatformChange" class="mr-2" mat-raised-button color="primary" (click)="addplat()">
+      <mat-icon>add</mat-icon> Add</button>
+    <button *ngIf="isPlatformDesChange && !isPlatformChange" class="mr-2" mat-raised-button color="primary" (click)="updateplat()">
+      <mat-icon>add</mat-icon> Update</button>
+    <button mat-raised-button color="warn" (click)="deleteplat()">
+      <mat-icon>delete</mat-icon> Delete</button>
+  </div>
+  <div fxFlex="30">
+
   </div>
 </div>

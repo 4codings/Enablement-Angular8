@@ -26,20 +26,6 @@ export class SingleExeComponent implements OnInit {
     // });
   }
 
-  onBtnDeleteExeClick(exe) {
-    const dialogRef = this.dialog.open(ConfirmationAlertComponent, {
-      panelClass: 'app-dialog',
-      width: '600px',
-    });
-
-    dialogRef.componentInstance.title = `Delete ExeType - ${exe.EXE_TYP}`;
-    dialogRef.componentInstance.message = `Are you sure, you want to delete ExeType <strong>${exe.EXE_TYP}</strong>?`;
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
-  }
-
   onBtnEditExeClick(exe) {
     const dialogRef = this.dialog.open(EditExeTypeDialogComponent, {
       panelClass: 'app-dialog',
@@ -57,7 +43,7 @@ export class SingleExeComponent implements OnInit {
   }
 
   selectedExeTile(exe) {
-    console.log("parent", exe);
+    //console.log("parent", exe);
     this.systemOverview.selectExe(exe);
   }
 

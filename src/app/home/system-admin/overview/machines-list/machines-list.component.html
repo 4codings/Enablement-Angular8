@@ -18,6 +18,6 @@
   </div>
   <mat-divider></mat-divider>
   <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="16px" cdkDropListGroup>
-    <app-single-machine *ngFor="let currMachine of connections | filterMachines:selectedMachineType" [machineData]="currMachine" [machines]="currMachine.V_CXN"></app-single-machine>
+    <app-single-machine *ngFor="let currMachine of sortedAllConnections | filterMachines:selectedMachineType" [machineData]="currMachine" [machines]="currMachine.V_CXN"></app-single-machine>
   </div>
 </div>

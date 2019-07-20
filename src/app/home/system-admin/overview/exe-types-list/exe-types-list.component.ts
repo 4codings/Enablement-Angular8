@@ -8,6 +8,7 @@ import { AddPlatformDialogComponent } from '../add-platform-dialog/add-platform-
 import { forEach } from '@angular/router/src/utils/collection';
 import { ConfirmationAlertComponent } from 'src/app/shared/components/confirmation-alert/confirmation-alert.component';
 import { EditExeTypeDialogComponent } from '../dialogs/edit-exe-type-dialog/edit-exe-type-dialog.component';
+import { SystemAdminOverviewService } from '../system-admin-overview.service';
 
 @Component({
   selector: 'app-exe-types-list',
@@ -25,40 +26,44 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
   exeTypeOptions;
   @Output() selectedExe: EventEmitter<any> = new EventEmitter();
 
-  constructor(public dialog: MatDialog, private http:HttpClient) { }
+  constructor(public dialog: MatDialog, private http:HttpClient, private systemOverview:SystemAdminOverviewService) { }
 
   ngOnInit() {
-    this.getExe();
+    this.systemOverview.getExe();
+    // this.getExe();
     this.http.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=EXE&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe(res => {
       this.exeTypeOptions = res;
       this.exeTypeOptions.push({EXE_TYP:"All"});
     }, err => {
        console.log(err);
     });
-  }
-
-  getExe() {
-    this.http.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=EXE&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe((res) => {
-      this.exes = res;
-      this.getAllExes();
-    }, err => {
-       console.log(err);
+    this.systemOverview.getExe$.subscribe(res => {
+      this.sortedAllExes = res;
     })
   }
 
-  getAllExes() {
-    this.http.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=EXES&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe((res:any) => {
-      this.exes.forEach(item => {
-        let arr = res.filter(data => {
-          return item.EXE_TYP == data.V_EXE_TYP
-        })
-        this.allExes.push({EXE_TYP: item.EXE_TYP, EXES:arr})
-      });
-      this.sortedAllExes = this.allExes.sort((a,b) => (a.EXES.length > b.EXES.length) ? -1 : ((b.EXES.length > a.EXES.length) ? 1 : 0));
-    }, err => {
-       console.log(err);
-    })
-  }
+  // getExe() {
+  //   this.http.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=EXE&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe((res) => {
+  //     this.exes = res;
+  //     this.getAllExes();
+  //   }, err => {
+  //      console.log(err);
+  //   })
+  // }
+
+  // getAllExes() {
+  //   this.http.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=EXES&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe((res:any) => {
+  //     this.exes.forEach(item => {
+  //       let arr = res.filter(data => {
+  //         return item.EXE_TYP == data.V_EXE_TYP
+  //       })
+  //       this.allExes.push({EXE_TYP: item.EXE_TYP, EXES:arr})
+  //     });
+  //     this.sortedAllExes = this.allExes.sort((a,b) => (a.EXES.length > b.EXES.length) ? -1 : ((b.EXES.length > a.EXES.length) ? 1 : 0));
+  //   }, err => {
+  //      console.log(err);
+  //   })
+  // }
 
 
   changeExeType(type): void {

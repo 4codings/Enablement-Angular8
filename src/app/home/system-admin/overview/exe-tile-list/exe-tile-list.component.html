@@ -38,9 +38,10 @@
        cdkDrag
        [cdkDragData]="currExe"
        [matTooltip]="currExe.V_EXE_CD"
-       *ngFor="let currExe of exes.EXES"
+       *ngFor="let currExe of exes.EXES; let i = index"
        [class.active]="currExe == selectedTile"
-       (contextmenu)="openContextmenu($event, currExe)"
+       [class.highlight]="currExe.V_EXE_TYP == selectedCxn"
+       (contextmenu)="openContextmenu($event, currExe, exes.EXE_TYP, i)"
        (mousedown)="onTileMouseDownEventHandler($event)"
        (click)="onExeTileClick(currExe)">
        <mat-icon class="iconmod shwmaticon">developer_mode</mat-icon>
@@ -52,8 +53,8 @@
     <mat-icon>add_circle</mat-icon>
   </div>
 </div>
-<!-- <div fxLayout="column" fxLayoutAlign="start stretch" class="context-menu" #contextMenu *ngIf="contextMenuActive"
+<div fxLayout="column" fxLayoutAlign="start stretch" class="context-menu" #contextMenu *ngIf="contextMenuActive"
      [ngStyle]="contextMenuStyle">
   <button mat-button class="menu-item" (click)="onContextMenuEditExeBtnClick()">Edit</button>
   <button mat-button class="many-item" (click)="onContextMenuDeleteExeBtnClick()">Delete</button>
-</div>  -->
+</div> 
