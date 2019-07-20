@@ -39,7 +39,7 @@
 </ng-template>
 <div fxLayout="row">
   <mat-sidenav-container fxFlex="100">
-    <mat-sidenav class="tree-bg-color" #treesidenav mode="side" [opened]="true" style="min-width:260px">
+    <mat-sidenav class="tree-bg-color" #treesidenav mode="side" [opened]="true" style="width:250px">
       <div flex fxLayout="column">
         <div fxFlex="100">
           <ngx-treeview [config]="config" [items]="item" [itemTemplate]="itemTemplate">
@@ -342,7 +342,7 @@
             </select>
 <!--            <div class="oneSpace"></div>-->
             <label class="m-t-15">{{Label['EXECUTABLE_INPUT']}}</label>
-            <textarea [(ngModel)]="executableInput"></textarea>
+            <textarea [disabled]="selectedExecutableType !== 'Manual' && (selectedExecutable !== 'NONREPEATABLE_MANUAL_TASK' || selectedExecutable !== 'REPEATABLE_MANUAL_TASK')"  [(ngModel)]="executableInput"></textarea>
 <!--            <div class="oneSpace"></div>-->
             <label class="m-t-15">{{Label['EXECUTABLE_OUTPUT']}}</label>
             <textarea disabled [(ngModel)]="executableOutput"></textarea>
@@ -387,7 +387,7 @@
             </mat-radio-group>
             <div *ngIf="async_sync==='sync'">
               <div class="row row1">
-                <label id="seconds_label">{{Label['SECONDS']}}</label>
+                <label id="Timeout_seconds_label">{{Label['TIMEOUT_SECONDS']}}</label>
                 <input id="seconds" type="number" [(ngModel)]="async_sync_seconds">
               </div>
             </div>
@@ -424,7 +424,7 @@
               <mat-divider></mat-divider>
             </div>
 
-            <label>{{Label['INSTANCES']}}</label>
+            <label class="m-t-15">{{Label['INSTANCES']}}</label>
             <mat-radio-group [(ngModel)]="instances">
               <mat-radio-button value="single">{{Label['SINGLE']}}</mat-radio-button>
               <mat-radio-button value="unlimited">{{Label['UNLIMITED']}}</mat-radio-button>

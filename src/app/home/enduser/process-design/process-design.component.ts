@@ -486,7 +486,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       this.instances_priority = 1;
     } else if (this.instances === 'unlimited') {
       this.instances_priority = -1;
-    } else if (this.instances === 'limted') {
+    } else if (this.instances === 'limited') {
       this.instances_priority = 100;
     }
     const body = {
@@ -992,15 +992,16 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
 
   // Added for property panel related tabs
   getAllExecutableTypes() {
-    this.endUserService.getAllExecutableTypes()
+    let iconType = this.iconType.split(':')[1];
+    iconType = iconType.split(/(?=[A-Z])/).join(' ');
+    this.endUserService.getAllExecutableTypes(iconType)
       .subscribe(res => {
         if (res) {
           this.executableTypesData = []; //clearning off old data if any
-          res.json().forEach(element => {
-            this.executableTypesData.push(element.EXE_TYP);
-          });
-          console.log(this.executableTypesData);
-          this.executableTypesData.sort();
+          if (res.json().EXE_TYP) {
+            this.executableTypesData = res.json().EXE_TYP;
+            this.executableTypesData.sort();
+          }
         }
       });
   }
@@ -1010,11 +1011,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         if (res) {
           this.executablesData = []; //clearning off old data if any
-          res.json().forEach(element => {
-            this.executablesData.push(element.EXE_CD);
-          });
-          console.log(this.executablesData);
-          this.executablesData.sort();
+          if (res.json().EXE_CD) {
+            this.executablesData = res.json().EXE_CD;
+            this.executablesData.sort();
+          }
         }
       });
   }
@@ -1023,10 +1023,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.endUserService.getInputOutputForSelctedExecutable(this.selectedExecutableType, this.selectedExecutable)
       .subscribe(res => {
         if (res) {
-          let result = res.json();
-          this.executableOutput = result[0]["EXE_OUT_PARAMS"];
-          this.executableDesc = result[0]["EXE_DSC"];
-          this.executableInput = result[0]["EXE_SIGN"];
+          const result = res.json();
+          this.executableOutput = result["EXE_OUT_PARAMS"][0];
+          this.executableDesc = result["EXE_DSC"][0];
+          this.executableInput = result["EXE_SIGN"][0];
         }
       });
   }

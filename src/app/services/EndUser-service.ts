@@ -109,15 +109,15 @@ export class EndUserService {
     /*
         To list all executable types
     */
-    getAllExecutableTypes() {
-        return this.http.get(this.baseSecureJsonUrl + "V_SRC_CD=" + this.V_SRC_CD + "&V_CD_TYP=EXE" + "&REST_Service=Masters" + "&Verb=GET", this.apiService.setHeaders());
+    getAllExecutableTypes(iconType: string) {
+        return this.http.get(this.baseSecureUrl + 'V_ICN_TYP='+ iconType + "&V_SRC_CD=" + this.V_SRC_CD + "&V_CD_TYP=EXE" + "&REST_Service=Masters" + "&Verb=GET", this.apiService.setHeaders());
     }
 
     /*
         To populate executable(s) based on selected executable type
     */
     getExecutablesForSelctedExecutableType(executableType: String) {
-        return this.http.get(this.baseSecureJsonUrl + "V_SRC_CD=" + this.V_SRC_CD + "&V_EXE_TYP=" + executableType + "&V_USR_NM=" + this.V_USR_NM + "&REST_Service=UsersExe&Verb=GET", this.apiService.setHeaders());
+        return this.http.get(this.baseSecureUrl  + "V_SRC_CD=" + this.V_SRC_CD + "&V_EXE_TYP=" + executableType + "&V_USR_NM=" + this.V_USR_NM + "&REST_Service=UsersExe&Verb=GET", this.apiService.setHeaders());
     }
 
     /*
@@ -125,6 +125,6 @@ export class EndUserService {
     */
     getInputOutputForSelctedExecutable(executableType: String, executable: String) {
         // TODO V_UNIQUE_ID should be populated dynamically
-        return this.http.get(this.baseSecureJsonUrl + "V_UNIQUE_ID=" + "28190" + "&V_EXE_TYP=" + executableType + "&V_EXE_CD=" + executable + "&V_SRC_CD=" + this.V_SRC_CD + "&V_USR_NM=" + this.V_USR_NM + "&REST_Service=Exe&Verb=GET", this.apiService.setHeaders());
+        return this.http.get(this.baseSecureUrl + "V_UNIQUE_ID=" + "28190" + "&V_EXE_TYP=" + executableType + "&V_EXE_CD=" + executable + "&V_SRC_CD=" + this.V_SRC_CD + "&V_USR_NM=" + this.V_USR_NM + "&REST_Service=Exe&Verb=GET", this.apiService.setHeaders());
     }
 }

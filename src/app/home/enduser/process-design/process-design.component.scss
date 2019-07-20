@@ -1,5 +1,5 @@
 #properties {
-  max-width: 260px;
+  width: 250px;
 }
 
 .toggle {
@@ -262,4 +262,8 @@ input {
 }
 .m-b-10{
   margin-bottom: 10px !important;
+}
+#Timeout_seconds_label{
+  text-align: left;
+  width: 138px;
 }
