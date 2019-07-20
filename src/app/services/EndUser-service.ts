@@ -18,9 +18,9 @@ export class EndUserService {
     private baseSecureJsonUrl: string = this.apiService.endPoints.securedJSON;
     // private V_SRC_CD: string = this.storage.getSession("agency");
     // private V_USR_NM: string = this.storage.getSession("email");
-    V_SRC_ID: string = JSON.parse(sessionStorage.getItem('u')).SRC_ID;
-    V_SRC_CD: string = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
-    V_USR_NM: string = JSON.parse(sessionStorage.getItem('u')).USR_NM;
+    V_SRC_ID: string;
+    V_SRC_CD: string;
+    V_USR_NM: string;
     private ResetOptimised: boolean = false;
     private Lazyload: boolean = true;
     constructor(private globals: Globals,
@@ -29,7 +29,6 @@ export class EndUserService {
         private globals2: Globals2,
         private apiService: ApiService
     ) {
-
     }
 
     /*
@@ -96,6 +95,11 @@ export class EndUserService {
     }
 
     getApplicationAndProcess() {
+        if(sessionStorage.getItem('u')) {
+            this.V_SRC_ID = JSON.parse(sessionStorage.getItem('u')).SRC_ID;
+            this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+            this.V_USR_NM = JSON.parse(sessionStorage.getItem('u')).USR_NM;
+        }
         return this.http.get(this.baseSecureJsonUrl + "V_SRC_CD=" + this.V_SRC_CD + "&V_USR_NM=" + this.V_USR_NM + "&REST_Service=ApplicationProcesses&Verb=GET", this.apiService.setHeaders());
     }
 
