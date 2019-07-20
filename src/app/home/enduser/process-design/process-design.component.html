@@ -39,7 +39,7 @@
 </ng-template>
 <div fxLayout="row">
   <mat-sidenav-container fxFlex="100">
-    <mat-sidenav class="tree-bg-color" #treesidenav mode="side" [opened]="true" style="min-width:250px">
+    <mat-sidenav class="tree-bg-color" #treesidenav mode="side" [opened]="true" style="min-width:260px">
       <div flex fxLayout="column">
         <div fxFlex="100">
           <ngx-treeview [config]="config" [items]="item" [itemTemplate]="itemTemplate">
@@ -360,12 +360,12 @@
             </mat-checkbox>
             <div *ngIf="isServiceActive">
               <mat-form-field class="form_input m-t-15">
-                <label>{{Label['START_DATE']}}</label>
+                <label class="m-b-10">{{Label['START_DATE']}}</label>
                 <input matInput class="bg-white" [(ngModel)]="currentDate" [owlDateTimeTrigger]="startDate" [owlDateTime]="startDate">
                 <owl-date-time #startDate></owl-date-time>
               </mat-form-field>
               <mat-form-field class="form_input">
-                <label>{{Label['END_DATE']}}</label>
+                <label class="m-b-10">{{Label['END_DATE']}}</label>
                 <input matInput class="bg-white" [(ngModel)]="afterFiveDays" [owlDateTimeTrigger]="endDate" [owlDateTime]="endDate">
                 <owl-date-time #endDate></owl-date-time>
               </mat-form-field>
@@ -374,7 +374,7 @@
               <mat-divider></mat-divider>
             </div>
 
-            <label class="m-t-15">{{Label['NOTIFICATION_EMAIL']}} </label>
+            <label class="m-t-15 m-b-10">{{Label['NOTIFICATION_EMAIL']}} </label>
             <input type="email" [(ngModel)]="userEmail" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}">
 
             <div class="spaceDiv">
@@ -390,11 +390,12 @@
                 <label id="seconds_label">{{Label['SECONDS']}}</label>
                 <input id="seconds" type="number" [(ngModel)]="async_sync_seconds">
               </div>
-              <div class="oneSpace"></div>
-              <div class="row row1">
-                <label id="priority_label">{{Label['PRIORITY']}}</label>
-                <input id="priority" type="number" [(ngModel)]="priority">
-              </div>
+            </div>
+
+            <div class="oneSpace"></div>
+            <div class="row row1">
+              <label id="priority_label">{{Label['PRIORITY']}}</label>
+              <input id="priority" type="number" [(ngModel)]="priority">
             </div>
 
             <div class="spaceDiv">
@@ -428,7 +429,7 @@
               <mat-radio-button value="single">{{Label['SINGLE']}}</mat-radio-button>
               <mat-radio-button value="unlimited">{{Label['UNLIMITED']}}</mat-radio-button>
               <div class="row row1">
-                <mat-radio-button class="w-100-p" value="limited">{{Label['LIMITED']}}</mat-radio-button>
+                <mat-radio-button class="w-100-p" (change)="onSelectLimtedPriority()" value="limited">{{Label['LIMITED']}}</mat-radio-button>
                 <div *ngIf="instances==='limited'">
                   <input id="priority" type="number" [(ngModel)]="instances_priority">
                 </div>

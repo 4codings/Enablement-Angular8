@@ -118,7 +118,7 @@
   "NOTIFICATION_EMAIL": "Notification Email",
   "ASYNCHRONOUS": "Asynchronous",
   "SYNCHORONOUS": "Synchronous",
-  "SECONDS": "Seconds",
+  "SECONDS": "Timeout",
   "PRIORITY": "Priority",
   "RESTORABILITY": "Restorability",
   "NONE": "None",

@@ -1,5 +1,5 @@
 #properties {
-  max-width: 250px;
+  max-width: 260px;
 }
 
 .toggle {
@@ -180,7 +180,7 @@
 }
 
 :host /deep/ #seconds_label {
-  width: 100px;
+  width: 60px;
   text-align: left
 }
 
@@ -191,7 +191,7 @@
 
 :host /deep/ #priority_label {
   text-align: left;
-  width: 100px;
+  width: 60px;
 }
 
 :host /deep/ .row1 {
@@ -259,4 +259,7 @@ input {
 }
 .m-t-10{
   margin-top: 10px;
+}
+.m-b-10{
+  margin-bottom: 10px !important;
 }

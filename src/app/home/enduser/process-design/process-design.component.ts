@@ -486,6 +486,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       this.instances_priority = 1;
     } else if (this.instances === 'unlimited') {
       this.instances_priority = -1;
+    } else if (this.instances === 'limted') {
+      this.instances_priority = 100;
     }
     const body = {
       'V_APP_CD': this.selectedApp,
@@ -997,6 +999,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           res.json().forEach(element => {
             this.executableTypesData.push(element.EXE_TYP);
           });
+          console.log(this.executableTypesData);
+          this.executableTypesData.sort();
         }
       });
   }
@@ -1009,6 +1013,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           res.json().forEach(element => {
             this.executablesData.push(element.EXE_CD);
           });
+          console.log(this.executablesData);
+          this.executablesData.sort();
         }
       });
   }
@@ -1522,5 +1528,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
   time_to_sec(time): any {
     return parseInt(time.substring(0, 2)) * 3600 + parseInt(time.substring(3, 5)) * 60 + (parseInt(time.substring(6)));
+  }
+  onSelectLimtedPriority(){
+    this.instances_priority = 100;
   }
 }
