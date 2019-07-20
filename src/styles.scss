@@ -415,10 +415,18 @@
 //    }
 
 .stage-{
-  &hide .bjs-container .djs-container .djs-palette{
-    display: none;
+  &hide{
+    .bjs-container .djs-container{
+      .djs-palette, .djs-hit{
+        display: none;
+      }
+    }
   }
-  &show .bjs-container .djs-container .djs-palette{
-    display: inherit;
+  &show{
+    .bjs-container .djs-container{
+      .djs-palette, .djs-hit{
+        display: inherit;
+      }
+    }
   }
 }

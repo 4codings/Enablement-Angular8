@@ -17,8 +17,8 @@ export class HttpInterceptorsService implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.userIdle.resetTimer();
     var sessiondata =  this.userService.getDetailFromStorage();
-
-    if(sessiondata.TOKEN){
+    
+    if(sessiondata ){
       const cloned = request.clone({
         headers: request.headers.set("Authorization", `Bearer ${sessiondata.TOKEN}`)
       });

@@ -86,6 +86,10 @@ export class ConfigServiceService {
     return modelReference && modelReference.invalid && (modelReference.touched || modelReference.dirty);
   }
 
+  public getICN() {
+    return this.https.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=ICN&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET");
+  }
+
   public getFieldInValidMsg(modelReference: any, fieldName: string) {
     let msg = fieldName + " is not valid";
     if (CommonUtils.isValidValue(modelReference.errors)) {

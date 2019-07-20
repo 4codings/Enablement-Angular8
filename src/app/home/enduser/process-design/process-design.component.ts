@@ -251,8 +251,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.url = this.apiService.endPoints.securedJSON;
     this.user = JSON.parse(sessionStorage.getItem('u'));
     this.downloadUrl = this.apiService.endPoints.downloadFile;
-    this.getApplicationProcess();
-    this.userEmail = this.user.USR_NM;
+    if(this.user != null) {
+      this.getApplicationProcess();
+      this.userEmail = this.user.USR_NM;
+    }
   }
 
   ngAfterViewInit() {

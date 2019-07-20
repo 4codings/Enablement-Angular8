@@ -1,6 +1,6 @@
 <div class="dialog-wrapper" fxLayoutGap="8px" fxLayout="column" fxLayoutAlign="start stretch">
   <div class="dialog-header content-wrapper" fxLayoutAlign="space-between center">
-    <span>Add Platform</span>
+    <span>Add {{this.data.EXE_TYP}} Executable</span>
     <button mat-icon-button (click)="onBtnCancelClick()"><mat-icon>close</mat-icon></button>
   </div>
   <mat-divider></mat-divider>
@@ -53,11 +53,26 @@
           </div>  
         </div>
         <br/>
-        <!-- VERSION -->
-        <label item-width="100"><strong>Version</strong></label>
-        <mat-form-field class="form_in" style="width:100%;">
-          <input matInput [(ngModel)]="F_EXE_VRSN" name="version" />
-        </mat-form-field>
+        <div fxLayout="row" fxLayout.lt-sm="column">
+          <div fxFlex="48" class="mr-2">
+            <!-- VERSION -->
+            <label item-width="100"><strong>Version</strong></label>
+            <mat-form-field class="form_in" style="width:100%;">
+              <input matInput [(ngModel)]="F_EXE_VRSN" name="version" />
+            </mat-form-field>
+          </div>
+          <div fxFlex="50" class="ml-2">
+            <!-- VERSION -->
+            <label item-width="100"><strong>BPNM Icon Type</strong></label>
+            <mat-form-field class="form_in">
+              <mat-select [(ngModel)]="V_ICN_TYP">
+                <mat-option style="text-align:center;" [value]="cn.ICN_TYP"  *ngFor="let cn of V_ICN_TYP">
+                  {{pf}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>    
         <br>
         <!-- SYNCH ASYNCH -->
         <mat-radio-group flex fxLayout="row" [(ngModel)]="F_SYNC_FLG" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="row" fxLayoutAlign="space-around center">
