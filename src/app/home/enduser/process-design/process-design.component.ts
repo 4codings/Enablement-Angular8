@@ -56,6 +56,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   private flows = {};
   public showAllTabFlag = true;
   public showCondtionType = false;
+  subAppProcess:Subscription;
+  subCtrlVar:Subscription;
+  subLabel:Subscription;
   @ViewChild('file')
   private file: any;
   @ViewChild('processForm') processForm: any;
@@ -242,17 +245,17 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.data.getJSON().subscribe(data => {
+    this.subLabel = this.data.getJSON().subscribe(data => {
       this.Label = data.json();
     });
-    this.httpClient.get('../../../../assets/control-variable.json').subscribe(res => {
+    this.subCtrlVar = this.httpClient.get('../../../../assets/control-variable.json').subscribe(res => {
       this.ctrl_variables = res;
     });
     this.url = this.apiService.endPoints.securedJSON;
     this.user = JSON.parse(sessionStorage.getItem('u'));
     this.downloadUrl = this.apiService.endPoints.downloadFile;
-    if (this.user != null) {
-      this.getApplicationProcess();
+    this.getApplicationProcess();
+    if(this.user != null) {
       this.userEmail = this.user.USR_NM;
     }
   }
@@ -417,6 +420,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.subAppProcess.unsubscribe();
+    this.subLabel.unsubscribe();
+    this.subCtrlVar.unsubscribe();
     this.applicationProcessObservable$.unsubscribe();
     this.roleObservable$.unsubscribe();
     if (this.modeler) {
@@ -770,14 +776,16 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     }
   }
   getApplicationProcess() {
-    this.endUserService.getApplicationAndProcess().subscribe(res => {
-      if (res) {
-        let data = res.json();
-        if (data.length) {
-          this.optionalService.getApplicationProcessOptionalValue(data);
+    if(JSON.parse(sessionStorage.getItem('u'))) {
+      this.subAppProcess = this.endUserService.getApplicationAndProcess().subscribe(res => {
+        if (res) {
+          let data = res.json();
+          if (data.length) {
+            this.optionalService.getApplicationProcessOptionalValue(data);
+          }
         }
-      }
-    })
+      })
+    }
   }
   updateTabs() {
     // if (this.isProcess) {
