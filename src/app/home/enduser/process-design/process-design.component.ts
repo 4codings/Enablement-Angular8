@@ -9,7 +9,7 @@ import { EndUserService } from 'src/app/services/EndUser-service';
 import { UseradminService } from 'src/app/services/useradmin.service2';
 import { OptionalValuesService, ApplicationProcessObservable } from 'src/app/services/optional-values.service';
 import { Subscription } from 'rxjs';
-import {TreeviewItem, TreeviewConfig, TreeviewI18nDefault, TreeviewI18n} from 'ngx-treeview';
+import { TreeviewItem, TreeviewConfig, TreeviewI18nDefault, TreeviewI18n } from 'ngx-treeview';
 import { RollserviceService } from 'src/app/services/rollservice.service';
 import { ApiService } from 'src/app/service/api/api.service';
 import { Http } from '@angular/http';
@@ -35,7 +35,7 @@ export class ReportData {
   styleUrls: ['./process-design.component.scss'],
   providers: [
     {
-      provide: TreeviewI18n , useValue: Object.assign(new TreeviewI18nDefault(), {
+      provide: TreeviewI18n, useValue: Object.assign(new TreeviewI18nDefault(), {
         getFilterPlaceholder(): string {
           return 'Find Process';
         }
@@ -251,7 +251,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.url = this.apiService.endPoints.securedJSON;
     this.user = JSON.parse(sessionStorage.getItem('u'));
     this.downloadUrl = this.apiService.endPoints.downloadFile;
-    if(this.user != null) {
+    if (this.user != null) {
       this.getApplicationProcess();
       this.userEmail = this.user.USR_NM;
     }
@@ -408,11 +408,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             }, this.ctrl_variables.delay_timeout);
           }
         }),
-        eventBus.on('connection.remove', ($event) => {
-          // console.log('connection.remove', $event);
-          if ($event && $event.element && ['bpmn:SequenceFlow'].indexOf($event.element.type) > -1) {
-            let id = $event.element.id;
-            this.deleteService(id);
+        eventBus.on("shape.remove", (event) => {
+          if (event && event.element && ['bpmn:Task', 'bpmn:StartEvent', 'bpmn:EndEvent', 'bpmn:Event'].indexOf(event.element.type) >= 0) {
+            this.deleteService(event.element.id);
           }
         });
     }
@@ -530,7 +528,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
   deleteService(id) {
     if (id !== '' || id !== null) {
-      this.httpClient.delete(this.apiService.endPoints.securedJSON + 'V_APP_CD=' + this.selectedApp + '&V_PRCS_CD=' + this.selectedProcess + 'V_SRVC_CD=' + id + '&V_SRC_CD=' + this.user.SRC_CD + '&V_USR_NM=' + this.user.USR_NM + '&REST_Service=Service&Verb=DELETE')
+      this.httpClient.delete(this.apiService.endPoints.securedJSON + 'V_APP_CD=' + this.selectedApp + '&V_PRCS_CD=' + this.selectedProcess + '&V_SRVC_CD=' + id + '&V_SRC_CD=' + this.user.SRC_CD + '&V_USR_NM=' + this.user.USR_NM + '&REST_Service=Service&Verb=DELETE')
         .subscribe(res => {
           this.selectedService = '';
           this.isApp = false;
@@ -1531,7 +1529,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   time_to_sec(time): any {
     return parseInt(time.substring(0, 2)) * 3600 + parseInt(time.substring(3, 5)) * 60 + (parseInt(time.substring(6)));
   }
-  onSelectLimtedPriority(){
+  onSelectLimtedPriority() {
     this.instances_priority = 100;
   }
 }
