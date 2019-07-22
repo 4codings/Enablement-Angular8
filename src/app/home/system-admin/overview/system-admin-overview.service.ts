@@ -26,7 +26,7 @@ export class SystemAdminOverviewService {
 
   public getExe() {
     //console.log("called");
-    this.http.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=EXE&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe((res) => {
+    this.http.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=EXE&V_SRC_CD="+this.V_SRC_CD+"&V_ICN_TYP=&REST_Service=Masters&Verb=GET").subscribe((res) => {
       //console.log("exe", res);
       this.exes = res;
       this.getAllExes();

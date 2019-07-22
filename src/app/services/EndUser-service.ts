@@ -96,7 +96,9 @@ export class EndUserService {
     }
 
     getApplicationAndProcess() {
-        return this.http.get(this.baseSecureJsonUrl + "V_SRC_CD=" + this.V_SRC_CD + "&V_USR_NM=" + this.V_USR_NM + "&REST_Service=ApplicationProcesses&Verb=GET", this.apiService.setHeaders());
+        if(JSON.parse(sessionStorage.getItem('u')) != null) {
+            return this.http.get(this.baseSecureJsonUrl + "V_SRC_CD=" + JSON.parse(sessionStorage.getItem('u')).SRC_CD + "&V_USR_NM=" + JSON.parse(sessionStorage.getItem('u')).USR_NM + "&REST_Service=ApplicationProcesses&Verb=GET", this.apiService.setHeaders());
+        }
     }
 
     /*
