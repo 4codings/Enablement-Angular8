@@ -12,7 +12,8 @@ import { StorageSessionService } from 'src/app/services/storage-session.service'
 import * as pluginAnnotations from 'chartjs-plugin-annotation';
 import { BaseChartDirective } from 'ng2-charts-x';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-
+import {MatSnackBar} from '@angular/material/snack-bar';
+import 'chartjs-plugin-zoom';
 @Component({
   selector: 'app-report-table',
   templateUrl: './report-table.component.html',
@@ -40,7 +41,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     private globals: Globals,
     private globalUser: Globals2,
     private endUserService: EndUserService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private _snackBar: MatSnackBar
   ) { }
 
   remove(item: string): void {
@@ -82,7 +84,107 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   show_choice = "Table";
   selectedchart = [];
   selectedcustomize = "";
+  myobj ={mychartType:"",myxaxisdata:"",myyaxisdata:"",myUoM:"",mySoM:""}
+  PersonalTableCols: any = ["Chart type","x-axis data","y-axis data","Unit of measure","Scale of measure"];
+  personalizationtable:any =[];
+  linearray:any =[];
+  bararray:any =[];
+  piearray:any =[];
+  doughnutarray: any=[];
 
+  updatecustoms(){
+    var test = 0;
+    console.log(this.myobj.mychartType);
+    
+    if(this.personalizationtable != undefined && (this.myobj.mychartType != "" || this.myobj.myxaxisdata != "" || this.myobj.myyaxisdata != "")){    
+    for(let i=0; i< this.personalizationtable.length; i++){
+      if((this.myobj.mychartType != this.personalizationtable[i].chartType || 
+        this.myobj.myxaxisdata != this.personalizationtable[i].xaxisdata ||
+        this.myobj.myyaxisdata != this.personalizationtable[i].yaxisdata))
+        {
+        test=0;
+      }
+      else{
+        test = 1;
+      }
+    }
+    }
+    else{
+      test = 1;
+    }
+    if(test==0){
+      var obj={
+        chartType:this.myobj.mychartType,
+        xaxisdata:this.myobj.myxaxisdata,
+        yaxisdata:this.myobj.myyaxisdata,
+        UoM:this.myobj.myUoM,
+        SoM:this.myobj.mySoM,
+      }
+    this.personalizationtable.push(obj);
+      switch(obj.chartType){
+            case "linechart":
+            this.linearray.push(obj);
+            console.log(this.linearray);
+            this._yaxis_sel_line.push(obj.yaxisdata);
+            this._xaxis_sel_line = obj.xaxisdata ;
+            this.updateLineChart();
+            break;
+            case "barchart":
+            this.bararray.push(obj);
+            this._yaxis_sel_bar.push(obj.yaxisdata);
+            this._xaxis_sel_bar = obj.xaxisdata ;
+            this.updateBarChart();
+            break;
+            case "piechart":
+            this.piearray.push(obj);
+            this._yaxis_sel_pie.push(obj.yaxisdata);
+            this._xaxis_sel_pie = obj.xaxisdata ;
+            this.updatePieChart();
+            break;
+            case "doughnutchart":
+            this.doughnutarray.push(obj);
+            this._yaxis_sel_doughnut.push(obj.yaxisdata);
+            this._xaxis_sel_doughnut = obj.xaxisdata ;
+            this.updateDoughnutChart();
+            break;
+      }
+    }
+    else
+    {
+      this._snackBar.open("Data already exist in table",'Ok',{
+        duration: 2000
+      });
+    }
+  }
+  deleterow(row){
+    console.log(row);
+    var index = this.personalizationtable.indexOf(row);
+    this.personalizationtable.splice(index,1);
+    switch(row.chartType){
+      case "linechart":
+          this.linearray.splice(index,1);
+          console.log(row.yaxisdata.toString());
+          var abc = this._yaxis_sel_line.indexOf(row.yaxisdata);
+          this._yaxis_sel_line.splice(abc,1);
+          this.updateLineChart();
+      break;
+      case "barchart":
+          this.bararray.splice(index,1);
+          this._yaxis_sel_bar =  this._yaxis_sel_bar.filter(function(e) { return e != row.yaxisdata.toString() });
+          this.updateBarChart();
+      break;
+      case "piechart":
+          this.piearray.splice(index,1);
+          this._yaxis_sel_pie =  this._yaxis_sel_pie.filter(function(e) { return e != row.yaxisdata.toString() });
+          this.updatePieChart();
+      break;
+      case "doughnutchart":
+          this.doughnutarray.splice(index,1);
+          this._yaxis_sel_doughnut =  this._yaxis_sel_doughnut.filter(function(e) { return e != row.yaxisdata.toString() });
+          this.updateDoughnutChart();
+      break;
+    }
+  }
   getReportData() {
 
     this.Table_of_Data = this.dataStored.getCookies('report_table')['RESULT'];
@@ -408,6 +510,14 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
           display: true
         }],
         yAxes: Array<any>()
+      },
+      pan: {
+        enabled: true,
+        mode: 'x',     
+      },
+      zoom: {
+        enabled: true,         
+        mode: 'xy',     
       }
     };
     for (let i = 0; i < this.lineChartData.length; i++) {
@@ -540,6 +650,14 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
           display: true
         }],
         yAxes: Array<any>()
+      },
+      pan: {
+        enabled: true,
+        mode: 'x',     
+      },
+      zoom: {
+        enabled: true,         
+        mode: 'xy',     
       }
     };
     for (let i = 0; i < this.barChartData.length; i++) {

@@ -88,7 +88,7 @@
     <canvas baseChart *ngIf="lineChartData" [datasets]="lineChartData" [labels]="lineChartLabels"
       [options]="lineChartOptions" [colors]="lineChartColors" [chartType]="lineChartType">
     </canvas>
-    <div style="max-width:inherit" fxLayout="row" fxLayoutAlign="space-around center">
+    <div style="max-width:inherit" fxLayout="row" fxLayoutAlign="center">
     <div fxFlex="23">
       <mat-form-field style="width:100%">
         <mat-select placeholder="Select X-axis Dataset" (selectionChange)="updateLineChart();setchartpreferences();" [(value)]="_xaxis_sel_line">
@@ -128,7 +128,7 @@
     <canvas baseChart *ngIf="barChartData" [datasets]="barChartData" [labels]="barChartLabels"
       [options]="barChartOptions" [colors]="barChartColors" [chartType]="barChartType">
     </canvas>
-    <div style="max-width:inherit" fxLayout="row" fxLayoutAlign="space-around center">
+    <div style="max-width:inherit" fxLayout="row" fxLayoutAlign="center">
       <div fxFlex="23">
         <mat-form-field style="width:100%">
           <mat-select placeholder="Select X-axis Dataset" (selectionChange)="updateBarChart();setchartpreferences();" [(value)]="_xaxis_sel_bar">
@@ -167,7 +167,7 @@
   <div class="example-box" cdkDragBoundary=".example-boundary" cdkDrag fxLayout="column" fxFlex="50%" fxFlex.lt-sm="100%" *ngIf="selectedchart.includes('piechart_sel')">
     <canvas baseChart [datasets]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType">
     </canvas>
-    <div style="max-width:inherit" fxLayout="row" fxLayoutAlign="space-around center">
+    <div style="max-width:inherit" fxLayout="row" fxLayoutAlign="center">
       <div fxFlex="23">
         <mat-form-field style="width:100%">
           <mat-select placeholder="Select X-axis Dataset" (selectionChange)="updateBarChart();setchartpreferences();" [(value)]="_xaxis_sel_pie">
@@ -205,7 +205,7 @@
   <div class="example-box" cdkDragBoundary=".example-boundary" cdkDrag fxLayout="column" fxFlex="50%" fxFlex.lt-sm="100%" *ngIf="selectedchart.includes('doughnutchart_sel')">
     <canvas baseChart [datasets]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType">
     </canvas>
-    <div style="max-width:inherit" fxLayout="row" fxLayoutAlign="space-around center">
+    <div style="max-width:inherit" fxLayout="row" fxLayoutAlign="center">
       <div fxFlex="23">
         <mat-form-field style="width:100%">
           <mat-select placeholder="Select X-axis Dataset" (selectionChange)="updateBarChart();setchartpreferences();" [(value)]="_xaxis_sel_doughnut">
@@ -240,6 +240,143 @@
         
       </div>
       </div>
+  </div>
+</div>
+<form class="formwidth" (ngSubmit)="updatecustoms()" #myForm="ngForm" *ngIf="dispchart">
+<div flex fxLayout="column">
+<div fxLayout = "row" fxLayoutGap="10">
+<div  fxFlex="30" flex style="max-width:inherit" *ngFor="let cols of PersonalTableCols" fxLayoutAlign="stretch center">
+  <mat-label style="text-align: center">{{cols}}</mat-label>
+</div>
+</div>
+<br>
+<div flex style="max-width:inherit" fxLayoutGap="10" fxLayout="row" fxLayoutAlign="flex-start">
+    <div fxFlex="30">
+    <mat-form-field style="width:100%">
+      <mat-select placeholder="Select Chart type" [(ngModel)]="myobj.mychartType" name="mychartType" required>
+        <mat-option value="linechart">Line Chart</mat-option>
+        <mat-option value="barchart">Bar Chart</mat-option>
+        <mat-option value="piechart">Pie Chart</mat-option>
+        <mat-option value="doughnutchart">Doughnut Chart</mat-option>
+        <mat-option value="ganttchart">Gantt Chart</mat-option>
+      </mat-select>
+    </mat-form-field>
+    </div>
+    <div fxFlex="30">
+      <mat-form-field style="width:100%">
+        <mat-select placeholder="Select X-axis Dataset" [(ngModel)]="myobj.myxaxisdata" name="myxaxisdata" required>
+          <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" value="{{items}}">
+            {{items}} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div fxFlex="30">
+      <mat-form-field style="width:100%">
+        <mat-select placeholder="Select Y-axis Dataset" [(ngModel)]="myobj.myyaxisdata" name="myyaxisdata" required>
+          <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" value="{{items}}">
+            {{items}} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div fxFlex="20">
+        <mat-form-field style="width:100%">
+          <input type="text" placeholder="Unit of measure" matInput [matAutocomplete]="auto" [(ngModel)]="myobj.myUoM" name="myUoM">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option value="">None</mat-option>
+            <mat-option *ngFor="let option of yaxiscallbacks" value="{{option}}">
+              {{option}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+    </div>
+    <div fxFlex="20">
+      <mat-form-field style="width:100%">
+        <input type="text" placeholder="Scale of measure" matInput [matAutocomplete]="auto1" [(ngModel)]="myobj.mySoM" name="mySoM">
+        <mat-autocomplete #auto1="matAutocomplete">
+          <mat-option value="10"> 10 </mat-option>
+          <mat-option value="100"> 100 </mat-option>
+          <mat-option value="1000"> 1000 </mat-option>
+          <mat-option value="10000"> 10000 </mat-option>
+          <mat-option value="100000"> 100000 </mat-option>
+          <mat-option value="1000000"> Millions </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+   </div>
+    <div style="display:inline-block;margin-left: 0.5px;">
+      <button mat-mini-fab type="submit" color="primary">
+        <mat-icon>done_all</mat-icon>
+      </button>
+    <!-- </br>
+      <button mat-icon-button *ngIf="iter===0 && V_CREATE==='Y'" (click)="addRow()">
+        <mat-icon style="color:red;font-size: larger;font-weight: bold;">add</mat-icon>
+      </button> -->
+    </div>
+</div>
+</div>
+</form>
+<div *ngIf="dispchart">
+  <div flex *ngFor="let rows of personalizationtable; let i = index;"
+   style="max-width:inherit" fxLayoutGap="10" fxLayout="row" fxLayoutAlign="flex-start">
+    <div fxFlex="30">
+    <mat-form-field style="width:100%">
+      <mat-select placeholder="Select Chart type" [(value)]="personalizationtable[i].chartType">
+        <mat-option value="linechart">Line Chart</mat-option>
+        <mat-option value="barchart">Bar Chart</mat-option>
+        <mat-option value="piechart">Pie Chart</mat-option>
+        <mat-option value="doughnutchart">Doughnut Chart</mat-option>
+        <mat-option value="ganttchart">Gantt Chart</mat-option>
+      </mat-select>
+    </mat-form-field>
+    </div>
+    <div fxFlex="30">
+      <mat-form-field style="width:100%">
+        <mat-select placeholder="Select X-axis Dataset" [(value)]="personalizationtable[i].xaxisdata">
+          <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" value="{{items}}">
+            {{items}} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div fxFlex="30">
+      <mat-form-field style="width:100%">
+        <mat-select placeholder="Select Y-axis Dataset" [(value)]="personalizationtable[i].yaxisdata">
+          <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" value="{{items}}">
+            {{items}} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div fxFlex="20">
+        <mat-form-field style="width:100%">
+          <input type="text" placeholder="Unit of measure" matInput [matAutocomplete]="auto" [(ngModel)]="personalizationtable[i].UoM">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option style="text-align: center;   height: 25px;   color: black; " value="">None</mat-option>
+            <mat-option *ngFor="let option of yaxiscallbacks" value="{{option}}">
+              {{option}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+    </div>
+    <div fxFlex="20">
+      <mat-form-field style="width:100%">
+        <input type="text" placeholder="Scale of measure" matInput [matAutocomplete]="auto1" [(ngModel)]="personalizationtable[i].SoM">
+        <mat-autocomplete #auto1="matAutocomplete">
+          <mat-option value="10"> 10 </mat-option>
+          <mat-option value="100"> 100 </mat-option>
+          <mat-option value="1000"> 1000 </mat-option>
+          <mat-option value="10000"> 10000 </mat-option>
+          <mat-option value="100000"> 100000 </mat-option>
+          <mat-option value="1000000"> Millions </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+  </div>
+    <div style="display:inline-block;margin-left: 0.5px;">
+      <button mat-mini-fab color="primary" (click)="deleterow(personalizationtable[i]);">
+        <mat-icon>delete_forever</mat-icon>
+      </button>
+    <!-- </br>
+      <button mat-icon-button *ngIf="iter===0 && V_CREATE==='Y'" (click)="addRow()">
+        <mat-icon style="color:red;font-size: larger;font-weight: bold;">add</mat-icon>
+      </button> -->
+    </div>
   </div>
 </div>
 <div fxLayout="column" fxLayoutAlign="space-around center" *ngIf="dispchart">
