@@ -84,7 +84,8 @@
 
 <div class="example-boundary" fxLayoutGap="10" *ngIf="dispchart">
   <!-- <br> -->
-  <div class="example-box" cdkDragBoundary=".example-boundary" cdkDrag fxLayout="column" fxFlex="50%" fxFlex.lt-sm="100%" *ngIf="selectedchart.includes('linechart_sel')">
+  <div class="example-box" (cdkDragEnded)="dragEndLine($event)" [style.top.px]="chartposition[0].y"
+  [style.left.px]="chartposition[0].x" cdkDragBoundary=".example-boundary" cdkDrag fxLayout="column" fxFlex="50%" fxFlex.lt-sm="100%" *ngIf="selectedchart.includes('linechart_sel')">
     <canvas baseChart *ngIf="lineChartData" [datasets]="lineChartData" [labels]="lineChartLabels"
       [options]="lineChartOptions" [colors]="lineChartColors" [chartType]="lineChartType">
     </canvas>
@@ -124,7 +125,8 @@
     </div>
     </div>
   </div>
-  <div class="example-box" cdkDragBoundary=".example-boundary" cdkDrag fxLayout="column" fxFlex="50%" fxFlex.lt-sm="100%" *ngIf="selectedchart.includes('barchart_sel')">
+  <div class="example-box" (cdkDragEnded)="dragEndBar($event)" [style.top.px]="chartposition[1].y"
+  [style.left.px]="chartposition[1].x" cdkDragBoundary=".example-boundary" cdkDrag fxLayout="column" fxFlex="50%" fxFlex.lt-sm="100%" *ngIf="selectedchart.includes('barchart_sel')">
     <canvas baseChart *ngIf="barChartData" [datasets]="barChartData" [labels]="barChartLabels"
       [options]="barChartOptions" [colors]="barChartColors" [chartType]="barChartType">
     </canvas>
@@ -164,7 +166,8 @@
       </div>
       </div>
   </div>
-  <div class="example-box" cdkDragBoundary=".example-boundary" cdkDrag fxLayout="column" fxFlex="50%" fxFlex.lt-sm="100%" *ngIf="selectedchart.includes('piechart_sel')">
+  <div class="example-box" (cdkDragEnded)="dragEndPie($event)" [style.top.px]="chartposition[2].y"
+  [style.left.px]="chartposition[2].x" cdkDragBoundary=".example-boundary" cdkDrag fxLayout="column" fxFlex="50%" fxFlex.lt-sm="100%" *ngIf="selectedchart.includes('piechart_sel')">
     <canvas baseChart [datasets]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType">
     </canvas>
     <div style="max-width:inherit" fxLayout="row" fxLayoutAlign="center">
@@ -202,7 +205,8 @@
       </div>
       </div>
   </div>
-  <div class="example-box" cdkDragBoundary=".example-boundary" cdkDrag fxLayout="column" fxFlex="50%" fxFlex.lt-sm="100%" *ngIf="selectedchart.includes('doughnutchart_sel')">
+  <div class="example-box" (cdkDragEnded)="dragEndDoughnut($event)" [style.top.px]="chartposition[3].y"
+  [style.left.px]="chartposition[3].x" cdkDragBoundary=".example-boundary" cdkDrag fxLayout="column" fxFlex="50%" fxFlex.lt-sm="100%" *ngIf="selectedchart.includes('doughnutchart_sel')">
     <canvas baseChart [datasets]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType">
     </canvas>
     <div style="max-width:inherit" fxLayout="row" fxLayoutAlign="center">
