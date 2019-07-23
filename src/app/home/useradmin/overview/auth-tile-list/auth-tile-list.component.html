@@ -15,10 +15,36 @@
        (contextmenu)="openContextmenu($event, currAuth)"
        (mousedown)="onTileMouseDownEventHandler($event)"
        (click)="onAuthTileClick(currAuth)">
-    <mat-icon class="tile-icon">lock</mat-icon>
+    <div class="tile-icons-wrapper"
+         fxLayout="row"
+         fxLayoutAlign="space-around">
+      <mat-icon class="tile-icon"
+                *ngIf="currAuth.V_CREATE==='Y'">
+        add
+      </mat-icon>
+      <mat-icon class="tile-icon"
+                *ngIf="currAuth.V_UPDATE==='Y'">
+        create
+      </mat-icon>
+      <mat-icon class="tile-icon"
+                *ngIf="currAuth.V_READ==='Y'">
+        remove_red_eye
+      </mat-icon>
+      <mat-icon class="tile-icon"
+                *ngIf="currAuth.V_DELETE==='Y'">
+        delete
+      </mat-icon>
+      <mat-icon class="tile-icon"
+                *ngIf="currAuth.V_EXECUTE==='Y'">
+        launch
+      </mat-icon>
+    </div>
 <!--    <div *ngIf="!environment.production">{{currAuth.V_AUTH_ID}}</div>-->
-    <div class="ellipsis-text"><strong>{{currAuth.V_AUTH_CD}}</strong></div>
-    <div class="ellipsis-text"><strong>{{currAuth.V_AUTH_CD.split(';')[1].trim()}}</strong></div>
+    <div class="tile-text">
+      <strong>
+        {{ currAuth.V_AUTH_CD }}
+      </strong>
+    </div>
   </div>
   <div class="tile add-new-tile" cdkDrag [cdkDragDisabled]="true" (click)="onAddAuthTileClick()"
        matTooltip="Add Auth" matRipple>
