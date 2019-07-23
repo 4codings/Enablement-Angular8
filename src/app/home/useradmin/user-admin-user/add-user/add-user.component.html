@@ -12,6 +12,11 @@
     <app-user-list *ngIf="selectedView == 'selectUser'" [users]="allUsers" (userSelectEvent)="onUserSelect($event)"></app-user-list>
     <app-user-form *ngIf="selectedView == 'addNewUser'" [users]="allUsers"></app-user-form>
   </div>
+  <div class="dialog-body content-wrapper" fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="start stretch">
+    <mat-checkbox class="example-margin" [(ngModel)]="isPrimaryGroup">
+      Is Primary Group
+    </mat-checkbox>
+  </div>
   <div class="dialog-footer content-wrapper" fxLayoutAlign="end center" fxLayoutGap="8px">
     <div fxFlex fxLayoutAlign="start center" style="color: #DD312E" *ngIf="userAlreadyExist">User already exist</div>
     <button mat-flat-button color="primary" (click)="onBtnAddClick()">Add</button>
