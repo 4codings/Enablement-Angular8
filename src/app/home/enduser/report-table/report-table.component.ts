@@ -44,6 +44,35 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     private apiService: ApiService,
     private _snackBar: MatSnackBar
   ) { }
+  chartposition:any = [{x: 0, y: 0},{x: 0, y: 0},{x: 0, y: 0},{x: 0, y: 0}];
+  dragEndLine(event) {
+  var offset = { ...(<any>event.source._dragRef)._passiveTransform };
+  console.log(offset);
+  this.chartposition[0] = offset;
+  console.log(this.chartposition[0]);
+  this.setchartpreferences();
+    }
+    dragEndBar(event) {
+      var offset = { ...(<any>event.source._dragRef)._passiveTransform };
+      console.log(offset);
+      this.chartposition[1] = offset;
+      console.log(this.chartposition[1]);
+      this.setchartpreferences();
+        }
+        dragEndPie(event) {
+          var offset = { ...(<any>event.source._dragRef)._passiveTransform };
+          console.log(offset);
+          this.chartposition[2] = offset;
+          console.log(this.chartposition[2]);
+          this.setchartpreferences();
+            }
+            dragEndDoughnut(event) {
+              var offset = { ...(<any>event.source._dragRef)._passiveTransform };
+              console.log(offset);
+              this.chartposition[3] = offset;
+              console.log(this.chartposition[3]);
+              this.setchartpreferences();
+                }
 
   remove(item: string): void {
     const index = this.hiddencols.indexOf(item);
@@ -148,6 +177,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
             this.updateDoughnutChart();
             break;
       }
+      this.setchartpreferences();
     }
     else
     {
@@ -184,6 +214,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
           this.updateDoughnutChart();
       break;
     }
+    this.setchartpreferences();
   }
   getReportData() {
 
@@ -391,9 +422,10 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
 
   //_________________________CHART FUNCTIONS________________________________________
   updateLineChart() {
-    var unit = this._yaxisCB_line;
-    // this.lineChartData = [];
-    // this.lineChartLabels = [];
+    var unit = this.linearray[0].UoM;
+    var scale = this.linearray[0].SoM;
+    this.lineChartData = [];
+    this.lineChartLabels = [];
     this.yaxis_data_line = [];
     this.lineChartOptions = null;
 
@@ -546,12 +578,13 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
             autoSkip: this._yaxisAutoskip,
             beginAtZero: true,
             callback: function (label) {
-              if (label > 1000) {
-                return unit + " " + label/1000 + " k";
-              }
-              else {
-                return unit + " " + label;
-              }
+              // if (label > 1000) {
+              //   return unit + " " + label/1000 + " k";
+              // }
+              // else {
+              //   return unit + " " + label;
+            // }
+              return unit + " " + label/scale;
             }
           }
         };
@@ -592,8 +625,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   }
   updateBarChart() {
     var unit = this._yaxisCB_bar;
-    // this.barChartData = [];
-    // this.barChartLabels = [];
+    this.barChartData = [];
+    this.barChartLabels = [];
     this.barChartOptions = null;
 
     if (this._yaxis_sel_bar != [] && this._yaxis_sel_bar != undefined) {
@@ -733,8 +766,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     :this.barChartLabels=this.chartlabels;
   }
   updatePieChart() {
-    // this.pieChartData = [];
-    // this.pieChartLabels = [];
+    this.pieChartData = [];
+    this.pieChartLabels = [];
 
     if (this._yaxis_sel_pie != [] && this._yaxis_sel_pie != undefined) {
       for (let i = 0; i < this._yaxis_sel_pie.length; i++) {
@@ -749,8 +782,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     :this.pieChartLabels=this.chartlabels;
   }
   updateDoughnutChart() {
-    // this.doughnutChartData = [];
-    // this.doughnutChartLabels = [];
+    this.doughnutChartData = [];
+    this.doughnutChartLabels = [];
 
     if (this._yaxis_sel_doughnut != [] && this._yaxis_sel_doughnut != undefined) {
       for (let i = 0; i < this._yaxis_sel_doughnut.length; i++) {
@@ -773,6 +806,13 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
 
   //__________________________Set Preferences_________________________________
   setchartpreferences() {
+    var cp = [];
+    for(let i =0;i<this.chartposition.length;i++){
+      cp.push(Object.values(this.chartposition[i]));
+    }
+    cp=[].concat.apply([], cp);
+    console.log(cp);
+    
     this.userprefs['backgroundcolor'] = this._backgroundColor;
     this.userprefs['bordercolor'] = this._borderColor;
     this.userprefs['fill'] = this._fill.toString().toLocaleUpperCase();
@@ -793,6 +833,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     this.userprefs['doughnutxaxis'] = this._xaxis_sel_doughnut;
     this.userprefs['doughnutyaxis'] = this._yaxis_sel_doughnut;
     this.userprefs['selectedchart'] = this.selectedchart;
+    this.userprefs['personalizationtable'] = this.personalizationtable;
+    this.userprefs['chartposition'] = cp;
     console.log(this.userprefs);
     this.V_PRF_NM = Object.keys(this.userprefs);
     this.V_PRF_VAL = Object.values(this.userprefs);
@@ -823,6 +865,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
 
   //__________________________Get Preferences________________________________
   getchartpreferences() {
+    var cp =[];
         if(this.userprefs['backgroundcolor']!=undefined)
         this._backgroundColor = this.userprefs['backgroundcolor'];
         if(this.userprefs['bordercolor']!=undefined)
@@ -851,6 +894,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         this._xaxis_sel_line = this.userprefs['linexaxis'];
         if(this.userprefs['lineyaxis']!= undefined && this.userprefs['lineyaxis']!="")
         this._yaxis_sel_line = this.userprefs['lineyaxis'].toString().split(',');
+        if(this.userprefs['personalizationtable']!= undefined && this.userprefs['personalizationtable']!="")
+        this.personalizationtable = this.userprefs['personalizationtable'].toString().split(',');
         if(this.userprefs['barxaxis']!= undefined && this.userprefs['barxaxis']!="")
         this._xaxis_sel_bar = this.userprefs['barxaxis'];
         if(this.userprefs['baryaxis']!= undefined && this.userprefs['baryaxis']!="")
@@ -866,7 +911,18 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
 
         if(this.userprefs['selectedchart']!=undefined && this.userprefs['selectedchart']!="")
         this.selectedchart = this.userprefs['selectedchart'].toString().split(',');
-
+        if(this.userprefs['chartposition']!=undefined)
+        cp = this.userprefs['chartposition'].toString().split(',').map(Number);
+          this.chartposition[0].x = cp[0];
+          this.chartposition[1].x = cp[2];
+          this.chartposition[2].x = cp[4];
+          this.chartposition[3].x = cp[6];
+          this.chartposition[0].y = cp[1];
+          this.chartposition[1].y = cp[3];
+          this.chartposition[2].y = cp[5];
+          this.chartposition[3].y = cp[7];
+          console.log(cp);
+          
         this.updatechart();
   }
   gettablepreferences(){
