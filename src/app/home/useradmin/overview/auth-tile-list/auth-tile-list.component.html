@@ -16,7 +16,7 @@
        (mousedown)="onTileMouseDownEventHandler($event)"
        (click)="onAuthTileClick(currAuth)">
     <div class="tile-icons-wrapper"
-         fxLayout="row"
+         fxLayout="row wrap"
          fxLayoutAlign="space-around">
       <mat-icon class="tile-icon"
                 *ngIf="currAuth.V_CREATE==='Y'">
@@ -42,7 +42,7 @@
 <!--    <div *ngIf="!environment.production">{{currAuth.V_AUTH_ID}}</div>-->
     <div class="tile-text">
       <strong>
-        {{ currAuth.V_AUTH_CD }}
+        {{ currAuth.V_AUTH_CD.replace('; CRUDE', '').replace('CRUDE; ', '') }}
       </strong>
     </div>
   </div>
