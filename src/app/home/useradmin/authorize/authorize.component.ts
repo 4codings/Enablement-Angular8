@@ -282,6 +282,7 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
       "V_APP_CD": data.V_APP_CD,
       "V_PRCS_CD": data.V_PRCS_CD,
       "V_EXE_TYP": data.V_EXE_TYP,
+      "V_ARTFCT_TYP": data.V_ARTFCT_TYP,
       "V_READ": data.V_READ,
       "V_UPDATE": data.V_UPDATE,
       "V_DELETE": data.V_DELETE,
