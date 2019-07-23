@@ -517,7 +517,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
       },
       zoom: {
         enabled: true,         
-        mode: 'xy',     
+        mode: 'xy',  
+        speed: 0.1   
       }
     };
     for (let i = 0; i < this.lineChartData.length; i++) {

@@ -319,7 +319,7 @@
    style="max-width:inherit" fxLayoutGap="10" fxLayout="row" fxLayoutAlign="flex-start">
     <div fxFlex="30">
     <mat-form-field style="width:100%">
-      <mat-select placeholder="Select Chart type" [(value)]="personalizationtable[i].chartType">
+      <mat-select placeholder="Select Chart type" [(value)]="rows.chartType">
         <mat-option value="linechart">Line Chart</mat-option>
         <mat-option value="barchart">Bar Chart</mat-option>
         <mat-option value="piechart">Pie Chart</mat-option>
@@ -330,7 +330,7 @@
     </div>
     <div fxFlex="30">
       <mat-form-field style="width:100%">
-        <mat-select placeholder="Select X-axis Dataset" [(value)]="personalizationtable[i].xaxisdata">
+        <mat-select placeholder="Select X-axis Dataset" [(value)]="rows.xaxisdata">
           <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" value="{{items}}">
             {{items}} </mat-option>
         </mat-select>
@@ -338,7 +338,7 @@
     </div>
     <div fxFlex="30">
       <mat-form-field style="width:100%">
-        <mat-select placeholder="Select Y-axis Dataset" [(value)]="personalizationtable[i].yaxisdata">
+        <mat-select placeholder="Select Y-axis Dataset" [(value)]="rows.yaxisdata">
           <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" value="{{items}}">
             {{items}} </mat-option>
         </mat-select>
@@ -346,7 +346,7 @@
     </div>
     <div fxFlex="20">
         <mat-form-field style="width:100%">
-          <input type="text" placeholder="Unit of measure" matInput [matAutocomplete]="auto" [(ngModel)]="personalizationtable[i].UoM">
+          <input type="text" placeholder="Unit of measure" matInput [matAutocomplete]="auto" [(ngModel)]="rows.UoM">
           <mat-autocomplete #auto="matAutocomplete">
             <mat-option style="text-align: center;   height: 25px;   color: black; " value="">None</mat-option>
             <mat-option *ngFor="let option of yaxiscallbacks" value="{{option}}">
@@ -357,7 +357,7 @@
     </div>
     <div fxFlex="20">
       <mat-form-field style="width:100%">
-        <input type="text" placeholder="Scale of measure" matInput [matAutocomplete]="auto1" [(ngModel)]="personalizationtable[i].SoM">
+        <input type="text" placeholder="Scale of measure" matInput [matAutocomplete]="auto1" [(ngModel)]="rows.SoM">
         <mat-autocomplete #auto1="matAutocomplete">
           <mat-option value="10"> 10 </mat-option>
           <mat-option value="100"> 100 </mat-option>
@@ -369,7 +369,7 @@
       </mat-form-field>
   </div>
     <div style="display:inline-block;margin-left: 0.5px;">
-      <button mat-mini-fab color="primary" (click)="deleterow(personalizationtable[i]);">
+      <button mat-mini-fab color="primary" (click)="deleterow(rows);">
         <mat-icon>delete_forever</mat-icon>
       </button>
     <!-- </br>
