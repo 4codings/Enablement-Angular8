@@ -60,6 +60,7 @@ export class SchdActnComponent implements OnInit, AfterViewInit, OnDestroy {
   kl = 0;
   displayedColumns = ['#', 'name', 'status', 'lastrun', 'nextrun', 'details'];
   dataSource = new MatTableDataSource();
+  masterDataSource = new MatTableDataSource();
   Action: any;
   selectedplat: any;
   selectedplat1: any;
@@ -104,6 +105,8 @@ export class SchdActnComponent implements OnInit, AfterViewInit, OnDestroy {
       this.desktopView = true;
     }
   }
+
+
   constructor(private router: Router,
     private http: HttpClient,
     private globals: Globals,
@@ -193,6 +196,17 @@ export class SchdActnComponent implements OnInit, AfterViewInit, OnDestroy {
     //     }
     //   });
   }
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.filteredData.length;
+    return numSelected === numRows;
+  }
+  masterToggle() {
+    this.isAllSelected() ?
+      this.selection.clear() :
+      this.dataSource.filteredData.forEach((row: any) => this.selection.select(row));
+  }
   getProcessCD(u) {
     if (this.mobileView) {
       u = u.value;
@@ -221,34 +235,6 @@ export class SchdActnComponent implements OnInit, AfterViewInit, OnDestroy {
         this.optionalService.getProcessOptionalValue(this.selectedplat);
       }
     }
-    // this.endUsrData.getProcesses(u)
-    //   .subscribe(res => {
-    //     this.proc_CD_data = res.json();
-    //     if (!this.applicationViewFlag) {
-    //       this.selectedplat1 = this.proc_CD_data['PRCS_CD'][0];
-    //       this.ProcessCD = this.selectedplat1;
-    //       this.fooo1(this.proc_CD_data['PRCS_CD'][0]);
-    //     }
-    //     this.process_box = true;
-    //     if (this.app.START === false && this.ProcessCD.length > 0 && this.app.selected_PROCESS !== 'ALL') {
-    //       if (this.mobileView) {
-    //         this.fooo1({ value: this.ProcessCD });
-    //       } else {
-    //         this.fooo1(this.ProcessCD);
-    //       }
-    //     }
-    //   });
-    // enable the scheduler btn
-    // this.find_process(u, this.ProcessCD, "All");
-    // this.process_box = true;
-    // if (this.app.START === false && this.ProcessCD.length > 0 && this.app.selected_PROCESS !== 'ALL') {
-    //   if (this.mobileView) {
-    //     this.fooo1({ value: this.ProcessCD });
-    //   } else {
-    //     this.fooo1(this.ProcessCD);
-    //   }
-    // }
-
   }
   functionCommonApp() {
     var flag = 0;
@@ -281,12 +267,8 @@ export class SchdActnComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
   // _________________________________FIND PROCESS__________________________________________
-  // Table_scheduled_data: any[] = [];
-  // Table_paused_data: any[] = [];
-  // Table_kill_data: any[] = [];
 
   find_process(ApplicationCD, ProcessCD, StatusCD) {
-
     this.Action = [];
     this.innerTableDT = [];
     this.Data = [];
@@ -303,6 +285,7 @@ export class SchdActnComponent implements OnInit, AfterViewInit, OnDestroy {
           this.F1 = dataResult.SRVC_CD;
           (this.F1);
           (this.F1.length);
+          this.selection = new SelectionModel<data>(true, [])
           for (let i = 0; i < this.F1.length; i++) {
             this.innerTableDT[i] = {
               name: dataResult.SRVC_CD[i],
@@ -345,39 +328,11 @@ export class SchdActnComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     return true;
   }
-  /** Whether the number of selected elements matches the total number of rows. */
 
-  // isAllSelected() {
-  //   const numSelected = this.selection.selected.length;
-  //   this.data1 = this.selection.selected;
-  //   (this.data1);
-  //   const numRows = this.dataSource.data.length;
-  //   return numSelected === numRows;
-
-  // }
-  // _____________________________________CLOSE____________________________________________
 
   // -------------get process id / JOB_NAME
   Check_process_id(key: any) {
     this.Process_key.push(key);
-    (this.Process_key);
-    this.Process_key.forEach(function (v, i) {
-      ('v' + v);
-      ('i' + i);
-      (key);
-      if (v === key) {
-        //     var index = this.Process_key.indexOf(v);
-
-        // if (index > -1) {
-        this.Process_key.splice(i, 1);
-        // }
-        // this.Process_key = this.Process_key.filter(function(e) { return e !== v })
-        // this.Process_key.slice(i);
-      }
-    });
-    (this.Process_key);
-
-    // ("Array lenght"+this.Process_key.length+" elm"+this.Process_key);
   }
   onRowClick(row) {
 
@@ -404,12 +359,11 @@ export class SchdActnComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   onPause() {
-
     this.innerTableDT = [];
-    ('PAUSE!!!');
     // Pause
-    for (let i = 0; i < this.Process_key.length; i++) {
-      this.Process_operation(this.Process_key[i], 'Pause');
+    for (let i = 0; i < this.selection.selected.length; i++) {
+      let obj: any = this.selection.selected[i];
+      this.Process_operation(obj.job_name, 'Pause');
     }
     setTimeout(() => {
       this.find_process(this.ApplicationCD, this.ProcessCD, 'All');
@@ -420,33 +374,25 @@ export class SchdActnComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onResume() {
     this.innerTableDT = [];
-    ('RESUME!!!');
-    // Resume
-    for (let i = 0; i < this.Process_key.length; i++) {
-      this.Process_operation(this.Process_key[i], 'Resume');
+    for (let i = 0; i < this.selection.selected.length; i++) {
+      let obj: any = this.selection.selected[i];
+      this.Process_operation(obj.job_name, 'Resume');
     }
-    // await delay(2000);
     setTimeout(() => {
       this.find_process(this.ApplicationCD, this.ProcessCD, 'All');
     }, 5000);
-    // this.find_process(this.ApplicationCD,this.ProcessCD,"All");
   }
 
   onKill() {
     this.innerTableDT = [];
-    // Kill
-    ('KILL!!!');
-    for (let i = 0; i < this.Process_key.length; i++) {
-      this.Process_operation(this.Process_key[i], 'Kill');
-      ('Process id' + this.Process_key[i]);
+    for (let i = 0; i < this.selection.selected.length; i++) {
+      let obj: any = this.selection.selected[i];
+      this.Process_operation(obj.job_name, 'Kill');
     }
     setTimeout(() => {
       this.find_process(this.ApplicationCD, this.ProcessCD, 'All');
     }, 5000);
   }
-
-  // Roll_cd: any[] = [];
-
   ngOnInit() {
     if (this.app.selected_APPLICATION !== 'ALL' && !this.app.START) {
       this.ApplicationCD = this.app.selected_APPLICATION;
@@ -476,7 +422,6 @@ export class SchdActnComponent implements OnInit, AfterViewInit, OnDestroy {
     this.innerTableDT = [];
     this.Data = [];
     this.action_box = true;
-
     this.find_process(this.ApplicationCD, this.ProcessCD, 'All');
   }
   fooo2(u) {
@@ -496,7 +441,6 @@ export class SchdActnComponent implements OnInit, AfterViewInit, OnDestroy {
     this.selectedplat2 = u;
     if (u === 'Setup a New Schedule') {
       this.display_process_table = false;
-
       this.innerTableDT = [];
       this.Resume_btn = false;
       this.Kill_btn = false;
@@ -505,8 +449,6 @@ export class SchdActnComponent implements OnInit, AfterViewInit, OnDestroy {
       this.Process_key = [];
       this.show_btn_save_schedule();
     } else if (u === 'Pause Existing Schedules') {
-      // this.onPause(); //Paused
-      // this.innerTableDT=[];
       this.display_dynamic_paramter = false;
       this.display_process_table = true;
       this.Resume_btn = false;
@@ -530,10 +472,8 @@ export class SchdActnComponent implements OnInit, AfterViewInit, OnDestroy {
       this.show_filter_input = false;
       this.checkbox_color_value = 'checkbox_green';
       this.applyFilter('PAUSED');
-      // When Click on "Resume Existing Schedule" Call all "Paused" Schedule and list if only Paused Schedules
       this.find_process(this.ApplicationCD, this.ProcessCD, 'Paused');
     } else if (u === 'Kill Existing Schedule') {
-      // this.innerTableDT=[];
       this.display_dynamic_paramter = false;
       this.display_process_table = true;
       this.Resume_btn = false;
@@ -547,21 +487,12 @@ export class SchdActnComponent implements OnInit, AfterViewInit, OnDestroy {
       this.find_process(this.ApplicationCD, this.ProcessCD, 'All');
     }
   }
-  // enable_btn() {
-  //   this.repeat_btn = false;
-  // }
-  // ---------------navigate to scheduler repeat after page
-
-  // repeat_btn: boolean = true;
   repeatURL() {
 
     this.form_dl_data[0] = {
       APP_CD: this.ApplicationCD,
       PRC_CD: this.ProcessCD
     };
-
-
-    (this.form_dl_data);
     this.storageSessionService.setSession('Exe_data', this.form_dl_data[0]);
     this.router.navigateByUrl('repeat');
 
@@ -739,7 +670,6 @@ export class SchdActnComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       );
   }
-  // filteredOptions: Observable<string[]>;
   getDropDownListValue(e) {
     // this.app.loading=true;
     this.searchResult = [];
