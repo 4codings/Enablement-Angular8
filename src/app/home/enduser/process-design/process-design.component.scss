@@ -19,13 +19,16 @@
 .parent-color {
   color: #000;
 }
-.parent-font{
+
+.parent-font {
   font-size: 14px;
   font-weight: bold;
 }
+
 .selected-process-font {
   font-weight: normal;
 }
+
 .child-color {
   color: #000;
   font-weight: normal;
@@ -72,6 +75,7 @@
 :host /deep/ .mat-tab-label {
   padding: 0 15px;
   min-width: 60px;
+
   .mat-tab-label-content {
     margin-bottom: -15px;
   }
@@ -203,7 +207,7 @@ input {
   text-align: center;
   width: 100%;
   height: 25px;
-  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 :host /deep/ .mat-tab-body-content {
@@ -214,7 +218,8 @@ input {
   padding-top: 2px;
   padding-bottom: 0px;
 }
-.m-t--16{
+
+.m-t--16 {
   margin-top: -16px !important;
 }
 
@@ -230,40 +235,55 @@ input {
   padding-bottom: 1px;
   padding-left: 0px;
 }
+
 .m-t-15 {
   margin-top: 15px;
 }
-.caret-font{
+
+.caret-font {
   font-size: 22px;
   margin-left: 1.3rem;
 }
-.more-vert-font{
+
+.more-vert-font {
   font-size: 19px;
   margin-left: -25px;
 }
-.add-font{
+
+.add-font {
   margin-left: 0;
   font-size: 22px;
 }
+
+.exe_disable {
+  background: lightgrey;
+}
+
 ::ng-deep .mat-checkbox-inner-container {
   background: #FFF;
 }
-.bg-white{
+
+.bg-white {
   background: #FFF;
 }
-::ng-deep .mat-radio-outer-circle{
+
+::ng-deep .mat-radio-outer-circle {
   background: #FFF;
 }
-.w-100-p{
+
+.w-100-p {
   width: 100px !important;
 }
-.m-t-10{
+
+.m-t-10 {
   margin-top: 10px;
 }
-.m-b-10{
+
+.m-b-10 {
   margin-bottom: 10px !important;
 }
-#Timeout_seconds_label{
+
+#Timeout_seconds_label {
   text-align: left;
   width: 138px;
 }

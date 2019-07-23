@@ -312,8 +312,7 @@
                   {{ condition}}
                 </option>
               </select>
-              <div
-                *ngIf="selectedConditionType==='Simple Expression' || selectedConditionType==='Java Script'|| selectedConditionType==='Java'|| selectedConditionType==='Python'|| selectedConditionType==='SQL Statement'">
+              <div>
                 <div class="oneSpace"></div>
                 <label>{{Label['CONDITION']}}</label>
                 <textarea (change)="onInputChange()" [(ngModel)]="sequenceCondition"></textarea>
@@ -340,15 +339,16 @@
                 {{ executable}}
               </option>
             </select>
-<!--            <div class="oneSpace"></div>-->
+            <!--            <div class="oneSpace"></div>-->
             <label class="m-t-15">{{Label['EXECUTABLE_INPUT']}}</label>
-            <textarea [disabled]="selectedExecutableType !== 'Manual' && (selectedExecutable !== 'NONREPEATABLE_MANUAL_TASK' || selectedExecutable !== 'REPEATABLE_MANUAL_TASK')"  [(ngModel)]="executableInput"></textarea>
-<!--            <div class="oneSpace"></div>-->
+            <textarea [ngClass]="selectedExecutableType !== 'MANUAL'?'exe_disable':''"
+              [disabled]="selectedExecutableType !== 'MANUAL'" [(ngModel)]="executableInput"></textarea>
+            <!--            <div class="oneSpace"></div>-->
             <label class="m-t-15">{{Label['EXECUTABLE_OUTPUT']}}</label>
-            <textarea disabled [(ngModel)]="executableOutput"></textarea>
-<!--            <div class="oneSpace"></div>-->
+            <textarea class="exe_disable" disabled [(ngModel)]="executableOutput"></textarea>
+            <!--            <div class="oneSpace"></div>-->
             <label class="m-t-15">{{Label['EXECUTABLE_DSC']}}</label>
-            <textarea disabled [(ngModel)]="executableDesc"></textarea>
+            <textarea class="exe_disable" disabled [(ngModel)]="executableDesc"></textarea>
 
           </mat-tab>
 
@@ -361,12 +361,14 @@
             <div *ngIf="isServiceActive">
               <mat-form-field class="form_input m-t-15">
                 <label class="m-b-10">{{Label['START_DATE']}}</label>
-                <input matInput class="bg-white" [(ngModel)]="currentDate" [owlDateTimeTrigger]="startDate" [owlDateTime]="startDate">
+                <input matInput class="bg-white" [(ngModel)]="currentDate" [owlDateTimeTrigger]="startDate"
+                  [owlDateTime]="startDate">
                 <owl-date-time #startDate></owl-date-time>
               </mat-form-field>
               <mat-form-field class="form_input">
                 <label class="m-b-10">{{Label['END_DATE']}}</label>
-                <input matInput class="bg-white" [(ngModel)]="afterFiveDays" [owlDateTimeTrigger]="endDate" [owlDateTime]="endDate">
+                <input matInput class="bg-white" [(ngModel)]="afterFiveDays" [owlDateTimeTrigger]="endDate"
+                  [owlDateTime]="endDate">
                 <owl-date-time #endDate></owl-date-time>
               </mat-form-field>
             </div>
@@ -429,7 +431,8 @@
               <mat-radio-button value="single">{{Label['SINGLE']}}</mat-radio-button>
               <mat-radio-button value="unlimited">{{Label['UNLIMITED']}}</mat-radio-button>
               <div class="row row1">
-                <mat-radio-button class="w-100-p" (change)="onSelectLimtedPriority()" value="limited">{{Label['LIMITED']}}</mat-radio-button>
+                <mat-radio-button class="w-100-p" (change)="onSelectLimtedPriority()" value="limited">
+                  {{Label['LIMITED']}}</mat-radio-button>
                 <div *ngIf="instances==='limited'">
                   <input id="priority" type="number" [(ngModel)]="instances_priority">
                 </div>

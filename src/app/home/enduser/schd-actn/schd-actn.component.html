@@ -244,14 +244,16 @@
     <!-- Checkbox Column -->
     <ng-container matColumnDef="#">
       <mat-header-cell *matHeaderCellDef>#
-        <!-- <mat-checkbox [class]="checkbox_color_value" (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
-                </mat-checkbox> -->
+        <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()">
+        </mat-checkbox>
       </mat-header-cell>
       <mat-cell *matCellDef="let dataSource">
-        <!--  <mat-checkbox (click)="$event.stopPropagation();Check_process_id(element.JOB_NAME)" (change)="$event ? selection.toggle(element.JOB_NAME) : null" [checked]="selection.isSelected(element.JOB_NAME)">
-                </mat-checkbox>  -->
-        <mat-checkbox [class]="checkbox_color_value"
-          (click)="$event.stopPropagation();Check_process_id(dataSource.job_name)"></mat-checkbox>
+        <mat-checkbox (click)="$event.stopPropagation();Check_process_id(dataSource.job_name)"
+          (change)="$event ? selection.toggle(dataSource) : null" [checked]="selection.isSelected(dataSource)">
+        </mat-checkbox>
+        <!-- <mat-checkbox [class]="checkbox_color_value"
+          (click)="$event.stopPropagation();Check_process_id(dataSource.job_name)"></mat-checkbox> -->
       </mat-cell>
     </ng-container>
 

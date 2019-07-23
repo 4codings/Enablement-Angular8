@@ -225,7 +225,6 @@ export class RepeatProcessComponent implements OnInit {
     var date22 = this.End_date.getFullYear() + '-' + endmonth + '-' + enddate;
     var time22 = endhrs + ":" + endmin + ":" + endsec;
     var dateTime22 = date22 + ' ' + time22;
-    (this.Exe_data['PRC_CD'].toString());
     let body = {
       
         "Schedule": "Y",

@@ -124,7 +124,33 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   isProcess = false;
   isService = false;
 
-  sequenceConditionType = ['None', 'Default', 'Simple Expression', 'Java Script', 'Java, Python', 'SQL Statement'];
+  taskList = ['bpmn:EndEvent',
+    'bpmn:Event',
+    'bpmn:StartEvent',
+    'bpmn:IntermediateThrowEvent',
+    'bpmn:MessageEndEvent',
+    'bpmn:EscalationEndEvent',
+    'bpmn:ErrorEndEvent',
+    'bpmn:CompensationEndEvent',
+    'bpmn:SignalEndEvent',
+    'bpmn:TerminateEndEvent',
+    'bpmn:Task',
+    'bpmn:SendTask',
+    'bpmn:ReceiveTask',
+    'bpmn:UserTask',
+    'bpmn:ManualTask',
+    'bpmn:BusinessRuleTask',
+    'bpmn:ServiceTask',
+    'bpmn:ScriptTask',
+    'bpmn:CallActivity',
+    'bpmn:SubProcess(collapsed)',
+    'bpmn:SubProcess(expanded)',
+    'bpmn:ExclusiveGateway',
+    'bpmn:ParallelGateway',
+    'bpmn:InclusiveGateway',
+    'bpmn:ComplexGateway',
+    'bpmn:EventbasedGateway'];
+  sequenceConditionType = ['Simple Expression', 'Java Script', 'Java, Python', 'SQL Statement'];
   sequenceCondition = '';
   selectedConditionType = '';
   //For property panel
@@ -279,19 +305,25 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         this.processName = '';
         this.documentation = '';
         this.iconType = '';
-        // console.log('element.click', $event)
+        console.log('element.click', $event)
+
         this.isApp = false;
         this.isProcess = false;
         this.isService = true;
         this.oldStateId = $event.element.id;
         this.generalId = $event.element.id;
         const businessObject = $event.element.businessObject;
+        // const source = $event.element.source;
+        // const sourceBusinessObject = source.businessObject;
+        // const isDefault = sourceBusinessObject.default &&
+        //   sourceBusinessObject.default === businessObject;
+
         this.iconType = $event.element.type;
         this.processName = businessObject.name ? businessObject.name : '';
         if (businessObject.documentation && businessObject.documentation.length) {
           this.documentation = businessObject.documentation[0].text ? businessObject.documentation[0].text : '';
         }
-        if ($event && $event.element && ['bpmn:Task', 'bpmn:StartEvent', 'bpmn:EndEvent', 'bpmn:Event'].indexOf($event.element.type) > -1) {
+        if ($event && $event.element && this.taskList.indexOf($event.element.type) > -1) {
           this.selectedService = this.generalId;
           this.showAllTabFlag = true;
           this.showCondtionType = false;
@@ -316,7 +348,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         }
       }),
         eventBus.on('element.changed', ($event) => {
-          // console.log('element.changed', $event)
+          console.log('element.changed', $event)
           const businessObject = $event.element.businessObject;
           this.processName = businessObject.name ? businessObject.name : '';
           if (businessObject.documentation && businessObject.documentation.length) {
@@ -338,6 +370,11 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             const sourceId = businessObject && businessObject.sourceRef ? businessObject.sourceRef.id : '';
             const targetId = businessObject && businessObject.targetRef ? businessObject.targetRef.id : '';
             const objectId = businessObject ? businessObject.id : '';
+            this.executableInput = '';
+            this.executableDesc = '';
+            this.executableOutput = '';
+            this.executablesData = [];
+            this.executableTypesData = [];
             // const vAppCd = 'V_APP_CD';
             // const vPrcsCd = 'V_PRCS_CD';
             const vAppCd = this.selectedApp;
@@ -405,6 +442,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
               this.upload(vAppCd, this.selectedProcess);
             }, this.ctrl_variables.delay_timeout);
           }
+        }),
+        eventBus.on("element.create", (event) => {
+          console.log('event', event);
         }),
         eventBus.on("shape.remove", (event) => {
           if (event && event.element && ['bpmn:Task', 'bpmn:StartEvent', 'bpmn:EndEvent', 'bpmn:Event'].indexOf(event.element.type) >= 0) {
@@ -597,7 +637,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         if (xml !== this.currentXml) {
           const formData: FormData = new FormData();
           formData.append('FileInfo', JSON.stringify({
-            File_Path: `/opt/tomcat/webapps/${this.useradminService.reduceFilePath(this.user.SRC_CD)}/${vAppCd}/`,
+            File_Path: `${this.ctrl_variables.bpmn_file_path}${this.useradminService.reduceFilePath(this.user.SRC_CD)}/${vAppCd}/`,
             File_Name: `${vPrcsCd}.bpmn`,
             V_SRC_CD: this.user.SRC_CD,
             USR_NM: this.user.USR_NM
@@ -769,12 +809,12 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
   getApplicationProcess() {
     this.endUserService.getApplicationAndProcess().subscribe(res => {
-        if (res) {
-          let data = res.json();
-          if (data.length) {
-            this.optionalService.getApplicationProcessOptionalValue(data);
-          }
+      if (res) {
+        let data = res.json();
+        if (data.length) {
+          this.optionalService.getApplicationProcessOptionalValue(data);
         }
+      }
     })
   }
   updateTabs() {
@@ -797,7 +837,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       this.selectedProcess = item.text;
       const formData: FormData = new FormData();
       formData.append('FileInfo', JSON.stringify({
-        File_Path: '/opt/tomcat/webapps/' + this.user.SRC_CD + '/' + item.value + '/',
+        File_Path: `${this.ctrl_variables.bpmn_file_path}` + this.user.SRC_CD + '/' + item.value + '/',
         File_Name: item.text.replace(new RegExp(' ', 'g'), '_') + '.bpmn'
       }));
       this.http.post(this.downloadUrl, formData)
