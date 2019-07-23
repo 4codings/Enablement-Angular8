@@ -20,6 +20,7 @@ export interface AuthorizationData {
     'APP_ID': number;
     'ROLE_ID': string;
     'V_AUTH_DSC': string;
+    'V_ARTFCT_TYP': string | null;
     'id': number;
     'V_AUTH_FLD': number;
     'is_selected': boolean;

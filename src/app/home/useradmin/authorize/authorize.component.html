@@ -21,7 +21,7 @@
             Executable Type
           </span>
           <span *ngIf="matRadioBtn.value === 'ARTIFACT' ">
-            Artifact Type
+            Artifact
           </span>
           <span *ngIf="matRadioBtn.value === 'SERVER'">
             Server
@@ -33,16 +33,17 @@
             SLA
           </span>
         </th>
-        <th *ngIf="matRadioBtn.value === 'PROCESS' ||matRadioBtn.value === 'SERVICE' || matRadioBtn.value === 'EXE' ">
+        <th *ngIf="matRadioBtn.value === 'PROCESS' ||matRadioBtn.value === 'SERVICE' || matRadioBtn.value === 'EXE' || matRadioBtn.value === 'ARTIFACT' ">
           <span *ngIf="matRadioBtn.value === 'EXE'">
             Executable Name
           </span>
           <span *ngIf="matRadioBtn.value === 'PROCESS' ||matRadioBtn.value === 'SERVICE'">
             Process
           </span>
-          <span *ngIf="matRadioBtn.value === 'ARTIFACT' ">
-            Artifact Name
+          <span *ngIf="matRadioBtn.value === 'ARTIFACT'">
+            Artifact Type
           </span>
+
         </th>
         <th *ngIf="matRadioBtn.value === 'SERVICE'">Service</th>
         <th>Create</th>
@@ -81,7 +82,7 @@
 
           </mat-form-field> -->
         </td>
-        <td *ngIf="matRadioBtn.value === 'PROCESS' ||matRadioBtn.value === 'SERVICE' || matRadioBtn.value === 'EXE' ">
+        <td *ngIf="matRadioBtn.value === 'PROCESS' ||matRadioBtn.value === 'SERVICE' || matRadioBtn.value === 'EXE' || matRadioBtn.value === 'ARTIFACT' ">
           <!-- {{selectedApplication[i].index}} we {{i}} -->
           <mat-form-field>
             <input matInput name="app" (change)="onProcessSelect($event.target.value)" [matAutocomplete]="auto">
@@ -170,7 +171,7 @@
             {{authorize.V_AUTH_CD}}
           </span>
         </td>
-        <td *ngIf="matRadioBtn.value === 'PROCESS' ||matRadioBtn.value === 'SERVICE' || matRadioBtn.value === 'EXE' ">
+        <td *ngIf="matRadioBtn.value === 'PROCESS' ||matRadioBtn.value === 'SERVICE' || matRadioBtn.value === 'EXE' || matRadioBtn.value === 'ARTIFACT' ">
           <!-- {{selectedApplication[i].index}} we {{i}} -->
           <span *ngIf="matRadioBtn.value === 'EXE' || matRadioBtn.value === 'PROCESS'">
             {{authorize.V_AUTH_CD}}
@@ -178,9 +179,9 @@
           <span *ngIf="matRadioBtn.value === 'SERVICE'">
             {{authorize.V_AUTH_DSC}}
           </span>
-          <!-- <span *ngIf="matRadioBtn.value === 'ARTIFACT' ">
-            {{authorize.V_AUTH_DSC}}
-          </span> -->
+          <span *ngIf="matRadioBtn.value === 'ARTIFACT' ">
+            {{authorize.V_ARTFCT_TYP}}
+          </span>
         </td>
         <td *ngIf="matRadioBtn.value === 'SERVICE'">
           {{authorize.V_AUTH_CD}}

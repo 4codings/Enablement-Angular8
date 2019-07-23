@@ -35,7 +35,7 @@
                   Executable Type
                 </span>
                 <span *ngIf="matRadioBtn.value === 'ARTIFACT' ">
-                  Artifact Type
+                  Artifact
                 </span>
                 <span *ngIf="matRadioBtn.value === 'SERVER'">
                   Server
@@ -70,19 +70,19 @@
             </div>
           </div>
           <div fxFlex="100"
-               *ngIf="matRadioBtn.value === 'PROCESS' ||matRadioBtn.value === 'SERVICE' || matRadioBtn.value === 'EXE' "
+               *ngIf="matRadioBtn.value === 'PROCESS' ||matRadioBtn.value === 'SERVICE' || matRadioBtn.value === 'EXE' || matRadioBtn.value === 'ARTIFACT'"
                fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="start stretch">
             <div>
               <strong>
-            <span *ngIf="matRadioBtn.value === 'EXE'">
-            Executable Name
-          </span>
+                <span *ngIf="matRadioBtn.value === 'EXE'">
+                  Executable Name
+                </span>
                 <span *ngIf="matRadioBtn.value === 'PROCESS' ||matRadioBtn.value === 'SERVICE'">
-            Process
-          </span>
+                  Process
+                </span>
                 <span *ngIf="matRadioBtn.value === 'ARTIFACT' ">
-            Artifact Name
-          </span>
+                  Artifact Type
+                </span>
               </strong>
             </div>
             <div>
