@@ -288,7 +288,7 @@
           <mat-tab label="General">
             <div class="generalTabV">
               <label class="m-t-15">{{Label['ID']}} </label>
-              <input id="processId" (change)="onInputChange()" [(ngModel)]="generalId">
+              <input id="processId" onfocus="this.select();" (change)="onInputChange()" [(ngModel)]="generalId">
             </div>
             <div class="oneSpace"></div>
             <div class="generalTabV">
