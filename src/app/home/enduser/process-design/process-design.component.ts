@@ -460,7 +460,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.applicationProcessObservable$.unsubscribe();
+    if (this.applicationProcessObservable$) {
+      this.applicationProcessObservable$.unsubscribe();
+    }
     this.roleObservable$.unsubscribe();
     if (this.modeler) {
       this.modeler.destroy();
@@ -898,7 +900,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.selectedApp = parentValue;
     switch (actionValue) {
       case 'Add': {
-        this.onTitleClickNoDelete=true;
+        this.onTitleClickNoDelete = true;
         this.newBpmn();
         this.isApp = false;
         this.isProcess = true;
