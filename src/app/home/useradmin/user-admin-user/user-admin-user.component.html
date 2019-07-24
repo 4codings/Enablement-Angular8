@@ -72,80 +72,97 @@
 
 
 
+<form #addUserForm="ngForm">
+  <div fxLayout="row" fxLayout.lt-sm="column">
+    <div fxFlex="30" style="text-align: center;">
 
-<div fxLayout="row" fxLayout.lt-sm="column">
-	<div fxFlex="30" style="text-align: center;">
-
-		<strong>{{Label['available_user']}}</strong>
-		<mat-list *ngIf="desktopView" class="scroll">
-			<mat-list-item class="list_item"  *ngFor="let user of users$ | async; let i = index;" [class.active]="i == selecteduser" (click)="onUserSelect(user, i)">
-        <div>{{user.V_USR_NM}}</div>
-      </mat-list-item>
-		</mat-list>
-		<mat-form-field *ngIf="mobileView" style="width:100%;text-align: center;" [floatLabel]="'never'">
-			<mat-select style="margin-top:10px;" placeholder="--Select--">
-        <mat-option style="text-align:center;"  *ngFor="let user of users$ | async; let i = index;" [class.active]="i == selecteduser" (click)="onUserSelect(user , i)">
-          {{user.V_USR_NM}}
-        </mat-option>
-			</mat-select>
-		</mat-form-field>
-	</div>
-	<div fxFlex="3"></div>
-	<div fxLayout="row" fxLayout.lt-sm="column" fxFlex="60" style="text-align: center;">
-		<div fxFlex="48">
-			<strong>{{Label['user_name']}}</strong>
-			<mat-form-field style="width:100%;margin-top:12px;">
-				<input matInput name="userName" [(ngModel)]="user.V_USR_NM" (ngModelChange)="nameModelChanged();" (keyup)="availableGroupValueChange(user.V_USR_NM)"/>
-			</mat-form-field>
-		</div>
-		<div fxFlex="4">
-		</div>
-		<div fxFlex="48">
-			<strong>{{Label['user_description']}}</strong>
-			<mat-form-field style="width:100%;">
-				<textarea  matInput [(ngModel)]="user.V_USR_DSC" (ngModelChange)="descModelChanged()"></textarea>
-			</mat-form-field>
-			<br />
-
-			<strong>{{Label['current_status']}}</strong>
-
-			<select class="glo_input" [(value)]="user.V_STS" [(ngModel)]="user.V_STS" (change)="statusChange()">
-				<option value="ACTIVE">Active</option>
-				<option value="TERMINATED">Terminated</option>
-				<option value="VACATION">Vacation</option>
-				<option value="LEAVE">Leave</option>
-				<option value="UNAVAILABLE">Unavailable</option>
-			</select>
-		</div>
-		<br />
-	</div>
-</div>
-<br><br>
-<div fxLayout="row">
-	<div fxFlex="38"></div>
-	<div fxFlex="60">
-		<div class="CustomeButtonFloat">
-			<button class="mr-2 mb-2" mat-raised-button color="primary" [disabled]="(duplicated && !selecteduser) || !statusChanged && !nameChanged && !descChanged || domainError || updateBtn"
-               (click)="addUser()">
-        <mat-icon style="vertical-align: middle;margin-right: 5px">add</mat-icon>{{Label['add_btn']}}</button>
-      <button class="mr-2 mb-2" mat-raised-button color="primary"
-              [disabled]="(totalDuplicated && !selecteduser) || !statusChanged && !descChanged && !nameChanged || !updateBtn"
-               (click)="updateUser()">
-        <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['UpdateBtn']}}</button>
-      
-      <button class="mr-2 mb-2" title="Upload file" mat-raised-button color="primary" (click)="uploadData()">
-        <i class="fas fa-upload"></i> Upload
-      </button>
-      <button mat-raised-button color="primary" (click)="downloadFile()">
-        <i class="fas fa-download"></i> Download
-      </button>
+      <strong>{{Label['available_user']}}</strong>
+      <mat-list *ngIf="desktopView" class="scroll">
+        <mat-list-item class="list_item" *ngFor="let user of users$ | async; let i = index;"
+          [class.active]="i == selecteduser" (click)="onUserSelect(user, i)">
+          <div>{{user.V_USR_NM}}</div>
+        </mat-list-item>
+      </mat-list>
+      <mat-form-field *ngIf="mobileView" style="width:100%;text-align: center;" [floatLabel]="'never'">
+        <mat-select style="margin-top:10px;" placeholder="--Select--">
+          <mat-option style="text-align:center;" *ngFor="let user of users$ | async; let i = index;"
+            [class.active]="i == selecteduser" (click)="onUserSelect(user , i)">
+            {{user.V_USR_NM}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
-    <br />
-    <div class="alertSuccess" *ngIf="emailMessage!=undefined && emailMessage!=''">
-      {{emailMessage}}
-    </div>
-	</div>
-	<div fxFlex="0"></div>
-</div>
+    <div fxFlex="3"></div>
+    <div fxLayout="row" fxLayout.lt-sm="column" fxFlex="60" style="text-align: center;">
 
-<input type="file" (change)="fileChangeEvent($event ,files)" #files name="Document_File" id="Document_File" style="display:none"/>
+      <div fxFlex="48">
+        <strong>{{Label['user_name']}}</strong>
+        <mat-form-field style="width:100%;margin-top:12px;">
+          <input matInput name="userName" [(ngModel)]="user.V_USR_NM" (ngModelChange)="nameModelChanged();"
+            (keyup)="availableGroupValueChange(user.V_USR_NM)"
+            pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" #name="ngModel" />
+        </mat-form-field>
+        <div *ngIf="name.invalid && (name.dirty || name.touched)" class="errors">
+          <div *ngIf="name.errors || domainError">
+            Valid Email is required.
+          </div>
+        </div>
+      </div>
+      <div fxFlex="4">
+      </div>
+      <div fxFlex="48">
+        <strong>{{Label['user_description']}}</strong>
+        <mat-form-field style="width:100%;">
+          <textarea matInput name="user_dsc" [(ngModel)]="user.V_USR_DSC"
+            (ngModelChange)="descModelChanged()"></textarea>
+        </mat-form-field>
+        <br />
+
+        <strong>{{Label['current_status']}}</strong>
+
+        <select class="glo_input" name="currentStatus" [(value)]="user.V_STS" [(ngModel)]="user.V_STS"
+          (change)="statusChange()">
+          <option value="ACTIVE">Active</option>
+          <option value="TERMINATED">Terminated</option>
+          <option value="VACATION">Vacation</option>
+          <option value="LEAVE">Leave</option>
+          <option value="UNAVAILABLE">Unavailable</option>
+        </select>
+      </div>
+      <br />
+    </div>
+  </div>
+  <br><br>
+  <div fxLayout="row">
+    <div fxFlex="38"></div>
+    <div fxFlex="60">
+      <div class="CustomeButtonFloat">
+        <button class="mr-2 mb-2" mat-raised-button color="primary"
+          [disabled]="addUserForm.invalid || (duplicated && !selecteduser) || !statusChanged && !nameChanged && !descChanged || domainError || updateBtn"
+          (click)="addUser()">
+          <mat-icon style="vertical-align: middle;margin-right: 5px">add</mat-icon>{{Label['add_btn']}}
+        </button>
+        <button class="mr-2 mb-2" mat-raised-button color="primary"
+          [disabled]="(totalDuplicated && !selecteduser) || !statusChanged && !descChanged && !nameChanged || !updateBtn"
+          (click)="updateUser()">
+          <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>{{Label['UpdateBtn']}}
+        </button>
+
+        <button class="mr-2 mb-2" title="Upload file" mat-raised-button color="primary" (click)="uploadData()">
+          <i class="fas fa-upload"></i> Upload
+        </button>
+        <button mat-raised-button color="primary" (click)="downloadFile()">
+          <i class="fas fa-download"></i> Download
+        </button>
+      </div>
+      <br />
+      <div class="alertSuccess" *ngIf="emailMessage!=undefined && emailMessage!=''">
+        {{emailMessage}}
+      </div>
+    </div>
+    <div fxFlex="0"></div>
+  </div>
+</form>
+
+<input type="file" (change)="fileChangeEvent($event ,files)" #files name="Document_File" id="Document_File"
+  style="display:none" />

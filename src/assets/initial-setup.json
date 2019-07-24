@@ -1,0 +1,5 @@
+{
+  "restricted_email_id": ["@gmail.", "@yahoo.", "@outlook.",
+    "@hotmail.", "@live.", "@aol.", "@aim.", "@yandex.", "@protonmail.", "@zoho.", "@gmx.", "@tutanota."
+  ]
+}

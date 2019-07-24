@@ -1,15 +1,16 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {UserAdminUserComponent} from '../user-admin-user.component';
-import {NoAuthDataService} from '../../../../services/no-auth-data.service';
-import {Store} from '@ngrx/store';
-import {AppState} from '../../../../app.state';
-import {UseradminService} from '../../../../services/useradmin.service2';
-import {Actions, ofType} from '@ngrx/effects';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {take, tap} from 'rxjs/operators';
+import { Component, Inject, OnInit } from '@angular/core';
+import { UserAdminUserComponent } from '../user-admin-user.component';
+import { NoAuthDataService } from '../../../../services/no-auth-data.service';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../../app.state';
+import { UseradminService } from '../../../../services/useradmin.service2';
+import { Actions, ofType } from '@ngrx/effects';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { take, tap } from 'rxjs/operators';
 import * as userActions from '../../../../store/user-admin/user/user.action';
 import * as userGroupActions from '../../../../store/user-admin/user-group/usergroup.action';
-import {User} from '../../../../store/user-admin/user/user.model';
+import { User } from '../../../../store/user-admin/user/user.model';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-add-edit-user',
@@ -22,12 +23,13 @@ export class AddEditUserComponent extends UserAdminUserComponent implements OnIn
   selectedView: 'selectUser' | 'addNewUser' = 'selectUser';
 
   constructor(public noAuthData: NoAuthDataService,
-              protected store: Store<AppState>,
-              protected userAdminService: UseradminService,
-              protected actions$: Actions,
-              private dialogRef: MatDialogRef<AddEditUserComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any) {
-    super(noAuthData, store, userAdminService);
+    protected store: Store<AppState>,
+    protected userAdminService: UseradminService,
+    protected httpClient: HttpClient,
+    protected actions$: Actions,
+    private dialogRef: MatDialogRef<AddEditUserComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any) {
+    super(noAuthData, store, userAdminService, httpClient);
   }
 
   ngOnInit() {

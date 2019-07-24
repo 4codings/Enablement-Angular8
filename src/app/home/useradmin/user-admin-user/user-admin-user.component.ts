@@ -1,19 +1,19 @@
-import {Component, OnInit, HostListener} from '@angular/core';
-import {NoAuthDataService} from 'src/app/services/no-auth-data.service';
+import { Component, OnInit, HostListener } from '@angular/core';
+import { NoAuthDataService } from 'src/app/services/no-auth-data.service';
 
 import * as usreActions from '../../../store/user-admin/user/user.action';
-import {Store, select} from '@ngrx/store';
-import {AppState} from 'src/app/app.state';
-import {User} from '../../../store/user-admin/user/user.model';
+import { Store, select } from '@ngrx/store';
+import { AppState } from 'src/app/app.state';
+import { User } from '../../../store/user-admin/user/user.model';
 import * as userSelectors from '../../../store/user-admin/user/user.selectors';
-import {Observable} from 'rxjs';
-import {FormGroup, FormControl, Validators} from '@angular/forms';
+import { Observable } from 'rxjs';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import {filter} from 'rxjs/operators';
-import {AddUser, UpdateUser} from '../../../store/user-admin/user/user.action';
-import {UserAdminService} from 'src/app/services/user-admin.service';
-import {UseradminService} from 'src/app/services/useradmin.service2';
-
+import { filter } from 'rxjs/operators';
+import { AddUser, UpdateUser } from '../../../store/user-admin/user/user.action';
+import { UserAdminService } from 'src/app/services/user-admin.service';
+import { UseradminService } from 'src/app/services/useradmin.service2';
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-user-admin-user',
   templateUrl: './user-admin-user.component.html',
@@ -55,14 +55,13 @@ export class UserAdminUserComponent implements OnInit {
 
   protected usersList = [];
 
-  protected emailIds: string[] = ['@gmail.', '@yahoo.', '@outlook.',
-    '@hotmail.', '@live.', '@aol.', '@aim.', '@yandex.', '@protonmail.', '@zoho.', '@gmx.', '@tutanota.'];
+  protected emailIds: string[] = [];
   public domainError = false;
   public screenHeight = 0;
   public screenWidth = 0;
   public mobileView = false;
   public desktopView = true;
-
+  initial_setup: any;
   @HostListener('window:resize', ['$event'])
   onResize(event?) {
     this.screenHeight = window.innerHeight;
@@ -79,12 +78,16 @@ export class UserAdminUserComponent implements OnInit {
   constructor(
     public noAuthData: NoAuthDataService,
     protected store: Store<AppState>,
-    protected userAdminService: UseradminService
+    protected userAdminService: UseradminService,
+    protected httpClient: HttpClient
   ) {
     // Label get service
     this.noAuthData.getJSON().subscribe(data => {
       //console.log(data);
       this.Label = data;
+    });
+    this.httpClient.get('../../../../assets/initial-setup.json').subscribe(res => {
+      this.initial_setup = res;
     });
   }
 
@@ -250,6 +253,7 @@ export class UserAdminUserComponent implements OnInit {
   }
 
   protected checkUserDomain() {
+    this.emailIds = this.initial_setup.restricted_email_id;
     for (let i = 0; i < this.emailIds.length; i++) {
       if (this.user.V_USR_NM.indexOf(this.emailIds[i]) > -1) {
         this.domainError = true;

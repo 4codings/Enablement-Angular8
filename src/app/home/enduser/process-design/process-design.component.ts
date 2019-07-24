@@ -348,6 +348,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         }
       }),
         eventBus.on('element.changed', ($event) => {
+          this.opened = true;
+          // this.showAllTabFlag = true;
+          this.showRightIcon = true;
           console.log('element.changed', $event)
           const businessObject = $event.element.businessObject;
           this.processName = businessObject.name ? businessObject.name : '';
@@ -447,8 +450,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           console.log('event', event);
         }),
         eventBus.on("shape.remove", (event) => {
-          if (event && event.element && ['bpmn:Task', 'bpmn:StartEvent', 'bpmn:EndEvent', 'bpmn:Event'].indexOf(event.element.type) >= 0) {
-            this.deleteService(event.element.id);
+          if (event && event.element && this.taskList.indexOf(event.element.type) >= 0) {
+            if (this.selectedProcess !== 'newProcess') {
+              this.deleteService(event.element.id);
+            }
           }
         });
     }
@@ -466,9 +471,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     if (this.documentation == '') {
       this.documentation = this.generalId.replace(new RegExp('_', 'g'), ' ');
     }
-    if (this.processName == '') {
-      this.processName = this.generalId.replace(new RegExp('_', 'g'), ' ');
-    }
+    // if (this.processName == '') {
+    //   this.processName = this.generalId.replace(new RegExp('_', 'g'), ' ');
+    // }
     const name = this.processName;
     if (!this.isApp && this.oldStateId) {
       let elementRegistry = this.modeler.get('elementRegistry');

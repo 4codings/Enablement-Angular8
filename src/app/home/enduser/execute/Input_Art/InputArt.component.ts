@@ -181,7 +181,7 @@ export class InputArtComponent {
   add_file() {
     let body: any = {
       "V_ARTFCT_NM": [this.fileName],
-      "V_ARTFCT_TYP": this.globals.Report.ARTFCT_TYP,
+      "V_ARTFCT_TYP": [this.globals.Report.ARTFCT_TYP],
       "V_ART_DSC": [this.form.value.description],
       "V_ART_SIZE_MB": [this.size],
       "V_SRC_CD": this.globals.Report.SRC_CD,
@@ -234,6 +234,7 @@ export class InputArtComponent {
         body = {
           ...body, ...res,
           ARTFCT_NM: this.fileName,
+          V_ARTFCT_TYP: this.globals.Report.ARTFCT_TYP,
           ART_DSC: this.form.value.description,
           ART_SIZE_MB: this.size,
           LST_UPDT_DT_TM: new Date().toISOString().slice(0, 10),
