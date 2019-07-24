@@ -287,3 +287,6 @@ input {
   text-align: left;
   width: 138px;
 }
+:host /deep/ .treeview-container .form-check .child-color {
+  margin-left: 1rem !important;
+}
