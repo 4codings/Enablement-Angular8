@@ -41,11 +41,11 @@
     <div fxFlex="32"></div>
   </div>
 </div> -->
-<mat-accordion *ngIf="selectedApp!=''">
+<mat-accordion *ngIf="APP_CD!=''">
   <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>
-        {{selectedApp}}<span class="selected-process-font" *ngIf="selectedProcess!=''"> : {{selectedProcess}}</span>
+        {{APP_CD}}<span class="selected-process-font" *ngIf="PRCS_CD!=''"> : {{PRCS_CD}}</span>
       </mat-panel-title>
     </mat-expansion-panel-header>
     <div fxFlex="100" id="canvas"></div>

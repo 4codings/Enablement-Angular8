@@ -36,7 +36,6 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
   totalRow = 1;
   edit_or_done: string[] = ["edit"];
   isDisabled: boolean[] = [true];
-  ctrl_variables: Object;
   phoneDash_arr: Array<any> = [];
   plainInput_arr: Array<any> = [];
   dateEntry_arr: Array<any> = [];

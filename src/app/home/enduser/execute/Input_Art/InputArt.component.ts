@@ -17,7 +17,6 @@ import { CommonUtils } from 'src/app/common/utils';
 import { Modeler, PropertiesPanelModule, OriginalPropertiesProvider, InjectionNames, Viewer } from '../../process-design/bpmn-js';
 import { CustomPropsProvider } from '../../process-design/props-provider/CustomPropsProvider';
 import { ToastrService } from 'ngx-toastr';
-
 @Component({
   selector: 'app-input-art',
   templateUrl: './Input_Art.component.html',
@@ -50,8 +49,8 @@ export class InputArtComponent implements OnInit, OnDestroy {
   CREATE: any;
   UPDATE: any;
   private dialogRef = null;
-  selectedApp = 'test app';
-  selectedProcess = 'test process';
+  APP_CD = '';
+  PRCS_CD = '';
   private viewer: any;
   ctrl_variables: any;
   private downloadUrl: string;
@@ -94,18 +93,20 @@ export class InputArtComponent implements OnInit, OnDestroy {
     this.CREATE = this.globals.Report.V_CREATE[0]
     this.READ = this.globals.Report.V_READ[0]
     this.DELETE = this.globals.Report.V_DELETE[0]
-    this.UPDATE = this.globals.Report.V_UPDATE[0]
+    this.UPDATE = this.globals.Report.V_UPDATE[0];
+    this.APP_CD = this.globals.Report.APP_CD[0];
+    this.PRCS_CD = this.globals.Report.PRCS_CD[0];
     this.oldfiles();
   }
 
   ngOnInit() {
     this.user = JSON.parse(sessionStorage.getItem('u'));
     this.downloadUrl = this.apiService.endPoints.downloadFile;
+  }
+  ngAfterViewInit() {
     this.http.get('../../../../assets/control-variable.json').subscribe(res => {
       this.ctrl_variables = res;
     });
-  }
-  ngAfterViewInit() {
     this.downloadBpmn();
     this.viewer = new Viewer({
       container: '#canvas',
@@ -128,10 +129,10 @@ export class InputArtComponent implements OnInit, OnDestroy {
   downloadBpmn() {
     const formData: FormData = new FormData();
     formData.append('FileInfo', JSON.stringify({
-      File_Path: `${this.ctrl_variables.bpmn_file_path}` + this.user.SRC_CD + '/' + this.selectedApp + '/',
-      File_Name: this.selectedProcess.replace(new RegExp(' ', 'g'), '_') + '.bpmn'
+      File_Path: '/opt/tomcat/webapps/src/bpmn/' + this.user.SRC_CD + '/' + this.APP_CD + '/',
+      File_Name: this.PRCS_CD.replace(new RegExp(' ', 'g'), '_') + '.bpmn'
     }));
-    this.http.post(this.downloadUrl, formData)
+    this.https.post(this.downloadUrl, formData)
       .subscribe(
         (res: any) => {
           if (res._body != "") {

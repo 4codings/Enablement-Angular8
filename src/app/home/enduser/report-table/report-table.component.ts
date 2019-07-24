@@ -127,8 +127,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   bararray: any = [];
   piearray: any = [];
   doughnutarray: any = [];
-  selectedApp = 'test app';
-  selectedProcess = 'test process';
+  APP_CD = '';
+  PRCS_CD = '';
   private modeler: any;
   private viewer: any;
   ctrl_variables: any;
@@ -166,42 +166,29 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     // `${this.ctrl_variables.bpmn_file_path}`
     const formData: FormData = new FormData();
     formData.append('FileInfo', JSON.stringify({
-      File_Path: '/opt/tomcat/webapps/src/bpmn/' + this.user.SRC_CD + '/' + this.selectedApp + '/',
-      File_Name: this.selectedProcess.replace(new RegExp(' ', 'g'), '_') + '.bpmn'
+      File_Path: '/opt/tomcat/webapps/src/bpmn/' + this.user.SRC_CD + '/' + this.APP_CD + '/',
+      File_Name: this.PRCS_CD.replace(new RegExp(' ', 'g'), '_') + '.bpmn'
     }));
-    this.httpClient.get('/assets/bpmn/newDiagram.bpmn', {
-      headers: { observe: 'response' }, responseType: 'text'
-    }).subscribe(
-      (x: any) => {
-        this.viewer.importXML(x, this.handleError.bind(this));
-        this.bpmnTemplate = x;
-      },
-      this.handleError.bind(this)
-    );
-    // this.httpClient.post(this.downloadUrl, formData)
-    //   .subscribe(
-    //     (res: any) => {
-    //       if (res._body != "") {
-    //         // this.modeler.importXML('');
-    //         // this.modeler.importXML(res._body, this.handleError.bind(this));
-    //         this.viewer.importXML(res._body, this.handleError.bind(this));
-    //         this.bpmnTemplate = res._body;
-    //       } else {
-    //         this.httpClient.get('/assets/bpmn/newDiagram.bpmn', {
-    //           headers: { observe: 'response' }, responseType: 'text'
-    //         }).subscribe(
-    //           (x: any) => {
-    //             // this.modeler.importXML('');
-    //             this.viewer.importXML(x, this.handleError.bind(this));
-    //             // this.modeler.importXML(x, this.handleError.bind(this));
-    //             this.bpmnTemplate = x;
-    //           },
-    //           this.handleError.bind(this)
-    //         );
-    //       }
-    //     },
-    //     this.handleError.bind(this)
-    //   );
+    this.https.post(this.downloadUrl, formData)
+      .subscribe(
+        (res: any) => {
+          if (res._body != "") {
+            this.viewer.importXML(res._body, this.handleError.bind(this));
+            this.bpmnTemplate = res._body;
+          } else {
+            this.httpClient.get('/assets/bpmn/newDiagram.bpmn', {
+              headers: { observe: 'response' }, responseType: 'text'
+            }).subscribe(
+              (x: any) => {
+                this.viewer.importXML(x, this.handleError.bind(this));
+                this.bpmnTemplate = x;
+              },
+              this.handleError.bind(this)
+            );
+          }
+        },
+        this.handleError.bind(this)
+      );
   }
   handleError(err: any) {
     if (err) {
@@ -314,7 +301,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     this.APP_ID = this.dataStored.getCookies('report_table')['APP_ID'][0];
     this.PRCS_ID = this.dataStored.getCookies('report_table')['PRCS_ID'][0];
     this.SRC_ID = this.dataStored.getCookies('report_table')['SRC_ID'][0];
-
+    this.APP_CD = this.dataStored.getCookies('report_table')['APP_CD'][0];
+    this.PRCS_CD = this.dataStored.getCookies('report_table')['PRCS_CD'][0];
     //(JSON.parse(this.Table_of_Data1[0]));
     this.columnsToDisplay = Object.keys(JSON.parse(this.Table_of_Data1[0]));
 

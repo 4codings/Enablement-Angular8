@@ -120,8 +120,8 @@ export class FormComponent implements OnInit {
   repeat = 0;
   Execute_res_data: any;
   public report: ReportData = new ReportData;
-  selectedApp = 'test app';
-  selectedProcess = 'test process';
+  APP_CD = '';
+  PRCS_CD = '';
   private modeler: any;
   private viewer: any;
   private downloadUrl: string;
@@ -130,6 +130,10 @@ export class FormComponent implements OnInit {
   ngOnInit() {
   }
   ngAfterViewInit() {
+    this.http.get('../../../../assets/control-variable.json').subscribe(res => {
+      this.ctrl_variables = res;
+      // console.log(res);
+    });
     this.downloadBpmn();
     this.viewer = new Viewer({
       container: '#canvas',
@@ -154,8 +158,8 @@ export class FormComponent implements OnInit {
     // `${this.ctrl_variables.bpmn_file_path}`
     const formData: FormData = new FormData();
     formData.append('FileInfo', JSON.stringify({
-      File_Path: this.ctrl_variables.bpmn_file_path + this.user.SRC_CD + '/' + this.selectedApp + '/',
-      File_Name: this.selectedProcess.replace(new RegExp(' ', 'g'), '_') + '.bpmn'
+      File_Path: '/opt/tomcat/webapps/src/bpmn/' + this.user.SRC_CD + '/' + this.APP_CD + '/',
+      File_Name: this.PRCS_CD.replace(new RegExp(' ', 'g'), '_') + '.bpmn'
     }));
     // this.http.get('/assets/bpmn/newDiagram.bpmn', {
     //   headers: { observe: 'response' }, responseType: 'text'
@@ -166,7 +170,7 @@ export class FormComponent implements OnInit {
     //   },
     //   this.handleError.bind(this)
     // );
-    this.http.post(this.downloadUrl, formData)
+    this.https.post(this.downloadUrl, formData)
       .subscribe(
         (res: any) => {
           if (res._body != "") {
@@ -198,10 +202,6 @@ export class FormComponent implements OnInit {
     }
   }
   getFormData(): any {
-    this.http.get('../../../../assets/control-variable.json').subscribe(res => {
-      this.ctrl_variables = res;
-      // console.log(res);
-    });
     this.Form_Data = [];
     this.Form_Data = this.StorageSessionService.getCookies('report_table');
     // console.log('this.Form_date', this.Form_Data);
@@ -341,7 +341,8 @@ export class FormComponent implements OnInit {
     this.V_PRCS_TXN_ID = this.PVP['V_PRCS_TXN_ID'][0];
 
     this.V_APP_ID = this.PVP['V_APP_ID'][0];
-
+    this.APP_CD = this.PVP['V_APP_CD'][0];
+    this.PRCS_CD = this.PVP['V_PRCS_CD'][0];
     this.V_SRC_ID = this.PVP['V_SRC_ID'][0];
 
     this.V_PRCS_ID = this.PVP['V_PRCS_ID'][0];

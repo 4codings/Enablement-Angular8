@@ -37,7 +37,6 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
   public param: any;
   mobileView = false;
   editing = true;
-  ctrl_variables: any;
   input: any[] = [];
   V_PVP: any;
   Field_Length: any;

@@ -277,10 +277,13 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.url = this.apiService.endPoints.securedJSON;
     this.user = JSON.parse(sessionStorage.getItem('u'));
     this.downloadUrl = this.apiService.endPoints.downloadFile;
-    this.userEmail = this.user.USR_NM;
+    if (this.user) {
+      this.userEmail = this.user.USR_NM;
+    }
   }
 
   ngAfterViewInit() {
+
     this.getApplicationProcess();
     this.modeler = new Modeler({
       container: '#canvas',
@@ -311,7 +314,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         this.isProcess = false;
         this.isService = true;
         this.oldStateId = $event.element.id;
-        this.generalId = $event.element.id;
+        this.generalId = $event.element.id.replace(new RegExp('_', 'g'), ' ');
         const businessObject = $event.element.businessObject;
         // const source = $event.element.source;
         // const sourceBusinessObject = source.businessObject;
@@ -324,7 +327,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.documentation = businessObject.documentation[0].text ? businessObject.documentation[0].text : '';
         }
         if ($event && $event.element && this.taskList.indexOf($event.element.type) > -1) {
-          this.selectedService = this.generalId;
+          this.selectedService = $event.element.id.replace(new RegExp('_', 'g'), ' ');
           this.showAllTabFlag = true;
           this.showCondtionType = false;
           this.getAllTabs(this.generalId);
@@ -339,8 +342,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         }
         if ($event && $event.element && ['bpmn:SequenceFlow'].indexOf($event.element.type) > -1) {
           const businessObject = $event.element.businessObject;
-          this.sequenceFlowsourceId = businessObject && businessObject.sourceRef ? businessObject.sourceRef.id : '';
-          this.sequenceFlowtargetId = businessObject && businessObject.targetRef ? businessObject.targetRef.id : '';
+          this.sequenceFlowsourceId = (businessObject && businessObject.sourceRef ? businessObject.sourceRef.id : '').replace(new RegExp('_', 'g'), ' ');
+          this.sequenceFlowtargetId = (businessObject && businessObject.targetRef ? businessObject.targetRef.id : '').replace(new RegExp('_', 'g'), ' ');
           this.showAllTabFlag = false;
           this.showCondtionType = true;
           this.getConditionType();
@@ -357,7 +360,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           if (businessObject.documentation && businessObject.documentation.length) {
             this.documentation = businessObject.documentation[0].text ? businessObject.documentation[0].text : '';
           }
-          this.generalId = $event.element.id;
+          this.generalId = $event.element.id.replace(new RegExp('_', 'g'), ' ')
           // console.log('this.this.bpmntemplate', this.bpmnTemplate);
           if ($event && $event.element && ['bpmn:Process'].indexOf($event.element.type) > -1) {
             this.isApp = false;
@@ -370,9 +373,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             this.isApp = false;
             this.isProcess = false;
             this.isService = true;
-            const sourceId = businessObject && businessObject.sourceRef ? businessObject.sourceRef.id : '';
-            const targetId = businessObject && businessObject.targetRef ? businessObject.targetRef.id : '';
-            const objectId = businessObject ? businessObject.id : '';
+            const sourceId = (businessObject && businessObject.sourceRef ? businessObject.sourceRef.id : '').replace(new RegExp('_', 'g'), ' ');
+            const targetId = (businessObject && businessObject.targetRef ? businessObject.targetRef.id : '').replace(new RegExp('_', 'g'), ' ');
+            const objectId = (businessObject ? businessObject.id : '').replace(new RegExp('_', 'g'), ' ');
             this.executableInput = '';
             this.executableDesc = '';
             this.executableOutput = '';
@@ -380,8 +383,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             this.executableTypesData = [];
             // const vAppCd = 'V_APP_CD';
             // const vPrcsCd = 'V_PRCS_CD';
-            const vAppCd = this.selectedApp;
-            const vPrcsCd = this.generalId;
+            const vAppCd = this.selectedApp.replace(new RegExp('_', 'g'), ' ');
+            const vPrcsCd = this.generalId.replace(new RegExp('_', 'g'), ' ');
             if ($event.element.type === 'bpmn:SequenceFlow') {
               // this.showAllTabFlag = false;
               const data: any = {
@@ -469,9 +472,11 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     }
   }
   onInputChange() {
-    this.generalId = this.generalId.replace(new RegExp(' ', 'g'), '_');
+    // replace(new RegExp(' ', 'g'), '_')
+    this.generalId = this.generalId;
     if (this.documentation == '') {
-      this.documentation = this.generalId.replace(new RegExp('_', 'g'), ' ');
+      // .replace(new RegExp('_', 'g'), ' ')
+      this.documentation = this.generalId;
     }
     // if (this.processName == '') {
     //   this.processName = this.generalId.replace(new RegExp('_', 'g'), ' ');
@@ -482,11 +487,12 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       let element = elementRegistry.get(this.oldStateId);
       let modeling = this.modeler.get('modeling');
       const doc = [{ 'text': this.documentation }];
+      let id = this.generalId;
       modeling.updateProperties(element, {
         name: name,
-        id: this.generalId,
+        id: id.replace(new RegExp(' ', 'g'), '_'),
       });
-      this.oldStateId = this.generalId;
+      this.oldStateId = id.replace(new RegExp(' ', 'g'), '_');
     }
     if (this.isApp) {
       this.addApplicationOnBE();
@@ -871,9 +877,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                     let element = elementRegistry.get('newProcess');
                     let modeling = this.modeler.get('modeling');
                     const doc = [{ 'text': this.documentation }];
+                    let id = this.selectedProcess;
                     modeling.updateProperties(element, {
-                      name: this.selectedProcess,
-                      id: this.selectedProcess.replace(new RegExp(' ', 'g'), '_'),
+                      name: id,
+                      id: id.replace(new RegExp(' ', 'g'), '_'),
                     })
                     document.getElementById("processId").focus();
                   })
