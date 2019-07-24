@@ -18,6 +18,7 @@ import { EndUserService } from 'src/app/services/EndUser-service';
 import { MatDialog } from '@angular/material';
 import { filter } from 'rxjs/operators';
 import { DeleteConfirmComponent } from '../delete-confirm/delete-confirm.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-repeatable-form',
@@ -56,10 +57,11 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     public cdr: ChangeDetectorRef,
     public apiService: ApiService,
     public configService: ConfigServiceService,
+    public toasterService: ToastrService,
     private endUserService: EndUserService,
     private dialog: MatDialog,
   ) {
-    super(StorageSessionService, http, https, router, globals, app, cdr, apiService, globalUser, configService);
+    super(StorageSessionService, http, https, router, globals, app, cdr, apiService, globalUser, configService, toasterService);
     this.navigationSubscription = router.events
       .pipe(filter(e => e instanceof NavigationEnd))
       .subscribe((e: NavigationEnd) => {
@@ -260,7 +262,7 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     console.log('RVP_labels', this.RVP_labels);
     n = n.split(" ").join("_")
     // var Field_Names_Ar = ('"`' + n + '`"');
-    var Field_Values_Ar = ( '"' + v + '"' );
+    var Field_Values_Ar = ('"' + v + '"');
 
     var Field_Names_Ar = n;
     // var Field_Values_Ar = v;

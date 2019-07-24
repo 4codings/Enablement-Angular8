@@ -18,6 +18,8 @@ import { ApiService } from 'src/app/service/api/api.service';
 import { HomeComponent } from 'src/app/home/home.component';
 import { StorageSessionService } from 'src/app/services/storage-session.service';
 import { Globals2 } from 'src/app/service/globals';
+import { ToastrService } from 'ngx-toastr';
+import { Viewer } from '../../process-design/bpmn-js';
 export class ReportData {
   public RESULT: string;
   public V_EXE_CD: string[];
@@ -67,7 +69,7 @@ export class FormComponent implements OnInit {
     public apiService: ApiService,
     public globarUser: Globals2,
     public configService: ConfigServiceService,
-
+    public toasterService: ToastrService
   ) { }
 
   domain_name = this.globals.domain_name;
@@ -118,8 +120,82 @@ export class FormComponent implements OnInit {
   repeat = 0;
   Execute_res_data: any;
   public report: ReportData = new ReportData;
-
+  selectedApp = 'test app';
+  selectedProcess = 'test process';
+  private modeler: any;
+  private viewer: any;
+  private downloadUrl: string;
+  private user: any;
+  private bpmnTemplate: any;
   ngOnInit() {
+  }
+  ngAfterViewInit() {
+    this.downloadBpmn();
+    this.viewer = new Viewer({
+      container: '#canvas',
+      width: '90%',
+      height: '400px'
+    });
+    const eventBus = this.viewer.get('eventBus');
+    if (eventBus) {
+      eventBus.on('element.click', ($event) => {
+        console.log('element.click', $event)
+      });
+    }
+
+  }
+  ngOnDestroy() {
+    if (this.viewer) {
+      this.viewer.destroy();
+    }
+  }
+
+  downloadBpmn() {
+    // `${this.ctrl_variables.bpmn_file_path}`
+    const formData: FormData = new FormData();
+    formData.append('FileInfo', JSON.stringify({
+      File_Path: this.ctrl_variables.bpmn_file_path + this.user.SRC_CD + '/' + this.selectedApp + '/',
+      File_Name: this.selectedProcess.replace(new RegExp(' ', 'g'), '_') + '.bpmn'
+    }));
+    // this.http.get('/assets/bpmn/newDiagram.bpmn', {
+    //   headers: { observe: 'response' }, responseType: 'text'
+    // }).subscribe(
+    //   (x: any) => {
+    //     this.viewer.importXML(x, this.handleError.bind(this));
+    //     this.bpmnTemplate = x;
+    //   },
+    //   this.handleError.bind(this)
+    // );
+    this.http.post(this.downloadUrl, formData)
+      .subscribe(
+        (res: any) => {
+          if (res._body != "") {
+            // this.modeler.importXML('');
+            // this.modeler.importXML(res._body, this.handleError.bind(this));
+            this.viewer.importXML(res._body, this.handleError.bind(this));
+            this.bpmnTemplate = res._body;
+          } else {
+            this.http.get('/assets/bpmn/newDiagram.bpmn', {
+              headers: { observe: 'response' }, responseType: 'text'
+            }).subscribe(
+              (x: any) => {
+                // this.modeler.importXML('');
+                this.viewer.importXML(x, this.handleError.bind(this));
+                // this.modeler.importXML(x, this.handleError.bind(this));
+                this.bpmnTemplate = x;
+              },
+              this.handleError.bind(this)
+            );
+          }
+        },
+        this.handleError.bind(this)
+      );
+  }
+  handleError(err: any) {
+    if (err) {
+      this.toasterService.error(err);
+      console.error(err);
+    }
   }
   getFormData(): any {
     this.http.get('../../../../assets/control-variable.json').subscribe(res => {

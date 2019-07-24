@@ -1,3 +1,13 @@
+<mat-accordion *ngIf="selectedApp!=''">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{selectedApp}}<span class="selected-process-font" *ngIf="selectedProcess!=''"> : {{selectedProcess}}</span>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div fxFlex="100" id="canvas"></div>
+  </mat-expansion-panel>
+</mat-accordion>
 <div fxLayout="row" fxLayout.lt-sm="column">
   <div fxFlex="9">
   </div>

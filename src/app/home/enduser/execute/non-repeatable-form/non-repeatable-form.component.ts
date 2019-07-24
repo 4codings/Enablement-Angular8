@@ -20,6 +20,7 @@ import { ApiService } from 'src/app/service/api/api.service';
 import { ConfigServiceService } from 'src/app/services/config-service.service';
 import { EndUserService } from 'src/app/services/EndUser-service';
 import { filter } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-non-repeatable-form',
@@ -62,10 +63,12 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     public cdr: ChangeDetectorRef,
     public apiService: ApiService,
     public configService: ConfigServiceService,
+    public toasterService: ToastrService,
     private endUserService: EndUserService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+
   ) {
-    super(StorageSessionService, http, https, router, globals, app, cdr, apiService, globalUser, configService);
+    super(StorageSessionService, http, https, router, globals, app, cdr, apiService, globalUser, configService, toasterService);
     // 10th April
     this.navigationSubscription = router.events
       .pipe(filter(e => e instanceof NavigationEnd))

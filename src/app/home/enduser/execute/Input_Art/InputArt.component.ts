@@ -1,5 +1,5 @@
 import { MatTableDataSource, MatDialog } from '@angular/material';
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit, TemplateRef, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
@@ -14,6 +14,9 @@ import { Globals } from 'src/app/services/globals';
 import { EndUserService } from 'src/app/services/EndUser-service';
 import { DeleteConfirmComponent } from '../delete-confirm/delete-confirm.component';
 import { CommonUtils } from 'src/app/common/utils';
+import { Modeler, PropertiesPanelModule, OriginalPropertiesProvider, InjectionNames, Viewer } from '../../process-design/bpmn-js';
+import { CustomPropsProvider } from '../../process-design/props-provider/CustomPropsProvider';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-input-art',
@@ -21,7 +24,7 @@ import { CommonUtils } from 'src/app/common/utils';
   styleUrls: ['./Input_Art.component.scss'],
 })
 
-export class InputArtComponent {
+export class InputArtComponent implements OnInit, OnDestroy {
   private dataSource1 = new MatTableDataSource();
   private reportData: ReportData;
   private scope: ScopeLimiting = new ScopeLimiting();
@@ -47,6 +50,13 @@ export class InputArtComponent {
   CREATE: any;
   UPDATE: any;
   private dialogRef = null;
+  selectedApp = 'test app';
+  selectedProcess = 'test process';
+  private viewer: any;
+  ctrl_variables: any;
+  private downloadUrl: string;
+  private user: any;
+  private bpmnTemplate: any;
 
   // accepType;
   // @ override
@@ -64,7 +74,8 @@ export class InputArtComponent {
     private _location: Location,
     private StorageSessionService: StorageSessionService,
     private endUserService: EndUserService,
-    private apiService: ApiService) {
+    private apiService: ApiService,
+    private toastrService: ToastrService) {
     //this.filesUrl = new FileUrls(this.storage);
     this.reportData = new ReportData(this.storage);
     // console.log('---------------');
@@ -87,6 +98,68 @@ export class InputArtComponent {
     this.oldfiles();
   }
 
+  ngOnInit() {
+    this.user = JSON.parse(sessionStorage.getItem('u'));
+    this.downloadUrl = this.apiService.endPoints.downloadFile;
+    this.http.get('../../../../assets/control-variable.json').subscribe(res => {
+      this.ctrl_variables = res;
+    });
+  }
+  ngAfterViewInit() {
+    this.downloadBpmn();
+    this.viewer = new Viewer({
+      container: '#canvas',
+      width: '90%',
+      height: '400px'
+    });
+    const eventBus = this.viewer.get('eventBus');
+    if (eventBus) {
+      eventBus.on('element.click', ($event) => {
+        console.log('element.click', $event)
+      });
+    }
+  }
+  ngOnDestroy() {
+    if (this.viewer) {
+      this.viewer.destroy();
+    }
+  }
+
+  downloadBpmn() {
+    const formData: FormData = new FormData();
+    formData.append('FileInfo', JSON.stringify({
+      File_Path: `${this.ctrl_variables.bpmn_file_path}` + this.user.SRC_CD + '/' + this.selectedApp + '/',
+      File_Name: this.selectedProcess.replace(new RegExp(' ', 'g'), '_') + '.bpmn'
+    }));
+    this.http.post(this.downloadUrl, formData)
+      .subscribe(
+        (res: any) => {
+          if (res._body != "") {
+            this.viewer.importXML('');
+            this.viewer.importXML(res._body, this.handleError.bind(this));
+            this.bpmnTemplate = res._body;
+          } else {
+            this.http.get('/assets/bpmn/newDiagram.bpmn', {
+              headers: { observe: 'response' }, responseType: 'text'
+            }).subscribe(
+              (x: any) => {
+                this.viewer.importXML('');
+                this.viewer.importXML(x, this.handleError.bind(this));
+                this.bpmnTemplate = x;
+              },
+              this.handleError.bind(this)
+            );
+          }
+        },
+        this.handleError.bind(this)
+      );
+  }
+  handleError(err: any) {
+    if (err) {
+      this.toastrService.error(err);
+      console.error(err);
+    }
+  }
   /*
   Get all old files that are exist in system on server
   */
