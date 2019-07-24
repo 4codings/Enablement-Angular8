@@ -103,9 +103,12 @@
             pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" #name="ngModel" />
         </mat-form-field>
         <div *ngIf="name.invalid && (name.dirty || name.touched)" class="errors">
-          <div *ngIf="name.errors || domainError">
+          <div *ngIf="name.errors">
             Valid Email is required.
           </div>
+        </div>
+        <div *ngIf="!name.invalid && domainError && (name.dirty || name.touched)" class="errors">
+          Valid Email is required.
         </div>
       </div>
       <div fxFlex="4">

@@ -177,7 +177,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   restorability_seconds: any = 30;
   attemps: any = 3;
   instances_priority: any = 400;
-
+  onTitleClickNoDelete = true;
   //property panel general tab variables
   generalId: string;
   processName: string = '';
@@ -451,7 +451,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         }),
         eventBus.on("shape.remove", (event) => {
           if (event && event.element && this.taskList.indexOf(event.element.type) >= 0) {
-            if (this.selectedProcess !== 'newProcess') {
+            if (!this.onTitleClickNoDelete) {
               this.deleteService(event.element.id);
             }
           }
@@ -831,6 +831,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     }
   }
   onTitleClick(item) {
+    this.onTitleClickNoDelete = true;
     this.isApp = false;
     this.isProcess = true;
     this.isService = false;
@@ -849,6 +850,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         .subscribe(
           (res: any) => {
             if (res._body != "") {
+              this.modeler.importXML('');
               this.modeler.importXML(res._body, this.handleError.bind(this));
               this.bpmnTemplate = res._body;
             } else {
@@ -859,6 +861,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                 headers: { observe: 'response' }, responseType: 'text'
               }).subscribe(
                 (x: any) => {
+                  this.modeler.importXML('');
                   this.modeler.importXML(x, this.handleError.bind(this));
                   this.bpmnTemplate = x;
                   setTimeout(() => {
@@ -895,6 +898,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.selectedApp = parentValue;
     switch (actionValue) {
       case 'Add': {
+        this.onTitleClickNoDelete=true;
         this.newBpmn();
         this.isApp = false;
         this.isProcess = true;
@@ -938,6 +942,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         this.isProcess = true;
         this.isService = false;
         this.generalId = this.selectedProcess;
+        this.onTitleClickNoDelete = false;
         break;
       }
       case 'Delete': {
