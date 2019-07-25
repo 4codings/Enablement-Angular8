@@ -73,14 +73,16 @@
 }
 
 :host /deep/ .mat-tab-label {
-  padding: 0 15px;
+  padding: 0 10px;
   min-width: 60px;
 
   .mat-tab-label-content {
     margin-bottom: -15px;
   }
 }
-
+:host /deep/ .mat-radio-button {
+  padding-bottom: 2px !important;
+}
 :host /deep/ .bjs-container .djs-container .djs-palette .two-open {
   position: absolute;
   left: 20px;
@@ -287,6 +289,19 @@ input {
   text-align: left;
   width: 138px;
 }
-:host /deep/ .treeview-container .form-check .child-color {
+:host /deep/ .treeview-container .form-check .form-check-label.child-color {
   margin-left: 1rem !important;
+}
+:host /deep/ .treeview-container {
+  max-height: inherit !important;
+  overflow-y: inherit !important;
+}
+:host /deep/ .generalTabV label {
+  font-weight: 500;
+}
+.tabTitle {
+  font-weight: bold !important;
+}
+:host /deep/ .mat-form-field-appearance-legacy .mat-form-field-wrapper {
+  padding-bottom: 1.2em !important;
 }
