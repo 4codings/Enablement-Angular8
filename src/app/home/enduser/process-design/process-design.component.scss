@@ -183,11 +183,11 @@
 
 :host /deep/ #seconds {
   width: 50px;
+  margin-left: 3px;
 }
 
 :host /deep/ #seconds_label {
   width: 60px;
-  text-align: left
 }
 
 :host /deep/ #priority {
@@ -196,8 +196,8 @@
 }
 
 :host /deep/ #priority_label {
-  text-align: left;
-  width: 60px;
+  text-align: right;
+  width: 50px;
 }
 
 :host /deep/ .row1 {
@@ -249,7 +249,7 @@ input {
 
 .more-vert-font {
   font-size: 19px;
-  margin-left: -25px;
+  margin-left: -30px;
 }
 
 .add-font {
@@ -286,8 +286,10 @@ input {
 }
 
 #Timeout_seconds_label {
-  text-align: left;
-  width: 138px;
+  width: 100px;
+}
+#Timeout_seconds {
+  width: 50px;
 }
 :host /deep/ .treeview-container .form-check .form-check-label.child-color {
   margin-left: 1rem !important;
@@ -304,4 +306,20 @@ input {
 }
 :host /deep/ .mat-form-field-appearance-legacy .mat-form-field-wrapper {
   padding-bottom: 1.2em !important;
+}
+:host /deep/ .treeview-container .row-item {
+  margin-bottom: 0px !important;
+}
+
+:host /deep/ .form-check-label .mat-icon-button {
+  line-height: 35px !important;
+}
+:host /deep/ .form-check-label .mat-icon-button:focus {
+  outline: none !important;
+}
+:host /deep/ .mat-tab-labels {
+  justify-content: center;
+}
+:host /deep/ .mat-tab-body.mat-tab-body-active, :host /deep/ .mat-tab-body {
+  overflow: initial !important;
 }

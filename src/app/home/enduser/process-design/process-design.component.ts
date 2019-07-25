@@ -37,7 +37,7 @@ export class ReportData {
     {
       provide: TreeviewI18n, useValue: Object.assign(new TreeviewI18nDefault(), {
         getFilterPlaceholder(): string {
-          return 'Find Process';
+          return 'Find a Process';
         }
       })
     }

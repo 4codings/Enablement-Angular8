@@ -119,7 +119,7 @@
   "ASYNCHRONOUS": "Asynchronous",
   "SYNCHORONOUS": "Synchronous",
   "SECONDS": "Seconds",
-  "TIMEOUT_SECONDS": "Timeout In Seconds",
+  "TIMEOUT_SECONDS": "Timeout In Sec",
   "PRIORITY": "Priority",
   "RESTORABILITY": "Restorability",
   "NONE": "None",

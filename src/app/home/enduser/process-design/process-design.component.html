@@ -391,15 +391,15 @@
               </mat-radio-group>
               <div *ngIf="async_sync==='sync'">
                 <div class="row row1">
+                  <input id="Timeout_seconds" type="number" [(ngModel)]="async_sync_seconds">
                   <label id="Timeout_seconds_label">{{Label['TIMEOUT_SECONDS']}}</label>
-                  <input disabled id="seconds" type="number" [(ngModel)]="async_sync_seconds">
                 </div>
               </div>
 
               <div class="oneSpace"></div>
               <div class="row row1">
-                <label id="priority_label">{{Label['PRIORITY']}}</label>
                 <input id="priority" type="number" [(ngModel)]="priority">
+                <label id="priority_label">{{Label['PRIORITY']}}</label>
               </div>
 
               <div class="spaceDiv">
@@ -414,13 +414,13 @@
               </mat-radio-group>
               <div *ngIf="restorability==='AUTO'">
                 <div class="row row1">
-                  <label id="seconds_label">{{Label['ATTEMPS']}}</label>
                   <input id="seconds" type="number" [(ngModel)]="attemps">
+                  <label id="seconds_label">{{Label['ATTEMPS']}}</label>
                 </div>
                 <div class="oneSpace"></div>
                 <div class="row row1">
-                  <label id="seconds_label">{{Label['SECONDS']}}</label>
                   <input id="seconds" type="number" [(ngModel)]="restorability_seconds">
+                  <label id="seconds_label">{{Label['SECONDS']}}</label>
                 </div>
               </div>
 
