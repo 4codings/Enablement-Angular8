@@ -324,8 +324,8 @@
           <mat-tab *ngIf="showAllTabFlag" label="Enable">
             <div class="generalTabV">
               <label class="m-t-10">{{Label['EXECUTABLE_TYPES']}}</label>
-              <select (change)="updateselectedExecutableType($event.target.value)">
-                <option>{{Label['PLEASE_SELECT']}}</option>
+              <select [(ngModel)]="selectedExecutableType" (change)="updateselectedExecutableType($event.target.value)">
+                <option value="">{{Label['PLEASE_SELECT']}}</option>
                 <option *ngFor="let exeType of executableTypesData " [value]="exeType">
                   {{ exeType}}
                 </option>
@@ -334,8 +334,8 @@
                 <mat-divider></mat-divider>
               </div>
               <label>{{Label['EXECUTABLES']}}</label>
-              <select (change)="updateselectedExecutable($event.target.value)">
-                <option>{{Label['PLEASE_SELECT']}}</option>
+              <select [(ngModel)]="selectedExecutable" (change)="updateselectedExecutable($event.target.value)">
+                <option value="">{{Label['PLEASE_SELECT']}}</option>
                 <option *ngFor="let executable of executablesData " [value]="executable">
                   {{ executable}}
                 </option>
@@ -436,7 +436,7 @@
                   <mat-radio-button class="w-100-p" (change)="onSelectLimtedPriority()" value="limited">
                     {{Label['LIMITED']}}</mat-radio-button>
                   <div *ngIf="instances==='limited'">
-                    <input id="priority" type="number" [(ngModel)]="instances_priority">
+                    <input id="priority" type="number" [(ngModel)]="job_instance">
                   </div>
                 </div>
               </mat-radio-group>

@@ -157,8 +157,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
 
   propertyPanelAllTabsData: any;
   executableTypesData = [];
-  selectedExecutableType: string;
-  selectedExecutable: string;
+  selectedExecutableType: string = '';
+  selectedExecutable: string = '';
   executableInput: any;
   executableOutput: string;
   executableDesc: string;
@@ -176,7 +176,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   async_sync_seconds: any = 300;
   restorability_seconds: any = 30;
   attemps: any = 3;
-  instances_priority: any = 400;
+  job_instance: any = 400;
   onTitleClickNoDelete = true;
   //property panel general tab variables
   generalId: string;
@@ -186,7 +186,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
 
   currentDate: any = new Date();
   todaysDate: any = new Date();
-  afterFiveDays: any = new Date(this.todaysDate.setDate(this.currentDate.getDate() + 5));
+  afterFiveDays: any = new Date(this.todaysDate.setYear(this.currentDate.getYear() + 5));
 
   userEmail: string;
   sequenceFlowsourceId: any;
@@ -534,11 +534,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   updateService() {
     this.selectedService = this.generalId;
     if (this.instances === 'single') {
-      this.instances_priority = 1;
+      this.job_instance = 1;
     } else if (this.instances === 'unlimited') {
-      this.instances_priority = -1;
-    } else if (this.instances === 'limited') {
-      this.instances_priority = 100;
+      this.job_instance = -1;
     }
     const body = {
       'V_APP_CD': this.selectedApp,
@@ -555,13 +553,15 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       'V_ATTMPT_DRTN_SEC': this.restorability_seconds,
       'V_SLA_MTS': 60.00,
       'V_PRIORITY': this.priority,
-      'V_SRVC_JOB_LMT': this.instances_priority,
+      "V_SYNC_FLG": this.async_sync === 'sync' ? 'Y' : 'N',
+      'V_SRVC_JOB_LMT': this.job_instance,
       'V_EFF_STRT_DT_TM': this.currentDate,
       'V_EFF_END_DT_TM': this.afterFiveDays,
       'V_DSPLY_OUTPUT': this.display_output ? 'Y' : 'N',
       'V_SRVC_ACTIVE_FLG': this.isServiceActive ? 'Y' : 'N',
       'V_ADD_TO_SMMRY_RESULT': this.summary_output ? 'Y' : 'N',
       'V_ICN_TYP': this.iconType,
+      'V_TIME_OUT_SEC': this.async_sync_seconds,
       'REST_Service': 'DefinedService',
       'V_SRC_CD': this.user.SRC_CD,
       'V_USR_NM': this.user.USR_NM,
@@ -1041,6 +1041,32 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         if (res) {
           this.propertyPanelAllTabsData = res.json();
+          this.executableDesc = this.propertyPanelAllTabsData[0]['V_EXE_DSC'];
+          this.executableInput = this.propertyPanelAllTabsData[0]['V_PARAM_NM_IN'];
+          this.executableOutput = this.propertyPanelAllTabsData[0]['V_PARAM_NM_OUT'];
+          this.selectedExecutable = this.propertyPanelAllTabsData[0]['V_EXE_CD'];
+          this.selectedExecutableType = this.propertyPanelAllTabsData[0]['V_EXE_TYP'];
+          this.async_sync = this.propertyPanelAllTabsData[0]['V_SYNC_FLG'] === 'Y' ? 'sync' : 'async';
+          this.attemps = this.propertyPanelAllTabsData[0]['V_MAX_ATTMPT'];
+          this.restorability = this.propertyPanelAllTabsData[0]['V_RSTN_TYP'];
+          this.userEmail = this.propertyPanelAllTabsData[0]["V_NOTIF_GRP"];
+          this.restorability_seconds = this.propertyPanelAllTabsData[0]["V_ATTMPT_DRTN_SEC"];
+          this.priority = this.propertyPanelAllTabsData[0]["V_PRIORITY"];
+          this.job_instance = this.propertyPanelAllTabsData[0]["V_SRVC_JOB_LMT"];
+          if (this.job_instance === '-1') {
+            this.instances = 'unlimited';
+          } else if (this.job_instance === '1') {
+            this.instances = 'single'
+          } else {
+            this.instances = 'limited';
+          }
+          this.async_sync_seconds = this.propertyPanelAllTabsData[0]["V_TIME_OUT_SEC"];
+          this.currentDate = this.propertyPanelAllTabsData[0]["V_EFF_STRT_DT_TM"];
+          this.afterFiveDays = this.propertyPanelAllTabsData[0]["V_EFF_END_DT_TM"];
+          this.display_output = this.propertyPanelAllTabsData[0]["V_DSPLY_OUTPUT"] === 'Y' ? true : false;
+          this.isServiceActive = this.propertyPanelAllTabsData[0]["V_SRVC_ACTIVE_FLG"] === 'Y' ? true : false;
+          this.summary_output = this.propertyPanelAllTabsData[0]["V_ADD_TO_SMMRY_RESULT"] === 'Y' ? true : false;
+          this.getExecutablesForSelctedExecutableType();
         }
       });
 
@@ -1587,6 +1613,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     return parseInt(time.substring(0, 2)) * 3600 + parseInt(time.substring(3, 5)) * 60 + (parseInt(time.substring(6)));
   }
   onSelectLimtedPriority() {
-    this.instances_priority = 100;
+    this.job_instance = 100;
   }
 }
