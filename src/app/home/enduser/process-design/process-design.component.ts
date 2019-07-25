@@ -351,6 +351,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         }
       }),
         eventBus.on('element.changed', ($event) => {
+          this.iconType = $event.element.type;
           this.opened = true;
           // this.showAllTabFlag = true;
           this.showRightIcon = true;
@@ -384,7 +385,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             // const vAppCd = 'V_APP_CD';
             // const vPrcsCd = 'V_PRCS_CD';
             const vAppCd = this.selectedApp.replace(new RegExp('_', 'g'), ' ');
-            const vPrcsCd = this.generalId.replace(new RegExp('_', 'g'), ' ');
+            const vPrcsCd = this.selectedProcess.replace(new RegExp('_', 'g'), ' ');
             if ($event.element.type === 'bpmn:SequenceFlow') {
               // this.showAllTabFlag = false;
               const data: any = {
@@ -412,20 +413,21 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
               }
               this.flows[targetId] = data;
             } else {
+              this.sequenceFlowtargetId = objectId;
               this.showAllTabFlag = true;
               const data: any = {
                 REST_Service: 'Service',
                 V_APP_CD: vAppCd,
-                V_CREATE: 'Y',
-                V_DELETE: 'Y',
-                V_EXECUTE: 'Y',
                 V_PRCS_CD: vPrcsCd,
-                V_READ: 'Y',
-                V_ROLE_CD: 'Program Assessment Role',
                 V_SRC_CD: this.user.SRC_CD,
                 V_SRVC_CD: objectId,
                 V_SRVC_DSC: '',
                 V_UPDATE: 'Y',
+                V_READ: 'Y',
+                V_CREATE: 'Y',
+                V_DELETE: 'Y',
+                V_EXECUTE: 'Y',
+                V_ROLE_CD: 'Program Assessment Role',
                 V_USR_NM: this.user.USR_NM,
                 Verb: 'PUT'
               };
@@ -449,13 +451,13 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             }, this.ctrl_variables.delay_timeout);
           }
         }),
-      eventBus.on("shape.remove", (event) => {
-        if (event && event.element && this.taskList.indexOf(event.element.type) >= 0) {
-          if (!this.onTitleClickNoDelete) {
-            this.deleteService(event.element.id);
+        eventBus.on("shape.remove", (event) => {
+          if (event && event.element && this.taskList.indexOf(event.element.type) >= 0) {
+            if (!this.onTitleClickNoDelete) {
+              this.deleteService(event.element.id);
+            }
           }
-        }
-      });
+        });
     }
   }
 
@@ -539,6 +541,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       'V_APP_CD': this.selectedApp,
       'V_PRCS_CD': this.selectedProcess,
       'V_SRVC_CD': this.selectedService,
+      'V_SRVC_DSC': this.documentation,
+      'V_OLD_SRVC_CD': this.oldStateId,
       'V_EXE_TYP': this.selectedExecutableType,
       'V_EXE_CD': this.selectedExecutable,
       'V_PARAM_NM_IN': this.executableInput,
@@ -1062,7 +1066,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.display_output = this.propertyPanelAllTabsData[0]["V_DSPLY_OUTPUT"] === 'Y' ? true : false;
           this.isServiceActive = this.propertyPanelAllTabsData[0]["V_SRVC_ACTIVE_FLG"] === 'Y' ? true : false;
           this.summary_output = this.propertyPanelAllTabsData[0]["V_ADD_TO_SMMRY_RESULT"] === 'Y' ? true : false;
-          this.getExecutablesForSelctedExecutableType();
+          if (this.selectedExecutableType != null || this.selectedExecutableType != '') {
+            this.getExecutablesForSelctedExecutableType();
+          }
         }
       });
 
