@@ -14,10 +14,11 @@ import { BaseChartDirective } from 'ng2-charts-x';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import 'chartjs-plugin-zoom';
-import { Modeler, PropertiesPanelModule, OriginalPropertiesProvider, InjectionNames, Viewer } from '../process-design/bpmn-js';
 import { ToastrService } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
 import { CustomPropsProvider } from '../process-design/props-provider/CustomPropsProvider';
+import { Modeler } from '../process-design/bpmn-js';
+// import { Modeler } from '../execute/bpmn-viewer-js';
 
 @Component({
   selector: 'app-report-table',
@@ -130,7 +131,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   APP_CD = '';
   PRCS_CD = '';
   private modeler: any;
-  private viewer: any;
   ctrl_variables: any;
   private downloadUrl: string;
   private user: any;
@@ -143,12 +143,12 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
     this.cd.detectChanges();
     this.downloadBpmn();
-    this.viewer = new Viewer({
+    this.modeler = new Modeler({
       container: '#canvas',
       width: '90%',
       height: '400px'
     });
-    const eventBus = this.viewer.get('eventBus');
+    const eventBus = this.modeler.get('eventBus');
     if (eventBus) {
       eventBus.on('element.click', ($event) => {
         console.log('element.click', $event)
@@ -157,8 +157,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
 
   }
   ngOnDestroy() {
-    if (this.viewer) {
-      this.viewer.destroy();
+    if (this.modeler) {
+      this.modeler.destroy();
     }
   }
 
@@ -173,14 +173,14 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
       .subscribe(
         (res: any) => {
           if (res._body != "") {
-            this.viewer.importXML(res._body, this.handleError.bind(this));
+            this.modeler.importXML(res._body, this.handleError.bind(this));
             this.bpmnTemplate = res._body;
           } else {
             this.httpClient.get('/assets/bpmn/newDiagram.bpmn', {
               headers: { observe: 'response' }, responseType: 'text'
             }).subscribe(
               (x: any) => {
-                this.viewer.importXML(x, this.handleError.bind(this));
+                this.modeler.importXML(x, this.handleError.bind(this));
                 this.bpmnTemplate = x;
               },
               this.handleError.bind(this)

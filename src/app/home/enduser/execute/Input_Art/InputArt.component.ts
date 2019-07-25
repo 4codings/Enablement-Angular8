@@ -14,9 +14,10 @@ import { Globals } from 'src/app/services/globals';
 import { EndUserService } from 'src/app/services/EndUser-service';
 import { DeleteConfirmComponent } from '../delete-confirm/delete-confirm.component';
 import { CommonUtils } from 'src/app/common/utils';
-import { Modeler, PropertiesPanelModule, OriginalPropertiesProvider, InjectionNames, Viewer } from '../../process-design/bpmn-js';
 import { CustomPropsProvider } from '../../process-design/props-provider/CustomPropsProvider';
 import { ToastrService } from 'ngx-toastr';
+import { Modeler } from '../../process-design/bpmn-js';
+// import { Modeler } from '../bpmn-viewer-js';
 @Component({
   selector: 'app-input-art',
   templateUrl: './Input_Art.component.html',
@@ -51,7 +52,7 @@ export class InputArtComponent implements OnInit, OnDestroy {
   private dialogRef = null;
   APP_CD = '';
   PRCS_CD = '';
-  private viewer: any;
+  private modeler: any;
   ctrl_variables: any;
   private downloadUrl: string;
   private user: any;
@@ -108,12 +109,12 @@ export class InputArtComponent implements OnInit, OnDestroy {
       this.ctrl_variables = res;
     });
     this.downloadBpmn();
-    this.viewer = new Viewer({
+    this.modeler = new Modeler({
       container: '#canvas',
       width: '90%',
       height: '400px'
     });
-    const eventBus = this.viewer.get('eventBus');
+    const eventBus = this.modeler.get('eventBus');
     if (eventBus) {
       eventBus.on('element.click', ($event) => {
         console.log('element.click', $event)
@@ -121,8 +122,8 @@ export class InputArtComponent implements OnInit, OnDestroy {
     }
   }
   ngOnDestroy() {
-    if (this.viewer) {
-      this.viewer.destroy();
+    if (this.modeler) {
+      this.modeler.destroy();
     }
   }
 
@@ -136,16 +137,16 @@ export class InputArtComponent implements OnInit, OnDestroy {
       .subscribe(
         (res: any) => {
           if (res._body != "") {
-            this.viewer.importXML('');
-            this.viewer.importXML(res._body, this.handleError.bind(this));
+            this.modeler.importXML('');
+            this.modeler.importXML(res._body, this.handleError.bind(this));
             this.bpmnTemplate = res._body;
           } else {
             this.http.get('/assets/bpmn/newDiagram.bpmn', {
               headers: { observe: 'response' }, responseType: 'text'
             }).subscribe(
               (x: any) => {
-                this.viewer.importXML('');
-                this.viewer.importXML(x, this.handleError.bind(this));
+                this.modeler.importXML('');
+                this.modeler.importXML(x, this.handleError.bind(this));
                 this.bpmnTemplate = x;
               },
               this.handleError.bind(this)

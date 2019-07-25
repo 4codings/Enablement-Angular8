@@ -449,16 +449,13 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             }, this.ctrl_variables.delay_timeout);
           }
         }),
-        eventBus.on("element.create", (event) => {
-          console.log('event', event);
-        }),
-        eventBus.on("shape.remove", (event) => {
-          if (event && event.element && this.taskList.indexOf(event.element.type) >= 0) {
-            if (!this.onTitleClickNoDelete) {
-              this.deleteService(event.element.id);
-            }
+      eventBus.on("shape.remove", (event) => {
+        if (event && event.element && this.taskList.indexOf(event.element.type) >= 0) {
+          if (!this.onTitleClickNoDelete) {
+            this.deleteService(event.element.id);
           }
-        });
+        }
+      });
     }
   }
 
@@ -561,7 +558,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       'V_SRVC_ACTIVE_FLG': this.isServiceActive ? 'Y' : 'N',
       'V_ADD_TO_SMMRY_RESULT': this.summary_output ? 'Y' : 'N',
       'V_ICN_TYP': this.iconType,
-      'V_TIME_OUT_SEC': this.async_sync_seconds,
       'REST_Service': 'DefinedService',
       'V_SRC_CD': this.user.SRC_CD,
       'V_USR_NM': this.user.USR_NM,
