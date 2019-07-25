@@ -153,6 +153,7 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
         }
       }
     } else if (this.radioSelected === 'ARTIFACT' || this.radioSelected === 'PLATFORM' || this.radioSelected === 'SERVER' || this.radioSelected === 'SLA') {
+      this.authValueObj.V_ARTFCT_TYP = event;
       this.authValueObj.V_AUTH_DSC = event;
       this.authValueObj.V_AUTH_CD = event;
     } else {
@@ -319,6 +320,7 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
       "V_APP_CD": data.V_APP_CD,
       "V_PRCS_CD": data.V_PRCS_CD,
       "V_EXE_TYP": data.V_EXE_TYP,
+      "V_ARTFCT_TYP": data.V_ARTFCT_TYP,
       "V_READ": data.V_READ,
       "V_UPDATE": data.V_UPDATE,
       "V_DELETE": data.V_DELETE,
@@ -410,6 +412,7 @@ export class data {
   APP_ID: number;
   ROLE_ID: string;
   V_AUTH_DSC: string;
+  V_ARTFCT_TYP: string;
   id: number;
   V_AUTH_FLD: number;
   is_selected: boolean;
