@@ -19,7 +19,7 @@ import { HomeComponent } from 'src/app/home/home.component';
 import { StorageSessionService } from 'src/app/services/storage-session.service';
 import { Globals2 } from 'src/app/service/globals';
 import { ToastrService } from 'ngx-toastr';
-import { Modeler } from '../../process-design/bpmn-js';
+import { Viewer } from '../bpmn-viewer';
 export class ReportData {
   public RESULT: string;
   public V_EXE_CD: string[];
@@ -122,7 +122,7 @@ export class FormComponent implements OnInit {
   public report: ReportData = new ReportData;
   APP_CD = '';
   PRCS_CD = '';
-  private modeler: any;
+  private viewer: any;
   private downloadUrl: string;
   private user: any;
   private bpmnTemplate: any;
@@ -134,12 +134,12 @@ export class FormComponent implements OnInit {
       // console.log(res);
     });
     this.downloadBpmn();
-    this.modeler = new Modeler({
+    this.viewer = new Viewer({
       container: '#canvas',
       width: '90%',
       height: '400px'
     });
-    const eventBus = this.modeler.get('eventBus');
+    const eventBus = this.viewer.get('eventBus');
     if (eventBus) {
       eventBus.on('element.click', ($event) => {
         console.log('element.click', $event)
@@ -148,8 +148,8 @@ export class FormComponent implements OnInit {
 
   }
   ngOnDestroy() {
-    if (this.modeler) {
-      this.modeler.destroy();
+    if (this.viewer) {
+      this.viewer.destroy();
     }
   }
 
@@ -164,7 +164,7 @@ export class FormComponent implements OnInit {
     //   headers: { observe: 'response' }, responseType: 'text'
     // }).subscribe(
     //   (x: any) => {
-    //     this.modeler.importXML(x, this.handleError.bind(this));
+    //     this.viewer.importXML(x, this.handleError.bind(this));
     //     this.bpmnTemplate = x;
     //   },
     //   this.handleError.bind(this)
@@ -173,18 +173,18 @@ export class FormComponent implements OnInit {
       .subscribe(
         (res: any) => {
           if (res._body != "") {
-            // this.modeler.importXML('');
-            // this.modeler.importXML(res._body, this.handleError.bind(this));
-            this.modeler.importXML(res._body, this.handleError.bind(this));
+            // this.viewer.importXML('');
+            // this.viewer.importXML(res._body, this.handleError.bind(this));
+            this.viewer.importXML(res._body, this.handleError.bind(this));
             this.bpmnTemplate = res._body;
           } else {
             this.http.get('/assets/bpmn/newDiagram.bpmn', {
               headers: { observe: 'response' }, responseType: 'text'
             }).subscribe(
               (x: any) => {
-                // this.modeler.importXML('');
-                this.modeler.importXML(x, this.handleError.bind(this));
-                // this.modeler.importXML(x, this.handleError.bind(this));
+                // this.viewer.importXML('');
+                this.viewer.importXML(x, this.handleError.bind(this));
+                // this.viewer.importXML(x, this.handleError.bind(this));
                 this.bpmnTemplate = x;
               },
               this.handleError.bind(this)
