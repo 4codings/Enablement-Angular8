@@ -70,14 +70,20 @@ export class ExeTileListComponent implements OnInit {
   }
 
   exeDropped(event: CdkDragDrop<any[]>) {
-    console.log(event.item.data);
+    console.log("event.previousContainer", event.previousContainer);
+    console.log("event.container", event.container);
     if (event.previousContainer === event.container) {
+      console.log("event",event);
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
       copyArrayItem(event.previousContainer.data,
         event.container.data,
         event.previousIndex,
         event.currentIndex);
+        console.log("event.previousContainer.data",event.previousContainer.data);
+        console.log("event.container.data", event.container.data);
+        console.log("event.previousIndex", event.previousIndex);
+        console.log("event.currentIndex", event.currentIndex);
       //this.addAuthEvent.emit(event.item.data);
     }
   }

@@ -25,6 +25,7 @@ export class AddExeDialogComponent implements OnInit {
   PLF_TYPE=[];
   PLF_CD:string = "Amazon";
   V_ICN_TYP;
+  ICN_TYP;
   PLF_DATA;
 
   constructor(public dialogRef: MatDialogRef<AddExeDialogComponent>,  @Inject(MAT_DIALOG_DATA) public data: any, private http:HttpClient, private config:ConfigServiceService) { }
@@ -37,7 +38,6 @@ export class AddExeDialogComponent implements OnInit {
 
     this.config.getICN().subscribe(res => {
       this.V_ICN_TYP=res;
-      console.log(this.V_ICN_TYP);
     });
   }
   
@@ -72,7 +72,7 @@ export class AddExeDialogComponent implements OnInit {
     "V_EXE_OUT_ARTFCTS":this.opart,
     "V_SERVER_CD":this.PLF_CD,
     "V_COMMNT": '',
-    "V_ICN_TYP":this.V_ICN_TYP,
+    "V_ICN_TYP":this.ICN_TYP,
     "REST_Service":["Exe"],
     "Verb":["PUT"]
   }

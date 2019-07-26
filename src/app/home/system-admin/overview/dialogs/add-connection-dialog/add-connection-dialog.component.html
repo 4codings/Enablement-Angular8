@@ -1,3 +1,56 @@
-<p>
-  add-connection-dialog works!
-</p>
+<div class="dialog-wrapper" fxLayoutGap="8px" fxLayout="column" fxLayoutAlign="start stretch">
+  <div class="dialog-header content-wrapper" fxLayoutAlign="space-between center">
+    <span>Add Connection</span>
+    <button mat-icon-button (click)="onBtnCancelClick()"><mat-icon>close</mat-icon></button>
+  </div>
+  <mat-divider></mat-divider>
+  <br/>
+  <form #addConnectionsForm="ngForm" (ngSubmit)="onBtnAddClick(addConnectionsForm.value)"> 
+    <div class="dialog-body content-wrapper">
+      <div fxLayout="row" fxLayout.lt-sm="column">
+        <div class="mr-2 pt-3" fxFlex="33">
+          <label item-width="100"><strong>Connecton Type</strong></label>
+          <mat-form-field class="form_in">
+            <mat-select [(ngModel)]="V_CXN_TYP" name="V_CXN_TYP" required>
+              <mat-option style="text-align:center;" [value]="item.EXE_TYP" (click)="getParams()" *ngFor="let item of connectionTypes">
+                {{item.EXE_TYP}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="mr-2 ml-2" fxFlex="34">
+          <label>Connection Code</label>
+          <mat-form-field class="incwid">
+            <textarea matInput [(ngModel)]="V_CXN_CD" name="V_CXN_CD" required></textarea>
+          </mat-form-field>
+        </div>
+        <div class="ml-2" fxFlex="33">
+          <label>Connection Description</label>
+          <mat-form-field class="incwid">
+            <textarea matInput [(ngModel)]="V_CXN_DSC" name="V_CXN_DSC" required></textarea>
+          </mat-form-field>
+        </div>
+
+      </div>  
+
+      <div *ngIf="tableshow" flex fxLayoutGap="50px" fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="row" fxLayout.gt-sm="row">
+        <div fxFlex="100">
+          <div class="tab">
+            <div *ngFor="let aa of DATA" style="padding-left: 20px;padding-right: 20px;text-align: center;float:left;" flex fxLayout="column"
+              class="myField">
+              <label>{{aa.PARAM_NM}}</label>
+              <mat-form-field>
+                <input matInput style="text-align: center" [(ngModel)]='aa.PARAM_VAL' name='{{aa.PARAM_NM}}'>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="dialog-footer content-wrapper" fxLayoutAlign="end center" fxLayoutGap="8px">
+      <button [disabled]="addConnectionsForm.invalid" mat-flat-button color="primary">Add</button>
+    </div>
+  </form>  
+</div>

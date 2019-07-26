@@ -8,10 +8,10 @@
        cdkDrag
        [cdkDragData]="currConn"
        [matTooltip]="currConn.V_CXN_CD"
-       *ngFor="let currConn of connectionList"
+       *ngFor="let currConn of connectionList.V_CXN; let i = index"
        [class.active]="currConn == selectedMachine"
        [class.highlight]="currConn.V_CXN_TYP == selectedExe"
-       (contextmenu)="openContextmenu($event, currConn)"
+       (contextmenu)="openContextmenu($event, currConn, connectionList.V_PLATFORM_CD, i)"
        (mousedown)="onTileMouseDownEventHandler($event)"
        (click)="onConnectionTileClick(currConn)">
     <!-- <mat-icon class="tile-icon">person</mat-icon> -->
