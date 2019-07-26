@@ -350,6 +350,26 @@
               <!--            <div class="oneSpace"></div>-->
               <label>{{Label['EXECUTABLE_DSC']}}</label>
               <textarea class="exe_disable" disabled [(ngModel)]="executableDesc"></textarea>
+              <div class="spaceDiv">
+                <mat-divider></mat-divider>
+              </div>
+
+              <mat-radio-group disabled [(ngModel)]="async_sync">
+                <mat-radio-button value="async">{{Label['ASYNCHRONOUS']}}</mat-radio-button>
+                <mat-radio-button value="sync">{{Label['SYNCHORONOUS']}}</mat-radio-button>
+              </mat-radio-group>
+              <div *ngIf="async_sync==='sync'">
+                <div class="row row1">
+                  <input id="Timeout_seconds" type="number" [(ngModel)]="async_sync_seconds">
+                  <label id="Timeout_seconds_label">{{Label['TIMEOUT_SECONDS']}}</label>
+                </div>
+              </div>
+
+              <div class="oneSpace"></div>
+              <div class="row row1">
+                <input id="priority" type="number" [(ngModel)]="priority">
+                <label id="priority_label">{{Label['PRIORITY']}}</label>
+              </div>
             </div>
           </mat-tab>
 
@@ -380,28 +400,7 @@
 
               <label>{{Label['NOTIFICATION_EMAIL']}} </label>
               <input type="email" [(ngModel)]="userEmail" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}">
-
-              <div class="spaceDiv">
-                <mat-divider></mat-divider>
-              </div>
-
-              <mat-radio-group disabled [(ngModel)]="async_sync">
-                <mat-radio-button value="async">{{Label['ASYNCHRONOUS']}}</mat-radio-button>
-                <mat-radio-button value="sync">{{Label['SYNCHORONOUS']}}</mat-radio-button>
-              </mat-radio-group>
-              <div *ngIf="async_sync==='sync'">
-                <div class="row row1">
-                  <input id="Timeout_seconds" type="number" [(ngModel)]="async_sync_seconds">
-                  <label id="Timeout_seconds_label">{{Label['TIMEOUT_SECONDS']}}</label>
-                </div>
-              </div>
-
-              <div class="oneSpace"></div>
-              <div class="row row1">
-                <input id="priority" type="number" [(ngModel)]="priority">
-                <label id="priority_label">{{Label['PRIORITY']}}</label>
-              </div>
-
+              
               <div class="spaceDiv">
                 <mat-divider></mat-divider>
               </div>
