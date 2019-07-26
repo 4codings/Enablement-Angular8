@@ -360,15 +360,9 @@
               </mat-radio-group>
               <div *ngIf="async_sync==='sync'">
                 <div class="row row1">
-                  <input id="Timeout_seconds" type="number" [(ngModel)]="async_sync_seconds">
+                  <input disabled id="Timeout_seconds" type="number" [(ngModel)]="async_sync_seconds">
                   <label id="Timeout_seconds_label">{{Label['TIMEOUT_SECONDS']}}</label>
                 </div>
-              </div>
-
-              <div class="oneSpace"></div>
-              <div class="row row1">
-                <input id="priority" type="number" [(ngModel)]="priority">
-                <label id="priority_label">{{Label['PRIORITY']}}</label>
               </div>
             </div>
           </mat-tab>
@@ -404,7 +398,14 @@
               <div class="spaceDiv">
                 <mat-divider></mat-divider>
               </div>
-
+              <div class="oneSpace"></div>
+              <div class="row row1">
+                <input id="priority" type="number" [(ngModel)]="priority">
+                <label id="priority_label">{{Label['PRIORITY']}}</label>
+              </div>
+              <div class="spaceDiv">
+                <mat-divider></mat-divider>
+              </div>
               <label class="tabTitle">{{Label['RESTORABILITY']}}</label>
               <mat-radio-group [(ngModel)]="restorability">
                 <mat-radio-button value="NONE">{{Label['NONE']}}</mat-radio-button>
