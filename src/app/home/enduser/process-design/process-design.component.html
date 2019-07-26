@@ -360,7 +360,8 @@
               </mat-radio-group>
               <div *ngIf="async_sync==='sync'">
                 <div class="row row1">
-                  <input disabled id="Timeout_seconds" type="number" [(ngModel)]="async_sync_seconds">
+                  <input class="exe_disable" disabled id="Timeout_seconds" type="number"
+                    [(ngModel)]="async_sync_seconds">
                   <label id="Timeout_seconds_label">{{Label['TIMEOUT_SECONDS']}}</label>
                 </div>
               </div>
@@ -394,7 +395,7 @@
 
               <label>{{Label['NOTIFICATION_EMAIL']}} </label>
               <input type="email" [(ngModel)]="userEmail" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}">
-              
+
               <div class="spaceDiv">
                 <mat-divider></mat-divider>
               </div>
