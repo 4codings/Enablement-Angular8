@@ -1046,7 +1046,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.executableOutput = this.propertyPanelAllTabsData[0]['V_PARAM_NM_OUT'];
           this.selectedExecutable = this.propertyPanelAllTabsData[0]['V_EXE_CD'];
           this.selectedExecutableType = this.propertyPanelAllTabsData[0]['V_EXE_TYP'];
-          this.async_sync = this.propertyPanelAllTabsData[0]['V_SYNC_FLG'] === 'Y' ? 'sync' : 'async';
           this.attemps = this.propertyPanelAllTabsData[0]['V_MAX_ATTMPT'];
           this.restorability = this.propertyPanelAllTabsData[0]['V_RSTN_TYP'];
           this.userEmail = this.propertyPanelAllTabsData[0]["V_NOTIF_GRP"];
@@ -1060,7 +1059,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           } else {
             this.instances = 'limited';
           }
-          this.async_sync_seconds = this.propertyPanelAllTabsData[0]["V_TIME_OUT_SEC"];
           this.currentDate = this.propertyPanelAllTabsData[0]["V_EFF_STRT_DT_TM"];
           this.afterFiveDays = this.propertyPanelAllTabsData[0]["V_EFF_END_DT_TM"];
           this.display_output = this.propertyPanelAllTabsData[0]["V_DSPLY_OUTPUT"] === 'Y' ? true : false;
@@ -1112,6 +1110,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.executableOutput = result["EXE_OUT_PARAMS"][0];
           this.executableDesc = result["EXE_DSC"][0];
           this.executableInput = result["EXE_SIGN"][0];
+          this.async_sync = result['SYNC_FLG'][0] === 'Y' ? 'sync' : 'async';
+          this.async_sync_seconds = result['TIME_OUT_SEC'][0];
         }
       });
   }
