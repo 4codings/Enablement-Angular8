@@ -153,7 +153,6 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
         }
       }
     } else if (this.radioSelected === 'ARTIFACT' || this.radioSelected === 'PLATFORM' || this.radioSelected === 'SERVER' || this.radioSelected === 'SLA') {
-      this.authValueObj.V_ARTFCT_TYP = event;
       this.authValueObj.V_AUTH_DSC = event;
       this.authValueObj.V_AUTH_CD = event;
     } else {
@@ -183,6 +182,7 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
         }
       }
     } else {
+      this.authValueObj.V_ARTFCT_TYP = event;
       this.authValueObj.V_AUTH_DSC = event;
       this.authValueObj.V_AUTH_CD = event;
     }

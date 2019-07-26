@@ -62,6 +62,17 @@
         <!-- <th (click)="uploadBtnClick(template)" *ngIf="CREATE!=='N'" class="addButton">+</th> -->
       </tr>
       <tr *ngIf="addFlag">
+        <td *ngIf="matRadioBtn.value === 'ARTIFACT'">
+          <mat-form-field>
+            <input matInput name="app" (change)="onProcessSelect($event.target.value)" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option style="text-align:center;" (click)="onProcessSelect(process)"
+                          *ngFor="let process of processValues" [value]="process">
+                {{process}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </td>
         <td>
           <mat-form-field>
             <input matInput name="app" (change)="onAppSelect($event.target.value)" [matAutocomplete]="auto">
@@ -82,7 +93,7 @@
 
           </mat-form-field> -->
         </td>
-        <td *ngIf="matRadioBtn.value === 'PROCESS' ||matRadioBtn.value === 'SERVICE' || matRadioBtn.value === 'EXE' || matRadioBtn.value === 'ARTIFACT' ">
+        <td *ngIf="matRadioBtn.value === 'PROCESS' ||matRadioBtn.value === 'SERVICE' || matRadioBtn.value === 'EXE'">
           <!-- {{selectedApplication[i].index}} we {{i}} -->
           <mat-form-field>
             <input matInput name="app" (change)="onProcessSelect($event.target.value)" [matAutocomplete]="auto">
@@ -150,7 +161,7 @@
           </button>
         </td>
       </tr>
-      <tr *ngFor="let authorize of filteredAuthValues;let i = index;">
+     <tr *ngFor="let authorize of filteredAuthValues;let i = index;">
         <td>
           <span *ngIf="matRadioBtn.value === 'PROCESS' ||matRadioBtn.value === 'SERVICE'">
             {{authorize.V_APP_CD}}

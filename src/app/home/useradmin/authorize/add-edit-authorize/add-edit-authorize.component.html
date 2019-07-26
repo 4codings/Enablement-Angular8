@@ -35,7 +35,7 @@
                   Executable Type
                 </span>
                 <span *ngIf="matRadioBtn.value === 'ARTIFACT' ">
-                  Artifact
+                  Artifact Type
                 </span>
                 <span *ngIf="matRadioBtn.value === 'SERVER'">
                   Server
@@ -49,12 +49,21 @@
               </strong>
             </div>
             <div>
-              <mat-form-field>
+              <mat-form-field *ngIf="matRadioBtn.value !== 'ARTIFACT'">
                 <input matInput name="app" [disabled]="isEditMode" [value]="authValueObj?.V_APP_CD ? authValueObj?.V_APP_CD : ''" (change)="onAppSelect($event.target.value)" [matAutocomplete]="auto" cdkFocusInitial>
                 <mat-autocomplete #auto="matAutocomplete">
                   <mat-option style="text-align:center;" (click)="onAppSelect(app)" *ngFor="let app of applicationValues"
                               [value]="app">
                     {{app}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+              <mat-form-field *ngIf="matRadioBtn.value === 'ARTIFACT'">
+                <input matInput name="app" [disabled]="isEditMode" [value]="authValueObj?.V_PRCS_CD ? authValueObj?.V_PRCS_CD : ''" (change)="onProcessSelect($event.target.value)" [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete">
+                  <mat-option style="text-align:center;" (click)="onProcessSelect(process)"
+                              *ngFor="let process of processValues" [value]="process">
+                    {{process}}
                   </mat-option>
                 </mat-autocomplete>
               </mat-form-field>
@@ -81,17 +90,26 @@
                   Process
                 </span>
                 <span *ngIf="matRadioBtn.value === 'ARTIFACT' ">
-                  Artifact Type
+                  Artifact
                 </span>
               </strong>
             </div>
             <div>
-              <mat-form-field>
+              <mat-form-field *ngIf="matRadioBtn.value !== 'ARTIFACT'">
                 <input matInput name="app" [disabled]="isEditMode" [value]="authValueObj?.V_PRCS_CD ? authValueObj?.V_PRCS_CD : ''" (change)="onProcessSelect($event.target.value)" [matAutocomplete]="auto">
                 <mat-autocomplete #auto="matAutocomplete">
                   <mat-option style="text-align:center;" (click)="onProcessSelect(process)"
                               *ngFor="let process of processValues" [value]="process">
                     {{process}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+              <mat-form-field *ngIf="matRadioBtn.value === 'ARTIFACT'">
+                <input matInput name="app" [disabled]="isEditMode" [value]="authValueObj?.V_APP_CD ? authValueObj?.V_APP_CD : ''" (change)="onAppSelect($event.target.value)" [matAutocomplete]="auto" cdkFocusInitial>
+                <mat-autocomplete #auto="matAutocomplete">
+                  <mat-option style="text-align:center;" (click)="onAppSelect(app)" *ngFor="let app of applicationValues"
+                              [value]="app">
+                    {{app}}
                   </mat-option>
                 </mat-autocomplete>
               </mat-form-field>
