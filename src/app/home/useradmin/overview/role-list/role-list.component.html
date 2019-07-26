@@ -12,6 +12,7 @@
     </div>
     <button mat-icon-button class="add-btn"
             matTooltip="Add Role"
+            *ngIf="rolePermission"
             (click)="onAddRoleBtnClick()">
       <mat-icon>add_circle</mat-icon>
     </button>
@@ -20,6 +21,7 @@
   <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="16px" cdkDropListGroup>
     <app-single-role *ngFor="let currRole of roles"
                       [role]="currRole"
+                      [rolePermission]="rolePermission"
                       [controlVariables]="controlVariables"></app-single-role>
   </div>
 </div>

@@ -2,10 +2,14 @@
   <div class="container-header" fxLayoutAlign="space-between center">
     <span class="container-title">{{role.V_ROLE_CD}}</span>
     <div class="container-actions">
-      <button mat-icon-button matTooltip="delete role" (click)="onBtnDeleteRoleClick(role)">
+      <button mat-icon-button matTooltip="delete role"
+              *ngIf="rolePermission"
+              (click)="onBtnDeleteRoleClick(role)">
         <mat-icon>delete</mat-icon>
       </button>
-      <button mat-icon-button matTooltip="edit role" (click)="onBtnEditRoleClick(role)">
+      <button mat-icon-button matTooltip="edit role"
+              *ngIf="rolePermission"
+              (click)="onBtnEditRoleClick(role)">
         <mat-icon>edit</mat-icon>
       </button>
       <button mat-icon-button matTooltip="assign role" (click)="onBtnAssignGroupClick(role)">

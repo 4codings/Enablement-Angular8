@@ -6,6 +6,7 @@ import {UseradminService} from '../../../../services/useradmin.service2';
 import {OverviewService} from '../overview.service';
 import {takeUntil} from 'rxjs/operators';
 import {userRole} from '../../../../store/user-admin/user-role/userrole.model';
+import { RollserviceService } from '../../../../services/rollservice.service';
 
 @Component({
   selector: 'app-role-list',
@@ -15,15 +16,19 @@ import {userRole} from '../../../../store/user-admin/user-role/userrole.model';
 export class RoleListComponent implements OnInit {
 
   roles: userRole[];
+  rolePermission = false;
   @Input() controlVariables: any;
   authorizationTypeOptions = authorizationTypeOptions;
   selectedAuthType = this.authorizationTypeOptions[0];
   V_SRC_CD_DATA: any;
   unsubscribeAll: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private dialog: MatDialog,
-              private userAdminService: UseradminService,
-              public overviewService: OverviewService) {
+  constructor(
+    private dialog: MatDialog,
+    private userAdminService: UseradminService,
+    public overviewService: OverviewService,
+    private rollserviceService: RollserviceService,
+  ) {
     this.overviewService.roles$.pipe(takeUntil(this.unsubscribeAll)).subscribe(roles => {
       this.roles = roles;
     });
@@ -35,6 +40,13 @@ export class RoleListComponent implements OnInit {
     this.V_SRC_CD_DATA = {
       V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
     };
+
+    this.rollserviceService.getRollCd().then((res) => {
+      const role = res.find(item => item === 'Enablement User Admin User Role');
+      if (role) {
+        this.rolePermission = true;
+      }
+    });
   }
 
   selectAuthType(authType): void {
