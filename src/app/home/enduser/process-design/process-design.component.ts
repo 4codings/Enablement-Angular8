@@ -172,11 +172,11 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   summary_output: any = false;
   isServiceActive: Boolean = true;
   isSynchronousActive: Boolean = true;
-  priority: any = 3;
-  async_sync_seconds: any = 300;
-  restorability_seconds: any = 30;
-  attemps: any = 3;
-  job_instance: any = 400;
+  priority: any; //3
+  async_sync_seconds: any; //300
+  restorability_seconds: any; //30
+  attemps: any; //3
+  job_instance: any; //400
   onTitleClickNoDelete = true;
   //property panel general tab variables
   generalId: string;
@@ -184,11 +184,12 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   documentation: string = '';
   oldStateId: any;
 
-  currentDate: any = new Date();
-  todaysDate: any = new Date();
-  afterFiveDays: any = new Date(this.todaysDate.setYear(this.currentDate.getYear() + 5));
 
-  userEmail: string;
+  todaysDate: any = new Date();
+  currentDate: any = new Date();
+  afterFiveDays: any = new Date(this.currentDate.setYear(this.currentDate.getYear() + 5));
+
+  userEmail: string = '';
   sequenceFlowsourceId: any;
   sequenceFlowtargetId: any;
   iconType = '';
@@ -268,6 +269,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+  }
+
+  ngAfterViewInit() {
     this.data.getJSON().subscribe(data => {
       this.Label = data.json();
     });
@@ -277,13 +281,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.url = this.apiService.endPoints.securedJSON;
     this.user = JSON.parse(sessionStorage.getItem('u'));
     this.downloadUrl = this.apiService.endPoints.downloadFile;
-    if (this.user) {
-      this.userEmail = this.user.USR_NM;
-    }
-  }
-
-  ngAfterViewInit() {
-
     this.getApplicationProcess();
     this.modeler = new Modeler({
       container: '#canvas',
@@ -537,12 +534,13 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     } else if (this.instances === 'unlimited') {
       this.job_instance = -1;
     }
+    let old_srvc_cd = this.oldStateId;
     const body = {
       'V_APP_CD': this.selectedApp,
       'V_PRCS_CD': this.selectedProcess,
       'V_SRVC_CD': this.selectedService,
       'V_SRVC_DSC': this.documentation,
-      'V_OLD_SRVC_CD': this.oldStateId,
+      'V_OLD_SRVC_CD': old_srvc_cd.replace(new RegExp('_', 'g'), ' '),
       'V_EXE_TYP': this.selectedExecutableType,
       'V_EXE_CD': this.selectedExecutable,
       'V_PARAM_NM_IN': this.executableInput,
@@ -1052,15 +1050,23 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.restorability_seconds = this.propertyPanelAllTabsData[0]["V_ATTMPT_DRTN_SEC"];
           this.priority = this.propertyPanelAllTabsData[0]["V_PRIORITY"];
           this.job_instance = this.propertyPanelAllTabsData[0]["V_SRVC_JOB_LMT"];
-          if (this.job_instance === '-1') {
+          if (this.job_instance == -1) {
             this.instances = 'unlimited';
-          } else if (this.job_instance === '1') {
+          } else if (this.job_instance == 1) {
             this.instances = 'single'
           } else {
             this.instances = 'limited';
           }
-          this.currentDate = this.propertyPanelAllTabsData[0]["V_EFF_STRT_DT_TM"];
-          this.afterFiveDays = this.propertyPanelAllTabsData[0]["V_EFF_END_DT_TM"];
+          if (this.propertyPanelAllTabsData[0]["V_EFF_STRT_DT_TM"] != null) {
+            this.currentDate = new Date(this.propertyPanelAllTabsData[0]["V_EFF_STRT_DT_TM"]);
+          } else {
+            this.currentDate = new Date();
+          }
+          if (this.propertyPanelAllTabsData[0]["V_EFF_END_DT_TM"] != null) {
+            this.afterFiveDays = new Date(this.propertyPanelAllTabsData[0]["V_EFF_END_DT_TM"]);
+          } else {
+            this.afterFiveDays = new Date();
+          }
           this.display_output = this.propertyPanelAllTabsData[0]["V_DSPLY_OUTPUT"] === 'Y' ? true : false;
           this.isServiceActive = this.propertyPanelAllTabsData[0]["V_SRVC_ACTIVE_FLG"] === 'Y' ? true : false;
           this.summary_output = this.propertyPanelAllTabsData[0]["V_ADD_TO_SMMRY_RESULT"] === 'Y' ? true : false;
