@@ -324,8 +324,8 @@ input {
   padding-bottom: 0px;
 }
 
-.m-t--16 {
-  margin-top: -16px !important;
+.m-t--10 {
+  margin-top: -10px !important;
 }
 
 :host /deep/.chosen-container.chosen-container-single {
@@ -411,6 +411,11 @@ input {
 :host /deep/ .mat-form-field-appearance-legacy .mat-form-field-wrapper {
   padding-bottom: 1.2em !important;
 }
+
+:host /deep/ .treeview-container .row-item.parent-menu {
+  margin-bottom: 7px !important;
+}
+
 :host /deep/ .treeview-container .row-item {
   margin-bottom: 0px !important;
 }
@@ -437,5 +442,9 @@ input {
 
 :host /deep/ #side-nav-menu .mat-button-wrapper {
   vertical-align: top;
-  margin-top: 4px;
+  margin-top: 3px;
+}
+
+:host /deep/ .mat-mini-fab .mat-button-wrapper {
+  padding: 0px !important;
 }

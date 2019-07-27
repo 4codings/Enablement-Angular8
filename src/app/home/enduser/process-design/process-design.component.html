@@ -1,13 +1,13 @@
-<ng-template #itemTemplate let-item="item" let-onCollapseExpand="onCollapseExpand"
+<ng-template #itemTemplate let-item="item" let-index let-onCollapseExpand="onCollapseExpand"
   let-onCheckedChange="onCheckedChange">
-  <div class="form-inline row-item">
+  <div class="form-inline row-item" [ngClass]="item.children?'parent-menu':'child-menu'" >
     <i *ngIf="item.children" (click)="onCollapseExpand()" aria-hidden="true" class="fa caret-font"
       [class.fa-caret-right]="item.collapsed" [class.fa-caret-down]="!item.collapsed"></i>
     <div class="form-check" *ngIf="item.text!=='NULL'">
       <label *ngIf="item.children" class="form-check-label parent-color" (click)="onTitleClick(item)">
         {{item.text}}
       </label>
-      <label *ngIf="!item.children" class="form-check-label child-color m-t--16" (click)="onTitleClick(item)">
+      <label *ngIf="!item.children" class="form-check-label child-color" (click)="onTitleClick(item)">
         {{item.text}}
       </label>
       <label *ngIf="item.children" class="form-check-label">
@@ -22,7 +22,7 @@
           </div>
         </mat-menu>
       </label>
-      <label *ngIf="!item.children" class="form-check-label m-t--16">
+      <label *ngIf="!item.children" class="form-check-label">
         <button id="side-nav-menu" mat-mini-fab [matMenuTriggerFor]="childMenu" aria-label="Example icon-button with a menu">
           <mat-icon class="child-color more-vert-font">more_vert</mat-icon>
         </button>
@@ -57,7 +57,11 @@
     <div fxFlex="100">
       <div class="parent">
         <h5 class="parent-font m-t-10" *ngIf="selectedApp!=''">
-          {{selectedApp}}<span class="selected-process-font" *ngIf="selectedProcess!=''"> : {{selectedProcess}}</span>
+          {{selectedApp}} 
+          <!-- <button id="side-nav-menu" mat-mini-fab [matMenuTriggerFor]="parentMenu" aria-label="Example icon-button with a menu">
+            <mat-icon class="parent-color more-vert-font">more_vert</mat-icon>
+          </button> -->
+          <span class="selected-process-font" *ngIf="selectedProcess!=''"> : {{selectedProcess}}</span>
         </h5>
       </div>
       <section>
