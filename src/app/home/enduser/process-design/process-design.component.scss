@@ -115,6 +115,10 @@
   color: yellow;
 }
 
+:host /deep/ .bpmn-icon-connection-multi:before {
+  color: rgb(255, 116, 0);
+}
+
 :host /deep/ .bpmn-icon-end-event-none:before {
   content: '\e838';
   color: red;
@@ -155,6 +159,105 @@
   color: rgb(146, 191, 250);
 }
 
+:host /deep/ .bpmn-icon-connection-multi:before {
+  color: rgb(255, 116, 0);
+}
+
+:host /deep/ .bpmn-icon-space-tool:before {
+  color: #a366ff;
+}
+
+:host /deep/ .bpmn-icon-lasso-tool:before {
+  color: #77ff33;
+}
+
+:host /deep/ .bpmn-icon-screw-wrench:before {
+  color: #802b00;
+}
+
+:host /deep/ .bpmn-icon-trash:before {
+  color: #ff3300;
+}
+
+:host /deep/ .bpmn-icon-text-annotation:before {
+  color: #99994d;
+}
+
+:host /deep/ .bpmn-icon-start-event-message:before {
+  color: #ff99ff;
+}
+
+:host /deep/ .bpmn-icon-start-event-timer:before {
+  color: #99bbff;
+}
+
+:host /deep/ .bpmn-icon-start-event-condition:before {
+  color: #ff5c33;
+}
+
+:host /deep/ .bpmn-icon-start-event-signal:before {
+  color: #ffbf00;
+}
+
+:host /deep/ .bpmn-icon-service:before {
+  color: #0066ff;
+}
+
+:host /deep/ .bpmn-icon-script:before {
+  color: #00ff00;
+}
+
+:host /deep/ .bpmn-icon-call-activity:before {
+  color: #4d0026;
+}
+
+:host /deep/ .bpmn-icon-subprocess-collapsed:before {
+  color: #884dff;
+}
+
+:host /deep/ .bpmn-icon-business-rule:before {
+  color: #66ccff;
+}
+
+:host /deep/ .bpmn-icon-manual:before {
+  color: #339933;
+}
+
+:host /deep/ .bpmn-icon-user:before {
+  color: #99cc00;
+}
+
+:host /deep/ .bpmn-icon-receive:before {
+  color: #b35900;
+}
+
+:host /deep/ .bpmn-icon-send:before {
+  color: #993300;
+}
+
+:host /deep/ .bpmn-icon-end-event-message:before {
+  color: #ff1a1a;
+}
+
+:host /deep/ .bpmn-icon-end-event-escalation:before {
+  color: #800000;
+}
+
+:host /deep/ .bpmn-icon-end-event-error:before {
+  color: #990099;
+}
+
+:host /deep/ .bpmn-icon-end-event-compensation:before {
+  color: #1af7ff;
+}
+
+:host /deep/ .bpmn-icon-end-event-signal:before {
+  color: #00ff00;
+}
+
+:host /deep/ .bpmn-icon-end-event-terminate:before {
+  color: #4d0026;
+}
 
 :host /deep/ label {
   text-align: center;
@@ -248,8 +351,8 @@ input {
 }
 
 .more-vert-font {
-  font-size: 19px;
-  margin-left: -30px;
+  font-size: 17px;
+  color: #fff;
 }
 
 .add-font {
@@ -323,4 +426,16 @@ input {
 }
 :host /deep/ .mat-tab-body.mat-tab-body-active, :host /deep/ .mat-tab-body {
   overflow: initial !important;
+}
+
+:host /deep/ #side-nav-menu
+{
+  width: 24px;
+  height: 24px;
+  outline: none;
+}
+
+:host /deep/ #side-nav-menu .mat-button-wrapper {
+  vertical-align: top;
+  margin-top: 4px;
 }
