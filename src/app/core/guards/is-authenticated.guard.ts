@@ -24,7 +24,7 @@ export class IsAuthenticatedGuard implements CanActivate {
         //console.log(this.user.isAnonymous)
         if (this.user.isAnonymous) {
             this.router.navigateByUrl(
-                '/',
+                '/login',
                 {queryParams: {next: state.url}, skipLocationChange: true}
             );
             return false;
