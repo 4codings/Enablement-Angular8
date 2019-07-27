@@ -132,6 +132,32 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   isProcess = false;
   isService = false;
 
+  taskList = ['bpmn:EndEvent',
+    'bpmn:Event',
+    'bpmn:StartEvent',
+    'bpmn:IntermediateThrowEvent',
+    'bpmn:MessageEndEvent',
+    'bpmn:EscalationEndEvent',
+    'bpmn:ErrorEndEvent',
+    'bpmn:CompensationEndEvent',
+    'bpmn:SignalEndEvent',
+    'bpmn:TerminateEndEvent',
+    'bpmn:Task',
+    'bpmn:SendTask',
+    'bpmn:ReceiveTask',
+    'bpmn:UserTask',
+    'bpmn:ManualTask',
+    'bpmn:BusinessRuleTask',
+    'bpmn:ServiceTask',
+    'bpmn:ScriptTask',
+    'bpmn:CallActivity',
+    'bpmn:SubProcess(collapsed)',
+    'bpmn:SubProcess(expanded)',
+    'bpmn:ExclusiveGateway',
+    'bpmn:ParallelGateway',
+    'bpmn:InclusiveGateway',
+    'bpmn:ComplexGateway',
+    'bpmn:EventbasedGateway'];
   sequenceConditionType = ['None', 'Default', 'Simple Expression', 'Java Script', 'Java, Python', 'SQL Statement'];
   sequenceCondition = '';
   selectedConditionType = '';
@@ -154,11 +180,12 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   summary_output: any = false;
   isServiceActive: Boolean = true;
   isSynchronousActive: Boolean = true;
-  priority: any = 3;
-  async_sync_seconds: any = 300;
-  restorability_seconds: any = 30;
-  attemps: any = 3;
-  instances_priority: any = 400;
+  priority: any; //3
+  async_sync_seconds: any; //300
+  restorability_seconds: any; //30
+  attemps: any; //3
+  job_instance: any; //400
+  onTitleClickNoDelete = true;
 
   //property panel general tab variables
   generalId: string;
@@ -166,11 +193,12 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   documentation: string = '';
   oldStateId: any;
 
-  currentDate: any = new Date();
   todaysDate: any = new Date();
-  afterFiveDays: any = new Date(this.todaysDate.setDate(this.currentDate.getDate() + 5));
+  currentDate: any = new Date();
+  afterFiveDays: any = new Date(this.currentDate.setYear(this.currentDate.getYear() + 5));
 
-  userEmail: string;
+  userEmail: string = '';
+
   sequenceFlowsourceId: any;
   sequenceFlowtargetId: any;
   iconType = '';
@@ -280,6 +308,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+  }
+
+  ngAfterViewInit() {
     this.data.getJSON().subscribe(data => {
       this.Label = data.json();
     });
@@ -290,10 +321,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.user = JSON.parse(sessionStorage.getItem('u'));
     this.downloadUrl = this.apiService.endPoints.downloadFile;
     this.getApplicationProcess();
-    this.userEmail = this.user.USR_NM;
-  }
-
-  ngAfterViewInit() {
     this.modeler = new Modeler({
       container: '#canvas',
       width: '90%',
@@ -322,15 +349,15 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         this.isProcess = false;
         this.isService = true;
         this.oldStateId = $event.element.id;
-        this.generalId = $event.element.id;
+        this.generalId = $event.element.id.replace(new RegExp('_', 'g'), ' ');
         const businessObject = $event.element.businessObject;
         this.iconType = $event.element.type;
         this.processName = businessObject.name ? businessObject.name : '';
         if (businessObject.documentation && businessObject.documentation.length) {
           this.documentation = businessObject.documentation[0].text ? businessObject.documentation[0].text : '';
         }
-        if ($event && $event.element && ['bpmn:Task', 'bpmn:StartEvent', 'bpmn:EndEvent', 'bpmn:Event'].indexOf($event.element.type) > -1) {
-          this.selectedService = this.generalId;
+        if ($event && $event.element && this.taskList.indexOf($event.element.type) > -1) {
+          this.selectedService = $event.element.id.replace(new RegExp('_', 'g'), ' ');
           this.showAllTabFlag = true;
           this.showCondtionType = false;
           this.getAllTabs(this.generalId);
@@ -345,8 +372,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         }
         if ($event && $event.element && ['bpmn:SequenceFlow'].indexOf($event.element.type) > -1) {
           const businessObject = $event.element.businessObject;
-          this.sequenceFlowsourceId = businessObject && businessObject.sourceRef ? businessObject.sourceRef.id : '';
-          this.sequenceFlowtargetId = businessObject && businessObject.targetRef ? businessObject.targetRef.id : '';
+          this.sequenceFlowsourceId = (businessObject && businessObject.sourceRef ? businessObject.sourceRef.id : '').replace(new RegExp('_', 'g'), ' ');
+          this.sequenceFlowtargetId = (businessObject && businessObject.targetRef ? businessObject.targetRef.id : '').replace(new RegExp('_', 'g'), ' ');
           this.showAllTabFlag = false;
           this.showCondtionType = true;
           this.getConditionType();
@@ -355,13 +382,16 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         this.closeSchedulePanel();
       }),
         eventBus.on('element.changed', ($event) => {
-          // console.log('element.changed', $event)
+          this.iconType = $event.element.type;
+          this.opened = true;
+          // this.showAllTabFlag = true;
+          this.showRightIcon = true;
           const businessObject = $event.element.businessObject;
           this.processName = businessObject.name ? businessObject.name : '';
           if (businessObject.documentation && businessObject.documentation.length) {
             this.documentation = businessObject.documentation[0].text ? businessObject.documentation[0].text : '';
           }
-          this.generalId = $event.element.id;
+          this.generalId = $event.element.id.replace(new RegExp('_', 'g'), ' ')
           // console.log('this.this.bpmntemplate', this.bpmnTemplate);
           if ($event && $event.element && ['bpmn:Process'].indexOf($event.element.type) > -1) {
             this.isApp = false;
@@ -374,13 +404,18 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             this.isApp = false;
             this.isProcess = false;
             this.isService = true;
-            const sourceId = businessObject && businessObject.sourceRef ? businessObject.sourceRef.id : '';
-            const targetId = businessObject && businessObject.targetRef ? businessObject.targetRef.id : '';
-            const objectId = businessObject ? businessObject.id : '';
+            const sourceId = (businessObject && businessObject.sourceRef ? businessObject.sourceRef.id : '').replace(new RegExp('_', 'g'), ' ');
+            const targetId = (businessObject && businessObject.targetRef ? businessObject.targetRef.id : '').replace(new RegExp('_', 'g'), ' ');
+            const objectId = (businessObject ? businessObject.id : '').replace(new RegExp('_', 'g'), ' ');
+            this.executableInput = '';
+            this.executableDesc = '';
+            this.executableOutput = '';
+            this.executablesData = [];
+            this.executableTypesData = [];
             // const vAppCd = 'V_APP_CD';
             // const vPrcsCd = 'V_PRCS_CD';
-            const vAppCd = this.selectedApp;
-            const vPrcsCd = this.generalId;
+            const vAppCd = this.selectedApp.replace(new RegExp('_', 'g'), ' ');
+            const vPrcsCd = this.selectedProcess.replace(new RegExp('_', 'g'), ' ');
             if ($event.element.type === 'bpmn:SequenceFlow') {
               // this.showAllTabFlag = false;
               const data: any = {
@@ -408,20 +443,21 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
               }
               this.flows[targetId] = data;
             } else {
+              this.sequenceFlowtargetId = objectId;
               this.showAllTabFlag = true;
               const data: any = {
                 REST_Service: 'Service',
                 V_APP_CD: vAppCd,
-                V_CREATE: 'Y',
-                V_DELETE: 'Y',
-                V_EXECUTE: 'Y',
                 V_PRCS_CD: vPrcsCd,
-                V_READ: 'Y',
-                V_ROLE_CD: 'Program Assessment Role',
                 V_SRC_CD: this.user.SRC_CD,
                 V_SRVC_CD: objectId,
                 V_SRVC_DSC: '',
                 V_UPDATE: 'Y',
+                V_READ: 'Y',
+                V_CREATE: 'Y',
+                V_DELETE: 'Y',
+                V_EXECUTE: 'Y',
+                V_ROLE_CD: 'Program Assessment Role',
                 V_USR_NM: this.user.USR_NM,
                 Verb: 'PUT'
               };
@@ -446,11 +482,11 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           }
           this.closeSchedulePanel();
         }),
-        eventBus.on('connection.remove', ($event) => {
-          // console.log('connection.remove', $event);
-          if ($event && $event.element && ['bpmn:SequenceFlow'].indexOf($event.element.type) > -1) {
-            let id = $event.element.id;
-            this.deleteService(id);
+        eventBus.on("shape.remove", (event) => {
+          if (event && event.element && this.taskList.indexOf(event.element.type) >= 0) {
+            if (!this.onTitleClickNoDelete) {
+              this.deleteService(event.element.id);
+            }
           }
           this.closeSchedulePanel();
         });
@@ -458,31 +494,36 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.applicationProcessObservable$.unsubscribe();
+    if (this.applicationProcessObservable$) {
+      this.applicationProcessObservable$.unsubscribe();
+    }
     this.roleObservable$.unsubscribe();
     if (this.modeler) {
       this.modeler.destroy();
     }
   }
   onInputChange() {
-    this.generalId = this.generalId.replace(new RegExp(' ', 'g'), '_');
+    // replace(new RegExp(' ', 'g'), '_')
+    this.generalId = this.generalId;
     if (this.documentation == '') {
-      this.documentation = this.generalId.replace(new RegExp('_', 'g'), ' ');
+      // .replace(new RegExp('_', 'g'), ' ')
+      this.documentation = this.generalId;
     }
-    if (this.processName == '') {
-      this.processName = this.generalId.replace(new RegExp('_', 'g'), ' ');
-    }
+    // if (this.processName == '') {
+    //   this.processName = this.generalId.replace(new RegExp('_', 'g'), ' ');
+    // }
     const name = this.processName;
     if (!this.isApp && this.oldStateId) {
       let elementRegistry = this.modeler.get('elementRegistry');
       let element = elementRegistry.get(this.oldStateId);
       let modeling = this.modeler.get('modeling');
       const doc = [{ 'text': this.documentation }];
+      let id = this.generalId;
       modeling.updateProperties(element, {
         name: name,
-        id: this.generalId,
+        id: id.replace(new RegExp(' ', 'g'), '_'),
       });
-      this.oldStateId = this.generalId;
+      this.oldStateId = id.replace(new RegExp(' ', 'g'), '_');
     }
     if (this.isApp) {
       this.addApplicationOnBE();
@@ -524,14 +565,17 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   updateService() {
     this.selectedService = this.generalId;
     if (this.instances === 'single') {
-      this.instances_priority = 1;
+      this.job_instance = 1;
     } else if (this.instances === 'unlimited') {
-      this.instances_priority = -1;
+      this.job_instance = -1;
     }
+    let old_srvc_cd = this.oldStateId;
     const body = {
       'V_APP_CD': this.selectedApp,
       'V_PRCS_CD': this.selectedProcess,
       'V_SRVC_CD': this.selectedService,
+      'V_SRVC_DSC': this.documentation,
+      'V_OLD_SRVC_CD': old_srvc_cd.replace(new RegExp('_', 'g'), ' '),
       'V_EXE_TYP': this.selectedExecutableType,
       'V_EXE_CD': this.selectedExecutable,
       'V_PARAM_NM_IN': this.executableInput,
@@ -543,7 +587,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       'V_ATTMPT_DRTN_SEC': this.restorability_seconds,
       'V_SLA_MTS': 60.00,
       'V_PRIORITY': this.priority,
-      'V_SRVC_JOB_LMT': this.instances_priority,
+      "V_SYNC_FLG": this.async_sync === 'sync' ? 'Y' : 'N',
+      'V_SRVC_JOB_LMT': this.job_instance,
       'V_EFF_STRT_DT_TM': this.currentDate,
       'V_EFF_END_DT_TM': this.afterFiveDays,
       'V_DSPLY_OUTPUT': this.display_output ? 'Y' : 'N',
@@ -567,7 +612,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
   deleteService(id) {
     if (id !== '' || id !== null) {
-      this.httpClient.delete(this.apiService.endPoints.securedJSON + 'V_APP_CD=' + this.selectedApp + '&V_PRCS_CD=' + this.selectedProcess + 'V_SRVC_CD=' + id + '&V_SRC_CD=' + this.user.SRC_CD + '&V_USR_NM=' + this.user.USR_NM + '&REST_Service=Service&Verb=DELETE')
+      this.httpClient.delete(this.apiService.endPoints.securedJSON + 'V_APP_CD=' + this.selectedApp + '&V_PRCS_CD=' + this.selectedProcess + '&V_SRVC_CD=' + id + '&V_SRC_CD=' + this.user.SRC_CD + '&V_USR_NM=' + this.user.USR_NM + '&REST_Service=Service&Verb=DELETE')
         .subscribe(res => {
           this.selectedService = '';
           this.isApp = false;
@@ -638,7 +683,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         if (xml !== this.currentXml) {
           const formData: FormData = new FormData();
           formData.append('FileInfo', JSON.stringify({
-            File_Path: `/opt/tomcat/webapps/${this.useradminService.reduceFilePath(this.user.SRC_CD)}/${vAppCd}/`,
+            File_Path: `${this.ctrl_variables.bpmn_file_path}${this.useradminService.reduceFilePath(this.user.SRC_CD)}/${vAppCd}/`,
             File_Name: `${vPrcsCd}.bpmn`,
             V_SRC_CD: this.user.SRC_CD,
             USR_NM: this.user.USR_NM
@@ -828,6 +873,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
   onTitleClick(item) {
     this.closeSchedulePanel();
+    this.onTitleClickNoDelete = true;
     this.isApp = false;
     this.isProcess = true;
     this.isService = false;
@@ -839,13 +885,14 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       this.selectedProcess = item.text;
       const formData: FormData = new FormData();
       formData.append('FileInfo', JSON.stringify({
-        File_Path: '/opt/tomcat/webapps/' + this.user.SRC_CD + '/' + item.value + '/',
+        File_Path: `${this.ctrl_variables.bpmn_file_path}` + this.user.SRC_CD + '/' + item.value + '/',
         File_Name: item.text.replace(new RegExp(' ', 'g'), '_') + '.bpmn'
       }));
       this.http.post(this.downloadUrl, formData)
         .subscribe(
           (res: any) => {
             if (res._body != "") {
+              this.modeler.importXML('');
               this.modeler.importXML(res._body, this.handleError.bind(this));
               this.bpmnTemplate = res._body;
             } else {
@@ -856,6 +903,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                 headers: { observe: 'response' }, responseType: 'text'
               }).subscribe(
                 (x: any) => {
+                  this.modeler.importXML('');
                   this.modeler.importXML(x, this.handleError.bind(this));
                   this.bpmnTemplate = x;
                   setTimeout(() => {
@@ -863,9 +911,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                     let element = elementRegistry.get('newProcess');
                     let modeling = this.modeler.get('modeling');
                     const doc = [{ 'text': this.documentation }];
+                    let id = this.selectedProcess;
                     modeling.updateProperties(element, {
-                      name: this.selectedProcess,
-                      id: this.selectedProcess.replace(new RegExp(' ', 'g'), '_'),
+                      name: id,
+                      id: id.replace(new RegExp(' ', 'g'), '_'),
                     })
                     document.getElementById("processId").focus();
                   })
@@ -892,6 +941,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.selectedApp = parentValue;
     switch (actionValue) {
       case 'Add': {
+        this.onTitleClickNoDelete = true;
         this.newBpmn();
         this.isApp = false;
         this.isProcess = true;
@@ -1064,6 +1114,40 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         if (res) {
           this.propertyPanelAllTabsData = res.json();
+          this.executableDesc = this.propertyPanelAllTabsData[0]['V_EXE_DSC'];
+          this.executableInput = this.propertyPanelAllTabsData[0]['V_PARAM_NM_IN'];
+          this.executableOutput = this.propertyPanelAllTabsData[0]['V_PARAM_NM_OUT'];
+          this.selectedExecutable = this.propertyPanelAllTabsData[0]['V_EXE_CD'];
+          this.selectedExecutableType = this.propertyPanelAllTabsData[0]['V_EXE_TYP'];
+          this.attemps = this.propertyPanelAllTabsData[0]['V_MAX_ATTMPT'];
+          this.restorability = this.propertyPanelAllTabsData[0]['V_RSTN_TYP'];
+          this.userEmail = this.propertyPanelAllTabsData[0]["V_NOTIF_GRP"];
+          this.restorability_seconds = this.propertyPanelAllTabsData[0]["V_ATTMPT_DRTN_SEC"];
+          this.priority = this.propertyPanelAllTabsData[0]["V_PRIORITY"];
+          this.job_instance = this.propertyPanelAllTabsData[0]["V_SRVC_JOB_LMT"];
+          if (this.job_instance == -1) {
+            this.instances = 'unlimited';
+          } else if (this.job_instance == 1) {
+            this.instances = 'single'
+          } else {
+            this.instances = 'limited';
+          }
+          if (this.propertyPanelAllTabsData[0]["V_EFF_STRT_DT_TM"] != null) {
+            this.currentDate = new Date(this.propertyPanelAllTabsData[0]["V_EFF_STRT_DT_TM"]);
+          } else {
+            this.currentDate = new Date();
+          }
+          if (this.propertyPanelAllTabsData[0]["V_EFF_END_DT_TM"] != null) {
+            this.afterFiveDays = new Date(this.propertyPanelAllTabsData[0]["V_EFF_END_DT_TM"]);
+          } else {
+            this.afterFiveDays = new Date();
+          }
+          this.display_output = this.propertyPanelAllTabsData[0]["V_DSPLY_OUTPUT"] === 'Y' ? true : false;
+          this.isServiceActive = this.propertyPanelAllTabsData[0]["V_SRVC_ACTIVE_FLG"] === 'Y' ? true : false;
+          this.summary_output = this.propertyPanelAllTabsData[0]["V_ADD_TO_SMMRY_RESULT"] === 'Y' ? true : false;
+          if (this.selectedExecutableType != null || this.selectedExecutableType != '') {
+            this.getExecutablesForSelctedExecutableType();
+          }
         }
       });
 
@@ -1072,13 +1156,16 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
 
   // Added for property panel related tabs
   getAllExecutableTypes() {
-    this.endUserService.getAllExecutableTypes(this.iconType)
+    let iconType = this.iconType.split(':')[1];
+    iconType = iconType.split(/(?=[A-Z])/).join(' ');
+    this.endUserService.getAllExecutableTypes(iconType)
       .subscribe(res => {
         if (res) {
           this.executableTypesData = []; //clearning off old data if any
-          res.json().forEach(element => {
-            this.executableTypesData.push(element.EXE_TYP);
-          });
+          if (res.json().EXE_TYP) {
+            this.executableTypesData = res.json().EXE_TYP;
+            this.executableTypesData.sort();
+          }
         }
       });
   }
@@ -1088,9 +1175,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         if (res) {
           this.executablesData = []; //clearning off old data if any
-          res.json().forEach(element => {
-            this.executablesData.push(element.EXE_CD);
-          });
+          if (res.json().EXE_CD) {
+            this.executablesData = res.json().EXE_CD;
+            this.executablesData.sort();
+          }
         }
       });
   }
@@ -1099,10 +1187,12 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.endUserService.getInputOutputForSelctedExecutable(this.selectedExecutableType, this.selectedExecutable)
       .subscribe(res => {
         if (res) {
-          let result = res.json();
-          this.executableOutput = result[0]["EXE_OUT_PARAMS"];
-          this.executableDesc = result[0]["EXE_DSC"];
-          this.executableInput = result[0]["EXE_SIGN"];
+          const result = res.json();
+          this.executableOutput = result["EXE_OUT_PARAMS"][0];
+          this.executableDesc = result["EXE_DSC"][0];
+          this.executableInput = result["EXE_SIGN"][0];
+          this.async_sync = result['SYNC_FLG'][0] === 'Y' ? 'sync' : 'async';
+          this.async_sync_seconds = result['TIME_OUT_SEC'][0];
         }
       });
   }
@@ -1604,6 +1694,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
   time_to_sec(time): any {
     return parseInt(time.substring(0, 2)) * 3600 + parseInt(time.substring(3, 5)) * 60 + (parseInt(time.substring(6)));
+  }
+
+  onSelectLimtedPriority() {
+    this.job_instance = 100;
   }
 
   repeatURL() {
