@@ -22,6 +22,10 @@ import { CommonUtils } from 'src/app/common/utils';
 import * as Chart from 'chart.js';
 
 import { CustomPropsProvider } from './props-provider/CustomPropsProvider';
+import { data } from '../schd-actn/schd_data';
+import { MatTableDataSource, MatDialog } from '@angular/material';
+import { SelectionModel } from '@angular/cdk/collections';
+import { DialogScheduleComponent } from '../execute/dialog-schedule/dialog-schedule.component';
 
 export class ReportData {
   public RESULT: string;
@@ -37,14 +41,14 @@ export class ReportData {
     {
       provide: TreeviewI18n, useValue: Object.assign(new TreeviewI18nDefault(), {
         getFilterPlaceholder(): string {
-          return 'Find a Process';
+          return 'Find Process';
         }
       })
     }
   ]
 })
 export class ProcessDesignComponent implements OnInit, OnDestroy {
-
+  innerTableDT: any[] = [];
   public opened: boolean;
   public treeopened: boolean = true;
   public showRightIcon = false;
@@ -73,6 +77,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     decoupleChildFromParent: false,
     maxHeight: 400,
 
+
   });
   parentMenuItems = [
     { item: 'New Process', value: 'Add', havePermission: 0 },
@@ -84,6 +89,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     { item: 'Edit', value: 'Edit', havePermission: 0 },
     { item: 'Delete', value: 'Delete', havePermission: 0 },
     { item: 'Schedule', value: 'Schedule', havePermission: 0 },
+    { item: 'Pause Schedule', value: 'SchedulePause', havePermission: 0 },
+    { item: 'Resume Schedule', value: 'ScheduleResume', havePermission: 0 },
+    { item: 'Kill Schedule', value: 'ScheduleKill', havePermission: 0 },
     { item: 'Monitor', value: 'Monitor', havePermission: 0 },
     { item: 'Approve', value: 'Approve', havePermission: 0 },
     { item: 'Resolve', value: 'Resolve', havePermission: 0 },
@@ -124,41 +132,15 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   isProcess = false;
   isService = false;
 
-  taskList = ['bpmn:EndEvent',
-    'bpmn:Event',
-    'bpmn:StartEvent',
-    'bpmn:IntermediateThrowEvent',
-    'bpmn:MessageEndEvent',
-    'bpmn:EscalationEndEvent',
-    'bpmn:ErrorEndEvent',
-    'bpmn:CompensationEndEvent',
-    'bpmn:SignalEndEvent',
-    'bpmn:TerminateEndEvent',
-    'bpmn:Task',
-    'bpmn:SendTask',
-    'bpmn:ReceiveTask',
-    'bpmn:UserTask',
-    'bpmn:ManualTask',
-    'bpmn:BusinessRuleTask',
-    'bpmn:ServiceTask',
-    'bpmn:ScriptTask',
-    'bpmn:CallActivity',
-    'bpmn:SubProcess(collapsed)',
-    'bpmn:SubProcess(expanded)',
-    'bpmn:ExclusiveGateway',
-    'bpmn:ParallelGateway',
-    'bpmn:InclusiveGateway',
-    'bpmn:ComplexGateway',
-    'bpmn:EventbasedGateway'];
-  sequenceConditionType = ['Simple Expression', 'Java Script', 'Java, Python', 'SQL Statement'];
+  sequenceConditionType = ['None', 'Default', 'Simple Expression', 'Java Script', 'Java, Python', 'SQL Statement'];
   sequenceCondition = '';
   selectedConditionType = '';
   //For property panel
 
   propertyPanelAllTabsData: any;
   executableTypesData = [];
-  selectedExecutableType: string = '';
-  selectedExecutable: string = '';
+  selectedExecutableType: string;
+  selectedExecutable: string;
   executableInput: any;
   executableOutput: string;
   executableDesc: string;
@@ -172,28 +154,56 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   summary_output: any = false;
   isServiceActive: Boolean = true;
   isSynchronousActive: Boolean = true;
-  priority: any; //3
-  async_sync_seconds: any; //300
-  restorability_seconds: any; //30
-  attemps: any; //3
-  job_instance: any; //400
-  onTitleClickNoDelete = true;
+  priority: any = 3;
+  async_sync_seconds: any = 300;
+  restorability_seconds: any = 30;
+  attemps: any = 3;
+  instances_priority: any = 400;
+
   //property panel general tab variables
   generalId: string;
   processName: string = '';
   documentation: string = '';
   oldStateId: any;
 
-
-  todaysDate: any = new Date();
   currentDate: any = new Date();
-  afterFiveDays: any = new Date(this.currentDate.setYear(this.currentDate.getYear() + 5));
+  todaysDate: any = new Date();
+  afterFiveDays: any = new Date(this.todaysDate.setDate(this.currentDate.getDate() + 5));
 
-  userEmail: string = '';
+  userEmail: string;
   sequenceFlowsourceId: any;
   sequenceFlowtargetId: any;
   iconType = '';
   navigationSubscription;
+
+  SL_APP_CD = '';
+  SL_PRC_CD = '';
+  form_dl_data: any[] = [];
+  selectedEmoji: string;
+
+  //Schedule Properties
+  domain_name = this.globals.domain_name;
+  private apiUrlGet = 'https://' + this.domain_name + '/rest/v1/secured?';
+  V_SRC_CD: string = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+  V_USR_NM: string = JSON.parse(sessionStorage.getItem('u')).USR_NM;
+
+  newScheduleView: boolean = false;
+  Pause_btn: boolean = false;
+  Resume_btn: boolean = false;
+  Kill_btn: boolean = false;
+
+  dataSource = new MatTableDataSource();
+  display_process_table:boolean = false;
+  show_filter_input:boolean = false;
+  checkbox_color_value = '';
+
+  displayedColumns = ['#', 'name', 'status', 'lastrun', 'nextrun', 'details'];
+  Process_key: any = [];
+  selection = new SelectionModel<data>(true, []);
+  
+  ApplicationCD = '';
+  ProcessCD = '';
+
   constructor(
     private httpClient: HttpClient,
     private http: Http,
@@ -208,6 +218,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     private PFrame: EnduserComponent,
     private app: HomeComponent,
     private router: Router,
+    private dialog: MatDialog,
     private StorageSessionService: StorageSessionService,
   ) {
     this.applicationProcessObservable$ = this.optionalService.applicationProcessValue.subscribe(data => {
@@ -238,19 +249,19 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                 this.childrenMenuItems[4].havePermission = 1;
                 break;
               case 'Enablement Workflow Dashboard Role':
-                this.childrenMenuItems[5].havePermission = 1;
+                this.childrenMenuItems[8].havePermission = 1;
                 break;
               case 'Enablement Workflow MyTask Role':
-                this.childrenMenuItems[6].havePermission = 1;
+                this.childrenMenuItems[9].havePermission = 1;
                 break;
               case 'Enablement Workflow Exception Role':
-                this.childrenMenuItems[7].havePermission = 1;
+                this.childrenMenuItems[10].havePermission = 1;
                 break;
               case 'Enablement Workflow Process Role':
                 this.parentMenuItems[0].havePermission = 1;
                 this.parentMenuItems[1].havePermission = 1;
-                this.childrenMenuItems[8].havePermission = 1;
-                this.childrenMenuItems[9].havePermission = 1;
+                this.childrenMenuItems[11].havePermission = 1;
+                this.childrenMenuItems[12].havePermission = 1;
                 break;
               default:
                 break;
@@ -269,9 +280,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-  }
-
-  ngAfterViewInit() {
     this.data.getJSON().subscribe(data => {
       this.Label = data.json();
     });
@@ -282,6 +290,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.user = JSON.parse(sessionStorage.getItem('u'));
     this.downloadUrl = this.apiService.endPoints.downloadFile;
     this.getApplicationProcess();
+    this.userEmail = this.user.USR_NM;
+  }
+
+  ngAfterViewInit() {
     this.modeler = new Modeler({
       container: '#canvas',
       width: '90%',
@@ -305,26 +317,20 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         this.processName = '';
         this.documentation = '';
         this.iconType = '';
-        console.log('element.click', $event)
-
+        // console.log('element.click', $event)
         this.isApp = false;
         this.isProcess = false;
         this.isService = true;
         this.oldStateId = $event.element.id;
-        this.generalId = $event.element.id.replace(new RegExp('_', 'g'), ' ');
+        this.generalId = $event.element.id;
         const businessObject = $event.element.businessObject;
-        // const source = $event.element.source;
-        // const sourceBusinessObject = source.businessObject;
-        // const isDefault = sourceBusinessObject.default &&
-        //   sourceBusinessObject.default === businessObject;
-
         this.iconType = $event.element.type;
         this.processName = businessObject.name ? businessObject.name : '';
         if (businessObject.documentation && businessObject.documentation.length) {
           this.documentation = businessObject.documentation[0].text ? businessObject.documentation[0].text : '';
         }
-        if ($event && $event.element && this.taskList.indexOf($event.element.type) > -1) {
-          this.selectedService = $event.element.id.replace(new RegExp('_', 'g'), ' ');
+        if ($event && $event.element && ['bpmn:Task', 'bpmn:StartEvent', 'bpmn:EndEvent', 'bpmn:Event'].indexOf($event.element.type) > -1) {
+          this.selectedService = this.generalId;
           this.showAllTabFlag = true;
           this.showCondtionType = false;
           this.getAllTabs(this.generalId);
@@ -339,26 +345,23 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         }
         if ($event && $event.element && ['bpmn:SequenceFlow'].indexOf($event.element.type) > -1) {
           const businessObject = $event.element.businessObject;
-          this.sequenceFlowsourceId = (businessObject && businessObject.sourceRef ? businessObject.sourceRef.id : '').replace(new RegExp('_', 'g'), ' ');
-          this.sequenceFlowtargetId = (businessObject && businessObject.targetRef ? businessObject.targetRef.id : '').replace(new RegExp('_', 'g'), ' ');
+          this.sequenceFlowsourceId = businessObject && businessObject.sourceRef ? businessObject.sourceRef.id : '';
+          this.sequenceFlowtargetId = businessObject && businessObject.targetRef ? businessObject.targetRef.id : '';
           this.showAllTabFlag = false;
           this.showCondtionType = true;
           this.getConditionType();
           this.getAllTabs(this.generalId);
         }
+        this.closeSchedulePanel();
       }),
         eventBus.on('element.changed', ($event) => {
-          this.iconType = $event.element.type;
-          this.opened = true;
-          // this.showAllTabFlag = true;
-          this.showRightIcon = true;
-          console.log('element.changed', $event)
+          // console.log('element.changed', $event)
           const businessObject = $event.element.businessObject;
           this.processName = businessObject.name ? businessObject.name : '';
           if (businessObject.documentation && businessObject.documentation.length) {
             this.documentation = businessObject.documentation[0].text ? businessObject.documentation[0].text : '';
           }
-          this.generalId = $event.element.id.replace(new RegExp('_', 'g'), ' ')
+          this.generalId = $event.element.id;
           // console.log('this.this.bpmntemplate', this.bpmnTemplate);
           if ($event && $event.element && ['bpmn:Process'].indexOf($event.element.type) > -1) {
             this.isApp = false;
@@ -371,18 +374,13 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             this.isApp = false;
             this.isProcess = false;
             this.isService = true;
-            const sourceId = (businessObject && businessObject.sourceRef ? businessObject.sourceRef.id : '').replace(new RegExp('_', 'g'), ' ');
-            const targetId = (businessObject && businessObject.targetRef ? businessObject.targetRef.id : '').replace(new RegExp('_', 'g'), ' ');
-            const objectId = (businessObject ? businessObject.id : '').replace(new RegExp('_', 'g'), ' ');
-            this.executableInput = '';
-            this.executableDesc = '';
-            this.executableOutput = '';
-            this.executablesData = [];
-            this.executableTypesData = [];
+            const sourceId = businessObject && businessObject.sourceRef ? businessObject.sourceRef.id : '';
+            const targetId = businessObject && businessObject.targetRef ? businessObject.targetRef.id : '';
+            const objectId = businessObject ? businessObject.id : '';
             // const vAppCd = 'V_APP_CD';
             // const vPrcsCd = 'V_PRCS_CD';
-            const vAppCd = this.selectedApp.replace(new RegExp('_', 'g'), ' ');
-            const vPrcsCd = this.selectedProcess.replace(new RegExp('_', 'g'), ' ');
+            const vAppCd = this.selectedApp;
+            const vPrcsCd = this.generalId;
             if ($event.element.type === 'bpmn:SequenceFlow') {
               // this.showAllTabFlag = false;
               const data: any = {
@@ -410,21 +408,20 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
               }
               this.flows[targetId] = data;
             } else {
-              this.sequenceFlowtargetId = objectId;
               this.showAllTabFlag = true;
               const data: any = {
                 REST_Service: 'Service',
                 V_APP_CD: vAppCd,
+                V_CREATE: 'Y',
+                V_DELETE: 'Y',
+                V_EXECUTE: 'Y',
                 V_PRCS_CD: vPrcsCd,
+                V_READ: 'Y',
+                V_ROLE_CD: 'Program Assessment Role',
                 V_SRC_CD: this.user.SRC_CD,
                 V_SRVC_CD: objectId,
                 V_SRVC_DSC: '',
                 V_UPDATE: 'Y',
-                V_READ: 'Y',
-                V_CREATE: 'Y',
-                V_DELETE: 'Y',
-                V_EXECUTE: 'Y',
-                V_ROLE_CD: 'Program Assessment Role',
                 V_USR_NM: this.user.USR_NM,
                 Verb: 'PUT'
               };
@@ -447,48 +444,45 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
               this.upload(vAppCd, this.selectedProcess);
             }, this.ctrl_variables.delay_timeout);
           }
+          this.closeSchedulePanel();
         }),
-        eventBus.on("shape.remove", (event) => {
-          if (event && event.element && this.taskList.indexOf(event.element.type) >= 0) {
-            if (!this.onTitleClickNoDelete) {
-              this.deleteService(event.element.id);
-            }
+        eventBus.on('connection.remove', ($event) => {
+          // console.log('connection.remove', $event);
+          if ($event && $event.element && ['bpmn:SequenceFlow'].indexOf($event.element.type) > -1) {
+            let id = $event.element.id;
+            this.deleteService(id);
           }
+          this.closeSchedulePanel();
         });
     }
   }
 
   ngOnDestroy() {
-    if (this.applicationProcessObservable$) {
-      this.applicationProcessObservable$.unsubscribe();
-    }
+    this.applicationProcessObservable$.unsubscribe();
     this.roleObservable$.unsubscribe();
     if (this.modeler) {
       this.modeler.destroy();
     }
   }
   onInputChange() {
-    // replace(new RegExp(' ', 'g'), '_')
-    this.generalId = this.generalId;
+    this.generalId = this.generalId.replace(new RegExp(' ', 'g'), '_');
     if (this.documentation == '') {
-      // .replace(new RegExp('_', 'g'), ' ')
-      this.documentation = this.generalId;
+      this.documentation = this.generalId.replace(new RegExp('_', 'g'), ' ');
     }
-    // if (this.processName == '') {
-    //   this.processName = this.generalId.replace(new RegExp('_', 'g'), ' ');
-    // }
+    if (this.processName == '') {
+      this.processName = this.generalId.replace(new RegExp('_', 'g'), ' ');
+    }
     const name = this.processName;
     if (!this.isApp && this.oldStateId) {
       let elementRegistry = this.modeler.get('elementRegistry');
       let element = elementRegistry.get(this.oldStateId);
       let modeling = this.modeler.get('modeling');
       const doc = [{ 'text': this.documentation }];
-      let id = this.generalId;
       modeling.updateProperties(element, {
         name: name,
-        id: id.replace(new RegExp(' ', 'g'), '_'),
+        id: this.generalId,
       });
-      this.oldStateId = id.replace(new RegExp(' ', 'g'), '_');
+      this.oldStateId = this.generalId;
     }
     if (this.isApp) {
       this.addApplicationOnBE();
@@ -530,17 +524,14 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   updateService() {
     this.selectedService = this.generalId;
     if (this.instances === 'single') {
-      this.job_instance = 1;
+      this.instances_priority = 1;
     } else if (this.instances === 'unlimited') {
-      this.job_instance = -1;
+      this.instances_priority = -1;
     }
-    let old_srvc_cd = this.oldStateId;
     const body = {
       'V_APP_CD': this.selectedApp,
       'V_PRCS_CD': this.selectedProcess,
       'V_SRVC_CD': this.selectedService,
-      'V_SRVC_DSC': this.documentation,
-      'V_OLD_SRVC_CD': old_srvc_cd.replace(new RegExp('_', 'g'), ' '),
       'V_EXE_TYP': this.selectedExecutableType,
       'V_EXE_CD': this.selectedExecutable,
       'V_PARAM_NM_IN': this.executableInput,
@@ -552,8 +543,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       'V_ATTMPT_DRTN_SEC': this.restorability_seconds,
       'V_SLA_MTS': 60.00,
       'V_PRIORITY': this.priority,
-      "V_SYNC_FLG": this.async_sync === 'sync' ? 'Y' : 'N',
-      'V_SRVC_JOB_LMT': this.job_instance,
+      'V_SRVC_JOB_LMT': this.instances_priority,
       'V_EFF_STRT_DT_TM': this.currentDate,
       'V_EFF_END_DT_TM': this.afterFiveDays,
       'V_DSPLY_OUTPUT': this.display_output ? 'Y' : 'N',
@@ -577,7 +567,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
   deleteService(id) {
     if (id !== '' || id !== null) {
-      this.httpClient.delete(this.apiService.endPoints.securedJSON + 'V_APP_CD=' + this.selectedApp + '&V_PRCS_CD=' + this.selectedProcess + '&V_SRVC_CD=' + id + '&V_SRC_CD=' + this.user.SRC_CD + '&V_USR_NM=' + this.user.USR_NM + '&REST_Service=Service&Verb=DELETE')
+      this.httpClient.delete(this.apiService.endPoints.securedJSON + 'V_APP_CD=' + this.selectedApp + '&V_PRCS_CD=' + this.selectedProcess + 'V_SRVC_CD=' + id + '&V_SRC_CD=' + this.user.SRC_CD + '&V_USR_NM=' + this.user.USR_NM + '&REST_Service=Service&Verb=DELETE')
         .subscribe(res => {
           this.selectedService = '';
           this.isApp = false;
@@ -648,7 +638,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         if (xml !== this.currentXml) {
           const formData: FormData = new FormData();
           formData.append('FileInfo', JSON.stringify({
-            File_Path: `${this.ctrl_variables.bpmn_file_path}${this.useradminService.reduceFilePath(this.user.SRC_CD)}/${vAppCd}/`,
+            File_Path: `/opt/tomcat/webapps/${this.useradminService.reduceFilePath(this.user.SRC_CD)}/${vAppCd}/`,
             File_Name: `${vPrcsCd}.bpmn`,
             V_SRC_CD: this.user.SRC_CD,
             USR_NM: this.user.USR_NM
@@ -837,7 +827,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     }
   }
   onTitleClick(item) {
-    this.onTitleClickNoDelete = true;
+    this.closeSchedulePanel();
     this.isApp = false;
     this.isProcess = true;
     this.isService = false;
@@ -849,14 +839,13 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       this.selectedProcess = item.text;
       const formData: FormData = new FormData();
       formData.append('FileInfo', JSON.stringify({
-        File_Path: `${this.ctrl_variables.bpmn_file_path}` + this.user.SRC_CD + '/' + item.value + '/',
+        File_Path: '/opt/tomcat/webapps/' + this.user.SRC_CD + '/' + item.value + '/',
         File_Name: item.text.replace(new RegExp(' ', 'g'), '_') + '.bpmn'
       }));
       this.http.post(this.downloadUrl, formData)
         .subscribe(
           (res: any) => {
             if (res._body != "") {
-              this.modeler.importXML('');
               this.modeler.importXML(res._body, this.handleError.bind(this));
               this.bpmnTemplate = res._body;
             } else {
@@ -867,7 +856,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                 headers: { observe: 'response' }, responseType: 'text'
               }).subscribe(
                 (x: any) => {
-                  this.modeler.importXML('');
                   this.modeler.importXML(x, this.handleError.bind(this));
                   this.bpmnTemplate = x;
                   setTimeout(() => {
@@ -875,10 +863,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                     let element = elementRegistry.get('newProcess');
                     let modeling = this.modeler.get('modeling');
                     const doc = [{ 'text': this.documentation }];
-                    let id = this.selectedProcess;
                     modeling.updateProperties(element, {
-                      name: id,
-                      id: id.replace(new RegExp(' ', 'g'), '_'),
+                      name: this.selectedProcess,
+                      id: this.selectedProcess.replace(new RegExp(' ', 'g'), '_'),
                     })
                     document.getElementById("processId").focus();
                   })
@@ -905,7 +892,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.selectedApp = parentValue;
     switch (actionValue) {
       case 'Add': {
-        this.onTitleClickNoDelete = true;
         this.newBpmn();
         this.isApp = false;
         this.isProcess = true;
@@ -929,9 +915,23 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       }
     }
   }
+
+  closeSchedulePanel() {
+    this.newScheduleView = false;
+    this.Pause_btn = false;
+    this.Resume_btn = false;
+    this.Kill_btn = false;
+    
+    this.display_process_table = false;
+    this.show_filter_input = false;
+  }
+
   onChildMenuItemClick(actionValue, childValue) {
     this.selectedApp = childValue.value;
     this.selectedProcess = childValue.text;
+
+    this.closeSchedulePanel();
+
     switch (actionValue) {
       case 'Run': {
         this.add();
@@ -939,6 +939,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         break;
       }
       case 'RunAt': {
+        this.add();
+        this.repeatURL();
+        this.openEmojiDialog();
         break;
       }
       case 'Edit': {
@@ -949,7 +952,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         this.isProcess = true;
         this.isService = false;
         this.generalId = this.selectedProcess;
-        this.onTitleClickNoDelete = false;
         break;
       }
       case 'Delete': {
@@ -957,6 +959,29 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         break;
       }
       case 'Schedule': {
+        this.newScheduleView = true;
+        break;
+      }
+      case 'SchedulePause': {
+        this.Pause_btn = true;
+        this.display_process_table = true;
+        this.checkbox_color_value = 'checkbox_blue';
+        this.applyFilter('SCHEDULED');
+        break;
+      }
+      case 'ScheduleResume': {
+        this.Resume_btn = true;
+        this.display_process_table = true;
+        this.checkbox_color_value = 'checkbox_green';
+        this.applyFilter('PAUSED');
+        break;
+      }
+      case 'ScheduleKill': {
+        this.Kill_btn = true;
+        this.display_process_table = true;
+        this.show_filter_input = true;
+        this.checkbox_color_value = 'checkbox_red';
+        this.applyFilter('');
         break;
       }
       case 'Monitor': {
@@ -1039,40 +1064,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         if (res) {
           this.propertyPanelAllTabsData = res.json();
-          this.executableDesc = this.propertyPanelAllTabsData[0]['V_EXE_DSC'];
-          this.executableInput = this.propertyPanelAllTabsData[0]['V_PARAM_NM_IN'];
-          this.executableOutput = this.propertyPanelAllTabsData[0]['V_PARAM_NM_OUT'];
-          this.selectedExecutable = this.propertyPanelAllTabsData[0]['V_EXE_CD'];
-          this.selectedExecutableType = this.propertyPanelAllTabsData[0]['V_EXE_TYP'];
-          this.attemps = this.propertyPanelAllTabsData[0]['V_MAX_ATTMPT'];
-          this.restorability = this.propertyPanelAllTabsData[0]['V_RSTN_TYP'];
-          this.userEmail = this.propertyPanelAllTabsData[0]["V_NOTIF_GRP"];
-          this.restorability_seconds = this.propertyPanelAllTabsData[0]["V_ATTMPT_DRTN_SEC"];
-          this.priority = this.propertyPanelAllTabsData[0]["V_PRIORITY"];
-          this.job_instance = this.propertyPanelAllTabsData[0]["V_SRVC_JOB_LMT"];
-          if (this.job_instance == -1) {
-            this.instances = 'unlimited';
-          } else if (this.job_instance == 1) {
-            this.instances = 'single'
-          } else {
-            this.instances = 'limited';
-          }
-          if (this.propertyPanelAllTabsData[0]["V_EFF_STRT_DT_TM"] != null) {
-            this.currentDate = new Date(this.propertyPanelAllTabsData[0]["V_EFF_STRT_DT_TM"]);
-          } else {
-            this.currentDate = new Date();
-          }
-          if (this.propertyPanelAllTabsData[0]["V_EFF_END_DT_TM"] != null) {
-            this.afterFiveDays = new Date(this.propertyPanelAllTabsData[0]["V_EFF_END_DT_TM"]);
-          } else {
-            this.afterFiveDays = new Date();
-          }
-          this.display_output = this.propertyPanelAllTabsData[0]["V_DSPLY_OUTPUT"] === 'Y' ? true : false;
-          this.isServiceActive = this.propertyPanelAllTabsData[0]["V_SRVC_ACTIVE_FLG"] === 'Y' ? true : false;
-          this.summary_output = this.propertyPanelAllTabsData[0]["V_ADD_TO_SMMRY_RESULT"] === 'Y' ? true : false;
-          if (this.selectedExecutableType != null || this.selectedExecutableType != '') {
-            this.getExecutablesForSelctedExecutableType();
-          }
         }
       });
 
@@ -1081,16 +1072,13 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
 
   // Added for property panel related tabs
   getAllExecutableTypes() {
-    let iconType = this.iconType.split(':')[1];
-    iconType = iconType.split(/(?=[A-Z])/).join(' ');
-    this.endUserService.getAllExecutableTypes(iconType)
+    this.endUserService.getAllExecutableTypes(this.iconType)
       .subscribe(res => {
         if (res) {
           this.executableTypesData = []; //clearning off old data if any
-          if (res.json().EXE_TYP) {
-            this.executableTypesData = res.json().EXE_TYP;
-            this.executableTypesData.sort();
-          }
+          res.json().forEach(element => {
+            this.executableTypesData.push(element.EXE_TYP);
+          });
         }
       });
   }
@@ -1100,10 +1088,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         if (res) {
           this.executablesData = []; //clearning off old data if any
-          if (res.json().EXE_CD) {
-            this.executablesData = res.json().EXE_CD;
-            this.executablesData.sort();
-          }
+          res.json().forEach(element => {
+            this.executablesData.push(element.EXE_CD);
+          });
         }
       });
   }
@@ -1112,12 +1099,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.endUserService.getInputOutputForSelctedExecutable(this.selectedExecutableType, this.selectedExecutable)
       .subscribe(res => {
         if (res) {
-          const result = res.json();
-          this.executableOutput = result["EXE_OUT_PARAMS"][0];
-          this.executableDesc = result["EXE_DSC"][0];
-          this.executableInput = result["EXE_SIGN"][0];
-          this.async_sync = result['SYNC_FLG'][0] === 'Y' ? 'sync' : 'async';
-          this.async_sync_seconds = result['TIME_OUT_SEC'][0];
+          let result = res.json();
+          this.executableOutput = result[0]["EXE_OUT_PARAMS"];
+          this.executableDesc = result[0]["EXE_DSC"];
+          this.executableInput = result[0]["EXE_SIGN"];
         }
       });
   }
@@ -1620,7 +1605,252 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   time_to_sec(time): any {
     return parseInt(time.substring(0, 2)) * 3600 + parseInt(time.substring(3, 5)) * 60 + (parseInt(time.substring(6)));
   }
-  onSelectLimtedPriority() {
-    this.job_instance = 100;
+
+  repeatURL() {
+    this.form_dl_data[0] = {
+      APP_CD: this.selectedApp,
+      PRC_CD: this.selectedProcess
+    };
+
+    this.StorageSessionService.setSession('Exe_data', this.form_dl_data[0]);
   }
+
+  openEmojiDialog() {
+    const dialog = this.dialog.open(DialogScheduleComponent, {
+      height: '150px',
+      width: '300px'
+    });
+
+    dialog.afterClosed()
+      .subscribe(selection => {
+        if (selection) {
+          this.selectedEmoji = selection;
+        } else {
+          // User clicked 'Cancel' or clicked outside the dialog
+        }
+      });
+  }
+
+  onChildMenuClick(item) {
+    // console.log("onChildMenuClick", item);
+    
+  this.ApplicationCD = item.value;
+  this.ProcessCD = item.text;
+    this.find_process(this.ApplicationCD, this.ProcessCD, "All");
+  }
+
+  isEmpty(obj) {
+    for (var key in obj) {
+      if (obj.hasOwnProperty(key))
+        return false;
+    }
+    return true;
+  }
+
+
+  Action;
+  F1;
+  find_process(ApplicationCD, ProcessCD, StatusCD) {
+
+    if (this.childrenMenuItems[4].havePermission == 0) {
+      console.warn("User does not have the permission to load Schedules...");
+      return;
+    }
+
+
+    this.childrenMenuItems[5].havePermission = 0;
+    this.childrenMenuItems[6].havePermission = 0;
+    this.childrenMenuItems[7].havePermission = 0;
+
+    /**internalChecked: true
+​
+internalCollapsed: false
+​
+internalDisabled: false
+​
+text: "new Process"
+​
+value: "Business Development"
+
+this.find_process(this.ApplicationCD, this.ProcessCD, 'Scheduled');
+this.find_process(this.ApplicationCD, this.ProcessCD, 'Paused');
+*/
+    this.Action = [];
+    // this.innerTableDT = [];
+    // this.Data = [];
+    this.httpClient.get<data>(this.apiUrlGet + 'V_SRC_CD=' + this.V_SRC_CD +
+      '&V_APP_CD=' + ApplicationCD + '&V_PRCS_CD=' + ProcessCD + '&V_USR_NM=' +
+      this.V_USR_NM + '&V_TRIGGER_STATE=' + StatusCD +
+      '&REST_Service=ScheduledJobs&Verb=GET').subscribe(dataResult => {
+        let rm_f: boolean;
+        let ps_r: boolean;
+
+        if (this.isEmpty(dataResult)) {
+        } else {
+          console.log("dataResult.SRVC_CD", dataResult.SRVC_CD);
+
+          this.F1 = dataResult.SRVC_CD;
+          this.selection = new SelectionModel<data>(true, []);
+
+          for (let i = 0; i < this.F1.length; i++) {
+            this.innerTableDT[i] = {
+              name: dataResult.SRVC_CD[i],
+              status: dataResult.TRIGGER_STATE[i],
+              lastrun: dataResult.PREV_FIRE_TIME[i],
+              nextrun: dataResult.NEXT_FIRE_TIME[i],
+              details: dataResult.DESCRIPTION[i],
+              job_name: dataResult.JOB_NAME[i]
+
+            };
+
+            // _______check trigger status
+            if (dataResult.TRIGGER_STATE[i] === 'SCHEDULED') {
+              ps_r = true;
+            } if (dataResult.TRIGGER_STATE[i] === 'PAUSED') {
+              rm_f = true;
+            }
+          }
+          // push dependent flag
+          // this.Action.push('Setup a New Schedule');
+          if (rm_f) {
+            this.childrenMenuItems[6].havePermission = 1;
+          } if (ps_r) {
+            this.childrenMenuItems[5].havePermission = 1;
+
+          }
+          //    push kill flag if process are not empty
+          if (dataResult.TRIGGER_STATE.length > 0) {
+            this.childrenMenuItems[7].havePermission = 1;
+          }
+          this.dataSource.data = this.innerTableDT;
+        }
+      });
+  }
+
+  onPause() {
+    this.innerTableDT = [];
+    // Pause
+    for (let i = 0; i < this.selection.selected.length; i++) {
+      let obj: any = this.selection.selected[i];
+      this.Process_operation(obj.job_name, 'Pause');
+    }
+    setTimeout(() => {
+      this.find_process(this.ApplicationCD, this.ProcessCD, 'All');
+    }, 5000);
+
+  }
+
+
+  onResume() {
+    this.innerTableDT = [];
+    for (let i = 0; i < this.selection.selected.length; i++) {
+      let obj: any = this.selection.selected[i];
+      this.Process_operation(obj.job_name, 'Resume');
+    }
+    setTimeout(() => {
+      this.find_process(this.ApplicationCD, this.ProcessCD, 'All');
+    }, 5000);
+  }
+
+  onKill() {
+    this.innerTableDT = [];
+    for (let i = 0; i < this.selection.selected.length; i++) {
+      let obj: any = this.selection.selected[i];
+      this.Process_operation(obj.job_name, 'Kill');
+    }
+    setTimeout(() => {
+      this.find_process(this.ApplicationCD, this.ProcessCD, 'All');
+    }, 5000);
+  }
+
+  // onPause() {
+
+  //   this.innerTableDT = [];
+  //   console.log('PAUSE!!!');
+  //   // // Pause
+  //   for (let i = 0; i < this.Process_key.length; i++) {
+  //     this.Process_operation(this.Process_key[i], 'Pause');
+  //   }
+  //   setTimeout(() => {
+  //     this.find_process(this.ApplicationCD, this.ProcessCD, 'All');
+  //   }, 5000);
+
+  // }
+
+
+  // onResume() {
+  //   this.innerTableDT = [];
+  //   console.log('RESUME!!!');
+  //   // // Resume
+  //   for (let i = 0; i < this.Process_key.length; i++) {
+  //     this.Process_operation(this.Process_key[i], 'Resume');
+  //   }
+  //   // await delay(2000);
+  //   setTimeout(() => {
+  //     this.find_process(this.ApplicationCD, this.ProcessCD, 'All');
+  //   }, 5000);
+  //   // // this.find_process(this.ApplicationCD,this.ProcessCD,"All");
+  // }
+
+  // onKill() {
+  //   this.innerTableDT = [];
+  //   console.log('KILL!!!');
+  //   for (let i = 0; i < this.Process_key.length; i++) {
+  //     this.Process_operation(this.Process_key[i], 'Kill');
+  //     ('Process id' + this.Process_key[i]);
+  //   }
+  //   setTimeout(() => {
+  //     this.find_process(this.ApplicationCD, this.ProcessCD, 'All');
+  //   }, 5000);
+  // }
+
+
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+    this.dataSource.filter = filterValue;
+
+    console.log("this.dataSource", this.dataSource, this.dataSource.filter);
+    
+  }
+
+// -------------get process id / JOB_NAME
+  Check_process_id(key: any) {
+    this.Process_key.push(key);
+  }
+
+  onRowClick(row) {
+
+  }
+
+  Process_operation(P_ID: any, P_OP: any) {
+
+    const body = {
+      'TriggerKey': [P_ID],
+      'JobKey': [P_ID],
+      'Operation': [P_OP]
+    };
+    (body);
+    this.http.post('https://' + this.domain_name + '/rest/Hold/ScheduleAction', body).subscribe(
+      res => {
+        (res.json());
+      }
+    );
+    // this.find_process(this.ApplicationCD,this.ProcessCD,"All");
+  }
+
+  
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.filteredData.length;
+    return numSelected === numRows;
+  }
+  masterToggle() {
+    this.isAllSelected() ?
+      this.selection.clear() :
+      this.dataSource.filteredData.forEach((row: any) => this.selection.select(row));
+  }
+
+
 }

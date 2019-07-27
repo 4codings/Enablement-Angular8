@@ -352,7 +352,7 @@ input {
 
 .more-vert-font {
   font-size: 17px;
-  color: #fff;
+  // color: #fff;
 }
 
 .add-font {
@@ -447,4 +447,9 @@ input {
 
 :host /deep/ .mat-mini-fab .mat-button-wrapper {
   padding: 0px !important;
+}
+
+mat-header-cell{
+  color: white;
+  font-weight: bold;
 }
