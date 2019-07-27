@@ -221,14 +221,14 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   Kill_btn: boolean = false;
 
   dataSource = new MatTableDataSource();
-  display_process_table:boolean = false;
-  show_filter_input:boolean = false;
+  display_process_table: boolean = false;
+  show_filter_input: boolean = false;
   checkbox_color_value = '';
 
   displayedColumns = ['#', 'name', 'status', 'lastrun', 'nextrun', 'details'];
   Process_key: any = [];
   selection = new SelectionModel<data>(true, []);
-  
+
   ApplicationCD = '';
   ProcessCD = '';
 
@@ -971,7 +971,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.Pause_btn = false;
     this.Resume_btn = false;
     this.Kill_btn = false;
-    
+
     this.display_process_table = false;
     this.show_filter_input = false;
   }
@@ -1700,7 +1700,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.job_instance = 100;
   }
 
-  repeatURL() {
+  repeatURL(APP_CD = this.selectedApp, PRC_CD = this.selectedProcess, ) {
     this.form_dl_data[0] = {
       APP_CD: this.selectedApp,
       PRC_CD: this.selectedProcess
@@ -1727,9 +1727,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
 
   onChildMenuClick(item) {
     // console.log("onChildMenuClick", item);
-    
-  this.ApplicationCD = item.value;
-  this.ProcessCD = item.text;
+
+    this.ApplicationCD = item.value;
+    this.ProcessCD = item.text;
+    this.repeatURL(this.ApplicationCD, this.ProcessCD);
     this.find_process(this.ApplicationCD, this.ProcessCD, "All");
   }
 
@@ -1905,10 +1906,10 @@ this.find_process(this.ApplicationCD, this.ProcessCD, 'Paused');
     this.dataSource.filter = filterValue;
 
     console.log("this.dataSource", this.dataSource, this.dataSource.filter);
-    
+
   }
 
-// -------------get process id / JOB_NAME
+  // -------------get process id / JOB_NAME
   Check_process_id(key: any) {
     this.Process_key.push(key);
   }
@@ -1933,7 +1934,7 @@ this.find_process(this.ApplicationCD, this.ProcessCD, 'Paused');
     // this.find_process(this.ApplicationCD,this.ProcessCD,"All");
   }
 
-  
+
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;

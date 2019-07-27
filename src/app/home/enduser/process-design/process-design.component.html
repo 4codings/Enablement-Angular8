@@ -23,7 +23,7 @@
         </mat-menu>
       </label>
       <label *ngIf="!item.children" class="form-check-label">
-        <button id="side-nav-menu" mat-mini-fab [matMenuTriggerFor]="childMenu" aria-label="Example icon-button with a menu">
+        <button id="side-nav-menu" mat-mini-fab [matMenuTriggerFor]="childMenu" aria-label="Example icon-button with a menu" (click)="onChildMenuClick(item)">
           <mat-icon class="child-color more-vert-font">more_vert</mat-icon>
         </button>
         <mat-menu #childMenu="matMenu">
