@@ -413,7 +413,7 @@ input {
 }
 
 :host /deep/ .treeview-container .row-item.parent-menu {
-  margin-bottom: 7px !important;
+  margin: 10px 0px !important;
 }
 
 :host /deep/ .treeview-container .row-item {
@@ -452,4 +452,88 @@ input {
 mat-header-cell{
   color: white;
   font-weight: bold;
+}
+:host /deep/ .bpmn-icon-gateway-eventbased:before {
+  color: #4d0026;
+}
+
+:host /deep/ .bpmn-icon-gateway-parallel:before {
+  color: #00ff00;
+}
+
+:host /deep/ .bpmn-icon-gateway-or:before {
+  color: #ff1a1a;
+}
+
+:host /deep/ .bpmn-icon-gateway-complex:before {
+  color: #ffbf00;
+}
+
+:host /deep/ .bpmn-icon-subprocess-collapsed:before {
+  color: #00ff00;
+}
+
+:host /deep/ .bpmn-icon-event-subprocess-expanded:before {
+  color: #ff1a1a;
+}
+
+:host /deep/ .bpmn-icon-transaction:before {
+  color: #ffbf00;
+}
+
+:host /deep/ .bpmn-icon-parallel-mi-marker:before {
+  color: #ff5c33;
+}
+
+:host /deep/ .bpmn-icon-sequential-mi-marker:before {
+  color: #ffbf00;
+}
+
+:host /deep/ .bpmn-icon-loop-marker:before {
+  color: #0066ff;
+}
+
+:host /deep/ .bpmn-icon-ad-hoc-marker:before {
+  color: #00ff00;
+}
+
+
+:host /deep/ .bpmn-icon-intermediate-event-catch-message:before {
+  color: #4d0026;
+}
+
+:host /deep/ .bpmn-icon-intermediate-event-throw-message:before {
+  color: #76D7C4;
+}
+
+:host /deep/ .bpmn-icon-intermediate-event-catch-timer:before {
+  color: #B9770E;
+}
+
+:host /deep/ .bpmn-icon-intermediate-event-throw-escalation:before {
+  color: #ffbf00;
+}
+
+:host /deep/ .bpmn-icon-intermediate-event-catch-condition:before {
+  color: #00ff00;
+}
+
+:host /deep/ .bpmn-icon-intermediate-event-catch-link:before {
+  color: #ff1a1a;
+}
+
+:host /deep/ .bpmn-icon-intermediate-event-throw-link:before {
+  color: #ffbf00;
+}
+
+:host /deep/ .bpmn-icon-intermediate-event-throw-compensation:before {
+  color: #ff5c33;
+}
+
+:host /deep/ .bpmn-icon-intermediate-event-catch-signal:before {
+  color: #ffbf00;
+}
+
+:host /deep/ .bpmn-icon-intermediate-event-throw-signal:before {
+  color: #0066ff;
 }
