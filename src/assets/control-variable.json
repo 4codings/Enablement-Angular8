@@ -6,7 +6,7 @@
   "show_ALL": false,
   "show_SM_PIE": false,
   "show_EXE": false,
-  "show_SCHE": false,
+  "show_SCHE": true,
   "show_PROC": false,
   "show_ORCH": false,
   "call_repeat_on_TIMEOUT": true,
