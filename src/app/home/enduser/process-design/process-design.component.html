@@ -1,6 +1,6 @@
 <ng-template #itemTemplate let-item="item" let-index let-onCollapseExpand="onCollapseExpand"
   let-onCheckedChange="onCheckedChange">
-  <div class="form-inline row-item" [ngClass]="item.children?'parent-menu':'child-menu'" >
+  <div class="form-inline row-item" [ngClass]="item.children?'parent-menu':'child-menu'">
     <i *ngIf="item.children" (click)="onCollapseExpand()" aria-hidden="true" class="fa caret-font"
       [class.fa-caret-right]="item.collapsed" [class.fa-caret-down]="!item.collapsed"></i>
     <div class="form-check" *ngIf="item.text!=='NULL'">
@@ -11,7 +11,8 @@
         {{item.text}}
       </label>
       <label *ngIf="item.children" class="form-check-label">
-        <button id="side-nav-menu" mat-mini-fab [matMenuTriggerFor]="parentMenu" aria-label="Example icon-button with a menu">
+        <button id="side-nav-menu" mat-mini-fab [matMenuTriggerFor]="parentMenu"
+          aria-label="Example icon-button with a menu">
           <mat-icon class="parent-color more-vert-font">more_vert</mat-icon>
         </button>
         <mat-menu #parentMenu="matMenu">
@@ -23,7 +24,8 @@
         </mat-menu>
       </label>
       <label *ngIf="!item.children" class="form-check-label">
-        <button id="side-nav-menu" mat-mini-fab [matMenuTriggerFor]="childMenu" aria-label="Example icon-button with a menu" (click)="onChildMenuClick(item)">
+        <button id="side-nav-menu" mat-mini-fab [matMenuTriggerFor]="childMenu"
+          aria-label="Example icon-button with a menu" (click)="onChildMenuClick(item)">
           <mat-icon class="child-color more-vert-font">more_vert</mat-icon>
         </button>
         <mat-menu #childMenu="matMenu">
@@ -57,7 +59,7 @@
     <div fxFlex="100">
       <div class="parent">
         <h5 class="parent-font m-t-10" *ngIf="selectedApp!=''">
-          {{selectedApp}} 
+          {{selectedApp}}
           <!-- <button id="side-nav-menu" mat-mini-fab [matMenuTriggerFor]="parentMenu" aria-label="Example icon-button with a menu">
             <mat-icon class="parent-color more-vert-font">more_vert</mat-icon>
           </button> -->
@@ -455,7 +457,7 @@
               <div *ngIf="async_sync==='sync'">
                 <div class="row row1">
                   <input class="exe_disable" disabled id="Timeout_seconds" type="number"
-                    [(ngModel)]="async_sync_seconds">
+                    [(ngModel)]="async_sync_seconds" min="1">
                   <label id="Timeout_seconds_label">{{Label['TIMEOUT_SECONDS']}}</label>
                 </div>
               </div>
@@ -495,7 +497,7 @@
               </div>
               <div class="oneSpace"></div>
               <div class="row row1">
-                <input id="priority" type="number" [(ngModel)]="priority">
+                <input id="priority" type="number" min="1" [(ngModel)]="priority">
                 <label id="priority_label">{{Label['PRIORITY']}}</label>
               </div>
               <div class="spaceDiv">
@@ -509,12 +511,12 @@
               </mat-radio-group>
               <div *ngIf="restorability==='AUTO'">
                 <div class="row row1">
-                  <input id="seconds" type="number" [(ngModel)]="attemps">
+                  <input id="seconds" type="number" min="1" [(ngModel)]="attemps">
                   <label id="seconds_label">{{Label['ATTEMPS']}}</label>
                 </div>
                 <div class="oneSpace"></div>
                 <div class="row row1">
-                  <input id="seconds" type="number" [(ngModel)]="restorability_seconds">
+                  <input id="seconds" type="number" min="1" [(ngModel)]="restorability_seconds">
                   <label id="seconds_label">{{Label['SECONDS']}}</label>
                 </div>
               </div>
@@ -531,7 +533,7 @@
                   <mat-radio-button class="w-100-p" (change)="onSelectLimtedPriority()" value="limited">
                     {{Label['LIMITED']}}</mat-radio-button>
                   <div *ngIf="instances==='limited'">
-                    <input id="priority" type="number" [(ngModel)]="job_instance">
+                    <input id="priority" type="number" min="1" [(ngModel)]="job_instance">
                   </div>
                 </div>
               </mat-radio-group>

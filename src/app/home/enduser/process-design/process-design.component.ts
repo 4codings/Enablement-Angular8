@@ -131,6 +131,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   isApp = false;
   isProcess = false;
   isService = false;
+  isTaskCreatedFlag = false;
+  oldTaskId = '';
 
   taskList = ['bpmn:EndEvent',
     'bpmn:Event',
@@ -308,6 +310,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.user = JSON.parse(sessionStorage.getItem('u'));
+    if (this.user) {
+      this.userEmail = this.user.USR_NM;
+    }
   }
 
   ngAfterViewInit() {
@@ -318,7 +324,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       this.ctrl_variables = res;
     });
     this.url = this.apiService.endPoints.securedJSON;
-    this.user = JSON.parse(sessionStorage.getItem('u'));
+
     this.downloadUrl = this.apiService.endPoints.downloadFile;
     this.getApplicationProcess();
     this.modeler = new Modeler({
@@ -369,6 +375,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.showAllTabFlag = false;
           this.showCondtionType = false;
           this.generalId = this.selectedProcess;
+          // this.selectedProcess = $event.element.id.replace(new RegExp('_', 'g'), ' ')
+          // this.generalId = $event.element.id.replace(new RegExp('_', 'g'), ' ');
         }
         if ($event && $event.element && ['bpmn:SequenceFlow'].indexOf($event.element.type) > -1) {
           const businessObject = $event.element.businessObject;
@@ -400,6 +408,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             this.showAllTabFlag = false;
           }
           if ($event && $event.element && ['bpmn:Process', 'label'].indexOf($event.element.type) === -1) {
+            if ($event.element.type !== 'bpmn:SequenceFlow') {
+              this.isTaskCreatedFlag = true;
+              this.oldTaskId = $event.element.id.replace(new RegExp('_', 'g'), ' ');
+            }
             this.selectedService = this.generalId;
             this.isApp = false;
             this.isProcess = false;
@@ -689,7 +701,15 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             USR_NM: this.user.USR_NM
           }));
           formData.append('Source_File', new File([xml], `${vPrcsCd}.bpmn`, { type: 'text/xml' }));
-          this.http.post(`https://${this.globals.domain}/FileAPIs/api/file/v1/upload`, formData).subscribe();
+          this.http.post(`https://${this.globals.domain}/FileAPIs/api/file/v1/upload`, formData).subscribe(
+            res => {
+              if (this.isTaskCreatedFlag) {
+                this.generalId = this.oldTaskId;
+                this.getAllTabs(this.generalId);
+                this.isTaskCreatedFlag = false;
+              }
+            }
+          );
         }
         this.currentXml = xml;
       });
