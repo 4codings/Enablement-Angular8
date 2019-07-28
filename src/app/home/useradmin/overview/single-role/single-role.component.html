@@ -12,12 +12,16 @@
               (click)="onBtnEditRoleClick(role)">
         <mat-icon>edit</mat-icon>
       </button>
-      <button mat-icon-button matTooltip="assign role" (click)="onBtnAssignGroupClick(role)">
+      <button mat-icon-button matTooltip="assign role"
+              *ngIf="assignPermission"
+              (click)="onBtnAssignGroupClick(role)">
         <mat-icon>link</mat-icon>
       </button>
     </div>
   </div>
   <app-auth-tile-list [auths]="auths"
+                      [authPermission]="authPermission"
+                      [authorizationPermission]="authorizationPermission"
                       (addAuthEvent)="onAddAuthEventHandler($event)"
                       (deleteAuthEvent)="onDeleteAuthEventHandler($event)"></app-auth-tile-list>
 </div>

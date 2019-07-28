@@ -35,11 +35,26 @@ export class UserAdminNavComponent implements OnInit {
           case 'Enablement User Admin Overview Role':
             this.showOverview = true;
             break;
+          case 'Enablement User Admin User Role':
+            this.showUser = true;
+            break;
+          case 'Enablement User Admin Group Role':
+            this.showGroup = true;
+            break;
           case 'Enablement User Admin Membership Role':
             this.showMembership = true;
             break;
-          case 'Enablement User Admin User Role':
+          case 'Enablement User Admin Role Role':
             this.showRole = true;
+            break;
+          case 'Enablement User Admin Assign Roles Role':
+            this.showAssignRole = true;
+            break;
+          case 'Enablement User Admin Auth Role':
+            this.showAuth = true;
+            break;
+          case 'Enablement User Admin Authorize Roles Role':
+            this.showAuthorization = true;
             break;
           default:
             break;

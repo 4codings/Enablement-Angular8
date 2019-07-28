@@ -22,6 +22,9 @@
     <app-single-role *ngFor="let currRole of roles"
                       [role]="currRole"
                       [rolePermission]="rolePermission"
+                      [authPermission]="authPermission"
+                      [authorizationPermission]="authorizationPermission"
+                      [assignPermission]="assignPermission"
                       [controlVariables]="controlVariables"></app-single-role>
   </div>
 </div>

@@ -13,6 +13,8 @@ import {environment} from '../../../../../environments/environment';
   styleUrls: ['./auth-tile-list.component.scss']
 })
 export class AuthTileListComponent implements OnInit {
+  @Input() authPermission: boolean;
+  @Input() authorizationPermission: boolean;
   @Input() auths: AuthorizationData[];
   @Input() selectedAuth: AuthorizationData;
   @Input() highlightedAuths: SelectionModel<AuthorizationData> = new SelectionModel<AuthorizationData>(true, []);

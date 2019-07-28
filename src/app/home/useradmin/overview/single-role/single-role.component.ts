@@ -14,6 +14,9 @@ import {userGroup} from '../../../../store/user-admin/user-group/usergroup.model
 export class SingleRoleComponent implements OnInit {
 
   @Input() rolePermission: boolean;
+  @Input() authPermission: boolean;
+  @Input() authorizationPermission: boolean;
+  @Input() assignPermission: boolean;
   @Input() role: userRole;
   auths: AuthorizationData[];
   @Input() controlVariables: any;

@@ -16,7 +16,10 @@ import { RollserviceService } from '../../../../services/rollservice.service';
 export class RoleListComponent implements OnInit {
 
   roles: userRole[];
+  authorizationPermission = false;
   rolePermission = false;
+  authPermission = false;
+  assignPermission = false;
   @Input() controlVariables: any;
   authorizationTypeOptions = authorizationTypeOptions;
   selectedAuthType = this.authorizationTypeOptions[0];
@@ -42,10 +45,24 @@ export class RoleListComponent implements OnInit {
     };
 
     this.rollserviceService.getRollCd().then((res) => {
-      const role = res.find(item => item === 'Enablement User Admin User Role');
-      if (role) {
-        this.rolePermission = true;
-      }
+      res.map((role) => {
+        switch (role) {
+          case 'Enablement User Admin Role Role':
+            this.rolePermission = true;
+            break;
+          case 'Enablement User Admin Assign Roles Role':
+            this.assignPermission = true;
+            break;
+          case 'Enablement User Admin Auth Role':
+            this.authPermission = false;
+            break;
+          case 'Enablement User Admin Authorize Roles Role':
+            this.authorizationPermission = true;
+            break;
+          default:
+            break;
+        }
+      });
     });
   }
 
