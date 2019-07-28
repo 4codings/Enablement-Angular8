@@ -63,6 +63,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   @ViewChild('file')
   private file: any;
   @ViewChild('processForm') processForm: any;
+  @ViewChild('treesidenav') treesidenav: any;
   private currentXml: any;
   private uploadLocked: boolean;
   applicationProcessObservable$: Subscription;
@@ -80,23 +81,23 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
 
   });
   parentMenuItems = [
-    { item: 'New Process', value: 'Add', havePermission: 0 },
-    { item: 'Open BPMN File', value: 'Import', havePermission: 0 },
-    { item: 'Delete Application', value: 'Delete', havePermission: 0 }];
+    { item: 'New Process', value: 'Add', havePermission: 0, icon: 'create' },
+    { item: 'Open BPMN File', value: 'Import', havePermission: 0, icon: 'attach_file' },
+    { item: 'Delete Application', value: 'Delete', havePermission: 0, icon: 'delete_outline' }];
   childrenMenuItems = [
-    { item: 'Run', value: 'Run', havePermission: 0 },
-    { item: 'Run At', value: 'RunAt', havePermission: 0 },
-    { item: 'Edit', value: 'Edit', havePermission: 0 },
-    { item: 'Delete', value: 'Delete', havePermission: 0 },
-    { item: 'Schedule', value: 'Schedule', havePermission: 0 },
-    { item: 'Pause Schedule', value: 'SchedulePause', havePermission: 0 },
-    { item: 'Resume Schedule', value: 'ScheduleResume', havePermission: 0 },
-    { item: 'Kill Schedule', value: 'ScheduleKill', havePermission: 0 },
-    { item: 'Monitor', value: 'Monitor', havePermission: 0 },
-    { item: 'Approve', value: 'Approve', havePermission: 0 },
-    { item: 'Resolve', value: 'Resolve', havePermission: 0 },
-    { item: 'Download BPNM', value: 'BPNM', havePermission: 0 },
-    { item: 'Download SVG', value: 'SVG', havePermission: 0 }];
+    { item: 'Run', value: 'Run', havePermission: 0, icon: 'directions_run', iconType: 'mat'},
+    { item: 'Run At', value: 'RunAt', havePermission: 0, icon: 'shutter_speed', iconType: 'material' },
+    { item: 'Edit', value: 'Edit', havePermission: 0, icon: 'edit', iconType: 'mat' },
+    { item: 'Delete', value: 'Delete', havePermission: 0, icon: 'delete', iconType: 'mat' },
+    { item: 'Schedule', value: 'Schedule', havePermission: 0, icon: 'schedule', iconType: 'mat' },
+    { item: 'Pause Schedule', value: 'SchedulePause', havePermission: 0, icon: 'pause_circle_outline', iconType: 'material' },
+    { item: 'Resume Schedule', value: 'ScheduleResume', havePermission: 0, icon: 'play_circle_outline', iconType: 'material' },
+    { item: 'Kill Schedule', value: 'ScheduleKill', havePermission: 0, icon: 'fas fa-skull-crossbones fa-lg', iconType: 'fa' },
+    { item: 'Monitor', value: 'Monitor', havePermission: 0, icon: 'fas fa-desktop fa-lg', iconType: 'fa' },
+    { item: 'Approve', value: 'Approve', havePermission: 0, icon: 'fas fa-thumbs-up fa-lg', iconType: 'fa'},
+    { item: 'Resolve', value: 'Resolve', havePermission: 0, icon: 'fab fa-resolving fa-lg', iconType: 'fa' },
+    { item: 'Download BPNM', value: 'BPNM', havePermission: 0, icon: 'fas fa-file-download fa-lg', iconType: 'fa' },
+    { item: 'Download SVG', value: 'SVG', havePermission: 0, icon: 'fas fa-download fa-lg', iconType: 'fa' }];
   roleObservable$: Subscription;
   roleValues;
   childobj = {};
@@ -104,6 +105,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   selectedApp = '';
   selectedProcess: string = '';
   selectedService = '';
+  selectedItem: any;
   Label: any[] = [];
   resFormData: any;
   form_Data_Keys = [];
@@ -956,8 +958,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       // );
       this.Execute_AP_PR();
     }
+    this.treesidenav.opened = false;
   }
-  onParentMenuItemClick(actionValue, parentValue) {
+  onParentMenuItemClick(actionValue, parentValue, selectedItem?) {
     this.selectedApp = parentValue;
     switch (actionValue) {
       case 'Add': {
@@ -984,6 +987,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         break;
       }
     }
+    this.treesidenav.opened = false;
   }
 
   closeSchedulePanel() {
@@ -997,9 +1001,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
 
   onChildMenuItemClick(actionValue, childValue) {
-    this.selectedApp = childValue.value;
-    this.selectedProcess = childValue.text;
 
+    this.selectedApp = childValue ? childValue.value :  this.selectedApp;
+    this.selectedProcess = childValue ? childValue.text :  this.selectedProcess;
+    this.selectedItem = childValue ? childValue : this.selectedItem;
     this.closeSchedulePanel();
 
     switch (actionValue) {
@@ -1075,6 +1080,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         break;
       }
     }
+    this.treesidenav.opened = false;
   }
   onDeleteProcess() {
     if (this.selectedProcess !== '' || this.selectedProcess !== null) {
@@ -1748,8 +1754,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   onChildMenuClick(item) {
     // console.log("onChildMenuClick", item);
 
-    this.ApplicationCD = item.value;
-    this.ProcessCD = item.text;
+    this.ApplicationCD = item ? item.value : this.selectedApp;
+    this.ProcessCD = item ? item.text: this.selectedProcess;
     this.repeatURL(this.ApplicationCD, this.ProcessCD);
     this.find_process(this.ApplicationCD, this.ProcessCD, "All");
   }
