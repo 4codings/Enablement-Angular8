@@ -7,7 +7,7 @@ import {AnonymousOnlyGuard} from '../core/guards/anonymous-only.guard';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'login',
     loadChildren: './login/login.module#LoginModule',
     canActivate: [AnonymousOnlyGuard]
   },

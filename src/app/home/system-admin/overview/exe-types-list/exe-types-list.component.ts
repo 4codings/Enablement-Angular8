@@ -34,6 +34,13 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
     this.http.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=EXE&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe(res => {
       this.exeTypeOptions = res;
       this.exeTypeOptions.push({EXE_TYP:"All"});
+      this.exeTypeOptions = this.exeTypeOptions.sort((a,b) => {
+        if (a.EXE_TYP < b.EXE_TYP) //sort string ascending
+          return -1;
+        if (a.EXE_TYP > b.EXE_TYP)
+          return 1;
+        return 0; 
+      });
     }, err => {
        console.log(err);
     });

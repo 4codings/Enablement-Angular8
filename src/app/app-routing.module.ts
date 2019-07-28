@@ -13,6 +13,7 @@ const routes: Routes = [
     // loadChildren: '../app/home/home.module#HomeModule',
     // redirectTo: '/home/dashboard'
     // },
+    {path:'', loadChildren: '../app/home/home.module#HomeModule'}
 
 ];
 

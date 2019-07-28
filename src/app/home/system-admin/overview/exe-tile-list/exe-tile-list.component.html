@@ -30,7 +30,7 @@
 </div> -->
 <div class="tiles-wrapper" fxLayout="row wrap"
     cdkDropList
-    [cdkDropListData]="exes"
+    [cdkDropListData]="exes.EXES"
     (cdkDropListDropped)="exeDropped($event)"
     cdkDropListOrientation="horizontal">
   <div class="tile"
@@ -44,7 +44,7 @@
        (contextmenu)="openContextmenu($event, currExe, exes.EXE_TYP, i)"
        (mousedown)="onTileMouseDownEventHandler($event)"
        (click)="onExeTileClick(currExe)">
-       <mat-icon class="iconmod shwmaticon">developer_mode</mat-icon>
+       <mat-icon class="iconmod shwmaticon">cloud_upload</mat-icon>
    <!-- <div>{{currExe.EXE_CD}}</div> -->
     <div class="ellipsis-text"><strong>{{currExe.V_EXE_CD?.split('@')[0]}}</strong></div>
   </div>

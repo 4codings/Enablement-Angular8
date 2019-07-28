@@ -4,6 +4,9 @@ import { SystemAdminOverviewService } from '../system-admin-overview.service';
 import { Subscription } from 'rxjs';
 import { AddConnectionDialogComponent } from '../dialogs/add-connection-dialog/add-connection-dialog.component';
 import { MatDialog } from '@angular/material';
+import { ConfirmationAlertComponent } from 'src/app/shared/components/confirmation-alert/confirmation-alert.component';
+import { HttpClient } from '@angular/common/http';
+import { EditConnectionDialogComponent } from '../dialogs/edit-connection-dialog/edit-connection-dialog.component';
 
 @Component({
   selector: 'app-machine-tile-list',
@@ -16,6 +19,8 @@ export class MachineTileListComponent implements OnInit {
   contextMenuActive: boolean = false;
   public selectedMachine;
   public selectedExe;
+  V_SRC_CD:string;
+  V_USR_NM:string;
   subscription: Subscription;
   @Output() selectedMachineTile = new EventEmitter();
   @Input() connectionList;
@@ -27,9 +32,11 @@ export class MachineTileListComponent implements OnInit {
     }
   }
 
-  constructor(private systemOverview:SystemAdminOverviewService, public dialog: MatDialog) { }
+  constructor(private systemOverview:SystemAdminOverviewService, public dialog: MatDialog, private http:HttpClient) { }
 
   ngOnInit() {
+    this.V_SRC_CD=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+    this.V_USR_NM=JSON.parse(sessionStorage.getItem('u')).USR_NM;
     //console.log(this.connectionList);
     this.subscription = this.systemOverview.selectedExe$.subscribe(data => {
       //console.log(data);
@@ -88,10 +95,14 @@ export class MachineTileListComponent implements OnInit {
     document.dispatchEvent(new MouseEvent('mousedown', ev));
   }
 
-  openContextmenu(event: MouseEvent, data?: any) {
+  openContextmenu(event: MouseEvent, data?: any, machineType?:any, index?:any) {
     event.preventDefault();
     if (data) {
-      this.contextMenuData = data;
+      this.contextMenuData = {
+        V_PLATFORM_CD: machineType,
+        cnxData:data,
+        index:index
+      };
     }
     this.contextMenuStyle = {
       top: `${event.clientY}px`,
@@ -102,14 +113,60 @@ export class MachineTileListComponent implements OnInit {
 
   onContextMenuEditConnBtnClick(): void {
     this.contextMenuActive = false;
-    //this.overviewService.openEditAuthDialog(this.contextMenuData);
+    this.onBtnEditExeClick(this.contextMenuData);
     this.contextMenuData = null;
+  }
+
+  onBtnEditExeClick(cxn) {
+    console.log(cxn);
+    const dialogRef = this.dialog.open(EditConnectionDialogComponent, {
+      panelClass: 'app-dialog',
+      width: '600px',
+      data: cxn
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      if(result) {
+        this.systemOverview.getExe();
+      }
+    });
   }
 
   onContextMenuDeleteConnBtnClick(): void {
     this.contextMenuActive = false;
-    //this.deleteAuthEvent.emit(this.contextMenuData);
+    this.onBtnDeleteConnectionClick(this.contextMenuData);
     this.contextMenuData = null;
+  }
+
+  onBtnDeleteConnectionClick(cnx) {
+    //console.log(cnx);
+    const dialogRef = this.dialog.open(ConfirmationAlertComponent, {
+      panelClass: 'app-dialog',
+      width: '600px',
+    });
+
+    dialogRef.componentInstance.title = `Delete Machine- ${cnx.V_PLATFORM_CD} connection`;
+    dialogRef.componentInstance.message = `Are you sure, you want to delete Connection <strong>${cnx.cnxData.V_CXN_CD}</strong>?`;
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        let body = {
+          "V_CXN_CD": cnx.cnxData.V_CXN_CD,
+          "V_SRC_CD": this.V_SRC_CD,
+          "V_CXN_TYP": cnx.cnxData.V_CXN_TYP,
+          "REST_Service": "Connection",
+          "Verb": "DELETE",
+          "RESULT": "@RESULT"
+        };
+        this.http.put('https://enablement.us/Enablement/rest/v1/secured', body).subscribe(res => {
+          console.log("res",res);
+          this.systemOverview.getMachine();
+        }, err => {
+          console.log("err", err)
+        }); 
+      }
+    });
   }
 
   ngOnDestroy() {

@@ -1,29 +1,29 @@
-<ng-template #itemTemplate let-item="item" let-onCollapseExpand="onCollapseExpand"
+<ng-template #itemTemplate let-item="item" let-index let-onCollapseExpand="onCollapseExpand"
   let-onCheckedChange="onCheckedChange">
-  <div class="form-inline row-item">
+  <div class="form-inline row-item" [ngClass]="item.children?'parent-menu':'child-menu'" >
     <i *ngIf="item.children" (click)="onCollapseExpand()" aria-hidden="true" class="fa caret-font"
       [class.fa-caret-right]="item.collapsed" [class.fa-caret-down]="!item.collapsed"></i>
     <div class="form-check" *ngIf="item.text!=='NULL'">
-      <label *ngIf="item.children" class="form-check-label parent-color" (click)="onTitleClick(item)">
+      <label *ngIf="item.children" class="form-check-label parent-color" [ngClass]="item.value == selectedApp?'active-menu':''" (click)="onTitleClick(item)">
         {{item.text}}
       </label>
-      <label *ngIf="!item.children" class="form-check-label child-color m-t--16" (click)="onTitleClick(item)">
+      <label *ngIf="!item.children" class="form-check-label child-color" [ngClass]="(item.text == selectedProcess && item.value == selectedApp)?'active-menu':''" (click)="onTitleClick(item)">
         {{item.text}}
       </label>
       <label *ngIf="item.children" class="form-check-label">
-        <button mat-icon-button [matMenuTriggerFor]="parentMenu" aria-label="Example icon-button with a menu">
+        <button id="side-nav-menu" mat-mini-fab [matMenuTriggerFor]="parentMenu" aria-label="Example icon-button with a menu">
           <mat-icon class="parent-color more-vert-font">more_vert</mat-icon>
         </button>
         <mat-menu #parentMenu="matMenu">
           <div *ngFor="let pitem of parentobj[item.text]">
-            <button (click)="onParentMenuItemClick(pitem.value,item.value)" *ngIf="pitem.havePermission" mat-menu-item>
+            <button (click)="onParentMenuItemClick(pitem.value,item.value, item)" *ngIf="pitem.havePermission" mat-menu-item>
               <span>{{pitem.item}}</span>
             </button>
           </div>
         </mat-menu>
       </label>
-      <label *ngIf="!item.children" class="form-check-label m-t--16">
-        <button mat-icon-button [matMenuTriggerFor]="childMenu" aria-label="Example icon-button with a menu">
+      <label *ngIf="!item.children" class="form-check-label">
+        <button (click)="onChildMenuClick(item)" id="side-nav-menu" mat-mini-fab [matMenuTriggerFor]="childMenu" aria-label="Example icon-button with a menu">
           <mat-icon class="child-color more-vert-font">more_vert</mat-icon>
         </button>
         <mat-menu #childMenu="matMenu">
@@ -57,7 +57,30 @@
     <div fxFlex="100">
       <div class="parent">
         <h5 class="parent-font m-t-10" *ngIf="selectedApp!=''">
-          {{selectedApp}}<span class="selected-process-font" *ngIf="selectedProcess!=''"> : {{selectedProcess}}</span>
+            <button class="mr-2" [matMenuTriggerFor]="parentMenu" aria-label="Example icon-button with a menu">
+                {{selectedApp}}
+              </button>
+              <mat-menu #parentMenu="matMenu">
+                  <div *ngFor="let pitem of parentobj[selectedApp]">
+                    <button (click)="onParentMenuItemClick(pitem.value,selectedApp)" *ngIf="pitem.havePermission" mat-menu-item>
+                      <mat-icon>{{pitem.icon}}</mat-icon>
+                    </button>
+                  </div>
+                </mat-menu>
+                <span class="selected-process-font" *ngIf="selectedProcess!=''"> 
+                <button (click)="onChildMenuClick(selectedItem)" [matMenuTriggerFor]="childMenu" aria-label="Example icon-button with a menu">
+                    {{selectedProcess}}
+                  </button>
+                </span>
+                  <mat-menu #childMenu="matMenu">
+                      <div *ngFor="let citem of childobj[selectedProcess]">
+                        <button (click)="onChildMenuItemClick(citem.value,selectedItem)" *ngIf="citem.havePermission" mat-menu-item>
+                          <mat-icon *ngIf="citem.iconType=='mat'">{{citem.icon}}</mat-icon> 
+                          <i *ngIf="citem.iconType=='material'" class="material-icons">{{citem.icon}}</i>
+                          <i *ngIf="citem.iconType=='fa'" class="{{citem.icon}}"></i>
+                        </button>
+                      </div>
+                    </mat-menu>
         </h5>
       </div>
       <section>
@@ -269,6 +292,96 @@
 
               </div>
             </div>
+
+            <div fxFlex="100" id="schedule" *ngIf="newScheduleView || Pause_btn || Resume_btn || Kill_btn">
+              <div>
+                <hr />
+                <h4 class="CenterAlign">Schedule</h4>
+                <hr />
+
+
+                <div *ngIf="display_process_table">
+                  <mat-form-field *ngIf="show_filter_input">
+                    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                  </mat-form-field>
+                  <img src="./assets/img/progress.gif" style="height:20px;width:20px;" *ngIf="progressImg" alt="" />
+                  <mat-table #table [dataSource]="dataSource" MatSort style="width: 100%">
+
+                    <!-- Checkbox Column -->
+                    <ng-container matColumnDef="#">
+                      <mat-header-cell *matHeaderCellDef>
+                        <mat-checkbox (change)="$event ? masterToggle() : null"
+                          [checked]="selection.hasValue() && isAllSelected()"
+                          [indeterminate]="selection.hasValue() && !isAllSelected()">
+                        </mat-checkbox>
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let dataSource">
+                        <mat-checkbox (click)="$event.stopPropagation();Check_process_id(dataSource.job_name)"
+                          (change)="$event ? selection.toggle(dataSource) : null"
+                          [checked]="selection.isSelected(dataSource)">
+                        </mat-checkbox>
+                        <!-- <mat-checkbox [class]="checkbox_color_value"
+                      (click)="$event.stopPropagation();Check_process_id(dataSource.job_name)"></mat-checkbox> -->
+                      </mat-cell>
+                    </ng-container>
+
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="name">
+                      <mat-header-cell *matHeaderCellDef style="color: white"> Services </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+                    </ng-container>
+
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="status">
+                      <mat-header-cell *matHeaderCellDef style="color: white"> Status </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.status}} </mat-cell>
+                    </ng-container>
+
+                    <!-- Weight Column -->
+                    <ng-container matColumnDef="lastrun">
+                      <mat-header-cell *matHeaderCellDef style="color: white"> Last Run </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.lastrun}} </mat-cell>
+                    </ng-container>
+
+                    <!-- Symbol Column -->
+                    <ng-container matColumnDef="nextrun">
+                      <mat-header-cell *matHeaderCellDef style="color: white"> Next Run </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.nextrun}} </mat-cell>
+                    </ng-container>
+
+                    <!-- Symbol Column -->
+                    <ng-container matColumnDef="details">
+                      <mat-header-cell *matHeaderCellDef style="color: white"> Details </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.details}} </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)"
+                      (click)="onRowClick(row)">
+                    </mat-row>
+                  </mat-table>
+                </div>
+                <div *ngIf="newScheduleView">
+                  <app-repeat-process [parentapp]="selectedplat" [parentpro]="selectedplat1"></app-repeat-process>
+                  <hr />
+                </div>
+              </div>
+              <!-- ______________________________________________________CLOSE TABLE________________________________ -->
+              <div class="row">
+                <div class="col-md-5"></div>
+                <div class="col-md-5">
+                  <br />
+                  <!-- <button mat-raised-button color="primary" *ngIf="Save_btn" [disabled]="save_shedule_btn" (click)="repeatURL()">Save the Schedule</button> -->
+                  <button mat-raised-button color="primary" (click)="onPause()" *ngIf="Pause_btn">Pause Selected
+                    Schedules</button>
+                  <button mat-raised-button color="primary" (click)="onResume()" *ngIf="Resume_btn">Resume Selected
+                    Schedules</button>
+                  <button mat-raised-button color="primary" (click)="onKill()" *ngIf="Kill_btn">Kill Selected
+                    Schedules</button>
+                  <br />
+                </div>
+              </div>
+            </div>
           </div>
           <div fxFlex="20px" class="toggle">
             <a *ngIf="showRightIcon" href="javascript:void(0)"
@@ -360,7 +473,8 @@
               </mat-radio-group>
               <div *ngIf="async_sync==='sync'">
                 <div class="row row1">
-                  <input disabled id="Timeout_seconds" type="number" [(ngModel)]="async_sync_seconds">
+                  <input class="exe_disable" disabled id="Timeout_seconds" type="number"
+                    [(ngModel)]="async_sync_seconds" min="1">
                   <label id="Timeout_seconds_label">{{Label['TIMEOUT_SECONDS']}}</label>
                 </div>
               </div>
@@ -394,13 +508,13 @@
 
               <label>{{Label['NOTIFICATION_EMAIL']}} </label>
               <input type="email" [(ngModel)]="userEmail" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}">
-              
+
               <div class="spaceDiv">
                 <mat-divider></mat-divider>
               </div>
               <div class="oneSpace"></div>
               <div class="row row1">
-                <input id="priority" type="number" [(ngModel)]="priority">
+                <input id="priority" type="number" [(ngModel)]="priority" min="1">
                 <label id="priority_label">{{Label['PRIORITY']}}</label>
               </div>
               <div class="spaceDiv">
@@ -414,12 +528,12 @@
               </mat-radio-group>
               <div *ngIf="restorability==='AUTO'">
                 <div class="row row1">
-                  <input id="seconds" type="number" [(ngModel)]="attemps">
+                  <input id="seconds" type="number" [(ngModel)]="attemps" min="1">
                   <label id="seconds_label">{{Label['ATTEMPS']}}</label>
                 </div>
                 <div class="oneSpace"></div>
                 <div class="row row1">
-                  <input id="seconds" type="number" [(ngModel)]="restorability_seconds">
+                  <input id="seconds" type="number" [(ngModel)]="restorability_seconds" min="1">
                   <label id="seconds_label">{{Label['SECONDS']}}</label>
                 </div>
               </div>
@@ -436,7 +550,7 @@
                   <mat-radio-button class="w-100-p" (change)="onSelectLimtedPriority()" value="limited">
                     {{Label['LIMITED']}}</mat-radio-button>
                   <div *ngIf="instances==='limited'">
-                    <input id="priority" type="number" [(ngModel)]="job_instance">
+                    <input id="priority" type="number" [(ngModel)]="job_instance" min="1">
                   </div>
                 </div>
               </mat-radio-group>

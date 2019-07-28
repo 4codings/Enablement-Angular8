@@ -175,6 +175,7 @@ export class ConnectionComponent implements OnInit {
         "REST_Service": "Connection",
         "Verb": "PATCH"
       };
+      console.log("body",body);
       this.http.patch(this.apiUrlPost, body).subscribe(
         res => {
           (res);

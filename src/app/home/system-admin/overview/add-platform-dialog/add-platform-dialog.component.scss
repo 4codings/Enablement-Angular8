@@ -36,3 +36,10 @@
 ::ng-deep .mat-input-underline,.mat-form-field-underline{
   display: none;
 }
+.dialog-header {
+  flex-direction: row-reverse !important;
+}
+
+button.mat-raised-button  {
+  min-width: unset;
+}

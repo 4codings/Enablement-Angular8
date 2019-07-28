@@ -8,6 +8,7 @@ const routes: Routes = [
     path: '',
     component: HomeComponent,
     children: [
+      {path:'', redirectTo:'user', pathMatch: 'full'},
       {
         path: 'user',
         loadChildren: './user/user.module#UserModule'
