@@ -9,12 +9,19 @@
   "show_SCHE": false,
   "show_PROC": false,
   "show_ORCH": false,
+  "show_UserAdminOverviewTab": true,
+  "show_UserAdminUserTab": true,
+  "show_UserAdminGroupTab": true,
+  "show_UserAdminMembershipTab": true,
+  "show_UserAdminRoleTab": true,
+  "show_UserAdminAssignRoleTab": true,
+  "show_UserAdminAuthTab": true,
+  "show_UserAdminAuthorizationTab": true,
   "call_repeat_on_TIMEOUT": true,
   "repeat_count": 5,
   "message_access_denied": "Sorry, you do not have access to this form",
   "effectiveEndDate": 1.577e+11,
   "noRole": "No Role has been assigned. Contact your system admin",
   "delay_timeout": 2000,
-  "bpmn_file_path": "/opt/tomcat/webapps/src/bpmn/",
-  "ShowUserAdminTabs": "Y"
+  "bpmn_file_path": "/opt/tomcat/webapps/src/bpmn/"
 }

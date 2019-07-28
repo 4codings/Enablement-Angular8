@@ -6,7 +6,6 @@ import {UseradminService} from '../../../../services/useradmin.service2';
 import {OverviewService} from '../overview.service';
 import {takeUntil} from 'rxjs/operators';
 import {userRole} from '../../../../store/user-admin/user-role/userrole.model';
-import { RollserviceService } from '../../../../services/rollservice.service';
 
 @Component({
   selector: 'app-role-list',
@@ -14,13 +13,13 @@ import { RollserviceService } from '../../../../services/rollservice.service';
   styleUrls: ['./role-list.component.scss']
 })
 export class RoleListComponent implements OnInit {
+  @Input() authorizationPermission: boolean;
+  @Input() rolePermission: boolean;
+  @Input() authPermission: boolean;
+  @Input() assignPermission: boolean;
+  @Input() controlVariables: any;
 
   roles: userRole[];
-  authorizationPermission = false;
-  rolePermission = false;
-  authPermission = false;
-  assignPermission = false;
-  @Input() controlVariables: any;
   authorizationTypeOptions = authorizationTypeOptions;
   selectedAuthType = this.authorizationTypeOptions[0];
   V_SRC_CD_DATA: any;
@@ -30,7 +29,6 @@ export class RoleListComponent implements OnInit {
     private dialog: MatDialog,
     private userAdminService: UseradminService,
     public overviewService: OverviewService,
-    private rollserviceService: RollserviceService,
   ) {
     this.overviewService.roles$.pipe(takeUntil(this.unsubscribeAll)).subscribe(roles => {
       this.roles = roles;
@@ -43,27 +41,6 @@ export class RoleListComponent implements OnInit {
     this.V_SRC_CD_DATA = {
       V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
     };
-
-    this.rollserviceService.getRollCd().then((res) => {
-      res.map((role) => {
-        switch (role) {
-          case 'Enablement User Admin Role Role':
-            this.rolePermission = true;
-            break;
-          case 'Enablement User Admin Assign Roles Role':
-            this.assignPermission = true;
-            break;
-          case 'Enablement User Admin Auth Role':
-            this.authPermission = false;
-            break;
-          case 'Enablement User Admin Authorize Roles Role':
-            this.authorizationPermission = true;
-            break;
-          default:
-            break;
-        }
-      });
-    });
   }
 
   selectAuthType(authType): void {
