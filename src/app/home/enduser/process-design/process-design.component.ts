@@ -205,6 +205,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
 
   sequenceFlowsourceId: any;
   sequenceFlowtargetId: any;
+  sequenceFlowobjectId: any;
   iconType = '';
   navigationSubscription;
 
@@ -382,12 +383,13 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         }
         if ($event && $event.element && ['bpmn:SequenceFlow'].indexOf($event.element.type) > -1) {
           const businessObject = $event.element.businessObject;
+          this.sequenceFlowobjectId = $event.element.id;
           this.sequenceFlowsourceId = (businessObject && businessObject.sourceRef ? businessObject.sourceRef.id : '').replace(new RegExp('_', 'g'), ' ');
           this.sequenceFlowtargetId = (businessObject && businessObject.targetRef ? businessObject.targetRef.id : '').replace(new RegExp('_', 'g'), ' ');
           this.showAllTabFlag = false;
           this.showCondtionType = true;
           this.getConditionType();
-          this.getAllTabs(this.generalId);
+          // this.getAllTabs(this.generalId);
         }
         this.closeSchedulePanel();
       }),
@@ -443,6 +445,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                 V_PRDCR_SRC_CD: this.user.SRC_CD,
                 V_PRDCR_SRVC_CD: sourceId,
                 V_SRVC_CD: targetId,
+                V_ORCH_CD: objectId,
                 V_TRNSN_TYP: 'None',
                 V_TRNSN_CND: "",
                 V_CONT_ON_ERR_FLG: 'N',
@@ -451,7 +454,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
               };
 
               // this.generalId = targetId;
-              this.getAllTabs(targetId);
+              // this.getAllTabs(targetId);
 
               if (!this.flows) {
                 this.flows = {};
@@ -503,6 +506,11 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
               this.deleteService(event.element.id);
             }
           }
+          if (event && event.element && event.element.type === 'bpmn:SequenceFlow') {
+            if (!this.onTitleClickNoDelete) {
+              this.deleteSequence(event.element.id);
+            }
+          }
           this.closeSchedulePanel();
         });
     }
@@ -551,6 +559,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       this.updateProcess();
     }
   }
+
   updatesequenceFlow() {
     const vAppCd = this.selectedApp;
     const vPrcsCd = this.selectedProcess;
@@ -564,6 +573,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       V_PRDCR_SRC_CD: this.user.SRC_CD,
       V_PRDCR_SRVC_CD: this.sequenceFlowsourceId,
       V_SRVC_CD: this.sequenceFlowtargetId,
+      V_ORCH_CD: this.sequenceFlowobjectId,
       V_TRNSN_TYP: 'None',
       V_TRNSN_CND: "",
       V_CONT_ON_ERR_FLG: 'N',
@@ -629,14 +639,30 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     if (id !== '' || id !== null) {
       this.httpClient.delete(this.apiService.endPoints.securedJSON + 'V_APP_CD=' + this.selectedApp + '&V_PRCS_CD=' + this.selectedProcess + '&V_SRVC_CD=' + id + '&V_SRC_CD=' + this.user.SRC_CD + '&V_USR_NM=' + this.user.USR_NM + '&REST_Service=Service&Verb=DELETE')
         .subscribe(res => {
-          this.selectedService = '';
+          this.generalId = this.selectedProcess;
           this.isApp = false;
-          this.isProcess = false;
+          this.isProcess = true;
           this.isService = false;
-          this.opened = false;
+          this.opened = true;
           this.showAllTabFlag = false;
-          this.showRightIcon = false;
+          this.showRightIcon = true;
+          this.selectedService = '';
         })
+    }
+  }
+  deleteSequence(id) {
+    if (id !== '' || id !== null) {
+      this.httpClient.get(this.apiService.endPoints.secure + "V_ORCH_CD=" + id + '&V_SRC_CD=' + this.user.SRC_CD + '&V_USR_NM=' + this.user.USR_NM + "&REST_Service=Orchetration&Verb=DELETE").subscribe(
+        res => {
+          this.generalId = this.selectedProcess;
+          this.isApp = false;
+          this.isProcess = true;
+          this.isService = false;
+          this.opened = true;
+          this.showAllTabFlag = false;
+          this.showRightIcon = true;
+        }
+      );
     }
   }
   updateProcess() {
@@ -785,6 +811,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.opened = true;
     this.showAllTabFlag = false;
     this.generalId = 'newApplication';
+    this.modeler.importXML('');
     const input = document.getElementById('processId') as HTMLInputElement;
     input.focus();
     input.select();

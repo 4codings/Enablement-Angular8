@@ -46,11 +46,11 @@ export class HeaderComponent implements OnInit {
     this.optionalService.applicationOptionalValue.next(null);
     this.optionalService.processOptionalValue.next(null);
     this.optionalService.serviceOptionalValue.next(null);
-    // this.optionalService.applicationProcessValue.next(null);
+    this.optionalService.applicationProcessValue.next(null);
     this.optionalService.applicationArray = [];
     this.optionalService.serviceArray = [];
     this.optionalService.processArray = [];
-    // this.optionalService.applicationProcessArray = [];
+    this.optionalService.applicationProcessArray = [];
     this.userService.clear();
     this.router.navigateByUrl('/login', { skipLocationChange: true });
   }
