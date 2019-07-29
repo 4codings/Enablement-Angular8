@@ -1,29 +1,35 @@
 <ng-template #itemTemplate let-item="item" let-index let-onCollapseExpand="onCollapseExpand"
   let-onCheckedChange="onCheckedChange">
-  <div class="form-inline row-item" [ngClass]="item.children?'parent-menu':'child-menu'" >
+  <div class="form-inline row-item" [ngClass]="item.children?'parent-menu':'child-menu'">
     <i *ngIf="item.children" (click)="onCollapseExpand()" aria-hidden="true" class="fa caret-font"
       [class.fa-caret-right]="item.collapsed" [class.fa-caret-down]="!item.collapsed"></i>
     <div class="form-check" *ngIf="item.text!=='NULL'">
-      <label *ngIf="item.children" class="form-check-label parent-color" [ngClass]="item.value == selectedApp?'active-menu':''" (click)="onTitleClick(item)">
+      <label *ngIf="item.children" class="form-check-label parent-color"
+        [ngClass]="item.value == selectedApp?'active-menu':''" (click)="onTitleClick(item)">
         {{item.text}}
       </label>
-      <label *ngIf="!item.children" class="form-check-label child-color" [ngClass]="(item.text == selectedProcess && item.value == selectedApp)?'active-menu':''" (click)="onTitleClick(item)">
+      <label *ngIf="!item.children" class="form-check-label child-color"
+        [ngClass]="(item.text == selectedProcess && item.value == selectedApp)?'active-menu':''"
+        (click)="onTitleClick(item)">
         {{item.text}}
       </label>
       <label *ngIf="item.children" class="form-check-label">
-        <button id="side-nav-menu" mat-mini-fab [matMenuTriggerFor]="parentMenu" aria-label="Example icon-button with a menu">
+        <button id="side-nav-menu" mat-mini-fab [matMenuTriggerFor]="parentMenu"
+          aria-label="Example icon-button with a menu">
           <mat-icon class="parent-color more-vert-font">more_vert</mat-icon>
         </button>
         <mat-menu #parentMenu="matMenu">
           <div *ngFor="let pitem of parentobj[item.text]">
-            <button (click)="onParentMenuItemClick(pitem.value,item.value, item)" *ngIf="pitem.havePermission" mat-menu-item>
+            <button (click)="onParentMenuItemClick(pitem.value,item.value, item)" *ngIf="pitem.havePermission"
+              mat-menu-item>
               <span>{{pitem.item}}</span>
             </button>
           </div>
         </mat-menu>
       </label>
       <label *ngIf="!item.children" class="form-check-label">
-        <button (click)="onChildMenuClick(item)" id="side-nav-menu" mat-mini-fab [matMenuTriggerFor]="childMenu" aria-label="Example icon-button with a menu">
+        <button (click)="onChildMenuClick(item)" id="side-nav-menu" mat-mini-fab [matMenuTriggerFor]="childMenu"
+          aria-label="Example icon-button with a menu">
           <mat-icon class="child-color more-vert-font">more_vert</mat-icon>
         </button>
         <mat-menu #childMenu="matMenu">
@@ -57,30 +63,33 @@
     <div fxFlex="100">
       <div class="parent">
         <h5 class="parent-font m-t-10" *ngIf="selectedApp!=''">
-            <button class="mr-2" [matMenuTriggerFor]="parentMenu" aria-label="Example icon-button with a menu">
-                {{selectedApp}}
+          <button class="mr-2" [matMenuTriggerFor]="parentMenu" aria-label="Example icon-button with a menu">
+            {{selectedApp}}
+          </button>
+          <mat-menu #parentMenu="matMenu">
+            <div *ngFor="let pitem of parentobj[selectedApp]">
+              <button (click)="onParentMenuItemClick(pitem.value,selectedApp)" *ngIf="pitem.havePermission"
+                mat-menu-item>
+                <mat-icon>{{pitem.icon}}</mat-icon>
               </button>
-              <mat-menu #parentMenu="matMenu">
-                  <div *ngFor="let pitem of parentobj[selectedApp]">
-                    <button (click)="onParentMenuItemClick(pitem.value,selectedApp)" *ngIf="pitem.havePermission" mat-menu-item>
-                      <mat-icon>{{pitem.icon}}</mat-icon>
-                    </button>
-                  </div>
-                </mat-menu>
-                <span class="selected-process-font" *ngIf="selectedProcess!=''"> 
-                <button (click)="onChildMenuClick(selectedItem)" [matMenuTriggerFor]="childMenu" aria-label="Example icon-button with a menu">
-                    {{selectedProcess}}
-                  </button>
-                </span>
-                  <mat-menu #childMenu="matMenu">
-                      <div *ngFor="let citem of childobj[selectedProcess]">
-                        <button (click)="onChildMenuItemClick(citem.value,selectedItem)" *ngIf="citem.havePermission" mat-menu-item>
-                          <mat-icon *ngIf="citem.iconType=='mat'">{{citem.icon}}</mat-icon> 
-                          <i *ngIf="citem.iconType=='material'" class="material-icons">{{citem.icon}}</i>
-                          <i *ngIf="citem.iconType=='fa'" class="{{citem.icon}}"></i>
-                        </button>
-                      </div>
-                    </mat-menu>
+            </div>
+          </mat-menu>
+          <span class="selected-process-font" *ngIf="selectedProcess!=''">
+            <button (click)="onChildMenuClick(selectedItem)" [matMenuTriggerFor]="childMenu"
+              aria-label="Example icon-button with a menu">
+              {{selectedProcess}}
+            </button>
+          </span>
+          <mat-menu #childMenu="matMenu">
+            <div *ngFor="let citem of childobj[selectedProcess]">
+              <button (click)="onChildMenuItemClick(citem.value,selectedItem)" *ngIf="citem.havePermission"
+                mat-menu-item>
+                <mat-icon *ngIf="citem.iconType=='mat'">{{citem.icon}}</mat-icon>
+                <i *ngIf="citem.iconType=='material'" class="material-icons">{{citem.icon}}</i>
+                <i *ngIf="citem.iconType=='fa'" class="{{citem.icon}}"></i>
+              </button>
+            </div>
+          </mat-menu>
         </h5>
       </div>
       <section>

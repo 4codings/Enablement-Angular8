@@ -41,7 +41,7 @@ export class ReportData {
     {
       provide: TreeviewI18n, useValue: Object.assign(new TreeviewI18nDefault(), {
         getFilterPlaceholder(): string {
-          return 'Find Process';
+          return 'Find a Process';
         }
       })
     }
@@ -85,7 +85,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     { item: 'Open BPMN File', value: 'Import', havePermission: 0, icon: 'attach_file' },
     { item: 'Delete Application', value: 'Delete', havePermission: 0, icon: 'delete_outline' }];
   childrenMenuItems = [
-    { item: 'Run', value: 'Run', havePermission: 0, icon: 'directions_run', iconType: 'mat'},
+    { item: 'Run', value: 'Run', havePermission: 0, icon: 'directions_run', iconType: 'mat' },
     { item: 'Run At', value: 'RunAt', havePermission: 0, icon: 'shutter_speed', iconType: 'material' },
     { item: 'Edit', value: 'Edit', havePermission: 0, icon: 'edit', iconType: 'mat' },
     { item: 'Delete', value: 'Delete', havePermission: 0, icon: 'delete', iconType: 'mat' },
@@ -94,7 +94,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     { item: 'Resume Schedule', value: 'ScheduleResume', havePermission: 0, icon: 'play_circle_outline', iconType: 'material' },
     { item: 'Kill Schedule', value: 'ScheduleKill', havePermission: 0, icon: 'fas fa-skull-crossbones fa-lg', iconType: 'fa' },
     { item: 'Monitor', value: 'Monitor', havePermission: 0, icon: 'fas fa-desktop fa-lg', iconType: 'fa' },
-    { item: 'Approve', value: 'Approve', havePermission: 0, icon: 'fas fa-thumbs-up fa-lg', iconType: 'fa'},
+    { item: 'Approve', value: 'Approve', havePermission: 0, icon: 'fas fa-thumbs-up fa-lg', iconType: 'fa' },
     { item: 'Resolve', value: 'Resolve', havePermission: 0, icon: 'fab fa-resolving fa-lg', iconType: 'fa' },
     { item: 'Download BPNM', value: 'BPNM', havePermission: 0, icon: 'fas fa-file-download fa-lg', iconType: 'fa' },
     { item: 'Download SVG', value: 'SVG', havePermission: 0, icon: 'fas fa-download fa-lg', iconType: 'fa' }];
@@ -135,7 +135,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   isService = false;
   isTaskCreatedFlag = false;
   oldTaskId = '';
-
+  oldIconType = '';
   taskList = ['bpmn:EndEvent',
     'bpmn:Event',
     'bpmn:StartEvent',
@@ -412,6 +412,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           if ($event && $event.element && ['bpmn:Process', 'label'].indexOf($event.element.type) === -1) {
             if ($event.element.type !== 'bpmn:SequenceFlow') {
               this.isTaskCreatedFlag = true;
+              this.oldIconType = $event.element.type;
               this.oldTaskId = $event.element.id.replace(new RegExp('_', 'g'), ' ');
             }
             this.selectedService = this.generalId;
@@ -706,9 +707,14 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.http.post(`https://${this.globals.domain}/FileAPIs/api/file/v1/upload`, formData).subscribe(
             res => {
               if (this.isTaskCreatedFlag) {
+                this.iconType = this.oldIconType;
+                this.oldIconType = '';
                 this.generalId = this.oldTaskId;
                 this.getAllTabs(this.generalId);
                 this.isTaskCreatedFlag = false;
+                const input = document.getElementById('processId') as HTMLInputElement;
+                input.focus();
+                input.select();
               }
             }
           );
@@ -779,7 +785,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.opened = true;
     this.showAllTabFlag = false;
     this.generalId = 'newApplication';
-    document.getElementById('processId').focus();
+    const input = document.getElementById('processId') as HTMLInputElement;
+    input.focus();
+    input.select();
   }
   addApplicationOnBE() {
     const body = {
@@ -1002,8 +1010,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
 
   onChildMenuItemClick(actionValue, childValue) {
 
-    this.selectedApp = childValue ? childValue.value :  this.selectedApp;
-    this.selectedProcess = childValue ? childValue.text :  this.selectedProcess;
+    this.selectedApp = childValue ? childValue.value : this.selectedApp;
+    this.selectedProcess = childValue ? childValue.text : this.selectedProcess;
     this.selectedItem = childValue ? childValue : this.selectedItem;
     this.closeSchedulePanel();
 
@@ -1197,16 +1205,18 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
 
   getExecutablesForSelctedExecutableType() {
-    this.endUserService.getExecutablesForSelctedExecutableType(this.selectedExecutableType)
-      .subscribe(res => {
-        if (res) {
-          this.executablesData = []; //clearning off old data if any
-          if (res.json().EXE_CD) {
-            this.executablesData = res.json().EXE_CD;
-            this.executablesData.sort();
+    if (this.selectedExecutableType != null) {
+      this.endUserService.getExecutablesForSelctedExecutableType(this.selectedExecutableType)
+        .subscribe(res => {
+          if (res) {
+            this.executablesData = []; //clearning off old data if any
+            if (res.json().EXE_CD) {
+              this.executablesData = res.json().EXE_CD;
+              this.executablesData.sort();
+            }
           }
-        }
-      });
+        });
+    }
   }
 
   getInputOutputForSelctedExecutable() {
@@ -1755,7 +1765,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     // console.log("onChildMenuClick", item);
 
     this.ApplicationCD = item ? item.value : this.selectedApp;
-    this.ProcessCD = item ? item.text: this.selectedProcess;
+    this.ProcessCD = item ? item.text : this.selectedProcess;
     this.repeatURL(this.ApplicationCD, this.ProcessCD);
     this.find_process(this.ApplicationCD, this.ProcessCD, "All");
   }
