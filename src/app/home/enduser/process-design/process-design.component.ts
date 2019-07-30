@@ -162,7 +162,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     'bpmn:InclusiveGateway',
     'bpmn:ComplexGateway',
     'bpmn:EventbasedGateway'];
-  sequenceConditionType = ['None', 'Default', 'Simple Expression', 'Java Script', 'Java, Python', 'SQL Statement'];
+  sequenceConditionType = ['Simple Expression', 'Java Script', 'Java, Python', 'SQL Statement'];
   sequenceCondition = '';
   selectedConditionType = '';
   //For property panel
@@ -387,21 +387,24 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.sequenceFlowsourceId = (businessObject && businessObject.sourceRef ? businessObject.sourceRef.id : '').replace(new RegExp('_', 'g'), ' ');
           this.sequenceFlowtargetId = (businessObject && businessObject.targetRef ? businessObject.targetRef.id : '').replace(new RegExp('_', 'g'), ' ');
           this.showAllTabFlag = false;
-          this.showCondtionType = true;
           const isConditional = !!businessObject.conditionExpression;
           console.log('iscondition', isConditional);
-          this.getConditionType();
+          if (isConditional) {
+            this.showCondtionType = true;
+            this.getConditionType();
+          }
+
           // this.getAllTabs(this.generalId);
         }
         this.closeSchedulePanel();
       }),
         eventBus.on('element.changed', ($event) => {
           console.log('element.changed', $event.element);
-
           this.iconType = $event.element.type;
           this.opened = true;
           // this.showAllTabFlag = true;
           this.showRightIcon = true;
+          this.showCondtionType = false;
           const businessObject = $event.element.businessObject;
           this.processName = businessObject.name ? businessObject.name : '';
           if (businessObject.documentation && businessObject.documentation.length) {
@@ -420,6 +423,11 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
               this.isTaskCreatedFlag = true;
               this.oldIconType = $event.element.type;
               this.oldTaskId = $event.element.id.replace(new RegExp('_', 'g'), ' ');
+            } else {
+              const isConditional = !!businessObject.conditionExpression;
+              if (isConditional) {
+                this.showCondtionType = true;
+              }
             }
             this.selectedService = this.generalId;
             this.isApp = false;
@@ -737,6 +745,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.http.post(`https://${this.globals.domain}/FileAPIs/api/file/v1/upload`, formData).subscribe(
             res => {
               if (this.isTaskCreatedFlag) {
+                this.showCondtionType = false;
                 this.iconType = this.oldIconType;
                 this.oldIconType = '';
                 this.generalId = this.oldTaskId;
@@ -998,7 +1007,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       // );
       this.Execute_AP_PR();
     }
-    if(!parentTitleClick) {
+    if (!parentTitleClick) {
       this.treesidenav.opened = false;
     }
   }
