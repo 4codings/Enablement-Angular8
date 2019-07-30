@@ -66,13 +66,13 @@
           <button class="mr-2" [matMenuTriggerFor]="parentMenu" aria-label="Example icon-button with a menu">
             {{selectedApp}}
           </button>
-          <mat-menu class="headerParentMenu" #parentMenu="matMenu">
-            <div *ngFor="let pitem of parentobj[selectedApp]">
+          <mat-menu class="headerChildMenu" #parentMenu="matMenu">
+            <span *ngFor="let pitem of parentobj[selectedApp]" class="{{pitem.icon}}">
               <button (click)="onParentMenuItemClick(pitem.value,selectedApp)" *ngIf="pitem.havePermission"
                 mat-menu-item>
                 <mat-icon>{{pitem.icon}}</mat-icon>
               </button>
-            </div>
+            </span>
           </mat-menu>
           <span class="selected-process-font" *ngIf="selectedProcess!=''">
             <button (click)="onChildMenuClick(selectedItem)" [matMenuTriggerFor]="childMenu"

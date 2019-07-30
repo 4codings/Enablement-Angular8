@@ -86,10 +86,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     { item: 'Delete Application', value: 'Delete', havePermission: 0, icon: 'delete_outline' }];
   childrenMenuItems = [
     { item: 'Run', value: 'Run', havePermission: 0, icon: 'directions_run', iconType: 'mat' },
-    { item: 'Run At', value: 'RunAt', havePermission: 0, icon: 'input', iconType: 'mat' },
-    { item: 'Edit', value: 'Edit', havePermission: 0, icon: 'edit', iconType: 'mat' },
+    { item: 'Run At', value: 'RunAt', havePermission: 0, icon: 'fa fa-plane fa-lg', iconType: 'fa' },
+    { item: 'Edit', value: 'Edit', havePermission: 0, icon: 'fa fa-edit fa-lg', iconType: 'fa' },
     { item: 'Delete', value: 'Delete', havePermission: 0, icon: 'entry bpmn-icon-trash', iconType: 'bpmn' },
-    { item: 'Schedule', value: 'Schedule', havePermission: 0, icon: 'schedule', iconType: 'mat' },
+    { item: 'Schedule', value: 'Schedule', havePermission: 0, icon: 'fa fa-calendar fa-lg', iconType: 'fa' },
     { item: 'Pause Schedule', value: 'SchedulePause', havePermission: 0, icon: 'fa fa-pause-circle-o fa-lg', iconType: 'fa' },
     { item: 'Resume Schedule', value: 'ScheduleResume', havePermission: 0, icon: 'fa fa-play-circle-o fa-lg', iconType: 'fa' },
     { item: 'Kill Schedule', value: 'ScheduleKill', havePermission: 0, icon: 'fa fa-skull-crossbones fa-lg', iconType: 'fa' },

@@ -547,6 +547,7 @@ mat-header-cell{
 :host /deep/ .parent-font button {
   background: #7685D7;
   color: #fff;
+  outline: none;
 }
 
 .fa-file-download {
@@ -587,6 +588,14 @@ mat-header-cell{
   color: rgb(255, 116, 0);
 }
 
+.fa-edit {
+  color: #a366ff;
+}
+
+.fa-calendar {
+  color: gray;
+}
+
 .mat-menu-item .bpmn-icon-trash {
     width: 22px;
     height: 22px;
@@ -600,6 +609,14 @@ mat-header-cell{
     color: red;
 }
 
-.mat-menu-item .mat-icon {
+.mat-menu-item .mat-icon:first-child {
   color: #99cc00;
+}
+
+.attach_file .mat-menu-item .mat-icon {
+  color: #ff7400;
+}
+
+.delete_outline .mat-menu-item .mat-icon {
+  color: red;
 }
