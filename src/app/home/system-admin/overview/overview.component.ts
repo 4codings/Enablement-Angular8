@@ -10,8 +10,8 @@ import {Subject} from 'rxjs';
 export class OverviewComponent implements OnDestroy {
 
   unsubscribeAll: Subject<boolean> = new Subject<boolean>();
-  selectedExeType: string = 'All';
-  selectedMachineType: string = 'All';
+  selectedExeType: string = 'E_REST';
+  //selectedMachineType: string = 'All';
 
   constructor() {}
 
@@ -28,11 +28,12 @@ export class OverviewComponent implements OnDestroy {
   }
   
   selectedExe(type) {
+    console.log(type);
     this.selectedExeType = type;
   }
 
   selectedMachine(type) {
-     this.selectedMachineType = type
+     this.selectedExeType = type
   }
 
   ngOnDestroy(): void {

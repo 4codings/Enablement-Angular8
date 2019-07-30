@@ -32,7 +32,28 @@
           </div>
   
         </div>  
-  
+        
+        <div fxLayout="row" fxLayout.lt-sm="column">
+          <!-- PLATFORM -->
+          <div class="ml-3 pt-3" fxFlex="50">
+            <label item-width="100"><strong>Platform</strong></label>
+            <mat-form-field class="form_in">
+              <mat-select [(ngModel)]="PLF_CD" name="PLF_CD">
+                <mat-option style="text-align:center;" [value]="pf" (click)="platformDescription()" *ngFor="let pf of PLF_TYPE['SERVER_CD']">
+                  {{pf}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <!-- PLATFORM DESCRIPTION -->
+          <div class="mr-3" fxFlex="48">
+            <label item-width="100"><strong>Platform Description</strong></label>
+            <mat-form-field class="form_in" style="width:100%;">
+              <textarea matInput  [(ngModel)]="PLF_DSC" name="PLF_DSC"></textarea>
+            </mat-form-field>
+          </div>
+        </div> 
+
         <div flex fxLayoutGap="50px" fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="row" fxLayout.gt-sm="row">
           <div fxFlex="100">
             <div class="tab">

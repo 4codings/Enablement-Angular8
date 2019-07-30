@@ -2,12 +2,12 @@
   <div fxLayoutAlign="space-between center">
     <div style="padding-left: 8px">
       <span>Executable Types : </span>
-      <button mat-button [matMenuTriggerFor]="groupTypeMenu">{{selectedExeType.EXE_TYP}}
+      <button mat-button [matMenuTriggerFor]="groupTypeMenu">{{selectedExeType}}
         <mat-icon matSuffix>arrow_drop_down</mat-icon>
       </button>
       <mat-menu #groupTypeMenu="matMenu">
         <button mat-menu-item *ngFor="let item of exeTypeOptions"
-                (click)="changeExeType(item)">{{item.EXE_TYP}}</button>
+                (click)="changeExeType(item.EXE_TYP)">{{item.EXE_TYP}}</button>
       </mat-menu>
     </div>
     <div class="container-actions">
@@ -26,6 +26,6 @@
   </div>
   <mat-divider></mat-divider>
   <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="16px" cdkDropListGroup>
-    <app-single-exe *ngFor="let currExe of sortedAllExes | filterExetype:selectedExeType" [exeType]="currExe" [exes]="currExe.EXES"></app-single-exe>
+    <app-single-exe *ngFor="let currExe of sortedAllExes | filterExetype:selectedExeType:'exe'" [exeType]="currExe" [exes]="currExe.EXES"></app-single-exe>
   </div>
 </div>

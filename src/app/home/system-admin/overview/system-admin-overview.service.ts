@@ -64,15 +64,15 @@ export class SystemAdminOverviewService {
     let connections=[];
     let sortedAllConnections = [];
     this.http.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=CXNS&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe((res:any) => {
-      this.machines.forEach(item => {
+      this.exes.forEach(item => {
         let arr = res.filter(data => {
-          return item.V_PLATFORM_ID == data.V_PLATFORM_ID
+          return item.EXE_TYP == data.V_CXN_TYP
         })
-        connections.push({V_PLATFORM_CD: item.V_PLATFORM_CD, V_CXN:arr});
-        sortedAllConnections = connections.sort((a,b) => (a.V_CXN.length > b.V_CXN.length) ? -1 : ((b.V_CXN.length > a.V_CXN.length) ? 1 : 0));
-        this.getMachineConnection$.next(sortedAllConnections);
-        //console.log("connections", sortedAllConnections);
+        connections.push({V_PLATFORM_CD: item.EXE_TYP, V_CXN:arr});
       });
+      sortedAllConnections = connections.sort((a,b) => (a.V_CXN.length > b.V_CXN.length) ? -1 : ((b.V_CXN.length > a.V_CXN.length) ? 1 : 0));
+      this.getMachineConnection$.next(sortedAllConnections);
+      //console.log("connections", sortedAllConnections);
     }, err => {
        console.log(err);
     })

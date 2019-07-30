@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Output } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, Input } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -21,7 +21,7 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
   public exes;
   public allExes = [];
   public sortedAllExes = [];
-  public selectedExeType= {EXE_TYP:"E_REST"};
+  @Input() selectedExeType;
   unsubscribeAll: Subject<boolean> = new Subject<boolean>();
   exeTypeOptions;
   @Output() selectedExe: EventEmitter<any> = new EventEmitter();
@@ -74,8 +74,9 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
 
 
   changeExeType(type): void {
+    console.log(type);
     this.selectedExeType = type;
-    this.selectedExe.emit(type.EXE_TYP);
+    this.selectedExe.emit(type);
   }
 
   onAddExeBtnClick() {

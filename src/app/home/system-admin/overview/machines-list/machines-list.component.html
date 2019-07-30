@@ -1,15 +1,22 @@
 <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="100" fxLayoutGap="8px">
   <div fxLayoutAlign="space-between center">
     <div style="padding-left: 8px">
-      <span>Machines : </span>
-      <button mat-button [matMenuTriggerFor]="machineTypeMenu">{{selectedMachineType}}
+      <span>Connection Types : </span>
+      <button mat-button [matMenuTriggerFor]="machineTypeMenu">{{selectedConnectionType}}
         <mat-icon matSuffix>arrow_drop_down</mat-icon>
       </button>
       <mat-menu #machineTypeMenu="matMenu">
-        <button mat-menu-item *ngFor="let item of machineTypeOptions"
-                (click)="changeMachineType(item)">{{item.V_PLATFORM_CD}}</button>
+        <button mat-menu-item *ngFor="let item of connectionTypeOptions"
+                (click)="changeMachineType(item)">{{item.EXE_TYP}}</button>
       </mat-menu>
     </div>
+    <div class="container-actions">
+      Manage Machines <button mat-icon-button class="add-btn"
+              matTooltip="Manage Machines"
+              (click)="onManageMachineBtnClick()">
+        <mat-icon class="edit-icon">edit</mat-icon>
+      </button>
+    </div> 
     <!-- <button mat-icon-button class="add-btn"
             matTooltip="Add Machines"
             (click)="onAddMachineBtnClick()">
@@ -18,6 +25,6 @@
   </div>
   <mat-divider></mat-divider>
   <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="16px" cdkDropListGroup>
-    <app-single-machine *ngFor="let currMachine of sortedAllConnections | filterMachines:selectedMachineType" [machineData]="currMachine" [machines]="currMachine.V_CXN"></app-single-machine>
+    <app-single-machine *ngFor="let currMachine of sortedAllConnections | filterExetype:selectedConnectionType:'cxn'" [machineData]="currMachine" [machines]="currMachine.V_CXN"></app-single-machine>
   </div>
 </div>
