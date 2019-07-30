@@ -17,6 +17,10 @@ import {BehaviorSubject, Subject} from 'rxjs';
 })
 export class SingleGroupComponent implements OnInit, OnDestroy {
 
+  @Input() groupPermission: boolean;
+  @Input() userPermission: boolean;
+  @Input() membershipPermission: boolean;
+  @Input() assignPermission: boolean;
   @Input() group: userGroup;
   users: User[];
   @Input() controlVariables: any;

@@ -334,11 +334,10 @@ input {
 }
 
 :host /deep/ .mat-form-field-appearance-legacy .mat-form-field-infix {
-  padding: 1px;
-  padding-top: 1px;
   padding-right: 0px;
-  padding-bottom: 1px;
   padding-left: 0px;
+  border-top: none;
+  background: #fff;
 }
 
 .m-t-15 {
@@ -398,6 +397,11 @@ input {
 :host /deep/ .treeview-container .form-check .form-check-label.child-color {
   margin-left: 1rem !important;
 }
+
+:host /deep/ .treeview-container .form-check .form-check-label.child-color:hover {
+  background-color: #ccc !important;
+}
+
 :host /deep/ .treeview-container {
   max-height: inherit !important;
   overflow-y: inherit !important;
@@ -536,4 +540,87 @@ mat-header-cell{
 
 :host /deep/ .bpmn-icon-intermediate-event-throw-signal:before {
   color: #0066ff;
+}
+
+.active-menu {
+  color: #23629F;
+  background-color: #fff;
+  padding: 0px 2px;
+}
+
+:host /deep/ .parent-font button {
+  background: #7685D7;
+  color: #fff;
+  outline: none;
+}
+
+.fa-file-download {
+  padding-left: 5px;
+}
+.fa-download {
+  color: orange;
+}
+.fa-resolving {
+  color: #00ff00;
+}
+
+.fa-desktop {
+  color: #ff1a1a;
+}
+
+.fa-play-circle-o {
+  color: #4d0026;
+}
+
+.fa-skull-crossbones {
+  color: #0066ff;
+}
+
+.fa-pause-circle-o {
+  color: rgb(0, 225, 255);
+}
+
+.fa-file-download {
+  color: rgb(0, 225, 255);
+}
+
+.fa-thumbs-up {
+  color: #99cc00;
+}
+
+.fa-pencil-square-o {
+  color: rgb(255, 116, 0);
+}
+
+.fa-edit {
+  color: #a366ff;
+}
+
+.fa-calendar {
+  color: gray;
+}
+
+.mat-menu-item .bpmn-icon-trash {
+    width: 22px;
+    height: 22px;
+    text-align: center;
+    display: inline-block;
+    font-size: 22px;
+    border-radius: 3px;
+    cursor: default;
+    box-shadow: 0 0 2px 1px #FEFEFE;
+    pointer-events: all;
+    color: red;
+}
+
+.mat-menu-item .mat-icon:first-child {
+  color: #99cc00;
+}
+
+.attach_file .mat-menu-item .mat-icon {
+  color: #ff7400;
+}
+
+.delete_outline .mat-menu-item .mat-icon {
+  color: red;
 }

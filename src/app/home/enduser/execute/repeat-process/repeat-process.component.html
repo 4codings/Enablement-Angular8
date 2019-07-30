@@ -41,7 +41,7 @@
     </div>
 </mat-radio-group> -->
 <!-- expression    -->
-<div flex fxLayout="row" fxLayoutAlign="center" style="margin-top:20px;">
+<div flex fxLayout="row" fxLayoutAlign="center">
 
     <div  fxShow="true" fxHide.gt-sm="true">
 
@@ -74,7 +74,7 @@
         </div>
     </div>
     <div fxFlex="5"></div>
-    <div fxFlex="15">
+    <div fxFlex="15" class="mt-4">
         <mat-form-field style="width:80px;resize: none" [floatLabel]="'always'">
             <input matInput placeholder="Repeat After" type="number" [(ngModel)]="Repeat_after" min="1" max="86400" />
         </mat-form-field>
@@ -82,7 +82,7 @@
     </div>
 </div>
 <!-- hide show  -->
-<div fxLayoutAlign="center" fxLayout="row" style="margin-top:20px;">
+<div fxLayoutAlign="center" fxLayout="row">
 
         <div *ngIf="week_block" fxLayoutAlign="center">
             <mat-form-field style="width:123px;">
@@ -99,7 +99,7 @@
     </div>
     
 </div>
-<div flex fxLayout="row" fxLayoutAlign="center" fxLayout.lt-sm="column" style="margin-top:20px;">
+<div flex fxLayout="row" fxLayoutAlign="center" fxLayout.lt-sm="column">
     <div fxFlex="25">
 
     </div>
@@ -248,7 +248,7 @@
 </div>
 <!-- close expression -->
 
-<div flex fxLayout="row" fxLayoutAlign="center" style="margin-top:20px;">
+<div flex fxLayout="row" fxLayoutAlign="center">
 
     <button mat-raised-button color="primary" [disabled]="Execute_Later" (click)="cronEditForRepeat()">
         <mat-icon class="iconmod">done_outline</mat-icon>Submit</button>

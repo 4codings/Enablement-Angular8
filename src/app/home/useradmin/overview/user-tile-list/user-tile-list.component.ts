@@ -17,6 +17,8 @@ import {environment} from '../../../../../environments/environment';
   styleUrls: ['./user-tile-list.component.scss']
 })
 export class UserTileListComponent implements OnInit, OnDestroy {
+  @Input() userPermission: boolean;
+  @Input() membershipPermission: boolean;
   @Input() users: User[];
   @Input() selectedUser: User;
   @Input() highlightedUsers: SelectionModel<User> = new SelectionModel<User>(true, []);

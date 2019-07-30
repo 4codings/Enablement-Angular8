@@ -14,17 +14,23 @@ import {Subject} from 'rxjs';
   styleUrls: ['./group-list.component.scss']
 })
 export class GroupListComponent implements OnInit, OnDestroy {
+  @Input() membershipPermission: boolean;
+  @Input() groupPermission: boolean;
+  @Input() userPermission: boolean;
+  @Input() assignPermission: boolean;
+  @Input() controlVariables: any;
 
   groups: userGroup[];
-  @Input() controlVariables: any;
   groupTypeOptions = groupTypeOptions;
   selectedGroupType;
   V_SRC_CD_DATA: any;
   unsubscribeAll: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private dialog: MatDialog,
-              private userAdminService: UseradminService,
-              public overviewService: OverviewService) {
+  constructor(
+    private dialog: MatDialog,
+    private userAdminService: UseradminService,
+    public overviewService: OverviewService,
+  ) {
     this.overviewService.groups$.pipe(takeUntil(this.unsubscribeAll)).subscribe(groups => this.groups = groups);
     this.overviewService.selectedGroupType$.pipe(takeUntil(this.unsubscribeAll)).subscribe(type => this.selectedGroupType = type);
   }

@@ -1,34 +1,45 @@
 <ng-template #itemTemplate let-item="item" let-index let-onCollapseExpand="onCollapseExpand"
   let-onCheckedChange="onCheckedChange">
-  <div class="form-inline row-item" [ngClass]="item.children?'parent-menu':'child-menu'" >
+  <div class="form-inline row-item" [ngClass]="item.children?'parent-menu':'child-menu'">
     <i *ngIf="item.children" (click)="onCollapseExpand()" aria-hidden="true" class="fa caret-font"
       [class.fa-caret-right]="item.collapsed" [class.fa-caret-down]="!item.collapsed"></i>
     <div class="form-check" *ngIf="item.text!=='NULL'">
-      <label *ngIf="item.children" class="form-check-label parent-color" (click)="onTitleClick(item)">
+      <label *ngIf="item.children" class="form-check-label parent-color"
+        [ngClass]="item.value == selectedApp?'active-menu':''" (click)="onTitleClick(item, true)">
         {{item.text}}
       </label>
-      <label *ngIf="!item.children" class="form-check-label child-color" (click)="onTitleClick(item)">
+      <label *ngIf="!item.children" class="form-check-label child-color"
+        [ngClass]="(item.text == selectedProcess && item.value == selectedApp)?'active-menu':''"
+        (click)="onTitleClick(item)">
         {{item.text}}
       </label>
       <label *ngIf="item.children" class="form-check-label">
-        <button id="side-nav-menu" mat-mini-fab [matMenuTriggerFor]="parentMenu" aria-label="Example icon-button with a menu">
+        <button id="side-nav-menu" mat-mini-fab [matMenuTriggerFor]="parentMenu"
+          aria-label="Example icon-button with a menu">
           <mat-icon class="parent-color more-vert-font">more_vert</mat-icon>
         </button>
-        <mat-menu #parentMenu="matMenu">
-          <div *ngFor="let pitem of parentobj[item.text]">
-            <button (click)="onParentMenuItemClick(pitem.value,item.value)" *ngIf="pitem.havePermission" mat-menu-item>
+        <mat-menu #parentMenu="matMenu" class="sideNavChildMenu">
+          <div *ngFor="let pitem of parentobj[item.text]" class="{{pitem.icon}}">
+            <button (click)="onParentMenuItemClick(pitem.value,item.value, item)" *ngIf="pitem.havePermission"
+              mat-menu-item>
+              <mat-icon>{{pitem.icon}}</mat-icon>
               <span>{{pitem.item}}</span>
             </button>
           </div>
         </mat-menu>
       </label>
       <label *ngIf="!item.children" class="form-check-label">
-        <button id="side-nav-menu" mat-mini-fab [matMenuTriggerFor]="childMenu" aria-label="Example icon-button with a menu" (click)="onChildMenuClick(item)">
+        <button (click)="onChildMenuClick(item)" id="side-nav-menu" mat-mini-fab [matMenuTriggerFor]="childMenu"
+          aria-label="Example icon-button with a menu">
           <mat-icon class="child-color more-vert-font">more_vert</mat-icon>
         </button>
-        <mat-menu #childMenu="matMenu">
+        <mat-menu #childMenu="matMenu" class="sideNavChildMenu">
           <div *ngFor="let citem of childobj[item.text]">
             <button (click)="onChildMenuItemClick(citem.value,item)" *ngIf="citem.havePermission" mat-menu-item>
+              <mat-icon *ngIf="citem.iconType=='mat'">{{citem.icon}}</mat-icon>
+              <i *ngIf="citem.iconType=='material'" class="material-icons">{{citem.icon}}</i>
+              <i *ngIf="citem.iconType=='fa'" class="{{citem.icon}}"></i>
+              <div *ngIf="citem.iconType=='bpmn'" class="{{citem.icon}}" draggable="true" data-action="delete" title="Remove"></div>
               <span *ngIf="citem.havePermission">{{citem.item}}</span>
             </button>
           </div>
@@ -47,7 +58,7 @@
           </ngx-treeview>
         </div>
         <div fxFlex="100">
-          <button mat-icon-button matTooltip="Add Application" (click)="addApplication()">
+          <button *ngIf="item.length" mat-icon-button matTooltip="Add Application" (click)="addApplication()">
             <mat-icon class="add-btn add-font">add</mat-icon>
           </button>
         </div>
@@ -57,11 +68,34 @@
     <div fxFlex="100">
       <div class="parent">
         <h5 class="parent-font m-t-10" *ngIf="selectedApp!=''">
-          {{selectedApp}} 
-          <!-- <button id="side-nav-menu" mat-mini-fab [matMenuTriggerFor]="parentMenu" aria-label="Example icon-button with a menu">
-            <mat-icon class="parent-color more-vert-font">more_vert</mat-icon>
-          </button> -->
-          <span class="selected-process-font" *ngIf="selectedProcess!=''"> : {{selectedProcess}}</span>
+          <button class="mr-2" [matMenuTriggerFor]="parentMenu" aria-label="Example icon-button with a menu">
+            {{selectedApp}}
+          </button>
+          <mat-menu class="headerChildMenu" #parentMenu="matMenu">
+            <span *ngFor="let pitem of parentobj[selectedApp]" class="{{pitem.icon}}">
+              <button (click)="onParentMenuItemClick(pitem.value,selectedApp)" *ngIf="pitem.havePermission"
+                mat-menu-item>
+                <mat-icon>{{pitem.icon}}</mat-icon>
+              </button>
+            </span>
+          </mat-menu>
+          <span class="selected-process-font" *ngIf="selectedProcess!=''">
+            <button (click)="onChildMenuClick(selectedItem)" [matMenuTriggerFor]="childMenu"
+              aria-label="Example icon-button with a menu">
+              {{selectedProcess}}
+            </button>
+          </span>
+          <mat-menu class="headerChildMenu" #childMenu="matMenu">
+            <span *ngFor="let citem of childobj[selectedProcess]">
+              <button (click)="onChildMenuItemClick(citem.value,selectedItem)" *ngIf="citem.havePermission"
+                mat-menu-item>
+                <mat-icon *ngIf="citem.iconType=='mat'">{{citem.icon}}</mat-icon>
+                <i *ngIf="citem.iconType=='material'" class="material-icons">{{citem.icon}}</i>
+                <i *ngIf="citem.iconType=='fa'" class="{{citem.icon}}"></i>
+                <div *ngIf="citem.iconType=='bpmn'" class="{{citem.icon}}" draggable="true" data-action="delete" title="Remove"></div>
+              </button>
+            </span>
+          </mat-menu>
         </h5>
       </div>
       <section>
@@ -277,7 +311,7 @@
             <div fxFlex="100" id="schedule" *ngIf="newScheduleView || Pause_btn || Resume_btn || Kill_btn">
               <div>
                 <hr />
-                <h4 class="CenterAlign">Schedule</h4>
+                <h4 class="text-center">Schedule</h4>
                 <hr />
 
 
@@ -455,7 +489,7 @@
               <div *ngIf="async_sync==='sync'">
                 <div class="row row1">
                   <input class="exe_disable" disabled id="Timeout_seconds" type="number"
-                    [(ngModel)]="async_sync_seconds">
+                    [(ngModel)]="async_sync_seconds" min="1">
                   <label id="Timeout_seconds_label">{{Label['TIMEOUT_SECONDS']}}</label>
                 </div>
               </div>
@@ -495,7 +529,7 @@
               </div>
               <div class="oneSpace"></div>
               <div class="row row1">
-                <input id="priority" type="number" [(ngModel)]="priority">
+                <input id="priority" type="number" [(ngModel)]="priority" min="1">
                 <label id="priority_label">{{Label['PRIORITY']}}</label>
               </div>
               <div class="spaceDiv">
@@ -509,12 +543,12 @@
               </mat-radio-group>
               <div *ngIf="restorability==='AUTO'">
                 <div class="row row1">
-                  <input id="seconds" type="number" [(ngModel)]="attemps">
+                  <input id="seconds" type="number" [(ngModel)]="attemps" min="1">
                   <label id="seconds_label">{{Label['ATTEMPS']}}</label>
                 </div>
                 <div class="oneSpace"></div>
                 <div class="row row1">
-                  <input id="seconds" type="number" [(ngModel)]="restorability_seconds">
+                  <input id="seconds" type="number" [(ngModel)]="restorability_seconds" min="1">
                   <label id="seconds_label">{{Label['SECONDS']}}</label>
                 </div>
               </div>
@@ -531,7 +565,7 @@
                   <mat-radio-button class="w-100-p" (change)="onSelectLimtedPriority()" value="limited">
                     {{Label['LIMITED']}}</mat-radio-button>
                   <div *ngIf="instances==='limited'">
-                    <input id="priority" type="number" [(ngModel)]="job_instance">
+                    <input id="priority" type="number" [(ngModel)]="job_instance" min="1">
                   </div>
                 </div>
               </mat-radio-group>

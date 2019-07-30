@@ -2,18 +2,27 @@
   <div class="container-header" fxLayoutAlign="space-between center">
     <span class="container-title">{{group.V_USR_GRP_CD}}</span>
     <div class="container-actions">
-      <button mat-icon-button matTooltip="delete group" (click)="onBtnDeleteGroupClick(group)">
+      <button mat-icon-button matTooltip="delete group"
+              *ngIf="groupPermission"
+              (click)="onBtnDeleteGroupClick(group)">
         <mat-icon>delete</mat-icon>
       </button>
-      <button mat-icon-button matTooltip="edit group" (click)="onBtnEditGroupClick(group)">
+      <button mat-icon-button matTooltip="edit group"
+              *ngIf="groupPermission"
+              (click)="onBtnEditGroupClick(group)">
         <mat-icon>edit</mat-icon>
       </button>
-      <button mat-icon-button matTooltip="assign role" (click)="onBtnAssignRoleClick(group)">
+      <button mat-icon-button matTooltip="assign role"
+              *ngIf="assignPermission"
+              (click)="onBtnAssignRoleClick(group)">
         <mat-icon>link</mat-icon>
       </button>
     </div>
   </div>
   <app-user-tile-list [users]="users"
+                      [userPermission]="userPermission"
+                      [membershipPermission]="membershipPermission"
                       (addUserEvent)="onAddUserEventHandler($event)"
-                      (deleteUserEvent)="onDeleteUserEventHandler($event)"></app-user-tile-list>
+                      (deleteUserEvent)="onDeleteUserEventHandler($event)">
+  </app-user-tile-list>
 </div>

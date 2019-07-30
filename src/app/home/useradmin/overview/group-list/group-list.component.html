@@ -12,6 +12,7 @@
     </div>
     <button mat-icon-button class="add-btn"
             matTooltip="Add Group"
+            *ngIf="groupPermission"
             (click)="onAddGroupBtnClick()">
       <mat-icon>add_circle</mat-icon>
     </button>
@@ -20,6 +21,10 @@
   <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="16px" cdkDropListGroup>
     <app-single-group *ngFor="let currGroup of groups | groupType:selectedGroupType.key"
                       [group]="currGroup"
+                      [groupPermission]="groupPermission"
+                      [userPermission]="userPermission"
+                      [assignPermission]="assignPermission"
+                      [membershipPermission]="membershipPermission"
                       [controlVariables]="controlVariables"></app-single-group>
   </div>
 </div>
