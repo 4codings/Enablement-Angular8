@@ -5,7 +5,7 @@
       [class.fa-caret-right]="item.collapsed" [class.fa-caret-down]="!item.collapsed"></i>
     <div class="form-check" *ngIf="item.text!=='NULL'">
       <label *ngIf="item.children" class="form-check-label parent-color"
-        [ngClass]="item.value == selectedApp?'active-menu':''" (click)="onTitleClick(item)">
+        [ngClass]="item.value == selectedApp?'active-menu':''" (click)="onTitleClick(item, true)">
         {{item.text}}
       </label>
       <label *ngIf="!item.children" class="form-check-label child-color"
@@ -66,7 +66,7 @@
           <button class="mr-2" [matMenuTriggerFor]="parentMenu" aria-label="Example icon-button with a menu">
             {{selectedApp}}
           </button>
-          <mat-menu #parentMenu="matMenu">
+          <mat-menu class="headerParentMenu" #parentMenu="matMenu">
             <div *ngFor="let pitem of parentobj[selectedApp]">
               <button (click)="onParentMenuItemClick(pitem.value,selectedApp)" *ngIf="pitem.havePermission"
                 mat-menu-item>
@@ -80,15 +80,16 @@
               {{selectedProcess}}
             </button>
           </span>
-          <mat-menu #childMenu="matMenu">
-            <div *ngFor="let citem of childobj[selectedProcess]">
+          <mat-menu class="headerChildMenu" #childMenu="matMenu">
+            <span *ngFor="let citem of childobj[selectedProcess]">
               <button (click)="onChildMenuItemClick(citem.value,selectedItem)" *ngIf="citem.havePermission"
                 mat-menu-item>
                 <mat-icon *ngIf="citem.iconType=='mat'">{{citem.icon}}</mat-icon>
                 <i *ngIf="citem.iconType=='material'" class="material-icons">{{citem.icon}}</i>
                 <i *ngIf="citem.iconType=='fa'" class="{{citem.icon}}"></i>
+                <div *ngIf="citem.iconType=='bpmn'" class="{{citem.icon}}" draggable="true" data-action="delete" title="Remove"></div>
               </button>
-            </div>
+            </span>
           </mat-menu>
         </h5>
       </div>

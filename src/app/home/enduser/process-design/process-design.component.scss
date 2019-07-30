@@ -540,4 +540,66 @@ mat-header-cell{
 
 .active-menu {
   color: #23629F;
+  background-color: #fff;
+  padding: 0px 2px;
+}
+
+:host /deep/ .parent-font button {
+  background: #7685D7;
+  color: #fff;
+}
+
+.fa-file-download {
+  padding-left: 5px;
+}
+.fa-download {
+  color: orange;
+}
+.fa-resolving {
+  color: #00ff00;
+}
+
+.fa-desktop {
+  color: #ff1a1a;
+}
+
+.fa-play-circle-o {
+  color: #4d0026;
+}
+
+.fa-skull-crossbones {
+  color: #0066ff;
+}
+
+.fa-pause-circle-o {
+  color: rgb(0, 225, 255);
+}
+
+.fa-file-download {
+  color: rgb(0, 225, 255);
+}
+
+.fa-thumbs-up {
+  color: #99cc00;
+}
+
+.fa-pencil-square-o {
+  color: rgb(255, 116, 0);
+}
+
+.mat-menu-item .bpmn-icon-trash {
+    width: 22px;
+    height: 22px;
+    text-align: center;
+    display: inline-block;
+    font-size: 22px;
+    border-radius: 3px;
+    cursor: default;
+    box-shadow: 0 0 2px 1px #FEFEFE;
+    pointer-events: all;
+    color: red;
+}
+
+.mat-menu-item .mat-icon {
+  color: #99cc00;
 }

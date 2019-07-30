@@ -86,13 +86,13 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     { item: 'Delete Application', value: 'Delete', havePermission: 0, icon: 'delete_outline' }];
   childrenMenuItems = [
     { item: 'Run', value: 'Run', havePermission: 0, icon: 'directions_run', iconType: 'mat' },
-    { item: 'Run At', value: 'RunAt', havePermission: 0, icon: 'shutter_speed', iconType: 'material' },
+    { item: 'Run At', value: 'RunAt', havePermission: 0, icon: 'input', iconType: 'mat' },
     { item: 'Edit', value: 'Edit', havePermission: 0, icon: 'edit', iconType: 'mat' },
-    { item: 'Delete', value: 'Delete', havePermission: 0, icon: 'delete', iconType: 'mat' },
+    { item: 'Delete', value: 'Delete', havePermission: 0, icon: 'entry bpmn-icon-trash', iconType: 'bpmn' },
     { item: 'Schedule', value: 'Schedule', havePermission: 0, icon: 'schedule', iconType: 'mat' },
-    { item: 'Pause Schedule', value: 'SchedulePause', havePermission: 0, icon: 'pause_circle_outline', iconType: 'material' },
-    { item: 'Resume Schedule', value: 'ScheduleResume', havePermission: 0, icon: 'play_circle_outline', iconType: 'material' },
-    { item: 'Kill Schedule', value: 'ScheduleKill', havePermission: 0, icon: 'fas fa-skull-crossbones fa-lg', iconType: 'fa' },
+    { item: 'Pause Schedule', value: 'SchedulePause', havePermission: 0, icon: 'fa fa-pause-circle-o fa-lg', iconType: 'fa' },
+    { item: 'Resume Schedule', value: 'ScheduleResume', havePermission: 0, icon: 'fa fa-play-circle-o fa-lg', iconType: 'fa' },
+    { item: 'Kill Schedule', value: 'ScheduleKill', havePermission: 0, icon: 'fa fa-skull-crossbones fa-lg', iconType: 'fa' },
     { item: 'Monitor', value: 'Monitor', havePermission: 0, icon: 'fas fa-desktop fa-lg', iconType: 'fa' },
     { item: 'Approve', value: 'Approve', havePermission: 0, icon: 'fas fa-thumbs-up fa-lg', iconType: 'fa' },
     { item: 'Resolve', value: 'Resolve', havePermission: 0, icon: 'fab fa-resolving fa-lg', iconType: 'fa' },
@@ -928,7 +928,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       this.updateService();
     }
   }
-  onTitleClick(item) {
+  onTitleClick(item, parentTitleClick?) {
     this.closeSchedulePanel();
     this.onTitleClickNoDelete = true;
     this.isApp = false;
@@ -993,7 +993,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       // );
       this.Execute_AP_PR();
     }
-    this.treesidenav.opened = false;
+    if(!parentTitleClick) {
+      this.treesidenav.opened = false;
+    }
   }
   onParentMenuItemClick(actionValue, parentValue, selectedItem?) {
     this.selectedApp = parentValue;

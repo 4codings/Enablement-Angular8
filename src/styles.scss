@@ -434,3 +434,10 @@
   line-height: 15px !important;
   height: 25px !important;
 }
+
+.headerChildMenu .mat-menu-content button.mat-menu-item {
+  width: 25% !important;
+  display: inline !important;
+  text-overflow: inherit;
+  outline: none;
+}
