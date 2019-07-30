@@ -334,11 +334,10 @@ input {
 }
 
 :host /deep/ .mat-form-field-appearance-legacy .mat-form-field-infix {
-  padding: 1px;
-  padding-top: 1px;
   padding-right: 0px;
-  padding-bottom: 1px;
   padding-left: 0px;
+  border-top: none;
+  background: #fff;
 }
 
 .m-t-15 {
