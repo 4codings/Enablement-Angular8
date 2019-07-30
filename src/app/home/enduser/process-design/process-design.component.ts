@@ -388,12 +388,16 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.sequenceFlowtargetId = (businessObject && businessObject.targetRef ? businessObject.targetRef.id : '').replace(new RegExp('_', 'g'), ' ');
           this.showAllTabFlag = false;
           this.showCondtionType = true;
+          const isConditional = !!businessObject.conditionExpression;
+          console.log('iscondition', isConditional);
           this.getConditionType();
           // this.getAllTabs(this.generalId);
         }
         this.closeSchedulePanel();
       }),
         eventBus.on('element.changed', ($event) => {
+          console.log('element.changed', $event.element);
+
           this.iconType = $event.element.type;
           this.opened = true;
           // this.showAllTabFlag = true;
@@ -500,7 +504,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           }
           this.closeSchedulePanel();
         }),
-        eventBus.on("shape.remove", (event) => {
+        eventBus.on("element.delete", (event) => {
           if (event && event.element && this.taskList.indexOf(event.element.type) >= 0) {
             if (!this.onTitleClickNoDelete) {
               this.deleteService(event.element.id);
@@ -811,7 +815,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.opened = true;
     this.showAllTabFlag = false;
     this.generalId = 'newApplication';
-    this.modeler.importXML('');
+    let x = '<?xml version="1.0" encoding="UTF-8"?><bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="2.0.3"></bpmn:definitions>';
+    this.modeler.importXML(x);
     const input = document.getElementById('processId') as HTMLInputElement;
     input.focus();
     input.select();

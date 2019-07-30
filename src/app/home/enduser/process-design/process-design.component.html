@@ -53,7 +53,7 @@
           </ngx-treeview>
         </div>
         <div fxFlex="100">
-          <button mat-icon-button matTooltip="Add Application" (click)="addApplication()">
+          <button *ngIf="item.length" mat-icon-button matTooltip="Add Application" (click)="addApplication()">
             <mat-icon class="add-btn add-font">add</mat-icon>
           </button>
         </div>
