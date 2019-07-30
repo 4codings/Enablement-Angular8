@@ -441,3 +441,7 @@
   text-overflow: inherit;
   outline: none;
 }
+.mat-menu-panel.headerChildMenu {
+  background: none !important;
+  box-shadow: none;
+}
