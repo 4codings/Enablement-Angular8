@@ -18,10 +18,11 @@
           aria-label="Example icon-button with a menu">
           <mat-icon class="parent-color more-vert-font">more_vert</mat-icon>
         </button>
-        <mat-menu #parentMenu="matMenu">
-          <div *ngFor="let pitem of parentobj[item.text]">
+        <mat-menu #parentMenu="matMenu" class="sideNavChildMenu">
+          <div *ngFor="let pitem of parentobj[item.text]" class="{{pitem.icon}}">
             <button (click)="onParentMenuItemClick(pitem.value,item.value, item)" *ngIf="pitem.havePermission"
               mat-menu-item>
+              <mat-icon>{{pitem.icon}}</mat-icon>
               <span>{{pitem.item}}</span>
             </button>
           </div>
@@ -32,9 +33,13 @@
           aria-label="Example icon-button with a menu">
           <mat-icon class="child-color more-vert-font">more_vert</mat-icon>
         </button>
-        <mat-menu #childMenu="matMenu">
+        <mat-menu #childMenu="matMenu" class="sideNavChildMenu">
           <div *ngFor="let citem of childobj[item.text]">
             <button (click)="onChildMenuItemClick(citem.value,item)" *ngIf="citem.havePermission" mat-menu-item>
+              <mat-icon *ngIf="citem.iconType=='mat'">{{citem.icon}}</mat-icon>
+              <i *ngIf="citem.iconType=='material'" class="material-icons">{{citem.icon}}</i>
+              <i *ngIf="citem.iconType=='fa'" class="{{citem.icon}}"></i>
+              <div *ngIf="citem.iconType=='bpmn'" class="{{citem.icon}}" draggable="true" data-action="delete" title="Remove"></div>
               <span *ngIf="citem.havePermission">{{citem.item}}</span>
             </button>
           </div>

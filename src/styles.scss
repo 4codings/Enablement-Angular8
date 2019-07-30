@@ -440,7 +440,17 @@
   display: inline !important;
   text-overflow: inherit;
   outline: none;
+  padding: 0 6px;
 }
+
+.sideNavChildMenu .mat-menu-content button.mat-menu-item .mat-icon, 
+.sideNavChildMenu .mat-menu-content .bpmn-icon-trash,
+.sideNavChildMenu .mat-menu-content .fa,
+.sideNavChildMenu .mat-menu-content .fas,
+.sideNavChildMenu .mat-menu-content .fab {
+  margin-right: 10px;
+}
+
 .mat-menu-panel.headerChildMenu {
   background: none !important;
   box-shadow: none;
