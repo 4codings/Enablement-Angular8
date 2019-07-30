@@ -398,6 +398,11 @@ input {
 :host /deep/ .treeview-container .form-check .form-check-label.child-color {
   margin-left: 1rem !important;
 }
+
+:host /deep/ .treeview-container .form-check .form-check-label.child-color:hover {
+  background-color: #ccc !important;
+}
+
 :host /deep/ .treeview-container {
   max-height: inherit !important;
   overflow-y: inherit !important;
