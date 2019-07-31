@@ -587,7 +587,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       V_SRVC_CD: this.sequenceFlowtargetId,
       V_ORCH_CD: this.sequenceFlowobjectId,
       V_TRNSN_TYP: 'None',
-      V_TRNSN_CND: "",
+      V_TRNSN_CND: this.sequenceCondition,
       V_CONT_ON_ERR_FLG: 'N',
       V_USR_NM: this.user.USR_NM,
       Verb: 'PUT'
@@ -751,9 +751,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                 this.generalId = this.oldTaskId;
                 this.getAllTabs(this.generalId);
                 this.isTaskCreatedFlag = false;
-                const input = document.getElementById('processId') as HTMLInputElement;
-                input.focus();
-                input.select();
+                document.getElementById('processId').focus();
               }
             }
           );
@@ -817,18 +815,22 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     }
   }
   addApplication() {
+    this.selectedProcess = '';
+    this.selectedService = '';
+    this.selectedApp = '';
+    this.documentation = '';
+    this.processName = '';
     this.isApp = true;
     this.isProcess = false;
     this.isService = false;
     this.showRightIcon = true;
     this.opened = true;
     this.showAllTabFlag = false;
+    this.showCondtionType = false;
     this.generalId = 'newApplication';
     let x = '<?xml version="1.0" encoding="UTF-8"?><bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="2.0.3"></bpmn:definitions>';
     this.modeler.importXML(x);
-    const input = document.getElementById('processId') as HTMLInputElement;
-    input.focus();
-    input.select();
+    document.getElementById('processId').focus();
   }
   addApplicationOnBE() {
     const body = {
@@ -1016,6 +1018,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     switch (actionValue) {
       case 'Add': {
         this.onTitleClickNoDelete = true;
+        let x = '<?xml version="1.0" encoding="UTF-8"?><bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="2.0.3"></bpmn:definitions>';
+        this.modeler.importXML(x);
+        this.selectedProcess = '';
+        this.selectedService = '';
         this.newBpmn();
         this.isApp = false;
         this.isProcess = true;
@@ -1023,6 +1029,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         this.generalId = "newProcess";
         this.showRightIcon = true;
         this.opened = true;
+        this.showCondtionType = false;
         break;
       }
       case 'Import': {

@@ -39,7 +39,8 @@
               <mat-icon *ngIf="citem.iconType=='mat'">{{citem.icon}}</mat-icon>
               <i *ngIf="citem.iconType=='material'" class="material-icons">{{citem.icon}}</i>
               <i *ngIf="citem.iconType=='fa'" class="{{citem.icon}}"></i>
-              <div *ngIf="citem.iconType=='bpmn'" class="{{citem.icon}}" draggable="true" data-action="delete" title="Remove"></div>
+              <div *ngIf="citem.iconType=='bpmn'" class="{{citem.icon}}" draggable="true" data-action="delete"
+                title="Remove"></div>
               <span *ngIf="citem.havePermission">{{citem.item}}</span>
             </button>
           </div>
@@ -92,7 +93,8 @@
                 <mat-icon *ngIf="citem.iconType=='mat'">{{citem.icon}}</mat-icon>
                 <i *ngIf="citem.iconType=='material'" class="material-icons">{{citem.icon}}</i>
                 <i *ngIf="citem.iconType=='fa'" class="{{citem.icon}}"></i>
-                <div *ngIf="citem.iconType=='bpmn'" class="{{citem.icon}}" draggable="true" data-action="delete" title="Remove"></div>
+                <div *ngIf="citem.iconType=='bpmn'" class="{{citem.icon}}" draggable="true" data-action="delete"
+                  title="Remove"></div>
               </button>
             </span>
           </mat-menu>
@@ -416,7 +418,8 @@
           <mat-tab label="General">
             <div class="generalTabV">
               <label class="m-t-10">{{Label['ID']}} </label>
-              <input id="processId" onfocus="this.select();" (change)="onInputChange()" [(ngModel)]="generalId">
+              <input id="processId" tabindex="-1" onfocus="this.select();" (change)="onInputChange()"
+                [(ngModel)]="generalId">
             </div>
             <div class="oneSpace"></div>
             <div class="generalTabV">
