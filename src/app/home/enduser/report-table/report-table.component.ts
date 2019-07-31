@@ -18,6 +18,8 @@ import { ToastrService } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
 import { CustomPropsProvider } from '../process-design/props-provider/CustomPropsProvider';
 import { Viewer } from '../execute/bpmn-viewer';
+import { RollserviceService } from 'src/app/services/rollservice.service';
+import { Subscription } from 'rxjs';
 // import { Viewer } from '../execute/bpmn-viewer-js';
 
 @Component({
@@ -37,6 +39,10 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   domain_name = this.globals.domain_name;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(BaseChartDirective, {}) chart: BaseChartDirective;
+  roleObservable$: Subscription;
+  roleValues;
+  hasMonitorPermission = false;
+  isMonitorClicked = false;
 
   constructor(private dataStored: StorageSessionService,
     private https: Http,
@@ -50,8 +56,26 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     private apiService: ApiService,
     private _snackBar: MatSnackBar,
     private toasterService: ToastrService,
-    private httpClient: HttpClient
-  ) { }
+    private httpClient: HttpClient,
+    private roleService: RollserviceService,
+  ) {
+    this.roleObservable$ = this.roleService.roleValue.subscribe(data => {
+      if (data != null) {
+        this.roleValues = data;
+        if (this.roleValues.length) {
+          this.roleValues.forEach(ele => {
+            switch (ele) {
+              case 'Enablement Workflow Dashboard Role':
+                this.hasMonitorPermission = true;
+                break;
+              default:
+                break;
+            }
+          })
+        }
+      }
+    });
+  }
   chartposition: any = [{ x: 0, y: 0 }, { x: 0, y: 0 }, { x: 0, y: 0 }, { x: 0, y: 0 }];
   dragEndLine(event) {
     var offset = { ...(<any>event.source._dragRef)._passiveTransform };
@@ -81,7 +105,10 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     console.log(this.chartposition[3]);
     this.setchartpreferences();
   }
-
+  onMonitorClick() {
+    console.log('monitor clicked')
+    this.isMonitorClicked = true;
+  }
   remove(item: string): void {
     const index = this.hiddencols.indexOf(item);
     if (index >= 0) {
@@ -152,6 +179,10 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     if (eventBus) {
       eventBus.on('element.click', ($event) => {
         console.log('element.click', $event)
+        if (this.isMonitorClicked) {
+          var canvas = this.viewer.get('canvas');
+          canvas.addMarker($event.element.id, 'highlight');
+        }
       });
     }
 
