@@ -93,8 +93,8 @@
                 <mat-icon *ngIf="citem.iconType=='mat'" title="{{citem.item}}">{{citem.icon}}</mat-icon>
                 <i *ngIf="citem.iconType=='material'" class="material-icons" title="{{citem.item}}">{{citem.icon}}</i>
                 <i *ngIf="citem.iconType=='fa'" class="{{citem.icon}}" title="{{citem.item}}"></i>
-                <div *ngIf="citem.iconType=='bpmn'" title="{{citem.item}}" class="{{citem.icon}}" draggable="true" data-action="delete"
-                  title="Remove"></div>
+                <div *ngIf="citem.iconType=='bpmn'" title="{{citem.item}}" class="{{citem.icon}}" draggable="true"
+                  data-action="delete" title="Remove"></div>
               </button>
             </span>
           </mat-menu>
@@ -438,8 +438,8 @@
                 <mat-divider></mat-divider>
               </div>
               <label>{{Label['CONDITION_TYPE']}}</label>
-              <select (change)="updatesequenceConditionType($event.target.value)">
-                <option>{{Label['PLEASE_SELECT']}}</option>
+              <select [(ngModel)]="selectedConditionType" (change)="updatesequenceConditionType($event.target.value)">
+                <!-- <option>{{Label['PLEASE_SELECT']}}</option> -->
                 <option *ngFor="let condition of sequenceConditionType " [value]="condition">
                   {{ condition}}
                 </option>
@@ -447,7 +447,13 @@
               <div>
                 <div class="oneSpace"></div>
                 <label>{{Label['CONDITION']}}</label>
-                <textarea (change)="onInputChange()" [(ngModel)]="sequenceCondition"></textarea>
+                <textarea type="text" name="condition" (change)="onInputChange()" [(ngModel)]="sequenceCondition"
+                  #seq_condition="ngModel" required></textarea>
+                <div *ngIf="seq_condition.invalid && (seq_condition.dirty || seq_condition.touched)" class="errors">
+                  <div *ngIf="seq_condition.errors && seq_condition.errors.required">
+                    {{selectedConditionType}} Condition is required.
+                  </div>
+                </div>
               </div>
             </div>
           </mat-tab>

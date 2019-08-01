@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, ViewEncapsulation, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { saveAs } from 'file-saver';
@@ -60,6 +60,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   private flows = {};
   public showAllTabFlag = true;
   public showCondtionType = false;
+  public isConditionalFlow = false;
+  public isDefaultFlow = false;
+  public isNoneFlow = false;
   @ViewChild('file')
   private file: any;
   @ViewChild('processForm') processForm: any;
@@ -133,9 +136,12 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   isApp = false;
   isProcess = false;
   isService = false;
+  isSequenceFlow = false;
   isTaskCreatedFlag = false;
+  isSequenceCreatedChangedFlag = false;
   oldTaskId = '';
   oldIconType = '';
+  oldSequenceId = '';
   taskList = ['bpmn:EndEvent',
     'bpmn:Event',
     'bpmn:StartEvent',
@@ -162,9 +168,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     'bpmn:InclusiveGateway',
     'bpmn:ComplexGateway',
     'bpmn:EventbasedGateway'];
-  sequenceConditionType = ['Simple Expression', 'Java Script', 'Java, Python', 'SQL Statement'];
+  sequenceConditionType = ['Simple Expression', 'Java Script', 'Java or Python', 'SQL Statement'];
   sequenceCondition = '';
-  selectedConditionType = '';
+  selectedConditionType = 'Simple Expression';
   //For property panel
 
   propertyPanelAllTabsData: any;
@@ -236,6 +242,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
 
   ApplicationCD = '';
   ProcessCD = '';
+  @ViewChild('processId') processID: ElementRef;
 
   constructor(
     private httpClient: HttpClient,
@@ -416,6 +423,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             this.isApp = false;
             this.isProcess = true;
             this.isService = false;
+            this.isSequenceFlow = false;
             this.showAllTabFlag = false;
           }
           if ($event && $event.element && ['bpmn:Process', 'label'].indexOf($event.element.type) === -1) {
@@ -424,9 +432,30 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
               this.oldIconType = $event.element.type;
               this.oldTaskId = $event.element.id.replace(new RegExp('_', 'g'), ' ');
             } else {
+              this.isSequenceCreatedChangedFlag = true;
+              this.oldSequenceId = $event.element.id.replace(new RegExp('_', 'g'), ' ');
+              this.isSequenceFlow = true;
               const isConditional = !!businessObject.conditionExpression;
+              const source = $event.element.source,
+                sourceBusinessObject = source.businessObject;
+
+              const isDefault = sourceBusinessObject.default &&
+                sourceBusinessObject.default === businessObject;
               if (isConditional) {
+                this.isConditionalFlow = true;
+                this.isDefaultFlow = false;
+                this.isNoneFlow = false;
                 this.showCondtionType = true;
+              }
+              else if (isDefault) {
+                this.isConditionalFlow = false;
+                this.isDefaultFlow = true;
+                this.isNoneFlow = false;
+
+              } else {
+                this.isConditionalFlow = false;
+                this.isDefaultFlow = false;
+                this.isNoneFlow = true;
               }
             }
             this.selectedService = this.generalId;
@@ -481,7 +510,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                 V_PRCS_CD: vPrcsCd,
                 V_SRC_CD: this.user.SRC_CD,
                 V_SRVC_CD: objectId,
-                V_SRVC_DSC: '',
+                V_SRVC_DSC: this.documentation,
                 V_UPDATE: 'Y',
                 V_READ: 'Y',
                 V_CREATE: 'Y',
@@ -564,8 +593,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       this.addApplicationOnBE();
     }
     if (this.isService) {
-      this.updatesequenceFlow();
       this.updateService();
+    }
+    if (this.isSequenceFlow) {
+      this.updatesequenceFlow();
     }
     if (this.isProcess) {
       this.updateProcess();
@@ -575,6 +606,16 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   updatesequenceFlow() {
     const vAppCd = this.selectedApp;
     const vPrcsCd = this.selectedProcess;
+    let v_trns_typ;
+    if (this.isConditionalFlow) {
+      v_trns_typ = this.selectedConditionType;
+    } else if (this.isDefaultFlow) {
+      v_trns_typ = 'Default';
+      this.sequenceCondition = '';
+    } else if (this.isNoneFlow) {
+      v_trns_typ = 'None';
+      this.sequenceCondition = '';
+    }
     const data: any = {
       REST_Service: 'SequenceFlow',
       V_APP_CD: vAppCd,
@@ -586,7 +627,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       V_PRDCR_SRVC_CD: this.sequenceFlowsourceId,
       V_SRVC_CD: this.sequenceFlowtargetId,
       V_ORCH_CD: this.sequenceFlowobjectId,
-      V_TRNSN_TYP: 'None',
+      V_TRNSN_TYP: v_trns_typ,
       V_TRNSN_CND: this.sequenceCondition,
       V_CONT_ON_ERR_FLG: 'N',
       V_USR_NM: this.user.USR_NM,
@@ -657,6 +698,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.isService = false;
           this.opened = true;
           this.showAllTabFlag = false;
+          this.showCondtionType = false;
           this.showRightIcon = true;
           this.selectedService = '';
         })
@@ -672,6 +714,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.isService = false;
           this.opened = true;
           this.showAllTabFlag = false;
+          this.showCondtionType = false;
           this.showRightIcon = true;
         }
       );
@@ -701,10 +744,12 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     }, this.ctrl_variables.delay_timeout);
   }
   getConditionType() {
-    this.http.get(this.apiService.endPoints.securedJSON + "V_PRDCR_SRC_CD=" + this.user.SRC_CD + "&V_PRDCR_APP_CD=" + this.selectedApp + "&V_PRDCR_PRCS_CD=" + this.selectedProcess + "&V_PRDCR_SRVC_CD=" + this.sequenceFlowsourceId + "&V_USR_NM=" + this.user.USR_NM + "&V_SRC_CD=" + this.user.SRC_CD + "&V_APP_CD=" + this.selectedApp + "&V_PRCS_CD=" + this.selectedProcess + "&V_SRVC_CD=" + this.selectedService + "&REST_Service=SequenceFlow" + "&Verb=GET", this.apiService.setHeaders())
+    this.http.get(this.apiService.endPoints.securedJSON + "V_PRDCR_SRC_CD=" + this.user.SRC_CD + "&V_PRDCR_APP_CD=" + this.selectedApp + "&V_PRDCR_PRCS_CD=" + this.selectedProcess + "&V_PRDCR_SRVC_CD=" + this.sequenceFlowsourceId + "&V_USR_NM=" + this.user.USR_NM + "&V_SRC_CD=" + this.user.SRC_CD + "&V_APP_CD=" + this.selectedApp + "&V_PRCS_CD=" + this.selectedProcess + "&V_SRVC_CD=" + this.sequenceFlowtargetId + "&REST_Service=SequenceFlow" + "&Verb=GET", this.apiService.setHeaders())
       .subscribe(res => {
         if (res) {
-          // this.sequenceConditionType = res.json();
+          let result = res.json();
+          this.selectedConditionType = result[0]["V_TRNSN_TYP"] != null ? result[0]["V_TRNSN_TYP"] : "Simple Expression";
+          this.sequenceCondition = result[0]["V_TRNSN_CND"];
         }
       });
   }
@@ -815,6 +860,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     }
   }
   addApplication() {
+    this.showRightIcon = true;
+    this.opened = true;
+    this.showAllTabFlag = false;
+    this.showCondtionType = false;
     this.selectedProcess = '';
     this.selectedService = '';
     this.selectedApp = '';
@@ -823,13 +872,12 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.isApp = true;
     this.isProcess = false;
     this.isService = false;
-    this.showRightIcon = true;
-    this.opened = true;
-    this.showAllTabFlag = false;
-    this.showCondtionType = false;
     this.generalId = 'newApplication';
     let x = '<?xml version="1.0" encoding="UTF-8"?><bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="2.0.3"></bpmn:definitions>';
     this.modeler.importXML(x);
+    // setTimeout(() => {
+    //   this.processID.nativeElement.focus();
+    // }, 0);
     document.getElementById('processId').focus();
   }
   addApplicationOnBE() {
@@ -1198,6 +1246,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         if (res) {
           this.propertyPanelAllTabsData = res.json();
+          this.documentation = this.propertyPanelAllTabsData[0]["V_SRVC_DSC"];
           this.executableDesc = this.propertyPanelAllTabsData[0]['V_EXE_DSC'];
           this.executableInput = this.propertyPanelAllTabsData[0]['V_PARAM_NM_IN'];
           this.executableOutput = this.propertyPanelAllTabsData[0]['V_PARAM_NM_OUT'];

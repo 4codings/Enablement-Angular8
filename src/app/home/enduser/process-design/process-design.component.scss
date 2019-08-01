@@ -2,6 +2,11 @@
   width: 250px;
 }
 
+.errors {
+  color: red;
+  font-size: 13px;
+}
+
 .toggle {
   text-align: end;
 
@@ -80,9 +85,11 @@
     margin-bottom: -15px;
   }
 }
+
 :host /deep/ .mat-radio-button {
   padding-bottom: 2px !important;
 }
+
 :host /deep/ .bjs-container .djs-container .djs-palette .two-open {
   position: absolute;
   left: 20px;
@@ -388,11 +395,13 @@ input {
 
 #Timeout_seconds_label {
   width: 100px;
-  color: rgba(0,0,0,.38);
+  color: rgba(0, 0, 0, .38);
 }
+
 #Timeout_seconds {
   width: 50px;
 }
+
 :host /deep/ .treeview-container .form-check .form-check-label.child-color {
   margin-left: 1rem !important;
 }
@@ -405,12 +414,15 @@ input {
   max-height: inherit !important;
   overflow-y: inherit !important;
 }
+
 :host /deep/ .generalTabV label {
   font-weight: 500;
 }
+
 .tabTitle {
   font-weight: bold !important;
 }
+
 :host /deep/ .mat-form-field-appearance-legacy .mat-form-field-wrapper {
   padding-bottom: 1.2em !important;
 }
@@ -426,18 +438,21 @@ input {
 :host /deep/ .form-check-label .mat-icon-button {
   line-height: 35px !important;
 }
+
 :host /deep/ .form-check-label .mat-icon-button:focus {
   outline: none !important;
 }
+
 :host /deep/ .mat-tab-labels {
   justify-content: center;
 }
-:host /deep/ .mat-tab-body.mat-tab-body-active, :host /deep/ .mat-tab-body {
+
+:host /deep/ .mat-tab-body.mat-tab-body-active,
+:host /deep/ .mat-tab-body {
   overflow: initial !important;
 }
 
-:host /deep/ #side-nav-menu
-{
+:host /deep/ #side-nav-menu {
   width: 24px;
   height: 24px;
   outline: none;
@@ -452,10 +467,11 @@ input {
   padding: 0px !important;
 }
 
-mat-header-cell{
+mat-header-cell {
   color: white;
   font-weight: bold;
 }
+
 :host /deep/ .bpmn-icon-gateway-eventbased:before {
   color: #4d0026;
 }
@@ -556,9 +572,11 @@ mat-header-cell{
 .fa-file-download {
   padding-left: 5px;
 }
+
 .fa-download {
   color: orange;
 }
+
 .fa-resolving {
   color: #00ff00;
 }
@@ -600,16 +618,16 @@ mat-header-cell{
 }
 
 .mat-menu-item .bpmn-icon-trash {
-    width: 22px;
-    height: 22px;
-    text-align: center;
-    display: inline-block;
-    font-size: 22px;
-    border-radius: 3px;
-    cursor: default;
-    box-shadow: 0 0 2px 1px #FEFEFE;
-    pointer-events: all;
-    color: red;
+  width: 22px;
+  height: 22px;
+  text-align: center;
+  display: inline-block;
+  font-size: 22px;
+  border-radius: 3px;
+  cursor: default;
+  box-shadow: 0 0 2px 1px #FEFEFE;
+  pointer-events: all;
+  color: red;
 }
 
 .mat-menu-item .mat-icon:first-child {
