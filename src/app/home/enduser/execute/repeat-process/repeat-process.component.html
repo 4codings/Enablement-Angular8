@@ -3,7 +3,7 @@
 
     <div flex fxLayout="column" style="text-align: center;">
         <label>Start At</label>
-        <mat-form-field style="width: 160px;">
+        <mat-form-field class="form_input" style="width: 160px;">
             <input matInput placeholder="" [min]="min_start" [(ngModel)]="start_date" [owlDateTimeTrigger]="dtPicker11"
                 [owlDateTime]="dtPicker11" style="text-align: center;"/>
             <owl-date-time #dtPicker11></owl-date-time>
@@ -12,7 +12,7 @@
     <div fxFlex="10" style="width: 100%;"></div>
     <div flex fxLayout="column" style="text-align: center;">
         <label>End At</label>
-        <mat-form-field style="width: 160px;">
+        <mat-form-field class="form_input" style="width: 160px;">
             <input [(ngModel)]="End_date" [min]="min_start" matInput placeholder="" [owlDateTimeTrigger]="dtPicker1" [owlDateTime]="dtPicker1" style="text-align: center;">
             <owl-date-time #dtPicker1></owl-date-time>
         </mat-form-field>
@@ -75,7 +75,7 @@
     </div>
     <div fxFlex="5"></div>
     <div fxFlex="15" class="mt-4">
-        <mat-form-field style="width:80px;resize: none" [floatLabel]="'always'">
+        <mat-form-field class="form_input" style="width:80px;resize: none" [floatLabel]="'always'">
             <input matInput placeholder="Repeat After" type="number" [(ngModel)]="Repeat_after" min="1" max="86400" />
         </mat-form-field>
 
@@ -115,7 +115,7 @@
                             <td>
                                 <mat-radio-button value="1">Day</mat-radio-button>&nbsp;
 
-                                <mat-form-field style="width:30%;text-align: center">
+                                <mat-form-field class="form_input" style="width:30%;text-align: center">
                                     <input matInput type="number" [(ngModel)]="numberthDayOfEveryMonth" min="1" max="31" />
                                 </mat-form-field>&nbsp;
                                 <b>of every Month</b>

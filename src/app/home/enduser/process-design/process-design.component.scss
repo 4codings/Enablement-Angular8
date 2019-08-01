@@ -333,10 +333,13 @@ input {
   /* or any value that fits your needs */
 }
 
-:host /deep/ .mat-form-field-appearance-legacy .mat-form-field-infix {
-  padding-right: 0px;
-  padding-left: 0px;
+:host /deep/ .form_input .mat-form-field-infix {
+  padding: 0px;
   border-top: none;
+}
+
+:host /deep/ .mat-form-field-appearance-legacy .mat-form-field-infix .mat-input-element {
+  border: 1px solid #000;
 }
 
 .m-t-15 {
