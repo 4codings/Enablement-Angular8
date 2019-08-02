@@ -7,7 +7,6 @@ import { EnduserRoutingModule } from './enduser-routing.module';
 import { EnduserComponent } from '../enduser/enduser.component';
 import { MytaskComponent } from './mytask/mytask.component';
 import { ExceptionComponent } from './exception/exception.component';
-import { ProcessComponent } from './process/process.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { UsernavbarComponent } from './usernavbar/usernavbar.component';
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -29,7 +28,6 @@ import { ProcessDesignComponent } from './process-design/process-design.componen
     EnduserComponent,
     MytaskComponent,
     ExceptionComponent,
-    ProcessComponent,
     DashboardComponent,
     UsernavbarComponent,
     FormComponent,

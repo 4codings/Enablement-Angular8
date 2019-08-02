@@ -1,4 +1,4 @@
-export interface data{
+export interface schedule{
     APP_CD:string;
     PRCS_CD:string;
     ser_cd_data:string[];

@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';  
-import {Item} from './itemList';
+import { Item } from './itemList';
   
 @Pipe({  
     name: 'myfilter',  

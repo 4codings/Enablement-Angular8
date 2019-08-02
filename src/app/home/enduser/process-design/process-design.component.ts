@@ -21,7 +21,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { CommonUtils } from 'src/app/common/utils';
 import * as Chart from 'chart.js';
 
-import { data } from '../schd-actn/schd_data';
+import { schedule } from './schd_data';
 import { MatTableDataSource, MatDialog } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 import { DialogScheduleComponent } from '../execute/dialog-schedule/dialog-schedule.component';
@@ -240,7 +240,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
 
   displayedColumns = ['#', 'name', 'status', 'lastrun', 'nextrun', 'details'];
   Process_key: any = [];
-  selection = new SelectionModel<data>(true, []);
+  selection = new SelectionModel<schedule>(true, []);
 
   ApplicationCD = '';
   ProcessCD = '';
@@ -1975,7 +1975,7 @@ this.find_process(this.ApplicationCD, this.ProcessCD, 'Paused');
     this.Action = [];
     // this.innerTableDT = [];
     // this.Data = [];
-    this.httpClient.get<data>(this.apiUrlGet + 'V_SRC_CD=' + this.V_SRC_CD +
+    this.httpClient.get<schedule>(this.apiUrlGet + 'V_SRC_CD=' + this.V_SRC_CD +
       '&V_APP_CD=' + ApplicationCD + '&V_PRCS_CD=' + ProcessCD + '&V_USR_NM=' +
       this.V_USR_NM + '&V_TRIGGER_STATE=' + StatusCD +
       '&REST_Service=ScheduledJobs&Verb=GET').subscribe(dataResult => {
@@ -1987,7 +1987,7 @@ this.find_process(this.ApplicationCD, this.ProcessCD, 'Paused');
           console.log("dataResult.SRVC_CD", dataResult.SRVC_CD);
 
           this.F1 = dataResult.SRVC_CD;
-          this.selection = new SelectionModel<data>(true, []);
+          this.selection = new SelectionModel<schedule>(true, []);
 
           for (let i = 0; i < this.F1.length; i++) {
             this.innerTableDT[i] = {

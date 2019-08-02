@@ -25,12 +25,12 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SplitLastPipe, MyFilterPipe } from '../home/enduser/execute/MyFilterPipe ';
-import { MyFilterPipe1 } from '../home/enduser/schd-actn/myFilterPipe1';
 import { MatMenuModule } from '@angular/material/menu';
 import { ConfirmationAlertComponent } from './components/confirmation-alert/confirmation-alert.component';
 import { TreeviewModule } from 'ngx-treeview';
 import {MatChipsModule} from '@angular/material/chips';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import { MyFilterPipe1 } from '../home/enduser/process-design/myFilterPipe1';
 @NgModule({
   imports: [
     CommonModule,
