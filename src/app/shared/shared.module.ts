@@ -32,9 +32,11 @@ import { MyFilterPipe1 } from '../home/enduser/process-design/myFilterPipe1';
 import { DeleteConfirmComponent } from './components/delete-confirm/delete-confirm.component';
 import { DialogScheduleComponent } from './components/dialog-schedule/dialog-schedule.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
 @NgModule({
   imports: [
     CommonModule,
+    HttpModule,
     FormsModule,
     ReactiveFormsModule.withConfig({ warnOnNgModelWithFormControl: 'never' }),
     // CoreModule,
@@ -128,7 +130,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     SplitLastPipe,
     MatMenuModule,
     ConfirmationAlertComponent,
-    TreeviewModule
+    TreeviewModule,
+    HttpModule,
+    FormsModule,
+    ReactiveFormsModule,
+    CommonModule
   ]
 })
 export class SharedModule {
