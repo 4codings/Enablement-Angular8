@@ -45,3 +45,14 @@ mat-list {
 		text-align: center;
 	}
 }
+.candence_choice {
+	width: 162px;
+	border-color: #000;
+}
+.repeat_after {
+	margin: 5px 4px 6px 4px;
+}
+
+:host /deep/ .day_of_month .mat-form-field-infix {
+	line-height: 24px !important;
+}

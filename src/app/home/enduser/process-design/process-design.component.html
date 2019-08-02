@@ -105,7 +105,7 @@
         <div fxLayout="row">
           <div fxFlex="20px" class="toggle">
             <a href="javascript:void(0)" matTooltip="{{treesidenav.opened ? 'Hide Application' : 'Show Application'}}"
-              (click)="treesidenav.toggle()">
+              (click)="treesidenav.toggle();">
               <mat-icon aria-hidden="false">{{treesidenav.opened ? 'arrow_left' : 'arrow_right'}}</mat-icon>
             </a>
           </div>
@@ -380,7 +380,7 @@
                   </mat-table>
                 </div>
                 <div *ngIf="newScheduleView">
-                  <app-repeat-process [parentapp]="selectedplat" [parentpro]="selectedplat1"></app-repeat-process>
+                  <app-repeat-process [parentapp]="selectedplat" [parentpro]="selectedplat1" [changing]="changingValue"></app-repeat-process>
                   <hr />
                 </div>
               </div>
@@ -403,7 +403,7 @@
           </div>
           <div fxFlex="20px" class="toggle">
             <a *ngIf="showRightIcon" href="javascript:void(0)"
-              matTooltip="{{opened ? 'Hide properties' : 'Show properties'}}" (click)="sidenav.toggle()">
+              matTooltip="{{opened ? 'Hide properties' : 'Show properties'}}" (click)="changeTrigger(opened);sidenav.toggle()">
               <mat-icon aria-hidden="false">{{opened ? 'arrow_right' : 'arrow_left'}}</mat-icon>
             </a>
           </div>
