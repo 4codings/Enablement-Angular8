@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router'
 import { FormControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { StorageSessionService } from 'src/app/services/storage-session.service';
 import { Globals } from 'src/app/services/globals';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-repeat-process',
@@ -15,6 +16,8 @@ import { Globals } from 'src/app/services/globals';
 export class RepeatProcessComponent implements OnInit {
   public parentapp: string;
   public parentpro: string;
+  @Input() changing: Subject<boolean>;		
+  public addClass: boolean = false;
   constructor(private store: StorageSessionService,
     private route: Router,
     private http: HttpClient, private globals: Globals
@@ -54,8 +57,8 @@ export class RepeatProcessComponent implements OnInit {
   fooo(v) {
     this.fo1 = v;
   }
-  changeView(timer_value) {
-    this.candence_choice = timer_value;
+  changeView() {
+    let timer_value = this.candence_choice;
     if (timer_value == "Week" || timer_value == "Month" || timer_value == "Year" || timer_value == "Minute") {
       switch (timer_value) {
         case "Minute":
@@ -261,6 +264,9 @@ export class RepeatProcessComponent implements OnInit {
   ngOnInit() {
     this.start_date = new Date();
     this.getEndYear();
+    this.changing.subscribe(v => { 		
+      this.addClass = v;		
+    });
   }
 }
 

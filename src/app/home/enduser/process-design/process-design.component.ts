@@ -8,7 +8,7 @@ import { Globals } from 'src/app/services/globals';
 import { EndUserService } from 'src/app/services/EndUser-service';
 import { UseradminService } from 'src/app/services/useradmin.service2';
 import { OptionalValuesService, ApplicationProcessObservable } from 'src/app/services/optional-values.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { TreeviewItem, TreeviewConfig, TreeviewI18nDefault, TreeviewI18n } from 'ngx-treeview';
 import { RollserviceService } from 'src/app/services/rollservice.service';
 import { ApiService } from 'src/app/service/api/api.service';
@@ -66,6 +66,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   private file: any;
   @ViewChild('processForm') processForm: any;
   @ViewChild('treesidenav') treesidenav: any;
+  changingValue: Subject<boolean> = new Subject();
   private currentXml: any;
   private uploadLocked: boolean;
   applicationProcessObservable$: Subscription;
@@ -2148,6 +2149,8 @@ this.find_process(this.ApplicationCD, this.ProcessCD, 'Paused');
       this.selection.clear() :
       this.dataSource.filteredData.forEach((row: any) => this.selection.select(row));
   }
-
-
+  
+  changeTrigger(data) {
+    this.changingValue.next(data);
+  }
 }
