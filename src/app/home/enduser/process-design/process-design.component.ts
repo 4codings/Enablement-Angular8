@@ -21,7 +21,6 @@ import { Router, NavigationEnd } from '@angular/router';
 import { CommonUtils } from 'src/app/common/utils';
 import * as Chart from 'chart.js';
 
-import { CustomPropsProvider } from './props-provider/CustomPropsProvider';
 import { data } from '../schd-actn/schd_data';
 import { MatTableDataSource, MatDialog } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -347,16 +346,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       additionalModules: [
         PropertiesPanelModule,
         OriginalPropertiesProvider,
-        // { contextPad: ['value', null], contextPadProvider: ['value', null] },
         { [InjectionNames.bpmnPropertiesProvider]: ['type', OriginalPropertiesProvider.propertiesProvider[1]] },
-        { [InjectionNames.propertiesProvider]: ['type', CustomPropsProvider] },
+        // { [InjectionNames.propertiesProvider]: ['type', CustomPropsProvider] },
       ]
-      // ,
-      // propertiesPanel: {
-      //   parent: '#properties'
-      // }
     });
-    // this.newBpmn();
     const eventBus = this.modeler.get('eventBus');
     if (eventBus) {
       eventBus.on('element.click', ($event) => {
@@ -654,7 +647,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.http.post(this.apiService.endPoints.securedJSON, data, this.apiService.setHeaders())
       .subscribe(res => {
         if (res) {
-          this.showCondtionType = true;
+          if (this.isConditionalFlow) {
+            this.showCondtionType = true;
+          }
         }
       });
   }

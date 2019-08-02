@@ -14,7 +14,6 @@ import { Globals } from 'src/app/services/globals';
 import { EndUserService } from 'src/app/services/EndUser-service';
 import { DeleteConfirmComponent } from '../delete-confirm/delete-confirm.component';
 import { CommonUtils } from 'src/app/common/utils';
-import { CustomPropsProvider } from '../../process-design/props-provider/CustomPropsProvider';
 import { ToastrService } from 'ngx-toastr';
 import { Viewer } from '../bpmn-viewer';
 // import { Viewer } from '../bpmn-viewer-js';

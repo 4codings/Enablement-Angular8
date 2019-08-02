@@ -25,8 +25,6 @@ import { RepeatProcessComponent } from './execute/repeat-process/repeat-process.
 import { RepeatableFormComponent } from './execute/repeatable-form/repeatable-form.component';
 import { ReportTableComponent } from './report-table/report-table.component';
 import { DialogChartsComponent } from './report-table/dialog-charts/dialog-charts.component';
-import { MyFilterPipe, SplitLastPipe } from './execute/MyFilterPipe ';
-import { MyFilterPipe1 } from './schd-actn/myFilterPipe1';
 import { DeleteConfirmComponent } from './execute/delete-confirm/delete-confirm.component';
 import { ProcessDesignComponent } from './process-design/process-design.component';
 

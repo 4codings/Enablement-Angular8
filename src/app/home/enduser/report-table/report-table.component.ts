@@ -16,7 +16,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import 'chartjs-plugin-zoom';
 import { ToastrService } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
-import { CustomPropsProvider } from '../process-design/props-provider/CustomPropsProvider';
 import { Viewer } from '../execute/bpmn-viewer';
 import { RollserviceService } from 'src/app/services/rollservice.service';
 import { Subscription } from 'rxjs';
