@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ChangeDetectorRef, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { Http } from '@angular/http';
 import { Router } from '@angular/router'
 import { MatTableDataSource, MatSort, MatDialog } from '@angular/material';
@@ -28,7 +28,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./report-table.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class ReportTableComponent implements OnInit, AfterViewInit {
+export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   removable = true;
 
@@ -76,6 +76,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
       }
     });
   }
+
   chartposition: any = [{ x: 0, y: 0 }, { x: 0, y: 0 }, { x: 0, y: 0 }, { x: 0, y: 0 }];
   dragEndLine(event) {
     var offset = { ...(<any>event.source._dragRef)._passiveTransform };
@@ -185,12 +186,12 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         }
       });
     }
-
   }
   ngOnDestroy() {
     if (this.viewer) {
       this.viewer.destroy();
     }
+    this.roleObservable$.unsubscribe();
   }
 
   downloadBpmn() {

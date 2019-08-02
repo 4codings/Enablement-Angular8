@@ -86,6 +86,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   parentMenuItems = [
     { item: 'New Process', value: 'Add', havePermission: 0, icon: 'create' },
     { item: 'Open BPMN File', value: 'Import', havePermission: 0, icon: 'attach_file' },
+    { item: 'Edit Application', value: 'Edit', havePermission: 0, icon: 'create' },
     { item: 'Delete Application', value: 'Delete', havePermission: 0, icon: 'delete_outline' }];
   childrenMenuItems = [
     { item: 'Run', value: 'Run', havePermission: 0, icon: 'directions_run', iconType: 'mat' },
@@ -139,6 +140,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   isSequenceFlow = false;
   isTaskCreatedFlag = false;
   isSequenceCreatedChangedFlag = false;
+  isEditApplicationFlag = false;
+  oldAppId = '';
   oldTaskId = '';
   oldIconType = '';
   oldSequenceId = '';
@@ -363,7 +366,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         // console.log('element.click', $event)
         this.isApp = false;
         this.isProcess = false;
-        this.isService = true;
+        this.isService = false;
+        this.isSequenceFlow = false;
         this.oldStateId = $event.element.id;
         this.generalId = $event.element.id.replace(new RegExp('_', 'g'), ' ');
         const businessObject = $event.element.businessObject;
@@ -373,6 +377,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.documentation = businessObject.documentation[0].text ? businessObject.documentation[0].text : '';
         }
         if ($event && $event.element && this.taskList.indexOf($event.element.type) > -1) {
+          this.isService = true;
           this.selectedService = $event.element.id.replace(new RegExp('_', 'g'), ' ');
           this.showAllTabFlag = true;
           this.showCondtionType = false;
@@ -385,16 +390,19 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.showAllTabFlag = false;
           this.showCondtionType = false;
           this.generalId = this.selectedProcess;
+          this.getDocumentation('PRCS', this.generalId);
           // this.selectedProcess = $event.element.id.replace(new RegExp('_', 'g'), ' ')
           // this.generalId = $event.element.id.replace(new RegExp('_', 'g'), ' ');
         }
         if ($event && $event.element && ['bpmn:SequenceFlow'].indexOf($event.element.type) > -1) {
+          this.isSequenceFlow = true;
           const businessObject = $event.element.businessObject;
-          this.sequenceFlowobjectId = $event.element.id;
+          this.sequenceFlowobjectId = $event.element.id.replace(new RegExp('_', 'g'), ' ');
           this.sequenceFlowsourceId = (businessObject && businessObject.sourceRef ? businessObject.sourceRef.id : '').replace(new RegExp('_', 'g'), ' ');
           this.sequenceFlowtargetId = (businessObject && businessObject.targetRef ? businessObject.targetRef.id : '').replace(new RegExp('_', 'g'), ' ');
           this.showAllTabFlag = false;
           const isConditional = !!businessObject.conditionExpression;
+          this.getDocumentation('ORCH', this.generalId);
           console.log('iscondition', isConditional);
           if (isConditional) {
             this.showCondtionType = true;
@@ -413,13 +421,14 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.showRightIcon = true;
           this.showCondtionType = false;
           const businessObject = $event.element.businessObject;
-          this.processName = businessObject.name ? businessObject.name : '';
-          if (businessObject.documentation && businessObject.documentation.length) {
-            this.documentation = businessObject.documentation[0].text ? businessObject.documentation[0].text : '';
-          }
-          this.generalId = $event.element.id.replace(new RegExp('_', 'g'), ' ')
+
           // console.log('this.this.bpmntemplate', this.bpmnTemplate);
           if ($event && $event.element && ['bpmn:Process'].indexOf($event.element.type) > -1) {
+            this.processName = businessObject.name ? businessObject.name : '';
+            if (businessObject.documentation && businessObject.documentation.length) {
+              this.documentation = businessObject.documentation[0].text ? businessObject.documentation[0].text : '';
+            }
+            this.generalId = $event.element.id.replace(new RegExp('_', 'g'), ' ')
             this.isApp = false;
             this.isProcess = true;
             this.isService = false;
@@ -427,7 +436,13 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             this.showAllTabFlag = false;
           }
           if ($event && $event.element && ['bpmn:Process', 'label'].indexOf($event.element.type) === -1) {
+            this.processName = businessObject.name ? businessObject.name : '';
+            if (businessObject.documentation && businessObject.documentation.length) {
+              this.documentation = businessObject.documentation[0].text ? businessObject.documentation[0].text : '';
+            }
+            this.generalId = $event.element.id.replace(new RegExp('_', 'g'), ' ')
             if ($event.element.type !== 'bpmn:SequenceFlow') {
+              this.isService = true;
               this.isTaskCreatedFlag = true;
               this.oldIconType = $event.element.type;
               this.oldTaskId = $event.element.id.replace(new RegExp('_', 'g'), ' ');
@@ -461,7 +476,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             this.selectedService = this.generalId;
             this.isApp = false;
             this.isProcess = false;
-            this.isService = true;
             const sourceId = (businessObject && businessObject.sourceRef ? businessObject.sourceRef.id : '').replace(new RegExp('_', 'g'), ' ');
             const targetId = (businessObject && businessObject.targetRef ? businessObject.targetRef.id : '').replace(new RegExp('_', 'g'), ' ');
             const objectId = (businessObject ? businessObject.id : '').replace(new RegExp('_', 'g'), ' ');
@@ -487,6 +501,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                 V_PRDCR_SRVC_CD: sourceId,
                 V_SRVC_CD: targetId,
                 V_ORCH_CD: objectId,
+                V_ORCH_DSC: this.documentation,
                 V_TRNSN_TYP: 'None',
                 V_TRNSN_CND: "",
                 V_CONT_ON_ERR_FLG: 'N',
@@ -511,12 +526,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                 V_SRC_CD: this.user.SRC_CD,
                 V_SRVC_CD: objectId,
                 V_SRVC_DSC: this.documentation,
-                V_UPDATE: 'Y',
-                V_READ: 'Y',
-                V_CREATE: 'Y',
-                V_DELETE: 'Y',
-                V_EXECUTE: 'Y',
-                V_ROLE_CD: 'Program Assessment Role',
                 V_USR_NM: this.user.USR_NM,
                 Verb: 'PUT'
               };
@@ -557,6 +566,14 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     }
   }
 
+  getDocumentation(v_type, v_cd) {
+    this.endUserService.getDocumentation(v_type, v_cd).subscribe(res => {
+      if (res) {
+        let result = res.json();
+        this.documentation = result["DSC"][0];
+      }
+    })
+  }
   ngOnDestroy() {
     if (this.applicationProcessObservable$) {
       this.applicationProcessObservable$.unsubscribe();
@@ -592,7 +609,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     if (this.isApp) {
       this.addApplicationOnBE();
     }
-    if (this.isService) {
+    if (this.isService && !this.isSequenceFlow) {
       this.updateService();
     }
     if (this.isSequenceFlow) {
@@ -626,7 +643,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       V_PRDCR_SRC_CD: this.user.SRC_CD,
       V_PRDCR_SRVC_CD: this.sequenceFlowsourceId,
       V_SRVC_CD: this.sequenceFlowtargetId,
-      V_ORCH_CD: this.sequenceFlowobjectId,
+      V_ORCH_CD: this.sequenceFlowobjectId.replace(new RegExp('_', 'g'), ' '),
+      V_ORCH_DSC: this.documentation,
       V_TRNSN_TYP: v_trns_typ,
       V_TRNSN_CND: this.sequenceCondition,
       V_CONT_ON_ERR_FLG: 'N',
@@ -636,7 +654,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.http.post(this.apiService.endPoints.securedJSON, data, this.apiService.setHeaders())
       .subscribe(res => {
         if (res) {
-          // this.getApplicationProcess();
+          this.showCondtionType = true;
         }
       });
   }
@@ -881,26 +899,74 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     document.getElementById('processId').focus();
   }
   addApplicationOnBE() {
-    const body = {
-      V_APP_CD: this.generalId,
-      V_SRC_CD: this.user.SRC_CD,
-      V_APP_DSC: this.documentation,
-      V_USR_NM: this.user.USR_NM,
-      REST_Service: 'Application',
-      Verb: 'PUT'
-    };
-    this.httpClient.post(this.apiService.endPoints.securedJSON, body)
+    let body;
+    if (this.isEditApplicationFlag) {
+      body = {
+        V_OLD_APP_CD: this.oldAppId,
+        V_NEW_APP_CD: this.generalId,
+        V_SRC_CD: this.user.SRC_CD,
+        V_APP_DSC: this.documentation,
+        V_USR_NM: this.user.USR_NM,
+        REST_Service: 'UpdateApplication',
+        Verb: 'PUT'
+      };
+    } else {
+      body = {
+        V_APP_CD: this.generalId,
+        V_SRC_CD: this.user.SRC_CD,
+        V_APP_DSC: this.documentation,
+        V_USR_NM: this.user.USR_NM,
+        REST_Service: 'Application',
+        Verb: 'PUT'
+      };
+    }
+
+    this.endUserService.addUpdateApplication(body)
       .subscribe(res => {
         if (res) {
+          this.selectedApp = this.generalId;
           this.getApplicationProcess();
           this.generalId = '';
           this.processName = '';
           this.documentation = '';
           this.opened = false;
-          this.showAllTabFlag = true;
+          this.showAllTabFlag = false;
           this.showRightIcon = false;
         }
       })
+  }
+  deleteApplication() {
+    if (this.selectedApp !== '' || this.selectedApp !== null) {
+      this.httpClient.delete(this.url + 'V_APP_CD=' + this.selectedApp + '&V_SRC_CD=' + this.user.SRC_CD + '&V_USR_NM=' + this.user.USR_NM + '&REST_Service=Application&Verb=DELETE')
+        .subscribe((res: any) => {
+          this.selectedApp = '';
+          this.selectedProcess = '';
+          this.isApp = false;
+          this.isProcess = false;
+          this.isService = false;
+          this.getApplicationProcess();
+        },
+          this.handleError.bind(this))
+    }
+  }
+  editApplication(appName) {
+    this.generalId = this.selectedApp;
+    this.isApp = true;
+    this.isProcess = false;
+    this.isService = false;
+    this.showRightIcon = true;
+    this.opened = true;
+    this.showAllTabFlag = false;
+    this.showCondtionType = false;
+    this.selectedProcess = '';
+    this.selectedService = '';
+    this.selectedApp = appName;
+    this.isConditionalFlow = false;
+    this.isSequenceFlow = false;
+    this.isSequenceCreatedChangedFlag = false;
+    this.isNoneFlow = false;
+    this.getDocumentation('APP', this.selectedApp);
+    // this.documentation = '';
   }
   // storing text as process name and value as application name for child tree view item 
   // to get application and process name both when clicked on child item
@@ -917,6 +983,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         }
         if (ele.auth.length) {
           let deleteCount = 0;
+          let editCount = 0;
           ele.auth.forEach((eleauth, index) => {
             eleauth = eleauth.replace(/'/g, "");
             let process = ele.process[index];
@@ -935,6 +1002,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                       break;
                     }
                     case 'UPDATE': {
+                      if (authSubStr[1] === 'Y') {
+                        editCount++;
+                      }
                       copyChildrenMenuItems[2].havePermission = authSubStr[1] === 'Y' ? 1 : 0;
                       break;
                     }
@@ -956,13 +1026,19 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           let copyParentrenMenuItems = [];
           copyParentrenMenuItems = [...this.parentMenuItems];
           if (ele.process[0] === 'NULL') {
+            copyParentrenMenuItems[3].havePermission = 1;
             copyParentrenMenuItems[2].havePermission = 1;
             this.parentobj[ele.app] = copyParentrenMenuItems;
           } else {
-            if (deleteCount == ele.auth.length) {
+            if (editCount == ele.auth.length) {
               copyParentrenMenuItems[2].havePermission = 1;
             } else {
               copyParentrenMenuItems[2].havePermission = 0;
+            }
+            if (deleteCount == ele.auth.length) {
+              copyParentrenMenuItems[3].havePermission = 1;
+            } else {
+              copyParentrenMenuItems[3].havePermission = 0;
             }
             this.parentobj[ele.app] = copyParentrenMenuItems;
           }
@@ -988,7 +1064,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     // if (this.isProcess) {
     //   this.updateProcess();
     // } else 
-    if (this.isService) {
+
+    if (this.isService && !this.isSequenceFlow) {
       this.updateService();
     }
   }
@@ -1065,6 +1142,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.selectedApp = parentValue;
     switch (actionValue) {
       case 'Add': {
+        this.isEditApplicationFlag = false;
         this.onTitleClickNoDelete = true;
         let x = '<?xml version="1.0" encoding="UTF-8"?><bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="2.0.3"></bpmn:definitions>';
         this.modeler.importXML(x);
@@ -1083,6 +1161,12 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       case 'Import': {
         let ele = document.getElementById('file');
         ele.click();
+        break;
+      }
+      case 'Edit': {
+        this.isEditApplicationFlag = true;
+        this.oldAppId = this.selectedApp;
+        this.editApplication(this.selectedApp);
         break;
       }
       case 'Delete': {
@@ -1133,6 +1217,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         this.isProcess = true;
         this.isService = false;
         this.generalId = this.selectedProcess;
+        this.getDocumentation('PRCS', this.generalId);
         break;
       }
       case 'Delete': {
@@ -1445,20 +1530,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       this.router.navigate(["/End_User/Design"], { queryParams: { page: 1 }, skipLocationChange: true });
     }
   }
-  deleteApplication() {
-    if (this.selectedApp !== '' || this.selectedApp !== null) {
-      this.httpClient.delete(this.url + 'V_APP_CD=' + this.selectedApp + '&V_SRC_CD=' + this.user.SRC_CD + '&V_USR_NM=' + this.user.USR_NM + '&REST_Service=Application&Verb=DELETE')
-        .subscribe((res: any) => {
-          this.selectedApp = '';
-          this.selectedProcess = '';
-          this.isApp = false;
-          this.isProcess = false;
-          this.isService = false;
-          this.getApplicationProcess();
-        },
-          this.handleError.bind(this))
-    }
-  }
+
   Execute_AP_PR() {
     this.resFormData = [];
     let FormData: any[];

@@ -26,6 +26,7 @@ export class EndUserService {
     private Lazyload: boolean = true;
     constructor(private globals: Globals,
         private http: Http,
+        private httpClient: HttpClient,
         private storage: StorageSessionService,
         private globals2: Globals2,
         private apiService: ApiService
@@ -96,7 +97,7 @@ export class EndUserService {
     }
 
     getApplicationAndProcess() {
-        if(JSON.parse(sessionStorage.getItem('u')) != null) {
+        if (JSON.parse(sessionStorage.getItem('u')) != null) {
             return this.http.get(this.baseSecureJsonUrl + "V_SRC_CD=" + JSON.parse(sessionStorage.getItem('u')).SRC_CD + "&V_USR_NM=" + JSON.parse(sessionStorage.getItem('u')).USR_NM + "&REST_Service=ApplicationProcesses&Verb=GET", this.apiService.setHeaders());
         }
     }
@@ -109,17 +110,25 @@ export class EndUserService {
     }
 
     /*
+       To GET DOCUMENTATION OF APP,PRCS,SEQUENCE FLOW
+   */
+    getDocumentation(v_type, v_cd) {
+        return this.http.get(this.baseSecureUrl + 'V_CD_TYP=' + v_type + '&V_CD=' + v_cd + '&V_SRC_CD=' + this.V_SRC_CD + '&REST_Service=Description&Verb=GET', this.apiService.setHeaders());
+    }
+
+
+    /*
         To list all executable types
     */
     getAllExecutableTypes(iconType: string) {
-        return this.http.get(this.baseSecureUrl + 'V_ICN_TYP='+ iconType + "&V_SRC_CD=" + this.V_SRC_CD + "&V_CD_TYP=EXE" + "&REST_Service=Masters" + "&Verb=GET", this.apiService.setHeaders());
+        return this.http.get(this.baseSecureUrl + 'V_ICN_TYP=' + iconType + "&V_SRC_CD=" + this.V_SRC_CD + "&V_CD_TYP=EXE" + "&REST_Service=Masters" + "&Verb=GET", this.apiService.setHeaders());
     }
 
     /*
         To populate executable(s) based on selected executable type
     */
     getExecutablesForSelctedExecutableType(executableType: String) {
-        return this.http.get(this.baseSecureUrl  + "V_SRC_CD=" + this.V_SRC_CD + "&V_EXE_TYP=" + executableType + "&V_USR_NM=" + this.V_USR_NM + "&REST_Service=UsersExe&Verb=GET", this.apiService.setHeaders());
+        return this.http.get(this.baseSecureUrl + "V_SRC_CD=" + this.V_SRC_CD + "&V_EXE_TYP=" + executableType + "&V_USR_NM=" + this.V_USR_NM + "&REST_Service=UsersExe&Verb=GET", this.apiService.setHeaders());
     }
 
     /*
@@ -128,5 +137,11 @@ export class EndUserService {
     getInputOutputForSelctedExecutable(executableType: String, executable: String) {
         // TODO V_UNIQUE_ID should be populated dynamically
         return this.http.get(this.baseSecureUrl + "V_UNIQUE_ID=" + "28190" + "&V_EXE_TYP=" + executableType + "&V_EXE_CD=" + executable + "&V_SRC_CD=" + this.V_SRC_CD + "&V_USR_NM=" + this.V_USR_NM + "&REST_Service=Exe&Verb=GET", this.apiService.setHeaders());
+    }
+    /*
+    to add update application
+    */
+    addUpdateApplication(body) {
+        return this.httpClient.post(this.baseSecureJsonUrl, body);
     }
 }
