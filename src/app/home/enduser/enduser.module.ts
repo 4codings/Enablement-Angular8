@@ -8,7 +8,6 @@ import { EnduserComponent } from '../enduser/enduser.component';
 import { MytaskComponent } from './mytask/mytask.component';
 import { ExceptionComponent } from './exception/exception.component';
 import { ProcessComponent } from './process/process.component';
-import { OrchestrateComponent } from './orchestrate/orchestrate.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { UsernavbarComponent } from './usernavbar/usernavbar.component';
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -31,7 +30,6 @@ import { ProcessDesignComponent } from './process-design/process-design.componen
     MytaskComponent,
     ExceptionComponent,
     ProcessComponent,
-    OrchestrateComponent,
     DashboardComponent,
     UsernavbarComponent,
     FormComponent,

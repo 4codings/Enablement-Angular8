@@ -4,7 +4,6 @@ import { EnduserComponent } from './enduser.component';
 import { MytaskComponent } from './mytask/mytask.component';
 import { ExceptionComponent } from './exception/exception.component';
 import { ProcessComponent } from './process/process.component';
-import { OrchestrateComponent } from './orchestrate/orchestrate.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { InputArtComponent } from './execute/Input_Art/InputArt.component';
 import { RepeatableFormComponent } from './execute/repeatable-form/repeatable-form.component';
@@ -21,7 +20,6 @@ const routes: Routes = [{
     { path: 'Exception', component: ExceptionComponent },
     { path: 'Process', component: ProcessComponent },
     { path: 'Design', component: ProcessDesignComponent },
-    { path: 'Orchestrate', component: OrchestrateComponent },
     { path: 'Dashboard', component: DashboardComponent },
   ]
 },
