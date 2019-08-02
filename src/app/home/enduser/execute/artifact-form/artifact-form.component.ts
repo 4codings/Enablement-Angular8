@@ -18,11 +18,11 @@ import { Viewer } from '../bpmn-viewer';
 import { DeleteConfirmComponent } from 'src/app/shared/components/delete-confirm/delete-confirm.component';
 @Component({
   selector: 'app-input-art',
-  templateUrl: './Input_Art.component.html',
-  styleUrls: ['./Input_Art.component.scss'],
+  templateUrl: './artifact-form.component.html',
+  styleUrls: ['./artifact-form.component.scss'],
 })
 
-export class InputArtComponent implements OnInit, OnDestroy {
+export class ArtifactFormComponent implements OnInit, OnDestroy {
   private reportData: ReportData;
   private scope: ScopeLimiting = new ScopeLimiting();
   private domain_name = this.globals.domain_name;;

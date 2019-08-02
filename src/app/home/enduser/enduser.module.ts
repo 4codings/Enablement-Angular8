@@ -13,13 +13,13 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { HeaderModule } from '../header/header.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormComponent } from './execute/form/form.component';
-import { InputArtComponent } from './execute/Input_Art/InputArt.component';
 import { NonRepeatableFormComponent } from './execute/non-repeatable-form/non-repeatable-form.component';
 import { RepeatProcessComponent } from './execute/repeat-process/repeat-process.component';
 import { RepeatableFormComponent } from './execute/repeatable-form/repeatable-form.component';
 import { ReportTableComponent } from './report-table/report-table.component';
 import { DialogChartsComponent } from './report-table/dialog-charts/dialog-charts.component';
 import { ProcessDesignComponent } from './process-design/process-design.component';
+import { ArtifactFormComponent } from './execute/artifact-form/artifact-form.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +29,7 @@ import { ProcessDesignComponent } from './process-design/process-design.componen
     DashboardComponent,
     UsernavbarComponent,
     FormComponent,
-    InputArtComponent,
+    ArtifactFormComponent,
     NonRepeatableFormComponent,
     RepeatProcessComponent,
     RepeatableFormComponent,

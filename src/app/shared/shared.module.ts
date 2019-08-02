@@ -2,10 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { ChartsModule } from 'ng2-charts-x';
-
 import { FormErrorMsgComponent } from './components/form-error-msg/form-error-msg.component';
 import { NoDataMsgComponent } from './components/no-data-msg/no-data-msg.component';
-// import {CoreModule} from "../core/core.module";
 import { RouterModule } from '@angular/router';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -33,9 +31,12 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MyFilterPipe1 } from '../home/enduser/process-design/myFilterPipe1';
 import { DeleteConfirmComponent } from './components/delete-confirm/delete-confirm.component';
 import { DialogScheduleComponent } from './components/dialog-schedule/dialog-schedule.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule.withConfig({ warnOnNgModelWithFormControl: 'never' }),
     // CoreModule,
     RouterModule,
     MatCardModule,
