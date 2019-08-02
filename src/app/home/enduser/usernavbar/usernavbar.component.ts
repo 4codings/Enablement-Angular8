@@ -25,7 +25,6 @@ export class UsernavbarComponent implements OnInit {
   constructor(
     private rollserviceService: RollserviceService,
     private httpClient: HttpClient,
-    private userAdminService: UseradminService
   ) { }
 
   ngOnInit() {

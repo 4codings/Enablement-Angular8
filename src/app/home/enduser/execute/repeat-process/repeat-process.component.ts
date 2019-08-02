@@ -17,27 +17,21 @@ export class RepeatProcessComponent implements OnInit {
   public parentpro: string;
   constructor(private store: StorageSessionService,
     private route: Router,
-    private http: HttpClient, private globals:Globals
+    private http: HttpClient, private globals: Globals
   ) { }
   toppings = new FormControl();
-  domain_name=this.globals.domain_name;
-  // end_and_start_date="";
+  domain_name = this.globals.domain_name;
   min: any;
 
-  //                      <mat-radio-button (onclick)="check_end_date_start_date()" value="no_end">No End Date</mat-radio-button>
-  // check_end_date_start_date(){
-  //   alert(this.end_and_start_date);
-  // }
   Select_candence_option: any = ["Minute", "Week", "Month", "Year"];
- //Select_candence_option: any = ["Week", "Month", "Year"]; 
- start_date: any = "";
+  start_date: any = "";
   End_date: any = "";
   Repeat_after: any;
-  
+
   week_day_selected: any;
-  Month_choice: any="1";
+  Month_choice: any = "1";
   Execute_Later: boolean = false;
-  candence_choice="Minute";
+  candence_choice = "Minute";
   Month_dayth: string;
 
   Month_timeth: string;
@@ -49,19 +43,19 @@ export class RepeatProcessComponent implements OnInit {
   Minute_block: boolean = false;
   //________________________________________
 
-  year_choice_final: any="1";
+  year_choice_final: any = "1";
   month_select_for_year: any;
   month_select_for_year1: any;
   numberthDayOfMonth: any;
   Year_timeth: any;
   Year_dayth: any;
   fo1: any = "Week";
-  tp={};
+  tp = {};
   fooo(v) {
     this.fo1 = v;
   }
   changeView(timer_value) {
-    this.candence_choice=timer_value;
+    this.candence_choice = timer_value;
     if (timer_value == "Week" || timer_value == "Month" || timer_value == "Year" || timer_value == "Minute") {
       switch (timer_value) {
         case "Minute":
@@ -95,13 +89,13 @@ export class RepeatProcessComponent implements OnInit {
   }
   //----------------------------cron expression
   Exe_data = this.store.getSession("Exe_data");
-  V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
-  V_USR_NM:string=JSON.parse(sessionStorage.getItem('u')).USR_NM;
-  private Url = "https://"+this.domain_name+"/rest/Process/Schedule"
+  V_SRC_CD: string = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+  V_USR_NM: string = JSON.parse(sessionStorage.getItem('u')).USR_NM;
+  private Url = "https://" + this.domain_name + "/rest/Process/Schedule"
   cronEditForRepeat() {
 
-  this.Execute_Later = true;
-   this.tp=this.store.getCookies("tp")
+    this.Execute_Later = true;
+    this.tp = this.store.getCookies("tp")
 
     var date = new Date(this.start_date);
     var sec: any = date.getSeconds();
@@ -113,10 +107,10 @@ export class RepeatProcessComponent implements OnInit {
     var year: any = date.getFullYear();
     var switch_data: any = this.candence_choice;
     var repeat_after: any = this.Repeat_after;
-    
+
     //    alert(this.Month_choice);
     switch (switch_data) {
-        
+
       case "Minute":
         min = "0/" + repeat_after;
         sec = "0";
@@ -169,85 +163,80 @@ export class RepeatProcessComponent implements OnInit {
           return;
         }
         break;
-        default:
-				alert("Please Do not manipulate the HTML!");
-			
+      default:
+        alert("Please Do not manipulate the HTML!");
+
     }
     var res_cron = "";
     res_cron = res_cron + sec + " " + min + " " + hrs + " " + date_of_month + " " + month + " " + day + " " + year;
-   (day);
+    (day);
 
     //------------------------------------------------------
     var timezone = new Date();
 
     var Intermediatetimezone = timezone.toString()
     /*Start Date*/
-     var stmonth=this.start_date.getMonth() + 1;
-     if(stmonth<10)
-     stmonth='0'+stmonth;
+    var stmonth = this.start_date.getMonth() + 1;
+    if (stmonth < 10)
+      stmonth = '0' + stmonth;
 
-     var stdate=this.start_date.getDate();
-     if(stdate<10)
-     stdate='0'+stdate;
+    var stdate = this.start_date.getDate();
+    if (stdate < 10)
+      stdate = '0' + stdate;
 
-     var sthrs=this.start_date.getHours();
-     if(sthrs<10)
-     sthrs='0'+sthrs;
-     var stmin=this.start_date.getMinutes();
-     if(stmin<10)
-     stmin='0'+stmin;
-     var stsec=this.start_date.getSeconds();
-     if(stsec<10)
-     stsec='0'+stsec;
+    var sthrs = this.start_date.getHours();
+    if (sthrs < 10)
+      sthrs = '0' + sthrs;
+    var stmin = this.start_date.getMinutes();
+    if (stmin < 10)
+      stmin = '0' + stmin;
+    var stsec = this.start_date.getSeconds();
+    if (stsec < 10)
+      stsec = '0' + stsec;
 
     var date11 = this.start_date.getFullYear() + '-' + stmonth + '-' + stdate;
     var time11 = sthrs + ":" + stmin + ":" + stsec;
     var dateTime11 = date11 + ' ' + time11;
     /*End Date*/
-    var endmonth=this.End_date.getMonth() + 1;
-     if(endmonth<10)
-     endmonth='0'+endmonth;
+    var endmonth = this.End_date.getMonth() + 1;
+    if (endmonth < 10)
+      endmonth = '0' + endmonth;
 
-     var enddate=this.End_date.getDate();
-     if(enddate<10)
-     enddate='0'+enddate;
+    var enddate = this.End_date.getDate();
+    if (enddate < 10)
+      enddate = '0' + enddate;
 
-     var endhrs=this.End_date.getHours();
-     if(endhrs<10)
-     endhrs='0'+endhrs;
-     var endmin=this.End_date.getMinutes();
-     if(endmin<10)
-     endmin='0'+endmin;
-     var endsec=this.End_date.getSeconds();
-     if(endsec<10)
-     endsec='0'+endsec;
+    var endhrs = this.End_date.getHours();
+    if (endhrs < 10)
+      endhrs = '0' + endhrs;
+    var endmin = this.End_date.getMinutes();
+    if (endmin < 10)
+      endmin = '0' + endmin;
+    var endsec = this.End_date.getSeconds();
+    if (endsec < 10)
+      endsec = '0' + endsec;
 
     var date22 = this.End_date.getFullYear() + '-' + endmonth + '-' + enddate;
     var time22 = endhrs + ":" + endmin + ":" + endsec;
     var dateTime22 = date22 + ' ' + time22;
     let body = {
-      
-        "Schedule": "Y",
-        "expression": res_cron,
-        "V_APP_CD": this.Exe_data['APP_CD'].toString(),
-        "V_PRCS_CD": this.Exe_data['PRC_CD'].toString(),
-        "V_SRVC_CD": "START",
-        "V_SRC_CD": this.V_SRC_CD.toString(),
-        "V_USR_NM": this.V_USR_NM.toString(),
-        "ST_DATE": dateTime11.toString(),
-        "END_DATE": dateTime22.toString(),
-        "TimeZone": Intermediatetimezone
+
+      "Schedule": "Y",
+      "expression": res_cron,
+      "V_APP_CD": this.Exe_data['APP_CD'].toString(),
+      "V_PRCS_CD": this.Exe_data['PRC_CD'].toString(),
+      "V_SRVC_CD": "START",
+      "V_SRC_CD": this.V_SRC_CD.toString(),
+      "V_USR_NM": this.V_USR_NM.toString(),
+      "ST_DATE": dateTime11.toString(),
+      "END_DATE": dateTime22.toString(),
+      "TimeZone": Intermediatetimezone
     }
-    Object.assign(body,this.tp);
-    (body);
+    Object.assign(body, this.tp);
     this.http.post(this.Url, body).subscribe(
       res => {
         this.Execute_Later = false;
         (res);
-
-        //  (res_cron);
-
-
       }
     );
 
@@ -257,12 +246,11 @@ export class RepeatProcessComponent implements OnInit {
   getEndYear() {
     var date = new Date();
     var nextD = new Date();
-    nextD.setFullYear(date.getFullYear()+1);
+    nextD.setFullYear(date.getFullYear() + 1);
     this.End_date = nextD;
 
     this.min = new Date(this.End_date);
     this.min_start = new Date(date);
-(this.End_date);
   }
   Redirect_to_user() {
     this.route.navigateByUrl("schd-actn");

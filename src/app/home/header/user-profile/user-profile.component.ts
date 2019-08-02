@@ -54,7 +54,7 @@ export class UserProfileComponent implements OnInit {
     this.chooworkingProfile();
     // let url:string="user";
     // this.router.navigateByUrl(url);
-    if(this.router.url == "/End_User/Execute") {
+    if(this.router.url == "/End_User/Design") {
       this.selectedProfile = "End_User";
     } else if(this.router.url == "/User_Admin/Adminuser") {
       this.selectedProfile = "User_Admin";

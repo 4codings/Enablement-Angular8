@@ -1,10 +1,8 @@
-import { Component, OnInit, Input, forwardRef, ChangeDetectorRef, ViewChild } from '@angular/core';
-//import { GetFormData } from '../getDataForm';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router, NavigationEnd } from '@angular/router';
 import { FormComponent } from '../form/form.component';
-import { AppComponent } from '../../../../app.component';
 import * as dateFormat from 'dateformat';
 import { CommonUtils } from '../../../../common/utils';
 import { Http } from '@angular/http';
@@ -26,9 +24,6 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./../../../../../assets/css/threepage.css']
 })
 export class RepeatableFormComponent extends FormComponent implements OnInit {
-  // domain_name = this.globals.domain_name;
-  //  private apiUrlGet = "https://" + this.domain_name + "/rest/v1/secured?";
-  //formData: GetFormData;
   private apiUrlGetSecure = this.apiService.endPoints.secure;
   public form: FormGroup;
   input: any[][] = [];
@@ -64,11 +59,9 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     this.navigationSubscription = router.events
       .pipe(filter(e => e instanceof NavigationEnd))
       .subscribe((e: NavigationEnd) => {
-        // alert('en'+e.urlAfterRedirects);
         this.registerDataChangeHandler(this.updateInput.bind(this));
         this.getFormData();
         this.updateInput();
-        // this.ngOnInit();
       });
   }
 
@@ -76,20 +69,14 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
   updateForm(form): void {
     var Field_Names_Ar = [];
     var Field_Values_Ar = [];
-
-
     for (const field_name in form) {
       if (form.hasOwnProperty(field_name) && field_name !== "iteration") {
         Field_Names_Ar.push("`" + field_name + "`");
         Field_Values_Ar.push("'" + form[field_name] + "'");
       }
     }
-
-
-
     const Field_Names = Field_Names_Ar.join("|");
     const Field_Values = Field_Values_Ar.join("|");
-
     let body_req = {
       "V_Table_Name": this.V_TABLE_NAME,
       "V_Schema_Name": this.V_SCHEMA_NAME,
@@ -121,17 +108,6 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
         }
       );
     }
-    //(body_FORMrec);
-    //this.http.put(this.apiUrlGet, body_FORMrec).subscribe(
-    // 10th April not used method
-    // httpMethod(this.apiUrlGet, body_req).subscribe(
-    //   res => {
-    //     ("Response:\n" + res);
-    //   }),
-    //   err => {
-    //     console.error("failure response recieved in post");
-    //     console.error(err);
-    //   }
   }
 
   deleteForm(form, index): void {
@@ -140,11 +116,8 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     this.dialogRef = this.dialog.open(DeleteConfirmComponent, { data: { recordName: this.V_TABLE_NAME }, disableClose: true, hasBackdrop: true });
     this.dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        // secure
         if (this.V_TABLE_NAME.length && this.V_TABLE_NAME != '') {
           var secure_del_URL = this.apiService.endPoints.secure + "V_Table_Name=" + this.V_TABLE_NAME + "&V_Schema_Name=" + this.V_SCHEMA_NAME + "&V_ID=" + this.V_ID[index - 1] + "&V_SRVC_CD=" + this.V_SRVC_CD + "&V_USR_NM=" + this.V_USR_NM + "&V_SRC_CD=" + this.V_SRC_CD + "&V_PRCS_ID=" + this.V_PRCS_ID + "&REST_Service=Forms_Record&Verb=DELETE";
-
-          // var secure_del_URL = this.apiService.endPoints.secure + "V_Table_Name=" + this.V_TABLE_NAME + "&V_Schema_Name=" + this.V_SCHEMA_NAME + "&V_SRVC_CD=" + this.V_SRVC_CD + "&V_USR_NM=" + this.V_USR_NM + "&V_SRC_CD=" + this.V_SRC_CD + "&V_PRCS_ID=" + this.V_PRCS_ID + "&REST_Service=Forms_Record&Verb=DELETE";
           secure_del_URL = encodeURI(secure_del_URL);
           this.https.delete(secure_del_URL, this.apiService.setHeaders()).subscribe(
             res => {
@@ -153,16 +126,6 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
         } else {
           this.deleted[index] = true;
         }
-        // var insecure_del_URL = this.apiService.endPoints.insecure + "V_Table_Name=" + this.V_TABLE_NAME + "&V_Schema_Name=" + this.V_SCHEMA_NAME + "&V_ID=" + this.V_ID[form["iteration"] - 1] + "&V_SRVC_CD=" + this.V_SRVC_CD + "&V_USR_NM=" + this.V_USR_NM + "&V_SRC_CD=" + this.V_SRC_CD + "&V_PRCS_ID=" + this.V_PRCS_ID + "&REST_Service=Forms_Record&Verb=DELETE";
-        // insecure_del_URL = encodeURI(insecure_del_URL);
-
-        // insecure
-        // this.https.delete(insecure_del_URL).subscribe(
-        //   res => {
-        //     ("Response:\n" + res);
-        //     this.deleted[index] = true;
-        //   });
-
       }
     });
   }
@@ -201,16 +164,6 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
       "V_UNIQUE_ID": this.V_UNIQUE_ID,
       "TimeZone": this.currentDate
     }
-    // 10th April added for future call after token works
-
-    // insecure
-    // this.https.post(this.apiService.endPoints.insecureFormSubmit, body_buildPVP).subscribe(
-    //   res => {
-    //     (res);
-    //     res = res.json();
-    //     this.invoke_router(res.json());
-    //   });
-
     // 10th April secured call
     // secure
     this.https.post(this.apiService.endPoints.secureFormSubmit, body_buildPVP, this.apiService.setHeaders()).subscribe(
@@ -245,10 +198,6 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
       this.Field_Names_initial += "\"" + key_array[i] + "\"";
       this.Field_Values_initial += "\"" + form[key_array[i]] + "\"";
     }
-
-    // this.Field_Names_initial += '|\"V_abcd\"';
-    // this.Field_Values_initial += '|\"\"';
-
   }
 
   ngOnDestroy() {
@@ -256,15 +205,9 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
   }
 
   Update_value(v: any, n: any, iter) { //v=value and n=paramter name
-    // var Field_Names_Ar = [];
-    // var Field_Values_Ar = []
-    console.log('RVP_labels', this.RVP_labels);
     n = n.split(" ").join("_")
-    // var Field_Names_Ar = ('"`' + n + '`"');
     var Field_Values_Ar = ('"' + v + '"');
-
     var Field_Names_Ar = n;
-    // var Field_Values_Ar = v;
 
     if (this.V_TABLE_NAME.length && this.V_TABLE_NAME != '' && this.V_ID[iter - 1] != undefined) {
       {
@@ -297,34 +240,15 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
   }
 
   addRow() {
-
     var areAllDisabled = true;
-    // for (let i = 0; i < this.totalRow; i++) {
-    //   if (!this.isDisabled[i]) {
-    //     areAllDisabled = false;
-    //   }
-    // }
     let obj = [];
     if (areAllDisabled) {
       this.rows.push(this.totalRow);
       ++this.totalRow;
       this.edit_or_done[this.totalRow - 1] = "done";
-
-      // for (let i = 0; i < this.RVP_labels.length; i++) {
-      //   let temp = null
-      //   obj.push(temp);
-      //   this.input[this.RVP_labels[i]].push(temp);
-      // }
       this.isDisabled[this.totalRow - 1] = false;
       this.deleted[this.totalRow - 1] = false;
     }
-
-    // if (this.V_TABLE_NAME.length && this.V_TABLE_NAME != '') {
-    //   this.apiService.requestSecureApi(this.apiUrlGetSecure + 'V_Table_Name=' + this.V_TABLE_NAME + '&V_SCHEMA_NAME=' + this.V_SCHEMA_NAME + '&V_SRVC_CD=' + this.V_SRVC_CD + '&V_PRCS_ID=' + this.V_PRCS_ID + '&V_SRC_CD=' + this.V_SRC_CD + '&V_USR_NM=' + this.V_USR_NM + '&Field_Names=' + this.RVP_labels + '&V_Key_Names=' + this.RVP_labels + '&Field_Values=' + obj + '&V_Key_Values=' + obj + '&REST_Service=Forms_Record&Verb=POST', 'get').subscribe(
-    //     res => {
-    //     }
-    //   );
-    // }
   }
 
   editTick_click(i) {
@@ -338,12 +262,10 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
       }
     }
     form["iteration"] = i;
-    // if (this.V_TABLE_NAME === null || this.V_TABLE_NAME.length > 0)
     this.updateForm(form);
   }
 
   delete_click(i) {
-    // this.deleted[i] = true;
     var form: any = [];
     if (this.V_TABLE_NAME === null || this.V_TABLE_NAME.length > 0)
       this.deleteForm(form, i);
@@ -354,8 +276,6 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
       }
     }
     form["iteration"] = i;
-    // if (this.V_TABLE_NAME === null || this.V_TABLE_NAME.length > 0)
-    //   this.deleteForm(form,i);
   }
 
   onCancel() {
@@ -381,11 +301,6 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
             form[this.RVP_labels[i].split(" ").join("_")].push(temp);
         }
       }
-      // for (let i = 0; i < this.totalRow; i++) {
-      //   if (!this.isDisabled[i]) {
-      //     areAllDisabled = false;
-      //   }
-      // }
       this.build_PVP(form);
     }
   }
