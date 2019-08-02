@@ -28,9 +28,11 @@ import { SplitLastPipe, MyFilterPipe } from '../home/enduser/execute/MyFilterPip
 import { MatMenuModule } from '@angular/material/menu';
 import { ConfirmationAlertComponent } from './components/confirmation-alert/confirmation-alert.component';
 import { TreeviewModule } from 'ngx-treeview';
-import {MatChipsModule} from '@angular/material/chips';
-import {DragDropModule} from '@angular/cdk/drag-drop';
+import { MatChipsModule } from '@angular/material/chips';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MyFilterPipe1 } from '../home/enduser/process-design/myFilterPipe1';
+import { DeleteConfirmComponent } from './components/delete-confirm/delete-confirm.component';
+import { DialogScheduleComponent } from './components/dialog-schedule/dialog-schedule.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -77,9 +79,14 @@ import { MyFilterPipe1 } from '../home/enduser/process-design/myFilterPipe1';
     MyFilterPipe,
     MyFilterPipe1,
     SplitLastPipe,
-    ConfirmationAlertComponent
+    ConfirmationAlertComponent,
+    DeleteConfirmComponent,
+    DialogScheduleComponent
   ],
-  entryComponents: [ConfirmationAlertComponent],
+  entryComponents: [
+    ConfirmationAlertComponent,
+    DeleteConfirmComponent,
+    DialogScheduleComponent],
   exports: [
     FormErrorMsgComponent,
     NoDataMsgComponent,

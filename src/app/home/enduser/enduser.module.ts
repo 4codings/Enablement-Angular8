@@ -13,14 +13,12 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { HeaderModule } from '../header/header.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormComponent } from './execute/form/form.component';
-import { DialogScheduleComponent } from './execute/dialog-schedule/dialog-schedule.component';
 import { InputArtComponent } from './execute/Input_Art/InputArt.component';
 import { NonRepeatableFormComponent } from './execute/non-repeatable-form/non-repeatable-form.component';
 import { RepeatProcessComponent } from './execute/repeat-process/repeat-process.component';
 import { RepeatableFormComponent } from './execute/repeatable-form/repeatable-form.component';
 import { ReportTableComponent } from './report-table/report-table.component';
 import { DialogChartsComponent } from './report-table/dialog-charts/dialog-charts.component';
-import { DeleteConfirmComponent } from './execute/delete-confirm/delete-confirm.component';
 import { ProcessDesignComponent } from './process-design/process-design.component';
 
 @NgModule({
@@ -31,14 +29,12 @@ import { ProcessDesignComponent } from './process-design/process-design.componen
     DashboardComponent,
     UsernavbarComponent,
     FormComponent,
-    DialogScheduleComponent,
     InputArtComponent,
     NonRepeatableFormComponent,
     RepeatProcessComponent,
     RepeatableFormComponent,
     ReportTableComponent,
     DialogChartsComponent,
-    DeleteConfirmComponent,
     ProcessDesignComponent
   ],
   imports: [
@@ -51,7 +47,7 @@ import { ProcessDesignComponent } from './process-design/process-design.componen
     NgbModule,
     ModalModule.forRoot(),
   ],
-  entryComponents: [DialogScheduleComponent, DialogChartsComponent, DeleteConfirmComponent]
+  entryComponents: [ DialogChartsComponent]
 })
 export class EnduserModule {
   constructor() {

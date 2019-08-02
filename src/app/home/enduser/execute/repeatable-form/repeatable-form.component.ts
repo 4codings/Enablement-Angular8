@@ -15,8 +15,8 @@ import { ConfigServiceService } from 'src/app/services/config-service.service';
 import { EndUserService } from 'src/app/services/EndUser-service';
 import { MatDialog } from '@angular/material';
 import { filter } from 'rxjs/operators';
-import { DeleteConfirmComponent } from '../delete-confirm/delete-confirm.component';
 import { ToastrService } from 'ngx-toastr';
+import { DeleteConfirmComponent } from 'src/app/shared/components/delete-confirm/delete-confirm.component';
 
 @Component({
   selector: 'app-repeatable-form',

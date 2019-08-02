@@ -24,7 +24,7 @@ import * as Chart from 'chart.js';
 import { schedule } from './schd_data';
 import { MatTableDataSource, MatDialog } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
-import { DialogScheduleComponent } from '../execute/dialog-schedule/dialog-schedule.component';
+import { DialogScheduleComponent } from 'src/app/shared/components/dialog-schedule/dialog-schedule.component';
 
 export class ReportData {
   public RESULT: string;

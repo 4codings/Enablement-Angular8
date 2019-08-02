@@ -12,10 +12,10 @@ import { ApiService } from 'src/app/service/api/api.service';
 import { Http, Headers, RequestOptions, RequestMethod } from '@angular/http';
 import { Globals } from 'src/app/services/globals';
 import { EndUserService } from 'src/app/services/EndUser-service';
-import { DeleteConfirmComponent } from '../delete-confirm/delete-confirm.component';
 import { CommonUtils } from 'src/app/common/utils';
 import { ToastrService } from 'ngx-toastr';
 import { Viewer } from '../bpmn-viewer';
+import { DeleteConfirmComponent } from 'src/app/shared/components/delete-confirm/delete-confirm.component';
 @Component({
   selector: 'app-input-art',
   templateUrl: './Input_Art.component.html',
