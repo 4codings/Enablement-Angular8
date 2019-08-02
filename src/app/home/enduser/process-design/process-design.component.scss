@@ -633,6 +633,20 @@ mat-header-cell {
   color: red;
 }
 
+.mat-menu-item .bpmn-icon-screw-wrench {
+  width: 22px;
+  height: 22px;
+  text-align: center;
+  display: inline-block;
+  font-size: 22px;
+  border-radius: 3px;
+  cursor: default;
+  box-shadow: 0 0 2px 1px #FEFEFE;
+  pointer-events: all;
+  color: #152995;
+  vertical-align: middle;
+}
+
 .mat-menu-item .mat-icon:first-child {
   color: #99cc00;
 }
@@ -643,4 +657,8 @@ mat-header-cell {
 
 .delete_outline .mat-menu-item .mat-icon {
   color: red;
+}
+
+.mr-10 {
+  margin-right: 10px;
 }

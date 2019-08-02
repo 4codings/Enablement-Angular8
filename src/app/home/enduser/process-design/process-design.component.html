@@ -19,10 +19,11 @@
           <mat-icon class="parent-color more-vert-font">more_vert</mat-icon>
         </button>
         <mat-menu #parentMenu="matMenu" class="sideNavChildMenu">
-          <div *ngFor="let pitem of parentobj[item.text]" class="{{pitem.icon}}">
+          <div *ngFor="let pitem of parentobj[item.text]" [ngClass]="pitem.iconType=='mat' ? pitem.icon : ''">
             <button (click)="onParentMenuItemClick(pitem.value,item.value, item)" *ngIf="pitem.havePermission"
               mat-menu-item>
-              <mat-icon>{{pitem.icon}}</mat-icon>
+              <mat-icon *ngIf="pitem.iconType=='mat'" title="{{pitem.item}}">{{pitem.icon}}</mat-icon>
+              <div *ngIf="pitem.iconType=='bpmn'" title="{{pitem.item}}" class="{{pitem.icon}}" draggable="true"></div>
               <span>{{pitem.item}}</span>
             </button>
           </div>
@@ -73,10 +74,11 @@
             {{selectedApp}}
           </button>
           <mat-menu class="headerParentMenu" #parentMenu="matMenu">
-            <span *ngFor="let pitem of parentobj[selectedApp]" class="{{pitem.icon}}">
+            <span *ngFor="let pitem of parentobj[selectedApp]" [ngClass]="pitem.iconType=='mat' ? pitem.icon : ''">
               <button (click)="onParentMenuItemClick(pitem.value,selectedApp)" *ngIf="pitem.havePermission"
                 mat-menu-item>
-                <mat-icon title="{{pitem.item}}">{{pitem.icon}}</mat-icon>
+                <mat-icon *ngIf="pitem.iconType=='mat'" title="{{pitem.item}}">{{pitem.icon}}</mat-icon>
+                <div *ngIf="pitem.iconType=='bpmn'" title="{{pitem.item}}" class="{{pitem.icon}}" draggable="true"></div>
               </button>
             </span>
           </mat-menu>
@@ -93,8 +95,7 @@
                 <mat-icon *ngIf="citem.iconType=='mat'" title="{{citem.item}}">{{citem.icon}}</mat-icon>
                 <i *ngIf="citem.iconType=='material'" class="material-icons" title="{{citem.item}}">{{citem.icon}}</i>
                 <i *ngIf="citem.iconType=='fa'" class="{{citem.icon}}" title="{{citem.item}}"></i>
-                <div *ngIf="citem.iconType=='bpmn'" title="{{citem.item}}" class="{{citem.icon}}" draggable="true"
-                  data-action="delete" title="Remove"></div>
+                <div *ngIf="citem.iconType=='bpmn'" title="{{citem.item}}" class="{{citem.icon}}" draggable="true"></div>
               </button>
             </span>
           </mat-menu>
