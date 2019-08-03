@@ -246,6 +246,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   ApplicationCD = '';
   ProcessCD = '';
   @ViewChild('processId') processID: ElementRef;
+  gantt = false;
+  bar = false;
+  pie = false;
 
   constructor(
     private httpClient: HttpClient,
@@ -1491,9 +1494,11 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       }
     }
   }
+
   chart_JSON_call() {
     this.apiService.requestSecureApi(this.apiService.endPoints.secure + 'V_SRC_ID=' + this.Execute_res_data['V_SRC_ID'] + '&V_APP_ID=' + this.Execute_res_data['V_APP_ID'] + '&V_PRCS_ID=' + this.Execute_res_data['V_PRCS_ID'] + '&V_PRCS_TXN_ID=' + this.Execute_res_data['V_PRCS_TXN_ID'] + '&REST_Service=ProcessStatus&Verb=GET', 'get').subscribe(res => {
       (res);
+      res = res.json();
       const start_time = [], end_time = [], Process = [];
 
       for (let i = 0; i < res['INS_DT_TM'].length; i++) {
@@ -1502,12 +1507,15 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         Process[i] = res['PRDCR_SRVC_CD'][i];
       }
       if (this.ctrl_variables.show_Gantt) {
+        this.gantt = true;
         this.show_gantt_chart(Process, start_time, end_time);
       }
       if (this.ctrl_variables.show_PIE) {
+        this.pie = true;
         this.show_pie(Process, start_time, end_time);
       }
       if (this.ctrl_variables.show_BAR) {
+        this.bar = true;
         this.show_bar_chart(Process, start_time, end_time);
       }
 
@@ -2149,7 +2157,7 @@ this.find_process(this.ApplicationCD, this.ProcessCD, 'Paused');
       this.selection.clear() :
       this.dataSource.filteredData.forEach((row: any) => this.selection.select(row));
   }
-  
+
   changeTrigger(data) {
     this.changingValue.next(data);
   }

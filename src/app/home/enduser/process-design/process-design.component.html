@@ -78,7 +78,8 @@
               <button (click)="onParentMenuItemClick(pitem.value,selectedApp)" *ngIf="pitem.havePermission"
                 mat-menu-item>
                 <mat-icon *ngIf="pitem.iconType=='mat'" title="{{pitem.item}}">{{pitem.icon}}</mat-icon>
-                <div *ngIf="pitem.iconType=='bpmn'" title="{{pitem.item}}" class="{{pitem.icon}}" draggable="true"></div>
+                <div *ngIf="pitem.iconType=='bpmn'" title="{{pitem.item}}" class="{{pitem.icon}}" draggable="true">
+                </div>
               </button>
             </span>
           </mat-menu>
@@ -95,7 +96,8 @@
                 <mat-icon *ngIf="citem.iconType=='mat'" title="{{citem.item}}">{{citem.icon}}</mat-icon>
                 <i *ngIf="citem.iconType=='material'" class="material-icons" title="{{citem.item}}">{{citem.icon}}</i>
                 <i *ngIf="citem.iconType=='fa'" class="{{citem.icon}}" title="{{citem.item}}"></i>
-                <div *ngIf="citem.iconType=='bpmn'" title="{{citem.item}}" class="{{citem.icon}}" draggable="true"></div>
+                <div *ngIf="citem.iconType=='bpmn'" title="{{citem.item}}" class="{{citem.icon}}" draggable="true">
+                </div>
               </button>
             </span>
           </mat-menu>
@@ -380,7 +382,8 @@
                   </mat-table>
                 </div>
                 <div *ngIf="newScheduleView">
-                  <app-repeat-process [parentapp]="selectedplat" [parentpro]="selectedplat1" [changing]="changingValue"></app-repeat-process>
+                  <app-repeat-process [parentapp]="selectedplat" [parentpro]="selectedplat1" [changing]="changingValue">
+                  </app-repeat-process>
                   <hr />
                 </div>
               </div>
@@ -400,10 +403,20 @@
                 </div>
               </div>
             </div>
+            <div fxFlex="100">
+              <canvas id="myGanttchart" *ngIf="gantt" fxFlex="100"></canvas>
+            </div>
+            <div fxFlex="100">
+              <canvas id="myBarchart" *ngIf="bar" fxFlex="100"></canvas>
+            </div>
+            <div fxFlex="100">
+              <canvas id="myPie" *ngIf="pie" fxFlex="100"></canvas>
+            </div>
           </div>
           <div fxFlex="20px" class="toggle">
             <a *ngIf="showRightIcon" href="javascript:void(0)"
-              matTooltip="{{opened ? 'Hide properties' : 'Show properties'}}" (click)="changeTrigger(opened);sidenav.toggle()">
+              matTooltip="{{opened ? 'Hide properties' : 'Show properties'}}"
+              (click)="changeTrigger(opened);sidenav.toggle()">
               <mat-icon aria-hidden="false">{{opened ? 'arrow_right' : 'arrow_left'}}</mat-icon>
             </a>
           </div>

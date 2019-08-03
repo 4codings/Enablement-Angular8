@@ -1,11 +1,11 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {userRole} from '../../../../store/user-admin/user-role/userrole.model';
-import {userGroup} from '../../../../store/user-admin/user-group/usergroup.model';
-import {Subject} from 'rxjs';
-import {SelectionModel} from '@angular/cdk/collections';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {UseradminService} from '../../../../services/useradmin.service2';
-import {groupTypeConstant} from '../../useradmin.constants';
+import { Component, Inject, OnInit } from '@angular/core';
+import { userRole } from '../../../../store/user-admin/user-role/userrole.model';
+import { userGroup } from '../../../../store/user-admin/user-group/usergroup.model';
+import { Subject } from 'rxjs';
+import { SelectionModel } from '@angular/cdk/collections';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { UseradminService } from '../../../../services/useradmin.service2';
+import { groupTypeConstant } from '../../useradmin.constants';
 
 @Component({
   selector: 'app-assign-group-modal',
@@ -21,8 +21,8 @@ export class AssignGroupModalComponent implements OnInit {
   public controlVariables;
   groupTypes = groupTypeConstant;
   constructor(private dialogRef: MatDialogRef<AssignGroupModalComponent>,
-              private userAdminService: UseradminService,
-              @Inject(MAT_DIALOG_DATA) public data: any) {
+    private userAdminService: UseradminService,
+    @Inject(MAT_DIALOG_DATA) public data: any) {
     this.role = data.role;
     this.groups = data.groups;
     this.controlVariables = data.controlVariables;
@@ -47,12 +47,13 @@ export class AssignGroupModalComponent implements OnInit {
 
   onBtnSaveClick(): void {
     const deletedGroups = [];
-    this.role.V_USR_GRP_ID.forEach(id => {
-      if (!this.selectedGroups.isSelected(id)) {
-        deletedGroups.push(id);
-      }
-    });
-
+    if (this.role.V_USR_GRP_ID.length) {
+      this.role.V_USR_GRP_ID.forEach(id => {
+        if (!this.selectedGroups.isSelected(id)) {
+          deletedGroups.push(id);
+        }
+      });
+    }
     let json = {
       'V_DELETED_ID_ARRAY': deletedGroups.toString(),
       'V_ADDED_ID_ARRAY': this.selectedGroups.selected.toString(),
