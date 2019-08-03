@@ -194,6 +194,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   downloadBpmn() {
+    console.log('path', this.ctrl_variables.bpmn_file_path);
     // `${this.ctrl_variables.bpmn_file_path}`
     const formData: FormData = new FormData();
     formData.append('FileInfo', JSON.stringify({
