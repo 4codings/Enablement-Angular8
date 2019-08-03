@@ -87,7 +87,7 @@ export class ConfigServiceService {
   }
 
   public getICN() {
-    return this.https.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=ICN&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET");
+    return this.https.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=ICN&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=Masters&Verb=GET");
   }
 
   public getFieldInValidMsg(modelReference: any, fieldName: string) {
@@ -721,19 +721,18 @@ export class ConfigServiceService {
 
 
   //_______________________________CHART STYLING CONFIG____________________________________
+  // V_APP_ID, V_PRCS_ID, V_SRC_ID
+  getchartstyling(UNIQUE_ID, V_SRC_ID) {
 
-  getchartstyling(V_APP_ID, V_PRCS_ID, V_SRC_ID) {
-    // return this.http.get(this.apiUrlGet + "V_USR_NM=" + this.V_USR_NM + "&V_SRC_ID=" + V_SRC_ID + "&V_APP_ID=" + V_APP_ID + "&V_PRCS_ID=" + V_PRCS_ID + "&REST_Service=User_Preference&Verb=GET" );
-    // secure
-    console.log(this.apiUrlGetSecure + "V_USR_NM=" + this.V_USR_NM + "&V_SRC_ID=" + V_SRC_ID + "&V_APP_ID=" + V_APP_ID + "&V_PRCS_ID=" + V_PRCS_ID + "&REST_Service=User_Preference&Verb=GET");
-    return this.http.get(this.apiUrlGetSecure + "V_USR_NM=" + this.V_USR_NM + "&V_SRC_ID=" + V_SRC_ID + "&V_APP_ID=" + V_APP_ID + "&V_PRCS_ID=" + V_PRCS_ID + "&REST_Service=User_Preference&Verb=GET", this.apiService.setHeaders());
+    // console.log(this.apiUrlGetSecure + "V_USR_NM=" + this.V_USR_NM + "&V_SRC_ID=" + V_SRC_ID + "&V_APP_ID=" + V_APP_ID + "&V_PRCS_ID=" + V_PRCS_ID + "&REST_Service=User_Preference&Verb=GET");
+    return this.http.get(this.apiUrlGetSecure + "V_USR_NM=" + this.V_USR_NM + "&V_SRC_ID=" + V_SRC_ID + "&V_UNIQUE_ID=" + UNIQUE_ID + "&REST_Service=User_Preference&Verb=GET", this.apiService.setHeaders());
   }
 
-  setchartstyling(V_APP_ID, V_PRCS_ID, V_SRC_ID, V_PRF_NM, V_PRF_VAL) {
+  setchartstyling(UNIQUE_ID, V_SRC_ID, V_PRF_NM, V_PRF_VAL) {
     // return this.http.get(this.apiUrlGet + "V_USR_NM=" + this.V_USR_NM + "&V_PRF_NM=" + V_PRF_NM + "&V_PRF_VAL=" + V_PRF_VAL + "&V_SRC_ID=" + V_SRC_ID + "&V_APP_ID=" + V_APP_ID + "&V_PRCS_ID=" + V_PRCS_ID + "&REST_Service=User_Preference&Verb=PATCH" );
 
     // secure
-    return this.http.get(this.apiUrlGetSecure + "V_USR_NM=" + this.V_USR_NM + "&V_PRF_NM=" + V_PRF_NM + "&V_PRF_VAL=" + V_PRF_VAL + "&V_SRC_ID=" + V_SRC_ID + "&V_APP_ID=" + V_APP_ID + "&V_PRCS_ID=" + V_PRCS_ID + "&REST_Service=User_Preference&Verb=PATCH", this.apiService.setHeaders());
+    return this.http.get(this.apiUrlGetSecure + "V_USR_NM=" + this.V_USR_NM + "&V_PRF_NM=" + V_PRF_NM + "&V_PRF_VAL=" + V_PRF_VAL + "&V_SRC_ID=" + V_SRC_ID + "&V_UNIQUE_ID=" + UNIQUE_ID + "&REST_Service=User_Preference&Verb=PATCH", this.apiService.setHeaders());
   }
 
   //________________________________________________________________________________________

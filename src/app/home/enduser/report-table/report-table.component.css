@@ -5,6 +5,7 @@
 .fa-desktop {
   color: #ff1a1a;
 }
+
 .icon_click {
   cursor: pointer;
 }
@@ -12,6 +13,12 @@
 .highlight:not(.djs-connection) .djs-visual> :nth-child(1) {
   fill: yellow !important;
   /* color elements as green */
+}
+
+:host .mat-sort-header-pointer-middle,
+.mat-sort-header-pointer-right,
+.mat-sort-header-pointer-left {
+  color: whitesmoke !important;
 }
 
 .example-box {

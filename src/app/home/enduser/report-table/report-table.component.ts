@@ -125,12 +125,14 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
   V_USR_NM: string = JSON.parse(sessionStorage.getItem('u')).USR_NM;
   Exe_data = this.dataStored.getCookies("executedata");
   iddata: any[] = [];
+  table_help_text: any;
   Table_of_Data: any[];
   Table_of_Data1: any[];
   Table_of_Data2: any[] = [];
   Table_of_Data3: any[] = [];
   Table_of_Data4: any[] = [];
   APP_ID = "";
+  UNIQUE_ID = "";
   PRCS_ID = "";
   SRC_ID = "";
   SRVC_ID = "";
@@ -194,7 +196,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   downloadBpmn() {
-    console.log('path', this.ctrl_variables.bpmn_file_path);
+    // console.log('path', this.ctrl_variables.bpmn_file_path);
     // `${this.ctrl_variables.bpmn_file_path}`
     const formData: FormData = new FormData();
     formData.append('FileInfo', JSON.stringify({
@@ -259,7 +261,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
       switch (obj.chartType) {
         case "linechart":
           this.linearray.push(obj);
-          console.log(this.linearray);
           this._yaxis_sel_line.push(obj.yaxisdata);
           this._xaxis_sel_line = obj.xaxisdata;
           this.updateLineChart();
@@ -327,6 +328,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.SRVC_CD = this.dataStored.getCookies('report_table')['SRVC_CD'][0];
     // this.SRVC_ID = this.dataStored.getCookies('report_table')['SRVC_ID'][0];
+    this.UNIQUE_ID = this.dataStored.getCookies('report_table')['TEMP_UNIQUE_ID'][0];
     this.Table_of_Data1 = this.dataStored.getCookies('report_table')['LOG_VAL'];
     this.iddata.push(this.dataStored.getCookies('iddata'));
     this.PRCS_TXN_ID = this.dataStored.getCookies('executeresdata')['V_PRCS_TXN_ID'];
@@ -335,6 +337,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.SRC_ID = this.dataStored.getCookies('report_table')['SRC_ID'][0];
     this.APP_CD = this.dataStored.getCookies('report_table')['APP_CD'][0];
     this.PRCS_CD = this.dataStored.getCookies('report_table')['PRCS_CD'][0];
+    this.table_help_text = this.dataStored.getCookies('report_table')['FLD_HLP_TXT'][0].split(",");;
     //(JSON.parse(this.Table_of_Data1[0]));
     this.columnsToDisplay = Object.keys(JSON.parse(this.Table_of_Data1[0]));
 
@@ -356,6 +359,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
   columnsToDisplay = [];
 
   showhide(abc) {
+    this.show_choice = abc;
     switch (abc) {
       case 'Table':
         this.disptable = true;
@@ -364,11 +368,16 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
       case 'Charts':
         this.disptable = false;
         this.dispchart = true;
-        this.getchartpreferences();
+        if (this.V_PRF_NM.length) {
+          this.getchartpreferences();
+        }
         break;
       case 'Both':
         this.disptable = true;
         this.dispchart = true;
+        if (this.V_PRF_NM.length) {
+          this.getchartpreferences();
+        }
         break;
     }
     this.settablepreferences();
@@ -524,8 +533,12 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   //_________________________CHART FUNCTIONS________________________________________
   updateLineChart() {
-    var unit = this.linearray[0].UoM;
-    var scale = this.linearray[0].SoM;
+    var unit = '';
+    var scale;
+    if (this.linearray.length) {
+      unit = this.linearray[0].UoM;
+      scale = this.linearray[0].SoM;
+    }
     this.lineChartData = [];
     this.lineChartLabels = [];
     this.yaxis_data_line = [];
@@ -941,7 +954,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.V_PRF_NM = Object.keys(this.userprefs);
     this.V_PRF_VAL = Object.values(this.userprefs);
     for (let j = 0; j < this.V_PRF_NM.length; j++) {
-      this.data.setchartstyling(this.APP_ID, this.PRCS_ID, this.SRC_ID, this.V_PRF_NM[j], this.V_PRF_VAL[j]).subscribe(
+      this.data.setchartstyling(this.UNIQUE_ID, this.SRC_ID, this.V_PRF_NM[j], this.V_PRF_VAL[j]).subscribe(
         () => {
 
         });
@@ -958,7 +971,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.V_PRF_NM = Object.keys(this.userprefs);
     this.V_PRF_VAL = Object.values(this.userprefs);
     for (let j = 0; j < this.V_PRF_NM.length; j++) {
-      this.data.setchartstyling(this.APP_ID, this.PRCS_ID, this.SRC_ID, this.V_PRF_NM[j], this.V_PRF_VAL[j]).subscribe(
+      this.data.setchartstyling(this.UNIQUE_ID, this.SRC_ID, this.V_PRF_NM[j], this.V_PRF_VAL[j]).subscribe(
         () => {
           //(res);
         });
@@ -1048,7 +1061,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
   getpreferences() {
-    this.data.getchartstyling(this.APP_ID, this.PRCS_ID, this.SRC_ID).subscribe(
+    this.data.getchartstyling(this.UNIQUE_ID, this.SRC_ID).subscribe(
       res => {
         (res.json());
         var result = res.json();
@@ -1061,8 +1074,12 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
         for (let i = 0; i < name.length; i++) {
           this.userprefs[name[i]] = value[i];
         }
-        this.gettablepreferences();
-        this.getchartpreferences();
+        if (name.length) {
+          this.gettablepreferences();
+          this.getchartpreferences();
+        } else {
+          this.showhide(this.show_choice);
+        }
         console.log(this.userprefs);
       });
   }
@@ -1108,16 +1125,18 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     for (let j = 0; j <= this.columnsToDisplay.length; j++) {
-      this.https.get(this.apiService.endPoints.secure + "FieldName=" + this.columnsToDisplay[j] + "&REST_Service=Field_Description&Verb=GET", this.apiService.setHeaders())
-        .subscribe(res => {
-          var data: data = res.json();
-          var name = data.Field_Name;
-          var tip = data.Description_Text;
-          var i;
-          for (i = 0; i < tip.length; i++) {
-            this.helpertext[name[i]] = tip[i];
-          }
-        })
+
+      this.helpertext[this.columnsToDisplay[j]] = this.table_help_text[j];
+      // this.https.get(this.apiService.endPoints.secure + "FieldName=" + this.columnsToDisplay[j] + "&REST_Service=Field_Description&Verb=GET", this.apiService.setHeaders())
+      //   .subscribe(res => {
+      //     var data: data = res.json();
+      //     var name = data.Field_Name;
+      //     var tip = data.Description_Text;
+      //     var i;
+      //     for (i = 0; i < tip.length; i++) {
+      //       this.helpertext[name[i]] = tip[i];
+      //     }
+      //   })
 
     }
     this.getpreferences();
