@@ -11,12 +11,11 @@ import { Subject } from 'rxjs';
   selector: 'app-repeat-process',
   templateUrl: './repeat-process.component.html',
   styleUrls: ['./repeat-process.component.scss'],
-  inputs: ['parentapp', 'parentpro']
 })
 export class RepeatProcessComponent implements OnInit {
-  public parentapp: string;
-  public parentpro: string;
-  @Input() changing: Subject<boolean>;		
+  @Input() parentapp: string;
+  @Input() parentpro: string;
+  @Input() changing: Subject<boolean>;
   public addClass: boolean = false;
   constructor(private store: StorageSessionService,
     private route: Router,
@@ -57,7 +56,7 @@ export class RepeatProcessComponent implements OnInit {
   fooo(v) {
     this.fo1 = v;
   }
-  changeView() {
+  changeView(v) {
     let timer_value = this.candence_choice;
     if (timer_value == "Week" || timer_value == "Month" || timer_value == "Year" || timer_value == "Minute") {
       switch (timer_value) {
@@ -264,8 +263,8 @@ export class RepeatProcessComponent implements OnInit {
   ngOnInit() {
     this.start_date = new Date();
     this.getEndYear();
-    this.changing.subscribe(v => { 		
-      this.addClass = v;		
+    this.changing.subscribe(v => {
+      this.addClass = v;
     });
   }
 }
