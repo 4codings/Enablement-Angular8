@@ -31,7 +31,21 @@ export class GroupListComponent implements OnInit, OnDestroy {
     private userAdminService: UseradminService,
     public overviewService: OverviewService,
   ) {
-    this.overviewService.groups$.pipe(takeUntil(this.unsubscribeAll)).subscribe(groups => this.groups = groups);
+    this.overviewService.groups$.pipe(takeUntil(this.unsubscribeAll)).subscribe((groups) => {
+      this.groups = groups.sort((a, b) => {
+        // Use toUpperCase() to ignore character casing
+        const genreA = a.V_USR_GRP_CD.toUpperCase();
+        const genreB = b.V_USR_GRP_CD.toUpperCase();
+
+        let comparison = 0;
+        if (genreA > genreB) {
+          comparison = 1;
+        } else if (genreA < genreB) {
+          comparison = -1;
+        }
+        return comparison;
+      });
+    });
     this.overviewService.selectedGroupType$.pipe(takeUntil(this.unsubscribeAll)).subscribe(type => this.selectedGroupType = type);
   }
 
