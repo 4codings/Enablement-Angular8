@@ -12,5 +12,8 @@
         <mat-option *ngFor="let status of userStatusOptions" [value]="status.key">{{status.label}}</mat-option>
       </mat-select>
     </mat-form-field>
+    <mat-checkbox formControlName="V_IS_PRIMARY">
+      Is Primary Group
+    </mat-checkbox>
   </form>
 </div>

@@ -22,6 +22,7 @@ export class UserFormComponent implements OnInit, OnChanges {
       V_SRC_CD: new FormControl(JSON.parse(sessionStorage.getItem('u')).SRC_CD, [Validators.required]),
       V_USR_DSC: new FormControl(''),
       V_STS: new FormControl(userStatusConstants.ACTIVE, Validators.required),
+      V_IS_PRIMARY: new FormControl(false),
     });
   }
 
@@ -44,6 +45,7 @@ export class UserFormComponent implements OnInit, OnChanges {
       V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
       V_USR_DSC: user.V_USR_DSC,
       V_STS: user.V_STS != '' ? user.V_STS : userStatusConstants.ACTIVE,
+      V_IS_PRIMARY: user.V_IS_PRIMARY[0] === 'Y',
     });
     this.userForm.get('V_USR_NM').disable({onlySelf: true, emitEvent: false});
   }
@@ -59,6 +61,7 @@ export class UserFormComponent implements OnInit, OnChanges {
       V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
       V_USR_DSC: formValue.V_USR_DSC,
       V_STS: formValue.V_STS != '' ? formValue.V_STS : userStatusConstants.ACTIVE,
+      V_IS_PRIMARY: formValue.V_IS_PRIMARY ? 'Y' : 'N',
     };
   }
 

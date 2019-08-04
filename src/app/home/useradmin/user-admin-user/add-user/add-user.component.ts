@@ -23,7 +23,6 @@ import {Subscription} from 'rxjs';
 export class AddUserComponent implements OnInit, OnDestroy {
   selectedView: 'selectUser' | 'addNewUser' = 'selectUser';
   selectedUser: User;
-  isPrimaryGroup = false;
   actionSubscription: Subscription;
   userAlreadyExist: boolean = false;
   allUsers: User[] = [];
@@ -83,7 +82,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
       'V_EFF_END_DT_TM': [new Date(Date.now() + this.userAdminService.controlVariables.effectiveEndDate)],
       'REST_Service': ['User_Group'],
       'Verb': ['POST'],
-      'V_IS_PRIMARY': this.isPrimaryGroup ? 'Y' : 'N',
+      'V_IS_PRIMARY': user.V_IS_PRIMARY ? 'Y' : 'N',
     };
     this.userAdminService.postSecuredJSON(json).subscribe(res => {
       const V_SRC_CD_DATA = {
