@@ -22,16 +22,14 @@
     </div>
   </div>
   <div fxLayout="row" fxLayoutGap="8px" class="content-wrapper">
-    <app-group-list [fxFlex]="selectedGroupType == groupTypes.CUSTOM ? 50 : 100"
+    <app-group-list [fxFlex]="50"
                     [membershipPermission]="roll_membership"
                     [groupPermission]="roll_group"
                     [userPermission]="roll_user"
                     [assignPermission]="roll_assignRole"
                     *ngIf="roll_user || roll_group || roll_membership">
     </app-group-list>
-    <mat-divider [vertical]="true"
-                 *ngIf="selectedGroupType == groupTypes.CUSTOM">
-    </mat-divider>
+    <mat-divider [vertical]="true"></mat-divider>
     <app-role-list fxFlex="50"
                    [authorizationPermission]="roll_authorization"
                    [rolePermission]="roll_role"
