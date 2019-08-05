@@ -91,17 +91,17 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   childrenMenuItems = [
     { item: 'Run', value: 'Run', havePermission: 0, icon: 'directions_run', iconType: 'mat' },
     { item: 'Run At', value: 'RunAt', havePermission: 0, icon: 'fa fa-plane fa-lg', iconType: 'fa' },
-    { item: 'Edit', value: 'Edit', havePermission: 0, icon: 'fa fa-edit fa-lg', iconType: 'fa' },
-    { item: 'Delete', value: 'Delete', havePermission: 0, icon: 'entry bpmn-icon-trash', iconType: 'bpmn' },
-    { item: 'Schedule', value: 'Schedule', havePermission: 0, icon: 'fa fa-calendar fa-lg', iconType: 'fa' },
-    { item: 'Pause Schedule', value: 'SchedulePause', havePermission: 0, icon: 'fa fa-pause-circle-o fa-lg', iconType: 'fa' },
-    { item: 'Resume Schedule', value: 'ScheduleResume', havePermission: 0, icon: 'fa fa-play-circle-o fa-lg', iconType: 'fa' },
-    { item: 'Kill Schedule', value: 'ScheduleKill', havePermission: 0, icon: 'fa fa-skull-crossbones fa-lg', iconType: 'fa' },
-    { item: 'Monitor', value: 'Monitor', havePermission: 0, icon: 'fas fa-desktop fa-lg', iconType: 'fa' },
     { item: 'Approve', value: 'Approve', havePermission: 0, icon: 'fas fa-thumbs-up fa-lg', iconType: 'fa' },
+    { item: 'Monitor', value: 'Monitor', havePermission: 0, icon: 'fas fa-desktop fa-lg', iconType: 'fa' },
     { item: 'Resolve', value: 'Resolve', havePermission: 0, icon: 'fab fa-resolving fa-lg', iconType: 'fa' },
+    { item: 'Schedule', value: 'Schedule', havePermission: 0, icon: 'fa fa-calendar fa-lg', iconType: 'fa' },
+    { item: 'Pause Schedule', value: 'SchedulePause', havePermission: 0, icon: 'far fa-pause-circle fa-lg', iconType: 'fa' },
+    { item: 'Kill Schedule', value: 'ScheduleKill', havePermission: 0, icon: 'far fa-skull-crossbones fa-lg', iconType: 'fa' },
+    { item: 'Resume Schedule', value: 'ScheduleResume', havePermission: 0, icon: 'far fa-play-circle mr-2 fa-lg', iconType: 'fa' },
     { item: 'Download BPNM', value: 'BPNM', havePermission: 0, icon: 'fas fa-file-download fa-lg', iconType: 'fa' },
-    { item: 'Download SVG', value: 'SVG', havePermission: 0, icon: 'fas fa-download fa-lg', iconType: 'fa' }];
+    { item: 'Download SVG', value: 'SVG', havePermission: 0, icon: 'fas fa-download fa-lg', iconType: 'fa' },
+    { item: 'Edit', value: 'Edit', havePermission: 0, icon: 'entry bpmn-icon-screw-wrench mr-2', iconType: 'bpmn' },
+    { item: 'Delete', value: 'Delete', havePermission: 0, icon: 'entry bpmn-icon-trash', iconType: 'bpmn' }];
   roleObservable$: Subscription;
   roleValues;
   childobj = {};
@@ -204,7 +204,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   generalId: string;
   processName: string = '';
   documentation: string = '';
-  oldStateId: any;
+  oldStateId: any = '';
 
   todaysDate: any = new Date();
   currentDate: any = new Date();
@@ -448,8 +448,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
               this.oldSequenceId = $event.element.id.replace(new RegExp('_', 'g'), ' ');
               this.isSequenceFlow = true;
               const isConditional = !!businessObject.conditionExpression;
-              const source = $event.element.source,
-                sourceBusinessObject = source.businessObject;
+              const source = $event.element.source;
+              const sourceBusinessObject = source != null ? source.businessObject : '';
 
               const isDefault = sourceBusinessObject.default &&
                 sourceBusinessObject.default === businessObject;
@@ -640,7 +640,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       V_PRDCR_SRC_CD: this.user.SRC_CD,
       V_PRDCR_SRVC_CD: this.sequenceFlowsourceId,
       V_SRVC_CD: this.sequenceFlowtargetId,
-      V_ORCH_CD: this.sequenceFlowobjectId.replace(new RegExp('_', 'g'), ' '),
+      V_ORCH_CD: this.sequenceFlowobjectId,
       V_ORCH_DSC: this.documentation,
       V_TRNSN_TYP: v_trns_typ,
       V_TRNSN_CND: this.sequenceCondition,
@@ -783,6 +783,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         if (res) {
           this.getApplicationProcess();
+          this.oldStateId = this.selectedProcess;
           document.getElementById("processId").focus();
         }
       });
@@ -792,35 +793,38 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
 
   upload(vAppCd, vPrcsCd) {
-    if (!this.uploadLocked) {
-      vPrcsCd = vPrcsCd.replace(new RegExp(' ', 'g'), '_')
-      this.modeler.saveXML((err: any, xml: any) => {
-        if (xml !== this.currentXml) {
-          const formData: FormData = new FormData();
-          formData.append('FileInfo', JSON.stringify({
-            File_Path: `${this.ctrl_variables.bpmn_file_path}${this.useradminService.reduceFilePath(this.user.SRC_CD)}/${vAppCd}/`,
-            File_Name: `${vPrcsCd}.bpmn`,
-            V_SRC_CD: this.user.SRC_CD,
-            USR_NM: this.user.USR_NM
-          }));
-          formData.append('Source_File', new File([xml], `${vPrcsCd}.bpmn`, { type: 'text/xml' }));
-          this.http.post(`https://${this.globals.domain}/FileAPIs/api/file/v1/upload`, formData).subscribe(
-            res => {
-              if (this.isTaskCreatedFlag) {
-                this.showCondtionType = false;
-                this.iconType = this.oldIconType;
-                this.oldIconType = '';
-                this.generalId = this.oldTaskId;
-                this.getAllTabs(this.generalId);
-                this.isTaskCreatedFlag = false;
-                document.getElementById('processId').focus();
-              }
+    // if (!this.uploadLocked) {
+    vPrcsCd = vPrcsCd.replace(new RegExp(' ', 'g'), '_')
+    this.modeler.saveXML((err: any, xml: any) => {
+      if (xml !== this.currentXml) {
+        const formData: FormData = new FormData();
+        formData.append('FileInfo', JSON.stringify({
+          // File_Path: `${this.ctrl_variables.bpmn_file_path}${this.useradminService.reduceFilePath(this.user.SRC_CD)}/${vAppCd}/`,
+          File_Path: `${this.ctrl_variables.bpmn_file_path}/${vAppCd}/`,
+          File_Name: `${vPrcsCd}.bpmn`,
+          V_SRC_CD: this.user.SRC_CD,
+          USR_NM: this.user.USR_NM
+        }));
+        formData.append('Source_File', new File([xml], `${vPrcsCd}.bpmn`, { type: 'text/xml' }));
+        this.http.post(`https://${this.globals.domain}/FileAPIs/api/file/v1/upload`, formData).subscribe(
+          res => {
+            if (this.isTaskCreatedFlag) {
+              this.showCondtionType = false;
+              this.iconType = this.oldIconType;
+              console.log('u old icon type', this.oldIconType)
+              console.log('u icon type', this.iconType)
+              this.oldIconType = '';
+              this.generalId = this.oldTaskId;
+              this.getAllTabs(this.generalId);
+              this.isTaskCreatedFlag = false;
+              document.getElementById('processId').focus();
             }
-          );
-        }
-        this.currentXml = xml;
-      });
-    }
+          }
+        );
+      }
+      this.currentXml = xml;
+    });
+    // }
   }
 
   openBpmn($event) {
@@ -1082,7 +1086,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       this.selectedProcess = item.text;
       const formData: FormData = new FormData();
       formData.append('FileInfo', JSON.stringify({
-        File_Path: `${this.ctrl_variables.bpmn_file_path}` + this.user.SRC_CD + '/' + item.value + '/',
+        File_Path: `${this.ctrl_variables.bpmn_file_path}` + item.value + '/',
         File_Name: item.text.replace(new RegExp(' ', 'g'), '_') + '.bpmn'
       }));
       this.http.post(this.downloadUrl, formData)
@@ -1368,11 +1372,16 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.getAllExecutableTypes();
+    // this.getAllExecutableTypes();
   }
 
   // Added for property panel related tabs
   getAllExecutableTypes() {
+    console.log('g old icon type', this.oldIconType)
+    console.log('g icon type', this.iconType)
+    if (this.oldIconType != '') {
+      this.iconType = this.oldIconType;
+    }
     let iconType = this.iconType.split(':')[1];
     iconType = iconType.split(/(?=[A-Z])/).join(' ');
     this.endUserService.getAllExecutableTypes(iconType)

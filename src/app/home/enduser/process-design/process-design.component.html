@@ -475,8 +475,9 @@
           <mat-tab *ngIf="showAllTabFlag" label="Enable">
             <div class="generalTabV">
               <label class="m-t-10">{{Label['EXECUTABLE_TYPES']}}</label>
-              <select [(ngModel)]="selectedExecutableType" (change)="updateselectedExecutableType($event.target.value)">
-                <option value="">{{Label['PLEASE_SELECT']}}</option>
+              <select [(ngModel)]="selectedExecutableType" (click)="getAllExecutableTypes()"
+                (change)="updateselectedExecutableType($event.target.value)">
+                <option *ngIf="!executableTypesData.length" [value]="selectedExecutableType">{{selectedExecutableType}}</option>
                 <option *ngFor="let exeType of executableTypesData " [value]="exeType">
                   {{ exeType}}
                 </option>

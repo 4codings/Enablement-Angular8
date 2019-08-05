@@ -116,11 +116,13 @@ export class FormComponent implements OnInit {
   private downloadUrl: string;
   private user: any;
   private bpmnTemplate: any;
+  public bpmnFilePath = '';
   ngOnInit() {
   }
   ngAfterViewInit() {
     this.http.get('../../../../assets/control-variable.json').subscribe(res => {
       this.ctrl_variables = res;
+      this.bpmnFilePath = this.ctrl_variables.bpmn_file_path;
     });
     this.downloadBpmn();
     this.viewer = new Viewer({
@@ -147,7 +149,7 @@ export class FormComponent implements OnInit {
     console.log('path', this.ctrl_variables.bpmn_file_path);
     const formData: FormData = new FormData();
     formData.append('FileInfo', JSON.stringify({
-      File_Path: '/opt/tomcat/webapps/src/bpmn/' + this.user.SRC_CD + '/' + this.APP_CD + '/',
+      File_Path: this.bpmnFilePath + this.APP_CD + '/',
       File_Name: this.PRCS_CD.replace(new RegExp(' ', 'g'), '_') + '.bpmn'
     }));
 

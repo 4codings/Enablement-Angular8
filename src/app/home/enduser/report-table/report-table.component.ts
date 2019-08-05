@@ -164,10 +164,13 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private downloadUrl: string;
   private user: any;
   private bpmnTemplate: any;
+  public path = '';
 
   ngAfterViewInit() {
-    this.httpClient.get('../../../../assets/control-variable.json').subscribe(res => {
+    this.httpClient.get('../../../../assets/control-variable.json').subscribe((res: any) => {
       this.ctrl_variables = res;
+      this.path = this.ctrl_variables.bpmn_file_path;
+      console.log('this.ctrl', this.ctrl_variables)
     });
     this.dataSource.sort = this.sort;
     this.cd.detectChanges();
@@ -200,7 +203,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     // `${this.ctrl_variables.bpmn_file_path}`
     const formData: FormData = new FormData();
     formData.append('FileInfo', JSON.stringify({
-      File_Path: '/opt/tomcat/webapps/src/bpmn/' + this.user.SRC_CD + '/' + this.APP_CD + '/',
+      File_Path: this.path + this.APP_CD + '/',
       File_Name: this.PRCS_CD.replace(new RegExp(' ', 'g'), '_') + '.bpmn'
     }));
     this.https.post(this.downloadUrl, formData)
