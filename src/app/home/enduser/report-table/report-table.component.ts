@@ -200,7 +200,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     // `${this.ctrl_variables.bpmn_file_path}`
     const formData: FormData = new FormData();
     formData.append('FileInfo', JSON.stringify({
-      File_Path: '/opt/tomcat/webapps/src/bpmn/' + this.user.SRC_CD + '/' + this.APP_CD + '/',
+      File_Path: '/opt/tomcat/webapps/bpmn/' + this.user.SRC_CD + '/' + this.APP_CD + '/',
       File_Name: this.PRCS_CD.replace(new RegExp(' ', 'g'), '_') + '.bpmn'
     }));
     this.https.post(this.downloadUrl, formData)

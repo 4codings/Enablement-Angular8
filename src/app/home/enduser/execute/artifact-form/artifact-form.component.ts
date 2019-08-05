@@ -118,7 +118,7 @@ export class ArtifactFormComponent implements OnInit, OnDestroy {
   downloadBpmn() {
     const formData: FormData = new FormData();
     formData.append('FileInfo', JSON.stringify({
-      File_Path: '/opt/tomcat/webapps/src/bpmn/' + this.user.SRC_CD + '/' + this.APP_CD + '/',
+      File_Path: '/opt/tomcat/webapps/bpmn/' + this.user.SRC_CD + '/' + this.APP_CD + '/',
       File_Name: this.PRCS_CD.replace(new RegExp(' ', 'g'), '_') + '.bpmn'
     }));
     this.https.post(this.downloadUrl, formData)
