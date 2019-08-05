@@ -19,6 +19,7 @@ import * as userActions from '../../../../store/user-admin/user/user.action';
 export class EditUserComponent implements OnInit {
 
   user: User;
+  groupId: string;
   actionSubscription: Subscription;
   @ViewChild(UserFormComponent) userForm: UserFormComponent;
 
@@ -28,6 +29,7 @@ export class EditUserComponent implements OnInit {
               private dialogRef: MatDialogRef<EditUserComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
     this.user = data.user;
+    this.groupId = data.groupId;
   }
 
   ngOnInit() {
