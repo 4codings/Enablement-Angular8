@@ -799,7 +799,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       if (xml !== this.currentXml) {
         const formData: FormData = new FormData();
         formData.append('FileInfo', JSON.stringify({
-          File_Path: `${this.ctrl_variables.bpmn_file_path}${this.useradminService.reduceFilePath(this.user.SRC_CD)}/${vAppCd}/`,
+          // File_Path: `${this.ctrl_variables.bpmn_file_path}${this.useradminService.reduceFilePath(this.user.SRC_CD)}/${vAppCd}/`,
+          File_Path: `${this.ctrl_variables.bpmn_file_path}/${vAppCd}/`,
           File_Name: `${vPrcsCd}.bpmn`,
           V_SRC_CD: this.user.SRC_CD,
           USR_NM: this.user.USR_NM
@@ -1085,7 +1086,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       this.selectedProcess = item.text;
       const formData: FormData = new FormData();
       formData.append('FileInfo', JSON.stringify({
-        File_Path: `${this.ctrl_variables.bpmn_file_path}` + this.user.SRC_CD + '/' + item.value + '/',
+        File_Path: `${this.ctrl_variables.bpmn_file_path}` + item.value + '/',
         File_Name: item.text.replace(new RegExp(' ', 'g'), '_') + '.bpmn'
       }));
       this.http.post(this.downloadUrl, formData)

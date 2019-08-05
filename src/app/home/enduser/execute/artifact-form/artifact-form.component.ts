@@ -53,7 +53,7 @@ export class ArtifactFormComponent implements OnInit, OnDestroy {
   private downloadUrl: string;
   private user: any;
   private bpmnTemplate: any;
-
+  public bpmnFilePath: any;
   constructor(private storage: StorageSessionService,
     private http: HttpClient,
     public globals: Globals,
@@ -95,6 +95,7 @@ export class ArtifactFormComponent implements OnInit, OnDestroy {
   ngAfterViewInit() {
     this.http.get('../../../../assets/control-variable.json').subscribe(res => {
       this.ctrl_variables = res;
+      this.bpmnFilePath = this.ctrl_variables.bpmn_file_path;
     });
     this.downloadBpmn();
     this.viewer = new Viewer({
@@ -118,7 +119,7 @@ export class ArtifactFormComponent implements OnInit, OnDestroy {
   downloadBpmn() {
     const formData: FormData = new FormData();
     formData.append('FileInfo', JSON.stringify({
-      File_Path: '/opt/tomcat/webapps/bpmn/' + this.user.SRC_CD + '/' + this.APP_CD + '/',
+      File_Path: this.bpmnFilePath + this.APP_CD + '/',
       File_Name: this.PRCS_CD.replace(new RegExp(' ', 'g'), '_') + '.bpmn'
     }));
     this.https.post(this.downloadUrl, formData)
