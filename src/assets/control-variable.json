@@ -20,6 +20,7 @@
   "call_repeat_on_TIMEOUT": true,
   "repeat_count": 5,
   "message_access_denied": "Sorry, you do not have access to this form",
+  "process_deployment_error": "Process Deployment Failed!",
   "effectiveEndDate": 1.577e+11,
   "noRole": "No Role has been assigned. Contact your system admin",
   "delay_timeout": 2000,

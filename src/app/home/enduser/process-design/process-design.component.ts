@@ -141,6 +141,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   isTaskCreatedFlag = false;
   isSequenceCreatedChangedFlag = false;
   isEditApplicationFlag = false;
+  editProcessFlag = false;
   oldAppId = '';
   oldTaskId = '';
   oldIconType = '';
@@ -369,6 +370,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         this.generalId = $event.element.id.replace(new RegExp('_', 'g'), ' ');
         const businessObject = $event.element.businessObject;
         this.iconType = $event.element.type;
+        this.oldIconType = this.iconType;
         this.processName = businessObject.name ? businessObject.name : '';
         if (businessObject.documentation && businessObject.documentation.length) {
           this.documentation = businessObject.documentation[0].text ? businessObject.documentation[0].text : '';
@@ -413,14 +415,13 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         eventBus.on('element.changed', ($event) => {
           console.log('element.changed', $event.element);
           this.iconType = $event.element.type;
-          this.opened = true;
-          // this.showAllTabFlag = true;
-          this.showRightIcon = true;
           this.showCondtionType = false;
           const businessObject = $event.element.businessObject;
-
-          // console.log('this.this.bpmntemplate', this.bpmnTemplate);
           if ($event && $event.element && ['bpmn:Process'].indexOf($event.element.type) > -1) {
+            if (this.editProcessFlag) {
+              this.opened = true;
+              this.showRightIcon = true;
+            }
             this.processName = businessObject.name ? businessObject.name : '';
             if (businessObject.documentation && businessObject.documentation.length) {
               this.documentation = businessObject.documentation[0].text ? businessObject.documentation[0].text : '';
@@ -433,6 +434,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             this.showAllTabFlag = false;
           }
           if ($event && $event.element && ['bpmn:Process', 'label'].indexOf($event.element.type) === -1) {
+            this.opened = true;
+            // this.showAllTabFlag = true;
+            this.showRightIcon = true;
             this.processName = businessObject.name ? businessObject.name : '';
             if (businessObject.documentation && businessObject.documentation.length) {
               this.documentation = businessObject.documentation[0].text ? businessObject.documentation[0].text : '';
@@ -800,7 +804,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         const formData: FormData = new FormData();
         formData.append('FileInfo', JSON.stringify({
           // File_Path: `${this.ctrl_variables.bpmn_file_path}${this.useradminService.reduceFilePath(this.user.SRC_CD)}/${vAppCd}/`,
-          File_Path: `${this.ctrl_variables.bpmn_file_path}/${vAppCd}/`,
+          File_Path: `${this.ctrl_variables.bpmn_file_path}${vAppCd}/`,
           File_Name: `${vPrcsCd}.bpmn`,
           V_SRC_CD: this.user.SRC_CD,
           USR_NM: this.user.USR_NM
@@ -933,6 +937,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.processName = '';
           this.documentation = '';
           this.opened = false;
+          this.editProcessFlag = false;
           this.showAllTabFlag = false;
           this.showRightIcon = false;
         }
@@ -1080,6 +1085,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.isService = false;
     this.showRightIcon = false;
     this.opened = false;
+    this.editProcessFlag = false;
     this.V_OLD_PRCS_CD = item.text;
     if (!item.children) {
       this.selectedApp = item.value;
@@ -1213,6 +1219,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         break;
       }
       case 'Edit': {
+        this.editProcessFlag = true;
         this.showRightIcon = true;
         this.opened = true;
         this.showAllTabFlag = false;
@@ -1290,6 +1297,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.isService = false;
           this.showRightIcon = false;
           this.opened = false;
+          this.editProcessFlag = false;
           this.modeler.importXML('<?xml version="1.0" encoding="UTF-8"?><bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="2.0.3"></bpmn:definitions>');
           this.getApplicationProcess();
         })
@@ -1322,7 +1330,11 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.Execute_res_data = res.json();
           this.StorageSessionService.setCookies('executeresdata', this.Execute_res_data);
           this.PFrame.display_page = true;
-          this.GenerateReportTable();
+          if (this.Execute_res_data['V_PRCS_TXN_ID'] !== null) {
+            this.GenerateReportTable();
+          } else {
+            this.toastrService.error(this.ctrl_variables.process_deployment_error);
+          }
         });
     }
   }
@@ -1391,6 +1403,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           if (res.json().EXE_TYP) {
             this.executableTypesData = res.json().EXE_TYP;
             this.executableTypesData.sort();
+            if (this.executableTypesData) {
+              this.selectedExecutableType = this.executableTypesData[0];
+            }
           }
         }
       });

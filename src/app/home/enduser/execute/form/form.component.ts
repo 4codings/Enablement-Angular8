@@ -146,7 +146,7 @@ export class FormComponent implements OnInit {
 
   downloadBpmn() {
     // `${this.ctrl_variables.bpmn_file_path}`
-    console.log('path', this.ctrl_variables.bpmn_file_path);
+    // console.log('path', this.ctrl_variables.bpmn_file_path);
     const formData: FormData = new FormData();
     formData.append('FileInfo', JSON.stringify({
       File_Path: this.bpmnFilePath + this.APP_CD + '/',

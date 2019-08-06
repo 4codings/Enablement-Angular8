@@ -46,7 +46,7 @@ export class AssignRoleModalComponent implements OnInit, OnDestroy {
 
   onBtnSaveClick(): void {
     const deletedRoles = [];
-    if (this.group.V_ROLE_ID.length) {
+    if (this.group.V_ROLE_ID != null && this.group.V_ROLE_ID.length) {
       this.group.V_ROLE_ID.forEach(id => {
         if (!this.selectedRoles.isSelected(id)) {
           deletedRoles.push(id);
