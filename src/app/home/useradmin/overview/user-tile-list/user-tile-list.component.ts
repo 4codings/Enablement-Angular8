@@ -19,6 +19,7 @@ import {environment} from '../../../../../environments/environment';
 export class UserTileListComponent implements OnInit, OnDestroy {
   @Input() userPermission: boolean;
   @Input() membershipPermission: boolean;
+  @Input() groupId: string;
   @Input() users: User[];
   @Input() selectedUser: User;
   @Input() highlightedUsers: SelectionModel<User> = new SelectionModel<User>(true, []);
@@ -85,7 +86,7 @@ export class UserTileListComponent implements OnInit, OnDestroy {
 
   onContextMenuEditUserBtnClick(): void {
     this.contextMenuActive = false;
-    this.overviewService.openEditUserDialog(this.contextMenuData);
+    this.overviewService.openEditUserDialog(this.contextMenuData, this.groupId);
     this.contextMenuData = null;
   }
 

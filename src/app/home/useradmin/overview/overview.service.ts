@@ -327,12 +327,12 @@ export class OverviewService implements OnDestroy {
     });
   }
 
-  openEditUserDialog(user: User): void {
+  openEditUserDialog(user: User, groupId: string): void {
     const dialogRef = this.dialog.open(EditUserComponent,
       {
         panelClass: 'app-dialog',
         width: '600px',
-        data: {user: user}
+        data: { user, groupId }
       });
     dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
       if (flag) {
