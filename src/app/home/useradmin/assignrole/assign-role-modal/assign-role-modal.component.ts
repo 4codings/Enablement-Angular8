@@ -1,10 +1,10 @@
-import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {userRole} from '../../../../store/user-admin/user-role/userrole.model';
-import {Subject} from 'rxjs';
-import {SelectionModel} from '@angular/cdk/collections';
-import {userGroup} from '../../../../store/user-admin/user-group/usergroup.model';
-import {UseradminService} from '../../../../services/useradmin.service2';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { userRole } from '../../../../store/user-admin/user-role/userrole.model';
+import { Subject } from 'rxjs';
+import { SelectionModel } from '@angular/cdk/collections';
+import { userGroup } from '../../../../store/user-admin/user-group/usergroup.model';
+import { UseradminService } from '../../../../services/useradmin.service2';
 
 @Component({
   selector: 'app-assign-role-modal',
@@ -20,8 +20,8 @@ export class AssignRoleModalComponent implements OnInit, OnDestroy {
   public controlVariables;
 
   constructor(private dialogRef: MatDialogRef<AssignRoleModalComponent>,
-              private userAdminService: UseradminService,
-              @Inject(MAT_DIALOG_DATA) public data: any) {
+    private userAdminService: UseradminService,
+    @Inject(MAT_DIALOG_DATA) public data: any) {
     this.group = data.group;
     this.roles = data.roles;
     this.controlVariables = data.controlVariables;
@@ -46,11 +46,13 @@ export class AssignRoleModalComponent implements OnInit, OnDestroy {
 
   onBtnSaveClick(): void {
     const deletedRoles = [];
-    this.group.V_ROLE_ID.forEach(id => {
-      if (!this.selectedRoles.isSelected(id)) {
-        deletedRoles.push(id);
-      }
-    });
+    if (this.group.V_ROLE_ID != null && this.group.V_ROLE_ID.length) {
+      this.group.V_ROLE_ID.forEach(id => {
+        if (!this.selectedRoles.isSelected(id)) {
+          deletedRoles.push(id);
+        }
+      });
+    }
     let json = {
       'V_DELETED_ID_ARRAY': deletedRoles.toString(),
       'V_ADDED_ID_ARRAY': this.selectedRoles.selected.toString(),

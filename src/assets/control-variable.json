@@ -1,10 +1,10 @@
 {
   "checkDeployment": false,
-  "show_PIE": false,
-  "show_BAR": false,
-  "show_Gantt": false,
-  "show_ALL": false,
-  "show_SM_PIE": false,
+  "show_PIE": true,
+  "show_BAR": true,
+  "show_Gantt": true,
+  "show_ALL": true,
+  "show_SM_PIE": true,
   "show_EXE": false,
   "show_SCHE": false,
   "show_PROC": false,
@@ -29,8 +29,9 @@
   "call_repeat_on_TIMEOUT": true,
   "repeat_count": 5,
   "message_access_denied": "Sorry, you do not have access to this form",
+  "process_deployment_error": "Process Deployment Failed!",
   "effectiveEndDate": 1.577e+11,
   "noRole": "No Role has been assigned. Contact your system admin",
   "delay_timeout": 2000,
-  "bpmn_file_path": "/opt/tomcat/webapps/src/bpmn/"
+  "bpmn_file_path": "/opt/tomcat/webapps/bpmn/"
 }

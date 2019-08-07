@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ChangeDetectorRef, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { Http } from '@angular/http';
 import { Router } from '@angular/router'
 import { MatTableDataSource, MatSort, MatDialog } from '@angular/material';
@@ -16,8 +16,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import 'chartjs-plugin-zoom';
 import { ToastrService } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
-import { CustomPropsProvider } from '../process-design/props-provider/CustomPropsProvider';
 import { Viewer } from '../execute/bpmn-viewer';
+import { RollserviceService } from 'src/app/services/rollservice.service';
+import { Subscription } from 'rxjs';
 // import { Viewer } from '../execute/bpmn-viewer-js';
 
 @Component({
@@ -26,7 +27,7 @@ import { Viewer } from '../execute/bpmn-viewer';
   styleUrls: ['./report-table.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class ReportTableComponent implements OnInit, AfterViewInit {
+export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   removable = true;
 
@@ -37,6 +38,10 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   domain_name = this.globals.domain_name;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(BaseChartDirective, {}) chart: BaseChartDirective;
+  roleObservable$: Subscription;
+  roleValues;
+  hasMonitorPermission = false;
+  isMonitorClicked = false;
 
   constructor(private dataStored: StorageSessionService,
     private https: Http,
@@ -50,8 +55,27 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     private apiService: ApiService,
     private _snackBar: MatSnackBar,
     private toasterService: ToastrService,
-    private httpClient: HttpClient
-  ) { }
+    private httpClient: HttpClient,
+    private roleService: RollserviceService,
+  ) {
+    this.roleObservable$ = this.roleService.roleValue.subscribe(data => {
+      if (data != null) {
+        this.roleValues = data;
+        if (this.roleValues.length) {
+          this.roleValues.forEach(ele => {
+            switch (ele) {
+              case 'Enablement Workflow Dashboard Role':
+                this.hasMonitorPermission = true;
+                break;
+              default:
+                break;
+            }
+          })
+        }
+      }
+    });
+  }
+
   chartposition: any = [{ x: 0, y: 0 }, { x: 0, y: 0 }, { x: 0, y: 0 }, { x: 0, y: 0 }];
   dragEndLine(event) {
     var offset = { ...(<any>event.source._dragRef)._passiveTransform };
@@ -81,7 +105,10 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     console.log(this.chartposition[3]);
     this.setchartpreferences();
   }
-
+  onMonitorClick() {
+    console.log('monitor clicked')
+    this.isMonitorClicked = true;
+  }
   remove(item: string): void {
     const index = this.hiddencols.indexOf(item);
     if (index >= 0) {
@@ -98,12 +125,14 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   V_USR_NM: string = JSON.parse(sessionStorage.getItem('u')).USR_NM;
   Exe_data = this.dataStored.getCookies("executedata");
   iddata: any[] = [];
+  table_help_text: any;
   Table_of_Data: any[];
   Table_of_Data1: any[];
   Table_of_Data2: any[] = [];
   Table_of_Data3: any[] = [];
   Table_of_Data4: any[] = [];
   APP_ID = "";
+  UNIQUE_ID = "";
   PRCS_ID = "";
   SRC_ID = "";
   SRVC_ID = "";
@@ -135,10 +164,13 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   private downloadUrl: string;
   private user: any;
   private bpmnTemplate: any;
+  public path = '';
 
   ngAfterViewInit() {
-    this.httpClient.get('../../../../assets/control-variable.json').subscribe(res => {
+    this.httpClient.get('../../../../assets/control-variable.json').subscribe((res: any) => {
       this.ctrl_variables = res;
+      this.path = this.ctrl_variables.bpmn_file_path;
+      console.log('this.ctrl', this.ctrl_variables)
     });
     this.dataSource.sort = this.sort;
     this.cd.detectChanges();
@@ -152,21 +184,26 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     if (eventBus) {
       eventBus.on('element.click', ($event) => {
         console.log('element.click', $event)
+        if (this.isMonitorClicked) {
+          var canvas = this.viewer.get('canvas');
+          canvas.addMarker($event.element.id, 'highlight');
+        }
       });
     }
-
   }
   ngOnDestroy() {
     if (this.viewer) {
       this.viewer.destroy();
     }
+    this.roleObservable$.unsubscribe();
   }
 
   downloadBpmn() {
+    // console.log('path', this.ctrl_variables.bpmn_file_path);
     // `${this.ctrl_variables.bpmn_file_path}`
     const formData: FormData = new FormData();
     formData.append('FileInfo', JSON.stringify({
-      File_Path: '/opt/tomcat/webapps/src/bpmn/' + this.user.SRC_CD + '/' + this.APP_CD + '/',
+      File_Path: this.path + this.APP_CD + '/',
       File_Name: this.PRCS_CD.replace(new RegExp(' ', 'g'), '_') + '.bpmn'
     }));
     this.https.post(this.downloadUrl, formData)
@@ -227,7 +264,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
       switch (obj.chartType) {
         case "linechart":
           this.linearray.push(obj);
-          console.log(this.linearray);
           this._yaxis_sel_line.push(obj.yaxisdata);
           this._xaxis_sel_line = obj.xaxisdata;
           this.updateLineChart();
@@ -295,6 +331,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
 
     this.SRVC_CD = this.dataStored.getCookies('report_table')['SRVC_CD'][0];
     // this.SRVC_ID = this.dataStored.getCookies('report_table')['SRVC_ID'][0];
+    this.UNIQUE_ID = this.dataStored.getCookies('report_table')['TEMP_UNIQUE_ID'][0];
     this.Table_of_Data1 = this.dataStored.getCookies('report_table')['LOG_VAL'];
     this.iddata.push(this.dataStored.getCookies('iddata'));
     this.PRCS_TXN_ID = this.dataStored.getCookies('executeresdata')['V_PRCS_TXN_ID'];
@@ -303,6 +340,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     this.SRC_ID = this.dataStored.getCookies('report_table')['SRC_ID'][0];
     this.APP_CD = this.dataStored.getCookies('report_table')['APP_CD'][0];
     this.PRCS_CD = this.dataStored.getCookies('report_table')['PRCS_CD'][0];
+    this.table_help_text = this.dataStored.getCookies('report_table')['FLD_HLP_TXT'][0].split(",");;
     //(JSON.parse(this.Table_of_Data1[0]));
     this.columnsToDisplay = Object.keys(JSON.parse(this.Table_of_Data1[0]));
 
@@ -324,6 +362,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   columnsToDisplay = [];
 
   showhide(abc) {
+    this.show_choice = abc;
     switch (abc) {
       case 'Table':
         this.disptable = true;
@@ -332,11 +371,16 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
       case 'Charts':
         this.disptable = false;
         this.dispchart = true;
-        this.getchartpreferences();
+        if (this.V_PRF_NM.length) {
+          this.getchartpreferences();
+        }
         break;
       case 'Both':
         this.disptable = true;
         this.dispchart = true;
+        if (this.V_PRF_NM.length) {
+          this.getchartpreferences();
+        }
         break;
     }
     this.settablepreferences();
@@ -492,8 +536,12 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
 
   //_________________________CHART FUNCTIONS________________________________________
   updateLineChart() {
-    var unit = this.linearray[0].UoM;
-    var scale = this.linearray[0].SoM;
+    var unit = '';
+    var scale;
+    if (this.linearray.length) {
+      unit = this.linearray[0].UoM;
+      scale = this.linearray[0].SoM;
+    }
     this.lineChartData = [];
     this.lineChartLabels = [];
     this.yaxis_data_line = [];
@@ -909,7 +957,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     this.V_PRF_NM = Object.keys(this.userprefs);
     this.V_PRF_VAL = Object.values(this.userprefs);
     for (let j = 0; j < this.V_PRF_NM.length; j++) {
-      this.data.setchartstyling(this.APP_ID, this.PRCS_ID, this.SRC_ID, this.V_PRF_NM[j], this.V_PRF_VAL[j]).subscribe(
+      this.data.setchartstyling(this.UNIQUE_ID, this.SRC_ID, this.V_PRF_NM[j], this.V_PRF_VAL[j]).subscribe(
         () => {
 
         });
@@ -926,7 +974,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     this.V_PRF_NM = Object.keys(this.userprefs);
     this.V_PRF_VAL = Object.values(this.userprefs);
     for (let j = 0; j < this.V_PRF_NM.length; j++) {
-      this.data.setchartstyling(this.APP_ID, this.PRCS_ID, this.SRC_ID, this.V_PRF_NM[j], this.V_PRF_VAL[j]).subscribe(
+      this.data.setchartstyling(this.UNIQUE_ID, this.SRC_ID, this.V_PRF_NM[j], this.V_PRF_VAL[j]).subscribe(
         () => {
           //(res);
         });
@@ -1016,7 +1064,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     }
   }
   getpreferences() {
-    this.data.getchartstyling(this.APP_ID, this.PRCS_ID, this.SRC_ID).subscribe(
+    this.data.getchartstyling(this.UNIQUE_ID, this.SRC_ID).subscribe(
       res => {
         (res.json());
         var result = res.json();
@@ -1029,8 +1077,12 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         for (let i = 0; i < name.length; i++) {
           this.userprefs[name[i]] = value[i];
         }
-        this.gettablepreferences();
-        this.getchartpreferences();
+        if (name.length) {
+          this.gettablepreferences();
+          this.getchartpreferences();
+        } else {
+          this.showhide(this.show_choice);
+        }
         console.log(this.userprefs);
       });
   }
@@ -1076,16 +1128,18 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     }
 
     for (let j = 0; j <= this.columnsToDisplay.length; j++) {
-      this.https.get(this.apiService.endPoints.secure + "FieldName=" + this.columnsToDisplay[j] + "&REST_Service=Field_Description&Verb=GET", this.apiService.setHeaders())
-        .subscribe(res => {
-          var data: data = res.json();
-          var name = data.Field_Name;
-          var tip = data.Description_Text;
-          var i;
-          for (i = 0; i < tip.length; i++) {
-            this.helpertext[name[i]] = tip[i];
-          }
-        })
+
+      this.helpertext[this.columnsToDisplay[j]] = this.table_help_text[j];
+      // this.https.get(this.apiService.endPoints.secure + "FieldName=" + this.columnsToDisplay[j] + "&REST_Service=Field_Description&Verb=GET", this.apiService.setHeaders())
+      //   .subscribe(res => {
+      //     var data: data = res.json();
+      //     var name = data.Field_Name;
+      //     var tip = data.Description_Text;
+      //     var i;
+      //     for (i = 0; i < tip.length; i++) {
+      //       this.helpertext[name[i]] = tip[i];
+      //     }
+      //   })
 
     }
     this.getpreferences();

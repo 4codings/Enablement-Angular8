@@ -18,8 +18,8 @@ import * as userActions from '../../../../store/user-admin/user/user.action';
 })
 export class EditUserComponent implements OnInit {
 
-  isPrimaryGroup = false;
   user: User;
+  groupId: string;
   actionSubscription: Subscription;
   @ViewChild(UserFormComponent) userForm: UserFormComponent;
 
@@ -29,6 +29,7 @@ export class EditUserComponent implements OnInit {
               private dialogRef: MatDialogRef<EditUserComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
     this.user = data.user;
+    this.groupId = data.groupId;
   }
 
   ngOnInit() {
@@ -47,7 +48,6 @@ export class EditUserComponent implements OnInit {
       const data = {
        ...userData,
         V_USR_NM: this.user.V_USR_NM,
-        V_IS_PRIMARY: this.isPrimaryGroup ? 'Y' : 'N',
         REST_Service: 'User',
         Verb: 'PATCH',
         id: this.user.id,

@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { UserService } from 'src/app/core/user.service';
 import { OptionalValuesService } from 'src/app/services/optional-values.service';
 import { ApiService } from 'src/app/service/api/api.service';
+import { RollserviceService } from '../../../services/rollservice.service';
 
 
 @Component({
@@ -22,7 +23,8 @@ export class HeaderComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private optionalService: OptionalValuesService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private rollserviceService: RollserviceService,
   ) {
     this.index = this.userName.indexOf('@');
     this.userName = this.userName.substring(0, this.index).toUpperCase();
@@ -52,6 +54,7 @@ export class HeaderComponent implements OnInit {
     this.optionalService.processArray = [];
     this.optionalService.applicationProcessArray = [];
     this.userService.clear();
+    this.rollserviceService.clear();
     this.router.navigateByUrl('/login', { skipLocationChange: true });
   }
 

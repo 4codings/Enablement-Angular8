@@ -12,6 +12,7 @@ export class UserFormComponent implements OnInit, OnChanges {
 
   @Input() user: User;
   @Input() users: User[];
+  @Input() groupId: string;
 
   userForm: FormGroup;
   userStatusOptions = userStatusOptions;
@@ -22,6 +23,7 @@ export class UserFormComponent implements OnInit, OnChanges {
       V_SRC_CD: new FormControl(JSON.parse(sessionStorage.getItem('u')).SRC_CD, [Validators.required]),
       V_USR_DSC: new FormControl(''),
       V_STS: new FormControl(userStatusConstants.ACTIVE, Validators.required),
+      V_IS_PRIMARY: new FormControl(false),
     });
   }
 
@@ -30,20 +32,23 @@ export class UserFormComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.hasOwnProperty('user')) {
-      this.setFormValue(this.user);
+    if (changes.hasOwnProperty('user') &&  changes.hasOwnProperty('groupId')) {
+      this.setFormValue(this.user, this.groupId);
     }
     if (changes.hasOwnProperty('users')) {
       this.userForm.get('V_USR_NM').setValidators([Validators.required, userNameValidator(this.users)]);
     }
   }
 
-  setFormValue(user: User): void {
+  setFormValue(user: User, groupId: string): void {
+    const groupIndex = user.V_USR_GRP_ID ? user.V_USR_GRP_ID.indexOf(Number(groupId)) : -1;
+
     this.userForm.setValue({
       V_USR_NM: user.V_USR_NM,
       V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
       V_USR_DSC: user.V_USR_DSC,
       V_STS: user.V_STS != '' ? user.V_STS : userStatusConstants.ACTIVE,
+      V_IS_PRIMARY: user.V_IS_PRIMARY[groupIndex] === 'Y',
     });
     this.userForm.get('V_USR_NM').disable({onlySelf: true, emitEvent: false});
   }
@@ -59,6 +64,7 @@ export class UserFormComponent implements OnInit, OnChanges {
       V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
       V_USR_DSC: formValue.V_USR_DSC,
       V_STS: formValue.V_STS != '' ? formValue.V_STS : userStatusConstants.ACTIVE,
+      V_IS_PRIMARY: formValue.V_IS_PRIMARY ? 'Y' : 'N',
     };
   }
 

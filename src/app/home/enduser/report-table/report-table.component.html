@@ -46,6 +46,9 @@
     <mat-expansion-panel-header>
       <mat-panel-title>
         {{APP_CD}}<span class="selected-process-font" *ngIf="PRCS_CD!=''"> : {{PRCS_CD}}</span>
+        <span class="ml-2" *ngIf="hasMonitorPermission">
+          <i (click)="onMonitorClick()" class="fas fa-desktop icon_click fa-lg"></i>
+        </span>
       </mat-panel-title>
     </mat-expansion-panel-header>
     <div fxFlex="100" id="canvas"></div>

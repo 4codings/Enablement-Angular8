@@ -2,10 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { ChartsModule } from 'ng2-charts-x';
-
 import { FormErrorMsgComponent } from './components/form-error-msg/form-error-msg.component';
 import { NoDataMsgComponent } from './components/no-data-msg/no-data-msg.component';
-// import {CoreModule} from "../core/core.module";
 import { RouterModule } from '@angular/router';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -25,15 +23,22 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SplitLastPipe, MyFilterPipe } from '../home/enduser/execute/MyFilterPipe ';
-import { MyFilterPipe1 } from '../home/enduser/schd-actn/myFilterPipe1';
 import { MatMenuModule } from '@angular/material/menu';
 import { ConfirmationAlertComponent } from './components/confirmation-alert/confirmation-alert.component';
 import { TreeviewModule } from 'ngx-treeview';
-import {MatChipsModule} from '@angular/material/chips';
-import {DragDropModule} from '@angular/cdk/drag-drop';
+import { MatChipsModule } from '@angular/material/chips';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MyFilterPipe1 } from '../home/enduser/process-design/myFilterPipe1';
+import { DeleteConfirmComponent } from './components/delete-confirm/delete-confirm.component';
+import { DialogScheduleComponent } from './components/dialog-schedule/dialog-schedule.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
 @NgModule({
   imports: [
     CommonModule,
+    HttpModule,
+    FormsModule,
+    ReactiveFormsModule.withConfig({ warnOnNgModelWithFormControl: 'never' }),
     // CoreModule,
     RouterModule,
     MatCardModule,
@@ -77,9 +82,14 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     MyFilterPipe,
     MyFilterPipe1,
     SplitLastPipe,
-    ConfirmationAlertComponent
+    ConfirmationAlertComponent,
+    DeleteConfirmComponent,
+    DialogScheduleComponent
   ],
-  entryComponents: [ConfirmationAlertComponent],
+  entryComponents: [
+    ConfirmationAlertComponent,
+    DeleteConfirmComponent,
+    DialogScheduleComponent],
   exports: [
     FormErrorMsgComponent,
     NoDataMsgComponent,
@@ -120,7 +130,11 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     SplitLastPipe,
     MatMenuModule,
     ConfirmationAlertComponent,
-    TreeviewModule
+    TreeviewModule,
+    HttpModule,
+    FormsModule,
+    ReactiveFormsModule,
+    CommonModule
   ]
 })
 export class SharedModule {
