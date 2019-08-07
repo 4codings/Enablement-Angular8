@@ -15,6 +15,10 @@
   }
 }
 
+:host /deep/ .treeview-text {
+  display: none;
+}
+
 .parent {
   text-align: center;
   align-content: center;

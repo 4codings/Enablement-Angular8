@@ -445,6 +445,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             if ($event.element.type !== 'bpmn:SequenceFlow') {
               this.isService = true;
               this.isTaskCreatedFlag = true;
+              if (this.generalId.includes('Task')) {
+                this.documentation = '';
+              }
               this.oldIconType = $event.element.type;
               this.oldTaskId = $event.element.id.replace(new RegExp('_', 'g'), ' ');
             } else {
@@ -1524,24 +1527,26 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       (res);
       res = res.json();
       const start_time = [], end_time = [], Process = [];
+      if (res['INS_DT_TM'].length) {
+        for (let i = 0; i < res['INS_DT_TM'].length; i++) {
+          start_time[i] = res['INS_DT_TM'][i].substring(11);
+          end_time[i] = res['LST_UPD_DT_TM'][i].substring(11);
+          Process[i] = res['PRDCR_SRVC_CD'][i];
+        }
+        if (this.ctrl_variables.show_Gantt) {
+          this.gantt = true;
+          this.show_gantt_chart(Process, start_time, end_time);
+        }
+        if (this.ctrl_variables.show_PIE) {
+          this.pie = true;
+          this.show_pie(Process, start_time, end_time);
+        }
+        if (this.ctrl_variables.show_BAR) {
+          this.bar = true;
+          this.show_bar_chart(Process, start_time, end_time);
+        }
+      }
 
-      for (let i = 0; i < res['INS_DT_TM'].length; i++) {
-        start_time[i] = res['INS_DT_TM'][i].substring(11);
-        end_time[i] = res['LST_UPD_DT_TM'][i].substring(11);
-        Process[i] = res['PRDCR_SRVC_CD'][i];
-      }
-      if (this.ctrl_variables.show_Gantt) {
-        this.gantt = true;
-        this.show_gantt_chart(Process, start_time, end_time);
-      }
-      if (this.ctrl_variables.show_PIE) {
-        this.pie = true;
-        this.show_pie(Process, start_time, end_time);
-      }
-      if (this.ctrl_variables.show_BAR) {
-        this.bar = true;
-        this.show_bar_chart(Process, start_time, end_time);
-      }
 
       const exec = this;
       if (this.app.loadingCharts) {
