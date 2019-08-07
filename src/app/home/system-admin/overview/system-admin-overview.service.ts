@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { RollserviceService } from 'src/app/services/rollservice.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,18 @@ export class SystemAdminOverviewService {
   public exes;
   public getMachineConnection$: Subject<any> = new Subject();
   public machines;
+  ctrl_variables: any;
+  role_status:boolean=false;
+  role_install:boolean=false;
+  role_machineConnection:boolean=false;
+  role_deployment:boolean=false;
+  role_connection:boolean=false;
+  role_machine:boolean=false;
+  role_machineSpec:boolean=false;
+  role_platform:boolean=false;
+  role_overview:boolean = false;
 
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient, private rollserviceService: RollserviceService) { }
 
   public selectExe(exe) {
     this.selectedExe$.next(exe);
@@ -77,5 +88,63 @@ export class SystemAdminOverviewService {
        console.log(err);
     })
   }
-
+  
+  getRollAccess() {
+    this.rollserviceService.getRollCd().then((res) => {
+      this.http.get('../../../../assets/control-variable.json').subscribe(cvres => {
+        this.ctrl_variables = cvres;
+        res.map((role) => {
+          switch (role) {
+            case 'Enablement System Admin Status Role':
+              if (this.ctrl_variables.show_SystemAdminStatusTab) {
+                this.role_status = true;
+              }
+              break;
+            case 'Enablement System Admin Install Role':
+              if (this.ctrl_variables.show_SystemAdminInstallTab) {
+                this.role_install = true;
+              }
+              break;
+            case 'Enablement System Admin Machine Connection Role':
+              if (this.ctrl_variables.show_SystemAdminMachineConnectionTab) {
+                this.role_machineConnection = true;
+              }
+              break;
+            case 'Enablement System Admin Deployment Role':
+              if (this.ctrl_variables.show_SystemAdminDeploymentTab) {
+                this.role_deployment = true;
+              }
+              break;
+            case 'Enablement System Admin Connection Role':
+              if (this.ctrl_variables.show_SystemAdminConnectionTab) {
+                this.role_connection = true;
+              }
+              break;
+            case 'Enablement System Admin Machine Role':
+              if (this.ctrl_variables.show_SystemAdminMachineTab) {
+                this.role_machine = true;
+              }
+              break;
+            case 'Enablement System Admin Machine Specs Role':
+              if (this.ctrl_variables.show_SystemAdminMachineSpecTab) {
+                this.role_machineSpec = true;
+              }
+              break;
+            case 'Enablement System Admin Platform Role':
+              if (this.ctrl_variables.show_SystemAdminPlatformTab) {
+                this.role_platform = true;
+              }
+              break;
+            case 'Enablement System Admin Overview Role':
+              if (this.ctrl_variables.show_SystemAdminOverViewTab) {
+                this.role_overview = true;
+              }
+              break;  
+            default:
+              break;
+          }
+        });
+      });
+    });
+  }
 }
