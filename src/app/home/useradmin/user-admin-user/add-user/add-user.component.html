@@ -10,6 +10,10 @@
       <mat-radio-button value="addNewUser">Add New User</mat-radio-button>
     </mat-radio-group>
     <app-user-list *ngIf="selectedView == 'selectUser'" [users]="allUsers" (userSelectEvent)="onUserSelect($event)"></app-user-list>
+    <mat-checkbox *ngIf="selectedView == 'selectUser'"
+                  [(ngModel)]="isPrimaryGroup">
+      Is Primary Group
+    </mat-checkbox>
     <app-user-form *ngIf="selectedView == 'addNewUser'" [users]="allUsers"></app-user-form>
   </div>
   <div class="dialog-footer content-wrapper" fxLayoutAlign="end center" fxLayoutGap="8px">
