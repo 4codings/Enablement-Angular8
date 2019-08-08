@@ -1436,12 +1436,15 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         if (res) {
           const result = res.json();
-          if (result && result.length) {
-            this.executableOutput = result["EXE_OUT_PARAMS"][0];
-            this.executableDesc = result["EXE_DSC"][0];
-            this.executableInput = result["EXE_SIGN"][0];
+          console.log('Object.keys(result).length', Object.keys(result).length)
+          if (result && Object.keys(result).length) {
+            this.executableOutput = result["EXE_OUT_PARAMS"] != undefined ? result["EXE_OUT_PARAMS"][0] : '';
+            this.executableDesc = result["EXE_DSC"] != undefined ? result["EXE_DSC"][0] : '';
+            this.executableInput = result["EXE_SIGN"] != undefined ? result["EXE_SIGN"][0] : '';
             this.async_sync = result['SYNC_FLG'][0] === 'Y' ? 'sync' : 'async';
-            this.async_sync_seconds = result['TIME_OUT_SEC'][0];
+            this.async_sync_seconds = result['TIME_OUT_SEC'] != undefined ? result["TIME_OUT_SEC"][0] : '';
+          } else {
+            this.toastrService.error(this.ctrl_variables.process_deployment_error)
           }
         }
       });
