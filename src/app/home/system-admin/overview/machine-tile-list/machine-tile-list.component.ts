@@ -25,6 +25,7 @@ export class MachineTileListComponent implements OnInit {
   @Output() selectedMachineTile = new EventEmitter();
   @Input() connectionList;
   @Input() machineType;
+  @Input() userAccess;
   @ViewChild('contextMenu') set contextMenu(value: ElementRef) {
     if (value) {
       let menu: HTMLDivElement = value.nativeElement;

@@ -1,6 +1,6 @@
 <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="100" fxLayoutGap="8px">
   <div fxLayoutAlign="space-between center">
-    <div style="padding-left: 8px">
+    <div style="padding-left: 8px" *ngIf="userAccess.role_deployment">
       <span>Executable Types : </span>
       <button mat-button [matMenuTriggerFor]="groupTypeMenu">{{selectedExeType}}
         <mat-icon matSuffix>arrow_drop_down</mat-icon>
@@ -10,7 +10,7 @@
                 (click)="changeExeType(item.EXE_TYP)">{{item.EXE_TYP}}</button>
       </mat-menu>
     </div>
-    <div class="container-actions">
+    <div class="container-actions" *ngIf="userAccess.role_platform">
       <!-- <button mat-icon-button matTooltip="delete ExeType" class="add-btn" (click)="onBtnDeleteExeClick()">
         <mat-icon>delete</mat-icon>
       </button>
@@ -26,6 +26,6 @@
   </div>
   <mat-divider></mat-divider>
   <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="16px" cdkDropListGroup>
-    <app-single-exe *ngFor="let currExe of sortedAllExes | filterExetype:selectedExeType:'exe'" [exeType]="currExe" [exes]="currExe.EXES"></app-single-exe>
+    <app-single-exe [userRoleAccess]="userAccess" *ngFor="let currExe of sortedAllExes | filterExetype:selectedExeType:'exe'" [exeType]="currExe" [exes]="currExe.EXES"></app-single-exe>
   </div>
 </div>

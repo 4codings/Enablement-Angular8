@@ -5,9 +5,6 @@ import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { EventEmitter } from '@angular/core';
 import { AddPlatformDialogComponent } from '../add-platform-dialog/add-platform-dialog.component';
-import { forEach } from '@angular/router/src/utils/collection';
-import { ConfirmationAlertComponent } from 'src/app/shared/components/confirmation-alert/confirmation-alert.component';
-import { EditExeTypeDialogComponent } from '../dialogs/edit-exe-type-dialog/edit-exe-type-dialog.component';
 import { SystemAdminOverviewService } from '../system-admin-overview.service';
 
 @Component({
@@ -22,6 +19,7 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
   public allExes = [];
   public sortedAllExes = [];
   @Input() selectedExeType;
+  @Input() userAccess;
   unsubscribeAll: Subject<boolean> = new Subject<boolean>();
   exeTypeOptions;
   @Output() selectedExe: EventEmitter<any> = new EventEmitter();

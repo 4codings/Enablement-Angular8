@@ -382,8 +382,8 @@
                   </mat-table>
                 </div>
                 <div *ngIf="newScheduleView">
-                  <app-repeat-process [parentapp]="selectedplat" [parentpro]="selectedplat1" [changing]="changingValue">
-                  </app-repeat-process>
+                  <app-schedular [parentapp]="selectedplat" [parentpro]="selectedplat1" [changing]="changingValue">
+                  </app-schedular>
                   <hr />
                 </div>
               </div>
@@ -486,7 +486,7 @@
                 <mat-divider></mat-divider>
               </div>
               <label>{{Label['EXECUTABLES']}}</label>
-              <select [(ngModel)]="selectedExecutable" (change)="updateselectedExecutable($event.target.value)">
+              <select [(ngModel)]="selectedExecutable" (click)="getExecutablesForSelctedExecutableType()" (change)="updateselectedExecutable($event.target.value)">
                 <option value="">{{Label['PLEASE_SELECT']}}</option>
                 <option *ngFor="let executable of executablesData " [value]="executable">
                   {{ executable}}

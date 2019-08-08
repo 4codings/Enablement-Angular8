@@ -10,6 +10,7 @@ export class SingleMachineComponent implements OnInit {
 
   @Input() machineData;
   @Input() machines;
+  @Input() userRoleAccess;
   V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
   V_USR_NM:string=JSON.parse(sessionStorage.getItem('u')).USR_NM;
 

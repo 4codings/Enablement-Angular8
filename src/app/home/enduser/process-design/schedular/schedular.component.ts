@@ -8,11 +8,11 @@ import { Globals } from 'src/app/services/globals';
 import { Subject } from 'rxjs';
 
 @Component({
-  selector: 'app-repeat-process',
-  templateUrl: './repeat-process.component.html',
-  styleUrls: ['./repeat-process.component.scss'],
+  selector: 'app-schedular',
+  templateUrl: './schedular.component.html',
+  styleUrls: ['./schedular.component.scss'],
 })
-export class RepeatProcessComponent implements OnInit {
+export class SchedularComponent implements OnInit {
   @Input() parentapp: string;
   @Input() parentpro: string;
   @Input() changing: Subject<boolean>;

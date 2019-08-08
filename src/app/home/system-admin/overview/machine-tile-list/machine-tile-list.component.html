@@ -9,8 +9,6 @@
        [cdkDragData]="currConn"
        [matTooltip]="currConn.V_CXN_CD"
        *ngFor="let currConn of connectionList.V_CXN; let i = index"
-       [class.active]="currConn == selectedMachine"
-       [class.highlight]="currConn.V_CXN_TYP == selectedExe"
        (contextmenu)="openContextmenu($event, currConn, connectionList.V_PLATFORM_CD, i)"
        (mousedown)="onTileMouseDownEventHandler($event)"
        (click)="onConnectionTileClick(currConn)">
@@ -19,13 +17,20 @@
    <!-- <div>{{currConn.EXE_CD}}</div> -->
     <div class="ellipsis-text"><strong>{{currConn.V_CXN_CD}}</strong></div>
   </div>
-  <div class="tile add-new-tile" (click)="onAddConnTileClick()"
+  <div class="tile add-new-tile" (click)="onAddConnTileClick()" *ngIf="userAccess.role_connection"
        matTooltip="Add Connection" matRipple>
     <mat-icon>add_circle</mat-icon>
   </div>
 </div>
+<ng-container *ngIf="userAccess.role_connection">
 <div fxLayout="column" fxLayoutAlign="start stretch" class="context-menu" #contextMenu *ngIf="contextMenuActive"
-     [ngStyle]="contextMenuStyle">
-  <button mat-button class="menu-item" (click)="onContextMenuEditConnBtnClick()">Edit</button>
-  <button mat-button class="many-item" (click)="onContextMenuDeleteConnBtnClick()">Delete</button>
-</div> 
+      [ngStyle]="contextMenuStyle">
+    <button mat-button class="menu-item" (click)="onContextMenuEditConnBtnClick()">Edit</button>
+    <button mat-button class="many-item" (click)="onContextMenuDeleteConnBtnClick()">Delete</button>
+  </div> 
+</ng-container>  
+
+<!--
+  [class.active]="currConn == selectedMachine"
+  [class.highlight]="currConn.V_CXN_TYP == selectedExe"
+-->
