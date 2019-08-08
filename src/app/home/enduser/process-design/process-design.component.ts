@@ -358,6 +358,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     const eventBus = this.modeler.get('eventBus');
     if (eventBus) {
       eventBus.on('element.click', ($event) => {
+        this.onTitleClickNoDelete = false;
         this.processName = '';
         this.documentation = '';
         this.iconType = '';
@@ -555,16 +556,31 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.closeSchedulePanel();
         }),
         eventBus.on("element.delete", (event) => {
-          if (event && event.element && this.taskList.indexOf(event.element.type) >= 0) {
-            if (!this.onTitleClickNoDelete) {
-              this.deleteService(event.element.id);
-            }
-          }
-          if (event && event.element && event.element.type === 'bpmn:SequenceFlow') {
-            if (!this.onTitleClickNoDelete) {
-              this.deleteSequence(event.element.id);
-            }
-          }
+          console.log('shape.remove", (event)', event);
+          // if (event && event.element && this.taskList.indexOf(event.element.type) >= 0) {
+          //   if (!this.onTitleClickNoDelete) {
+          //     this.deleteService(event.element.id.replace(new RegExp('_', 'g'), ' '));
+          //   }
+          // }
+          // if (event && event.element && event.element.type === 'bpmn:SequenceFlow') {
+          //   if (!this.onTitleClickNoDelete) {
+          //     this.deleteSequence(event.element.id.replace(new RegExp('_', 'g'), ' '));
+          //   }
+          // }
+          this.closeSchedulePanel();
+        }),
+        eventBus.on("shape.remove", (event) => {
+          console.log('shape.remove", (event)', event);
+          // if (event && event.element && this.taskList.indexOf(event.element.type) >= 0) {
+          //   if (!this.onTitleClickNoDelete) {
+          //     this.deleteService(event.element.id.replace(new RegExp('_', 'g'), ' '));
+          //   }
+          // }
+          // if (event && event.element && event.element.type === 'bpmn:SequenceFlow') {
+          //   if (!this.onTitleClickNoDelete) {
+          //     this.deleteSequence(event.element.id.replace(new RegExp('_', 'g'), ' '));
+          //   }
+          // }
           this.closeSchedulePanel();
         });
     }
