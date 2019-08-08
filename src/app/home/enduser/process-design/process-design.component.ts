@@ -1349,40 +1349,42 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         if (res) {
           this.propertyPanelAllTabsData = res.json();
-          this.documentation = this.propertyPanelAllTabsData[0]["V_SRVC_DSC"];
-          this.executableDesc = this.propertyPanelAllTabsData[0]['V_EXE_DSC'];
-          this.executableInput = this.propertyPanelAllTabsData[0]['V_PARAM_NM_IN'];
-          this.executableOutput = this.propertyPanelAllTabsData[0]['V_PARAM_NM_OUT'];
-          this.selectedExecutable = this.propertyPanelAllTabsData[0]['V_EXE_CD'];
-          this.selectedExecutableType = this.propertyPanelAllTabsData[0]['V_EXE_TYP'];
-          this.attemps = this.propertyPanelAllTabsData[0]['V_MAX_ATTMPT'];
-          this.restorability = this.propertyPanelAllTabsData[0]['V_RSTN_TYP'];
-          this.userEmail = this.propertyPanelAllTabsData[0]["V_NOTIF_GRP"];
-          this.restorability_seconds = this.propertyPanelAllTabsData[0]["V_ATTMPT_DRTN_SEC"];
-          this.priority = this.propertyPanelAllTabsData[0]["V_PRIORITY"];
-          this.job_instance = this.propertyPanelAllTabsData[0]["V_SRVC_JOB_LMT"];
-          if (this.job_instance == -1) {
-            this.instances = 'unlimited';
-          } else if (this.job_instance == 1) {
-            this.instances = 'single'
-          } else {
-            this.instances = 'limited';
-          }
-          if (this.propertyPanelAllTabsData[0]["V_EFF_STRT_DT_TM"] != null) {
-            this.currentDate = new Date(this.propertyPanelAllTabsData[0]["V_EFF_STRT_DT_TM"]);
-          } else {
-            this.currentDate = new Date();
-          }
-          if (this.propertyPanelAllTabsData[0]["V_EFF_END_DT_TM"] != null) {
-            this.afterFiveDays = new Date(this.propertyPanelAllTabsData[0]["V_EFF_END_DT_TM"]);
-          } else {
-            this.afterFiveDays = new Date();
-          }
-          this.display_output = this.propertyPanelAllTabsData[0]["V_DSPLY_OUTPUT"] === 'Y' ? true : false;
-          this.isServiceActive = this.propertyPanelAllTabsData[0]["V_SRVC_ACTIVE_FLG"] === 'Y' ? true : false;
-          this.summary_output = this.propertyPanelAllTabsData[0]["V_ADD_TO_SMMRY_RESULT"] === 'Y' ? true : false;
-          if (this.selectedExecutableType != null || this.selectedExecutableType != '') {
-            this.getExecutablesForSelctedExecutableType();
+          if (this.propertyPanelAllTabsData && this.propertyPanelAllTabsData.length) {
+            this.documentation = this.propertyPanelAllTabsData[0]["V_SRVC_DSC"];
+            this.executableDesc = this.propertyPanelAllTabsData[0]['V_EXE_DSC'];
+            this.executableInput = this.propertyPanelAllTabsData[0]['V_PARAM_NM_IN'];
+            this.executableOutput = this.propertyPanelAllTabsData[0]['V_PARAM_NM_OUT'];
+            this.selectedExecutable = this.propertyPanelAllTabsData[0]['V_EXE_CD'];
+            this.selectedExecutableType = this.propertyPanelAllTabsData[0]['V_EXE_TYP'];
+            this.attemps = this.propertyPanelAllTabsData[0]['V_MAX_ATTMPT'];
+            this.restorability = this.propertyPanelAllTabsData[0]['V_RSTN_TYP'];
+            this.userEmail = this.propertyPanelAllTabsData[0]["V_NOTIF_GRP"];
+            this.restorability_seconds = this.propertyPanelAllTabsData[0]["V_ATTMPT_DRTN_SEC"];
+            this.priority = this.propertyPanelAllTabsData[0]["V_PRIORITY"];
+            this.job_instance = this.propertyPanelAllTabsData[0]["V_SRVC_JOB_LMT"];
+            if (this.job_instance == -1) {
+              this.instances = 'unlimited';
+            } else if (this.job_instance == 1) {
+              this.instances = 'single'
+            } else {
+              this.instances = 'limited';
+            }
+            if (this.propertyPanelAllTabsData[0]["V_EFF_STRT_DT_TM"] != null) {
+              this.currentDate = new Date(this.propertyPanelAllTabsData[0]["V_EFF_STRT_DT_TM"]);
+            } else {
+              this.currentDate = new Date();
+            }
+            if (this.propertyPanelAllTabsData[0]["V_EFF_END_DT_TM"] != null) {
+              this.afterFiveDays = new Date(this.propertyPanelAllTabsData[0]["V_EFF_END_DT_TM"]);
+            } else {
+              this.afterFiveDays = new Date();
+            }
+            this.display_output = this.propertyPanelAllTabsData[0]["V_DSPLY_OUTPUT"] === 'Y' ? true : false;
+            this.isServiceActive = this.propertyPanelAllTabsData[0]["V_SRVC_ACTIVE_FLG"] === 'Y' ? true : false;
+            this.summary_output = this.propertyPanelAllTabsData[0]["V_ADD_TO_SMMRY_RESULT"] === 'Y' ? true : false;
+            if (this.selectedExecutableType != null || this.selectedExecutableType != '') {
+              this.getExecutablesForSelctedExecutableType();
+            }
           }
         }
       });
@@ -1434,11 +1436,13 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         if (res) {
           const result = res.json();
-          this.executableOutput = result["EXE_OUT_PARAMS"][0];
-          this.executableDesc = result["EXE_DSC"][0];
-          this.executableInput = result["EXE_SIGN"][0];
-          this.async_sync = result['SYNC_FLG'][0] === 'Y' ? 'sync' : 'async';
-          this.async_sync_seconds = result['TIME_OUT_SEC'][0];
+          if (result && result.length) {
+            this.executableOutput = result["EXE_OUT_PARAMS"][0];
+            this.executableDesc = result["EXE_DSC"][0];
+            this.executableInput = result["EXE_SIGN"][0];
+            this.async_sync = result['SYNC_FLG'][0] === 'Y' ? 'sync' : 'async';
+            this.async_sync_seconds = result['TIME_OUT_SEC'][0];
+          }
         }
       });
   }
@@ -1557,7 +1561,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   repeatCallTable(data: any): void {
     if (data && this.repeat < this.ctrl_variables.repeat_count) {
       this.repeat++;
-      this.GenerateReportTable();
+      setTimeout(() => {
+        this.GenerateReportTable();
+      }, this.ctrl_variables.report_table_timeout);
+
     } else {
       this.repeat = 0;
       this.router.navigate(["/End_User/Design"], { queryParams: { page: 1 }, skipLocationChange: true });
