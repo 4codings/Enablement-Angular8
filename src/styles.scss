@@ -437,7 +437,7 @@
 }
 
 .headerChildMenu .mat-menu-content button.mat-menu-item {
-  width: 12% !important;
+  width: 11% !important;
   display: inline !important;
   text-overflow: inherit;
   outline: none;
@@ -459,7 +459,31 @@
   margin-right: 10px;
 }
 
+.headerParentMenu .mat-menu-item .mat-icon {
+  margin-right: 1px !important
+}
+
 .mat-menu-panel.headerChildMenu, .mat-menu-panel.headerParentMenu {
   background: none !important;
   box-shadow: none;
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-infix .mat-input-element {
+  background-color: #fff;
+}
+
+.mat-dialog-container {
+  background-color: #ededed;
+}
+
+.form_input .mat-form-field-flex .mat-form-field-infix {
+  background: white;
+  border: 1px solid rgb(200,200,200);
+  padding: 0px;
+  text-align: center;
+  line-height: 24px;
+}
+
+button:focus {
+  outline: none;
 }

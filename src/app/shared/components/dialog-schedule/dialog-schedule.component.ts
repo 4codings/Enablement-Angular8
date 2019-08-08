@@ -101,4 +101,8 @@ export class DialogScheduleComponent implements OnInit {
 		this.start_date = new Date();
 	}
 
+	onBtnCancelClick(): void {
+		this.dialogRef.close();
+	}
+
 }
