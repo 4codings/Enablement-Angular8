@@ -1,17 +1,22 @@
-<div flex fxLayout="row">
+<div class="dialog-header" fxLayoutAlign="flex-end">
+  <button mat-icon-button (click)="onBtnCancelClick()"><mat-icon>close</mat-icon></button>
+</div>
+<div fxLayout.lt-sm="column" fxLayout="row">
   <div fxFlex="15"></div>
-  <div fxFlex="40">
+  <div fxFlex="85">
     <div class="input-wrapper">
-      <mat-form-field>
-        <input [(ngModel)]="start_date" matInput placeholder="Select Execution Date and Time" [owlDateTimeTrigger]="dtPicker1" [owlDateTime]="dtPicker1">
+      <label style="font-size:12px;margin-top:5px;">Select Execution Date and Time</label>
+      <mat-form-field class="form_input" style="width: 160px;">
+        <input [(ngModel)]="start_date" matInput [min]="min_start" placeholder="" [owlDateTimeTrigger]="dtPicker1"
+          [owlDateTime]="dtPicker1" style="text-align: center;">
         <owl-date-time #dtPicker1></owl-date-time>
       </mat-form-field>
     </div>
   </div>
 </div>
-<div flex fxLayout="row" fxLayout.lt-sm="column">
+<div  fxLayout="row" fxLayout.lt-sm="column">
   <div fxFlex="100" class="parent" style="gap: 10px">
     <button mat-raised-button mat-button [mat-dialog-close]="true" color="primary" (click)="Execute()"><mat-icon style="margin-right: 3px">schedule</mat-icon>Okay</button>
-    <button mat-raised-button mat-button mat-dialog-close color="primary"><mat-icon style="margin-right: 3px">clear</mat-icon>Cancel</button>
+    <!--<button mat-raised-button mat-button mat-dialog-close color="primary"><mat-icon style="margin-right: 3px">clear</mat-icon>Cancel</button>-->
   </div>
 </div>

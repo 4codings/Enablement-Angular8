@@ -1958,8 +1958,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
 
   openEmojiDialog() {
     const dialog = this.dialog.open(DialogScheduleComponent, {
-      height: '150px',
-      width: '300px'
+      height: '200px',
+      width: '300px',
+      panelClass: 'app-dialog'
     });
 
     dialog.afterClosed()
