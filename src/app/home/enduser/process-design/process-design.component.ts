@@ -443,6 +443,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
               this.documentation = businessObject.documentation[0].text ? businessObject.documentation[0].text : '';
             }
             this.generalId = $event.element.id.replace(new RegExp('_', 'g'), ' ')
+            const sourceId = (businessObject && businessObject.sourceRef ? businessObject.sourceRef.id : '').replace(new RegExp('_', 'g'), ' ');
+            const targetId = (businessObject && businessObject.targetRef ? businessObject.targetRef.id : '').replace(new RegExp('_', 'g'), ' ');
+            const objectId = (businessObject ? businessObject.id : '').replace(new RegExp('_', 'g'), ' ');
             if ($event.element.type !== 'bpmn:SequenceFlow') {
               this.isService = true;
               this.isTaskCreatedFlag = true;
@@ -452,38 +455,39 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
               this.oldIconType = $event.element.type;
               this.oldTaskId = $event.element.id.replace(new RegExp('_', 'g'), ' ');
             } else {
-              this.isSequenceCreatedChangedFlag = true;
-              this.oldSequenceId = $event.element.id.replace(new RegExp('_', 'g'), ' ');
-              this.isSequenceFlow = true;
-              const isConditional = !!businessObject.conditionExpression;
-              const source = $event.element.source;
-              const sourceBusinessObject = source != null ? source.businessObject : '';
-
-              const isDefault = sourceBusinessObject.default &&
-                sourceBusinessObject.default === businessObject;
-              if (isConditional) {
-                this.isConditionalFlow = true;
-                this.isDefaultFlow = false;
-                this.isNoneFlow = false;
-                this.showCondtionType = true;
-              }
-              else if (isDefault) {
-                this.isConditionalFlow = false;
-                this.isDefaultFlow = true;
-                this.isNoneFlow = false;
-
+              if (sourceId === "" && targetId === "") {
+                this.deleteSequence(this.generalId);
               } else {
-                this.isConditionalFlow = false;
-                this.isDefaultFlow = false;
-                this.isNoneFlow = true;
+                this.isSequenceCreatedChangedFlag = true;
+                this.oldSequenceId = $event.element.id.replace(new RegExp('_', 'g'), ' ');
+                this.isSequenceFlow = true;
+                const isConditional = !!businessObject.conditionExpression;
+                const source = $event.element.source;
+                const sourceBusinessObject = source != null ? source.businessObject : '';
+
+                const isDefault = sourceBusinessObject.default &&
+                  sourceBusinessObject.default === businessObject;
+                if (isConditional) {
+                  this.isConditionalFlow = true;
+                  this.isDefaultFlow = false;
+                  this.isNoneFlow = false;
+                  this.showCondtionType = true;
+                }
+                else if (isDefault) {
+                  this.isConditionalFlow = false;
+                  this.isDefaultFlow = true;
+                  this.isNoneFlow = false;
+
+                } else {
+                  this.isConditionalFlow = false;
+                  this.isDefaultFlow = false;
+                  this.isNoneFlow = true;
+                }
               }
             }
             this.selectedService = this.generalId;
             this.isApp = false;
             this.isProcess = false;
-            const sourceId = (businessObject && businessObject.sourceRef ? businessObject.sourceRef.id : '').replace(new RegExp('_', 'g'), ' ');
-            const targetId = (businessObject && businessObject.targetRef ? businessObject.targetRef.id : '').replace(new RegExp('_', 'g'), ' ');
-            const objectId = (businessObject ? businessObject.id : '').replace(new RegExp('_', 'g'), ' ');
             this.executableInput = '';
             this.executableDesc = '';
             this.executableOutput = '';
@@ -555,27 +559,13 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           }
           this.closeSchedulePanel();
         }),
-        eventBus.on("element.delete", (event) => {
-          console.log('shape.remove", (event)', event);
-          // if (event && event.element && this.taskList.indexOf(event.element.type) >= 0) {
-          //   if (!this.onTitleClickNoDelete) {
-          //     this.deleteService(event.element.id.replace(new RegExp('_', 'g'), ' '));
-          //   }
-          // }
-          // if (event && event.element && event.element.type === 'bpmn:SequenceFlow') {
-          //   if (!this.onTitleClickNoDelete) {
-          //     this.deleteSequence(event.element.id.replace(new RegExp('_', 'g'), ' '));
-          //   }
-          // }
-          this.closeSchedulePanel();
-        }),
         eventBus.on("shape.remove", (event) => {
           console.log('shape.remove", (event)', event);
-          // if (event && event.element && this.taskList.indexOf(event.element.type) >= 0) {
-          //   if (!this.onTitleClickNoDelete) {
-          //     this.deleteService(event.element.id.replace(new RegExp('_', 'g'), ' '));
-          //   }
-          // }
+          if (event && event.element && this.taskList.indexOf(event.element.type) >= 0) {
+            if (!this.onTitleClickNoDelete) {
+              this.deleteService(event.element.id.replace(new RegExp('_', 'g'), ' '));
+            }
+          }
           // if (event && event.element && event.element.type === 'bpmn:SequenceFlow') {
           //   if (!this.onTitleClickNoDelete) {
           //     this.deleteSequence(event.element.id.replace(new RegExp('_', 'g'), ' '));
