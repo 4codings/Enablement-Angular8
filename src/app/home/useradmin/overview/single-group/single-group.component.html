@@ -20,7 +20,7 @@
     </div>
   </div>
   <app-user-tile-list [users]="users"
-                      [groupId]="group.V_USR_GRP_ID"
+                      [group]="group"
                       [userPermission]="userPermission"
                       [membershipPermission]="membershipPermission"
                       (addUserEvent)="onAddUserEventHandler($event)"
