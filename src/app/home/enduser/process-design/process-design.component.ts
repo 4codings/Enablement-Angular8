@@ -96,7 +96,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     { item: 'Resolve', value: 'Resolve', havePermission: 0, icon: 'fab fa-resolving fa-lg', iconType: 'fa' },
     { item: 'Schedule', value: 'Schedule', havePermission: 0, icon: 'fa fa-calendar fa-lg', iconType: 'fa' },
     { item: 'Pause Schedule', value: 'SchedulePause', havePermission: 0, icon: 'far fa-pause-circle fa-lg', iconType: 'fa' },
-    { item: 'Kill Schedule', value: 'ScheduleKill', havePermission: 0, icon: 'far fa-skull-crossbones fa-lg', iconType: 'fa' },
+    { item: 'Kill Schedule', value: 'ScheduleKill', havePermission: 0, icon: 'far fa-trash fa-lg', iconType: 'fa' },
     { item: 'Resume Schedule', value: 'ScheduleResume', havePermission: 0, icon: 'far fa-play-circle mr-2 fa-lg', iconType: 'fa' },
     { item: 'Download BPNM', value: 'BPNM', havePermission: 0, icon: 'fas fa-file-download fa-lg', iconType: 'fa' },
     { item: 'Download SVG', value: 'SVG', havePermission: 0, icon: 'fas fa-download fa-lg', iconType: 'fa' },
@@ -240,7 +240,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   show_filter_input: boolean = false;
   checkbox_color_value = '';
 
-  displayedColumns = ['#', 'name', 'status', 'lastrun', 'nextrun', 'details'];
+  displayedColumns = ['#', 'status', 'lastrun', 'nextrun', 'details'];
   Process_key: any = [];
   selection = new SelectionModel<schedule>(true, []);
 
@@ -293,22 +293,22 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.roleValues.forEach(ele => {
             switch (ele) {
               case 'Enablement Workflow Schedule Role':
-                this.childrenMenuItems[4].havePermission = 1;
+                this.childrenMenuItems[5].havePermission = 1;
                 break;
               case 'Enablement Workflow Dashboard Role':
-                this.childrenMenuItems[8].havePermission = 1;
+                this.childrenMenuItems[3].havePermission = 1;
                 break;
               case 'Enablement Workflow MyTask Role':
-                this.childrenMenuItems[9].havePermission = 1;
+                this.childrenMenuItems[2].havePermission = 1;
                 break;
               case 'Enablement Workflow Exception Role':
-                this.childrenMenuItems[10].havePermission = 1;
+                this.childrenMenuItems[4].havePermission = 1;
                 break;
               case 'Enablement Workflow Process Role':
                 this.parentMenuItems[0].havePermission = 1;
                 this.parentMenuItems[1].havePermission = 1;
-                this.childrenMenuItems[11].havePermission = 1;
-                this.childrenMenuItems[12].havePermission = 1;
+                this.childrenMenuItems[9].havePermission = 1;
+                this.childrenMenuItems[10].havePermission = 1;
                 break;
               default:
                 break;
@@ -443,6 +443,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
               this.documentation = businessObject.documentation[0].text ? businessObject.documentation[0].text : '';
             }
             this.generalId = $event.element.id.replace(new RegExp('_', 'g'), ' ')
+            const sourceId = (businessObject && businessObject.sourceRef ? businessObject.sourceRef.id : '').replace(new RegExp('_', 'g'), ' ');
+            const targetId = (businessObject && businessObject.targetRef ? businessObject.targetRef.id : '').replace(new RegExp('_', 'g'), ' ');
+            const objectId = (businessObject ? businessObject.id : '').replace(new RegExp('_', 'g'), ' ');
             if ($event.element.type !== 'bpmn:SequenceFlow') {
               this.isService = true;
               this.isTaskCreatedFlag = true;
@@ -452,38 +455,39 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
               this.oldIconType = $event.element.type;
               this.oldTaskId = $event.element.id.replace(new RegExp('_', 'g'), ' ');
             } else {
-              this.isSequenceCreatedChangedFlag = true;
-              this.oldSequenceId = $event.element.id.replace(new RegExp('_', 'g'), ' ');
-              this.isSequenceFlow = true;
-              const isConditional = !!businessObject.conditionExpression;
-              const source = $event.element.source;
-              const sourceBusinessObject = source != null ? source.businessObject : '';
-
-              const isDefault = sourceBusinessObject.default &&
-                sourceBusinessObject.default === businessObject;
-              if (isConditional) {
-                this.isConditionalFlow = true;
-                this.isDefaultFlow = false;
-                this.isNoneFlow = false;
-                this.showCondtionType = true;
-              }
-              else if (isDefault) {
-                this.isConditionalFlow = false;
-                this.isDefaultFlow = true;
-                this.isNoneFlow = false;
-
+              if (sourceId === "" && targetId === "") {
+                this.deleteSequence(this.generalId);
               } else {
-                this.isConditionalFlow = false;
-                this.isDefaultFlow = false;
-                this.isNoneFlow = true;
+                this.isSequenceCreatedChangedFlag = true;
+                this.oldSequenceId = $event.element.id.replace(new RegExp('_', 'g'), ' ');
+                this.isSequenceFlow = true;
+                const isConditional = !!businessObject.conditionExpression;
+                const source = $event.element.source;
+                const sourceBusinessObject = source != null ? source.businessObject : '';
+
+                const isDefault = sourceBusinessObject.default &&
+                  sourceBusinessObject.default === businessObject;
+                if (isConditional) {
+                  this.isConditionalFlow = true;
+                  this.isDefaultFlow = false;
+                  this.isNoneFlow = false;
+                  this.showCondtionType = true;
+                }
+                else if (isDefault) {
+                  this.isConditionalFlow = false;
+                  this.isDefaultFlow = true;
+                  this.isNoneFlow = false;
+
+                } else {
+                  this.isConditionalFlow = false;
+                  this.isDefaultFlow = false;
+                  this.isNoneFlow = true;
+                }
               }
             }
             this.selectedService = this.generalId;
             this.isApp = false;
             this.isProcess = false;
-            const sourceId = (businessObject && businessObject.sourceRef ? businessObject.sourceRef.id : '').replace(new RegExp('_', 'g'), ' ');
-            const targetId = (businessObject && businessObject.targetRef ? businessObject.targetRef.id : '').replace(new RegExp('_', 'g'), ' ');
-            const objectId = (businessObject ? businessObject.id : '').replace(new RegExp('_', 'g'), ' ');
             this.executableInput = '';
             this.executableDesc = '';
             this.executableOutput = '';
@@ -555,27 +559,13 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           }
           this.closeSchedulePanel();
         }),
-        eventBus.on("element.delete", (event) => {
-          console.log('shape.remove", (event)', event);
-          // if (event && event.element && this.taskList.indexOf(event.element.type) >= 0) {
-          //   if (!this.onTitleClickNoDelete) {
-          //     this.deleteService(event.element.id.replace(new RegExp('_', 'g'), ' '));
-          //   }
-          // }
-          // if (event && event.element && event.element.type === 'bpmn:SequenceFlow') {
-          //   if (!this.onTitleClickNoDelete) {
-          //     this.deleteSequence(event.element.id.replace(new RegExp('_', 'g'), ' '));
-          //   }
-          // }
-          this.closeSchedulePanel();
-        }),
         eventBus.on("shape.remove", (event) => {
           console.log('shape.remove", (event)', event);
-          // if (event && event.element && this.taskList.indexOf(event.element.type) >= 0) {
-          //   if (!this.onTitleClickNoDelete) {
-          //     this.deleteService(event.element.id.replace(new RegExp('_', 'g'), ' '));
-          //   }
-          // }
+          if (event && event.element && this.taskList.indexOf(event.element.type) >= 0) {
+            if (!this.onTitleClickNoDelete) {
+              this.deleteService(event.element.id.replace(new RegExp('_', 'g'), ' '));
+            }
+          }
           // if (event && event.element && event.element.type === 'bpmn:SequenceFlow') {
           //   if (!this.onTitleClickNoDelete) {
           //     this.deleteSequence(event.element.id.replace(new RegExp('_', 'g'), ' '));
@@ -1032,14 +1022,14 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                       if (authSubStr[1] === 'Y') {
                         editCount++;
                       }
-                      copyChildrenMenuItems[2].havePermission = authSubStr[1] === 'Y' ? 1 : 0;
+                      copyChildrenMenuItems[11].havePermission = authSubStr[1] === 'Y' ? 1 : 0;
                       break;
                     }
                     case 'DELETE': {
                       if (authSubStr[1] === 'Y') {
                         deleteCount++;
                       }
-                      copyChildrenMenuItems[3].havePermission = authSubStr[1] === 'Y' ? 1 : 0;
+                      copyChildrenMenuItems[12].havePermission = authSubStr[1] === 'Y' ? 1 : 0;
                       break;
                     }
                     default: break;
@@ -1993,8 +1983,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
 
   onChildMenuClick(item) {
-    // console.log("onChildMenuClick", item);
-
+    console.log("onChildMenuClick", this.selectedApp);
     this.ApplicationCD = item ? item.value : this.selectedApp;
     this.ProcessCD = item ? item.text : this.selectedProcess;
     this.repeatURL(this.ApplicationCD, this.ProcessCD);
@@ -2015,14 +2004,13 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   find_process(ApplicationCD, ProcessCD, StatusCD) {
 
     if (this.childrenMenuItems[4].havePermission == 0) {
+
       console.warn("User does not have the permission to load Schedules...");
       return;
     }
-
-
-    this.childrenMenuItems[5].havePermission = 0;
     this.childrenMenuItems[6].havePermission = 0;
     this.childrenMenuItems[7].havePermission = 0;
+    this.childrenMenuItems[8].havePermission = 0;
 
     /**internalChecked: true
 ​
@@ -2056,7 +2044,7 @@ this.find_process(this.ApplicationCD, this.ProcessCD, 'Paused');
 
           for (let i = 0; i < this.F1.length; i++) {
             this.innerTableDT[i] = {
-              name: dataResult.SRVC_CD[i],
+              // name: dataResult.SRVC_CD[i],
               status: dataResult.TRIGGER_STATE[i],
               lastrun: dataResult.PREV_FIRE_TIME[i],
               nextrun: dataResult.NEXT_FIRE_TIME[i],
@@ -2075,15 +2063,16 @@ this.find_process(this.ApplicationCD, this.ProcessCD, 'Paused');
           // push dependent flag
           // this.Action.push('Setup a New Schedule');
           if (rm_f) {
-            this.childrenMenuItems[6].havePermission = 1;
+            this.childrenMenuItems[8].havePermission = 1;
+            this.childrenMenuItems[7].havePermission = 1;
           } if (ps_r) {
-            this.childrenMenuItems[5].havePermission = 1;
-
-          }
-          //    push kill flag if process are not empty
-          if (dataResult.TRIGGER_STATE.length > 0) {
+            this.childrenMenuItems[6].havePermission = 1;
             this.childrenMenuItems[7].havePermission = 1;
           }
+          //    push kill flag if process are not empty
+          // if (dataResult.TRIGGER_STATE.length > 0) {
+          //   this.childrenMenuItems[8].havePermission = 1;
+          // }
           this.dataSource.data = this.innerTableDT;
         }
       });

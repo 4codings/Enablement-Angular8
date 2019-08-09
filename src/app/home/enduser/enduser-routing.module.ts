@@ -18,19 +18,23 @@ const routes: Routes = [{
     { path: '', redirectTo: 'Design', pathMatch: 'full' },
     {
       path: 'Mytask',
-      loadChildren: () => MytaskModule,
+      loadChildren: './mytask/mytask.module#MytaskModule'
+      // loadChildren: () => MytaskModule,
     },
     {
       path: 'Exception',
-      loadChildren: () => ExceptionModule,
+      loadChildren: './exception/exception.module#ExceptionModule'
+      // loadChildren: () => ExceptionModule,
     },
     {
       path: 'Design',
-      loadChildren: () => ProcessDesignModule,
+      loadChildren: './process-design/process-design.module#ProcessDesignModule'
+      // loadChildren: () => ProcessDesignModule,
     },
     {
       path: 'Dashboard',
-      loadChildren: () => DashboardModule,
+      loadChildren: './dashboard/dashboard.module#DashboardModule'
+      // loadChildren: () => DashboardModule,
     },
   ]
 },
