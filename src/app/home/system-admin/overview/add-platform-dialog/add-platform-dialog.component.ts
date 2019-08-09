@@ -54,7 +54,7 @@ export class AddPlatformDialogComponent implements OnInit {
   progress:boolean;
 
   platFormChange() {
-    if(this.p_plat.length != this.p_plat_dup[0].length) {
+    if(this.p_plat != this.p_plat_dup) {
       this.isPlatformChange = true;
     } else {
       this.isPlatformChange = false;
@@ -95,14 +95,14 @@ export class AddPlatformDialogComponent implements OnInit {
       "V_SERVER_DSC":this.p_desc,
       "REST_Service":"Platform_Master",
       "Verb":"PUT"
-  };
+    };
 
-  this.http.put(this.apiUrlPut,body).subscribe(
-    res=>{
-      (res);
-      (body);
-      this.dialogRef.close();
-    });
+    this.http.put(this.apiUrlPut,body).subscribe(
+      res=>{
+        (res);
+        (body);
+        this.dialogRef.close();
+      });
   }
   
   updateplat() {
