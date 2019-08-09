@@ -666,3 +666,7 @@ mat-header-cell {
 .mr-10 {
   margin-right: 10px;
 }
+
+:host /deep/ .dynamicContent .f_label {
+  display: inline-block;
+}
