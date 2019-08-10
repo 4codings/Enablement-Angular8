@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material';
 import { ConfirmationAlertComponent } from 'src/app/shared/components/confirmation-alert/confirmation-alert.component';
 import { HttpClient } from '@angular/common/http';
 import { EditConnectionDialogComponent } from '../dialogs/edit-connection-dialog/edit-connection-dialog.component';
+import { Globals } from 'src/app/services/globals';
 
 @Component({
   selector: 'app-machine-tile-list',
@@ -26,6 +27,8 @@ export class MachineTileListComponent implements OnInit {
   @Input() connectionList;
   @Input() machineType;
   @Input() userAccess;
+  domain_name=this.globals.domain_name;
+  private apiUrlGet = "https://"+this.domain_name+"/rest/v1/secured?";
   @ViewChild('contextMenu') set contextMenu(value: ElementRef) {
     if (value) {
       let menu: HTMLDivElement = value.nativeElement;
@@ -33,7 +36,7 @@ export class MachineTileListComponent implements OnInit {
     }
   }
 
-  constructor(private systemOverview:SystemAdminOverviewService, public dialog: MatDialog, private http:HttpClient) { }
+  constructor(private systemOverview:SystemAdminOverviewService, public dialog: MatDialog, private http:HttpClient, private globals:Globals) { }
 
   ngOnInit() {
     this.V_SRC_CD=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
@@ -119,7 +122,6 @@ export class MachineTileListComponent implements OnInit {
   }
 
   onBtnEditExeClick(cxn) {
-    console.log(cxn);
     const dialogRef = this.dialog.open(EditConnectionDialogComponent, {
       panelClass: 'app-dialog',
       width: '600px',
@@ -160,7 +162,8 @@ export class MachineTileListComponent implements OnInit {
           "Verb": "DELETE",
           "RESULT": "@RESULT"
         };
-        this.http.put('https://enablement.us/Enablement/rest/v1/secured', body).subscribe(res => {
+
+        this.http.delete(this.apiUrlGet+'V_CXN_TYP='+ cnx.cnxData.V_CXN_TYP + '&V_CXN_CD='+ cnx.cnxData.V_CXN_CD + '&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=CXN&Verb=DELETE').subscribe(res => {
           console.log("res",res);
           this.systemOverview.getMachine();
         }, err => {

@@ -73,7 +73,7 @@ export class AddConnectionDialogComponent implements OnInit {
       "Verb":["PUT"]
     }
   
-    this.http.put('https://enablement.us/Enablement/rest/v1/securedJSON?', data).subscribe(res => {
+    this.http.put('https://enablement.us/Enablement/rest/v1/securedJSON', data).subscribe(res => {
       console.log("res",res);
       this.dialogRef.close(true);
     }, err => {
