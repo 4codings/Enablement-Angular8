@@ -24,6 +24,7 @@ export class ConfigServiceService {
 
   private apiUrlGet = this.apiService.endPoints.insecure;
   private apiUrlGetSecure = this.apiService.endPoints.secure;
+  private apiUrlGetSecureJSON = this.apiService.endPoints.securejson;
   private apiUrlPost = "https://" + this.domain_name + "/";
   private fieldConfig: { [key: string]: IFormFieldConfig } = {};
   //-------------TAB GROU
@@ -725,13 +726,14 @@ export class ConfigServiceService {
   getchartstyling(UNIQUE_ID, V_SRC_ID) {
 
     // console.log(this.apiUrlGetSecure + "V_USR_NM=" + this.V_USR_NM + "&V_SRC_ID=" + V_SRC_ID + "&V_APP_ID=" + V_APP_ID + "&V_PRCS_ID=" + V_PRCS_ID + "&REST_Service=User_Preference&Verb=GET");
-    return this.http.get(this.apiUrlGetSecure + "V_USR_NM=" + this.V_USR_NM + "&V_SRC_ID=" + V_SRC_ID + "&V_UNIQUE_ID=" + UNIQUE_ID + "&REST_Service=User_Preference&Verb=GET", this.apiService.setHeaders());
+    return this.http.get(this.apiUrlGetSecureJSON + "V_USR_NM=" + this.V_USR_NM + "&V_SRC_ID=" + V_SRC_ID + "&V_UNIQUE_ID=" + UNIQUE_ID + "&REST_Service=User_Preference&Verb=GET", this.apiService.setHeaders());
   }
 
   setchartstyling(UNIQUE_ID, V_SRC_ID, V_PRF_NM, V_PRF_VAL) {
     // return this.http.get(this.apiUrlGet + "V_USR_NM=" + this.V_USR_NM + "&V_PRF_NM=" + V_PRF_NM + "&V_PRF_VAL=" + V_PRF_VAL + "&V_SRC_ID=" + V_SRC_ID + "&V_APP_ID=" + V_APP_ID + "&V_PRCS_ID=" + V_PRCS_ID + "&REST_Service=User_Preference&Verb=PATCH" );
 
     // secure
+    //console.log(this.apiUrlGetSecure + "V_USR_NM=" + this.V_USR_NM + "&V_PRF_NM=" + V_PRF_NM + "&V_PRF_VAL=" + V_PRF_VAL + "&V_SRC_ID=" + V_SRC_ID + "&V_UNIQUE_ID=" + UNIQUE_ID + "&REST_Service=User_Preference&Verb=PATCH");
     return this.http.get(this.apiUrlGetSecure + "V_USR_NM=" + this.V_USR_NM + "&V_PRF_NM=" + V_PRF_NM + "&V_PRF_VAL=" + V_PRF_VAL + "&V_SRC_ID=" + V_SRC_ID + "&V_UNIQUE_ID=" + UNIQUE_ID + "&REST_Service=User_Preference&Verb=PATCH", this.apiService.setHeaders());
   }
 
