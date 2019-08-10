@@ -164,7 +164,7 @@ export class ManageMachinesComponent implements OnInit {
   }
 
   deleteMachine() {
-    this.http.delete(this.apiUrl+"/V_PLATFORM_CD="+this.PLATFORM_CD+"&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Machine&Verb=DELETE").subscribe(
+    this.http.delete(this.apiUrlGet+"V_PLATFORM_CD="+this.PLATFORM_CD+"&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Machine&Verb=DELETE").subscribe(
     res=>{
       (res);
       this.dialogRef.close();

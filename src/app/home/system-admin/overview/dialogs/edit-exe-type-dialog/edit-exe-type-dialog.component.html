@@ -10,7 +10,7 @@
           <div fxFlex="48" class="mr-2">
             <label item-width="100"><strong>Executable Name</strong></label>
             <mat-form-field style="width:100%;">
-              <input matInput  [(ngModel)]="data.exeData.V_EXE_CD" name="exe" readonly/>
+              <input matInput  [(ngModel)]="data.exeData.V_EXE_CD" name="exe" (ngModelChange)="isExeChange()"/>
             </mat-form-field>
           </div>  
           <div class="ml-2" fxFlex="48">  
@@ -95,6 +95,8 @@
         
   </div>
   <div class="dialog-footer content-wrapper" fxLayoutAlign="end center" fxLayoutGap="8px">
-    <button mat-flat-button color="primary" (click)="onBtnUpdateClick()">Update</button>
+    <button *ngIf="isexeChange" class="mr-2" mat-raised-button color="primary" (click)="onBtnUpdateClick()">
+    <mat-icon>add</mat-icon> Add</button>
+    <button *ngIf="!isexeChange" mat-flat-button color="primary" (click)="onBtnUpdateClick()">Update</button>
   </div>
 </div>

@@ -19,6 +19,8 @@ export class EditConnectionDialogComponent implements OnInit {
   PLF_DSC:string = 'Apache Tomcat Web Server';
   PLF_TYPE=[];
   PLF_DATA;
+  V_CXN_CD_DUP='';
+  iscnxChange:boolean = false;
 
   constructor(public dialogRef: MatDialogRef<EditConnectionDialogComponent>,  @Inject(MAT_DIALOG_DATA) public data: any, private http:HttpClient, private config:ConfigServiceService) { }
 
@@ -30,7 +32,9 @@ export class EditConnectionDialogComponent implements OnInit {
     this.V_SRC_CD=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
     this.http.get('https://enablement.us/Enablement/rest/E_DB/SPJSON?V_SRC_CD='+ this.V_SRC_CD +'&V_CXN_TYP='+ this.data.cnxData.V_CXN_TYP +'&REST_Service=Params_of_CXN_Type&Verb=GET').subscribe(res => {
       this.DATA = res;
-    })
+    });
+
+    this.V_CXN_CD_DUP = this.data.cnxData.V_CXN_CD;
   }
 
   onBtnCancelClick(): void {
@@ -77,6 +81,14 @@ export class EditConnectionDialogComponent implements OnInit {
     }, err => {
   
     })
+  }
+
+  isCnxChange() {
+    if(this.data.cnxData.V_CXN_CD.toLowerCase() != this.V_CXN_CD_DUP.toLocaleLowerCase()) {
+      this.iscnxChange = true;
+    } else {
+      this.iscnxChange = false;
+    }
   }
 
 }

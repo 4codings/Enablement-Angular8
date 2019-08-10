@@ -153,15 +153,15 @@
 
       <div fxFlex="20"></div>
       <div fxFlex="20">
-        <button *ngIf="isMachineChange" [disabled]="!isMachineChange || isValid()" class="mr-2" mat-raised-button color="primary" (click)="addplat()">
+        <button *ngIf="isMachineChange" [disabled]="!isMachineChange || isValid()" class="mr-2" mat-raised-button color="primary" (click)="addMachine()">
           <mat-icon>add</mat-icon> Add</button>
-        <button [disabled]="Selected == null" *ngIf="!isMachineChange" class="mr-2" mat-raised-button color="primary" (click)="addplat()">
-          <mat-icon>add</mat-icon> Update</button>
+        <button [disabled]="Selected == null" *ngIf="!isMachineChange" class="mr-2" mat-raised-button color="primary" (click)="updateMachine()">
+           Update</button>
       </div>
 
       <div fxFlex="20"></div>
       <div fxFlex="20">
-        <button [disabled]="Selected == null || isMachineChange" type="submit" style="width: 100%;" mat-raised-button color="primary" (click)="deleteMachine()">
+        <button [disabled]="Selected == null || isMachineChange" type="submit" style="width: 100%;" mat-raised-button color="warn" (click)="deleteMachine()">
           <mat-icon>delete</mat-icon> Delete</button>
       </div>
       
