@@ -1,6 +1,6 @@
 <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="100" fxLayoutGap="8px">
   <div fxLayoutAlign="space-between center">
-    <div style="padding-left: 8px">
+    <div style="padding-left: 8px" *ngIf="userAccess.role_deployment">
       <span>Connection Types : </span>
       <button mat-button [matMenuTriggerFor]="machineTypeMenu">{{selectedConnectionType}}
         <mat-icon matSuffix>arrow_drop_down</mat-icon>
@@ -8,9 +8,9 @@
       <mat-menu #machineTypeMenu="matMenu">
         <button mat-menu-item *ngFor="let item of connectionTypeOptions"
                 (click)="changeMachineType(item)">{{item.EXE_TYP}}</button>
-      </mat-menu>
+      </mat-menu> 
     </div>
-    <div class="container-actions">
+    <div class="container-actions" *ngIf="userAccess.role_machine">
       Manage Machines <button mat-icon-button class="add-btn"
               matTooltip="Manage Machines"
               (click)="onManageMachineBtnClick()">
@@ -25,6 +25,6 @@
   </div>
   <mat-divider></mat-divider>
   <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="16px" cdkDropListGroup>
-    <app-single-machine *ngFor="let currMachine of sortedAllConnections | filterExetype:selectedConnectionType:'cxn'" [machineData]="currMachine" [machines]="currMachine.V_CXN"></app-single-machine>
+    <app-single-machine [userRoleAccess]="userAccess" *ngFor="let currMachine of sortedAllConnections | filterExetype:selectedConnectionType:'cxn'" [machineData]="currMachine" [machines]="currMachine.V_CXN"></app-single-machine>
   </div>
 </div>

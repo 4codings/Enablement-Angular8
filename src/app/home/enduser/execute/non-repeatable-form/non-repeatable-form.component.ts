@@ -113,7 +113,7 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
       this.rows.push(i);
     }
     for (let i = 0; i < this.RVP_labels.length; i++) {
-      this.input[this.RVP_labels[i]] = this.RVP_DataObj[this.RVP_labels[i].split(" ").join(" ")][0];
+      this.input[this.RVP_labels[i]] = this.RVP_DataObj[this.RVP_labels[i].split(" ").join(" ")] != undefined ? (this.RVP_DataObj[this.RVP_labels[i].split(" ").join(" ")][0]) : this.RVP_DataObj[this.RVP_labels[i].split(" ").join(" ")];
     }
     this.cdr.detectChanges();
     var key_array = Object.keys(this.RVP_DataObj)

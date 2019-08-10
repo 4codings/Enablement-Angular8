@@ -11,20 +11,20 @@
     <div>
       <mat-menu #uploadMenu="matMenu">
         <button mat-menu-item (click)="onFileUploadBtnClick('Upload_User_File')">Exe</button>
-        <button mat-menu-item (click)="onFileUploadBtnClick('Upload_Group_File')">Platform</button>
-        <button mat-menu-item (click)="onFileUploadBtnClick('Upload_Role_File')">Machines</button>
+        <button mat-menu-item (click)="onFileUploadBtnClick('Upload_Group_File')" *ngIf="userAccess.role_platform">Platform</button>
+        <button mat-menu-item (click)="onFileUploadBtnClick('Upload_Role_File')" *ngIf="userAccess.role_machine">Machines</button>
       </mat-menu>
       <mat-menu #downloadMenu="matMenu">
         <button mat-menu-item (click)="downloadFile('UserDL.xlsx')">Exe</button>
-        <button mat-menu-item (click)="downloadFile('GroupDL.xlsx')">Platform</button>
-        <button mat-menu-item (click)="downloadFile('RoleDL.xlsx')">Machines</button>
+        <button mat-menu-item (click)="downloadFile('GroupDL.xlsx')" *ngIf="userAccess.role_platform">Platform</button>
+        <button mat-menu-item (click)="downloadFile('RoleDL.xlsx')" *ngIf="userAccess.role_machine">Machines</button>
       </mat-menu>
     </div>
   </div>
   <div fxLayout="row" fxLayoutGap="8px" class="content-wrapper">
-    <app-exe-types-list [fxFlex]="50" [selectedExeType]="selectedExeType" (selectedExe)="selectedExe($event)"></app-exe-types-list>
+    <app-exe-types-list [fxFlex]="50" [selectedExeType]="selectedExeType" [userAccess]="userAccess" (selectedExe)="selectedExe($event)"></app-exe-types-list>
     <mat-divider [vertical]="true"></mat-divider>
-    <app-machines-list fxFlex="50" [selectedConnectionType]="selectedExeType" (selectedMachine)="selectedMachine($event)"></app-machines-list>
+    <app-machines-list fxFlex="50" [selectedConnectionType]="selectedExeType" [userAccess]="userAccess" (selectedMachine)="selectedMachine($event)"></app-machines-list>
   </div>
 </div>
 

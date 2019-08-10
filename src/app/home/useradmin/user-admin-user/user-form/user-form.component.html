@@ -3,6 +3,8 @@
     <mat-form-field>
       <input type="text" matInput placeholder="Name" #htmlInputElement formControlName="V_USR_NM" cdkFocusInitial>
       <mat-error *ngIf="userForm.get('V_USR_NM').errors?.userError">User already exist.</mat-error>
+      <mat-error *ngIf="f.V_USR_NM.errors?.email">Valid User is required.</mat-error>
+      <mat-error *ngIf="userForm.get('V_USR_NM').errors?.groupError">Valid User is required.</mat-error>
     </mat-form-field>
     <mat-form-field>
       <input type="text" matInput placeholder="Description" formControlName="V_USR_DSC">

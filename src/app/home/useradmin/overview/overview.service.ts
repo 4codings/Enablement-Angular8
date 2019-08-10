@@ -318,7 +318,7 @@ export class OverviewService implements OnDestroy {
       {
         panelClass: 'app-dialog',
         width: '600px',
-        data: {groupId: groupId, allUsers: this.allUsers}
+        data: {groupId, allUsers: this.allUsers}
       });
     dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
       if (flag) {
@@ -327,12 +327,12 @@ export class OverviewService implements OnDestroy {
     });
   }
 
-  openEditUserDialog(user: User): void {
+  openEditUserDialog(user: User, group: userGroup): void {
     const dialogRef = this.dialog.open(EditUserComponent,
       {
         panelClass: 'app-dialog',
         width: '600px',
-        data: {user: user}
+        data: { user, group }
       });
     dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
       if (flag) {

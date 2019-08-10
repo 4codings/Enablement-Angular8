@@ -1,7 +1,7 @@
 import {Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {User} from '../../../../store/user-admin/user/user.model';
 import {CdkDragDrop, copyArrayItem, moveItemInArray} from '@angular/cdk/drag-drop';
-import {userGroup} from '../../../../store/user-admin/user-group/usergroup.model';
+import { userGroup } from '../../../../store/user-admin/user-group/usergroup.model';
 import {SelectionModel} from '@angular/cdk/collections';
 import * as fromUserMembership from '../../../../store/user-admin/user-membership/usermembership.action';
 import {AddUserComponent} from '../../user-admin-user/add-user/add-user.component';
@@ -19,6 +19,7 @@ import {environment} from '../../../../../environments/environment';
 export class UserTileListComponent implements OnInit, OnDestroy {
   @Input() userPermission: boolean;
   @Input() membershipPermission: boolean;
+  @Input() group: userGroup;
   @Input() users: User[];
   @Input() selectedUser: User;
   @Input() highlightedUsers: SelectionModel<User> = new SelectionModel<User>(true, []);
@@ -85,7 +86,7 @@ export class UserTileListComponent implements OnInit, OnDestroy {
 
   onContextMenuEditUserBtnClick(): void {
     this.contextMenuActive = false;
-    this.overviewService.openEditUserDialog(this.contextMenuData);
+    this.overviewService.openEditUserDialog(this.contextMenuData, this.group);
     this.contextMenuData = null;
   }
 

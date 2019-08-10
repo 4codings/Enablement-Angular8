@@ -5,7 +5,9 @@
   </div>
   <mat-divider></mat-divider>
   <div class="dialog-body content-wrapper" fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="start stretch">
-    <app-user-form [user]="user"></app-user-form>
+    <app-user-form [user]="user"
+                   [group]="group">
+    </app-user-form>
   </div>
   <div class="dialog-footer content-wrapper" fxLayoutAlign="end center" fxLayoutGap="8px">
     <button mat-flat-button color="primary" (click)="onBtnUpdateClick()">Update</button>

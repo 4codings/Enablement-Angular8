@@ -33,7 +33,8 @@ export class ApiService {
 		logout: `${this.insecureUrl}/logout`,
 		deleteArtifact: `${this.insecureUrl}/Artifact/DeleteArtifact?`,
 		securedJSON: `${this.securedApiUrl}/securedJSON?`,
-		downloadFile: `${this.fileUrl}/download`
+		downloadFile: `${this.fileUrl}/download`,
+		securedScheduleProcess: `${this.securedApiUrl}/secured/Process/Schedule`
 	}
 
 	constructor(private http: HttpClient, private globals: Globals2, private globalUrl: Globals,
@@ -136,9 +137,9 @@ export class ApiService {
 	setHeadersForBlob() {
 		const headers = new Headers();
 		headers.append('Authorization', `Bearer ${JSON.parse(sessionStorage.getItem('u')).TOKEN}`);
-		const options = new RequestOptions({headers: headers, responseType: ResponseContentType.Blob});
+		const options = new RequestOptions({ headers: headers, responseType: ResponseContentType.Blob });
 		return options;
-	  }
+	}
 }
 
 export enum RequestTypes {

@@ -20,6 +20,8 @@ export class MachinesListComponent implements OnInit {
   public connections=[];
   public sortedAllConnections = [];
   @Input() selectedConnectionType;
+  @Input() userAccess;
+  
   unsubscribeAll: Subject<boolean> = new Subject<boolean>();
   connectionTypeOptions;
   @Output() selectedMachine: EventEmitter<any> = new EventEmitter();

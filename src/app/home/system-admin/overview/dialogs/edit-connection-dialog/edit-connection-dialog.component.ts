@@ -71,12 +71,12 @@ export class EditConnectionDialogComponent implements OnInit {
       "REST_Service":["CXN"],
       "Verb":["PUT"]
     }
-    // this.http.put('https://enablement.us/Enablement/rest/v1/securedJSON?', data).subscribe(res => {
-    //   console.log("res",res);
-    //   this.dialogRef.close(true);
-    // }, err => {
+    this.http.put('https://enablement.us/Enablement/rest/v1/securedJSON?', data).subscribe(res => {
+      console.log("res",res);
+      this.dialogRef.close(true);
+    }, err => {
   
-    // })
+    })
   }
 
 }

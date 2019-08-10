@@ -13,6 +13,6 @@
       </button>
     </div>
   </div>
-  <app-exe-tile-list [exes]="exeType" (selectedExeTile)="selectedExeTile($event)"></app-exe-tile-list>
+  <app-exe-tile-list [userAccess]="userRoleAccess" [exes]="exeType" (selectedExeTile)="selectedExeTile($event)"></app-exe-tile-list>
 </div>
 

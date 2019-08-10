@@ -17,28 +17,28 @@ export class DialogScheduleComponent implements OnInit {
 	choosenEmoji: string;
 	public parentapp: string;
 	public parentpro: string;
-	tp:any;
+	tp: any;
 	constructor(public dialogRef: MatDialogRef<DialogScheduleComponent>,
 		private route: Router,
 		private store: StorageSessionService,
-		private http: HttpClient,private globals:Globals
+		private http: HttpClient, private globals: Globals
 
 
 	) { }
 	start_date: any = "";
-	domain_name=this.globals.domain_name;
-	private Url = "https://"+this.domain_name+"/rest/Process/Schedule"
-
+	domain_name = this.globals.domain_name;
+	private Url = "https://" + this.domain_name + "/rest/Process/Schedule"
+	min_start = new Date();
 	Exe_data = this.store.getSession("Exe_data");
-	V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
-  	V_USR_NM:string=JSON.parse(sessionStorage.getItem('u')).USR_NM;
+	V_SRC_CD: string = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+	V_USR_NM: string = JSON.parse(sessionStorage.getItem('u')).USR_NM;
 	Execute() {
 		var date = new Date(this.start_date);
 		var sec: any = date.getSeconds();
 		var min: any = date.getMinutes();
 		var hrs: any = date.getHours();
 		var date_of_month: any = date.getDate();
-		var month: any = date.getMonth()+1;
+		var month: any = date.getMonth() + 1;
 		var day: any = date.getDay();
 		var year: any = date.getFullYear();
 
@@ -85,9 +85,9 @@ export class DialogScheduleComponent implements OnInit {
 			"END_DATE": null,
 			"TimeZone": Intermediatetimezone
 		}
-		this.tp=this.store.getCookies("ts");
+		this.tp = this.store.getCookies("ts");
 		//(this.tp);
-		Object.assign(body,this.tp);
+		Object.assign(body, this.tp);
 		(body);
 		this.http.post(this.Url, body).subscribe(
 			res => {
@@ -99,6 +99,10 @@ export class DialogScheduleComponent implements OnInit {
 
 	ngOnInit() {
 		this.start_date = new Date();
+	}
+
+	onBtnCancelClick(): void {
+		this.dialogRef.close();
 	}
 
 }

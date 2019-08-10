@@ -23,6 +23,7 @@ export class ExeTileListComponent implements OnInit {
   public selectedTile;
   public selectedCxn;
   @Input() exes;
+  @Input() userAccess;
   @Output() selectedExeTile = new EventEmitter();
   @Output() deleteExeEvent = new EventEmitter();
   public selectedMachine;
