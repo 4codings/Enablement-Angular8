@@ -17,7 +17,7 @@ import * as userRoleActions from '../../../store/user-admin/user-role/userrole.a
 import * as authActions from '../../../store/user-admin/user-authorization/authorization.actions';
 import {take, takeUntil} from 'rxjs/operators';
 import {AddUserComponent} from '../user-admin-user/add-user/add-user.component';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import {EditUserComponent} from '../user-admin-user/edit-user/edit-user.component';
 import {ConfirmationAlertComponent} from '../../../shared/components/confirmation-alert/confirmation-alert.component';
 import {UseradminService} from '../../../services/useradmin.service2';
@@ -110,7 +110,6 @@ export class OverviewService implements OnDestroy {
       this.prepareUserGroupMap();
       this.updateSelectedDataObjRef();
     }, error => {
-      console.log('http error => ', error);
     });
     combineLatest(roles$, authData$).pipe(takeUntil(this.unsubscribeAll)).subscribe(result => {
       this.allRoles = result[0] ? result[0].sort(this.sortById) : result[0];
@@ -122,7 +121,6 @@ export class OverviewService implements OnDestroy {
       this.prepareAuthRoleMap();
       this.updateSelectedDataObjRef();
     }, error => {
-      console.log('http error => ', error);
     });
   }
 
@@ -143,7 +141,6 @@ export class OverviewService implements OnDestroy {
 
 
   selectAuthType(type): void {
-    console.log("selectedAuthType",type)
     this.selectedAuthType = type;
     this.selectedAuthType$.next(this.selectedAuthType);
   }
@@ -318,7 +315,7 @@ export class OverviewService implements OnDestroy {
       {
         panelClass: 'app-dialog',
         width: '600px',
-        data: {groupId, allUsers: this.allUsers}
+        data: {groupId: groupId, allUsers: this.allUsers}
       });
     dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
       if (flag) {
@@ -327,12 +324,12 @@ export class OverviewService implements OnDestroy {
     });
   }
 
-  openEditUserDialog(user: User, group: userGroup): void {
+  openEditUserDialog(user: User, groupId: string): void {
     const dialogRef = this.dialog.open(EditUserComponent,
       {
         panelClass: 'app-dialog',
         width: '600px',
-        data: { user, group }
+        data: { user, groupId }
       });
     dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
       if (flag) {
@@ -522,7 +519,6 @@ export class OverviewService implements OnDestroy {
     this.roleService.assignAuthToRole(json).subscribe(res => {
       this.store.dispatch(new userRoleActions.getUserRole(this.V_SRC_CD_DATA));
     }, err => {
-      console.log(err);
     });
   }
 
@@ -549,7 +545,6 @@ export class OverviewService implements OnDestroy {
         this.roleService.assignAuthToRole(json).subscribe(res => {
           this.store.dispatch(new userRoleActions.getUserRole(this.V_SRC_CD_DATA));
         }, err => {
-          console.log(err);
         });
       }
     });

@@ -6,7 +6,7 @@ import { ProcessDesignComponent } from './process-design.component';
 import { HeaderModule } from '../../header/header.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { SharedModule } from 'src/app/shared/shared.module';
+import { SharedModule } from '../../../shared/shared.module';
 import { SchedularComponent } from './schedular/schedular.component';
 
 @NgModule({

@@ -29,7 +29,6 @@ export class getUserGroup implements Action {
 export class getUserGroupSuccess implements Action {
   readonly type = GET_USER_GROUP_SUCCESS;
   constructor(public payload: userGroup[]) {
-    // console.log("userGroup",payload);
   }
 }
 
@@ -37,7 +36,6 @@ export class getUserGroupFail implements Action {
   readonly type = GET_USER_GROUP_FAIL;
 
   constructor(public payload: string) {
-    console.log('err', payload);
   }
 }
 
@@ -45,14 +43,12 @@ export class addUserGroup implements Action {
   readonly type = ADD_USER_GROUP;
 
   constructor(public payload: any) {
-    //console.log("addgroup", payload)
   }
 }
 
 export class addUserGroupSuccess implements Action {
   readonly type = ADD_USER_GROUP_SUCCESS;
   constructor(public payload: any) {
-    //console.log("addgroup success",payload[0]);
   }
 }
 
@@ -60,7 +56,6 @@ export class addUserGroupFail implements Action {
   readonly type = ADD_USER_GROUP_FAIL;
 
   constructor(public payload: string) {
-    console.log('err', payload);
   }
 }
 
@@ -68,14 +63,12 @@ export class UpdateUserGroup implements Action {
   readonly type = UPDATE_USER_GROUP;
 
   constructor(public payload: any) {
-    //console.log("userGroup",payload);
   }
 }
 
 export class UpdateUserGroupSuccess implements Action {
   readonly type = UPDATE_USER_GROUP_SUCCESS;
   constructor(public payload: any) {
-    //console.log("userGroup update",payload);
   }
 }
 
@@ -83,7 +76,6 @@ export class UpdateUserGroupFail implements Action {
   readonly type = UPDATE_USER_GROUP_FAIL;
 
   constructor(public payload: string) {
-    console.log('err', payload);
   }
 }
 
@@ -104,7 +96,6 @@ export class DeleteUserGroupFail implements Action {
   readonly type = DELETE_USER_GROUP_FAIL;
 
   constructor(public payload: string) {
-    console.log('err', payload);
   }
 }
 
@@ -112,7 +103,7 @@ export class SelectUserGroupRelation implements Action {
   readonly type = SELECT_USER_GROUP_RELATION;
 
   constructor(public payload: any) {
-    //console.log('relation', payload);
+
   }
 }
 
@@ -120,7 +111,7 @@ export class RemoveSelectedUserGroupRelation implements Action {
   readonly type = REMOVE_SELECTED_USER_GROUP_RELATION;
 
   constructor(public payload: any) {
-    //console.log('remove relation', payload);
+
   }
 }
 

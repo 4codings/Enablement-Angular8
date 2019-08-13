@@ -114,9 +114,7 @@
           <div fxFlex="100" fxLayout="column">
             <div fxFlex="100" id="canvas" [ngClass]="opened?'stage-show':'stage-hide'">
             </div>
-            <!-- <div fxFlex="100" id="viewer" [ngClass]="opened?'stage-show':'stage-hide'">
-            </div> -->
-            <div *ngIf="!isMonitor" fxFlex="100">
+            <div fxFlex="100">
               <div class="dynamicFormContent">
                 <!-- <h3 style="text-align: center;" *ngIf="resFormData!='' &&  resFormData!=undefined">
                   {{Label['Parameters']}}</h3> -->
@@ -326,7 +324,7 @@
                   <mat-form-field *ngIf="show_filter_input">
                     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
                   </mat-form-field>
-                  <img src="./assets/img/progress.gif" style="height:20px;width:20px;" *ngIf="progressImg" alt="" />
+                  <img src="/assets/img/progress.gif" style="height:20px;width:20px;" *ngIf="progressImg" alt="" />
                   <mat-table #table [dataSource]="dataSource" MatSort style="width: 100%">
 
                     <!-- Checkbox Column -->
@@ -345,6 +343,12 @@
                         <!-- <mat-checkbox [class]="checkbox_color_value"
                       (click)="$event.stopPropagation();Check_process_id(dataSource.job_name)"></mat-checkbox> -->
                       </mat-cell>
+                    </ng-container>
+
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="name">
+                      <mat-header-cell *matHeaderCellDef style="color: white"> Services </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
                     </ng-container>
 
                     <!-- Name Column -->
@@ -378,7 +382,7 @@
                   </mat-table>
                 </div>
                 <div *ngIf="newScheduleView">
-                  <app-schedular [parentapp]="ApplicationCD" [parentpro]="ProcessCD" [changing]="changingValue">
+                  <app-schedular [parentapp]="selectedplat" [parentpro]="selectedplat1" [changing]="changingValue">
                   </app-schedular>
                   <hr />
                 </div>
@@ -389,12 +393,12 @@
                 <div class="col-md-5">
                   <br />
                   <!-- <button mat-raised-button color="primary" *ngIf="Save_btn" [disabled]="save_shedule_btn" (click)="repeatURL()">Save the Schedule</button> -->
-                  <button mat-raised-button color="primary" (click)="onPause()" *ngIf="Pause_btn">Pause
-                  </button>
-                  <button mat-raised-button color="primary" (click)="onResume()" *ngIf="Resume_btn">Resume
-                  </button>
-                  <button mat-raised-button color="primary" (click)="onKill()" *ngIf="Kill_btn">Kill
-                  </button>
+                  <button mat-raised-button color="primary" (click)="onPause()" *ngIf="Pause_btn">Pause Selected
+                    Schedules</button>
+                  <button mat-raised-button color="primary" (click)="onResume()" *ngIf="Resume_btn">Resume Selected
+                    Schedules</button>
+                  <button mat-raised-button color="primary" (click)="onKill()" *ngIf="Kill_btn">Kill Selected
+                    Schedules</button>
                   <br />
                 </div>
               </div>
@@ -402,12 +406,12 @@
             <div fxFlex="100">
               <canvas id="myGanttchart" *ngIf="gantt" fxFlex="100"></canvas>
             </div>
-            <!-- <div fxFlex="100">
+            <div fxFlex="100">
               <canvas id="myBarchart" *ngIf="bar" fxFlex="100"></canvas>
             </div>
             <div fxFlex="100">
               <canvas id="myPie" *ngIf="pie" fxFlex="100"></canvas>
-            </div> -->
+            </div>
           </div>
           <div fxFlex="20px" class="toggle">
             <a *ngIf="showRightIcon" href="javascript:void(0)"
@@ -473,8 +477,7 @@
               <label class="m-t-10">{{Label['EXECUTABLE_TYPES']}}</label>
               <select [(ngModel)]="selectedExecutableType" (click)="getAllExecutableTypes()"
                 (change)="updateselectedExecutableType($event.target.value)">
-                <option *ngIf="!executableTypesData.length" [value]="selectedExecutableType">{{selectedExecutableType}}
-                </option>
+                <option *ngIf="!executableTypesData.length" [value]="selectedExecutableType">{{selectedExecutableType}}</option>
                 <option *ngFor="let exeType of executableTypesData " [value]="exeType">
                   {{ exeType}}
                 </option>
@@ -483,8 +486,7 @@
                 <mat-divider></mat-divider>
               </div>
               <label>{{Label['EXECUTABLES']}}</label>
-              <select [(ngModel)]="selectedExecutable" (click)="getExecutablesForSelctedExecutableType()"
-                (change)="updateselectedExecutable($event.target.value)">
+              <select [(ngModel)]="selectedExecutable" (click)="getExecutablesForSelctedExecutableType()" (change)="updateselectedExecutable($event.target.value)">
                 <option value="">{{Label['PLEASE_SELECT']}}</option>
                 <option *ngFor="let executable of executablesData " [value]="executable">
                   {{ executable}}

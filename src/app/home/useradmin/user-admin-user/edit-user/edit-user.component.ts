@@ -3,7 +3,7 @@ import {select, Store} from '@ngrx/store';
 import {AppState} from '../../../../app.state';
 import {UseradminService} from '../../../../services/useradmin.service2';
 import {Actions, ofType} from '@ngrx/effects';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {User} from '../../../../store/user-admin/user/user.model';
 import {take} from 'rxjs/operators';
 import {AddUser, UpdateUser} from '../../../../store/user-admin/user/user.action';
@@ -19,9 +19,9 @@ import * as userActions from '../../../../store/user-admin/user/user.action';
 export class EditUserComponent implements OnInit {
 
   user: User;
-  group: string;
+  groupId: string;
   actionSubscription: Subscription;
-  @ViewChild(UserFormComponent) userForm: UserFormComponent;
+  @ViewChild(UserFormComponent, { static: true }) userForm: UserFormComponent;
 
   constructor(private store: Store<AppState>,
               private userAdminService: UseradminService,
@@ -29,7 +29,7 @@ export class EditUserComponent implements OnInit {
               private dialogRef: MatDialogRef<EditUserComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
     this.user = data.user;
-    this.group = data.group;
+    this.groupId = data.groupId;
   }
 
   ngOnInit() {

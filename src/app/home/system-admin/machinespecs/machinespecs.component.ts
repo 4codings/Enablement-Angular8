@@ -5,20 +5,18 @@ import { MatCardModule } from '@angular/material/card';
 import { DataSource } from '@angular/cdk/table';
 import { Observable } from 'rxjs';
 import { CdkTableModule } from '@angular/cdk/table';
-import { forEach } from '@angular/router/src/utils/collection';
-import {
-  MatPaginator, MatSort, MatTable, MatTableModule, MatTabHeader,
-  MatHeaderRow, MatHeaderCell, MatHeaderCellDef, MatHeaderRowDef,
-  MatSortHeader, MatRow, MatRowDef, MatCell, MatCellDef
-} from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort, MatSortHeader } from '@angular/material/sort';
+import { MatTable, MatTableModule, MatHeaderRow, MatHeaderCell, MatHeaderCellDef, MatHeaderRowDef, MatRow, MatRowDef, MatCell, MatCellDef } from '@angular/material/table';
+import { MatTabHeader } from '@angular/material/tabs';
 import { HostListener } from "@angular/core";
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource } from '@angular/material/table';
 
 import { SelectionModel } from '@angular/cdk/collections';
-import { StorageSessionService } from 'src/app/services/storage-session.service';
-import { ConfigServiceService } from 'src/app/services/config-service.service';
-import { UseradminService } from 'src/app/services/useradmin.service2';
-import { Globals } from 'src/app/services/globals';
+import { StorageSessionService } from '../../../services/storage-session.service';
+import { ConfigServiceService } from '../../../services/config-service.service';
+import { UseradminService } from '../../../services/useradmin.service2';
+import { Globals } from '../../../services/globals';
 
 @Component({
   selector: 'app-machine',
@@ -75,7 +73,7 @@ export class MachinespecsComponent implements OnInit {
   // EFF_STRT_DT_TM = "";
   // MODESTATUS = "";
   // STATE_FLG = "";
-  
+
   P = ["RM_NMBR", "RCK_NMBR", "NTWRK_PRT", "WDTH", "WGHT", "VLTG", "AMPR", "PWR", "RAM", "PRCSSR", "PRCSSR_TYP", "LNGTH", "HGHT", "PRCSSR_SPEED", "MMRY_TYP", "NTWRK_STRGE", "BTTRY_BCK_UP", "STREET_NMBR", "STREET_NM1", "STREET_NM2", "CITY", "STATE", "COUNTRY", "ZIP", "PLATFORM_CD", "RESULT"];
   onpselect: Function;
   selectedplftyp: Number;
@@ -136,7 +134,7 @@ export class MachinespecsComponent implements OnInit {
       this.Label = data2.json();
     })
     this.MachineCode();
-    
+
   }
 
 }

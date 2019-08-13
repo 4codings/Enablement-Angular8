@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { UserService } from './core/user.service';
 import { OptionalValuesService } from './services/optional-values.service';
 import { ApiService } from './service/api/api.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { KeepAliveDialog } from './home/home.component';
 
 @Component({

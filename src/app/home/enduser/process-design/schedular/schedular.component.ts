@@ -3,30 +3,24 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router'
 import { FormControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { StorageSessionService } from 'src/app/services/storage-session.service';
-import { Globals } from 'src/app/services/globals';
+import { StorageSessionService } from '../../../../services/storage-session.service';
+import { Globals } from '../../../../services/globals';
 import { Subject } from 'rxjs';
-import { ApiService } from 'src/app/service/api/api.service';
 
 @Component({
   selector: 'app-schedular',
   templateUrl: './schedular.component.html',
   styleUrls: ['./schedular.component.scss'],
-  inputs: ['parentapp', 'parentpro', 'changing']
 })
 export class SchedularComponent implements OnInit {
-  parentapp: string;
-  parentpro: string;
-  changing: Subject<boolean>;
+  @Input() parentapp: string;
+  @Input() parentpro: string;
+  @Input() changing: Subject<boolean>;
   public addClass: boolean = false;
   constructor(private store: StorageSessionService,
     private route: Router,
-    private http: HttpClient, private globals: Globals,
-    private apiService: ApiService
-  ) {
-    console.log('this.parentapp', this.parentapp);
-    console.log('this', this.parentpro);
-  }
+    private http: HttpClient, private globals: Globals
+  ) { }
   toppings = new FormControl();
   domain_name = this.globals.domain_name;
   min: any;
@@ -44,7 +38,7 @@ export class SchedularComponent implements OnInit {
 
   Month_timeth: string;
   numberthDayOfEveryMonth: any;
-  //______________________BLOCK 
+  //______________________BLOCK
   week_block: boolean = true;
   month_block: boolean = false;
   year_block: boolean = false;
@@ -99,11 +93,11 @@ export class SchedularComponent implements OnInit {
   Exe_data = this.store.getSession("Exe_data");
   V_SRC_CD: string = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
   V_USR_NM: string = JSON.parse(sessionStorage.getItem('u')).USR_NM;
-  private Url = this.apiService.endPoints.securedScheduleProcess;
+  private Url = "https://" + this.domain_name + "/rest/Process/Schedule"
   cronEditForRepeat() {
 
     this.Execute_Later = true;
-    this.tp = this.store.getCookies("ts")
+    this.tp = this.store.getCookies("tp")
 
     var date = new Date(this.start_date);
     var sec: any = date.getSeconds();
@@ -128,7 +122,7 @@ export class SchedularComponent implements OnInit {
         year = "*";
         day = "?";
         break;
-      //----------------------------------WEEK                       
+      //----------------------------------WEEK
       case "Week":
 
         day = this.week_day_selected;
@@ -138,7 +132,7 @@ export class SchedularComponent implements OnInit {
         year = "*";
 
         break;
-      //--------------------------------------MONTH                     
+      //--------------------------------------MONTH
       case "Month":
         if (this.Month_choice == "1") {
           date_of_month = this.numberthDayOfEveryMonth;
@@ -231,9 +225,8 @@ export class SchedularComponent implements OnInit {
 
       "Schedule": "Y",
       "expression": res_cron,
-      "V_APP_CD": this.parentapp,
-      // this.Exe_data['PRC_CD'].toString(),
-      "V_PRCS_CD": this.parentpro,
+      "V_APP_CD": this.Exe_data['APP_CD'].toString(),
+      "V_PRCS_CD": this.Exe_data['PRC_CD'].toString(),
       "V_SRVC_CD": "START",
       "V_SRC_CD": this.V_SRC_CD.toString(),
       "V_USR_NM": this.V_USR_NM.toString(),
@@ -242,8 +235,6 @@ export class SchedularComponent implements OnInit {
       "TimeZone": Intermediatetimezone
     }
     Object.assign(body, this.tp);
-    console.log('this.tp', this.tp);
-    console.log('body', body);
     this.http.post(this.Url, body).subscribe(
       res => {
         this.Execute_Later = false;

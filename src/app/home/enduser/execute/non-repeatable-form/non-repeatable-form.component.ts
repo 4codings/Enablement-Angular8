@@ -7,18 +7,18 @@ import { HttpClient } from '@angular/common/http'
 import { Router, NavigationEnd, ParamMap, ActivatedRouteSnapshot, ActivatedRoute } from '@angular/router';
 import * as dateFormat from 'dateformat';
 import { HostListener, ChangeDetectorRef, ViewChild } from "@angular/core";
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource } from '@angular/material/table';
 import { getISODayOfWeek } from 'ngx-bootstrap/chronos/units/day-of-week';
 import { encode } from 'punycode';
 import { CommonUtils } from '../../../../common/utils';
 import { Http } from '@angular/http';
-import { HomeComponent } from 'src/app/home/home.component';
-import { Globals2 } from 'src/app/service/globals';
-import { Globals } from 'src/app/services/globals';
-import { StorageSessionService } from 'src/app/services/storage-session.service';
-import { ApiService } from 'src/app/service/api/api.service';
-import { ConfigServiceService } from 'src/app/services/config-service.service';
-import { EndUserService } from 'src/app/services/EndUser-service';
+import { HomeComponent } from '../../../../home/home.component';
+import { Globals2 } from '../../../../service/globals';
+import { Globals } from '../../../../services/globals';
+import { StorageSessionService } from '../../../../services/storage-session.service';
+import { ApiService } from '../../../../service/api/api.service';
+import { ConfigServiceService } from '../../../../services/config-service.service';
+import { EndUserService } from '../../../../services/EndUser-service';
 import { filter } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 
@@ -44,7 +44,7 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
   screenHeight: number;
   screenWidth: number;
   desktopView: boolean = true;
-  @ViewChild('nrpForm') nrpForm: any;
+  @ViewChild('nrpForm', { static: false }) nrpForm: any;
   navigationSubscription;
   private apiUrlGetSecure = this.apiService.endPoints.secure;
 

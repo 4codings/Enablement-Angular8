@@ -3,7 +3,7 @@ import { userRole } from '../../../../store/user-admin/user-role/userrole.model'
 import { userGroup } from '../../../../store/user-admin/user-group/usergroup.model';
 import { Subject } from 'rxjs';
 import { SelectionModel } from '@angular/cdk/collections';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { UseradminService } from '../../../../services/useradmin.service2';
 import { groupTypeConstant } from '../../useradmin.constants';
 
@@ -70,7 +70,6 @@ export class AssignGroupModalComponent implements OnInit {
         this.dialogRef.close(true);
       }
     }, error => {
-      console.log('http error => ', error);
     });
   }
 

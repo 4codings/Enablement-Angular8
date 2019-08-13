@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DeveloperComponent } from './developer.component';
 import { ParametersComponent } from './parameters/parameters.component';
 import { DeveloperRoutingModule } from './developer-routing.module';
-import { SharedModule } from 'src/app/shared/shared.module';
+import { SharedModule } from '../../shared/shared.module';
 import { HeaderModule } from '../header/header.module';
 import { FormsModule } from '@angular/forms';
 
@@ -19,6 +19,6 @@ import { FormsModule } from '@angular/forms';
 })
 export class DeveloperModule {
   constructor(){
-    console.log("DeveloperModule => ");
+
   }
 }

@@ -3,17 +3,16 @@ import { Http, Response, Headers } from '@angular/http';
 import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
 import { CdkTableModule } from '@angular/cdk/table';
-import { MatTableDataSource } from '@angular/material';
-import {
-  MatPaginator, MatSort, MatTable, MatTableModule, MatTabHeader,
-  MatHeaderRow, MatHeaderCell, MatHeaderCellDef, MatHeaderRowDef,
-  MatSortHeader, MatRow, MatRowDef, MatCell, MatCellDef
-} from '@angular/material';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort, MatSortHeader } from '@angular/material/sort';
+import { MatTable, MatTableModule, MatHeaderRow, MatHeaderCell, MatHeaderCellDef, MatHeaderRowDef, MatRow, MatRowDef, MatCell, MatCellDef } from '@angular/material/table';
+import { MatTabHeader } from '@angular/material/tabs';
 import { HostListener } from "@angular/core";
-import { Globals } from 'src/app/services/globals';
-import { UseradminService } from 'src/app/services/useradmin.service2';
-import { StorageSessionService } from 'src/app/services/storage-session.service';
-import { ConfigServiceService } from 'src/app/services/config-service.service';
+import { Globals } from '../../../services/globals';
+import { UseradminService } from '../../../services/useradmin.service2';
+import { StorageSessionService } from '../../../services/storage-session.service';
+import { ConfigServiceService } from '../../../services/config-service.service';
 
 
 @Component({
@@ -44,7 +43,7 @@ export class DeployStatusComponent implements OnInit {
     private https: Http,private globals:Globals,
     private data2:UseradminService,
     private StorageSessionService: StorageSessionService,
-    private data: ConfigServiceService ){ 
+    private data: ConfigServiceService ){
       this.onResize();
     }
 
@@ -71,7 +70,7 @@ export class DeployStatusComponent implements OnInit {
   SL_PRCS_ID="";
   SL_SRVC_ID="";
   SL_SRC_ID="";
-   
+
   Label:any[]=[];
 
 
@@ -99,7 +98,7 @@ export class DeployStatusComponent implements OnInit {
       this.PRCS_DATA=res.json();
        this.PRCS_CD=this.PRCS_DATA['PRCS_CD'];
       //  this.getServiceCode();
-      
+
     });
   }
 
@@ -116,7 +115,7 @@ export class DeployStatusComponent implements OnInit {
       this.SRVC_DATA = res.json();
       this.SRVC_CD = this.SRVC_DATA['SRVC_CD'];
       (this.SRVC_CD);
-      
+
       this.getIdCode();
     });
   }
@@ -129,8 +128,8 @@ getIdCode(){
       this.data.getID(this.SL_APP_CD, this.SL_PRCS_CD, this.SL_SRVC_CD).subscribe(res => {
         (res.json());
 
-        
-        
+
+
         this.ID_DATA = res.json();
         this.APP_ID = this.ID_DATA['V_APP_ID'];
         // this.SL_APP_ID = this.APP_ID[0];
@@ -163,7 +162,7 @@ getIdCode(){
     // (this.SL_APP_CD);
     // (this.SL_PRCS_CD);
 
-  
+
     // this.data.getDeployStatus(this.SL_SRC_ID,this.SL_APP_ID, this.SL_PRCS_ID, this.SRVC_ID).subscribe(res => {
     //   (res.json());
 
@@ -171,7 +170,7 @@ getIdCode(){
 
     // });
 
-   
+
     //for (let i = 0; i < this.SRVC_ID.length; i++) {
       //this.SL_SRVC_ID = this.SRVC_ID[i];
 
@@ -200,7 +199,7 @@ getIdCode(){
             Status: this.deployData['MODESTATUS'],
             State: this.deployData['STATE_FLG'],
             Cxn_Type: this.deployData['CXN_TYP']
-            
+
 
 
           }
@@ -209,14 +208,14 @@ getIdCode(){
 
         // this.c++;
         this.dataSource.data = this.deployTableDT;
-        
+
 
       });
-      
-      
-      
+
+
+
     //}
-           
+
 
     ("DEPLOY TABLE HERE!!!");
     (this.deployTableDT);
@@ -225,20 +224,20 @@ getIdCode(){
     // for (let index = 0; index < this.deployTableDT.length; index++) {
     //   (this.deployTableDT[index]);
     //   ("Hellloooo");
-      
-    // }
-    
-    
 
-    
+    // }
+
+
+
+
   }
 
   ngOnInit() {
     this.getApplicationCode();
-    this.data2.getJSON().subscribe(data2 => {  
-              
-            this.Label=data2.json();      
-            
+    this.data2.getJSON().subscribe(data2 => {
+
+            this.Label=data2.json();
+
              })
     // this.getServiceCode();
 

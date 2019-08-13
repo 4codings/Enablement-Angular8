@@ -102,25 +102,24 @@
 <div fxLayoutAlign="center" fxLayout="row" class="my-2">
 
   <div *ngIf="week_block" fxLayoutAlign="center">
-    <mat-form-field style="width:123px;">
-      <mat-select [formControl]="toppings" multiple placeholder="Select Day" [(ngModel)]="week_day_selected"
-        style="text-align:center;">
-        <mat-option style="text-align:center;" value="Sunday">Sunday</mat-option>
-        <mat-option style="text-align:center;" value="Monday">Monday</mat-option>
-        <mat-option style="text-align:center;" value="Tuesday">Tuesday</mat-option>
-        <mat-option style="text-align:center;" value="Wednessday">Wednessday</mat-option>
-        <mat-option style="text-align:center;" value="Thursday">Thursday</mat-option>
-        <mat-option style="text-align:center;" value="Friday">Friday</mat-option>
-        <mat-option style="text-align:center;" value="Saturday">Saturday</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <!-- <select [formControl]="toppings" [(ngModel)]="week_day_selected" style="text-align:center;" style="width:123px;">
+    <!-- <mat-form-field style="width:123px;">
+                <mat-select [formControl]="toppings" multiple placeholder="Select Day" [(ngModel)]="week_day_selected" style="text-align:center;">
+                    <mat-option style="text-align:center;"  value="Sunday">Sunday</mat-option>
+                    <mat-option style="text-align:center;"  value="Monday">Monday</mat-option>
+                    <mat-option style="text-align:center;"  value="Tuesday">Tuesday</mat-option>
+                    <mat-option style="text-align:center;"  value="Wednessday">Wednessday</mat-option>
+                    <mat-option style="text-align:center;"  value="Thursday">Thursday</mat-option>
+                    <mat-option style="text-align:center;"  value="Friday">Friday</mat-option>
+                    <mat-option style="text-align:center;"  value="Saturday">Saturday</mat-option>
+                </mat-select>
+            </mat-form-field>-->
+    <select [formControl]="toppings" [(ngModel)]="week_day_selected" style="text-align:center;" style="width:123px;">
       <option value="">Select</option>
       <option value="1">First</option>
       <option value="2">Second</option>
       <option value="3">Third</option>
       <option value="4">Fourth</option>
-    </select> -->
+    </select>
   </div>
 
 </div>

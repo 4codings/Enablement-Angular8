@@ -11,23 +11,23 @@ const routes: Routes = [
       {path:'', redirectTo:'user', pathMatch: 'full'},
       {
         path: 'user',
-        loadChildren: './user/user.module#UserModule'
+        loadChildren: () => import('./user/user.module').then(m => m.UserModule)
       },
       {
         path: 'Developer',
-        loadChildren: './developer/developer.module#DeveloperModule'
+        loadChildren: () => import('./developer/developer.module').then(m => m.DeveloperModule)
       },
       {
         path: 'User_Admin',
-        loadChildren: './useradmin/useradmin.module#UseradminModule'
+        loadChildren: () => import('./useradmin/useradmin.module').then(m => m.UseradminModule)
       },
       {
         path: 'End_User',
-        loadChildren: './enduser/enduser.module#EnduserModule'
+        loadChildren: () => import('./enduser/enduser.module').then(m => m.EnduserModule)
       },
       {
         path: 'System_Admin',
-        loadChildren: './system-admin/system-admin.module#SystemAdminModule'
+        loadChildren: () => import('./system-admin/system-admin.module').then(m => m.SystemAdminModule)
       }
     ],
     canActivate: [IsAuthenticatedGuard]

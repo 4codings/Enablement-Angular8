@@ -83,7 +83,6 @@ export class SelectUserGroupRelation implements Action {
   readonly type = SELECT_USER_GROUP_RELATION;
 
   constructor(public payload: any) {
-    //console.log('relation', payload);
   }
 }
 
@@ -91,7 +90,6 @@ export class RemoveSelectedUserGroupRelation implements Action {
   readonly type = REMOVE_SELECTED_USER_GROUP_RELATION;
 
   constructor(public payload: any) {
-    //console.log('remove relation', payload);
   }
 }
 

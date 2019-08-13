@@ -1,5 +1,5 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { userRole } from '../../../../store/user-admin/user-role/userrole.model';
 import { Subject } from 'rxjs';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -69,7 +69,6 @@ export class AssignRoleModalComponent implements OnInit, OnDestroy {
         this.dialogRef.close(true);
       }
     }, error => {
-      console.log('http error => ', error);
     });
   }
 

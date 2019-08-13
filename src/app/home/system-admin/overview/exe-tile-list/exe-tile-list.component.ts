@@ -1,11 +1,11 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, EventEmitter, Output } from '@angular/core';
 import { CdkDragDrop, copyArrayItem, moveItemInArray } from '@angular/cdk/drag-drop';
 import { SystemAdminOverviewService } from '../system-admin-overview.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { AddExeDialogComponent } from '../dialogs/add-exe-dialog/add-exe-dialog.component';
 import { Subscription } from 'rxjs';
 import { EditExeTypeDialogComponent } from '../dialogs/edit-exe-type-dialog/edit-exe-type-dialog.component';
-import { ConfirmationAlertComponent } from 'src/app/shared/components/confirmation-alert/confirmation-alert.component';
+import { ConfirmationAlertComponent } from '../../../../shared/components/confirmation-alert/confirmation-alert.component';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -27,7 +27,7 @@ export class ExeTileListComponent implements OnInit {
   @Output() selectedExeTile = new EventEmitter();
   @Output() deleteExeEvent = new EventEmitter();
   public selectedMachine;
-  @ViewChild('contextMenu') set contextMenu(value: ElementRef) {
+  @ViewChild('contextMenu', { static: false }) set contextMenu(value: ElementRef) {
     if (value) {
       let menu: HTMLDivElement = value.nativeElement;
       menu.addEventListener('mousedown', ev => ev.stopImmediatePropagation());
@@ -36,9 +36,7 @@ export class ExeTileListComponent implements OnInit {
   constructor(private systemOverview:SystemAdminOverviewService, public dialog: MatDialog, private http:HttpClient) { }
 
   ngOnInit() {
-    //console.log(this.exes);
     this.subscription = this.systemOverview.selectedCxn$.subscribe(data => {
-      //console.log(data);
       if(data) {
         this.selectedTile = null;
         this.selectedCxn = data.V_CXN_TYP;
@@ -61,7 +59,6 @@ export class ExeTileListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       if(result) {
         if(result) {
           this.systemOverview.getExe();
@@ -71,26 +68,19 @@ export class ExeTileListComponent implements OnInit {
   }
 
   exeDropped(event: CdkDragDrop<any[]>) {
-    console.log("event.previousContainer", event.previousContainer);
-    console.log("event.container", event.container);
     if (event.previousContainer === event.container) {
-      console.log("event",event);
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
       copyArrayItem(event.previousContainer.data,
         event.container.data,
         event.previousIndex,
         event.currentIndex);
-        console.log("event.previousContainer.data",event.previousContainer.data);
-        console.log("event.container.data", event.container.data);
-        console.log("event.previousIndex", event.previousIndex);
-        console.log("event.currentIndex", event.currentIndex);
       //this.addAuthEvent.emit(event.item.data);
     }
   }
 
   onExeTileClick(exe) {
-    
+
     if(this.selectedTile === exe) {
       this.selectedTile = null;
       this.selectedExeTile.emit(this.selectedTile);
@@ -136,7 +126,6 @@ export class ExeTileListComponent implements OnInit {
   }
 
   onBtnEditExeClick(exeData) {
-    //console.log(exeData);
     const dialogRef = this.dialog.open(EditExeTypeDialogComponent, {
       panelClass: 'app-dialog',
       width: '600px',
@@ -144,7 +133,6 @@ export class ExeTileListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       if(result) {
         this.systemOverview.getExe();
       }
@@ -152,7 +140,6 @@ export class ExeTileListComponent implements OnInit {
   }
 
   onBtnDeleteExeClick(exe) {
-    //console.log(exe);
     const dialogRef = this.dialog.open(ConfirmationAlertComponent, {
       panelClass: 'app-dialog',
       width: '600px',
@@ -164,11 +151,9 @@ export class ExeTileListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
         this.http.get('https://enablement.us/Enablement/rest/v1/securedJSON?V_EXE_TYP='+ exe.EXE_TYP + '&V_EXE_CD='+ exe.exeData.V_EXE_CD + '&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=Exe&Verb=DELETE').subscribe(res => {
-          console.log("res",res);
           this.systemOverview.getExe();
         }, err => {
-          console.log("err", err)
-        }); 
+        });
       }
     });
   }

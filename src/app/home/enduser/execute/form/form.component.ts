@@ -3,12 +3,12 @@ import { HttpClient } from '@angular/common/http'
 import { Router } from '@angular/router';
 import { CommonUtils } from '../../../../common/utils';
 import { Http, Headers, RequestOptions, RequestMethod } from '@angular/http';
-import { Globals } from 'src/app/services/globals';
-import { ConfigServiceService } from 'src/app/services/config-service.service';
-import { ApiService } from 'src/app/service/api/api.service';
-import { HomeComponent } from 'src/app/home/home.component';
-import { StorageSessionService } from 'src/app/services/storage-session.service';
-import { Globals2 } from 'src/app/service/globals';
+import { Globals } from '../../../../services/globals';
+import { ConfigServiceService } from '../../../../services/config-service.service';
+import { ApiService } from '../../../../service/api/api.service';
+import { HomeComponent } from '../../../../home/home.component';
+import { StorageSessionService } from '../../../../services/storage-session.service';
+import { Globals2 } from '../../../../service/globals';
 import { ToastrService } from 'ngx-toastr';
 import { Viewer } from '../bpmn-viewer';
 export class ReportData {
@@ -134,7 +134,6 @@ export class FormComponent implements OnInit {
     const eventBus = this.viewer.get('eventBus');
     if (eventBus) {
       eventBus.on('element.click', ($event) => {
-        console.log('element.click', $event)
       });
     }
 

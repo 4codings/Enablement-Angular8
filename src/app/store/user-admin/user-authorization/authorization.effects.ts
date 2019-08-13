@@ -5,7 +5,7 @@ import { Action } from '@ngrx/store';
 import * as authActions from './authorization.actions';
 import { mergeMap, map, catchError } from 'rxjs/operators';
 import { AuthorizationData } from './authorization.model';
-import { UserAdminService } from 'src/app/services/user-admin.service';
+import { UserAdminService } from '../../../services/user-admin.service';
 import {HttpClient} from '@angular/common/http';
 
 @Injectable()

@@ -1,15 +1,15 @@
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import {Globals} from 'src/app/services/globals';
+import {Globals} from '../../../services/globals';
 import { Http,Response,Headers } from '@angular/http';
 import { HttpClient,HttpEvent,HttpEventType } from '@angular/common/http';
 
 // import { MatTableDataSource } from '@angular/material';
 import { HostListener } from "@angular/core";
 import { HomeComponent } from '../../home.component';
-import { UserAdminService } from 'src/app/services/user-admin.service';
-import { NoAuthDataService } from 'src/app/services/no-auth-data.service';
-import { StorageSessionService } from 'src/app/services/storage-session.service';
+import { UserAdminService } from '../../../services/user-admin.service';
+import { NoAuthDataService } from '../../../services/no-auth-data.service';
+import { StorageSessionService } from '../../../services/storage-session.service';
 
 @Component({
   selector: 'app-exception',
@@ -22,7 +22,7 @@ export class ExceptionComponent implements OnInit {
   // rowData={};
   // displayedColumns = ['Name', 'Values'];
   // dataSource = new MatTableDataSource();
-  private selectedLink:string="Replay";     
+  private selectedLink:string="Replay";
   V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
   V_USR_NM:string=JSON.parse(sessionStorage.getItem('u')).USR_NM;
   V_BASE_ID:string[]=null;
@@ -43,7 +43,7 @@ export class ExceptionComponent implements OnInit {
         this.desktopView=true;
       }
   }
- 
+
   constructor(private http:HttpClient,private router:Router,
     private data:UserAdminService,private globals:Globals,
     private StorageSessionService:StorageSessionService,
@@ -51,7 +51,7 @@ export class ExceptionComponent implements OnInit {
       this.onResize();
       this.onpselect = function(index){
         this.selectedplat = index;
-        this.app.selected_SERVICE = this.srvcd[index]; 
+        this.app.selected_SERVICE = this.srvcd[index];
         this.selectedot=null;
         this.selectedat=null;
         }
@@ -96,7 +96,7 @@ export class ExceptionComponent implements OnInit {
  txn_id:string;
   //Label:any[]=[];
    Label: string[]=[];
-  
+
 //for getting list of services
 
 functionsrvcGetData(){
@@ -121,7 +121,7 @@ functionsrvcGetData(){
 //=>for getting acquired transaction ids
 
 
-functionATIDGetData(exc_sl){  
+functionATIDGetData(exc_sl){
 
   ("GET..............")
   if(exc_sl=="")
@@ -129,7 +129,7 @@ functionATIDGetData(exc_sl){
     this.grp=null;
     this.otxnid=null;
     this.atxnid=null;
-    
+
     this.agency_sl="";
       }
       this.txn_id="";
@@ -150,7 +150,7 @@ functionOTIDGetData(exc_sl){
       this.grp=null;
       this.otxnid=null;
       this.atxnid=null;
-      
+
       this.agency_sl="";
         }
   this.http.get<data>(this.apiUrlGet+"V_SRVC_CD="+exc_sl+"&V_USR_NM="+this.V_USR_NM+"&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=FailedTransaction&Verb=GET").subscribe(
@@ -228,7 +228,7 @@ functionownedservicedetails(txn_id){
     //       }
     //       this.dataSource.data=this.innerTableDT;
     //          (this.array2);
-             
+
     // }
     });
 }
@@ -248,9 +248,9 @@ getDropDownListValue(e){
                        this.app.loading = false;
                         }
                     );
-                        
+
         }
-    
+
 
   functiontoAcquire(){
 
@@ -292,18 +292,18 @@ functiontoRelease(){
     res=>{
       (res);
     }
-  ); 
+  );
 }
 agcygrpbox:boolean=false;
   detailshow:boolean=false;
   acquirebtnshow:boolean=false;
   operationshow:boolean=false;
   functiondetailshow()
-    {     
-      this.detailshow=true;    
+    {
+      this.detailshow=true;
     }
     functionoperations()
-    {     
+    {
       this.operationshow=true;
       this.acquirebtnshow=false;
     }
@@ -319,7 +319,7 @@ agcygrpbox:boolean=false;
       this.agcygrpbox=false;
       this.operationshow=false;
       this.parashow=false;
-    
+
     }
     showagcygrpbox()
     {
@@ -334,35 +334,34 @@ agcygrpbox:boolean=false;
   ngOnInit() {
     ("Data fetch..........")
     this.functionsrvcGetData();
-    // this.data.getJSON().subscribe(data => {      
-    //    (data.json());       
-    //    this.Label=data.json();       
-    //    (this.Label);   
+    // this.data.getJSON().subscribe(data => {
+    //    (data.json());
+    //    this.Label=data.json();
+    //    (this.Label);
     //   })
     this.noAuthData.getJSON().subscribe(data => {
-      //console.log(data);
       this.Label = data;
     });
-    
+
   }
 
-  // setradio(e: string): void{  
-  //  this.selectedLink = e;  
-  // }  
-  
-  // isSelected(name: string): boolean {  
-  //   if (!this.selectedLink) { // if no radio button is selected, always return false so every nothing is shown  
-  //           return false;  
-  // }  
-  
-  //  return (this.selectedLink === name); // if current radio button is selected, return true, else return false  
-  // } 
+  // setradio(e: string): void{
+  //  this.selectedLink = e;
+  // }
+
+  // isSelected(name: string): boolean {
+  //   if (!this.selectedLink) { // if no radio button is selected, always return false so every nothing is shown
+  //           return false;
+  // }
+
+  //  return (this.selectedLink === name); // if current radio button is selected, return true, else return false
+  // }
   // showLogout(){
   //   if(this.isSelected('release') || this.isSelected('ignore'))
   //       return true;
   //   else
   //       return false;
-  // } 
+  // }
 }
 export interface data{
   SRVC_CD:string[];

@@ -7,7 +7,6 @@ export interface userGroup {
     V_USR_GRP_DSC: string;
     V_USR_GRP_ID: string;
     V_USR_ID: Array<any>;
-    V_IS_PRIMARY: ('Y' | 'N')[];
     id: string;
     is_selected: boolean;
     is_selected_role: boolean;

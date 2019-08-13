@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { NoAuthDataService } from 'src/app/services/no-auth-data.service';
+import { NoAuthDataService } from '../../../services/no-auth-data.service';
 import { Store, select } from '@ngrx/store';
-import { AppState } from 'src/app/app.state';
-import { AuthorizationData } from 'src/app/store/user-admin/user-authorization/authorization.model';
+import { AppState } from '../../../app.state';
+import { AuthorizationData } from '../../../store/user-admin/user-authorization/authorization.model';
 import { Observable } from 'rxjs';
 import * as userAuthorizationSelectors from '../../../store/user-admin/user-authorization/authorization.selectors';
 import * as userAuthorizationActions from '../../../store/user-admin/user-authorization/authorization.actions';
-import { userRole } from 'src/app/store/user-admin/user-role/userrole.model';
+import { userRole } from '../../../store/user-admin/user-role/userrole.model';
 import * as userRoleSelectors from '../../../store/user-admin/user-role/userrole.selectors';
 import * as userRoleActions from '../../../store/user-admin/user-role/userrole.action';
 import { HttpClient } from '@angular/common/http';
@@ -51,10 +51,9 @@ export class AuthorizeroleComponent implements OnInit {
       V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
     };
     this.noAuthData.getJSON().subscribe(data => {
-      //console.log(data);
       this.Label = data;
     });
-    
+
     this.store.dispatch(new userAuthorizationActions.RemoveAuthId());
     this.store.dispatch(new userRoleActions.RemoveRoleId());
     this.store.dispatch(new userAuthorizationActions.getAuth(this.V_SRC_CD_DATA));
@@ -81,7 +80,7 @@ export class AuthorizeroleComponent implements OnInit {
       this.authData = auth;
       this.enableSubmitButton();
     });
-  
+
     this.subRole = this.roles$.subscribe(role => {
       this.roleData = role;
       this.enableSubmitButton();
@@ -94,7 +93,7 @@ export class AuthorizeroleComponent implements OnInit {
     this.store.dispatch(new userAuthorizationActions.getAuth(this.V_SRC_CD_DATA));
     this.store.dispatch(new userRoleActions.getUserRole(this.V_SRC_CD_DATA));
   }
-  
+
   selectedRole(role, index) {
     if(this.selectCurrentAuth != undefined) {
       let removeRolerelation = [];
@@ -112,8 +111,8 @@ export class AuthorizeroleComponent implements OnInit {
       let authRelation = [];
       let removeAuthRelation = [];
       this.selectedrole = index;
-      this.USR_ROLE_DSR = role.V_ROLE_DSC; 
-      this. USR_AUTH_DSCR = ''; 
+      this.USR_ROLE_DSR = role.V_ROLE_DSC;
+      this. USR_AUTH_DSCR = '';
 
       this.authData.forEach(auth => {
         if(auth.is_selected_role == true || auth.is_selected == true) {
@@ -121,7 +120,7 @@ export class AuthorizeroleComponent implements OnInit {
         }
       });
       this.store.dispatch(new userAuthorizationActions.RemoveSelectedRoleAuthRelation(removeAuthRelation));
-    
+
       if (role.V_ROLE_ID != null) {
         role.V_AUTH_ID.forEach(AUTH_ID => {
           this.authData.forEach(auth => {
@@ -137,7 +136,7 @@ export class AuthorizeroleComponent implements OnInit {
       let authRelation = [];
       let removeAuthRelation = [];
       this.selectedrole = index;
-      this.USR_ROLE_DSR = role.V_ROLE_DSC; 
+      this.USR_ROLE_DSR = role.V_ROLE_DSC;
 
       this.authData.forEach(auth => {
         if(auth.is_selected_role == true || auth.is_selected == true) {
@@ -145,7 +144,7 @@ export class AuthorizeroleComponent implements OnInit {
         }
       });
       this.store.dispatch(new userAuthorizationActions.RemoveSelectedRoleAuthRelation(removeAuthRelation));
-    
+
       if (role.V_ROLE_ID != null) {
         role.V_AUTH_ID.forEach(AUTH_ID => {
           this.authData.forEach(auth => {
@@ -158,7 +157,7 @@ export class AuthorizeroleComponent implements OnInit {
       }
     }
   }
-  
+
 
  selectedAuth(auth, index) {
     if(this.selectCurrentRole != undefined) {
@@ -177,8 +176,8 @@ export class AuthorizeroleComponent implements OnInit {
       let roleRelation = [];
       let removeRolerelation = [];
       this.selectedauth = index;
-      this.USR_AUTH_DSCR = auth.V_AUTH_DSC; 
-      this.USR_ROLE_DSR = ''; 
+      this.USR_AUTH_DSCR = auth.V_AUTH_DSC;
+      this.USR_ROLE_DSR = '';
 
       this.roleData.forEach(role => {
         if(role.is_selected_auth == true || role.is_selected == true) {
@@ -186,7 +185,7 @@ export class AuthorizeroleComponent implements OnInit {
         }
       });
       this.store.dispatch(new userRoleActions.RemoveSelectedRoleGroupRelation(removeRolerelation));
-      
+
       if (auth.V_ROLE_ID != null) {
         auth.V_ROLE_ID.forEach(ROLE_ID => {
           this.roleData.forEach(role => {
@@ -210,7 +209,7 @@ export class AuthorizeroleComponent implements OnInit {
         }
       });
       this.store.dispatch(new userRoleActions.RemoveSelectedRoleGroupRelation(removeRolerelation));
-      
+
       if (auth.V_ROLE_ID != null) {
         auth.V_ROLE_ID.forEach(ROLE_ID => {
           this.roleData.forEach(role => {
@@ -221,26 +220,24 @@ export class AuthorizeroleComponent implements OnInit {
         });
         this.store.dispatch(new userRoleActions.SelectRoleGroupRelation(roleRelation));
       }
-    }  
+    }
   }
 
   checkboxRoleSelect(event, role) {
-    //console.log(event, user);
     if(this.selectCurrentAuth != undefined) {
       this.store.dispatch(new userRoleActions.CheckedRoleGroup({id:role.id, is_selected:role.is_selected}));
     }
   }
 
   checkboxAuthSelect(event, auth) {
-    //console.log(event, group);
     if(this.selectCurrentRole != undefined) {
       this.store.dispatch(new userAuthorizationActions.CheckedRoleAuth({id:auth.id, is_selected:auth.is_selected}));
     }
   }
 
   enableSubmitButton() {
-    
-    let is_selectedExist=[]; 
+
+    let is_selectedExist=[];
 
     if(this.selectCurrentRole != undefined) {
       this.authData.forEach(data => {
@@ -248,7 +245,7 @@ export class AuthorizeroleComponent implements OnInit {
           is_selectedExist.push(data.is_selected);
         }
       });
-    } 
+    }
     if(this.selectCurrentAuth != undefined) {
       this.roleData.forEach(data => {
         if(data.is_selected == true) {
@@ -265,11 +262,11 @@ export class AuthorizeroleComponent implements OnInit {
   }
 
   submitAssignRole() {
-    
+
     if(this.selectCurrentRole != undefined) {
       let deletedIds = [];
       let addedIds = [];
-    
+
       this.authData.forEach(auth => {
         if(auth.is_selected == false && auth.is_selected_role == true) {
           deletedIds.push(auth.V_ROLE_ID)
@@ -294,19 +291,17 @@ export class AuthorizeroleComponent implements OnInit {
         "REST_Service":["Role_Auth"],
         "Verb":["POST"]
       }
-      //console.log(json);
       this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', json).subscribe(res => {
         this.updateAuthStateAdded(res[0]);
         this.updateAuthStateDeleted(deletedIds)
       }, err => {
-        console.log(err);
       });
     }
 
     if(this.selectCurrentAuth != undefined) {
       let deletedIds = [];
       let addedIds = [];
-    
+
       this.roleData.forEach(role => {
         if(role.is_selected == false && role.is_selected_auth == true) {
           deletedIds.push(role.V_ROLE_ID)
@@ -331,17 +326,15 @@ export class AuthorizeroleComponent implements OnInit {
         "REST_Service":["Role_Auth"],
         "Verb":["POST"]
       }
-      //console.log(json);
-      
+
       this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', json).subscribe(res => {
         this.updateRoleStateAdded(res[0]);
         this.updateRoleStateDeleted(deletedIds)
       }, err => {
-        console.log(err);
       });
-      
+
     }
-    
+
   }
 
   updateRoleStateAdded(role) {
@@ -359,7 +352,7 @@ export class AuthorizeroleComponent implements OnInit {
 
   updateRoleStateDeleted(deletedRole) {
     let removeRoleRelation = [];
-    
+
     deletedRole.forEach(deletedId => {
       this.roleData.forEach(role => {
           if(role.V_ROLE_ID == deletedId) {
@@ -385,7 +378,7 @@ export class AuthorizeroleComponent implements OnInit {
 
   updateAuthStateDeleted(deletedAuth) {
     let removeAuthpRelation = [];
-    
+
     deletedAuth.forEach(deletedId => {
       this.authData.forEach(auth => {
           if(auth.V_AUTH_ID == deletedId) {

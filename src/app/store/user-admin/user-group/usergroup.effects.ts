@@ -5,7 +5,7 @@ import { Action } from '@ngrx/store';
 import * as userGroupActions from './usergroup.action';
 import { mergeMap, map, catchError } from 'rxjs/operators';
 import { userGroup } from './usergroup.model';
-import { UserAdminService } from 'src/app/services/user-admin.service';
+import { UserAdminService } from '../../../services/user-admin.service';
 import {HttpClient} from '@angular/common/http';
 
 @Injectable()

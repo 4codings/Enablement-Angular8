@@ -5,7 +5,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { EnduserRoutingModule } from './enduser-routing.module';
 import { EnduserComponent } from '../enduser/enduser.component';
 import { UsernavbarComponent } from './usernavbar/usernavbar.component';
-import { SharedModule } from 'src/app/shared/shared.module';
+import { SharedModule } from '../../shared/shared.module';
 import { HeaderModule } from '../header/header.module';
 import { FormComponent } from './execute/form/form.component';
 import { DialogChartsComponent } from './report-table/dialog-charts/dialog-charts.component';
@@ -36,6 +36,5 @@ import { ReportTableComponent } from './report-table/report-table.component';
 })
 export class EnduserModule {
   constructor() {
-    console.log("EnduserModule => ");
   }
 }

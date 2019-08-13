@@ -1,9 +1,9 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import { NoAuthDataService } from 'src/app/services/no-auth-data.service';
+import { NoAuthDataService } from '../../../services/no-auth-data.service';
 
 import * as usreActions from '../../../store/user-admin/user/user.action';
 import { Store, select } from '@ngrx/store';
-import { AppState } from 'src/app/app.state';
+import { AppState } from '../../../app.state';
 import { User } from '../../../store/user-admin/user/user.model';
 import * as userSelectors from '../../../store/user-admin/user/user.selectors';
 import { Observable } from 'rxjs';
@@ -11,8 +11,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { filter } from 'rxjs/operators';
 import { AddUser, UpdateUser } from '../../../store/user-admin/user/user.action';
-import { UserAdminService } from 'src/app/services/user-admin.service';
-import { UseradminService } from 'src/app/services/useradmin.service2';
+import { UserAdminService } from '../../../services/user-admin.service';
+import { UseradminService } from '../../../services/useradmin.service2';
 import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-user-admin-user',
@@ -83,7 +83,6 @@ export class UserAdminUserComponent implements OnInit {
   ) {
     // Label get service
     this.noAuthData.getJSON().subscribe(data => {
-      //console.log(data);
       this.Label = data;
     });
     this.httpClient.get('../../../../assets/initial-setup.json').subscribe(res => {
@@ -124,7 +123,6 @@ export class UserAdminUserComponent implements OnInit {
     this.users$.subscribe(data => {
       if (data.length) {
         const newArray = data.filter(item => item.V_USR_NM == usr);
-        //console.log(newArray);
         this.addBtn = newArray.length == 0 ? false : true;
       }
     });
