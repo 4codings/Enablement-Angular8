@@ -14,6 +14,8 @@ export class EditExeTypeDialogComponent implements OnInit {
   PLF_TYPE=[];
   PLF_CD;
   PLF_Data;
+  V_EXE_CD_DUP='';
+  isexeChange:boolean = false;
 
   constructor(public dialogRef: MatDialogRef<EditExeTypeDialogComponent>,  @Inject(MAT_DIALOG_DATA) public data: any, private config:ConfigServiceService, private http:HttpClient) { }
 
@@ -23,6 +25,7 @@ export class EditExeTypeDialogComponent implements OnInit {
       // this.PLF_CD=this.PLF_TYPE['SERVER_CD'];
     });
     this.PLF_Data = this.data.exeData.V_SERVER_CD.toString();
+    this.V_EXE_CD_DUP = this.data.exeData.V_EXE_CD;
   }
   
   onBtnCancelClick(): void {
@@ -66,6 +69,14 @@ export class EditExeTypeDialogComponent implements OnInit {
         (this.PLF_CD);
         this.data.exeData.V_SERVER_DSC=this.PLF_CD['SERVER_DSC'];
       });
+  }
+
+  isExeChange() {
+    if(this.data.exeData.V_EXE_CD.toLowerCase() != this.V_EXE_CD_DUP.toLocaleLowerCase()) {
+      this.isexeChange = true;
+    } else {
+      this.isexeChange = false;
+    }
   }
 
 }

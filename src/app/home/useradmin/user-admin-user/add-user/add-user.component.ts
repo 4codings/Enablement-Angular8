@@ -46,7 +46,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
     this.actionSubscription = this.actions$.pipe(ofType(userActions.ADD_USER_SUCCESS), take(1)).subscribe((result: any) => {
       console.log(result);
       const userData = this.userForm.getValue();
-      this.addUserInGroup(this.data.groupId, { ...result.payload[0], V_IS_PRIMARY: userData.V_IS_PRIMARY ? ['Y'] : ['N']});
+      this.addUserInGroup(this.data.groupId, { ...result.payload[0], V_IS_PRIMARY: userData.V_IS_PRIMARY === 'Y' ? ['Y'] : ['N']});
     });
   }
 

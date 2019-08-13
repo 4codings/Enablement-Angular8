@@ -21,6 +21,7 @@ export class ApiService {
 		login: `${this.apiURL}/`,
 		insecure: `${this.insecureUrl}/v1/secured?`,
 		secure: `${this.securedApiUrl}/secured?`,
+		securejson: `${this.securedApiUrl}/securedJSON?`,
 		insecureProcessReport: `${this.insecureUrl}/Process/Report`,
 		secureProcessReport: `${this.securedApiUrl}/secured/Process/Report`,
 		secureProcessReportSubmit: `${this.securedApiUrl}/secured/Process/ReportSubmit`,

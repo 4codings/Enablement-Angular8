@@ -21,7 +21,7 @@
           <div class="mr-2" fxFlex="48">
             <label>Connection Code</label>
             <mat-form-field class="form_in" style="width:100%;">
-              <textarea matInput [(ngModel)]="data.cnxData.V_CXN_CD" name="V_CXN_CD" required></textarea>
+              <textarea matInput [(ngModel)]="data.cnxData.V_CXN_CD" name="V_CXN_CD" (ngModelChange)="isCnxChange()" required></textarea>
             </mat-form-field>
           </div>
           <div class="ml-2" fxFlex="48">
@@ -71,7 +71,9 @@
       </div>
   
       <div class="dialog-footer content-wrapper" fxLayoutAlign="end center" fxLayoutGap="8px">
-        <button [disabled]="editConnectionsForm.invalid" mat-flat-button color="primary">Edit</button>
+          <button *ngIf="iscnxChange" [disabled]="editConnectionsForm.invalid" class="mr-2" mat-raised-button color="primary">
+            <mat-icon>add</mat-icon> Add</button>
+        <button *ngIf="!iscnxChange" [disabled]="editConnectionsForm.invalid" mat-flat-button color="primary">Edit</button>
       </div>
     </form> 
   </div>
