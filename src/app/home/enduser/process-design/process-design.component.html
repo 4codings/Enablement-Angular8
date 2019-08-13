@@ -114,7 +114,9 @@
           <div fxFlex="100" fxLayout="column">
             <div fxFlex="100" id="canvas" [ngClass]="opened?'stage-show':'stage-hide'">
             </div>
-            <div fxFlex="100">
+            <!-- <div fxFlex="100" id="viewer" [ngClass]="opened?'stage-show':'stage-hide'">
+            </div> -->
+            <div *ngIf="!isMonitor" fxFlex="100">
               <div class="dynamicFormContent">
                 <!-- <h3 style="text-align: center;" *ngIf="resFormData!='' &&  resFormData!=undefined">
                   {{Label['Parameters']}}</h3> -->
@@ -400,12 +402,12 @@
             <div fxFlex="100">
               <canvas id="myGanttchart" *ngIf="gantt" fxFlex="100"></canvas>
             </div>
-            <div fxFlex="100">
+            <!-- <div fxFlex="100">
               <canvas id="myBarchart" *ngIf="bar" fxFlex="100"></canvas>
             </div>
             <div fxFlex="100">
               <canvas id="myPie" *ngIf="pie" fxFlex="100"></canvas>
-            </div>
+            </div> -->
           </div>
           <div fxFlex="20px" class="toggle">
             <a *ngIf="showRightIcon" href="javascript:void(0)"

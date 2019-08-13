@@ -25,6 +25,7 @@ import { schedule } from './schd_data';
 import { MatTableDataSource, MatDialog } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 import { DialogScheduleComponent } from 'src/app/shared/components/dialog-schedule/dialog-schedule.component';
+import { Viewer } from '../execute/bpmn-viewer';
 
 export class ReportData {
   public RESULT: string;
@@ -52,6 +53,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   public treeopened: boolean = true;
   public showRightIcon = false;
   private modeler: any;
+  private viewer: any;
   private url: string;
   private downloadUrl: string;
   private user: any;
@@ -134,6 +136,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   ColorBar = [];
   ColorBar_border = [];
   V_OLD_PRCS_CD: string = '';
+  isMonitor: boolean = false;
   isApp = false;
   isProcess = false;
   isService = false;
@@ -574,6 +577,18 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.closeSchedulePanel();
         });
     }
+
+    // this.viewer = new Viewer({
+    //   container: '#viewer',
+    //   width: '90%',
+    //   height: '400px'
+    // });
+    // const viewereventBus = this.viewer.get('eventBus');
+    // if (viewereventBus) {
+    //   viewereventBus.on('viewereventBus.click', ($event) => {
+    //     console.log('viewereventBus.click', $event)
+    //   });
+    // }
   }
 
   getDocumentation(v_type, v_cd) {
@@ -584,6 +599,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       }
     })
   }
+
   ngOnDestroy() {
     if (this.applicationProcessObservable$) {
       this.applicationProcessObservable$.unsubscribe();
@@ -593,6 +609,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       this.modeler.destroy();
     }
   }
+
   onInputChange() {
     // replace(new RegExp(' ', 'g'), '_')
     this.generalId = this.generalId;
@@ -670,6 +687,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         }
       });
   }
+
   updateService() {
     this.selectedService = this.generalId;
     if (this.instances === 'single') {
@@ -718,6 +736,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     //   this.upload(this.selectedApp, this.selectedProcess);
     // }, this.ctrl_variables.delay_timeout);
   }
+
   deleteService(id) {
     if (id !== '' || id !== null) {
       this.httpClient.delete(this.apiService.endPoints.securedJSON + 'V_APP_CD=' + this.selectedApp + '&V_PRCS_CD=' + this.selectedProcess + '&V_SRVC_CD=' + id + '&V_SRC_CD=' + this.user.SRC_CD + '&V_USR_NM=' + this.user.USR_NM + '&REST_Service=Service&Verb=DELETE')
@@ -734,6 +753,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         })
     }
   }
+
   deleteSequence(id) {
     if (id !== '' || id !== null) {
       this.httpClient.get(this.apiService.endPoints.secure + "V_ORCH_CD=" + id + '&V_SRC_CD=' + this.user.SRC_CD + '&V_USR_NM=' + this.user.USR_NM + "&REST_Service=Orchetration&Verb=DELETE").subscribe(
@@ -750,6 +770,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       );
     }
   }
+
   updateProcess() {
     this.showAllTabFlag = false;
     this.selectedProcess = this.generalId;
@@ -773,6 +794,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       this.upload(this.selectedApp, this.selectedProcess);
     }, this.ctrl_variables.delay_timeout);
   }
+
   getConditionType() {
     this.http.get(this.apiService.endPoints.securedJSON + "V_PRDCR_SRC_CD=" + this.user.SRC_CD + "&V_PRDCR_APP_CD=" + this.selectedApp + "&V_PRDCR_PRCS_CD=" + this.selectedProcess + "&V_PRDCR_SRVC_CD=" + this.sequenceFlowsourceId + "&V_USR_NM=" + this.user.USR_NM + "&V_SRC_CD=" + this.user.SRC_CD + "&V_APP_CD=" + this.selectedApp + "&V_PRCS_CD=" + this.selectedProcess + "&V_SRVC_CD=" + this.sequenceFlowtargetId + "&REST_Service=SequenceFlow" + "&Verb=GET", this.apiService.setHeaders())
       .subscribe(res => {
@@ -783,6 +805,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         }
       });
   }
+
   addProcess() {
     const body = {
       'V_APP_CD': this.selectedApp,
@@ -893,6 +916,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       console.error(err);
     }
   }
+
   addApplication() {
     this.showRightIcon = true;
     this.opened = true;
@@ -914,6 +938,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     // }, 0);
     document.getElementById('processId').focus();
   }
+
   addApplicationOnBE() {
     let body;
     if (this.isEditApplicationFlag) {
@@ -952,6 +977,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         }
       })
   }
+
   deleteApplication() {
     if (this.selectedApp !== '' || this.selectedApp !== null) {
       this.httpClient.delete(this.url + 'V_APP_CD=' + this.selectedApp + '&V_SRC_CD=' + this.user.SRC_CD + '&V_USR_NM=' + this.user.USR_NM + '&REST_Service=Application&Verb=DELETE')
@@ -966,6 +992,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.handleError.bind(this))
     }
   }
+
   editApplication(appName) {
     this.generalId = this.selectedApp;
     this.isApp = true;
@@ -985,6 +1012,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.getDocumentation('APP', this.selectedApp);
     // this.documentation = '';
   }
+
   // storing text as process name and value as application name for child tree view item 
   // to get application and process name both when clicked on child item
   generateTreeItem() {
@@ -1067,6 +1095,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       })
     }
   }
+
   getApplicationProcess() {
     this.endUserService.getApplicationAndProcess().subscribe(res => {
       if (res) {
@@ -1077,6 +1106,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       }
     })
   }
+
   updateTabs() {
     // if (this.isProcess) {
     //   this.updateProcess();
@@ -1086,6 +1116,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       this.updateService();
     }
   }
+
   onTitleClick(item, parentTitleClick?) {
     this.closeSchedulePanel();
     this.onTitleClickNoDelete = true;
@@ -1156,6 +1187,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       this.treesidenav.opened = false;
     }
   }
+
   onParentMenuItemClick(actionValue, parentValue, selectedItem?) {
     this.selectedApp = parentValue;
     switch (actionValue) {
@@ -1228,6 +1260,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         break;
       }
       case 'Edit': {
+        this.isMonitor = false;
         this.editProcessFlag = true;
         this.showRightIcon = true;
         this.opened = true;
@@ -1244,10 +1277,12 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         break;
       }
       case 'Schedule': {
+        this.isMonitor = false;
         this.newScheduleView = true;
         break;
       }
       case 'SchedulePause': {
+        this.isMonitor = false;
         this.Pause_btn = true;
         this.display_process_table = true;
         this.checkbox_color_value = 'checkbox_blue';
@@ -1255,6 +1290,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         break;
       }
       case 'ScheduleResume': {
+        this.isMonitor = false;
         this.Resume_btn = true;
         this.display_process_table = true;
         this.checkbox_color_value = 'checkbox_green';
@@ -1262,6 +1298,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         break;
       }
       case 'ScheduleKill': {
+        this.isMonitor = false;
         this.Kill_btn = true;
         this.display_process_table = true;
         this.show_filter_input = true;
@@ -1270,6 +1307,25 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         break;
       }
       case 'Monitor': {
+        // this.isMonitor = true;
+        // this.newScheduleView = false;
+        // this.httpClient.get('/assets/bpmn/newDiagram.bpmn', {
+        //   headers: { observe: 'response' }, responseType: 'text'
+        // }).subscribe(
+        //   (x: any) => {
+        //     this.viewer.importXML(x, this.handleError.bind(this));
+        //   },
+        //   this.handleError.bind(this)
+        // );
+
+        // this.editProcessFlag = false;
+        // this.showRightIcon = false;
+        // this.opened = false;
+        // this.showAllTabFlag = false;
+        // this.isApp = false;
+        // this.isProcess = false;
+        // this.isService = false;
+        // this.onTitleClickNoDelete = true;
         break;
       }
       case 'Approve': {
@@ -1292,6 +1348,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     }
     this.treesidenav.opened = false;
   }
+
   onDeleteProcess() {
     if (this.selectedProcess !== '' || this.selectedProcess !== null) {
       this.httpClient.delete(this.apiService.endPoints.securedJSON + 'V_APP_CD=' + this.selectedApp + '&V_PRCS_CD=' + this.selectedProcess + '&V_SRC_CD=' + this.user.SRC_CD + '&V_USR_NM=' + this.user.USR_NM + '&REST_Service=Process&Verb=DELETE')
@@ -1312,6 +1369,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         })
     }
   }
+
   add() {
     for (let i = 0; i <= this.k; i++) {
       if (this.resFormData[i].value != '' && this.resFormData[i].value != null) {
@@ -1320,6 +1378,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     }
     this.StorageSessionService.setCookies('ts', this.ts);
   }
+
   Execute_Now() {
     if (this.processForm.valid) {
       const body = {
@@ -1347,6 +1406,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         });
     }
   }
+
   // Added for property panel related tabs
   getAllTabs(selService: any) {
     this.opened = true;
@@ -1467,10 +1527,12 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.selectedExecutable = value;
     this.getInputOutputForSelctedExecutable();
   }
+
   updatesequenceConditionType(value: any) {
     this.selectedConditionType = value;
     this.onInputChange();
   }
+
   serviceActiveSelected(value: Boolean) {
     this.isServiceActive = value;
   }
@@ -1567,6 +1629,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       }
     });
   }
+
   repeatCallTable(data: any): void {
     if (data && this.repeat < this.ctrl_variables.repeat_count) {
       this.repeat++;
@@ -1604,6 +1667,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         }
       });
   }
+
   labels_toShow(): any {
     this.form_Data_Keys = Object.keys(this.form_result);
     for (let i = 0; i < this.form_Data_Keys.length; i++) {
@@ -1629,6 +1693,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   show_gantt_chart(Process, start_time, end_time) {
     let count = 0, flag = false, val1;
     const mydataset = [];
@@ -1739,6 +1804,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       });
     }
   }
+
   show_pie(Process, start_time, end_time) {
     const mydata = [];
     const color = [], bcolor = [];
@@ -1948,6 +2014,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       });
     }
   }
+
   time_to_sec(time): any {
     return parseInt(time.substring(0, 2)) * 3600 + parseInt(time.substring(3, 5)) * 60 + (parseInt(time.substring(6)));
   }
@@ -1997,7 +2064,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     }
     return true;
   }
-
 
   Action;
   F1;
@@ -2091,7 +2157,6 @@ this.find_process(this.ApplicationCD, this.ProcessCD, 'Paused');
 
   }
 
-
   onResume() {
     this.innerTableDT = [];
     for (let i = 0; i < this.selection.selected.length; i++) {
@@ -2114,48 +2179,6 @@ this.find_process(this.ApplicationCD, this.ProcessCD, 'Paused');
     }, 5000);
   }
 
-  // onPause() {
-
-  //   this.innerTableDT = [];
-  //   console.log('PAUSE!!!');
-  //   // // Pause
-  //   for (let i = 0; i < this.Process_key.length; i++) {
-  //     this.Process_operation(this.Process_key[i], 'Pause');
-  //   }
-  //   setTimeout(() => {
-  //     this.find_process(this.ApplicationCD, this.ProcessCD, 'All');
-  //   }, 5000);
-
-  // }
-
-
-  // onResume() {
-  //   this.innerTableDT = [];
-  //   console.log('RESUME!!!');
-  //   // // Resume
-  //   for (let i = 0; i < this.Process_key.length; i++) {
-  //     this.Process_operation(this.Process_key[i], 'Resume');
-  //   }
-  //   // await delay(2000);
-  //   setTimeout(() => {
-  //     this.find_process(this.ApplicationCD, this.ProcessCD, 'All');
-  //   }, 5000);
-  //   // // this.find_process(this.ApplicationCD,this.ProcessCD,"All");
-  // }
-
-  // onKill() {
-  //   this.innerTableDT = [];
-  //   console.log('KILL!!!');
-  //   for (let i = 0; i < this.Process_key.length; i++) {
-  //     this.Process_operation(this.Process_key[i], 'Kill');
-  //     ('Process id' + this.Process_key[i]);
-  //   }
-  //   setTimeout(() => {
-  //     this.find_process(this.ApplicationCD, this.ProcessCD, 'All');
-  //   }, 5000);
-  // }
-
-
   applyFilter(filterValue: string) {
     filterValue = filterValue.trim(); // Remove whitespace
     filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
@@ -2171,11 +2194,9 @@ this.find_process(this.ApplicationCD, this.ProcessCD, 'Paused');
   }
 
   onRowClick(row) {
-
   }
 
   Process_operation(P_ID: any, P_OP: any) {
-
     const body = {
       'TriggerKey': [P_ID],
       'JobKey': [P_ID],
@@ -2187,16 +2208,14 @@ this.find_process(this.ApplicationCD, this.ProcessCD, 'Paused');
         (res.json());
       }
     );
-    // this.find_process(this.ApplicationCD,this.ProcessCD,"All");
   }
-
-
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.filteredData.length;
     return numSelected === numRows;
   }
+
   masterToggle() {
     this.isAllSelected() ?
       this.selection.clear() :
@@ -2206,4 +2225,5 @@ this.find_process(this.ApplicationCD, this.ProcessCD, 'Paused');
   changeTrigger(data) {
     this.changingValue.next(data);
   }
+
 }
