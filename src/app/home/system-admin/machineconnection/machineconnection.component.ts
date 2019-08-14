@@ -3,9 +3,9 @@ import { Http,Response,Headers } from '@angular/http';
 import { HttpClient,HttpEvent,HttpEventType } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { HostListener } from "@angular/core";
-import { Globals } from 'src/app/services/globals';
-import { StorageSessionService } from 'src/app/services/storage-session.service';
-import { UseradminService } from 'src/app/services/useradmin.service2';
+import { Globals } from '../../../services/globals';
+import { StorageSessionService } from '../../../services/storage-session.service';
+import { UseradminService } from '../../../services/useradmin.service2';
 
 @Component({
   selector: 'app-machineconnection',
@@ -36,12 +36,12 @@ export class MachineconnectionComponent implements OnInit {
   constructor(private http:HttpClient,
     private StorageSessionService:StorageSessionService,
     private data:UseradminService,private globals:Globals,
-    public toastr: ToastrService) { 
-      this.onResize();   
+    public toastr: ToastrService) {
+      this.onResize();
       this.oncontypeselect = function(index){
         this.selectedcon=undefined;
         this.selectedcontype = index;
-        
+
       }
       this.onmselect = function(index){
         this.selectedmach = index;
@@ -53,7 +53,7 @@ export class MachineconnectionComponent implements OnInit {
 
     domain_name=this.globals.domain_name; private apiUrlGet = "https://"+this.domain_name+"/rest/v1/secured?";
     private apiUrlPost = "https://"+this.domain_name+"/rest/v1/secured";
-    
+
     con_type:string[];
     machines:string[];
     connections:string[];
@@ -71,19 +71,19 @@ export class MachineconnectionComponent implements OnInit {
     oncontypeselect:Function;
     onmselect: Function;
     onconselect: Function;
- 
+
    //function to get connection_types
    getcontypes(){
      this.http.get<data>(this.apiUrlGet+"V_CD_TYP=CXN&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe(
        res=>{
           this.con_type=res.CXN_TYP;
-          
+
        });
     }
 
   //function to get Machines
     getmachines(){
-      
+
       this.http.get<data>(this.apiUrlGet+"V_SRC_CD="+this.V_SRC_CD+"&V_USR_NM="+this.V_USR_NM+"&REST_Service=Users_Machines&Verb=GET").subscribe(
         res=>{
            this.machines=res.PLATFORM_CD;
@@ -94,21 +94,21 @@ export class MachineconnectionComponent implements OnInit {
     getconnections(sel_contype){
       this.c_desc=null;
       this.contype_sl=sel_contype;
-      
+
       this.http.get<data>(this.apiUrlGet+"V_CXN_TYP="+sel_contype+"&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Connection&Verb=GET").subscribe(
         res=>{
            this.connections=res.CXN_CD;
-     
+
         });
      }
 
      //function to get connection description
      getcondesc(sel_con){
        this.con_sl=sel_con;
-       
+
       this.http.get<data>(this.apiUrlGet+"V_CXN_TYP="+this.contype_sl+"&V_CXN_CD="+sel_con+"&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=ConnectionDescription&Verb=GET").subscribe(
         res=>{
-          
+
           this.c_desc=res.CXN_DSC;
         });
      }
@@ -117,7 +117,7 @@ export class MachineconnectionComponent implements OnInit {
        this.machine_sl=sel_machine;
      this.http.get<data>(this.apiUrlGet+"V_PLATFORM_CD="+sel_machine+"&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Machine&Verb=GET").subscribe(
       res=>{
-        
+
         this.m_desc=res.PLATFORM_DSC;
       });
     }
@@ -139,7 +139,7 @@ export class MachineconnectionComponent implements OnInit {
        });
      }
 
-     //function to delete a connection  
+     //function to delete a connection
      detach(){
        this.http.get(this.apiUrlGet+"V_PLATFORM_CD="+this.machine_sl+"&V_SRC_CD="+this.V_SRC_CD+"&V_CXN_CD="+this.con_sl+"&V_CXN_TYP="+this.contype_sl+"&REST_Service=Machine_Connection&Verb=DELETE").subscribe(
         res=>{
@@ -154,8 +154,8 @@ export class MachineconnectionComponent implements OnInit {
       this.getcontypes();
       this.getmachines();
       this.data.getJSON().subscribe(data => {
-                     
-                this.Label=data.json();       
+
+                this.Label=data.json();
                    })
     }
 }

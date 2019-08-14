@@ -20,11 +20,11 @@ export class SingleMachineComponent implements OnInit {
   }
 
   onBtnDeleteMachineClick(exe) {
-    
+
   }
 
   onBtnEditMachineClick(exe) {
-    
+
   }
 
   onBtnAssignRoleClick(exeType) {
@@ -32,7 +32,6 @@ export class SingleMachineComponent implements OnInit {
   }
 
   selectedMachineTile(connection) {
-    //console.log("connection", connection);
     this.systemOverview.selectCxn(connection);
   }
 

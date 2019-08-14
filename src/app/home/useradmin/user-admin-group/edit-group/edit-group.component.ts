@@ -2,7 +2,7 @@ import {Component, Inject, OnInit, ViewChild} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../../../app.state';
 import {Actions, ofType} from '@ngrx/effects';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {userGroup} from '../../../../store/user-admin/user-group/usergroup.model';
 import {take} from 'rxjs/operators';
 import * as userGroupActions from '../../../../store/user-admin/user-group/usergroup.action';
@@ -19,7 +19,7 @@ export class EditGroupComponent implements OnInit {
 
   group: userGroup;
   actionSubscription: Subscription;
-  @ViewChild(GroupFormComponent) form: GroupFormComponent;
+  @ViewChild(GroupFormComponent, { static: true }) form: GroupFormComponent;
 
   constructor(private store: Store<AppState>,
               private actions$: Actions,

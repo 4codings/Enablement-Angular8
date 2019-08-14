@@ -1,16 +1,16 @@
 import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
-import { NoAuthDataService } from 'src/app/services/no-auth-data.service';
-import { userMemberShip } from 'src/app/store/user-admin/user-membership/usermembership.model';
+import { NoAuthDataService } from '../../../services/no-auth-data.service';
+import { userMemberShip } from '../../../store/user-admin/user-membership/usermembership.model';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 import { Store, select } from '@ngrx/store';
-import { AppState } from 'src/app/app.state';
+import { AppState } from '../../../app.state';
 import * as userGroupSelectors from '../../../store/user-admin/user-group/usergroup.selectors';
 import * as userGroupActions from '../../../store/user-admin/user-group/usergroup.action';
-import { userGroup } from 'src/app/store/user-admin/user-group/usergroup.model';
+import { userGroup } from '../../../store/user-admin/user-group/usergroup.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { userRole } from 'src/app/store/user-admin/user-role/userrole.model';
+import { userRole } from '../../../store/user-admin/user-role/userrole.model';
 import * as userRoleSelectors from '../../../store/user-admin/user-role/userrole.selectors';
 import * as userRoleActions from '../../../store/user-admin/user-role/userrole.action';
 import {groupTypeConstant, groupTypeOptions} from '../useradmin.constants';
@@ -81,7 +81,6 @@ export class AssignroleComponent implements OnInit, OnDestroy {
     };
 
     this.noAuthData.getJSON().subscribe(data => {
-      //console.log(data);
       this.Label = data;
     });
     this.store.dispatch(new userGroupActions.RemoveGroupId());
@@ -111,14 +110,14 @@ export class AssignroleComponent implements OnInit, OnDestroy {
       this.groupData = groups;
       this.enableSubmitButton();
     });
-  
+
     this.subRole = this.roles$.subscribe(role => {
       this.roleData = role;
       this.enableSubmitButton();
     });
 
   }
-  
+
   ngOnDestroy() {
     this.store.dispatch(new userGroupActions.RemoveGroupId());
     this.store.dispatch(new userRoleActions.RemoveRoleId());
@@ -143,8 +142,8 @@ export class AssignroleComponent implements OnInit, OnDestroy {
       let groupRelation = [];
       let removeGroupRelation = [];
       this.selectedrole = index;
-      this.USR_ROLE_DSR = role.V_ROLE_DSC; 
-      this.USR_GRP_DSCR = ''; 
+      this.USR_ROLE_DSR = role.V_ROLE_DSC;
+      this.USR_GRP_DSCR = '';
 
       this.groupData.forEach(group => {
         if(group.is_selected_user == true || group.is_selected == true) {
@@ -152,7 +151,7 @@ export class AssignroleComponent implements OnInit, OnDestroy {
         }
       });
       this.store.dispatch(new userGroupActions.RemoveSelectedUserGroupRelation(removeGroupRelation));
-    
+
       if (role.V_ROLE_ID != null) {
         role.V_USR_GRP_ID.forEach(GRP_ID => {
           this.groupData.forEach(group => {
@@ -168,7 +167,7 @@ export class AssignroleComponent implements OnInit, OnDestroy {
       let groupRelation = [];
       let removeGroupRelation = [];
       this.selectedrole = index;
-      this.USR_ROLE_DSR = role.V_ROLE_DSC; 
+      this.USR_ROLE_DSR = role.V_ROLE_DSC;
 
       this.groupData.forEach(group => {
         if(group.is_selected_user == true || group.is_selected == true) {
@@ -176,7 +175,7 @@ export class AssignroleComponent implements OnInit, OnDestroy {
         }
       });
       this.store.dispatch(new userGroupActions.RemoveSelectedUserGroupRelation(removeGroupRelation));
-    
+
       if (role.V_ROLE_ID != null) {
         role.V_USR_GRP_ID.forEach(GRP_ID => {
           this.groupData.forEach(group => {
@@ -207,8 +206,8 @@ export class AssignroleComponent implements OnInit, OnDestroy {
       let roleRelation = [];
       let removeRolerelation = [];
       this.selectedgroup = index;
-      this.USR_GRP_DSCR = group.V_USR_GRP_DSC; 
-      this.USR_ROLE_DSR = ''; 
+      this.USR_GRP_DSCR = group.V_USR_GRP_DSC;
+      this.USR_ROLE_DSR = '';
 
       this.roleData.forEach(role => {
         if(role.is_selected_usr_grp == true || role.is_selected == true) {
@@ -216,7 +215,7 @@ export class AssignroleComponent implements OnInit, OnDestroy {
         }
       });
       this.store.dispatch(new userRoleActions.RemoveSelectedRoleGroupRelation(removeRolerelation));
-      
+
       if (group.V_ROLE_ID != null) {
         group.V_ROLE_ID.forEach(ROLE_ID => {
           this.roleData.forEach(role => {
@@ -240,7 +239,7 @@ export class AssignroleComponent implements OnInit, OnDestroy {
         }
       });
       this.store.dispatch(new userRoleActions.RemoveSelectedRoleGroupRelation(removeRolerelation));
-      
+
       if (group.V_ROLE_ID != null) {
         group.V_ROLE_ID.forEach(ROLE_ID => {
           this.roleData.forEach(role => {
@@ -251,26 +250,24 @@ export class AssignroleComponent implements OnInit, OnDestroy {
         });
         this.store.dispatch(new userRoleActions.SelectRoleGroupRelation(roleRelation));
       }
-    }  
+    }
   }
 
   checkboxGroupSelect(event, group) {
-    //console.log(event, group);
     if(this.selectCurrentRole != undefined) {
       this.store.dispatch(new userGroupActions.CheckedUserGroup({id:group.id, is_selected:group.is_selected}));
     }
   }
 
   checkboxRoleSelect(event, role) {
-    //console.log(event, user);
     if(this.selectCurrentGroup != undefined) {
       this.store.dispatch(new userRoleActions.CheckedRoleGroup({id:role.id, is_selected:role.is_selected}));
     }
   }
 
   enableSubmitButton() {
-    
-    let is_selectedExist=[]; 
+
+    let is_selectedExist=[];
 
     if(this.selectCurrentRole != undefined) {
       this.groupData.forEach(data => {
@@ -278,7 +275,7 @@ export class AssignroleComponent implements OnInit, OnDestroy {
           is_selectedExist.push(data.is_selected);
         }
       });
-    } 
+    }
     if(this.selectCurrentGroup != undefined) {
       this.roleData.forEach(data => {
         if(data.is_selected == true) {
@@ -290,11 +287,11 @@ export class AssignroleComponent implements OnInit, OnDestroy {
   }
 
   submitAssignRole() {
-    
+
     if(this.selectCurrentRole != undefined) {
       let deletedIds = [];
       let addedIds = [];
-    
+
       this.groupData.forEach(group => {
         if(group.is_selected == false && group.is_selected_user == true) {
           deletedIds.push(group.V_USR_GRP_ID)
@@ -319,19 +316,18 @@ export class AssignroleComponent implements OnInit, OnDestroy {
         "REST_Service":["Group_Role"],
         "Verb":["POST"]
       };
-      
+
       this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', json).subscribe(res => {
         this.updateGroupStateAdded(res[0]);
         this.updateGroupStateDeleted(deletedIds)
       }, err => {
-        console.log(err);
       });
     }
 
     if(this.selectCurrentGroup != undefined) {
       let deletedIds = [];
       let addedIds = [];
-    
+
       this.roleData.forEach(role => {
         if(role.is_selected == false && role.is_selected_usr_grp == true) {
           deletedIds.push(role.V_ROLE_ID)
@@ -356,12 +352,11 @@ export class AssignroleComponent implements OnInit, OnDestroy {
         "REST_Service":["Group_Role"],
         "Verb":["POST"]
       };
-      
+
       this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', json).subscribe(res => {
         this.updateRoleStateAdded(res[0]);
         this.updateRoleStateDeleted(deletedIds)
       }, err => {
-        console.log(err);
       });
     }
   }
@@ -381,7 +376,7 @@ export class AssignroleComponent implements OnInit, OnDestroy {
 
   updateGroupStateDeleted(deletedGroup) {
     let removeGroupRelation = [];
-    
+
     deletedGroup.forEach(deletedId => {
       this.groupData.forEach(group => {
           if(group.V_USR_GRP_ID == deletedId) {
@@ -407,7 +402,7 @@ export class AssignroleComponent implements OnInit, OnDestroy {
 
   updateRoleStateDeleted(deletedRole) {
     let removeRoleRelation = [];
-    
+
     deletedRole.forEach(deletedId => {
       this.roleData.forEach(role => {
           if(role.V_ROLE_ID == deletedId) {

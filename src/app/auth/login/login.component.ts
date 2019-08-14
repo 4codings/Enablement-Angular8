@@ -6,7 +6,7 @@ import {Router} from '@angular/router';
 // import {LoggerService} from "../../core/logger.service";
 import {ToastrService} from 'ngx-toastr';
 import { Store, select } from '@ngrx/store';
-import { AppState } from 'src/app/app.state';
+import { AppState } from '../../app.state';
 import * as usreLoginActions from '../../store/auth/userlogin.action';
 import { Observable } from 'rxjs';
 
@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.initForm();
-        
+
         this.didLoading$ = this.store.pipe(select(state => state.userInfo.loading));
 
         this.didLoaded$ = this.store.pipe(select(state => state.userInfo && state.userInfo.loaded));
@@ -66,7 +66,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     login(form:NgForm) {
         if (form.invalid) { return; }
 
-        //console.log(form.value);
         const body = {
             V_USR_NM: form.value.email,
             V_PSWRD: form.value.pass,
@@ -157,7 +156,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 // email_id:string[]=['gmail','yahoo','outlook','hotmail','live','aol','aim','yandex','protonmail','zoho','gmx','tutanota'];
 // btn_disabled:boolean=false;
 //   onKey(event: any) {
-//  console.log(this.email,event);
 //  this.btn_disabled=false;
 //  let index_start=this.email.indexOf("@");
 //  let index_end=this.email.indexOf(".");
@@ -195,7 +193,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 //     //     if (loaded == true) {
 //     //         this.router.navigate(['/user']);
 //     //     }
-//     //     });  
+//     //     });
 //   }
 //   resolved(captchaResponse: string) {
 //     (`Resolved captcha with response ${captchaResponse}:`);
@@ -236,14 +234,13 @@ export class LoginComponent implements OnInit, OnDestroy {
 // CheckSrc(form){   //4
 //   this.confirm_msg = false;
 //     this.logData.CheckSrc(form).subscribe(res=>{
-//          if( res.resultUsrname=="Passed"){ 
+//          if( res.resultUsrname=="Passed"){
 //           this.toastr.success("A confirmation link is sent to your email id. Please check your email and confirm the registration","Login");
 //           this.confirm_msg = true;
 //           this.agcy = true;
-//           console.log(this.confirm_msg)
 //           this.sendConfirmation(form);  //5
 //           this.progress=false;
-            
+
 // }});}
 // sendConfirmation(data){    //6  "Please confirm your login..."
 // this.logData.sendConfirmation(data)
@@ -253,7 +250,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 // CheckUsrPw(form){     //7
 //   this.progress=true;
 //   this.pwdset=false;
-  
+
 // if(form.value.email!=""&&form.value.pass!=""){
 // this.logData.CheckUsrPw(form).subscribe(
 //    data=>{
@@ -263,7 +260,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 //                      if(data.resultUsrOnly=="FALSE"){
 //                              this.srcBloc=true; //show src block
 //                              this.agcy=false;
-                             
+
 //                              this.toastr.warning("Please enter your Organization name","Agency");
 //                             //  this.msg_alert="Please enter your Organization name";
 //                       }else if(data.resultUsrOnly=="TERMINATED"){
@@ -285,7 +282,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 //                                          this.logBtn=false;
 //                                          this.captcha=true;
 //                                          this.pwdset=true;
-//                                          console.log(this.pwdset)
 //                                          this.sendResetPassowrdEmail(form);
 //                                     }else{
 //                                         this.toastr.warning("Invalid password,Attempt="+this.countAt,"Login");
@@ -294,7 +290,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 //                          // put this parameter when payment option come in res "&& data.resultUsrPaymentValid == "TRUE""
 //                            // this.toastr.success("Success...!","Login In");
 //                             this.loading = true;
-                                        
+
 //                        }
 //     });
 //     this.progress=false;

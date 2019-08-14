@@ -16,7 +16,6 @@ export class getUserMembershipSuccess implements Action {
   readonly type = GET_USER_MEMBERSHIP_SUCCESS;
 
   constructor(public payload: userMemberShip[]) {
-    console.log('member', payload);
   }
 }
 
@@ -24,7 +23,6 @@ export class getUserMembershipFail implements Action {
   readonly type = GET_USER_MEMBERSHIP_FAIL;
 
   constructor(public payload: string) {
-    console.log('err', payload);
   }
 }
 
@@ -48,7 +46,6 @@ export class addUserMembershipFail implements Action {
   readonly type = ADD_USER_MEMBERSHIP_FAIL;
 
   constructor(public payload: string) {
-    console.log('err', payload);
   }
 }
 

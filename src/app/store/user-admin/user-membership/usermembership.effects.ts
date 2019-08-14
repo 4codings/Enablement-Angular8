@@ -5,7 +5,7 @@ import { Action } from '@ngrx/store';
 import * as userMemberShipActions from './usermembership.action';
 import { mergeMap, map, catchError } from 'rxjs/operators';
 import { userMemberShip } from './usermembership.model';
-import { UserAdminService } from 'src/app/services/user-admin.service';
+import { UserAdminService } from '../../../services/user-admin.service';
 import {UseradminService} from '../../../services/useradmin.service2';
 
 @Injectable()

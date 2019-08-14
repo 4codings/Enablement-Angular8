@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {DomSanitizer} from '@angular/platform-browser';
-import {MatIconRegistry} from '@angular/material';
+import { MatIconRegistry } from '@angular/material/icon';
 import { HttpClient } from '@angular/common/http';
-import { RollserviceService } from 'src/app/services/rollservice.service';
+import { RollserviceService } from '../../../services/rollservice.service';
 @Component({
   selector: 'app-deploymentsnavbar',
   templateUrl: './deploymentsnavbar.component.html',
@@ -22,8 +22,8 @@ export class DeploymentsnavbarComponent implements OnInit {
   role_overview:boolean = true;
 
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private rollserviceService: RollserviceService,
-    private httpClient: HttpClient) { 
-  
+    private httpClient: HttpClient) {
+
     iconRegistry.addSvgIcon(
       'machines',
       sanitizer.bypassSecurityTrustResourceUrl('assets/img/navbaricons/machines.svg'));
@@ -79,7 +79,7 @@ export class DeploymentsnavbarComponent implements OnInit {
               if (this.ctrl_variables.show_SystemAdminOverViewTab) {
                 this.role_overview = true;
               }
-              break;    
+              break;
             default:
               break;
           }

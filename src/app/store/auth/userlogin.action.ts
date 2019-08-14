@@ -9,14 +9,12 @@ export const CLEAR_USER_INFO = 'Clear user info';
 export class userLogin implements Action {
   readonly type = USER_LOGIN;
   constructor(public payload: any) {
-    //console.log(payload);
   }
 }
 
 export class userLoginSuccess implements Action {
   readonly type = USER_LOGIN_SUCCESS;
   constructor(public payload: userInfo) {
-    //console.log(payload);
   }
 }
 

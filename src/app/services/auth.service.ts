@@ -15,7 +15,7 @@ import {Globals} from './globals';
 })
 export class AuthService {
   userDetail: Observable<UserLoginState>;
-  domain_name="enablement.us/Enablement"; 
+  domain_name="enablement.us/Enablement";
   private apiUrlGet = "https://"+this.domain_name+"/rest/v1/secured?";
   private apiUrlPost = "https://"+this.domain_name+"/";
 
@@ -26,7 +26,6 @@ export class AuthService {
             // this.userServicve.clear();
             if (data.userInfo.TOKEN != '') {
               if (this.userService.getDetailFromStorage() == null) {
-                //console.log(data.userInfo.TOKEN);
                 this.userService.setUser(data.userInfo);
               }
             }
@@ -38,7 +37,7 @@ export class AuthService {
 	userLogin(data) {
 		return this.http.post<userInfo>('https://enablement.us/Enablement/rest/authentication', data);
   }
-  
+
   CheckSrc(form){
     let body={
       "V_SRC_CD":form.value.agency,
@@ -85,7 +84,7 @@ export class AuthService {
     ChangePassword(form){
           return this.http.get("https://"+this.domain_name+"/rest/v1/secured?V_USR_NM=exeserver@adventbusiness.com&V_PSWRD=bala&REST_Service=Password&Verb=PATCH");
     }
-  
+
 }
 
 //-------------------------------

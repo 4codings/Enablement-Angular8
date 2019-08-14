@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import { Http, Response, Headers } from '@angular/http';
 import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
-import { UserAdminService } from 'src/app/services/user-admin.service';
-import { Globals } from 'src/app/services/globals';
+import { UserAdminService } from '../../../services/user-admin.service';
+import { Globals } from '../../../services/globals';
 import { HomeComponent } from '../../home.component';
-import { NoAuthDataService } from 'src/app/services/no-auth-data.service';
-import { StorageSessionService } from 'src/app/services/storage-session.service';
+import { NoAuthDataService } from '../../../services/no-auth-data.service';
+import { StorageSessionService } from '../../../services/storage-session.service';
 
 
 @Component({
@@ -267,7 +267,7 @@ export class MytaskComponent implements OnInit {
 
   }
 
-  // ------------------ 
+  // ------------------
 
   ngOnInit() {
     this.functionsrvcGetData();

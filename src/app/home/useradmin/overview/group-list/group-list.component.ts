@@ -3,7 +3,7 @@ import {userGroup} from '../../../../store/user-admin/user-group/usergroup.model
 import {groupTypeOptions} from '../../useradmin.constants';
 import {AddGroupComponent} from '../../user-admin-group/add-group/add-group.component';
 import {take, takeUntil} from 'rxjs/operators';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import {UseradminService} from '../../../../services/useradmin.service2';
 import {OverviewService} from '../overview.service';
 import {Subject} from 'rxjs';

@@ -5,8 +5,8 @@ import { Action } from '@ngrx/store';
 import * as userActions from './user.action';
 import { mergeMap, map, catchError } from 'rxjs/operators';
 import { User } from './user.model';
-import { AuthService } from 'src/app/services/auth.service';
-import { UserAdminService } from 'src/app/services/user-admin.service';
+import { AuthService } from '../../../services/auth.service';
+import { UserAdminService } from '../../../services/user-admin.service';
 import * as userGroupActions from '../user-group/usergroup.action';
 import {HttpClient} from '@angular/common/http';
 

@@ -1,16 +1,16 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import { NoAuthDataService } from 'src/app/services/no-auth-data.service';
+import { NoAuthDataService } from '../../../services/no-auth-data.service';
 
 import { Store, select } from '@ngrx/store';
-import { AppState } from 'src/app/app.state';
+import { AppState } from '../../../app.state';
 import * as userGroupSelectors from '../../../store/user-admin/user-group/usergroup.selectors';
 import * as userGroupActions from '../../../store/user-admin/user-group/usergroup.action';
 import { Observable } from 'rxjs';
-import { userGroup } from 'src/app/store/user-admin/user-group/usergroup.model';
+import { userGroup } from '../../../store/user-admin/user-group/usergroup.model';
 import {addUserGroup, DeleteUserGroup, UpdateUserGroup} from '../../../store/user-admin/user-group/usergroup.action';
 import {HttpClient} from '@angular/common/http';
-import { UserAdminService } from 'src/app/services/user-admin.service';
-import { UseradminService } from 'src/app/services/useradmin.service2';
+import { UserAdminService } from '../../../services/user-admin.service';
+import { UseradminService } from '../../../services/useradmin.service2';
 import {groupTypeOptions} from '../useradmin.constants';
 
 @Component({
@@ -33,7 +33,7 @@ export class UserAdminGroupComponent implements OnInit {
   public screenWidth = 0;
   public mobileView = false;
   public desktopView = true;
-  
+
   public start_date: any;
   public end_date: any;
   public groupList = [];
@@ -94,7 +94,6 @@ export class UserAdminGroupComponent implements OnInit {
       });
 
     this.noAuthData.getJSON().subscribe(data => {
-      //console.log(data);
       this.Label = data;
     });
 
@@ -130,7 +129,7 @@ export class UserAdminGroupComponent implements OnInit {
   onpselect(i) {
 
   }
-  
+
   selectedGroupId(id) {
     this.selectedGroupid = id;
   }
@@ -252,7 +251,7 @@ export class UserAdminGroupComponent implements OnInit {
       }
     }
   }
-  
+
 
   downloadFile() {
     this.userAdminService.downloadFile('GroupDL.xlsx');

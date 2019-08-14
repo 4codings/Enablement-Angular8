@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 
 import { MytaskRoutingModule } from './mytask-routing.module';
-import { SharedModule } from 'src/app/shared/shared.module';
+import { SharedModule } from '../../../shared/shared.module';
 import { MytaskComponent } from './mytask.component';
 import { HeaderModule } from '../../header/header.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';

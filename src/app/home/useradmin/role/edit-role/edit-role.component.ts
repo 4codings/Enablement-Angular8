@@ -3,7 +3,7 @@ import {Subscription} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../../../app.state';
 import {Actions, ofType} from '@ngrx/effects';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import * as userRoleActions from '../../../../store/user-admin/user-role/userrole.action';
 import {take} from 'rxjs/operators';
 import {userRole} from '../../../../store/user-admin/user-role/userrole.model';
@@ -18,7 +18,7 @@ export class EditRoleComponent implements OnInit {
 
   role: userRole;
   actionSubscription: Subscription;
-  @ViewChild(RoleFormComponent) form: RoleFormComponent;
+  @ViewChild(RoleFormComponent, { static: true }) form: RoleFormComponent;
 
   constructor(private store: Store<AppState>,
               private actions$: Actions,

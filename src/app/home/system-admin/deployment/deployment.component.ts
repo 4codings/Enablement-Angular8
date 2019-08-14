@@ -3,9 +3,9 @@ import { Http,Response,Headers } from '@angular/http';
 import { HttpClient,HttpEvent,HttpEventType } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { HostListener } from "@angular/core";
-import { Globals } from 'src/app/services/globals';
-import { UseradminService } from 'src/app/services/useradmin.service2';
-import { StorageSessionService } from 'src/app/services/storage-session.service';
+import { Globals } from '../../../services/globals';
+import { UseradminService } from '../../../services/useradmin.service2';
+import { StorageSessionService } from '../../../services/storage-session.service';
 
 @Component({
   selector: 'app-deployment',
@@ -35,13 +35,13 @@ export class DeploymentComponent implements OnInit {
   constructor(private http:HttpClient,
     private StorageSessionService:StorageSessionService,
     private data:UseradminService,private globals:Globals,
-    public toastr: ToastrService, ) { 
+    public toastr: ToastrService, ) {
       this.onResize();
       this.onexetypeselect = function(index){
         this.selectedcon=undefined;
         this.selectedexe=undefined;
         this.selectedexetype = index;
-        
+
       }
         this.onmselect = function(index){
           (this.executable_sl);
@@ -51,7 +51,7 @@ export class DeploymentComponent implements OnInit {
         this.selectedcon = index;
       }
     }
-showexebox(){  
+showexebox(){
   if(this.showexe=false ||this.executable_sl===undefined)
   {
     this.executable_sl="";
@@ -75,7 +75,7 @@ setexecutable_sl(b){
     exetype_sl="";
     executable_sl="";
     con_sl="";
-    
+
     executablestips={};
     Label:any[]=[];
     selectedexetype : Number;
@@ -84,13 +84,13 @@ setexecutable_sl(b){
     onexetypeselect:Function;
     onmselect: Function;
     onconselect: Function;
- 
+
    //function to Executable_types
    getexetypes(){
      this.http.get<data>(this.apiUrlGet+"V_CD_TYP=EXE&V_SRC_CD="+this.V_SRC_CD+"&SCREEN=PROFILE&REST_Service=Masters&Verb=GET").subscribe(
        res=>{
           this.exe_type=res.EXE_TYP;
-          
+
        });
     }
 
@@ -100,10 +100,10 @@ setexecutable_sl(b){
       this.http.get<data>(this.apiUrlGet+"V_SRC_CD="+this.V_SRC_CD+"&V_EXE_TYP="+a+"&V_USR_NM="+this.V_USR_NM+"&REST_Service=User_Executables&Verb=GET").subscribe(
         res=>{
           for(let b of res.EXE_CD){
-               this.executables.push(b);   
+               this.executables.push(b);
 
           }
-          //for getting helper text for executables 
+          //for getting helper text for executables
           for(let k=0;k<=this.executables.length;k++) {
             (this.executables[k]);
             this.http.get<data>(this.apiUrlGet+"V_UNIQUE_ID=&V_EXE_TYP="+a+"&V_EXE_CD="+this.executables[k]+"&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Exe_Detail&Verb=GET")
@@ -119,7 +119,7 @@ setexecutable_sl(b){
           }
         });
 
-        
+
      }
 
   //function to get Connections
@@ -130,31 +130,31 @@ setexecutable_sl(b){
       this.http.get<data>(this.apiUrlGet+"V_CXN_TYP="+sel_exetype+"&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Connection&Verb=GET").subscribe(
         res=>{
            this.connections=res.CXN_CD;
-     
+
         });
-        
+
      }
 
      //function to get connection description
      getcondesc(sel_con){
        this.con_sl=sel_con;
-       
+
       this.http.get<data>(this.apiUrlGet+"V_CXN_TYP="+this.exetype_sl+"&V_CXN_CD="+sel_con+"&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=ConnectionDescription&Verb=GET").subscribe(
         res=>{
-          
+
           this.c_desc=res.CXN_DSC;
         });
-     } 
+     }
      //function to get executable description
      getexedesc(sel_exe){
       this.executable_sl=sel_exe;
-      
+
       this.http.get<data>(this.apiUrlGet+"V_UNIQUE_ID=&V_EXE_TYP="+this.exetype_sl+"&V_EXE_CD="+this.executable_sl+"&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Exe_Detail&Verb=GET").subscribe(
       res=>{
-         
+
          this.e_desc=res.EXE_DSC;
        });
-    }     
+    }
      //function to add a connection
      Link(){
               let body={
@@ -162,10 +162,10 @@ setexecutable_sl(b){
                 "V_CXN_TYP":this.exetype_sl,
          "V_EXE_TYP":this.exetype_sl,
          "V_EXE_CD":this.executable_sl,
-          
-          
-         "V_SRC_CD":this.V_SRC_CD, 
-         "V_USR_NM":this.V_USR_NM, 
+
+
+         "V_SRC_CD":this.V_SRC_CD,
+         "V_USR_NM":this.V_USR_NM,
          "V_COMMNT":"ADDED EXE TO CXN" ,
          "REST_Service":"Exe_Connection",
          "Verb":"PUT"
@@ -178,7 +178,7 @@ setexecutable_sl(b){
         });
      }
 
-     //function to delete a connection  
+     //function to delete a connection
      Delink(){
        (this.exetype_sl+" + "+this.executable_sl+" + "+this.con_sl);
         this.http.get(this.apiUrlGet+"V_EXE_CD="+this.executable_sl+"&V_EXE_TYP="+this.exetype_sl+"&V_CXN_CD="+this.con_sl+"&V_CXN_TYP="+this.exetype_sl+"&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Executable_Connection&Verb=DELETE").subscribe(
@@ -193,8 +193,8 @@ setexecutable_sl(b){
       this.getexetypes();
 (this.executablestips);
       this.data.getJSON().subscribe(data => {
-                     
-                this.Label=data.json();       
+
+                this.Label=data.json();
                    })
     }
 }

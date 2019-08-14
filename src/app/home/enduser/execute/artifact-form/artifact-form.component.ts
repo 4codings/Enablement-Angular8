@@ -1,21 +1,22 @@
-import { MatTableDataSource, MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
 import { Component, OnInit, TemplateRef, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
-import { StorageSessionService } from 'src/app/services/storage-session.service';
-import { Globals2 } from 'src/app/service/globals';
+import { StorageSessionService } from '../../../../services/storage-session.service';
+import { Globals2 } from '../../../../service/globals';
 import { ReportData, ScopeLimiting } from './Classes';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ApiService } from 'src/app/service/api/api.service';
+import { ApiService } from '../../../../service/api/api.service';
 import { Http, Headers, RequestOptions, RequestMethod } from '@angular/http';
-import { Globals } from 'src/app/services/globals';
-import { EndUserService } from 'src/app/services/EndUser-service';
-import { CommonUtils } from 'src/app/common/utils';
+import { Globals } from '../../../../services/globals';
+import { EndUserService } from '../../../../services/EndUser-service';
+import { CommonUtils } from '../../../../common/utils';
 import { ToastrService } from 'ngx-toastr';
 import { Viewer } from '../bpmn-viewer';
-import { DeleteConfirmComponent } from 'src/app/shared/components/delete-confirm/delete-confirm.component';
+import { DeleteConfirmComponent } from '../../../../shared/components/delete-confirm/delete-confirm.component';
 @Component({
   selector: 'app-input-art',
   templateUrl: './artifact-form.component.html',
@@ -106,7 +107,7 @@ export class ArtifactFormComponent implements OnInit, OnDestroy {
     const eventBus = this.viewer.get('eventBus');
     if (eventBus) {
       eventBus.on('element.click', ($event) => {
-        console.log('element.click', $event)
+
       });
     }
   }
@@ -234,7 +235,6 @@ export class ArtifactFormComponent implements OnInit, OnDestroy {
     // secure
     this.https.post(this.apiService.endPoints.secure, body, this.apiService.setHeaders()).subscribe(
       res => {
-        // console.log(res);
         res = res.json();
         body = {
           ...body, ...res,

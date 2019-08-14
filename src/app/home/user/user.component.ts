@@ -9,10 +9,10 @@ import * as userGroupActions from '../../store/user-admin/user-group/usergroup.a
 import { Observable } from 'rxjs';
 import { userGroup } from 'src/app/store/user-admin/user-group/usergroup.model';
 import { Router, NavigationEnd } from '@angular/router';
-import { StorageSessionService } from 'src/app/services/storage-session.service';
-import { RollserviceService } from 'src/app/services/rollservice.service';
+import { StorageSessionService } from '../../services/storage-session.service';
+import { RollserviceService } from '../../services/rollservice.service';
 import { ToastrService } from 'ngx-toastr';
-import { UseradminService } from 'src/app/services/useradmin.service2';
+import { UseradminService } from '../../services/useradmin.service2';
 import { filter, take } from 'rxjs/operators';
 import {Location} from '@angular/common';
 
@@ -97,13 +97,11 @@ export class UserComponent implements OnInit {
 
   //   this.users$.subscribe(data => {
   //     if (data.length) {
-  //       console.log('users', data);
   //     }
   //   });
 
   //   this.userGroups$.subscribe(data => {
   //     if (data.length) {
-  //       console.log('userGroups-roles', data);
   //     }
   //   });
 

@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, Input } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
@@ -21,7 +21,7 @@ export class MachinesListComponent implements OnInit {
   public sortedAllConnections = [];
   @Input() selectedConnectionType;
   @Input() userAccess;
-  
+
   unsubscribeAll: Subject<boolean> = new Subject<boolean>();
   connectionTypeOptions;
   @Output() selectedMachine: EventEmitter<any> = new EventEmitter();
@@ -39,16 +39,14 @@ export class MachinesListComponent implements OnInit {
           return -1;
         if (a.EXE_TYP > b.EXE_TYP)
           return 1;
-        return 0; 
+        return 0;
       });
     }, err => {
-       console.log(err);
     });
     // this.http.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=MACHINES&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe(res => {
     //   this.machineTypeOptions = res;
     //   this.machineTypeOptions.push({V_PLATFORM_CD:"All"});
     // }, err => {
-    //   console.log(err);
     // });
     this.systemOverview.getMachineConnection$.subscribe(res => {
       this.sortedAllConnections = res;
@@ -60,7 +58,6 @@ export class MachinesListComponent implements OnInit {
   //     this.machines = res;
   //     this.getAllMachineConnections();
   //   }, err => {
-  //      console.log(err);
   //   })
   // }
 
@@ -74,7 +71,6 @@ export class MachinesListComponent implements OnInit {
   //       this.sortedAllConnections = this.connections.sort((a,b) => (a.V_CXN.length > b.V_CXN.length) ? -1 : ((b.V_CXN.length > a.V_CXN.length) ? 1 : 0));
   //     });
   //   }, err => {
-  //      console.log(err);
   //   })
   // }
 
@@ -82,7 +78,7 @@ export class MachinesListComponent implements OnInit {
     this.selectedConnectionType = type.EXE_TYP;
     this.selectedMachine.emit(type.EXE_TYP);
   }
-  
+
   onAddMachineBtnClick() {
     const dialogRef = this.dialog.open(AddPlatformDialogComponent, {
       panelClass: 'app-dialog',
@@ -91,7 +87,6 @@ export class MachinesListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
     });
   }
 
@@ -103,10 +98,9 @@ export class MachinesListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
     });
   }
-  
+
   ngOnDestroy(): void {
     this.unsubscribeAll.next(true);
     this.unsubscribeAll.complete();

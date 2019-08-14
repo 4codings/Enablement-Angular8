@@ -7,7 +7,7 @@ import { SystemAdminRoutingModule } from './system-admin-routing.module';
 import { ConnectionComponent } from './connection/connection.component';
 import { DeployStatusComponent } from './deploy-status/deploy-status.component';
 import { DeploymentComponent } from './deployment/deployment.component';
-import { SharedModule } from 'src/app/shared/shared.module';
+import { SharedModule } from '../../shared/shared.module';
 import { DeploymentsnavbarComponent } from './deploymentsnavbar/deploymentsnavbar.component';
 import { InstallComponent } from './install/install.component';
 import { MachineComponent } from './machine/machine.component';
@@ -46,6 +46,5 @@ import { ManageMachinesComponent } from './overview/dialogs/manage-machines/mana
 })
 export class SystemAdminModule {
   constructor(){
-    console.log("SystemAdminModule => ");
   }
 }

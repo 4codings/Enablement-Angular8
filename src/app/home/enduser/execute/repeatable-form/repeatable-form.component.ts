@@ -6,17 +6,17 @@ import { FormComponent } from '../form/form.component';
 import * as dateFormat from 'dateformat';
 import { CommonUtils } from '../../../../common/utils';
 import { Http } from '@angular/http';
-import { HomeComponent } from 'src/app/home/home.component';
-import { StorageSessionService } from 'src/app/services/storage-session.service';
-import { Globals2 } from 'src/app/service/globals';
-import { Globals } from 'src/app/services/globals';
-import { ApiService } from 'src/app/service/api/api.service';
-import { ConfigServiceService } from 'src/app/services/config-service.service';
-import { EndUserService } from 'src/app/services/EndUser-service';
-import { MatDialog } from '@angular/material';
+import { HomeComponent } from '../../../../home/home.component';
+import { StorageSessionService } from '../../../../services/storage-session.service';
+import { Globals2 } from '../../../../service/globals';
+import { Globals } from '../../../../services/globals';
+import { ApiService } from '../../../../service/api/api.service';
+import { ConfigServiceService } from '../../../../services/config-service.service';
+import { EndUserService } from '../../../../services/EndUser-service';
+import { MatDialog } from '@angular/material/dialog';
 import { filter } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
-import { DeleteConfirmComponent } from 'src/app/shared/components/delete-confirm/delete-confirm.component';
+import { DeleteConfirmComponent } from '../../../../shared/components/delete-confirm/delete-confirm.component';
 
 @Component({
   selector: 'app-repeatable-form',
@@ -39,7 +39,7 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
   PVP_Updated: any = {};
   navigationSubscription;
   dialogRef: any;
-  @ViewChild('rpForm') rpForm: any;
+  @ViewChild('rpForm', { static: false }) rpForm: any;
   constructor(
     public StorageSessionService: StorageSessionService,
     public app: HomeComponent,

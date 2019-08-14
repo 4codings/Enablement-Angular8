@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Http, Response, Headers } from '@angular/http';
 import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 import { HostListener } from "@angular/core";
-import { Globals } from 'src/app/services/globals';
-import { StorageSessionService } from 'src/app/services/storage-session.service';
-import { UseradminService } from 'src/app/services/useradmin.service2';
+import { Globals } from '../../../services/globals';
+import { StorageSessionService } from '../../../services/storage-session.service';
+import { UseradminService } from '../../../services/useradmin.service2';
 
 @Component({
   selector: 'app-connection',
@@ -107,7 +107,7 @@ export class ConnectionComponent implements OnInit {
             name: this.par_nm[i],
             value: this.par_val[i],
           }
-         
+
         }
       });
   }
@@ -138,7 +138,7 @@ export class ConnectionComponent implements OnInit {
       });
   }
 
-  //function to delete a connection  
+  //function to delete a connection
   deleteconn() {
 
     let body = {
@@ -175,7 +175,6 @@ export class ConnectionComponent implements OnInit {
         "REST_Service": "Connection",
         "Verb": "PATCH"
       };
-      console.log("body",body);
       this.http.patch(this.apiUrlPost, body).subscribe(
         res => {
           (res);
@@ -186,9 +185,9 @@ export class ConnectionComponent implements OnInit {
   }
   ngOnInit() {
     this.getconnectiontype();
-    this.data.getJSON().subscribe(data => {  
-           (data.json());     
-             this.Label=data.json();      
+    this.data.getJSON().subscribe(data => {
+           (data.json());
+             this.Label=data.json();
               (this.Label);   })
   }
 }

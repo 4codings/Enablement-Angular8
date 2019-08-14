@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Http,Response,Headers } from '@angular/http';
 
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { MatDialog, MatDialogRef } from '@angular/material';
-import { StorageSessionService } from 'src/app/services/storage-session.service';
-import { ConfigServiceService } from 'src/app/services/config-service.service';
-import { NoAuthDataService } from 'src/app/services/no-auth-data.service';
-import { UseradminService } from 'src/app/services/useradmin.service2';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { StorageSessionService } from '../../../services/storage-session.service';
+import { ConfigServiceService } from '../../../services/config-service.service';
+import { NoAuthDataService } from '../../../services/no-auth-data.service';
+import { UseradminService } from '../../../services/useradmin.service2';
 import { HttpClient } from '@angular/common/http';
 // import { DefineDialogComponent} from './define-dialog/define-dialog.component';
 
@@ -21,7 +21,7 @@ export class ParametersComponent implements OnInit {
   constructor(private router:Router,
     private StorageSessionService:StorageSessionService,
     public dialog: MatDialog,
-    private http:Http,private data:ConfigServiceService, 
+    private http:Http,private data:ConfigServiceService,
     public noAuthData: NoAuthDataService,
     private userAdminService:UseradminService,
     private https:HttpClient) { }
@@ -35,8 +35,8 @@ export class ParametersComponent implements OnInit {
   //     data: this.ROLE_CD,
 
   //   });
-    
-    
+
+
   //   dialog.afterClosed().subscribe(res => {
   //       // (res.json());
   //       if (res) {
@@ -131,7 +131,7 @@ getExecutableCode(EXE_TYPE_R){
               });
             }
 
-//____________________________________________________            
+//____________________________________________________
 getAllExecutable(EXE_CD_R){
   this.EXE_CD_R = EXE_CD_R;
   this.DorA = "Authorize";    //change define to authorize
@@ -139,7 +139,6 @@ getAllExecutable(EXE_CD_R){
     (res:any)=>{
       this.EXE_ALL=JSON.parse(res._body)
       //(this.EXE_ALL);
-      //console.log(this.EXE_ALL['SYNC_FLG']);
       this.F_EXE_CD=this.EXE_ALL['EXE_CD'];
       this.F_EXE_SIGN=this.EXE_ALL['EXE_SIGN'];
       this.F_EXE_OUT_PARAM=this.EXE_ALL['EXE_OUT_PARAMS'];
@@ -171,12 +170,12 @@ getAllExecutable(EXE_CD_R){
       this.DUP_F_EXE_TYP = this.EXE_ALL['EXE_TYP'];
       this.DUP_PLF_CD = this.EXE_ALL['SERVER_CD'].toString();
       this.DUP_PLF_DSC = this.EXE_ALL['SERVER_DSC'];
- 
+
       if(this.F_EXE_IN_ART=="Y")
       {
         this.ipart=true;
       }
-      
+
       if (this.F_EXE_OUT_ART == "Y") {
         this.opart = true;
       }
@@ -194,7 +193,7 @@ getPlatformTypeCode(){
   });
   // (this.PLF_TYPE);
 }
-  
+
   platformDescription(){
     this.data.getPlatformDescription(this.PLF_CD).subscribe(
       res=>{
@@ -258,7 +257,7 @@ getPlatformTypeCode(){
     }
     this.selectedExecutableType = index;
   }
-  
+
   clearSelectedexecutable() {
     this.selectedexecutable = null;
 
@@ -311,7 +310,7 @@ getPlatformTypeCode(){
     // });
   }
 
- 
+
 makeDefine(){
   this.DorA="Define";
 }
@@ -355,12 +354,11 @@ uploadData() {
 delete() {
   if(this.selectedExecutableType != undefined && this.selectedexecutable != undefined) {
     this.https.get('https://enablement.us/Enablement/rest/v1/securedJSON?V_EXE_TYP='+ this.F_EXE_TYP + '&V_EXE_CD='+ this.F_EXE_CD + '&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=Exe&Verb=DELETE').subscribe(res => {
-      console.log("res",res);
       this.getExecutableTypeCode();
       this.clearSelectedexecutable();
     }, err => {
-      console.log("err", err)
-    }); 
+
+    });
   }
 }
 
@@ -383,9 +381,8 @@ add() {
     "V_SERVER_CD":this.PLF_CD,
     "REST_Service":["Exe"],
     "Verb":["PUT"]
-  } 
+  }
   this.https.put('https://enablement.us/Enablement/rest/v1/securedJSON?', data).subscribe(res => {
-    console.log("res",res);
     this.getExecutableTypeCode();
     this.clearSelectedexecutable();
     this.showUpdateBtn = false;
@@ -414,21 +411,20 @@ update() {
     "V_SERVER_CD":this.PLF_CD,
     "REST_Service":["Exe"],
     "Verb":["PUT"]
-  }  
+  }
   this.https.put('https://enablement.us/Enablement/rest/v1/securedJSON?', data).subscribe(res => {
-    console.log("res",res);
     this.getExecutableTypeCode();
     this.clearSelectedexecutable();
     this.showUpdateBtn = false;
     this.showAddBtn = false;
   }, err => {
-    
+
   })
 
 }
 
 executableChange() {
-  
+
   if((this.DUP_F_EXE_CD.toString()).toLowerCase() != this.F_EXE_CD.toLowerCase()) {
     this.showAddBtn = true;
     if(this.showUpdateBtn == true) {
@@ -477,7 +473,7 @@ executableValChange() {
   }
 }
 
- 
+
 //  openDefineDialog(){
 //    this.router.navigateByUrl("defineRole");
 //  }
@@ -489,14 +485,13 @@ executableValChange() {
   this.roleCode();
   this.DorA="Define";
   this.noAuthData.getJSON().subscribe(data => {
-    //console.log(data);
     this.Label = data;
   });
   // (this.ROLE_DATA);
   // this.accessRights();
   // this.roleDescription();
   //this.StorageSessionService.session_check();
-  
+
   }
 
 }

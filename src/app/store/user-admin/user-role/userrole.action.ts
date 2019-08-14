@@ -23,14 +23,14 @@ export const UPDATE_GROUP_IDS = '[ROLE] Update Group Ids';
 export class getUserRole implements Action {
   readonly type = GET_USER_ROLE;
   constructor(public payload: any) {
-    //console.log(this.payload);
+
   }
 }
 
 export class getUserRoleSuccess implements Action {
   readonly type = GET_USER_ROLE_SUCCESS;
   constructor(public payload: userRole[]) {
-    // console.log("roles", payload);
+
   }
 }
 
@@ -38,7 +38,7 @@ export class getUserRoleFail implements Action {
   readonly type = GET_USER_ROLE_FAIL;
 
   constructor(public payload: string) {
-    //console.log('err', payload);
+
   }
 }
 
@@ -51,7 +51,7 @@ export class AddUserRole implements Action {
 export class AddUserRoleSuccess implements Action {
   readonly type = ADD_USER_ROLE_SUCCESS;
   constructor(public payload: any) {
-    // console.log("roles", payload);
+
   }
 }
 
@@ -59,7 +59,7 @@ export class AddUserRoleFail implements Action {
   readonly type = ADD_USER_ROLE_FAIL;
 
   constructor(public payload: string) {
-    console.log('err', payload);
+
   }
 }
 
@@ -72,7 +72,7 @@ export class UpdateUserRole implements Action {
 export class UpdateUserRoleSuccess implements Action {
   readonly type = UPDATE_USER_ROLE_SUCCESS;
   constructor(public payload: any) {
-    // console.log("roles", payload);
+
   }
 }
 
@@ -80,7 +80,7 @@ export class UpdateUserRoleFail implements Action {
   readonly type = UPDATE_USER_ROLE_FAIL;
 
   constructor(public payload: string) {
-    console.log('err', payload);
+
   }
 }
 
@@ -94,7 +94,7 @@ export class DeleteUserRole implements Action {
 export class DeleteUserRoleSuccess implements Action {
   readonly type = DELETE_USER_ROLE_SUCCESS;
   constructor(public res:any, public payload: any) {
-    // console.log("roles", payload);
+
   }
 }
 
@@ -102,7 +102,7 @@ export class DeleteUserRoleFail implements Action {
   readonly type = DELETE_USER_ROLE_FAIL;
 
   constructor(public payload: string) {
-    console.log('err', payload);
+
   }
 }
 
@@ -110,7 +110,7 @@ export class SelectRoleGroupRelation implements Action {
   readonly type = SELECT_ROLE_GROUP_RELATION;
 
   constructor(public payload: any) {
-    //console.log('relation', payload);
+
   }
 }
 
@@ -118,7 +118,7 @@ export class RemoveSelectedRoleGroupRelation implements Action {
   readonly type = REMOVE_SELECTED_ROLE_GROUP_RELATION;
 
   constructor(public payload: any) {
-    //console.log('remove relation', payload);
+
   }
 }
 

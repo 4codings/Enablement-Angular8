@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 
-import { RollserviceService } from 'src/app/services/rollservice.service';
+import { RollserviceService } from '../../../services/rollservice.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -10,7 +10,7 @@ import { RollserviceService } from 'src/app/services/rollservice.service';
   //   styleUrls: ['./user-profile.component.css']
 })
 export class UserProfileComponent implements OnInit {
-  
+
   public selectedProfile = '';
   options = [];
   optionSelected: string = "";
@@ -43,7 +43,6 @@ export class UserProfileComponent implements OnInit {
 
   //Selected option in the profile section
   optionSelecteds(e: any) {
-     //console.log(e);
      this.selectedProfile = e;
     //if(e.split(" ") > 0)
     // this.toastr.info("your profile "+e+"profile");

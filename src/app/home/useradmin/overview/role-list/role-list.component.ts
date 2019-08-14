@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {authorizationTypeOptions} from '../../useradmin.constants';
 import {Subject} from 'rxjs';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import {UseradminService} from '../../../../services/useradmin.service2';
 import {OverviewService} from '../overview.service';
 import {takeUntil} from 'rxjs/operators';

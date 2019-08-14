@@ -1,5 +1,8 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ChangeDetectorRef, ViewEncapsulation, OnDestroy } from '@angular/core';
-import { MatDialog, MatSnackBar, MatTableDataSource, MatSelectChange } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSelectChange } from '@angular/material/select';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
 import { Http, Response, Headers } from '@angular/http';
 import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 import { Router } from '@angular/router'
@@ -9,12 +12,12 @@ import { MONTH } from 'ngx-bootstrap/chronos/units/constants';
 import { trigger } from '@angular/animations';
 import { dboard_secondary } from './dboard_secondary';
 import { HostListener } from "@angular/core";
-import { Globals } from 'src/app/services/globals';
-import { ConfigServiceService } from 'src/app/services/config-service.service';
+import { Globals } from '../../../services/globals';
+import { ConfigServiceService } from '../../../services/config-service.service';
 import { HomeComponent } from '../../home.component';
-import { RollserviceService } from 'src/app/services/rollservice.service';
-import { StorageSessionService } from 'src/app/services/storage-session.service';
-import { OptionalValuesService } from 'src/app/services/optional-values.service';
+import { RollserviceService } from '../../../services/rollservice.service';
+import { StorageSessionService } from '../../../services/storage-session.service';
+import { OptionalValuesService } from '../../../services/optional-values.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -164,7 +167,7 @@ export class DashboardComponent extends dboard_secondary implements OnInit, Afte
     this.serviceValues$.unsubscribe();
   }
   /*  getReportData() {
-  
+
       //this.Table_of_Data = this.StorageSessionService.getCookies('report_table')['RESULT'];
       //(this.dataStored.getCookies('report_table'));
       this.SRVC_CD_Rep = this.StorageSessionService.getCookies('report_table')['SRVC_CD'][0];
@@ -185,9 +188,9 @@ export class DashboardComponent extends dboard_secondary implements OnInit, Afte
         SRC_ID:this.SRC_ID
       };
       (obj);
-  
+
       //(JSON.parse(this.Table_of_Data1[0]));
-  
+
       //this.columnsToDisplay = Object.keys(JSON.parse(this.Table_of_Data1[0]));
     }*/
 

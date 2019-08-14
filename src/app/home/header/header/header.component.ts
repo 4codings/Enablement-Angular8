@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Router, ActivatedRoute } from "@angular/router";
-import { UserService } from 'src/app/core/user.service';
-import { OptionalValuesService } from 'src/app/services/optional-values.service';
-import { ApiService } from 'src/app/service/api/api.service';
+import { UserService } from '../../../core/user.service';
+import { OptionalValuesService } from '../../../services/optional-values.service';
+import { ApiService } from '../../../service/api/api.service';
 import { RollserviceService } from '../../../services/rollservice.service';
 
 

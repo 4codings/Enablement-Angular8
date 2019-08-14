@@ -7,7 +7,7 @@ import {UseradminService} from '../../../../services/useradmin.service2';
 import {Actions, ofType} from '@ngrx/effects';
 import * as userRoleActions from '../../../../store/user-admin/user-role/userrole.action';
 import {take, tap} from 'rxjs/operators';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-edit-role',
