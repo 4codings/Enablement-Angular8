@@ -65,7 +65,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   public isNoneFlow = false;
   @ViewChild('file', { static: false })
   private file: any;
-  @ViewChild('processForm', { static: true }) processForm: any;
+  @ViewChild('processForm', { static: false }) processForm: any;
   @ViewChild('treesidenav', { static: true }) treesidenav: any;
   changingValue: Subject<boolean> = new Subject();
   private currentXml: any;
