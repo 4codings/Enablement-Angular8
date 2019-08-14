@@ -255,6 +255,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   gantt = false;
   bar = false;
   pie = false;
+  file_path: any;
 
   constructor(
     private httpClient: HttpClient,
@@ -344,6 +345,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     });
     this.httpClient.get('../../../../assets/control-variable.json').subscribe(res => {
       this.ctrl_variables = res;
+      this.file_path = this.ctrl_variables.bpmn_file_path;
     });
     this.url = this.apiService.endPoints.securedJSON;
 
@@ -1260,20 +1262,20 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       }
       case 'Edit': {
         console.log('selected', this.selectedItem);
-        if (this.isMonitor) {
-          this.modeler = new Modeler({
-            container: '#canvas',
-            width: '90%',
-            height: '500px',
-            additionalModules: [
-              PropertiesPanelModule,
-              OriginalPropertiesProvider,
-              { [InjectionNames.bpmnPropertiesProvider]: ['type', OriginalPropertiesProvider.propertiesProvider[1]] },
-              // { [InjectionNames.propertiesProvider]: ['type', CustomPropsProvider] },
-            ]
-          });
-          this.onTitleClick(this.selectedItem, false);
-        }
+        // if (this.isMonitor) {
+        //   this.modeler = new Modeler({
+        //     container: '#canvas',
+        //     width: '90%',
+        //     height: '500px',
+        //     additionalModules: [
+        //       PropertiesPanelModule,
+        //       OriginalPropertiesProvider,
+        //       { [InjectionNames.bpmnPropertiesProvider]: ['type', OriginalPropertiesProvider.propertiesProvider[1]] },
+        //       // { [InjectionNames.propertiesProvider]: ['type', CustomPropsProvider] },
+        //     ]
+        //   });
+        //   this.onTitleClick(this.selectedItem, false);
+        // }
         this.isMonitor = false;
         this.editProcessFlag = true;
         this.showRightIcon = true;

@@ -116,7 +116,7 @@
               <div id="canvas"></div>
             </div>
             <div *ngIf="isMonitor" fxFlex="100" [ngClass]="opened?'stage-show':'stage-hide'">
-              <app-viewer [parentapp]="ApplicationCD" [parentpro]="ProcessCD">
+              <app-viewer [parentapp]="ApplicationCD" [parentpro]="ProcessCD" [file_path]="file_path">
               </app-viewer>
             </div>
 
@@ -483,7 +483,8 @@
               <label class="m-t-10">{{Label['EXECUTABLE_TYPES']}}</label>
               <select [(ngModel)]="selectedExecutableType" (click)="getAllExecutableTypes()"
                 (change)="updateselectedExecutableType($event.target.value)">
-                <option *ngIf="!executableTypesData.length" [value]="selectedExecutableType">{{selectedExecutableType}}</option>
+                <option *ngIf="!executableTypesData.length" [value]="selectedExecutableType">{{selectedExecutableType}}
+                </option>
                 <option *ngFor="let exeType of executableTypesData " [value]="exeType">
                   {{ exeType}}
                 </option>
@@ -492,7 +493,8 @@
                 <mat-divider></mat-divider>
               </div>
               <label>{{Label['EXECUTABLES']}}</label>
-              <select [(ngModel)]="selectedExecutable" (click)="getExecutablesForSelctedExecutableType()" (change)="updateselectedExecutable($event.target.value)">
+              <select [(ngModel)]="selectedExecutable" (click)="getExecutablesForSelctedExecutableType()"
+                (change)="updateselectedExecutable($event.target.value)">
                 <option value="">{{Label['PLEASE_SELECT']}}</option>
                 <option *ngFor="let executable of executablesData " [value]="executable">
                   {{ executable}}
