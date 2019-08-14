@@ -10,7 +10,7 @@
       </label>
       <label *ngIf="!item.children" class="form-check-label child-color"
         [ngClass]="(item.text == selectedProcess && item.value == selectedApp)?'active-menu':''"
-        (click)="onTitleClick(item)">
+        (click)="onTitleClick(item,false)">
         {{item.text}}
       </label>
       <label *ngIf="item.children" class="form-check-label">
@@ -112,10 +112,14 @@
             </a>
           </div>
           <div fxFlex="100" fxLayout="column">
-            <div fxFlex="100" id="canvas" [ngClass]="opened?'stage-show':'stage-hide'">
+            <div *ngIf="!isMonitor" fxFlex="100" [ngClass]="opened?'stage-show':'stage-hide'">
+              <div id="canvas"></div>
             </div>
-            <!-- <div fxFlex="100" id="viewer" [ngClass]="opened?'stage-show':'stage-hide'">
-            </div> -->
+            <div *ngIf="isMonitor" fxFlex="100" [ngClass]="opened?'stage-show':'stage-hide'">
+              <app-viewer [parentapp]="ApplicationCD" [parentpro]="ProcessCD">
+              </app-viewer>
+            </div>
+
             <div *ngIf="!isMonitor" fxFlex="100">
               <div class="dynamicFormContent">
                 <!-- <h3 style="text-align: center;" *ngIf="resFormData!='' &&  resFormData!=undefined">

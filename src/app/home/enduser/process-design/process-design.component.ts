@@ -25,7 +25,6 @@ import { schedule } from './schd_data';
 import { MatTableDataSource, MatDialog } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 import { DialogScheduleComponent } from 'src/app/shared/components/dialog-schedule/dialog-schedule.component';
-import { Viewer } from '../execute/bpmn-viewer';
 
 export class ReportData {
   public RESULT: string;
@@ -53,7 +52,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   public treeopened: boolean = true;
   public showRightIcon = false;
   private modeler: any;
-  private viewer: any;
   private url: string;
   private downloadUrl: string;
   private user: any;
@@ -145,6 +143,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   isSequenceCreatedChangedFlag = false;
   isEditApplicationFlag = false;
   editProcessFlag = false;
+  addUpdateSequenceFlag = false;
+  deleteUpdateSequenceFlag = false; // used to call update sequence api once only not with the service call again while delete sequence
+  addUpdateServiceFlag = false; // to call update  api for service (i.e defined service) and not put api 
   oldAppId = '';
   oldTaskId = '';
   oldIconType = '';
@@ -209,7 +210,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   processName: string = '';
   documentation: string = '';
   oldStateId: any = '';
-
+  old_srvc_cd: any = '';
   todaysDate: any = new Date();
   currentDate: any = new Date();
   afterFiveDays: any = new Date(this.currentDate.setYear(this.currentDate.getYear() + 5));
@@ -437,9 +438,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             this.isSequenceFlow = false;
             this.showAllTabFlag = false;
           }
-          if ($event && $event.element && ['bpmn:Process', 'label'].indexOf($event.element.type) === -1) {
+          else if ($event && $event.element && ['bpmn:Process', 'label'].indexOf($event.element.type) === -1) {
             this.opened = true;
-            // this.showAllTabFlag = true;
             this.showRightIcon = true;
             this.processName = businessObject.name ? businessObject.name : '';
             if (businessObject.documentation && businessObject.documentation.length) {
@@ -458,7 +458,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
               this.oldIconType = $event.element.type;
               this.oldTaskId = $event.element.id.replace(new RegExp('_', 'g'), ' ');
             } else {
+              // source Id and target id are referenced for sequence flow while for task,events and gateway input/output property is used 
               if (sourceId === "" && targetId === "") {
+                this.deleteUpdateSequenceFlag = true;
                 this.deleteSequence(this.generalId);
               } else {
                 this.isSequenceCreatedChangedFlag = true;
@@ -486,6 +488,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                   this.isDefaultFlow = false;
                   this.isNoneFlow = true;
                 }
+                if (!this.addUpdateSequenceFlag) {
+                  this.updatesequenceFlow();
+                }
               }
             }
             this.selectedService = this.generalId;
@@ -500,61 +505,64 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             // const vPrcsCd = 'V_PRCS_CD';
             const vAppCd = this.selectedApp.replace(new RegExp('_', 'g'), ' ');
             const vPrcsCd = this.selectedProcess.replace(new RegExp('_', 'g'), ' ');
-            if ($event.element.type === 'bpmn:SequenceFlow') {
-              // this.showAllTabFlag = false;
-              const data: any = {
-                REST_Service: 'SequenceFlow',
-                V_APP_CD: vAppCd,
-                V_PRDCR_APP_CD: vAppCd,
-                V_PRCS_CD: vPrcsCd,
-                V_PRDCR_PRCS_CD: vPrcsCd,
-                V_SRC_CD: this.user.SRC_CD,
-                V_PRDCR_SRC_CD: this.user.SRC_CD,
-                V_PRDCR_SRVC_CD: sourceId,
-                V_SRVC_CD: targetId,
-                V_ORCH_CD: objectId,
-                V_ORCH_DSC: this.documentation,
-                V_TRNSN_TYP: 'None',
-                V_TRNSN_CND: "",
-                V_CONT_ON_ERR_FLG: 'N',
-                V_USR_NM: this.user.USR_NM,
-                Verb: 'PUT'
-              };
+            if (!this.deleteUpdateSequenceFlag && !this.addUpdateServiceFlag) {
+              if ($event.element.type === 'bpmn:SequenceFlow') {
+                // this.showAllTabFlag = false;
+                const data: any = {
+                  REST_Service: 'SequenceFlow',
+                  V_APP_CD: vAppCd,
+                  V_PRDCR_APP_CD: vAppCd,
+                  V_PRCS_CD: vPrcsCd,
+                  V_PRDCR_PRCS_CD: vPrcsCd,
+                  V_SRC_CD: this.user.SRC_CD,
+                  V_PRDCR_SRC_CD: this.user.SRC_CD,
+                  V_PRDCR_SRVC_CD: sourceId,
+                  V_SRVC_CD: targetId,
+                  V_ORCH_CD: objectId,
+                  V_ORCH_DSC: this.documentation,
+                  V_TRNSN_TYP: 'None',
+                  V_TRNSN_CND: "",
+                  V_CONT_ON_ERR_FLG: 'N',
+                  V_USR_NM: this.user.USR_NM,
+                  Verb: 'PUT'
+                };
 
-              // this.generalId = targetId;
-              // this.getAllTabs(targetId);
+                // this.generalId = targetId;
+                // this.getAllTabs(targetId);
 
-              if (!this.flows) {
-                this.flows = {};
-              }
-              this.flows[targetId] = data;
-            } else {
-              this.sequenceFlowtargetId = objectId;
-              this.showAllTabFlag = true;
-              const data: any = {
-                REST_Service: 'Service',
-                V_APP_CD: vAppCd,
-                V_PRCS_CD: vPrcsCd,
-                V_SRC_CD: this.user.SRC_CD,
-                V_SRVC_CD: objectId,
-                V_SRVC_DSC: this.documentation,
-                V_USR_NM: this.user.USR_NM,
-                Verb: 'PUT'
-              };
-
-              // this.generalId = objectId;
-              this.getAllTabs(objectId);
-
-              this.httpClient.post(this.url, data).subscribe(() => {
-                if (objectId && this.flows[objectId]) {
-                  this.uploadLocked = true;
-                  this.httpClient.put(this.url, this.flows[objectId]).subscribe(() => {
-                    delete this.flows[objectId];
-                    this.upload(vAppCd, this.selectedProcess);
-                    this.uploadLocked = false;
-                  }, () => this.uploadLocked = false);
+                if (!this.flows) {
+                  this.flows = {};
                 }
-              });
+                this.flows[targetId] = data;
+              } else {
+                this.addUpdateSequenceFlag = true;
+                this.sequenceFlowtargetId = objectId;
+                this.showAllTabFlag = true;
+                const data: any = {
+                  REST_Service: 'Service',
+                  V_APP_CD: vAppCd,
+                  V_PRCS_CD: vPrcsCd,
+                  V_SRC_CD: this.user.SRC_CD,
+                  V_SRVC_CD: objectId,
+                  V_SRVC_DSC: this.documentation,
+                  V_USR_NM: this.user.USR_NM,
+                  Verb: 'PUT'
+                };
+
+                // this.generalId = objectId;
+                this.getAllTabs(objectId);
+
+                this.httpClient.post(this.url, data).subscribe((res: any) => {
+                  if (objectId && this.flows[objectId]) {
+                    this.uploadLocked = true;
+                    this.httpClient.put(this.url, this.flows[objectId]).subscribe(() => {
+                      delete this.flows[objectId];
+                      this.upload(vAppCd, this.selectedProcess);
+                      this.uploadLocked = false;
+                    }, () => this.uploadLocked = false);
+                  }
+                });
+              }
             }
             setTimeout(() => {
               this.upload(vAppCd, this.selectedProcess);
@@ -577,18 +585,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.closeSchedulePanel();
         });
     }
-
-    // this.viewer = new Viewer({
-    //   container: '#viewer',
-    //   width: '90%',
-    //   height: '400px'
-    // });
-    // const viewereventBus = this.viewer.get('eventBus');
-    // if (viewereventBus) {
-    //   viewereventBus.on('viewereventBus.click', ($event) => {
-    //     console.log('viewereventBus.click', $event)
-    //   });
-    // }
   }
 
   getDocumentation(v_type, v_cd) {
@@ -621,7 +617,13 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     //   this.processName = this.generalId.replace(new RegExp('_', 'g'), ' ');
     // }
     const name = this.processName;
+    if (this.isService) {
+      this.addUpdateServiceFlag = true;
+    } else if (this.isSequenceFlow) {
+      this.addUpdateSequenceFlag = true;
+    }
     if (!this.isApp && this.oldStateId) {
+      this.old_srvc_cd = this.oldStateId;
       let elementRegistry = this.modeler.get('elementRegistry');
       let element = elementRegistry.get(this.oldStateId);
       let modeling = this.modeler.get('modeling');
@@ -636,6 +638,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     if (this.isApp) {
       this.addApplicationOnBE();
     }
+    // on service id update , we do not have to send sequence flow update call to the backend. 
     if (this.isService && !this.isSequenceFlow) {
       this.updateService();
     }
@@ -695,13 +698,13 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     } else if (this.instances === 'unlimited') {
       this.job_instance = -1;
     }
-    let old_srvc_cd = this.oldStateId;
+    // let old_srvc_cd = this.oldStateId;
     const body = {
       'V_APP_CD': this.selectedApp,
       'V_PRCS_CD': this.selectedProcess,
       'V_SRVC_CD': this.selectedService,
       'V_SRVC_DSC': this.documentation,
-      'V_OLD_SRVC_CD': old_srvc_cd.replace(new RegExp('_', 'g'), ' '),
+      'V_OLD_SRVC_CD': this.old_srvc_cd.replace(new RegExp('_', 'g'), ' '),
       'V_EXE_TYP': this.selectedExecutableType,
       'V_EXE_CD': this.selectedExecutable,
       'V_PARAM_NM_IN': this.executableInput,
@@ -853,6 +856,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
               this.generalId = this.oldTaskId;
               this.getAllTabs(this.generalId);
               this.isTaskCreatedFlag = false;
+              this.deleteUpdateSequenceFlag = false;
+              this.addUpdateServiceFlag = false;
+              this.addUpdateSequenceFlag = false;
               document.getElementById('processId').focus();
             }
           }
@@ -1117,7 +1123,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     }
   }
 
-  onTitleClick(item, parentTitleClick?) {
+  onTitleClick(item, parentTitleClick) {
     this.closeSchedulePanel();
     this.onTitleClickNoDelete = true;
     this.isApp = false;
@@ -1186,6 +1192,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     if (!parentTitleClick) {
       this.treesidenav.opened = false;
     }
+    this.selectedItem = item;
   }
 
   onParentMenuItemClick(actionValue, parentValue, selectedItem?) {
@@ -1260,6 +1267,21 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         break;
       }
       case 'Edit': {
+        console.log('selected', this.selectedItem);
+        if (this.isMonitor) {
+          this.modeler = new Modeler({
+            container: '#canvas',
+            width: '90%',
+            height: '500px',
+            additionalModules: [
+              PropertiesPanelModule,
+              OriginalPropertiesProvider,
+              { [InjectionNames.bpmnPropertiesProvider]: ['type', OriginalPropertiesProvider.propertiesProvider[1]] },
+              // { [InjectionNames.propertiesProvider]: ['type', CustomPropsProvider] },
+            ]
+          });
+          this.onTitleClick(this.selectedItem, false);
+        }
         this.isMonitor = false;
         this.editProcessFlag = true;
         this.showRightIcon = true;
@@ -1307,25 +1329,16 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         break;
       }
       case 'Monitor': {
-        // this.isMonitor = true;
-        // this.newScheduleView = false;
-        // this.httpClient.get('/assets/bpmn/newDiagram.bpmn', {
-        //   headers: { observe: 'response' }, responseType: 'text'
-        // }).subscribe(
-        //   (x: any) => {
-        //     this.viewer.importXML(x, this.handleError.bind(this));
-        //   },
-        //   this.handleError.bind(this)
-        // );
-
-        // this.editProcessFlag = false;
-        // this.showRightIcon = false;
-        // this.opened = false;
-        // this.showAllTabFlag = false;
-        // this.isApp = false;
-        // this.isProcess = false;
-        // this.isService = false;
-        // this.onTitleClickNoDelete = true;
+        this.isMonitor = true;
+        this.newScheduleView = false;
+        this.editProcessFlag = false;
+        this.showRightIcon = false;
+        this.opened = false;
+        this.showAllTabFlag = false;
+        this.isApp = false;
+        this.isProcess = false;
+        this.isService = false;
+        this.onTitleClickNoDelete = true;
         break;
       }
       case 'Approve': {
