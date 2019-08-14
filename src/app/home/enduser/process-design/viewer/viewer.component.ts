@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { StorageSessionService } from 'src/app/services/storage-session.service';
+import { StorageSessionService } from '../../../../services/storage-session.service';
 import { Router } from '@angular/router';
-import { Globals } from 'src/app/services/globals';
-import { ApiService } from 'src/app/service/api/api.service';
+import { Globals } from '../../../../services/globals';
+import { ApiService } from '../../../../service/api/api.service';
 import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { Viewer } from '../../execute/bpmn-viewer';

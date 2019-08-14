@@ -25,7 +25,7 @@ import { schedule } from './schd_data';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
-import { DialogScheduleComponent } from 'src/app/shared/components/dialog-schedule/dialog-schedule.component';
+import { DialogScheduleComponent } from '../../../shared/components/dialog-schedule/dialog-schedule.component';
 
 export class ReportData {
   public RESULT: string;
@@ -63,10 +63,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   public isConditionalFlow = false;
   public isDefaultFlow = false;
   public isNoneFlow = false;
-  @ViewChild('file')
+  @ViewChild('file', { static: false })
   private file: any;
-  @ViewChild('processForm') processForm: any;
-  @ViewChild('treesidenav') treesidenav: any;
+  @ViewChild('processForm', { static: true }) processForm: any;
+  @ViewChild('treesidenav', { static: true }) treesidenav: any;
   changingValue: Subject<boolean> = new Subject();
   private currentXml: any;
   private uploadLocked: boolean;
@@ -251,7 +251,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
 
   ApplicationCD = '';
   ProcessCD = '';
-  @ViewChild('processId') processID: ElementRef;
+  @ViewChild('processId', { static: false }) processID: ElementRef;
   gantt = false;
   bar = false;
   pie = false;
