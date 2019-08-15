@@ -35,6 +35,12 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // myControl = new FormControl();
   columnsToDisplayKeys: string[];
+  columnsPreferences: string[] = ['chartType', 'xaxisData', 'yaxisData', 'unit',
+   'scale', 'ystepSize', 'gridlineWidth', 'backgroundColor', 'borderColor', 'fillBackground',
+    'lineTension', 'pointSize', 'animations', 'pointStyle', 'lineStyle','addRow'];
+  dataPreferences = [{chartType: "",xaxisData:"",yaxisData:"",unit:"",scale:"",ystepSize:"",gridlineWidth:"",
+                      backgroundColor:"",borderColor:"",fillBackground:"",lineTension:"",pointSize:"",animations:"",
+                      pointStyle:"",lineStyle:"",addRow:""}];
   domain_name = this.globals.domain_name;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(BaseChartDirective, {}) chart: BaseChartDirective;
@@ -82,28 +88,28 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log(offset);
     this.chartposition[0] = offset;
     console.log(this.chartposition[0]);
-    this.setchartpreferences();
+    this.setchartpreferences('all');
   }
   dragEndBar(event) {
     var offset = { ...(<any>event.source._dragRef)._passiveTransform };
     console.log(offset);
     this.chartposition[1] = offset;
     console.log(this.chartposition[1]);
-    this.setchartpreferences();
+    this.setchartpreferences('all');
   }
   dragEndPie(event) {
     var offset = { ...(<any>event.source._dragRef)._passiveTransform };
     console.log(offset);
     this.chartposition[2] = offset;
     console.log(this.chartposition[2]);
-    this.setchartpreferences();
+    this.setchartpreferences('all');
   }
   dragEndDoughnut(event) {
     var offset = { ...(<any>event.source._dragRef)._passiveTransform };
     console.log(offset);
     this.chartposition[3] = offset;
     console.log(this.chartposition[3]);
-    this.setchartpreferences();
+    this.setchartpreferences('all');
   }
   onMonitorClick() {
     console.log('monitor clicked')
@@ -287,7 +293,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
           this.updateDoughnutChart();
           break;
       }
-      this.setchartpreferences();
+      this.setchartpreferences('all');
     }
     else {
       this._snackBar.open("Data already exist in table", 'Ok', {
@@ -323,7 +329,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.updateDoughnutChart();
         break;
     }
-    this.setchartpreferences();
+    this.setchartpreferences('all');
   }
   getReportData() {
 
@@ -923,46 +929,52 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   //__________________________Set Preferences_________________________________
-  setchartpreferences() {
+  setchartpreferences(pref,val?) {
     var cp = [];
     for (let i = 0; i < this.chartposition.length; i++) {
       cp.push(Object.values(this.chartposition[i]));
     }
     cp = [].concat.apply([], cp);
     console.log(cp);
+    if (pref === 'all') {
+      this.userprefs['backgroundcolor'] = this._backgroundColor;
+      this.userprefs['bordercolor'] = this._borderColor;
+      this.userprefs['fill'] = this._fill.toString().toLocaleUpperCase();
+      this.userprefs['pointstyle'] = this._pointstyle;
+      this.userprefs['linetension'] = this._linetension;
+      this.userprefs['animations'] = this._animations;
+      this.userprefs['pointradius'] = this._pointradius;
+      this.userprefs['linestyle'] = this._linestyle;
+      this.userprefs['gridlinedashed'] = this._gridborder.toString().toLocaleUpperCase();
+      this.userprefs['linewidth'] = this._gridlinewidth;
+      this.userprefs['yautoskip'] = this._yaxisAutoskip.toString().toLocaleUpperCase();
+      this.userprefs['linexaxis'] = this._xaxis_sel_line;
+      this.userprefs['lineyaxis'] = this._yaxis_sel_line;
+      this.userprefs['barxaxis'] = this._xaxis_sel_bar;
+      this.userprefs['baryaxis'] = this._yaxis_sel_bar;
+      this.userprefs['piexaxis'] = this._xaxis_sel_pie;
+      this.userprefs['pieyaxis'] = this._yaxis_sel_pie;
+      this.userprefs['doughnutxaxis'] = this._xaxis_sel_doughnut;
+      this.userprefs['doughnutyaxis'] = this._yaxis_sel_doughnut;
+      this.userprefs['selectedchart'] = this.selectedchart;
+      this.userprefs['personalizationtable'] = this.personalizationtable;
+      this.userprefs['chartposition'] = cp;
+      console.log(this.userprefs);
+      this.V_PRF_NM = Object.keys(this.userprefs);
+      this.V_PRF_VAL = Object.values(this.userprefs);
+      for (let j = 0; j < this.V_PRF_NM.length; j++) {
+        this.data.setchartstyling(this.UNIQUE_ID, this.SRC_ID, this.V_PRF_NM[j], this.V_PRF_VAL[j]).subscribe(
+          () => {
 
-    this.userprefs['backgroundcolor'] = this._backgroundColor;
-    this.userprefs['bordercolor'] = this._borderColor;
-    this.userprefs['fill'] = this._fill.toString().toLocaleUpperCase();
-    this.userprefs['pointstyle'] = this._pointstyle;
-    this.userprefs['linetension'] = this._linetension;
-    this.userprefs['animations'] = this._animations;
-    this.userprefs['pointradius'] = this._pointradius;
-    this.userprefs['linestyle'] = this._linestyle;
-    this.userprefs['gridlinedashed'] = this._gridborder.toString().toLocaleUpperCase();
-    this.userprefs['linewidth'] = this._gridlinewidth;
-    this.userprefs['yautoskip'] = this._yaxisAutoskip.toString().toLocaleUpperCase();
-    this.userprefs['linexaxis'] = this._xaxis_sel_line;
-    this.userprefs['lineyaxis'] = this._yaxis_sel_line;
-    this.userprefs['barxaxis'] = this._xaxis_sel_bar;
-    this.userprefs['baryaxis'] = this._yaxis_sel_bar;
-    this.userprefs['piexaxis'] = this._xaxis_sel_pie;
-    this.userprefs['pieyaxis'] = this._yaxis_sel_pie;
-    this.userprefs['doughnutxaxis'] = this._xaxis_sel_doughnut;
-    this.userprefs['doughnutyaxis'] = this._yaxis_sel_doughnut;
-    this.userprefs['selectedchart'] = this.selectedchart;
-    this.userprefs['personalizationtable'] = this.personalizationtable;
-    this.userprefs['chartposition'] = cp;
-    console.log(this.userprefs);
-    this.V_PRF_NM = Object.keys(this.userprefs);
-    this.V_PRF_VAL = Object.values(this.userprefs);
-    for (let j = 0; j < this.V_PRF_NM.length; j++) {
-      this.data.setchartstyling(this.UNIQUE_ID, this.SRC_ID, this.V_PRF_NM[j], this.V_PRF_VAL[j]).subscribe(
+          });
+      }
+    }
+    else{
+      this.data.setchartstyling(this.UNIQUE_ID, this.SRC_ID, pref, val).subscribe(
         () => {
-
+          
         });
     }
-
 
   }
   settablepreferences() {
@@ -1242,7 +1254,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.https.post(this.apiService.endPoints.secureProcessReport, body, this.apiService.setHeaders())
       .subscribe(
         res => {
-          //(res.json());
+          console.log(res.json());
           this.dataStored.setCookies("report_table", res.json());
 
         }

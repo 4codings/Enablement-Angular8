@@ -573,6 +573,255 @@
     <button mat-raised-button color="primary" (click)="setchartpreferences();updatechart();">Update</button>
   </div>
 </div>
+
+
+<table mat-table [dataSource]="dataPreferences" matPreferences id='matPreferences' class="mat-elevation-z8">
+  <ng-container matColumnDef="chartType">
+    <th mat-header-cell *matHeaderCellDef>Chart Type</th>
+    <td mat-cell *matCellDef="let element"></td>
+  </ng-container>
+
+  <ng-container matColumnDef="xaxisData">
+    <th mat-header-cell *matHeaderCellDef>X-Axis Dataset</th>
+    <td mat-cell *matCellDef="let element">
+      <mat-form-field style="width:100%">
+        <mat-select placeholder="Select X-axis Dataset" (selectionChange)="updateBarChart();setchartpreferences();"
+          [(value)]="_xaxis_sel_doughnut">
+          <mat-option style="text-align: center;   height: 25px;   color: black; " value="">None</mat-option>
+          <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" value="{{items}}">
+            {{items}} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="yaxisData">
+    <th mat-header-cell *matHeaderCellDef>Y-Axis Dataset</th>
+    <td mat-cell *matCellDef="let element">
+      <mat-form-field style="width:100%">
+        <mat-select placeholder="Select Y-axis Dataset" (selectionChange)="updateLineChart();setchartpreferences();"
+          multiple [(value)]="_yaxis_sel_line">
+          <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" [value]="items">
+            {{items}} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="unit">
+    <th mat-header-cell *matHeaderCellDef>Unit of Measure</th>
+    <td mat-cell *matCellDef="let element">
+      <mat-form-field style="width:100%">
+        <input type="text" placeholder="Unit of measure" (input)="updateLineChart()" (blur)="setchartpreferences();"
+          matInput [matAutocomplete]="auto" [(ngModel)]="_yaxisCB_line">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option (click)="updateLineChart();setchartpreferences();"
+            style="text-align: center;height: 25px;color: black; " value="">None</mat-option>
+          <mat-option (click)="updateLineChart();setchartpreferences();" *ngFor="let option of yaxiscallbacks"
+            value="{{option}}">
+            {{option}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="scale">
+    <th mat-header-cell *matHeaderCellDef>Scale of Measure</th>
+    <td mat-cell *matCellDef="let element">
+      <mat-form-field style="width:100%">
+        <input type="text" placeholder="Scale of measure" matInput [matAutocomplete]="auto1" [(ngModel)]="myobj.mySoM"
+          name="mySoM">
+        <mat-autocomplete #auto1="matAutocomplete">
+          <mat-option value="10"> 10 </mat-option>
+          <mat-option value="100"> 100 </mat-option>
+          <mat-option value="1000"> 1000 </mat-option>
+          <mat-option value="10000"> 10000 </mat-option>
+          <mat-option value="100000"> 100000 </mat-option>
+          <mat-option value="1000000"> Millions </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="ystepSize">
+    <th mat-header-cell *matHeaderCellDef>Y-step size</th>
+    <td mat-cell *matCellDef="let element">
+      <mat-form-field>
+        <input matInput type="number" placeholder="Y-Step Size" min=0 [(ngModel)]="_yaxisstepSize">
+      </mat-form-field>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="gridlineWidth">
+    <th mat-header-cell *matHeaderCellDef>Grid Line Width</th>
+    <td mat-cell *matCellDef="let element">
+      <mat-form-field>
+        <input matInput type="number" placeholder="Grid line width" min=1 [(ngModel)]="_gridlinewidth">
+      </mat-form-field>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="backgroundColor">
+    <th mat-header-cell *matHeaderCellDef>Background Color</th>
+    <td mat-cell *matCellDef="let element">
+      <div fxLayout="row">
+        <div fxFlex="80">Background Color</div>
+        <div fxLayoutAlign="center center">
+          <input class="colorselector" [(value)]="_backgroundColor" [style.background]="_backgroundColor"
+            [(colorPicker)]="_backgroundColor" [cpAlphaChannel]="'always'" [cpOutputFormat]="'rgba'"
+            [cpOKButton]="true" [cpCancelButton]="true" [cpSaveClickOutside]="true"
+            [cpOKButtonClass]="'btn btn-primary btn-xs'" [cpCancelButtonClass]="'btn btn-primary btn-xs'" />
+        </div>
+      </div>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="borderColor">
+    <th mat-header-cell *matHeaderCellDef>Border Color</th>
+    <td mat-cell *matCellDef="let element">
+      <div fxLayout="row">
+        <div fxFlex="80">Border Color</div>
+        <div fxLayoutAlign="center center">
+          <input class="colorselector" [(value)]="_borderColor" [style.background]="_borderColor"
+            [(colorPicker)]="_borderColor" [cpAlphaChannel]="'always'" [cpOutputFormat]="'rgba'" [cpOKButton]="true"
+            [cpCancelButton]="true" [cpSaveClickOutside]="true" [cpOKButtonClass]="'btn btn-primary btn-xs'"
+            [cpCancelButtonClass]="'btn btn-primary btn-xs'" />
+        </div>
+      </div>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="fillBackground">
+    <th mat-header-cell *matHeaderCellDef>Fill Background</th>
+    <td mat-cell *matCellDef="let element">
+      <div fxLayout="row">
+        <div fxFlex="80">Fill Background</div>
+        <div fxLayoutAlign="center center">
+          <mat-slide-toggle class="example-margin" color="primary" [(ngModel)]="_fill"></mat-slide-toggle>
+        </div>
+      </div>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="lineTension">
+    <th mat-header-cell *matHeaderCellDef>Line Tension</th>
+    <td mat-cell *matCellDef="let element">
+      <div fxLayout="column" style="text-align:center">
+        <div fxLayoutAlign="center">Line Tension</div>
+        <div>
+          <mat-button-toggle-group [(value)]="_linetension">
+            <mat-button-toggle value="none">None</mat-button-toggle>
+            <mat-button-toggle value="mild">Mild</mat-button-toggle>
+            <mat-button-toggle value="full">Full</mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+      </div>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="pointSize">
+    <th mat-header-cell *matHeaderCellDef>Point Size</th>
+    <td mat-cell *matCellDef="let element">
+      <div fxLayout="column" style="text-align:center">
+        <div fxLayoutAlign="center">Point Size</div>
+        <div>
+          <mat-button-toggle-group [(value)]="_pointradius">
+            <mat-button-toggle value="small">Small</mat-button-toggle>
+            <mat-button-toggle value="normal">Normal</mat-button-toggle>
+            <mat-button-toggle value="large">Large</mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+      </div>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="animations">
+    <th mat-header-cell *matHeaderCellDef>Animations</th>
+    <td mat-cell *matCellDef="let element">
+      <mat-form-field style="width:100%">
+        <mat-select placeholder="Animations" [(value)]="_animations">
+          <mat-option style="text-align:center;" value="linear"> linear </mat-option>
+          <mat-option style="text-align:center;" value="easeInOutQuad"> easeInOutQuad </mat-option>
+          <mat-option style="text-align:center;" value="easeInCubic"> easeInCubic </mat-option>
+          <mat-option style="text-align:center;" value="easeOutCubic"> easeOutCubic </mat-option>
+          <mat-option style="text-align:center;" value="easeInQuad"> easeInQuad </mat-option>
+          <mat-option style="text-align:center;" value="easeOutQuad"> easeOutQuad </mat-option>
+          <mat-option style="text-align:center;" value="easeInQuart"> easeInQuart </mat-option>
+          <mat-option style="text-align:center;" value="easeOutQuart"> easeOutQuart </mat-option>
+          <mat-option style="text-align:center;" value="easeInSine"> easeInSine </mat-option>
+          <mat-option style="text-align:center;" value="easeOutSine"> easeOutSine </mat-option>
+          <mat-option style="text-align:center;" value="easeInElastic"> easeInElastic </mat-option>
+          <mat-option style="text-align:center;" value="easeInBack"> easeInBack </mat-option>
+          <mat-option style="text-align:center;" value="easeOutBack"> easeOutBack </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="pointStyle">
+    <th mat-header-cell *matHeaderCellDef>Point Style</th>
+    <td mat-cell *matCellDef="let element">
+      <mat-form-field style="width:100%;cursor: pointer;">
+        <input matInput placeholder="Point Style" [(ngModel)]="_pointstyle" [matAutocomplete]="auto1" class="autosel">
+        <mat-autocomplete #auto1="matAutocomplete">
+          <mat-option style="text-align:center;" value="circle">
+            <mat-icon>fiber_manual_record</mat-icon> Circle
+          </mat-option>
+          <mat-option style="text-align:center;" value="triangle">
+            <mat-icon>change_history</mat-icon> Triangle
+          </mat-option>
+          <mat-option style="text-align:center;" value="rect">
+            <mat-icon>crop_7_5</mat-icon> Rectangle
+          </mat-option>
+          <mat-option style="text-align:center;" value="rectRounded">
+            <mat-icon>check_box_outline_blank</mat-icon> RectRounded
+          </mat-option>
+          <mat-option style="text-align:center;" value="rectRot">
+            <mat-icon>layers</mat-icon>RectRot
+          </mat-option>
+          <mat-option style="text-align:center;" value="cross">
+            <mat-icon>add</mat-icon> Cross
+          </mat-option>
+          <mat-option style="text-align:center;" value="crossRot">
+            <mat-icon>clear</mat-icon> CrossRot
+          </mat-option>
+          <mat-option style="text-align:center;" value="star">
+            <mat-icon>ac_unit</mat-icon> Star
+          </mat-option>
+        </mat-autocomplete>
+        <mat-icon style="vertical-align: middle" matSuffix>arrow_drop_down</mat-icon>
+      </mat-form-field>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="lineStyle">
+    <th mat-header-cell *matHeaderCellDef>Line Style</th>
+    <td mat-cell *matCellDef="let element">
+      <mat-form-field style="width:100%;cursor: pointer;">
+        <input matInput placeholder="Line Style" [(ngModel)]="_linestyle" [matAutocomplete]="auto" class="autosel">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option style="text-align:center;" value="solid">
+            <mat-icon>remove</mat-icon>Solid
+          </mat-option>
+          <mat-option style="text-align:center;" value="dashed">
+            <mat-icon>more_horiz</mat-icon>Dashed
+          </mat-option>
+        </mat-autocomplete>
+        <mat-icon style="vertical-align: middle" matSuffix>arrow_drop_down</mat-icon>
+      </mat-form-field>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="addRow">
+    <th mat-header-cell *matHeaderCellDef><mat-icon aria-hidden="false" aria-label="Add a Row">add_circle</mat-icon></th>
+    <td mat-cell *matCellDef="let element"></td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnsPreferences"></tr>
+  <tr mat-row *matRowDef="let row; columns: columnsPreferences;"></tr>
+
+</table>
 <!-- --------------------Chart------------------------- -->
 
 <!-- ________________________________________________________________________ -->

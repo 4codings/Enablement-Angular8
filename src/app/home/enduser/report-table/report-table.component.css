@@ -239,3 +239,14 @@ table {
 th.mat-sort-header {
   color: black;
 }
+#matPreferences {
+  overflow-x: auto;
+  width: 100%;
+}
+#matPreferences th{
+  background-color: rgb(235, 235, 235);
+  border: 1px solid gray;
+}
+#matPreferences td{
+  border: 1px solid gray;
+}

@@ -2034,7 +2034,10 @@ this.find_process(this.ApplicationCD, this.ProcessCD, 'Paused');
       '&REST_Service=ScheduledJobs&Verb=GET').subscribe(dataResult => {
         let rm_f: boolean;
         let ps_r: boolean;
-
+        console.log(this.apiUrlGet + 'V_SRC_CD=' + this.V_SRC_CD +
+        '&V_APP_CD=' + ApplicationCD + '&V_PRCS_CD=' + ProcessCD + '&V_USR_NM=' +
+        this.V_USR_NM + '&V_TRIGGER_STATE=' + StatusCD +
+        '&REST_Service=ScheduledJobs&Verb=GET');
         if (this.isEmpty(dataResult)) {
         } else {
           console.log("dataResult.SRVC_CD", dataResult.SRVC_CD);
