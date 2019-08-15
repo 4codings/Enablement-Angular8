@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { ConfigServiceService } from 'src/app/services/config-service.service';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ConfigServiceService } from '../../../../../services/config-service.service';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -24,7 +24,7 @@ export class EditExeTypeDialogComponent implements OnInit {
     });
     this.PLF_Data = this.data.exeData.V_SERVER_CD.toString();
   }
-  
+
   onBtnCancelClick(): void {
     this.dialogRef.close();
   }
@@ -48,18 +48,17 @@ export class EditExeTypeDialogComponent implements OnInit {
       "V_SERVER_CD":this.PLF_Data,
       "REST_Service":["Exe"],
       "Verb":["PUT"]
-    }  
+    }
     this.http.put('https://enablement.us/Enablement/rest/v1/securedJSON?', data).subscribe(res => {
-      console.log("res",res);
       this.dialogRef.close(true);
     }, err => {
-      
+
     })
-  
+
   }
 
   platformDescription(){
-    
+
     this.config.getPlatformDescription(this.PLF_Data).subscribe(
       res=>{
         this.PLF_CD=res.json();

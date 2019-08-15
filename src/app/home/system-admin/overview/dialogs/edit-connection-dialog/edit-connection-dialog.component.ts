@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
-import { ConfigServiceService } from 'src/app/services/config-service.service';
+import { ConfigServiceService } from '../../../../../services/config-service.service';
 
 @Component({
   selector: 'app-edit-connection-dialog',
@@ -14,7 +14,7 @@ export class EditConnectionDialogComponent implements OnInit {
   public V_CXN_CD;
   public V_CXN_DSC;
   public V_CXN_TYP;
-  public DATA; 
+  public DATA;
   PLF_CD:string = "Amazon";
   PLF_DSC:string = 'Apache Tomcat Web Server';
   PLF_TYPE=[];
@@ -38,7 +38,7 @@ export class EditConnectionDialogComponent implements OnInit {
   }
 
   platformDescription(){
-    
+
     this.config.getPlatformDescription(this.PLF_CD).subscribe(
       res=>{
         this.PLF_DATA=res.json();
@@ -48,7 +48,6 @@ export class EditConnectionDialogComponent implements OnInit {
   }
 
   onBtnEditClick(connectionData) {
-    console.log(connectionData);
     let V_PARAM_N = '';
     let V_PARAM_V = '';
     Object.keys(connectionData).forEach((key, index) => {
@@ -59,7 +58,7 @@ export class EditConnectionDialogComponent implements OnInit {
         V_PARAM_V += connectionData[key] + "|"
       }
     })
-    
+
     var data = {
       "V_CXN_CD":connectionData.V_CXN_CD,
       "V_CXN_TYPE":connectionData.V_CXN_TYP,
@@ -71,12 +70,11 @@ export class EditConnectionDialogComponent implements OnInit {
       "REST_Service":["CXN"],
       "Verb":["PUT"]
     }
-    this.http.put('https://enablement.us/Enablement/rest/v1/securedJSON?', data).subscribe(res => {
-      console.log("res",res);
-      this.dialogRef.close(true);
-    }, err => {
-  
-    })
+    // this.http.put('https://enablement.us/Enablement/rest/v1/securedJSON?', data).subscribe(res => {
+    //   this.dialogRef.close(true);
+    // }, err => {
+
+    // })
   }
 
 }

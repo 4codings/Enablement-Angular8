@@ -1,15 +1,15 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
-import { NoAuthDataService } from 'src/app/services/no-auth-data.service';
+import { NoAuthDataService } from '../../../services/no-auth-data.service';
 import { Observable } from 'rxjs';
 
 import * as userActions from '../../../store/user-admin/user/user.action';
 import { Store, select } from '@ngrx/store';
-import { AppState } from 'src/app/app.state';
+import { AppState } from '../../../app.state';
 import { User } from '../../../store/user-admin/user/user.model';
 import * as userSelectors from '../../../store/user-admin/user/user.selectors';
 import * as userGroupSelectors from '../../../store/user-admin/user-group/usergroup.selectors';
 import * as userGroupActions from '../../../store/user-admin/user-group/usergroup.action';
-import { userGroup } from 'src/app/store/user-admin/user-group/usergroup.model';
+import { userGroup } from '../../../store/user-admin/user-group/usergroup.model';
 import { HttpClient } from '@angular/common/http';
 import {groupTypeOptions} from '../useradmin.constants';
 
@@ -75,7 +75,6 @@ export class MembershipComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.noAuthData.getJSON().subscribe(data => {
-      //console.log(data);
       this.Label = data;
     });
     this.V_SRC_CD_DATA = {
@@ -92,7 +91,7 @@ export class MembershipComponent implements OnInit, OnDestroy {
     this.store.pipe(select(userSelectors.selectCurrentUser)).subscribe(currentUser => {
         this.selectCurrentUser = currentUser;
     });
-    
+
     this.http.get('../../../../assets/control-variable.json').subscribe(res => {
       this.ctrlVvariables = res;
     });
@@ -111,14 +110,14 @@ export class MembershipComponent implements OnInit, OnDestroy {
         this.groupData = groups;
         this.enableSubmitButton();
     });
-    
+
     this.subUser = this.users$.subscribe(users => {
       this.userData = users;
       this.enableSubmitButton();
     });
 
   }
-  
+
   ngOnDestroy() {
     this.sub.unsubscribe();
     this.subUser.unsubscribe();
@@ -145,8 +144,8 @@ export class MembershipComponent implements OnInit, OnDestroy {
       let groupRelation = [];
       let removeGroupRelation = [];
       this.selecteduser = index;
-      this.USR_DSC_R = user.V_USR_DSC; 
-      this.USR_GRP_DSCR = ''; 
+      this.USR_DSC_R = user.V_USR_DSC;
+      this.USR_GRP_DSCR = '';
 
       this.groupData.forEach(group => {
           if(group.is_selected_user == true || group.is_selected == true) {
@@ -154,7 +153,7 @@ export class MembershipComponent implements OnInit, OnDestroy {
           }
       });
       this.store.dispatch(new userGroupActions.RemoveSelectedUserGroupRelation(removeGroupRelation));
-    
+
       if (user.V_USR_GRP_ID != null) {
         user.V_USR_GRP_ID.forEach(GRP_ID => {
           this.groupData.forEach(group => {
@@ -170,8 +169,8 @@ export class MembershipComponent implements OnInit, OnDestroy {
       let groupRelation = [];
       let removeGroupRelation = [];
       this.selecteduser = index;
-      this.USR_DSC_R = user.V_USR_DSC; 
-      this.USR_GRP_DSCR = ''; 
+      this.USR_DSC_R = user.V_USR_DSC;
+      this.USR_GRP_DSCR = '';
 
       this.groupData.forEach(group => {
           if(group.is_selected_user == true || group.is_selected == true) {
@@ -179,7 +178,7 @@ export class MembershipComponent implements OnInit, OnDestroy {
           }
       });
       this.store.dispatch(new userGroupActions.RemoveSelectedUserGroupRelation(removeGroupRelation));
-    
+
       if (user.V_USR_GRP_ID != null) {
         user.V_USR_GRP_ID.forEach(GRP_ID => {
           this.groupData.forEach(group => {
@@ -210,8 +209,8 @@ export class MembershipComponent implements OnInit, OnDestroy {
       let userRelation = [];
       let removeUserelation = [];
       this.selectedgroup = index;
-      this.USR_GRP_DSCR = group.V_USR_GRP_DSC; 
-      this.USR_DSC_R = ''; 
+      this.USR_GRP_DSCR = group.V_USR_GRP_DSC;
+      this.USR_DSC_R = '';
 
       this.userData.forEach(user => {
         if(user.is_selected_usr_grp == true || user.is_selected == true) {
@@ -219,7 +218,7 @@ export class MembershipComponent implements OnInit, OnDestroy {
         }
       });
       this.store.dispatch(new userActions.RemoveSelectedUserGroupRelation(removeUserelation));
-      
+
       if (group.V_USR_ID != null) {
         group.V_USR_ID.forEach(USR_ID => {
           this.userData.forEach(user => {
@@ -235,8 +234,8 @@ export class MembershipComponent implements OnInit, OnDestroy {
       let userRelation = [];
       let removeUserelation = [];
       this.selectedgroup = index;
-      this.USR_GRP_DSCR = group.V_USR_GRP_DSC; 
-      this.USR_DSC_R = ''; 
+      this.USR_GRP_DSCR = group.V_USR_GRP_DSC;
+      this.USR_DSC_R = '';
 
       this.userData.forEach(user => {
         if(user.is_selected_usr_grp == true || user.is_selected == true) {
@@ -244,7 +243,7 @@ export class MembershipComponent implements OnInit, OnDestroy {
         }
       });
       this.store.dispatch(new userActions.RemoveSelectedUserGroupRelation(removeUserelation));
-      
+
       if (group.V_USR_ID != null) {
         group.V_USR_ID.forEach(USR_ID => {
           this.userData.forEach(user => {
@@ -255,29 +254,27 @@ export class MembershipComponent implements OnInit, OnDestroy {
         });
         this.store.dispatch(new userActions.SelectUserGroupRelation(userRelation));
       }
-    }  
+    }
   }
 
   checkboxGroupSelect(event, group) {
-    //console.log(event, group);
     if(this.selectCurrentUser != undefined) {
       this.store.dispatch(new userGroupActions.CheckedUserGroup({id:group.id, is_selected:group.is_selected}));
     }
   }
 
   checkboxUserSelect(event, user) {
-    //console.log(event, user);
     if(this.selectCurrentGroup != undefined) {
       this.store.dispatch(new userActions.CheckedUserGroup({id:user.id, is_selected:user.is_selected}));
     }
   }
 
   submitMemberShip() {
-  
+
     if(this.selectCurrentUser != undefined) {
       let deletedIds = [];
       let addedIds = [];
-    
+
       this.groupData.forEach(group => {
         if(group.is_selected == false && group.is_selected_user == true) {
           deletedIds.push(group.V_USR_GRP_ID)
@@ -302,19 +299,18 @@ export class MembershipComponent implements OnInit, OnDestroy {
         "REST_Service":["User_Group"],
         "Verb":["POST"]
       }
-      
+
       this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', json).subscribe(res => {
         this.updateGroupStateAdded(res[0]);
         this.updateGroupStateDeleted(deletedIds)
       }, err => {
-        console.log(err);
       });
     }
 
     if(this.selectCurrentGroup != undefined) {
       let deletedIds = [];
       let addedIds = [];
-    
+
       this.userData.forEach(user => {
         if(user.is_selected == false && user.is_selected_usr_grp == true) {
           deletedIds.push(user.V_USR_ID)
@@ -339,20 +335,19 @@ export class MembershipComponent implements OnInit, OnDestroy {
         "REST_Service":["User_Group"],
         "Verb":["POST"]
       }
-      
+
       this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', json).subscribe(res => {
         this.updateUserStateAdded(res[0]);
         this.updateUserStateDeleted(deletedIds)
       }, err => {
-        console.log(err);
       });
     }
-    
+
   }
 
   enableSubmitButton():boolean {
-   
-      let is_selectedExist=[]; 
+
+      let is_selectedExist=[];
 
       if(this.selectCurrentUser != undefined) {
         this.groupData.forEach(data => {
@@ -360,7 +355,7 @@ export class MembershipComponent implements OnInit, OnDestroy {
             is_selectedExist.push(data.is_selected);
           }
         });
-      } 
+      }
       if(this.selectCurrentGroup != undefined) {
         this.userData.forEach(data => {
           if(data.is_selected == true) {
@@ -376,7 +371,7 @@ export class MembershipComponent implements OnInit, OnDestroy {
       }
 
   }
-  
+
   updateGroupStateAdded(user) {
     let groupRelation = [];
     this.store.dispatch(new userActions.UpdateUserGroupIds({id:this.selectCurrentUser.id, V_USR_GRP_ID:user.V_USR_GRP_ID}));
@@ -392,7 +387,7 @@ export class MembershipComponent implements OnInit, OnDestroy {
 
   updateGroupStateDeleted(deletedGroup) {
     let removeGroupRelation = [];
-    
+
     deletedGroup.forEach(deletedId => {
       this.groupData.forEach(group => {
           if(group.V_USR_GRP_ID == deletedId) {
@@ -418,7 +413,7 @@ export class MembershipComponent implements OnInit, OnDestroy {
 
   updateUserStateDeleted(deletedUser) {
     let removeUserRelation = [];
-    
+
     deletedUser.forEach(deletedId => {
       this.userData.forEach(user => {
           if(user.V_USR_ID == deletedId) {

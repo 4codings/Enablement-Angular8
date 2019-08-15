@@ -7,7 +7,7 @@ import {OptionalValuesService} from '../../../../services/optional-values.servic
 import {HttpClient} from '@angular/common/http';
 import {ApiService} from '../../../../service/api/api.service';
 import {Actions, ofType} from '@ngrx/effects';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import * as userActions from '../../../../store/user-admin/user/user.action';
 import {take} from 'rxjs/operators';
 import {Observable} from 'rxjs';
@@ -76,7 +76,6 @@ export class AddEditAuthorizeComponent extends AuthorizeComponent implements OnI
           this.assignAuthToRole(this.data.roleId, res[0] ? res[0].id + '' : '');
         },
         err => {
-          console.log('Error in form record post request:\n' + err);
         });
     } else if (this.selectedView == 'selectAuth') {
       if (this.selectedAuth) {
@@ -106,7 +105,6 @@ export class AddEditAuthorizeComponent extends AuthorizeComponent implements OnI
     this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', json).subscribe(res => {
       this.dialogRef.close(true);
     }, err => {
-      console.log(err);
     });
   }
 
@@ -135,7 +133,6 @@ export class AddEditAuthorizeComponent extends AuthorizeComponent implements OnI
         this.dialogRef.close(true);
       },
       err => {
-        console.log('Error in form record post request:\n' + err);
       });
   }
 

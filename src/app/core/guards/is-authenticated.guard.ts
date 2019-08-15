@@ -21,7 +21,6 @@ export class IsAuthenticatedGuard implements CanActivate {
     }
 
     private validate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        //console.log(this.user.isAnonymous)
         if (this.user.isAnonymous) {
             this.router.navigateByUrl(
                 '/login',

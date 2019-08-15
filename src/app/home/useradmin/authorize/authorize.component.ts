@@ -1,15 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { AuthorizationData } from 'src/app/store/user-admin/user-authorization/authorization.model';
-import { NoAuthDataService } from 'src/app/services/no-auth-data.service';
-import { AppState } from 'src/app/app.state';
+import { AuthorizationData } from '../../../store/user-admin/user-authorization/authorization.model';
+import { NoAuthDataService } from '../../../services/no-auth-data.service';
+import { AppState } from '../../../app.state';
 import { Store, select } from '@ngrx/store';
 import * as authActions from '../../../store/user-admin/user-authorization/authorization.actions';
 import * as authSelectors from '../../../store/user-admin//user-authorization/authorization.selectors';
-import { MatRadioChange } from '@angular/material';
-import { OptionalValuesService, ProcessObservable, ServiceObservable } from 'src/app/services/optional-values.service';
+import { MatRadioChange } from '@angular/material/radio';
+import { OptionalValuesService, ProcessObservable, ServiceObservable } from '../../../services/optional-values.service';
 import { HttpClient } from '@angular/common/http';
-import { ApiService } from 'src/app/service/api/api.service';
+import { ApiService } from '../../../service/api/api.service';
 
 @Component({
   selector: 'app-authorize',
@@ -63,7 +63,6 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
     this.authValueObj.V_EXECUTE = 'N';
     // Label get service
     this.noAuthData.getJSON().subscribe(data => {
-      //console.log(data);
       this.Label = data;
     });
     this.applicationValues$ = this.optionalService.applicationOptionalValue.subscribe(data => {
@@ -298,7 +297,6 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         this.store.dispatch(new authActions.getAuth(this.V_SRC_CD_DATA));
       },err => {
-        console.log("Error in form record post request:\n" + err);
       });
   }
   delete_click(index) {
@@ -307,7 +305,6 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         this.store.dispatch(new authActions.getAuth(this.V_SRC_CD_DATA));
       },err => {
-        console.log("Error in form record post request:\n" + err);
       });
   }
   onAddSubmit(){
@@ -337,7 +334,6 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
         this.store.dispatch(new authActions.getAuth(this.V_SRC_CD_DATA));
       },
     err => {
-      console.log("Error in form record post request:\n" + err);
     });
   }
   // showAuthData(authData) {
@@ -352,12 +348,10 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
   authData(auth) {
     this.authValues$.subscribe(data => {
       this.updateBtn = data.filter(s => s.V_AUTH_CD == auth).length > 0 ? true : false;
-      //console.log(this.updateBtn);
       // }
     });
   }
   // checkUncheck(str) {
-  //   //console.log(str);
   //   switch (str) {
   //     case 'Read': {
   //       this.authD.read_select = !this.authD.read_select;

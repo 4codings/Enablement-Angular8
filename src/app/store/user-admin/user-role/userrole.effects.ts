@@ -5,7 +5,7 @@ import { Action } from '@ngrx/store';
 import * as userRoleActions from './userrole.action';
 import { mergeMap, map, catchError } from 'rxjs/operators';
 import { userRole } from './userrole.model';
-import { UserAdminService } from 'src/app/services/user-admin.service';
+import { UserAdminService } from '../../../services/user-admin.service';
 import {HttpClient} from '@angular/common/http';
 
 @Injectable()
@@ -27,7 +27,7 @@ export class UserRoleEffects {
         )
     )
   );
-  
+
   @Effect({dispatch: true})
   addUserRole$: Observable<Action> = this.actions$.pipe(
     ofType<userRoleActions.AddUserRole>(userRoleActions.ADD_USER_ROLE),
@@ -55,7 +55,7 @@ export class UserRoleEffects {
         )
     )
   );
-  
+
   @Effect({ dispatch: true })
   deleteUserRole$: Observable<Action> = this.actions$.pipe(
     ofType<userRoleActions.DeleteUserRole>(userRoleActions.DELETE_USER_ROLE),

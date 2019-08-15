@@ -6,19 +6,17 @@ import { MatCardModule } from '@angular/material/card';
 import { DataSource } from '@angular/cdk/table';
 import { Observable } from 'rxjs';
 import { CdkTableModule } from '@angular/cdk/table';
-import { forEach } from '@angular/router/src/utils/collection';
-import {
-  MatPaginator, MatSort, MatTable, MatTableModule, MatTabHeader,
-  MatHeaderRow, MatHeaderCell, MatHeaderCellDef, MatHeaderRowDef,
-  MatSortHeader, MatRow, MatRowDef, MatCell, MatCellDef
-} from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort, MatSortHeader } from '@angular/material/sort';
+import { MatTable, MatTableModule, MatHeaderRow, MatHeaderCell, MatHeaderCellDef, MatHeaderRowDef, MatRow, MatRowDef, MatCell, MatCellDef } from '@angular/material/table';
+import { MatTabHeader } from '@angular/material/tabs';
 
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
-import { Globals } from 'src/app/services/globals';
-import { StorageSessionService } from 'src/app/services/storage-session.service';
-import { UseradminService } from 'src/app/services/useradmin.service2';
-import { ConfigServiceService } from 'src/app/services/config-service.service';
+import { Globals } from '../../../services/globals';
+import { StorageSessionService } from '../../../services/storage-session.service';
+import { UseradminService } from '../../../services/useradmin.service2';
+import { ConfigServiceService } from '../../../services/config-service.service';
 
 @Component({
   selector: 'app-machine',
@@ -93,8 +91,8 @@ export class MachineComponent implements OnInit {
   }
   ngOnInit() {
     this.MachineCode();
-    this.data2.getJSON().subscribe(data2 => { 
-    this.Label=data2.json();    
+    this.data2.getJSON().subscribe(data2 => {
+    this.Label=data2.json();
         })
   }
 

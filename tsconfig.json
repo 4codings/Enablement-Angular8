@@ -4,13 +4,14 @@
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
+    "allowJs": true,
     "declaration": false,
-    "module": "es2015",
+    "module": "esNext",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "target": "es5",
+    "target": "es2015",
     "resolveJsonModule": true,
     "typeRoots": [
       "node_modules/@types"
@@ -19,5 +20,9 @@
       "es2018",
       "dom"
     ]
-  }
+  },
+  "include": [
+    "src/**/*",
+    "**/*.ts"
+  ]
 }

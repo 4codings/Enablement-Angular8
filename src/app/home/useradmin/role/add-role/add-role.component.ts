@@ -3,7 +3,7 @@ import {Subscription} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../../../app.state';
 import {Actions, ofType} from '@ngrx/effects';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import * as userRoleActions from '../../../../store/user-admin/user-role/userrole.action';
 import {take} from 'rxjs/operators';
 import {RoleFormComponent} from '../role-form/role-form.component';
@@ -16,7 +16,7 @@ import {userRole} from '../../../../store/user-admin/user-role/userrole.model';
 })
 export class AddRoleComponent implements OnInit, OnDestroy {
 
-  @ViewChild(RoleFormComponent) form: RoleFormComponent;
+  @ViewChild(RoleFormComponent, { static: true }) form: RoleFormComponent;
   actionSubscription: Subscription;
   roleAlreadyExist: boolean = false;
   allRoles: userRole[];

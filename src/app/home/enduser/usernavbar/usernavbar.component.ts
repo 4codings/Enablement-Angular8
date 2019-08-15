@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { RollserviceService } from 'src/app/services/rollservice.service';
+import { RollserviceService } from '../../../services/rollservice.service';
 import { UseradminService } from 'src/app/services/useradmin.service2';
 import { HttpClient } from '@angular/common/http';
 

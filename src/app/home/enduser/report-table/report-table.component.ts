@@ -1,14 +1,16 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ChangeDetectorRef, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { Http } from '@angular/http';
 import { Router } from '@angular/router'
-import { MatTableDataSource, MatSort, MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { DialogChartsComponent } from './dialog-charts/dialog-charts.component';
-import { ConfigServiceService } from 'src/app/services/config-service.service';
-import { Globals } from 'src/app/services/globals';
-import { Globals2 } from 'src/app/service/globals';
-import { EndUserService } from 'src/app/services/EndUser-service';
-import { ApiService } from 'src/app/service/api/api.service';
-import { StorageSessionService } from 'src/app/services/storage-session.service';
+import { ConfigServiceService } from '../../../services/config-service.service';
+import { Globals } from '../../../services/globals';
+import { Globals2 } from '../../../service/globals';
+import { EndUserService } from '../../../services/EndUser-service';
+import { ApiService } from '../../../service/api/api.service';
+import { StorageSessionService } from '../../../services/storage-session.service';
 import * as pluginAnnotations from 'chartjs-plugin-annotation';
 import { BaseChartDirective } from 'ng2-charts-x';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -17,7 +19,7 @@ import 'chartjs-plugin-zoom';
 import { ToastrService } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
 import { Viewer } from '../execute/bpmn-viewer';
-import { RollserviceService } from 'src/app/services/rollservice.service';
+import { RollserviceService } from '../../../services/rollservice.service';
 import { Subscription } from 'rxjs';
 // import { Viewer } from '../execute/bpmn-viewer-js';
 
@@ -42,8 +44,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
                       backgroundColor:"",borderColor:"",fillBackground:"",lineTension:"",pointSize:"",animations:"",
                       pointStyle:"",lineStyle:"",addRow:""}];
   domain_name = this.globals.domain_name;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(BaseChartDirective, {}) chart: BaseChartDirective;
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
+  @ViewChild(BaseChartDirective, { static: false }) chart: BaseChartDirective;
   roleObservable$: Subscription;
   roleValues;
   hasMonitorPermission = false;
@@ -85,34 +87,29 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
   chartposition: any = [{ x: 0, y: 0 }, { x: 0, y: 0 }, { x: 0, y: 0 }, { x: 0, y: 0 }];
   dragEndLine(event) {
     var offset = { ...(<any>event.source._dragRef)._passiveTransform };
-    console.log(offset);
     this.chartposition[0] = offset;
     console.log(this.chartposition[0]);
     this.setchartpreferences('all');
   }
   dragEndBar(event) {
     var offset = { ...(<any>event.source._dragRef)._passiveTransform };
-    console.log(offset);
     this.chartposition[1] = offset;
     console.log(this.chartposition[1]);
     this.setchartpreferences('all');
   }
   dragEndPie(event) {
     var offset = { ...(<any>event.source._dragRef)._passiveTransform };
-    console.log(offset);
     this.chartposition[2] = offset;
     console.log(this.chartposition[2]);
     this.setchartpreferences('all');
   }
   dragEndDoughnut(event) {
     var offset = { ...(<any>event.source._dragRef)._passiveTransform };
-    console.log(offset);
     this.chartposition[3] = offset;
     console.log(this.chartposition[3]);
     this.setchartpreferences('all');
   }
   onMonitorClick() {
-    console.log('monitor clicked')
     this.isMonitorClicked = true;
   }
   remove(item: string): void {
@@ -176,7 +173,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.httpClient.get('../../../../assets/control-variable.json').subscribe((res: any) => {
       this.ctrl_variables = res;
       this.path = this.ctrl_variables.bpmn_file_path;
-      console.log('this.ctrl', this.ctrl_variables)
     });
     this.dataSource.sort = this.sort;
     this.cd.detectChanges();
@@ -189,7 +185,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     const eventBus = this.viewer.get('eventBus');
     if (eventBus) {
       eventBus.on('element.click', ($event) => {
-        console.log('element.click', $event)
         if (this.isMonitorClicked) {
           var canvas = this.viewer.get('canvas');
           canvas.addMarker($event.element.id, 'highlight');
@@ -205,7 +200,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   downloadBpmn() {
-    // console.log('path', this.ctrl_variables.bpmn_file_path);
     // `${this.ctrl_variables.bpmn_file_path}`
     const formData: FormData = new FormData();
     formData.append('FileInfo', JSON.stringify({
@@ -241,7 +235,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   updatecustoms() {
     var test = 0;
-    console.log(this.myobj.mychartType);
 
     if (this.personalizationtable != undefined && (this.myobj.mychartType != "" || this.myobj.myxaxisdata != "" || this.myobj.myyaxisdata != "")) {
       for (let i = 0; i < this.personalizationtable.length; i++) {
@@ -302,13 +295,11 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
   deleterow(row) {
-    console.log(row);
     var index = this.personalizationtable.indexOf(row);
     this.personalizationtable.splice(index, 1);
     switch (row.chartType) {
       case "linechart":
         this.linearray.splice(index, 1);
-        console.log(row.yaxisdata.toString());
         var abc = this._yaxis_sel_line.indexOf(row.yaxisdata);
         this._yaxis_sel_line.splice(abc, 1);
         this.updateLineChart();
@@ -1051,7 +1042,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.chartposition[1].y = cp[3];
     this.chartposition[2].y = cp[5];
     this.chartposition[3].y = cp[7];
-    console.log(cp);
 
     this.updatechart();
   }
@@ -1080,7 +1070,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
       res => {
         (res.json());
         var result = res.json();
-        console.log(result);
 
         var name = result.PRF_NM;
         var value = result.PRF_VAL;
@@ -1095,7 +1084,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
           this.showhide(this.show_choice);
         }
-        console.log(this.userprefs);
       });
   }
 
@@ -1184,10 +1172,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     //       //(res);
 
     //  });
-    // console.log('exitbtn_click');
     this.endUserService.processCancel(this.SRVC_ID, this.PRCS_TXN_ID, this.globals.Report.TEMP_UNIQUE_ID[0]).subscribe(
       () => {
-        // console.log('Response:\n', res);
         this.route.navigateByUrl('End_User', { skipLocationChange: true });
       });
   }

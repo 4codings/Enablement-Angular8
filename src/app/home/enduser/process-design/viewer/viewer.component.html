@@ -1,0 +1,35 @@
+<div fxLayout="row">
+  <div fxFlex>
+    Executed By: {{selectedUserName}}
+  </div>
+  <div fxFlex="20px">
+    on
+  </div>
+  <div fxFlex>
+    <mat-form-field>
+      <mat-label>Date Time Of Instances</mat-label>
+      <mat-select [(ngModel)]="selectedInstance" (selectionChange)="onInstanceChange($event.target)">
+        <mat-option *ngFor="let dateTime of PRCS_TXN_ID;let i = index" [value]="dateTime">
+          {{StartDateTime[i]}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div fxFlex>
+    <mat-checkbox [(ngModel)]="is_more">More</mat-checkbox>
+  </div>
+  <div fxLayout="column" fxFlex *ngIf="is_more">
+    <mat-form-field class="form_input">
+      <label class="m-b-10">From</label>
+      <input matInput class="bg-white" [(ngModel)]="fromDate" [owlDateTimeTrigger]="FromDate" [owlDateTime]="FromDate">
+      <owl-date-time #FromDate></owl-date-time>
+    </mat-form-field>
+    <mat-form-field class="form_input">
+      <label class="m-b-10">To</label>
+      <input matInput class="bg-white" [(ngModel)]="toDate" [owlDateTimeTrigger]="EndDate" [owlDateTime]="EndDate">
+      <owl-date-time #EndDate></owl-date-time>
+    </mat-form-field>
+  </div>
+</div>
+
+<div id="viewer"></div>

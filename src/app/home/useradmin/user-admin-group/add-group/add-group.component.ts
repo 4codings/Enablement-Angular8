@@ -3,7 +3,7 @@ import {Store} from '@ngrx/store';
 import {AppState} from '../../../../app.state';
 import {UseradminService} from '../../../../services/useradmin.service2';
 import {Actions, ofType} from '@ngrx/effects';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {GroupFormComponent} from '../group-form/group-form.component';
 import * as userGroupActions from '../../../../store/user-admin/user-group/usergroup.action';
 import {addUserGroup} from '../../../../store/user-admin/user-group/usergroup.action';
@@ -18,7 +18,7 @@ import {userGroup} from '../../../../store/user-admin/user-group/usergroup.model
 })
 export class AddGroupComponent implements OnInit, OnDestroy {
 
-  @ViewChild(GroupFormComponent) form: GroupFormComponent;
+  @ViewChild(GroupFormComponent, { static: true }) form: GroupFormComponent;
   actionSubscription: Subscription;
   groupAlreadyExist: boolean = false;
   allGroups: userGroup[];
@@ -27,7 +27,6 @@ export class AddGroupComponent implements OnInit, OnDestroy {
               private actions$: Actions,
               private dialogRef: MatDialogRef<AddGroupComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
-    console.log(data);
   }
 
   ngOnInit() {

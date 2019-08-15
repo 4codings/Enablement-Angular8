@@ -10,7 +10,7 @@
       </label>
       <label *ngIf="!item.children" class="form-check-label child-color"
         [ngClass]="(item.text == selectedProcess && item.value == selectedApp)?'active-menu':''"
-        (click)="onTitleClick(item)">
+        (click)="onTitleClick(item,false)">
         {{item.text}}
       </label>
       <label *ngIf="item.children" class="form-check-label">
@@ -112,9 +112,15 @@
             </a>
           </div>
           <div fxFlex="100" fxLayout="column">
-            <div fxFlex="100" id="canvas" [ngClass]="opened?'stage-show':'stage-hide'">
+            <div *ngIf="!isMonitor" fxFlex="100" [ngClass]="opened?'stage-show':'stage-hide'">
+              <div id="canvas"></div>
             </div>
-            <div fxFlex="100">
+            <div *ngIf="isMonitor" fxFlex="100" [ngClass]="opened?'stage-show':'stage-hide'">
+              <app-viewer [parentapp]="ApplicationCD" [parentpro]="ProcessCD" [file_path]="file_path">
+              </app-viewer>
+            </div>
+
+            <div *ngIf="!isMonitor" fxFlex="100">
               <div class="dynamicFormContent">
                 <!-- <h3 style="text-align: center;" *ngIf="resFormData!='' &&  resFormData!=undefined">
                   {{Label['Parameters']}}</h3> -->
@@ -324,7 +330,7 @@
                   <mat-form-field *ngIf="show_filter_input">
                     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
                   </mat-form-field>
-                  <img src="./assets/img/progress.gif" style="height:20px;width:20px;" *ngIf="progressImg" alt="" />
+                  <img src="/assets/img/progress.gif" style="height:20px;width:20px;" *ngIf="progressImg" alt="" />
                   <mat-table #table [dataSource]="dataSource" MatSort style="width: 100%">
 
                     <!-- Checkbox Column -->
@@ -343,6 +349,12 @@
                         <!-- <mat-checkbox [class]="checkbox_color_value"
                       (click)="$event.stopPropagation();Check_process_id(dataSource.job_name)"></mat-checkbox> -->
                       </mat-cell>
+                    </ng-container>
+
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="name">
+                      <mat-header-cell *matHeaderCellDef style="color: white"> Services </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
                     </ng-container>
 
                     <!-- Name Column -->
@@ -376,7 +388,7 @@
                   </mat-table>
                 </div>
                 <div *ngIf="newScheduleView">
-                  <app-schedular [parentapp]="ApplicationCD" [parentpro]="ProcessCD" [changing]="changingValue">
+                  <app-schedular [parentapp]="selectedplat" [parentpro]="selectedplat1" [changing]="changingValue">
                   </app-schedular>
                   <hr />
                 </div>
@@ -387,12 +399,12 @@
                 <div class="col-md-5">
                   <br />
                   <!-- <button mat-raised-button color="primary" *ngIf="Save_btn" [disabled]="save_shedule_btn" (click)="repeatURL()">Save the Schedule</button> -->
-                  <button mat-raised-button color="primary" (click)="onPause()" *ngIf="Pause_btn">Pause
-                  </button>
-                  <button mat-raised-button color="primary" (click)="onResume()" *ngIf="Resume_btn">Resume
-                  </button>
-                  <button mat-raised-button color="primary" (click)="onKill()" *ngIf="Kill_btn">Kill
-                  </button>
+                  <button mat-raised-button color="primary" (click)="onPause()" *ngIf="Pause_btn">Pause Selected
+                    Schedules</button>
+                  <button mat-raised-button color="primary" (click)="onResume()" *ngIf="Resume_btn">Resume Selected
+                    Schedules</button>
+                  <button mat-raised-button color="primary" (click)="onKill()" *ngIf="Kill_btn">Kill Selected
+                    Schedules</button>
                   <br />
                 </div>
               </div>

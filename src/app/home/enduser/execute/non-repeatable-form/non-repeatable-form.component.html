@@ -37,12 +37,14 @@
               <ng-container *ngIf="!configService.isFieldHidden(label)">
                 <h4 style="text-align:center;margin-bottom: 0px;">{{RVP_placeholder[i]}}
                   <span *ngIf="configService.isFieldMendatory(label)">*</span>
-                  <mat-icon *ngIf="configService.getFieldTooltip(label)!=null"
+                  <!-- <mat-icon *ngIf="configService.getFieldTooltip(label)!=null"
                     [matTooltip]="configService.getFieldTooltip(label)" class="field-help">help
-                  </mat-icon>
+                  </mat-icon> -->
+                  <mat-icon *ngIf="FLD_HLP_TXT[i] !== null" matTooltip="{{FLD_HLP_TXT[i]}}" class="field-help"
+                    matTooltipPosition="after">help</mat-icon>
                 </h4>
-                <mat-icon *ngIf="FLD_HLP_TXT[i] !== null" matTooltip="{{FLD_HLP_TXT[i]}}" class="field-help"
-                  matTooltipPosition="after">help</mat-icon>
+                <!-- <mat-icon *ngIf="FLD_HLP_TXT[i] !== null" matTooltip="{{FLD_HLP_TXT[i]}}" class="field-help"
+                  matTooltipPosition="after">help</mat-icon> -->
                 <br />
                 <div *ngIf="DSPLY_FLD[i]">
                   <ng-container [ngSwitch]="fieldType[label]">

@@ -3,7 +3,7 @@ import {takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import { SystemAdminOverviewService } from './system-admin-overview.service';
 import { HttpClient } from '@angular/common/http';
-import { RollserviceService } from 'src/app/services/rollservice.service';
+import { RollserviceService } from '../../../services/rollservice.service';
 
 @Component({
   selector: 'app-overview',
@@ -45,9 +45,8 @@ export class OverviewComponent implements OnInit,OnDestroy {
   onFileSelectEvent(event, filename, moduleName): void {
     //this.overviewService.uploadFile(event, filename, moduleName);
   }
-  
+
   selectedExe(type) {
-    console.log(type);
     this.selectedExeType = type;
   }
 

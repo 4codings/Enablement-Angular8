@@ -1,11 +1,12 @@
 import { Component, OnInit, Inject, Optional } from '@angular/core';
 import { Http } from '@angular/http';
 import { Router } from '@angular/router'
-import { MatTableDataSource, MatSort } from '@angular/material';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { HttpClient } from '@angular/common/http';
 import { Chart } from 'chart.js';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Globals } from 'src/app/services/globals';
+import { Globals } from '../../../../services/globals';
 
 @Component({
   selector: 'app-dialog-charts',
@@ -59,7 +60,6 @@ export class DialogChartsComponent implements OnInit {
       .subscribe(res => {
         (res);
 
-        console.log(res);
         var start_time = [], end_time = [], Process = [];
 
         for (let i = 0; i < res['INS_DT_TM'].length; i++) {

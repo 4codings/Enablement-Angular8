@@ -1,6 +1,6 @@
 import { AppComponent } from '../../../app.component';
 import { HomeComponent } from '../../home.component';
-import { Globals } from 'src/app/services/globals';
+import { Globals } from '../../../services/globals';
 import { ProcessObservable, ServiceObservable } from 'src/app/services/optional-values.service';
 
 export class dboard_secondary{
@@ -52,7 +52,7 @@ export class dboard_secondary{
   selectedusrgp: string='';
   selectedusr: string='';
   selectedstatus: string=null;
-  domain_name=this.globals.domain_name; 
+  domain_name=this.globals.domain_name;
   apiUrlGet = "https://"+this.domain_name+"/rest/v1/secured?";
   apiUrlAdd = "https://"+this.domain_name+"/rest/v1/secured";
   apiFetch = "https://"+this.domain_name+"/rest/v1/secured";
@@ -60,7 +60,7 @@ export class dboard_secondary{
   displayedCol_Inp = ['Input_name','Input_value'];
   displayedCol_Oup = ['Output_name','Output_value'];
   displayedCol_title1=['Input_Payload'];
-  displayedCol_title2=['Output_Payload'];    
+  displayedCol_title2=['Output_Payload'];
   predapp_sl = '';
   succapp_sl: string;
   APP_CD = ['ALL'];

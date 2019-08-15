@@ -4,9 +4,9 @@ import {LoginComponent} from './login.component';
 import {LoginRoutingModule} from './login-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { SharedModule } from 'src/app/shared/shared.module';
+import { SharedModule } from '../../shared/shared.module';
 import { EffectsModule } from '@ngrx/effects';
-import { UserLoginEffects } from 'src/app/store/auth/userlogin.effects';
+import { UserLoginEffects } from '../../store/auth/userlogin.effects';
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 

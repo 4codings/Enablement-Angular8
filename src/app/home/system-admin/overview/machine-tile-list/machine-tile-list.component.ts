@@ -3,8 +3,8 @@ import { CdkDragDrop, moveItemInArray, copyArrayItem } from '@angular/cdk/drag-d
 import { SystemAdminOverviewService } from '../system-admin-overview.service';
 import { Subscription } from 'rxjs';
 import { AddConnectionDialogComponent } from '../dialogs/add-connection-dialog/add-connection-dialog.component';
-import { MatDialog } from '@angular/material';
-import { ConfirmationAlertComponent } from 'src/app/shared/components/confirmation-alert/confirmation-alert.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationAlertComponent } from '../../../../shared/components/confirmation-alert/confirmation-alert.component';
 import { HttpClient } from '@angular/common/http';
 import { EditConnectionDialogComponent } from '../dialogs/edit-connection-dialog/edit-connection-dialog.component';
 
@@ -26,7 +26,7 @@ export class MachineTileListComponent implements OnInit {
   @Input() connectionList;
   @Input() machineType;
   @Input() userAccess;
-  @ViewChild('contextMenu') set contextMenu(value: ElementRef) {
+  @ViewChild('contextMenu', { static: false }) set contextMenu(value: ElementRef) {
     if (value) {
       let menu: HTMLDivElement = value.nativeElement;
       menu.addEventListener('mousedown', ev => ev.stopImmediatePropagation());
@@ -38,9 +38,7 @@ export class MachineTileListComponent implements OnInit {
   ngOnInit() {
     this.V_SRC_CD=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
     this.V_USR_NM=JSON.parse(sessionStorage.getItem('u')).USR_NM;
-    //console.log(this.connectionList);
     this.subscription = this.systemOverview.selectedExe$.subscribe(data => {
-      //console.log(data);
       if(data) {
         this.selectedMachine = null;
         this.selectedExe = data.V_EXE_TYP;
@@ -53,7 +51,7 @@ export class MachineTileListComponent implements OnInit {
       this.contextMenuData = null;
     });
   }
-  
+
   onAddConnTileClick() {
     const dialogRef = this.dialog.open(AddConnectionDialogComponent, {
       panelClass: 'app-dialog',
@@ -62,12 +60,10 @@ export class MachineTileListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
     });
   }
 
   connectionDropped(event: CdkDragDrop<any[]>) {
-    console.log(event.item.data);
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -80,7 +76,7 @@ export class MachineTileListComponent implements OnInit {
   }
 
   onConnectionTileClick(connection) {
-    
+
     if(this.selectedMachine === connection) {
       this.selectedMachine = null;
       this.selectedMachineTile.emit(this.selectedMachine);
@@ -89,7 +85,7 @@ export class MachineTileListComponent implements OnInit {
       this.selectedMachine = connection;
       this.selectedMachineTile.emit(this.selectedMachine);
     }
-      
+
   }
 
   onTileMouseDownEventHandler(ev: MouseEvent): void {
@@ -119,7 +115,6 @@ export class MachineTileListComponent implements OnInit {
   }
 
   onBtnEditExeClick(cxn) {
-    console.log(cxn);
     const dialogRef = this.dialog.open(EditConnectionDialogComponent, {
       panelClass: 'app-dialog',
       width: '600px',
@@ -127,7 +122,6 @@ export class MachineTileListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       if(result) {
         this.systemOverview.getExe();
       }
@@ -141,7 +135,6 @@ export class MachineTileListComponent implements OnInit {
   }
 
   onBtnDeleteConnectionClick(cnx) {
-    //console.log(cnx);
     const dialogRef = this.dialog.open(ConfirmationAlertComponent, {
       panelClass: 'app-dialog',
       width: '600px',
@@ -161,11 +154,9 @@ export class MachineTileListComponent implements OnInit {
           "RESULT": "@RESULT"
         };
         this.http.put('https://enablement.us/Enablement/rest/v1/secured', body).subscribe(res => {
-          console.log("res",res);
           this.systemOverview.getMachine();
         }, err => {
-          console.log("err", err)
-        }); 
+        });
       }
     });
   }

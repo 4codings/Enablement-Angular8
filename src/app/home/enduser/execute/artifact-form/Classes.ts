@@ -1,16 +1,14 @@
-import { StorageSessionService } from 'src/app/services/storage-session.service';
+import { StorageSessionService } from '../../../../services/storage-session.service';
 import { Globals2 } from 'src/app/service/globals';
 
 export class ReportData{
     private agency:string;
     constructor(private storage:StorageSessionService){
         this.storage.getCookies('report_table')
-        console.info("Storage limit data======================>");
-        // console.log(this.storage.getCookies('report_table'));
         this.agency=this.storage.getSession("agency");
     }
     /*
-        get agency name 
+        get agency name
     */
     public getAgency() : string {
         return  this.storage.getCookies('report_table')['SRC_CD'][0];
@@ -31,7 +29,7 @@ export class ReportData{
     Get service code
     */
     public getService() : string {
-        return this.storage.getCookies('report_table')['SRVC_CD'][0]; 
+        return this.storage.getCookies('report_table')['SRVC_CD'][0];
     }
 }
 

@@ -54,7 +54,7 @@
       <mat-icon>cloud_upload</mat-icon> Data Load</button> -->
     <button *ngIf="!isPlatformDesChange || isPlatformChange" [disabled]="!isPlatformChange" class="mr-2" mat-raised-button color="primary" (click)="addplat()">
       <mat-icon>add</mat-icon> Add</button>
-    <button *ngIf="isPlatformDesChange && !isPlatformChange" class="mr-2" mat-raised-button color="primary" (click)="addplat()">
+    <button *ngIf="isPlatformDesChange && !isPlatformChange" class="mr-2" mat-raised-button color="primary" (click)="updateplat()">
       <mat-icon>add</mat-icon> Update</button>
     <button mat-raised-button color="warn" (click)="deleteplat()">
       <mat-icon>delete</mat-icon> Delete</button>

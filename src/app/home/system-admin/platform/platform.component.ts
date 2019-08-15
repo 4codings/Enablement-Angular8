@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Http, Response, Headers } from '@angular/http';
 import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 import { HostListener } from "@angular/core";
-import { Globals } from 'src/app/services/globals';
-import { StorageSessionService } from 'src/app/services/storage-session.service';
+import { Globals } from '../../../services/globals';
+import { StorageSessionService } from '../../../services/storage-session.service';
 
 @Component({
   selector: 'app-platform',

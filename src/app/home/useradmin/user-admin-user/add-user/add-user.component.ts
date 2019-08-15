@@ -25,10 +25,9 @@ export class AddUserComponent implements OnInit, OnDestroy {
   selectedUser: User;
   actionSubscription: Subscription;
   userAlreadyExist: boolean = false;
-  isPrimaryGroup = false;
   allUsers: User[] = [];
-  @ViewChild(UserFormComponent) userForm: UserFormComponent;
-  @ViewChild(UserListComponent) userList: UserListComponent;
+  @ViewChild(UserFormComponent, { static: false }) userForm: UserFormComponent;
+  @ViewChild(UserListComponent, { static: false }) userList: UserListComponent;
 
   constructor(private store: Store<AppState>,
               private userAdminService: UseradminService,
@@ -44,9 +43,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
     };
     this.allUsers = this.data.allUsers;
     this.actionSubscription = this.actions$.pipe(ofType(userActions.ADD_USER_SUCCESS), take(1)).subscribe((result: any) => {
-      console.log(result);
-      const userData = this.userForm.getValue();
-      this.addUserInGroup(this.data.groupId, { ...result.payload[0], V_IS_PRIMARY: userData.V_IS_PRIMARY === 'Y' ? ['Y'] : ['N']});
+      this.addUserInGroup(this.data.groupId, result.payload[0]);
     });
   }
 
@@ -58,7 +55,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
     switch (this.selectedView) {
       case 'selectUser':
         if (this.userList && this.selectedUser) {
-          this.addUserInGroup(this.data.groupId, {...this.selectedUser, V_IS_PRIMARY: this.isPrimaryGroup ? ['Y'] : ['N']});
+          this.addUserInGroup(this.data.groupId, this.selectedUser);
         }
         break;
       case 'addNewUser':
@@ -84,7 +81,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
       'V_EFF_END_DT_TM': [new Date(Date.now() + this.userAdminService.controlVariables.effectiveEndDate)],
       'REST_Service': ['User_Group'],
       'Verb': ['POST'],
-      'V_IS_PRIMARY': user.V_IS_PRIMARY[0],
+      'V_IS_PRIMARY': user.V_IS_PRIMARY ? 'Y' : 'N',
     };
     this.userAdminService.postSecuredJSON(json).subscribe(res => {
       const V_SRC_CD_DATA = {
@@ -93,7 +90,6 @@ export class AddUserComponent implements OnInit, OnDestroy {
       this.store.dispatch(new userGroupActions.getUserGroup(V_SRC_CD_DATA));
       this.dialogRef.close();
     }, err => {
-      console.log(err);
     });
   }
 

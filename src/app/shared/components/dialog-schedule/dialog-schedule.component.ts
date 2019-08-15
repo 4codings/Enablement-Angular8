@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router'
 import { HttpClient } from '@angular/common/http';
-import { StorageSessionService } from 'src/app/services/storage-session.service';
-import { Globals } from 'src/app/services/globals';
+import { StorageSessionService } from '../../../services/storage-session.service';
+import { Globals } from '../../../services/globals';
 
 @Component({
 	selector: 'app-dialog-schedule',

@@ -3,20 +3,17 @@ import {CommonModule} from '@angular/common';
 import {UseradminComponent} from './useradmin.component';
 import {UserAdminUserComponent} from './user-admin-user/user-admin-user.component';
 import {UseradminRoutingModule} from './useradmin-routing.module';
-import {
-  MatListModule,
-  MatCardModule,
-  MatInputModule,
-  MatButtonModule,
-  MatFormFieldControl,
-  MatFormFieldModule,
-  MatSelectModule,
-  MatDatepickerModule,
-  MatNativeDateModule,
-  MatCheckboxModule,
-  MatRadioModule,
-  MatGridListModule, MatRippleModule
-} from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldControl, MatFormFieldModule } from '@angular/material/form-field';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
 import {AssignroleComponent} from './assignrole/assignrole.component';
 import {AuthorizeroleComponent} from './authorizerole/authorizerole.component';
 import {MembershipComponent} from './membership/membership.component';
@@ -25,17 +22,17 @@ import {RoleComponent} from './role/role.component';
 import {UserAdminNavComponent} from './user-admin-nav/user-admin-nav.component';
 import {UserAdminGroupComponent} from './user-admin-group/user-admin-group.component';
 import {EffectsModule} from '@ngrx/effects';
-import {UserEffects} from 'src/app/store/user-admin/user/user.effects';
-import {UserGroupEffects} from 'src/app/store/user-admin/user-group/usergroup.effects';
+import {UserEffects} from '../../store/user-admin/user/user.effects';
+import {UserGroupEffects} from '../../store/user-admin/user-group/usergroup.effects';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {UserRoleEffects} from 'src/app/store/user-admin/user-role/userrole.effects';
-import {UserMembershipEffects} from 'src/app/store/user-admin/user-membership/usermembership.effects';
-import {AuthEffects} from 'src/app/store/user-admin/user-authorization/authorization.effects';
+import {UserRoleEffects} from '../../store/user-admin/user-role/userrole.effects';
+import {UserMembershipEffects} from '../../store/user-admin/user-membership/usermembership.effects';
+import {AuthEffects} from '../../store/user-admin/user-authorization/authorization.effects';
 import {AuthorizeComponent} from './authorize/authorize.component';
 import {HeaderModule} from '../header/header.module';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {MatIconModule} from '@angular/material/icon';
-import {SharedModule} from 'src/app/shared/shared.module';
+import {SharedModule} from '../../shared/shared.module';
 import {OverviewComponent} from './overview/overview.component';
 import {AuthTypePipe} from './overview/auth-type.pipe';
 import {UserFormComponent} from './user-admin-user/user-form/user-form.component';
@@ -140,6 +137,5 @@ import { AssignGroupModalComponent } from './assignrole/assign-group-modal/assig
 })
 export class UseradminModule {
   constructor() {
-    console.log('UseradminModule => ');
   }
 }

@@ -3,7 +3,7 @@ import { environment } from '../../../environments/environment';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Globals2 } from '../globals';
 import { Observable } from 'rxjs';
-import { Globals } from 'src/app/services/globals';
+import { Globals } from '../../services/globals';
 import { Http, RequestOptions, Headers, ResponseContentType } from '@angular/http';
 
 @Injectable({
@@ -21,7 +21,6 @@ export class ApiService {
 		login: `${this.apiURL}/`,
 		insecure: `${this.insecureUrl}/v1/secured?`,
 		secure: `${this.securedApiUrl}/secured?`,
-		securejson: `${this.securedApiUrl}/securedJSON?`,
 		insecureProcessReport: `${this.insecureUrl}/Process/Report`,
 		secureProcessReport: `${this.securedApiUrl}/secured/Process/Report`,
 		secureProcessReportSubmit: `${this.securedApiUrl}/secured/Process/ReportSubmit`,
@@ -33,8 +32,7 @@ export class ApiService {
 		logout: `${this.insecureUrl}/logout`,
 		deleteArtifact: `${this.insecureUrl}/Artifact/DeleteArtifact?`,
 		securedJSON: `${this.securedApiUrl}/securedJSON?`,
-		downloadFile: `${this.fileUrl}/download`,
-		securedScheduleProcess: `${this.securedApiUrl}/secured/Process/Schedule`
+		downloadFile: `${this.fileUrl}/download`
 	}
 
 	constructor(private http: HttpClient, private globals: Globals2, private globalUrl: Globals,
@@ -137,9 +135,9 @@ export class ApiService {
 	setHeadersForBlob() {
 		const headers = new Headers();
 		headers.append('Authorization', `Bearer ${JSON.parse(sessionStorage.getItem('u')).TOKEN}`);
-		const options = new RequestOptions({ headers: headers, responseType: ResponseContentType.Blob });
+		const options = new RequestOptions({headers: headers, responseType: ResponseContentType.Blob});
 		return options;
-	}
+	  }
 }
 
 export enum RequestTypes {

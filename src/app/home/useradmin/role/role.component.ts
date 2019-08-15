@@ -1,15 +1,15 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import { NoAuthDataService } from 'src/app/services/no-auth-data.service';
+import { NoAuthDataService } from '../../../services/no-auth-data.service';
 import { Observable } from 'rxjs';
-import { userRole } from 'src/app/store/user-admin/user-role/userrole.model';
+import { userRole } from '../../../store/user-admin/user-role/userrole.model';
 import * as userRoleSelectors from '../../../store/user-admin/user-role/userrole.selectors';
 import * as userRoleActions from '../../../store/user-admin/user-role/userrole.action';
 import { Store, select } from '@ngrx/store';
-import { AppState } from 'src/app/app.state';
+import { AppState } from '../../../app.state';
 import {addUserGroup, UpdateUserGroup} from '../../../store/user-admin/user-group/usergroup.action';
 import {AddUserRole, DeleteUserRole, UpdateUserRole} from '../../../store/user-admin/user-role/userrole.action';
-import { UserAdminService } from 'src/app/services/user-admin.service';
-import { UseradminService } from 'src/app/services/useradmin.service2';
+import { UserAdminService } from '../../../services/user-admin.service';
+import { UseradminService } from '../../../services/useradmin.service2';
 
 @Component({
   selector: 'app-role',
@@ -67,7 +67,6 @@ export class RoleComponent implements OnInit {
 
   ngOnInit() {
     this.noAuthData.getJSON().subscribe(data => {
-      //console.log(data);
       this.Label = data;
     });
     const data = {
@@ -147,7 +146,6 @@ export class RoleComponent implements OnInit {
     // if (this.roleData != null) {
     //   this.userRoles$.subscribe(data => {
     //     const result = data.filter(s => s.ROLE_CD == x);
-    //     console.log(result);
     //   });
     // }
   }

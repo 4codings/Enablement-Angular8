@@ -1,11 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { EnduserComponent } from './enduser.component';
-import { ProcessDesignComponent } from './process-design/process-design.component';
-import { MytaskModule } from './mytask/mytask.module';
-import { ProcessDesignModule } from './process-design/process-design.module';
-import { ExceptionModule } from './exception/exception.module';
-import { DashboardModule } from './dashboard/dashboard.module';
 import { ArtifactFormComponent } from './execute/artifact-form/artifact-form.component';
 import { RepeatableFormComponent } from './execute/repeatable-form/repeatable-form.component';
 import { NonRepeatableFormComponent } from './execute/non-repeatable-form/non-repeatable-form.component';
@@ -18,23 +13,19 @@ const routes: Routes = [{
     { path: '', redirectTo: 'Design', pathMatch: 'full' },
     {
       path: 'Mytask',
-      loadChildren: './mytask/mytask.module#MytaskModule'
-      // loadChildren: () => MytaskModule,
+      loadChildren: () => import('./mytask/mytask.module').then(m => m.MytaskModule)
     },
     {
       path: 'Exception',
-      loadChildren: './exception/exception.module#ExceptionModule'
-      // loadChildren: () => ExceptionModule,
+      loadChildren: () => import('./exception/exception.module').then(m => m.ExceptionModule)
     },
     {
       path: 'Design',
-      loadChildren: './process-design/process-design.module#ProcessDesignModule'
-      // loadChildren: () => ProcessDesignModule,
+      loadChildren: () => import('./process-design/process-design.module').then(m => m.ProcessDesignModule)
     },
     {
       path: 'Dashboard',
-      loadChildren: './dashboard/dashboard.module#DashboardModule'
-      // loadChildren: () => DashboardModule,
+      loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
     },
   ]
 },

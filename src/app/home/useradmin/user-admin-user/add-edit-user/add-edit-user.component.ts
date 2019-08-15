@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../../app.state';
 import { UseradminService } from '../../../../services/useradmin.service2';
 import { Actions, ofType } from '@ngrx/effects';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { take, tap } from 'rxjs/operators';
 import * as userActions from '../../../../store/user-admin/user/user.action';
 import * as userGroupActions from '../../../../store/user-admin/user-group/usergroup.action';
@@ -70,7 +70,6 @@ export class AddEditUserComponent extends UserAdminUserComponent implements OnIn
       this.store.dispatch(new userGroupActions.getUserGroup(V_SRC_CD_DATA));
       this.dialogRef.close(true);
     }, err => {
-      console.log(err);
     });
   }
 
