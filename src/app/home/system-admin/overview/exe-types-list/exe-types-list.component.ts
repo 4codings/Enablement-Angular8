@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Output, Input } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
@@ -37,9 +37,10 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
           return -1;
         if (a.EXE_TYP > b.EXE_TYP)
           return 1;
-        return 0;
+        return 0; 
       });
     }, err => {
+       console.log(err);
     });
     this.systemOverview.getExe$.subscribe(res => {
       this.sortedAllExes = res;
@@ -51,6 +52,7 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
   //     this.exes = res;
   //     this.getAllExes();
   //   }, err => {
+  //      console.log(err);
   //   })
   // }
 
@@ -64,11 +66,13 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
   //     });
   //     this.sortedAllExes = this.allExes.sort((a,b) => (a.EXES.length > b.EXES.length) ? -1 : ((b.EXES.length > a.EXES.length) ? 1 : 0));
   //   }, err => {
+  //      console.log(err);
   //   })
   // }
 
 
   changeExeType(type): void {
+    console.log(type);
     this.selectedExeType = type;
     this.selectedExe.emit(type);
   }
@@ -81,6 +85,7 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
     });
   }
 
@@ -95,6 +100,7 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.message = `Are you sure, you want to delete ExeType <strong>${exe.EXE_TYP}</strong>?`;
 
     dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
     });
     */
   }
@@ -108,10 +114,11 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
     });
     */
   }
-
+  
   ngOnDestroy(): void {
     this.unsubscribeAll.next(true);
     this.unsubscribeAll.complete();

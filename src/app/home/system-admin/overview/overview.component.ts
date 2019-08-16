@@ -45,8 +45,9 @@ export class OverviewComponent implements OnInit,OnDestroy {
   onFileSelectEvent(event, filename, moduleName): void {
     //this.overviewService.uploadFile(event, filename, moduleName);
   }
-
+  
   selectedExe(type) {
+    console.log(type);
     this.selectedExeType = type;
   }
 

@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, HostListener } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { StorageSessionService } from '../../../../services/storage-session.service';
 import { HttpClient } from '@angular/common/http';
 import { Globals } from '../../../../services/globals';
@@ -54,13 +54,13 @@ export class AddPlatformDialogComponent implements OnInit {
   progress:boolean;
 
   platFormChange() {
-    if(this.p_plat.length != this.p_plat_dup[0].length) {
+    if(this.p_plat != this.p_plat_dup) {
       this.isPlatformChange = true;
     } else {
       this.isPlatformChange = false;
     }
   }
-
+  
   platFormDesChange() {
     if(this.p_desc.length != this.p_desc_dup[0].length) {
       this.isPlatformDesChange = true;
@@ -78,7 +78,7 @@ export class AddPlatformDialogComponent implements OnInit {
   dataplat(){
 
   }
-
+ 
   getplatformdesc(p){
     this.http.get<data>(this.apiUrlGet+"V_CD_TYP=SERVER&V_CD="+p+"&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Description&Verb=GET").subscribe(
       res=>{
@@ -95,20 +95,20 @@ export class AddPlatformDialogComponent implements OnInit {
       "V_SERVER_DSC":this.p_desc,
       "REST_Service":"Platform_Master",
       "Verb":"PUT"
-  };
+    };
 
-  this.http.put(this.apiUrlPut,body).subscribe(
-    res=>{
-      (res);
-      (body);
-      this.dialogRef.close();
-    });
+    this.http.put(this.apiUrlPut,body).subscribe(
+      res=>{
+        (res);
+        (body);
+        this.dialogRef.close();
+      });
   }
-
+  
   updateplat() {
-
+    
   }
-
+ 
   deleteplat(){
   this.http.delete(this.apiUrlGet+"V_SERVER_CD="+this.p_plat+"&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Platform_Master&Verb=DELETE").subscribe(
     res=>{

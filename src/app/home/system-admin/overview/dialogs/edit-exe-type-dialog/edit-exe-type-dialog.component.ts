@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ConfigServiceService } from '../../../../../services/config-service.service';
 import { HttpClient } from '@angular/common/http';
 
@@ -14,6 +14,8 @@ export class EditExeTypeDialogComponent implements OnInit {
   PLF_TYPE=[];
   PLF_CD;
   PLF_Data;
+  V_EXE_CD_DUP='';
+  isexeChange:boolean = false;
 
   constructor(public dialogRef: MatDialogRef<EditExeTypeDialogComponent>,  @Inject(MAT_DIALOG_DATA) public data: any, private config:ConfigServiceService, private http:HttpClient) { }
 
@@ -23,8 +25,9 @@ export class EditExeTypeDialogComponent implements OnInit {
       // this.PLF_CD=this.PLF_TYPE['SERVER_CD'];
     });
     this.PLF_Data = this.data.exeData.V_SERVER_CD.toString();
+    this.V_EXE_CD_DUP = this.data.exeData.V_EXE_CD;
   }
-
+  
   onBtnCancelClick(): void {
     this.dialogRef.close();
   }
@@ -48,23 +51,32 @@ export class EditExeTypeDialogComponent implements OnInit {
       "V_SERVER_CD":this.PLF_Data,
       "REST_Service":["Exe"],
       "Verb":["PUT"]
-    }
+    }  
     this.http.put('https://enablement.us/Enablement/rest/v1/securedJSON?', data).subscribe(res => {
+      console.log("res",res);
       this.dialogRef.close(true);
     }, err => {
-
+      
     })
-
+  
   }
 
   platformDescription(){
-
+    
     this.config.getPlatformDescription(this.PLF_Data).subscribe(
       res=>{
         this.PLF_CD=res.json();
         (this.PLF_CD);
         this.data.exeData.V_SERVER_DSC=this.PLF_CD['SERVER_DSC'];
       });
+  }
+
+  isExeChange() {
+    if(this.data.exeData.V_EXE_CD.toLowerCase() != this.V_EXE_CD_DUP.toLocaleLowerCase()) {
+      this.isexeChange = true;
+    } else {
+      this.isexeChange = false;
+    }
   }
 
 }

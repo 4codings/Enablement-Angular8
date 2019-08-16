@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { HttpClient } from '@angular/common/http';
 import { ConfigServiceService } from '../../../../../services/config-service.service';
 
@@ -40,13 +40,13 @@ export class AddExeDialogComponent implements OnInit {
       this.V_ICN_TYP=res;
     });
   }
-
+  
   onBtnCancelClick(): void {
     this.dialogRef.close();
   }
 
   platformDescription(){
-
+    
     this.config.getPlatformDescription(this.PLF_CD).subscribe(
       res=>{
         this.PLF_DATA=res.json();
@@ -77,9 +77,10 @@ export class AddExeDialogComponent implements OnInit {
     "Verb":["PUT"]
   }
     this.http.put('https://enablement.us/Enablement/rest/v1/securedJSON?', data).subscribe(res => {
+      console.log("res",res);
       this.dialogRef.close(true);
     }, err => {
-
+  
     })
   }
 }

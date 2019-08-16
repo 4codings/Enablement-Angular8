@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { HttpClient } from '@angular/common/http';
 import { ConfigServiceService } from '../../../../../services/config-service.service';
 
@@ -9,13 +9,13 @@ import { ConfigServiceService } from '../../../../../services/config-service.ser
   styleUrls: ['./add-connection-dialog.component.scss']
 })
 export class AddConnectionDialogComponent implements OnInit {
-
+  
   public connectionTypes;
   public V_SRC_CD:string;
   public V_CXN_CD;
   public V_CXN_DSC;
   public V_CXN_TYP;
-  public DATA;
+  public DATA; 
   public tableshow = false;
   PLF_CD:string = "Amazon";
   PLF_DSC:string = 'Apache Tomcat Web Server';
@@ -40,7 +40,7 @@ export class AddConnectionDialogComponent implements OnInit {
   }
 
   platformDescription(){
-
+    
     this.config.getPlatformDescription(this.PLF_CD).subscribe(
       res=>{
         this.PLF_DATA=res.json();
@@ -60,7 +60,7 @@ export class AddConnectionDialogComponent implements OnInit {
         V_PARAM_V += connectionData[key] + "|"
       }
     })
-
+    
     var data = {
       "V_CXN_CD":connectionData.V_CXN_CD,
       "V_CXN_TYPE":connectionData.V_CXN_TYP,
@@ -72,17 +72,20 @@ export class AddConnectionDialogComponent implements OnInit {
       "REST_Service":["CXN"],
       "Verb":["PUT"]
     }
-    // this.http.put('https://enablement.us/Enablement/rest/v1/securedJSON?', data).subscribe(res => {
-    //   this.dialogRef.close(true);
-    // }, err => {
-
-    // })
+  
+    this.http.put('https://enablement.us/Enablement/rest/v1/securedJSON', data).subscribe(res => {
+      console.log("res",res);
+      this.dialogRef.close(true);
+    }, err => {
+  
+    })
   }
 
   getParams() {
     this.http.get('https://enablement.us/Enablement/rest/E_DB/SPJSON?V_SRC_CD='+ this.V_SRC_CD +'&V_CXN_TYP='+ this.V_CXN_TYP +'&REST_Service=Params_of_CXN_Type&Verb=GET').subscribe(res => {
       this.DATA = res;
       this.tableshow = true;
+      //console.log(this.DATA);
     })
   }
 

@@ -1,8 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material';
 import { EditExeTypeDialogComponent } from '../dialogs/edit-exe-type-dialog/edit-exe-type-dialog.component';
-import { ConfirmationAlertComponent } from '../../../../shared/components/confirmation-alert/confirmation-alert.component';
 import { SystemAdminOverviewService } from '../system-admin-overview.service';
 
 @Component({
@@ -15,7 +14,7 @@ export class SingleExeComponent implements OnInit {
   @Input() exeType;
   @Input() exes;
   @Input() userRoleAccess;
-
+  
   V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
   V_USR_NM:string=JSON.parse(sessionStorage.getItem('u')).USR_NM;
 
@@ -35,6 +34,7 @@ export class SingleExeComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
     });
   }
 
@@ -43,6 +43,7 @@ export class SingleExeComponent implements OnInit {
   }
 
   selectedExeTile(exe) {
+    //console.log("parent", exe);
     this.systemOverview.selectExe(exe);
   }
 

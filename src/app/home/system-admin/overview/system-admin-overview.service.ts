@@ -36,7 +36,9 @@ export class SystemAdminOverviewService {
   }
 
   public getExe() {
+    //console.log("called");
     this.http.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=EXE&V_SRC_CD="+this.V_SRC_CD+"&V_ICN_TYP=&REST_Service=Masters&Verb=GET").subscribe((res) => {
+      //console.log("exe", res);
       this.exes = res;
       this.getAllExes();
     })
@@ -54,15 +56,18 @@ export class SystemAdminOverviewService {
       });
       sortedAllExes = allExes.sort((a,b) => (a.EXES.length > b.EXES.length) ? -1 : ((b.EXES.length > a.EXES.length) ? 1 : 0));
       this.getExe$.next(sortedAllExes);
+      //console.log("sortedAllExes", sortedAllExes);
     }, err => {
+       console.log(err);
     })
   }
-
+   
   getMachine() {
     this.http.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=MACHINES&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe((res:any) => {
       this.machines = res;
       this.getAllMachineConnections();
     }, err => {
+       console.log(err);
     })
   }
 
@@ -78,10 +83,12 @@ export class SystemAdminOverviewService {
       });
       sortedAllConnections = connections.sort((a,b) => (a.V_CXN.length > b.V_CXN.length) ? -1 : ((b.V_CXN.length > a.V_CXN.length) ? 1 : 0));
       this.getMachineConnection$.next(sortedAllConnections);
+      //console.log("connections", sortedAllConnections);
     }, err => {
+       console.log(err);
     })
   }
-
+  
   getRollAccess() {
     this.rollserviceService.getRollCd().then((res) => {
       this.http.get('../../../../assets/control-variable.json').subscribe(cvres => {
@@ -132,7 +139,7 @@ export class SystemAdminOverviewService {
               if (this.ctrl_variables.show_SystemAdminOverViewTab) {
                 this.role_overview = true;
               }
-              break;
+              break;  
             default:
               break;
           }
