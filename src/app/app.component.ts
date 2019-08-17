@@ -1,13 +1,7 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { filter } from 'rxjs/operators';
-import { NavigationEnd, Router, NavigationStart } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { environment } from '../environments/environment';
-import { Subscription } from 'rxjs';
-import { UserService } from './core/user.service';
-import { OptionalValuesService } from './services/optional-values.service';
-import { ApiService } from './service/api/api.service';
-import { MatDialog } from '@angular/material/dialog';
-import { KeepAliveDialog } from './home/home.component';
 
 @Component({
   selector: 'app-root',
@@ -16,15 +10,9 @@ import { KeepAliveDialog } from './home/home.component';
 })
 export class AppComponent implements OnInit {
   title = 'enablement';
-  private dialogRef = null;
 
   constructor(
-    // private /api: ApiSdkService,
-    private userService: UserService,
-    private optionalService: OptionalValuesService,
-    private router: Router,
-    private apiService: ApiService,
-    private dialog: MatDialog,
+    private router: Router
   ) {
   }
 

@@ -33,7 +33,6 @@
         "@ngrx/store-devtools": "^8.2.0",
         "angular-resizable-element": "^3.2.4",
         "angular-user-idle": "^2.1.2",
-        "angular2-ladda": "^2.0.1",
         "bpmn-js": "^4.0.0",
         "bpmn-js-properties-panel": "^0.32.0",
         "chart.js": "^2.8.0",
