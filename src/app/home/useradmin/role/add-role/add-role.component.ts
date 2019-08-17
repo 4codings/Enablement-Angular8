@@ -16,7 +16,7 @@ import {userRole} from '../../../../store/user-admin/user-role/userrole.model';
 })
 export class AddRoleComponent implements OnInit, OnDestroy {
 
-  @ViewChild(RoleFormComponent, { static: true }) form: RoleFormComponent;
+  @ViewChild(RoleFormComponent, { static: true } as any) form: RoleFormComponent;
   actionSubscription: Subscription;
   roleAlreadyExist: boolean = false;
   allRoles: userRole[];

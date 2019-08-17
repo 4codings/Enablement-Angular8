@@ -27,7 +27,7 @@ export class ExeTileListComponent implements OnInit {
   @Output() selectedExeTile = new EventEmitter();
   @Output() deleteExeEvent = new EventEmitter();
   public selectedMachine;
-  @ViewChild('contextMenu', { static: false }) set contextMenu(value: ElementRef) {
+  @ViewChild('contextMenu', { static: false } as any) set contextMenu(value: ElementRef) {
     if (value) {
       let menu: HTMLDivElement = value.nativeElement;
       menu.addEventListener('mousedown', ev => ev.stopImmediatePropagation());

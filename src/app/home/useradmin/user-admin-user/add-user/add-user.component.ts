@@ -26,8 +26,8 @@ export class AddUserComponent implements OnInit, OnDestroy {
   actionSubscription: Subscription;
   userAlreadyExist: boolean = false;
   allUsers: User[] = [];
-  @ViewChild(UserFormComponent, { static: false }) userForm: UserFormComponent;
-  @ViewChild(UserListComponent, { static: false }) userList: UserListComponent;
+  @ViewChild(UserFormComponent, { static: false } as any) userForm: UserFormComponent;
+  @ViewChild(UserListComponent, { static: false } as any) userList: UserListComponent;
 
   constructor(private store: Store<AppState>,
               private userAdminService: UseradminService,

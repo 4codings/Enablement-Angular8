@@ -18,7 +18,7 @@ import {userGroup} from '../../../../store/user-admin/user-group/usergroup.model
 })
 export class AddGroupComponent implements OnInit, OnDestroy {
 
-  @ViewChild(GroupFormComponent, { static: true }) form: GroupFormComponent;
+  @ViewChild(GroupFormComponent, { static: true } as any) form: GroupFormComponent;
   actionSubscription: Subscription;
   groupAlreadyExist: boolean = false;
   allGroups: userGroup[];

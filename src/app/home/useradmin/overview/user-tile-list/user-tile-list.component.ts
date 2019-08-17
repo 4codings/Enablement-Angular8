@@ -28,7 +28,7 @@ export class UserTileListComponent implements OnInit, OnDestroy {
   @Output() addUserEvent: EventEmitter<User> = new EventEmitter<User>();
   @Output() deleteUserEvent: EventEmitter<User> = new EventEmitter<User>();
 
-  @ViewChild('contextMenu', { static: false }) set contextMenu(value: ElementRef) {
+  @ViewChild('contextMenu', { static: false } as any) set contextMenu(value: ElementRef) {
     if (value) {
       let menu: HTMLDivElement = value.nativeElement;
       menu.addEventListener('mousedown', ev => ev.stopImmediatePropagation());

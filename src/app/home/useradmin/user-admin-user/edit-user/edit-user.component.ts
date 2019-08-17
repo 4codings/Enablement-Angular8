@@ -21,7 +21,7 @@ export class EditUserComponent implements OnInit {
   user: User;
   groupId: string;
   actionSubscription: Subscription;
-  @ViewChild(UserFormComponent, { static: true }) userForm: UserFormComponent;
+  @ViewChild(UserFormComponent, { static: true } as any) userForm: UserFormComponent;
 
   constructor(private store: Store<AppState>,
               private userAdminService: UseradminService,

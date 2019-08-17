@@ -18,7 +18,7 @@ export class EditRoleComponent implements OnInit {
 
   role: userRole;
   actionSubscription: Subscription;
-  @ViewChild(RoleFormComponent, { static: true }) form: RoleFormComponent;
+  @ViewChild(RoleFormComponent, { static: true } as any) form: RoleFormComponent;
 
   constructor(private store: Store<AppState>,
               private actions$: Actions,

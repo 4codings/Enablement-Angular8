@@ -23,7 +23,7 @@ export class AuthTileListComponent implements OnInit {
   @Output() addAuthEvent: EventEmitter<AuthorizationData> = new EventEmitter<AuthorizationData>();
   @Output() deleteAuthEvent: EventEmitter<AuthorizationData> = new EventEmitter<AuthorizationData>();
 
-  @ViewChild('contextMenu', { static: false }) set contextMenu(value: ElementRef) {
+  @ViewChild('contextMenu', { static: false } as any) set contextMenu(value: ElementRef) {
     if (value) {
       let menu: HTMLDivElement = value.nativeElement;
       menu.addEventListener('mousedown', ev => ev.stopImmediatePropagation());

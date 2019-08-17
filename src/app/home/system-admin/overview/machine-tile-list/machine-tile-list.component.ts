@@ -30,7 +30,7 @@ export class MachineTileListComponent implements OnInit {
   @Input() userAccess;
   domain_name=this.globals.domain_name;
   private apiUrlGet = "https://"+this.domain_name+"/rest/v1/secured?";
-  @ViewChild('contextMenu', { static: false }) set contextMenu(value: ElementRef) {
+  @ViewChild('contextMenu', { static: false } as any) set contextMenu(value: ElementRef) {
     if (value) {
       let menu: HTMLDivElement = value.nativeElement;
       menu.addEventListener('mousedown', ev => ev.stopImmediatePropagation());

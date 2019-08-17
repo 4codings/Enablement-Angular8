@@ -19,7 +19,7 @@ export class EditGroupComponent implements OnInit {
 
   group: userGroup;
   actionSubscription: Subscription;
-  @ViewChild(GroupFormComponent, { static: true }) form: GroupFormComponent;
+  @ViewChild(GroupFormComponent, { static: true } as any) form: GroupFormComponent;
 
   constructor(private store: Store<AppState>,
               private actions$: Actions,

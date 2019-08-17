@@ -44,7 +44,7 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
   screenHeight: number;
   screenWidth: number;
   desktopView: boolean = true;
-  @ViewChild('nrpForm', { static: false }) nrpForm: any;
+  @ViewChild('nrpForm', { static: false } as any) nrpForm: any;
   navigationSubscription;
   private apiUrlGetSecure = this.apiService.endPoints.secure;
 

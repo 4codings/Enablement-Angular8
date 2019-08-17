@@ -39,7 +39,7 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
   PVP_Updated: any = {};
   navigationSubscription;
   dialogRef: any;
-  @ViewChild('rpForm', { static: false }) rpForm: any;
+  @ViewChild('rpForm', { static: false } as any) rpForm: any;
   constructor(
     public StorageSessionService: StorageSessionService,
     public app: HomeComponent,
