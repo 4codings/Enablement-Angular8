@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
     { path: '', loadChildren: () => import('../app/home/home.module').then(m => m.HomeModule) },
@@ -8,9 +8,7 @@ const routes: Routes = [
 
 @NgModule({
     imports: [
-        RouterModule.forRoot(routes, {
-            preloadingStrategy: PreloadAllModules
-        })
+        RouterModule.forRoot(routes)
     ],
     exports: [RouterModule],
     declarations: []
