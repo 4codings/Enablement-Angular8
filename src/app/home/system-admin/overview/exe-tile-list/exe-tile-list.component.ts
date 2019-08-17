@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { EditExeTypeDialogComponent } from '../dialogs/edit-exe-type-dialog/edit-exe-type-dialog.component';
 import { ConfirmationAlertComponent } from '../../../../shared/components/confirmation-alert/confirmation-alert.component';
 import { HttpClient } from '@angular/common/http';
+import { AssignConnectionExeComponent } from '../dialogs/assign-connection-exe/assign-connection-exe.component';
 
 @Component({
   selector: 'app-exe-tile-list',
@@ -147,6 +148,27 @@ export class ExeTileListComponent implements OnInit {
       console.log('The dialog was closed');
       if(result) {
         this.systemOverview.getExe();
+      }
+    });
+  }
+
+  onContextMenuAssigneConnBtnClick() {
+    this.contextMenuActive = false;
+    this.onBtnAssignCxnClick(this.contextMenuData);
+    this.contextMenuData = null;
+  }
+
+  onBtnAssignCxnClick(exe) {
+    const dialogRef = this.dialog.open(AssignConnectionExeComponent, {
+      panelClass: 'app-dialog',
+      width: '600px',
+      data: {exe:exe, isSelectedEntity:'EXE', type:'Connections'}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      if(result) {
+        this.systemOverview.getMachine();
       }
     });
   }

@@ -4,8 +4,8 @@
     "scripts": {
         "ng": "ng",
         "start": "ng serve",
-        "build": "ng build --prod",
-        "build:stats": "ng build --prod --stats-json",
+        "build": "ng build --base-href . --prod",
+        "build:stats": "ng build --base-href . --prod --stats-json",
         "analyze-es5": "webpack-bundle-analyzer dist/enablement/stats-es5.json",
         "analyze-es2015": "webpack-bundle-analyzer dist/enablement/stats-es2015.json",
         "test": "ng test",

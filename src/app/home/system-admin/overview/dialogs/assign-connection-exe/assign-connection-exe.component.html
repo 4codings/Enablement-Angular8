@@ -1,29 +1,44 @@
 <div class="dialog-wrapper" fxLayoutGap="8px" fxLayout="column" fxLayoutAlign="start stretch">
     <div class="dialog-header content-wrapper" fxLayoutAlign="space-between center">
-      <span>Assign Connections to Exe</span>
-      <button mat-icon-button>
+      <span>Assign</span>
+      <button mat-icon-button (click)="onBtnCancelClick()">
         <mat-icon>close</mat-icon>
       </button>
     </div>
     <mat-divider></mat-divider>
     <div class="dialog-body content-wrapper" fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="start stretch">
       <div>
-        <strong>Executables</strong>
+        <strong>{{data.type}}</strong>
         <mat-list class="scroll">
-          <!-- <mat-list-item class="sd list_item" *ngFor="let group of groups | groupType: groupTypes.CUSTOM"
-            (click)="onListItemClick(group)" [class.active]="selectedGroups.isSelected(+group.V_USR_GRP_ID)">
-            <div fxLayout="row">
-              <div fxFlex="90">{{group.V_USR_GRP_CD}}</div>
-              <div fxFlex="10">
-                <mat-checkbox style="pointer-events: none" [checked]="selectedGroups.isSelected(+group.V_USR_GRP_ID)">
-                </mat-checkbox>
+          <ng-container *ngIf="data.isSelectedEntity == 'CXN'">
+            <mat-list-item class="sd list_item" *ngFor="let list of lists; let i = index;"
+              [class.active]="list.is_selected" (click)="changeAssignItem(list, i)">
+              <div fxLayout="row">
+                <div fxFlex="90">{{list.V_EXE_CD}}</div>
+                <div fxFlex="10">
+                  <mat-checkbox style="pointer-events: none" [(ngModel)]="list.is_selected" [checked]="list.is_selected">
+                  </mat-checkbox>
+                </div>
               </div>
-            </div>
-          </mat-list-item> -->
+            </mat-list-item>
+          </ng-container>
+          
+          <ng-container *ngIf="data.isSelectedEntity == 'EXE'">
+            <mat-list-item class="sd list_item" *ngFor="let list of lists; let i = index;"
+              [class.active]="list.is_selected" (click)="changeAssignItem(list, i)">
+              <div fxLayout="row">
+                <div fxFlex="90">{{list.V_CXN_CD}}</div>
+                <div fxFlex="10">
+                  <mat-checkbox style="pointer-events: none" [(ngModel)]="list.is_selected" [checked]="list.is_selected">
+                  </mat-checkbox>
+                </div>
+              </div>
+            </mat-list-item>
+          </ng-container>  
         </mat-list>
       </div>
     </div>
     <div class="dialog-footer content-wrapper" fxLayoutAlign="end center" fxLayoutGap="8px">
-      <button mat-flat-button color="primary" (click)="onBtnSaveClick()">Assign Executable</button>
+      <button mat-flat-button color="primary" (click)="onBtnSaveClick()">Assign</button>
     </div>
 </div>

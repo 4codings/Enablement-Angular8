@@ -93,7 +93,7 @@ export class MachineTileListComponent implements OnInit {
     const dialogRef = this.dialog.open(AssignConnectionExeComponent, {
       panelClass: 'app-dialog',
       width: '600px',
-      data: cxn
+      data: {cxn:cxn, isSelectedEntity:'CXN', type:'Executable'}
     });
 
     dialogRef.afterClosed().subscribe(result => {
