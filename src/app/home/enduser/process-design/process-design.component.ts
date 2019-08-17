@@ -63,10 +63,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   public isConditionalFlow = false;
   public isDefaultFlow = false;
   public isNoneFlow = false;
-  @ViewChild('file', { static: false })
+  @ViewChild('file', { static: false } as any)
   private file: any;
-  @ViewChild('processForm', { static: false }) processForm: any;
-  @ViewChild('treesidenav', { static: true }) treesidenav: any;
+  @ViewChild('processForm', { static: false } as any) processForm: any;
+  @ViewChild('treesidenav', { static: true } as any) treesidenav: any;
   changingValue: Subject<boolean> = new Subject();
   private currentXml: any;
   private uploadLocked: boolean;
@@ -251,7 +251,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
 
   ApplicationCD = '';
   ProcessCD = '';
-  @ViewChild('processId', { static: false }) processID: ElementRef;
+  @ViewChild('processId', { static: false } as any) processID: ElementRef;
   gantt = false;
   bar = false;
   pie = false;

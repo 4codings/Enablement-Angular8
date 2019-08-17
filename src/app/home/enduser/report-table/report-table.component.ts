@@ -44,8 +44,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
                       backgroundColor:"",borderColor:"",fillBackground:"",lineTension:"",pointSize:"",animations:"",
                       pointStyle:"",lineStyle:"",addRow:""}];
   domain_name = this.globals.domain_name;
-  @ViewChild(MatSort, { static: false }) sort: MatSort;
-  @ViewChild(BaseChartDirective, { static: false }) chart: BaseChartDirective;
+  @ViewChild(MatSort, { static: false } as any) sort: MatSort;
+  @ViewChild(BaseChartDirective, { static: false } as any) chart: BaseChartDirective;
   roleObservable$: Subscription;
   roleValues;
   hasMonitorPermission = false;
