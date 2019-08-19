@@ -13,16 +13,22 @@ export class AssignConnectionExeComponent implements OnInit {
   
   public V_SRC_CD:string;
   public lists;
+  public clone_lists;
   public addList = [];
   public deleteList = [];
+  controlVariables;
   domain_name=this.globals.domain_name;
   private apiUrlGet = "https://"+this.domain_name+"/rest/v1/securedJSON?";
-  private apiUrlPut = "https://"+this.domain_name+"/rest/v1/secured";
+  private apiUrlPut = "https://"+this.domain_name+"/rest/v1/secured?";
 
   constructor(public dialogRef: MatDialogRef<AssignConnectionExeComponent>,  @Inject(MAT_DIALOG_DATA) public data: any, private http:HttpClient, private config:ConfigServiceService, private globals:Globals) { }
 
   ngOnInit() {
     this.V_SRC_CD=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+
+    this.http.get('../../../../../../assets/control-variable.json').subscribe(data => {
+      this.controlVariables = data;
+    })
 
     if(this.data.isSelectedEntity == 'EXE') {
       this.getAssignedExe();
@@ -31,10 +37,6 @@ export class AssignConnectionExeComponent implements OnInit {
     if(this.data.isSelectedEntity == 'CXN') {
       this.getAssignedCnx();
     }
-  }
-
-  onBtnSaveClick() {
-
   }
 
   getAssignedExe() {
@@ -48,7 +50,16 @@ export class AssignConnectionExeComponent implements OnInit {
     console.log(this.data);
     this.http.get(this.apiUrlGet+'SELECTED_ENTITY=CXN&SELECTED_ENTITY_ID='+this.data.cxn.cnxData.V_CXN_ID+'&V_SRC_CD='+this.V_SRC_CD+'&V_TYP='+this.data.cxn.cnxData.V_CXN_TYP+'&REST_Service=EXE_CXN&Verb=GET').subscribe(res => {
       this.lists = res;
+      this.clone_lists = this.deepClone(this.lists);
     })
+  }
+
+  deepClone(oldArray: Object[]) {
+    let newArray: any = [];
+    oldArray.forEach((item) => {
+      newArray.push(Object.assign({}, item));
+    });
+    return newArray;
   }
 
   onBtnCancelClick(): void {
@@ -56,34 +67,99 @@ export class AssignConnectionExeComponent implements OnInit {
   }
 
   changeAssignItem(list, i) {
-    console.log("list", list);
     if(this.data.isSelectedEntity == 'CXN') {
-      if(list.is_selected = "FALSE") {
-        this.addList.push(list.V_EXE_ID);
+      if(!list.is_selected) {
+        // this.addList.push(list.V_EXE_ID);
+        // this.deleteList = this.deleteList.filter(data => {
+        //   return data != list.V_EXE_ID;
+        // });
         this.lists[i].is_selected = !this.lists[i].is_selected;
-      }
-
-      if(list.is_selected = "TRUE") {
-        this.deleteList.push(list.V_EXE_ID);
+      } else {
+        // this.deleteList.push(list.V_EXE_ID);
+        // this.addList = this.addList.filter(data => {
+        //   return data != list.V_EXE_ID;
+        // });
         this.lists[i].is_selected = !this.lists[i].is_selected;
       }
     }
 
     if(this.data.isSelectedEntity == 'EXE') {
-      console.log("list", list);
-      if(list.is_selected == "FALSE") {
-        this.addList.push(list.V_CXE_ID);
+      if(!list.is_selected) {
+        // this.addList.push(list.V_CXN_ID);
+        // this.deleteList = this.deleteList.filter(data => {
+        //   return data != list.V_CXN_ID;
+        // });
         this.lists[i].is_selected = !this.lists[i].is_selected;
-        console.log(this.addList);
-      }
-
-      if(list.is_selected == "TRUE") {
-        this.deleteList.push(list.V_CXE_ID); 
+      } else {
+        // this.deleteList.push(list.V_CXN_ID); 
+        // this.addList = this.addList.filter(data => {
+        //   return data != list.V_CXN_ID;
+        // });
         this.lists[i].is_selected = !this.lists[i].is_selected;
-        console.log(this.addList);
       }
     }
 
+  }
+
+  onBtnSaveClick(): void {
+    let selctedEntityId ;
+    let type;
+    
+    if(this.data.isSelectedEntity == 'EXE') {
+      selctedEntityId = this.data.exe.exeData.V_EXE_ID;
+      type = this.data.exe.EXE_TYP;
+      
+      this.clone_lists.forEach(data => {
+        this.lists.forEach(val => {
+          if(data.V_CXN_ID == val.V_CXN_ID && data.is_selected != val.is_selected) {
+            if(data.is_selected) {
+              this.deleteList.push(val.V_CXN_ID);
+            }
+            if(!data.is_selected) {
+              this.addList.push(val.V_CXN_ID);
+            }
+          }
+        })
+      })
+    }
+
+    if(this.data.isSelectedEntity == 'CXN') {
+      selctedEntityId = this.data.cxn.cnxData.V_CXN_ID;
+      type = this.data.cxn.cnxData.V_CXN_TYP;
+
+      this.clone_lists.forEach(data => {
+        this.lists.forEach(val => {
+          if(data.V_EXE_ID == val.V_EXE_ID && data.is_selected != val.is_selected) {
+            if(data.is_selected) {
+              this.deleteList.push(val.V_EXE_ID);
+            }
+            if(!data.is_selected) {
+              this.addList.push(val.V_EXE_ID);
+            }
+          }
+        })
+      })
+    }
+    console.log(this.deleteList, this.addList);
+    let json = {
+      'V_DELETED_ID_ARRAY': this.deleteList.toString(),
+      'V_ADDED_ID_ARRAY': this.addList.toString(),
+      'SELECTED_ENTITY': this.data.isSelectedEntity,
+      'SELECTED_ENTITY_ID': selctedEntityId,
+      "V_TYP": type,
+      "V_SRC_CD": this.V_SRC_CD,
+      'V_EFF_STRT_DT_TM': new Date(Date.now()),
+      'V_EFF_END_DT_TM': new Date(Date.now() + this.controlVariables.effectiveEndDate),
+      'REST_Service': 'EXE_CXN',
+      'Verb': 'PUT'
+    };
+
+    this.http.post(this.apiUrlGet, json).subscribe(result => {
+      if (result) {
+        this.dialogRef.close(true);
+      }
+    }, error => {
+    });
   }
 
 }
