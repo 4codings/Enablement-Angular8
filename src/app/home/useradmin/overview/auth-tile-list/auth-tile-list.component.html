@@ -9,7 +9,7 @@
        cdkDrag
        cdkDropListSortingDisabled
        [cdkDragData]="currAuth"
-       [matTooltip]="currAuth.V_AUTH_CD"
+       [matTooltip]="currAuth.V_AUTH_CD.split(';')[0]"
        *ngFor="let currAuth of auths | authType: selectedAuthType?.key"
        [class.active]="currAuth == selectedAuth"
        [class.highlight]="highlightedAuths.isSelected(currAuth)"
@@ -43,7 +43,7 @@
 <!--    <div *ngIf="!environment.production">{{currAuth.V_AUTH_ID}}</div>-->
     <div class="tile-text">
       <strong>
-        {{ currAuth.V_AUTH_CD.replace('; CRUDE', '').replace('CRUDE; ', '') }}
+        {{ currAuth.V_AUTH_CD.split(';')[0] }}
       </strong>
     </div>
   </div>
