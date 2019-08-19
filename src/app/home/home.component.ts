@@ -4,13 +4,15 @@ import { MatIconRegistry } from "@angular/material/icon";
 import { DomSanitizer } from "@angular/platform-browser";
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router, NavigationEnd } from '@angular/router';
-import { Subscription } from 'rxjs';
 import { UserIdleService } from 'angular-user-idle';
 import { environment } from '../../environments/environment';
 import { ApiService } from '../service/api/api.service';
 import { StorageSessionService } from '../services/storage-session.service';
 import { UserService } from '../core/user.service';
 import { OptionalValuesService } from '../services/optional-values.service';
+
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Injectable()
 @Component({
@@ -28,9 +30,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   public selected_PROCESS = 'ALL';
   public selected_SERVICE = 'ALL';
   public START = true;
-  private useTimeout: boolean;
-  private routerSubscription: Subscription;
+  private useTimeout = true;
   private dialogRef = null;
+  private unsubscribe = new Subject<void>();
 
   constructor(
     private matIconRegistry: MatIconRegistry,
@@ -162,8 +164,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.apiService.refreshToken();
   }
   ngOnInit() {
+    this.useTimeout = true;
     this.userIdle.startWatching();
-    this.userIdle.onTimerStart().subscribe((count) => {
+    this.userIdle.onTimerStart().pipe(takeUntil(this.unsubscribe)).subscribe((count) => {
       if (this.useTimeout && count === 1) {
         this.dialogRef = this.dialog.open(KeepAliveDialog, { disableClose: true, hasBackdrop: true });
         this.dialogRef.afterClosed().subscribe((result) => {
@@ -172,7 +175,6 @@ export class HomeComponent implements OnInit, OnDestroy {
             this.useTimeout = true;
             this.apiService.refreshToken();
           } else if (result === 'logout') {
-            this.userIdle.resetTimer();
             this.useTimeout = false;
             this.apiService.logout('LOGOUT');
             this.logout();
@@ -187,23 +189,22 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
       this.useTimeout = false;
     });
-    this.routerSubscription = this.router.events.subscribe((event) => {
+     this.router.events.pipe(takeUntil(this.unsubscribe)).subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.userIdle.resetTimer();
-        if (['/'].indexOf(event.url) !== -1) {
-          this.useTimeout = false;
-        } else {
-          this.useTimeout = true;
-        }
       }
     });
   }
 
   ngOnDestroy() {
-    this.routerSubscription.unsubscribe();
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 
   private logout() {
+    this.userIdle.stopTimer();
+    this.userIdle.stopWatching();
+    this.useTimeout = false;
     if (this.dialogRef) {
       this.dialogRef.close();
     }
