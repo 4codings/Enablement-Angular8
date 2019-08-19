@@ -239,14 +239,24 @@ table {
 th.mat-sort-header {
   color: black;
 }
-#matPreferences {
-  overflow-x: auto;
-  width: 100%;
+#tableContainer {
+  overflow-x: scroll;
+  width: 100% !important;
 }
-#matPreferences th{
+#matPreferences mat-cell{
+  padding: 20px;
+  min-width: 150px !important;
+  border: 1px solid rgb(225, 225, 225);
+}
+#matPreferences .mat-header-row{
+  background-color: rgb(215, 215, 215);
+  border: 1px solid gray;
+  width: fit-content !important; 
+  color: white;
+  font-weight: bold;
+}
+#matPreferences mat-row{
   background-color: rgb(235, 235, 235);
-  border: 1px solid gray;
-}
-#matPreferences td{
-  border: 1px solid gray;
+  width: fit-content !important; 
+  border:1px solid lightgray;
 }
