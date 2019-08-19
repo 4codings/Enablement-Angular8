@@ -22,7 +22,8 @@
     </div>
   </div>
   <div fxLayout="row" fxLayoutGap="8px" class="content-wrapper">
-    <app-group-list [fxFlex]="50"
+    <app-group-list [ngClass]="{'content-wrapper-smallTile': selectedGroupType != groupTypes.CUSTOM }"
+                    [fxFlex]="selectedGroupType == groupTypes.CUSTOM ? 50 : 100"
                     [membershipPermission]="roll_membership"
                     [groupPermission]="roll_group"
                     [userPermission]="roll_user"
