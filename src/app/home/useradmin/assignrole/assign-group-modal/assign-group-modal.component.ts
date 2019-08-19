@@ -20,6 +20,7 @@ export class AssignGroupModalComponent implements OnInit {
   selectedGroups: SelectionModel<any> = new SelectionModel(true, []);
   public controlVariables;
   groupTypes = groupTypeConstant;
+  V_SRC_CD = '';
   constructor(private dialogRef: MatDialogRef<AssignGroupModalComponent>,
     private userAdminService: UseradminService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
@@ -27,6 +28,7 @@ export class AssignGroupModalComponent implements OnInit {
     this.groups = data.groups;
     this.controlVariables = data.controlVariables;
     this.selectedGroups.select(...this.role.V_USR_GRP_ID);
+    this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
   }
 
   ngOnInit() {
@@ -62,6 +64,7 @@ export class AssignGroupModalComponent implements OnInit {
       'V_EFF_STRT_DT_TM': [new Date(Date.now())],
       'V_EFF_END_DT_TM': [new Date(Date.now() + this.controlVariables.effectiveEndDate)],
       'REST_Service': ['Group_Role'],
+      "V_SRC_CD": this.V_SRC_CD,
       'Verb': ['POST']
     };
 
