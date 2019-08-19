@@ -97,8 +97,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     { item: 'Resolve', value: 'Resolve', havePermission: 0, icon: 'fab fa-resolving fa-lg', iconType: 'fa' },
     { item: 'Schedule', value: 'Schedule', havePermission: 0, icon: 'fa fa-calendar fa-lg', iconType: 'fa' },
     { item: 'Pause Schedule', value: 'SchedulePause', havePermission: 0, icon: 'far fa-pause-circle fa-lg', iconType: 'fa' },
-    { item: 'Kill Schedule', value: 'ScheduleKill', havePermission: 0, icon: 'far fa-skull-crossbones fa-lg', iconType: 'fa' },
-    { item: 'Resume Schedule', value: 'ScheduleResume', havePermission: 0, icon: 'far fa-play-circle mr-2 fa-lg', iconType: 'fa' },
+    { item: 'Kill Schedule', value: 'ScheduleKill', havePermission: 0, icon: 'far fa-trash fa-lg', iconType: 'fa' }, { item: 'Resume Schedule', value: 'ScheduleResume', havePermission: 0, icon: 'far fa-play-circle mr-2 fa-lg', iconType: 'fa' },
     { item: 'Download BPNM', value: 'BPNM', havePermission: 0, icon: 'fas fa-file-download fa-lg', iconType: 'fa' },
     { item: 'Download SVG', value: 'SVG', havePermission: 0, icon: 'fas fa-download fa-lg', iconType: 'fa' },
     { item: 'Edit', value: 'Edit', havePermission: 0, icon: 'entry bpmn-icon-screw-wrench mr-2', iconType: 'bpmn' },
@@ -245,7 +244,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   show_filter_input: boolean = false;
   checkbox_color_value = '';
 
-  displayedColumns = ['#', 'name', 'status', 'lastrun', 'nextrun', 'details'];
+  displayedColumns = ['#', 'status', 'lastrun', 'nextrun', 'details'];
   Process_key: any = [];
   selection = new SelectionModel<schedule>(true, []);
 
@@ -299,22 +298,22 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.roleValues.forEach(ele => {
             switch (ele) {
               case 'Enablement Workflow Schedule Role':
-                this.childrenMenuItems[4].havePermission = 1;
+                this.childrenMenuItems[5].havePermission = 1;
                 break;
               case 'Enablement Workflow Dashboard Role':
-                this.childrenMenuItems[8].havePermission = 1;
+                this.childrenMenuItems[3].havePermission = 1;
                 break;
               case 'Enablement Workflow MyTask Role':
-                this.childrenMenuItems[9].havePermission = 1;
+                this.childrenMenuItems[2].havePermission = 1;
                 break;
               case 'Enablement Workflow Exception Role':
-                this.childrenMenuItems[10].havePermission = 1;
+                this.childrenMenuItems[4].havePermission = 1;
                 break;
               case 'Enablement Workflow Process Role':
                 this.parentMenuItems[0].havePermission = 1;
                 this.parentMenuItems[1].havePermission = 1;
-                this.childrenMenuItems[11].havePermission = 1;
-                this.childrenMenuItems[12].havePermission = 1;
+                this.childrenMenuItems[9].havePermission = 1;
+                this.childrenMenuItems[10].havePermission = 1;
                 break;
               default:
                 break;
@@ -1053,14 +1052,14 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                       if (authSubStr[1] === 'Y') {
                         editCount++;
                       }
-                      copyChildrenMenuItems[2].havePermission = authSubStr[1] === 'Y' ? 1 : 0;
+                      copyChildrenMenuItems[11].havePermission = authSubStr[1] === 'Y' ? 1 : 0;
                       break;
                     }
                     case 'DELETE': {
                       if (authSubStr[1] === 'Y') {
                         deleteCount++;
                       }
-                      copyChildrenMenuItems[3].havePermission = authSubStr[1] === 'Y' ? 1 : 0;
+                      copyChildrenMenuItems[12].havePermission = authSubStr[1] === 'Y' ? 1 : 0;
                       break;
                     }
                     default: break;
@@ -1262,20 +1261,20 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       }
       case 'Edit': {
         console.log('selected', this.selectedItem);
-        // if (this.isMonitor) {
-        //   this.modeler = new Modeler({
-        //     container: '#canvas',
-        //     width: '90%',
-        //     height: '500px',
-        //     additionalModules: [
-        //       PropertiesPanelModule,
-        //       OriginalPropertiesProvider,
-        //       { [InjectionNames.bpmnPropertiesProvider]: ['type', OriginalPropertiesProvider.propertiesProvider[1]] },
-        //       // { [InjectionNames.propertiesProvider]: ['type', CustomPropsProvider] },
-        //     ]
-        //   });
-        //   this.onTitleClick(this.selectedItem, false);
-        // }
+        if (this.isMonitor) {
+          this.modeler = new Modeler({
+            container: '#canvas',
+            width: '90%',
+            height: '500px',
+            additionalModules: [
+              PropertiesPanelModule,
+              OriginalPropertiesProvider,
+              { [InjectionNames.bpmnPropertiesProvider]: ['type', OriginalPropertiesProvider.propertiesProvider[1]] },
+              // { [InjectionNames.propertiesProvider]: ['type', CustomPropsProvider] },
+            ]
+          });
+          this.onTitleClick(this.selectedItem, false);
+        }
         this.isMonitor = false;
         this.editProcessFlag = true;
         this.showRightIcon = true;
@@ -2065,9 +2064,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     }
 
 
-    this.childrenMenuItems[5].havePermission = 0;
     this.childrenMenuItems[6].havePermission = 0;
     this.childrenMenuItems[7].havePermission = 0;
+    this.childrenMenuItems[8].havePermission = 0;
 
     /**internalChecked: true
 ​
@@ -2091,10 +2090,6 @@ this.find_process(this.ApplicationCD, this.ProcessCD, 'Paused');
       '&REST_Service=ScheduledJobs&Verb=GET').subscribe(dataResult => {
         let rm_f: boolean;
         let ps_r: boolean;
-        console.log(this.apiUrlGet + 'V_SRC_CD=' + this.V_SRC_CD +
-        '&V_APP_CD=' + ApplicationCD + '&V_PRCS_CD=' + ProcessCD + '&V_USR_NM=' +
-        this.V_USR_NM + '&V_TRIGGER_STATE=' + StatusCD +
-        '&REST_Service=ScheduledJobs&Verb=GET');
         if (this.isEmpty(dataResult)) {
         } else {
 
@@ -2103,7 +2098,7 @@ this.find_process(this.ApplicationCD, this.ProcessCD, 'Paused');
 
           for (let i = 0; i < this.F1.length; i++) {
             this.innerTableDT[i] = {
-              name: dataResult.SRVC_CD[i],
+              // name: dataResult.SRVC_CD[i],
               status: dataResult.TRIGGER_STATE[i],
               lastrun: dataResult.PREV_FIRE_TIME[i],
               nextrun: dataResult.NEXT_FIRE_TIME[i],
@@ -2122,15 +2117,17 @@ this.find_process(this.ApplicationCD, this.ProcessCD, 'Paused');
           // push dependent flag
           // this.Action.push('Setup a New Schedule');
           if (rm_f) {
-            this.childrenMenuItems[6].havePermission = 1;
+            this.childrenMenuItems[8].havePermission = 1;
+            this.childrenMenuItems[7].havePermission = 1;
           } if (ps_r) {
-            this.childrenMenuItems[5].havePermission = 1;
+            this.childrenMenuItems[6].havePermission = 1;
+            this.childrenMenuItems[7].havePermission = 1;
 
           }
           //    push kill flag if process are not empty
-          if (dataResult.TRIGGER_STATE.length > 0) {
-            this.childrenMenuItems[7].havePermission = 1;
-          }
+          // if (dataResult.TRIGGER_STATE.length > 0) {
+          //   this.childrenMenuItems[7].havePermission = 1;
+          // }
           this.dataSource.data = this.innerTableDT;
         }
       });

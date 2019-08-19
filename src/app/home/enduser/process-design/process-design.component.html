@@ -351,12 +351,6 @@
                       </mat-cell>
                     </ng-container>
 
-                    <!-- Position Column -->
-                    <ng-container matColumnDef="name">
-                      <mat-header-cell *matHeaderCellDef style="color: white"> Services </mat-header-cell>
-                      <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
-                    </ng-container>
-
                     <!-- Name Column -->
                     <ng-container matColumnDef="status">
                       <mat-header-cell *matHeaderCellDef style="color: white"> Status </mat-header-cell>
@@ -388,7 +382,7 @@
                   </mat-table>
                 </div>
                 <div *ngIf="newScheduleView">
-                  <app-schedular [parentapp]="selectedplat" [parentpro]="selectedplat1" [changing]="changingValue">
+                  <app-schedular [parentapp]="ApplicationCD" [parentpro]="ProcessCD" [changing]="changingValue">
                   </app-schedular>
                   <hr />
                 </div>
@@ -399,12 +393,9 @@
                 <div class="col-md-5">
                   <br />
                   <!-- <button mat-raised-button color="primary" *ngIf="Save_btn" [disabled]="save_shedule_btn" (click)="repeatURL()">Save the Schedule</button> -->
-                  <button mat-raised-button color="primary" (click)="onPause()" *ngIf="Pause_btn">Pause Selected
-                    Schedules</button>
-                  <button mat-raised-button color="primary" (click)="onResume()" *ngIf="Resume_btn">Resume Selected
-                    Schedules</button>
-                  <button mat-raised-button color="primary" (click)="onKill()" *ngIf="Kill_btn">Kill Selected
-                    Schedules</button>
+                  <button mat-raised-button color="primary" (click)="onPause()" *ngIf="Pause_btn">Pause </button>
+                  <button mat-raised-button color="primary" (click)="onResume()" *ngIf="Resume_btn">Resume</button>
+                  <button mat-raised-button color="primary" (click)="onKill()" *ngIf="Kill_btn">Kill</button>
                   <br />
                 </div>
               </div>
