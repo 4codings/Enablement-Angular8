@@ -29,7 +29,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     HttpClientModule,
     HttpModule,
     MatDialogModule,
-    UserIdleModule.forRoot({ idle: environment.idle, timeout: environment.timeout, ping: 300 }),
+    UserIdleModule.forRoot({ idle: environment.idle, timeout: environment.timeout, ping: 120 }),
     ToastrModule.forRoot(),
     ChartsModule,
     DeviceDetectorModule.forRoot(),
