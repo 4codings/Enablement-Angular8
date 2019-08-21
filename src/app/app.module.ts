@@ -18,14 +18,17 @@ import { LocalStorageService, SessionStorageService, CookiesStorageService, Shar
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { UserIdleModule } from 'angular-user-idle';
 import { ChartsModule } from 'ng2-charts-x';
+import { KeepAliveDialog } from './core/keep-alive-dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, KeepAliveDialog],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
     HttpModule,
+    MatDialogModule,
     UserIdleModule.forRoot({ idle: environment.idle, timeout: environment.timeout, ping: 300 }),
     ToastrModule.forRoot(),
     ChartsModule,
@@ -49,6 +52,7 @@ import { ChartsModule } from 'ng2-charts-x';
     CookiesStorageService,
     SharedStorageService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [KeepAliveDialog]
 })
 export class AppModule { }
