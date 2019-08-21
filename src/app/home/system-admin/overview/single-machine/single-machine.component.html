@@ -7,10 +7,10 @@
       </button>
       <button mat-icon-button matTooltip="edit V_PLATFORM_CD" (click)="onBtnEditMachineClick(machineData)">
         <mat-icon>edit</mat-icon>
-      </button> -->
+      </button>
       <button mat-icon-button matTooltip="Assign" (click)="onBtnAssignRoleClick(machineData)">
         <mat-icon>link</mat-icon>
-      </button>
+      </button> -->
     </div>
   </div>
   <app-machine-tile-list [userAccess]="userRoleAccess" [machineType]="machineData.V_PLATFORM_CD" [connectionList]="machineData" (selectedMachineTile)="selectedMachineTile($event)"></app-machine-tile-list>

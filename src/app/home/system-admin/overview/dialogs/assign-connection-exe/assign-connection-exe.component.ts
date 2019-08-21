@@ -69,32 +69,16 @@ export class AssignConnectionExeComponent implements OnInit {
   changeAssignItem(list, i) {
     if(this.data.isSelectedEntity == 'CXN') {
       if(!list.is_selected) {
-        // this.addList.push(list.V_EXE_ID);
-        // this.deleteList = this.deleteList.filter(data => {
-        //   return data != list.V_EXE_ID;
-        // });
         this.lists[i].is_selected = !this.lists[i].is_selected;
       } else {
-        // this.deleteList.push(list.V_EXE_ID);
-        // this.addList = this.addList.filter(data => {
-        //   return data != list.V_EXE_ID;
-        // });
         this.lists[i].is_selected = !this.lists[i].is_selected;
       }
     }
 
     if(this.data.isSelectedEntity == 'EXE') {
       if(!list.is_selected) {
-        // this.addList.push(list.V_CXN_ID);
-        // this.deleteList = this.deleteList.filter(data => {
-        //   return data != list.V_CXN_ID;
-        // });
         this.lists[i].is_selected = !this.lists[i].is_selected;
       } else {
-        // this.deleteList.push(list.V_CXN_ID); 
-        // this.addList = this.addList.filter(data => {
-        //   return data != list.V_CXN_ID;
-        // });
         this.lists[i].is_selected = !this.lists[i].is_selected;
       }
     }

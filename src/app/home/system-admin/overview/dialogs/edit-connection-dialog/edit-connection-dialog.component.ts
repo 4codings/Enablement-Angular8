@@ -71,7 +71,7 @@ export class EditConnectionDialogComponent implements OnInit {
     var data = {
       "V_CXN_CD":connectionData.V_CXN_CD,
       "V_CXN_DSC":connectionData.V_CXN_DSC,
-      "V_CXN_TYPE":this.data.cnxData.V_CXN_TYP,
+      "V_CXN_TYP":this.data.cnxData.V_CXN_TYP,
       "V_SRC_CD":this.V_SRC_CD,
       "V_PARAM_N":V_PARAM_N,
       "V_PARAM_V":V_PARAM_V,
