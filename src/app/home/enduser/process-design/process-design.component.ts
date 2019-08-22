@@ -1261,20 +1261,20 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       }
       case 'Edit': {
         console.log('selected', this.selectedItem);
-        if (this.isMonitor) {
-          this.modeler = new Modeler({
-            container: '#canvas',
-            width: '90%',
-            height: '500px',
-            additionalModules: [
-              PropertiesPanelModule,
-              OriginalPropertiesProvider,
-              { [InjectionNames.bpmnPropertiesProvider]: ['type', OriginalPropertiesProvider.propertiesProvider[1]] },
-              // { [InjectionNames.propertiesProvider]: ['type', CustomPropsProvider] },
-            ]
-          });
-          this.onTitleClick(this.selectedItem, false);
-        }
+        // if (this.isMonitor) {
+        //   this.modeler = new Modeler({
+        //     container: '#canvas',
+        //     width: '90%',
+        //     height: '500px',
+        //     additionalModules: [
+        //       PropertiesPanelModule,
+        //       OriginalPropertiesProvider,
+        //       { [InjectionNames.bpmnPropertiesProvider]: ['type', OriginalPropertiesProvider.propertiesProvider[1]] },
+        //       // { [InjectionNames.propertiesProvider]: ['type', CustomPropsProvider] },
+        //     ]
+        //   });
+        //   this.onTitleClick(this.selectedItem, false);
+        // }
         this.isMonitor = false;
         this.editProcessFlag = true;
         this.showRightIcon = true;
@@ -1328,6 +1328,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         this.isProcess = false;
         this.isService = false;
         this.onTitleClickNoDelete = true;
+        let obj = { 'app': this.ApplicationCD, 'process': this.ProcessCD, 'file_path': this.file_path }
+        this.optionalService.selectedAppPrcoessValue.next(obj);
+        this.router.navigateByUrl('End_User/Design/viewer', { skipLocationChange: true });
         break;
       }
       case 'Approve': {

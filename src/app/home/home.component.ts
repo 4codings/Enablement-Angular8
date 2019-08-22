@@ -215,6 +215,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.optionalService.applicationArray = [];
     this.optionalService.serviceArray = [];
     this.optionalService.processArray = [];
+    this.optionalService.selectedAppPrcoessValue.next(null);
     //this.storageSessionService.ClearSession('email');
     //this.storageSessionService.ClearSession('agency');
     this.router.navigateByUrl('/login', { skipLocationChange: true });

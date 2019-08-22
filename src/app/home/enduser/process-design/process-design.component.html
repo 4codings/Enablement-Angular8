@@ -112,15 +112,15 @@
             </a>
           </div>
           <div fxFlex="100" fxLayout="column">
-            <div *ngIf="!isMonitor" fxFlex="100" [ngClass]="opened?'stage-show':'stage-hide'">
+            <div fxFlex="100" [ngClass]="opened?'stage-show':'stage-hide'">
               <div id="canvas"></div>
             </div>
-            <div *ngIf="isMonitor" fxFlex="100" [ngClass]="opened?'stage-show':'stage-hide'">
+            <!-- <div fxFlex="100" [ngClass]="opened?'stage-show':'stage-hide'">
               <app-viewer [parentapp]="ApplicationCD" [parentpro]="ProcessCD" [file_path]="file_path">
               </app-viewer>
-            </div>
+            </div> -->
 
-            <div *ngIf="!isMonitor" fxFlex="100">
+            <div fxFlex="100">
               <div class="dynamicFormContent">
                 <!-- <h3 style="text-align: center;" *ngIf="resFormData!='' &&  resFormData!=undefined">
                   {{Label['Parameters']}}</h3> -->

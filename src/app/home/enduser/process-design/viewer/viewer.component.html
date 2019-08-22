@@ -1,35 +1,71 @@
 <div fxLayout="row">
-  <div fxFlex>
-    Executed By: {{selectedUserName}}
+  <div fxFlex class="text-center">
+    <label> Executed By</label>
+    <mat-form-field class="label-bottom">
+      <input matInput [ngModel]="selectedUserName" disabled>
+    </mat-form-field>
   </div>
-  <div fxFlex="20px">
-    on
-  </div>
-  <div fxFlex>
-    <mat-form-field>
-      <mat-label>Date Time Of Instances</mat-label>
-      <mat-select [(ngModel)]="selectedInstance" (selectionChange)="onInstanceChange($event.target)">
+  <div fxFlex class="text-center">
+    <label>Executed At</label>
+    <mat-form-field class="label-bottom">
+      <mat-select class="bg-white" [(ngModel)]="selectedInstance" (selectionChange)="onInstanceChange($event.target)">
         <mat-option *ngFor="let dateTime of PRCS_TXN_ID;let i = index" [value]="dateTime">
           {{StartDateTime[i]}}
         </mat-option>
       </mat-select>
     </mat-form-field>
   </div>
-  <div fxFlex>
-    <mat-checkbox [(ngModel)]="is_more">More</mat-checkbox>
-  </div>
-  <div fxLayout="column" fxFlex *ngIf="is_more">
+  <div fxFlex="15">
+    <label class="m-b-10 text-center">From</label>
     <mat-form-field class="form_input">
-      <label class="m-b-10">From</label>
-      <input matInput class="bg-white" [(ngModel)]="fromDate" [owlDateTimeTrigger]="FromDate" [owlDateTime]="FromDate">
+      <input matInput class="bg-white" [max]="toDate" [(ngModel)]="fromDate" [owlDateTimeTrigger]="FromDate"
+        [owlDateTime]="FromDate" (dateTimeInput)="onDateChange()">
       <owl-date-time #FromDate></owl-date-time>
     </mat-form-field>
+  </div>
+  &nbsp;
+  <div fxFlex="15">
+    <label class="m-b-10 text-center">To</label>
     <mat-form-field class="form_input">
-      <label class="m-b-10">To</label>
-      <input matInput class="bg-white" [(ngModel)]="toDate" [owlDateTimeTrigger]="EndDate" [owlDateTime]="EndDate">
+      <input matInput class="bg-white" [min]="fromDate" [(ngModel)]="toDate" [owlDateTimeTrigger]="EndDate"
+        [owlDateTime]="EndDate" (dateTimeInput)="onDateChange()">
       <owl-date-time #EndDate></owl-date-time>
     </mat-form-field>
   </div>
 </div>
 
-<div id="viewer"></div>
+<div id="ref"></div>
+<!-- <div *ngIf="elementClick">
+  <div class="row">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">First</th>
+          <th scope="col">Last</th>
+          <th scope="col">Handle</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">1</th>
+          <td>Mark</td>
+          <td>Otto</td>
+          <td>@mdo</td>
+        </tr>
+        <tr>
+          <th scope="row">2</th>
+          <td>Jacob</td>
+          <td>Thornton</td>
+          <td>@fat</td>
+        </tr>
+        <tr>
+          <th scope="row">3</th>
+          <td>Larry</td>
+          <td>the Bird</td>
+          <td>@twitter</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div> -->

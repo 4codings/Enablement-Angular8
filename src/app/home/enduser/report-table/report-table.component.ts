@@ -38,11 +38,13 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
   // myControl = new FormControl();
   columnsToDisplayKeys: string[];
   columnsPreferences: string[] = ['chartType', 'xaxisData', 'yaxisData', 'unit',
-   'scale', 'ystepSize', 'gridlineWidth', 'backgroundColor', 'borderColor', 'fillBackground',
-    'lineTension', 'pointSize', 'animations', 'pointStyle', 'lineStyle','addRow'];
-  dataPreferences = [{chartType: "",xaxisData:"",yaxisData:"",unit:"",scale:"",ystepSize:"",gridlineWidth:"",
-                      backgroundColor:"",borderColor:"",fillBackground:"",lineTension:"",pointSize:"",animations:"",
-                      pointStyle:"",lineStyle:"",addRow:""}];
+    'scale', 'ystepSize', 'gridlineWidth', 'backgroundColor', 'borderColor', 'fillBackground',
+    'lineTension', 'pointSize', 'animations', 'pointStyle', 'lineStyle', 'addRow'];
+  dataPreferences = [{
+    chartType: "", xaxisData: "", yaxisData: "", unit: "", scale: "", ystepSize: "", gridlineWidth: "",
+    backgroundColor: "", borderColor: "", fillBackground: "", lineTension: "", pointSize: "", animations: "",
+    pointStyle: "", lineStyle: "", addRow: ""
+  }];
   domain_name = this.globals.domain_name;
   @ViewChild(MatSort, { static: false } as any) sort: MatSort;
   @ViewChild(BaseChartDirective, { static: false } as any) chart: BaseChartDirective;
@@ -186,6 +188,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     if (eventBus) {
       eventBus.on('element.click', ($event) => {
         if (this.isMonitorClicked) {
+          console.log('element', $event.element.id)
           var canvas = this.viewer.get('canvas');
           canvas.addMarker($event.element.id, 'highlight');
         }
@@ -219,6 +222,11 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
               (x: any) => {
                 this.viewer.importXML(x, this.handleError.bind(this));
                 this.bpmnTemplate = x;
+                setTimeout(ele => {
+                  var canvas = this.viewer.get('canvas');
+                  console.log('this.viewer.get', this.viewer.get('elementRegistry'));
+                  canvas.addMarker('Start', 'highlight');
+                }, 2000);
               },
               this.handleError.bind(this)
             );
@@ -920,7 +928,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   //__________________________Set Preferences_________________________________
-  setchartpreferences(pref,val?) {
+  setchartpreferences(pref, val?) {
     var cp = [];
     for (let i = 0; i < this.chartposition.length; i++) {
       cp.push(Object.values(this.chartposition[i]));
@@ -960,10 +968,10 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
           });
       }
     }
-    else{
+    else {
       this.data.setchartstyling(this.UNIQUE_ID, this.SRC_ID, pref, val).subscribe(
         () => {
-          
+
         });
     }
 
