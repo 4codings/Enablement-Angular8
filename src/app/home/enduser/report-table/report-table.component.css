@@ -239,14 +239,42 @@ table {
 th.mat-sort-header {
   color: black;
 }
-#matPreferences {
-  overflow-x: auto;
-  width: 100%;
+#tableContainer {
+  overflow-x: scroll;
+  width: 95% !important;
+  margin: 0 auto;
 }
-#matPreferences th{
-  background-color: rgb(235, 235, 235);
-  border: 1px solid gray;
+/*::ng-deep td.mat-cell, ::ng-deep td.mat-header-cell{
+  padding: 20px !important;
+  min-width: 150px !important;
+  border: 1px solid rgb(125, 125, 125) !important;
 }
-#matPreferences td{
+::ng-deep tr.mat-header-row{
+  background-color: rgb(215, 215, 215) !important;
   border: 1px solid gray;
+  width: fit-content !important; 
+  color: white !important;
+  font-weight: bold !important;
+}
+::ng-deep tr.mat-row{
+  background-color: rgb(235, 235, 235) !important;
+  width: fit-content !important; 
+  border:1px solid gray !important;
+}
+*/
+th.mat-header-cell{
+  text-align: center !important;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+}
+.mat-cell div.mat-cell-div{
+  padding: 20px;
+}
+
+.mat-cell .mat-input-element{
+  background: transparent !important;
+}
+.mat-cell mat-form-field{
+  padding: 20px;
 }

@@ -103,6 +103,10 @@
           background-color: transparent;
         }
 
+        .content-wrapper-smallTile & {
+          width: calc(100% / 8 - 8px);
+        }
+
         .tile-icons-wrapper {
           width: 100%;
         }

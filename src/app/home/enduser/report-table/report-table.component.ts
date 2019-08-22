@@ -38,13 +38,12 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
   // myControl = new FormControl();
   columnsToDisplayKeys: string[];
   columnsPreferences: string[] = ['chartType', 'xaxisData', 'yaxisData', 'unit',
-    'scale', 'ystepSize', 'gridlineWidth', 'backgroundColor', 'borderColor', 'fillBackground',
-    'lineTension', 'pointSize', 'animations', 'pointStyle', 'lineStyle', 'addRow'];
-  dataPreferences = [{
-    chartType: "", xaxisData: "", yaxisData: "", unit: "", scale: "", ystepSize: "", gridlineWidth: "",
-    backgroundColor: "", borderColor: "", fillBackground: "", lineTension: "", pointSize: "", animations: "",
-    pointStyle: "", lineStyle: "", addRow: ""
-  }];
+   'scale', 'ystepSize', 'gridlineWidth', 'backgroundColor', 'borderColor', 'fillBackground',
+    'lineTension', 'pointSize', 'animations', 'pointStyle', 'lineStyle','addRow'];
+  Element_Preferences = [{chartType: "",xaxisData:"",yaxisData:"",unit:"",scale:"",ystepSize:"",gridlineWidth:"",
+                      backgroundColor:"",borderColor:"",fillBackground:"",lineTension:"",pointSize:"",animations:"",
+                      pointStyle:"",lineStyle:"",addRow:""}];
+  dataPreferences = new MatTableDataSource(this.Element_Preferences);                      
   domain_name = this.globals.domain_name;
   @ViewChild(MatSort, { static: false } as any) sort: MatSort;
   @ViewChild(BaseChartDirective, { static: false } as any) chart: BaseChartDirective;
@@ -1305,6 +1304,14 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
       });
 
     }
+  }
+  //__________________________Personalization Table_________________________
+  addRow(){
+    this.Element_Preferences.push({chartType: "",xaxisData:"",yaxisData:"",unit:"",scale:"",ystepSize:"",gridlineWidth:"",
+    backgroundColor:"",borderColor:"",fillBackground:"",lineTension:"",pointSize:"",animations:"",
+    pointStyle:"",lineStyle:"",addRow:""});
+    console.log(this.dataPreferences);
+    this.dataPreferences = new MatTableDataSource(this.Element_Preferences);
   }
   //currency = 'USD';
   //price: number;

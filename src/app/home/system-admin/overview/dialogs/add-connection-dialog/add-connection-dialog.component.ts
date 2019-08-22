@@ -63,7 +63,7 @@ export class AddConnectionDialogComponent implements OnInit {
     
     var data = {
       "V_CXN_CD":connectionData.V_CXN_CD,
-      "V_CXN_TYPE":connectionData.V_CXN_TYP,
+      "V_CXN_TYP":connectionData.V_CXN_TYP,
       "V_SRC_CD":this.V_SRC_CD,
       "V_PARAM_N":V_PARAM_N,
       "V_PARAM_V":V_PARAM_V,
