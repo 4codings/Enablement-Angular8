@@ -4,6 +4,7 @@ import {Subject} from 'rxjs';
 import { SystemAdminOverviewService } from './system-admin-overview.service';
 import { HttpClient } from '@angular/common/http';
 import { RollserviceService } from '../../../services/rollservice.service';
+import { UseradminService } from '../../..//services/useradmin.service2';
 
 @Component({
   selector: 'app-overview',
@@ -28,7 +29,7 @@ export class OverviewComponent implements OnInit,OnDestroy {
     role_platform:false
   }
 
-  constructor(private systemOverview:SystemAdminOverviewService, private rollserviceService: RollserviceService, private http:HttpClient) {}
+  constructor(private systemOverview:SystemAdminOverviewService, private userAdminService:UseradminService, private rollserviceService: RollserviceService, private http:HttpClient) {}
 
   ngOnInit() {
     this.getRollAccess();
@@ -39,11 +40,11 @@ export class OverviewComponent implements OnInit,OnDestroy {
   }
 
   downloadFile(fileName: any) {
-    //this.overviewService.downloadFile(fileName);
+    this.userAdminService.downloadFile(fileName);
   }
 
   onFileSelectEvent(event, filename, moduleName): void {
-    //this.overviewService.uploadFile(event, filename, moduleName);
+    this.userAdminService.fileUpload(event, filename, moduleName);
   }
   
   selectedExe(type) {
