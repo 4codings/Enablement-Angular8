@@ -37,10 +37,10 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // myControl = new FormControl();
   columnsToDisplayKeys: string[];
-  columnsPreferences: string[] = ['chartType', 'xaxisData', 'yaxisData', 'unit',
+  columnsPreferences: string[] = ['chartNo','chartType', 'xaxisData', 'yaxisData', 'unit',
    'scale', 'ystepSize', 'gridlineWidth', 'backgroundColor', 'borderColor', 'fillBackground',
     'lineTension', 'pointSize', 'animations', 'pointStyle', 'lineStyle','addRow'];
-  Element_Preferences = [{chartType: "",xaxisData:"",yaxisData:"",unit:"",scale:"",ystepSize:"",gridlineWidth:"",
+  Element_Preferences = [{chartNo:"1",chartType: "",xaxisData:"",yaxisData:"",unit:"",scale:"",ystepSize:"",gridlineWidth:"",
                       backgroundColor:"",borderColor:"",fillBackground:"",lineTension:"",pointSize:"",animations:"",
                       pointStyle:"",lineStyle:"",addRow:""}];
   dataPreferences = new MatTableDataSource(this.Element_Preferences);                      
@@ -388,6 +388,13 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
   V_PRF_NM = [];
   V_PRF_VAL = [];
   userprefs = {};
+  chartPrefs = {backgroundcolor:"",bordercolor:"",fill:"",pointstyle:"",
+                linetension:"",animations:"",pointradius:"",linestyle:"",
+                gridlinedashed:"",linewidth:"",yautoskip:"",linexaxis:"",
+                lineyaxis:"",barxaxis:"",baryaxis:"",piexaxis:"",pieyaxis:"",
+                doughnutxaxis:"",doughnutyaxis:"",selectedchart:"",
+                personalizationtable:"",chartposition:""};
+  chartPrefs_arr = [];
   hiddencolsconfig = {};
   _yaxisstepSize = null;
   _yaxisAutoskip: boolean = false;
@@ -1300,11 +1307,18 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
   //__________________________Personalization Table_________________________
-  addRow(){
-    this.Element_Preferences.push({chartType: "",xaxisData:"",yaxisData:"",unit:"",scale:"",ystepSize:"",gridlineWidth:"",
+  addRow_action(){
+    let chart_no = this.Element_Preferences.length+1;
+    this.Element_Preferences.push({chartNo: chart_no+"", chartType: "",xaxisData:"",yaxisData:"",unit:"",scale:"",ystepSize:"",gridlineWidth:"",
     backgroundColor:"",borderColor:"",fillBackground:"",lineTension:"",pointSize:"",animations:"",
     pointStyle:"",lineStyle:"",addRow:""});
     console.log(this.dataPreferences);
+    this.dataPreferences = new MatTableDataSource(this.Element_Preferences);
+  }
+
+  deleteRow_action(chartNo){
+    this.Element_Preferences.pop();
+    //---data move up
     this.dataPreferences = new MatTableDataSource(this.Element_Preferences);
   }
   //currency = 'USD';
