@@ -25,6 +25,6 @@
   </div>
   <mat-divider></mat-divider>
   <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="16px" cdkDropListGroup>
-    <app-single-machine [userRoleAccess]="userAccess" *ngFor="let currMachine of sortedAllConnections | filterExetype:selectedConnectionType:'cxn'" [machineData]="currMachine" [machines]="currMachine.V_CXN"></app-single-machine>
+    <app-single-machine [userRoleAccess]="userAccess" *ngFor="let currMachine of sortedAllConnections | filterExetype:selectedConnectionType:'cxn'" [machineData]="currMachine" [machines]="currMachine.V_CXN" [selectedConnectionType]="selectedConnectionType"></app-single-machine>
   </div>
 </div>
