@@ -10,7 +10,7 @@ import { SchedularComponent } from './schedular/schedular.component';
 import { ViewerComponent } from './viewer/viewer.component';
 
 @NgModule({
-  declarations: [ProcessDesignComponent, SchedularComponent, ViewerComponent],
+  declarations: [ProcessDesignComponent, SchedularComponent,ViewerComponent],
   imports: [
     SharedModule,
     ProcessDesignRoutingModule,

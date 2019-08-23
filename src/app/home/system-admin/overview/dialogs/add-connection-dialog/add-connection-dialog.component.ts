@@ -12,6 +12,7 @@ export class AddConnectionDialogComponent implements OnInit {
   
   public connectionTypes;
   public V_SRC_CD:string;
+  public V_USR_NM:string;
   public V_CXN_CD;
   public V_CXN_DSC;
   public V_CXN_TYP;
@@ -30,6 +31,7 @@ export class AddConnectionDialogComponent implements OnInit {
       // this.PLF_CD=this.PLF_TYPE['SERVER_CD'];
     });
     this.V_SRC_CD=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+    this.V_USR_NM=JSON.parse(sessionStorage.getItem('u')).USR_NM;
     this.http.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=EXE&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe(res => {
       this.connectionTypes = res;
     })
@@ -63,8 +65,9 @@ export class AddConnectionDialogComponent implements OnInit {
     
     var data = {
       "V_CXN_CD":connectionData.V_CXN_CD,
-      "V_CXN_TYPE":connectionData.V_CXN_TYP,
+      "V_CXN_TYP":connectionData.V_CXN_TYP,
       "V_SRC_CD":this.V_SRC_CD,
+      "V_USR_NM":this.V_USR_NM,
       "V_PARAM_N":V_PARAM_N,
       "V_PARAM_V":V_PARAM_V,
       "V_PLATFORM_CD":this.PLF_CD,

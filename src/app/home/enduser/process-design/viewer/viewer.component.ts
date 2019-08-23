@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { StorageSessionService } from '../../../../services/storage-session.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Globals } from '../../../../services/globals';
 import { ApiService } from '../../../../service/api/api.service';
 import { HttpClient } from '@angular/common/http';
@@ -8,18 +8,21 @@ import { ToastrService } from 'ngx-toastr';
 import { Viewer } from '../../execute/bpmn-viewer';
 import { Http } from '@angular/http';
 import { DatePipe } from '@angular/common';
+import { OptionalValuesService } from 'src/app/services/optional-values.service';
+import { Subscription } from 'rxjs';
 export interface Food {
   value: string;
   viewValue: string;
 }
+
 @Component({
   selector: 'app-viewer',
   templateUrl: './viewer.component.html',
   styleUrls: ['./viewer.component.scss'],
-  inputs: ['parentapp', 'parentpro', 'file_path'],
+  // inputs: ['parentapp', 'parentpro', 'file_path'],
   providers: [DatePipe]
 })
-export class ViewerComponent implements OnInit {
+export class ViewerComponent implements OnInit, OnDestroy {
 
   parentapp: string;
   parentpro: string;
@@ -38,6 +41,7 @@ export class ViewerComponent implements OnInit {
   fromDate = new Date(this.currentDate.setDate(this.currentDate.getDate() - 1));
   toDate = new Date();
   apiUrl: any;
+  apiJSONUrl: any;
   numbersOfTransactions = 3;
   V_SRC_CD: string = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
   V_USR_NM: string = JSON.parse(sessionStorage.getItem('u')).USR_NM;
@@ -49,31 +53,89 @@ export class ViewerComponent implements OnInit {
   V_SRC_ID: any = [];
   selectedInstance: any = '';
   selectedUserName: any = '';
-  PRDCR_SRVC_CD: any = [];
+  selectedAppProcess$: Subscription;
+  selectedInstanceElementsList: InstanceElementList[] = [];
+  selectedElement = new InstanceElementList();
+  selectedElementInput: any;
+  selectedElementOutput: any;
+  elementClick = false;
   constructor(private store: StorageSessionService, private http: Http,
-    private route: Router, private toastrService: ToastrService,
-    private httpClient: HttpClient, private globals: Globals, private datePipe: DatePipe,
-    private apiService: ApiService) { }
+    private route: Router, private toastrService: ToastrService, private optionalService: OptionalValuesService,
+    private httpClient: HttpClient, private activatedRoute: ActivatedRoute, private datePipe: DatePipe,
+    private apiService: ApiService) {
+    this.selectedAppProcess$ = this.optionalService.selectedAppPrcoessValue.subscribe(res => {
+      if (res) {
+        this.parentapp = res.app;
+        this.parentpro = res.process;
+        this.file_path = res.file_path;
+      }
+    })
+  }
 
   ngOnInit() {
+    this.apiUrl = this.apiService.endPoints.secure;
+    this.apiJSONUrl = this.apiService.endPoints.securedJSON;
+    this.downloadUrl = this.apiService.endPoints.downloadFile;
+    this.downloadBpmn();
+  }
+  ngOnDestroy() {
+    this.selectedAppProcess$.unsubscribe();
   }
 
   ngAfterViewInit() {
-    this.apiUrl = this.apiService.endPoints.secure;
-    this.downloadUrl = this.apiService.endPoints.downloadFile;
     this.viewer = new Viewer({
-      container: '#viewer',
+      container: '#ref',
       width: '90%',
       height: '400px'
     });
     const eventBus = this.viewer.get('eventBus');
     if (eventBus) {
       eventBus.on('element.click', ($event) => {
-        console.log('element.click', $event)
-        var canvas = this.viewer.get('viewer');
-        canvas.addMarker('My_Program', 'highlight');
+        this.elementClick = false;
+        console.log('element.click', $event);
+        let i = this.selectedInstanceElementsList.findIndex(v => v.PRDCR_SRVC_CD.replace(new RegExp(' ', 'g'), '_') == $event.element.id);
+        if (i > -1) {
+          console.log('ele', this.selectedInstanceElementsList[i]);
+          this.selectedElement = this.selectedInstanceElementsList[i];
+          this.selectedElementInput = this.selectedElement.SRVC_INPUT;
+          this.selectedElementOutput = this.selectedElement.SRVC_OUTPUT;
+          if (this.selectedElementInput != null) {
+            this.elementClick = true;
+            let inputs = this.selectedElementInput[0].split(',');
+            let keys = [];
+            if (inputs.length) {
+              inputs.forEach(ele => {
+                let split = ele.trim().split('=');
+                let obj = { 'key': split[0], 'value': split[1] };
+                keys.push(obj);
+              })
+              this.selectedElementInput = [];
+              this.selectedElementInput = keys;
+              console.log('eleinu', this.selectedElementInput);
+            }
+          }
+          if (this.selectedElementOutput != null) {
+            this.elementClick = true;
+            let outputs = this.selectedElementOutput[0].split(',');
+            let keys = [];
+            if (outputs.length) {
+              outputs.forEach(ele => {
+                let split = ele.trim().split('=');
+                let obj = { 'key': split[0], 'value': split[1] };
+                keys.push(obj);
+              })
+              this.selectedElementOutput = [];
+              this.selectedElementOutput = keys;
+              console.log('selectedElementOutput', this.selectedElementOutput);
+            }
+          }
+          let canvas = this.viewer.get('canvas');
+          canvas.addMarker($event.element.id, 'highlight');
+        }
       });
     }
+  }
+  downloadBpmn() {
     const formData: FormData = new FormData();
     formData.append('FileInfo', JSON.stringify({
       File_Path: `${this.file_path}` + this.parentapp + '/',
@@ -86,6 +148,11 @@ export class ViewerComponent implements OnInit {
             this.viewer.importXML('');
             this.viewer.importXML(res._body, this.handleError.bind(this));
             this.bpmnTemplate = res._body;
+            setTimeout(ele => {
+              var canvas = this.viewer.get('canvas');
+              console.log('this.viewer.get', this.viewer.get('elementRegistry'));
+              canvas.addMarker('Start', 'highlight');
+            }, 2000);
           } else {
             this.httpClient.get('/assets/bpmn/newDiagram.bpmn', {
               headers: { observe: 'response' }, responseType: 'text'
@@ -94,6 +161,11 @@ export class ViewerComponent implements OnInit {
                 this.viewer.importXML('');
                 this.viewer.importXML(x, this.handleError.bind(this));
                 this.bpmnTemplate = x;
+                setTimeout(ele => {
+                  var canvas = this.viewer.get('canvas');
+                  console.log('this.viewer.get', this.viewer.get('elementRegistry'));
+                  canvas.addMarker('Start', 'highlight');
+                }, 2000);
               },
               this.handleError.bind(this)
             );
@@ -103,10 +175,10 @@ export class ViewerComponent implements OnInit {
       );
     this.getProcessStatus();
   }
-
+  onDateChange() {
+    this.getProcessStatus();
+  }
   getProcessStatus() {
-    console.log(this.datePipe.transform(this.fromDate, 'yyyy-MM-dd HH:mm:ss'));
-    console.log(this.datePipe.transform(this.toDate, 'yyyy-MM-dd HH:mm:ss'))
     this.httpClient.get(this.apiUrl + 'V_SRC_CD=' + this.V_SRC_CD +
       '&V_APP_CD=' + this.parentapp + '&V_PRCS_CD=' + this.parentpro + '&V_USR_NM=' +
       this.V_USR_NM + '&StartDatetime=' + this.datePipe.transform(this.fromDate, 'yyyy-MM-dd HH:mm:ss') + '&EndDatetime=' + this.datePipe.transform(this.toDate, 'yyyy-MM-dd HH:mm:ss') + '&NumbersOfTransactions=' + this.numbersOfTransactions +
@@ -140,22 +212,32 @@ export class ViewerComponent implements OnInit {
   }
 
   getServicesInstances(index) {
-    this.httpClient.get(this.apiUrl + 'V_SRC_ID=' + this.V_SRC_ID[index] +
+    this.httpClient.get(this.apiJSONUrl + 'V_SRC_ID=' + this.V_SRC_ID[index] +
       '&V_APP_ID=' + this.V_APP_ID[index] + '&V_PRCS_ID=' + this.V_PRCS_ID[index] + '&V_USR_NM=' +
       this.USR_NM[index] + '&V_PRCS_TXN_ID=' + this.PRCS_TXN_ID[index] +
-      '&REST_Service=Service_Instances&Verb=GET').subscribe(res => {
-        if (Object.keys(res).length) {
+      '&REST_Service=Service_Instances&Verb=GET').subscribe((res: any) => {
+        if (res.length) {
           console.log('res', res);
-          this.PRDCR_SRVC_CD = res['PRDCR_SRVC_CD'];
-          console.log('PRDCR_SRVC_CD', this.PRDCR_SRVC_CD);
-          if (this.PRDCR_SRVC_CD.length) {
-            let idlist = ['My_Program', 'Select_Program', 'Program_Report_Detail', 'Program_Report_Form1'];
-            this.PRDCR_SRVC_CD.forEach((ele, index) => {
-              var canvas = this.viewer.get('viewer');
-              console.log('id', idlist[index]);
-              canvas.addMarker(idlist[index], 'highlight');
-            })
-          }
+          this.selectedInstanceElementsList = res;
+          console.log('res', this.selectedInstanceElementsList);
+          // this.PRDCR_SRVC_CD = res['PRDCR_SRVC_CD'];
+          // console.log('PRDCR_SRVC_CD', this.PRDCR_SRVC_CD);
+          setTimeout(ele => {
+            // if (this.PRDCR_SRVC_CD.length) {
+            //   var canvas = this.viewer.get('canvas');
+            //   let elements = this.viewer.get('elementRegistry');
+            //   console.log('elements', elements);
+            //   canvas.addMarker('Start', 'highlight');
+            //   // this.PRDCR_SRVC_CD.forEach((ele, index) => {
+            //   //   let eleReg = ele.replace(new RegExp(' ', 'g'), '_')
+            //   //   console.log('eleReg ', eleReg);
+            //   //   if (elements.get(eleReg)) {
+            //   //     canvas.addMarker(eleReg, 'highlight');
+            //   //   }
+            //   // })
+            // }
+          }, 2000);
+
         }
       })
   }
@@ -165,4 +247,16 @@ export class ViewerComponent implements OnInit {
       console.error(err);
     }
   }
+}
+export class InstanceElementList {
+  EXCPN_MSG: any;
+  INS_DT_TM: any;
+  LEVEL: any;
+  LST_UPD_DT_TM: any;
+  PRCS_CD: any;
+  PRDCR_SRVC_CD: any;
+  SRVC_INPUT: any;
+  SRVC_OUTPUT: any;
+  TXN_ID: any;
+  TXN_STS: any;
 }

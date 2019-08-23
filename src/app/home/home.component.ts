@@ -1,18 +1,8 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Injectable } from '@angular/core';
 import { MatIconRegistry } from "@angular/material/icon";
 import { DomSanitizer } from "@angular/platform-browser";
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Router, NavigationEnd } from '@angular/router';
-import { UserIdleService } from 'angular-user-idle';
-import { environment } from '../../environments/environment';
 import { ApiService } from '../service/api/api.service';
-import { StorageSessionService } from '../services/storage-session.service';
-import { UserService } from '../core/user.service';
-import { OptionalValuesService } from '../services/optional-values.service';
-
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 @Injectable()
 @Component({
@@ -20,7 +10,7 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit {
   title = 'app';
   text_mgs: string;
   public loading = false;
@@ -30,20 +20,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   public selected_PROCESS = 'ALL';
   public selected_SERVICE = 'ALL';
   public START = true;
-  private useTimeout = true;
-  private dialogRef = null;
-  private unsubscribe = new Subject<void>();
 
   constructor(
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer,
-    private dialog: MatDialog,
-    private router: Router,
-    private userIdle: UserIdleService,
-    private storageSessionService: StorageSessionService,
-    private apiService: ApiService,
-    private userService: UserService,
-    private optionalService: OptionalValuesService,
+    private apiService: ApiService
   ) {
     //--------------------Workflow Profile---------------------
     this.matIconRegistry.addSvgIcon(
@@ -159,95 +140,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   @HostListener('window:beforeunload') goToPage() {
-    this.userIdle.resetTimer();
-    this.useTimeout = true;
     this.apiService.refreshToken();
   }
-  ngOnInit() {
-    this.useTimeout = true;
-    this.userIdle.startWatching();
-    this.userIdle.onTimerStart().pipe(takeUntil(this.unsubscribe)).subscribe((count) => {
-      if (this.useTimeout && count === 1) {
-        this.dialogRef = this.dialog.open(KeepAliveDialog, { disableClose: true, hasBackdrop: true });
-        this.dialogRef.afterClosed().subscribe((result) => {
-          if (result === 'keep') {
-            this.userIdle.resetTimer();
-            this.useTimeout = true;
-            this.apiService.refreshToken();
-          } else if (result === 'logout') {
-            this.useTimeout = false;
-            this.apiService.logout('LOGOUT');
-            this.logout();
-          }
-        });
-      }
-    });
-    this.userIdle.onTimeout().subscribe(() => {
-      if (this.useTimeout) {
-        this.apiService.logout('TIMEOUT');
-        this.logout();
-      }
-      this.useTimeout = false;
-    });
-     this.router.events.pipe(takeUntil(this.unsubscribe)).subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        this.userIdle.resetTimer();
-      }
-    });
-  }
-
-  ngOnDestroy() {
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
-  }
-
-  private logout() {
-    this.userIdle.stopTimer();
-    this.userIdle.stopWatching();
-    this.useTimeout = false;
-    if (this.dialogRef) {
-      this.dialogRef.close();
-    }
-    this.userService.clear();
-    this.optionalService.applicationOptionalValue.next(null);
-    this.optionalService.processOptionalValue.next(null);
-    this.optionalService.serviceOptionalValue.next(null);
-    this.optionalService.applicationArray = [];
-    this.optionalService.serviceArray = [];
-    this.optionalService.processArray = [];
-    //this.storageSessionService.ClearSession('email');
-    //this.storageSessionService.ClearSession('agency');
-    this.router.navigateByUrl('/login', { skipLocationChange: true });
-  }
-}
-
-@Component({
-  selector: 'keep-alive-dialog',
-  template: `
-    <h1 mat-dialog-title>Session Timeout</h1>
-    <div mat-dialog-content>
-      <p>Your session will be timeout in {{timeout}} minutes.</p>
-    </div>
-    <div mat-dialog-actions>
-      <button mat-button (click)="keepMeAlive()">Keep me alive</button>
-      <button mat-button (click)="logout()">Logout</button>
-    </div>
-  `,
-})
-export class KeepAliveDialog {
-
-  public timeout = environment.timeout % 60 === 0 ? environment.timeout / 60 : (environment.timeout / 60).toFixed(1);
-
-  constructor(
-    private dialogRef: MatDialogRef<KeepAliveDialog>
-  ) { }
-
-  public keepMeAlive() {
-    this.dialogRef.close('keep');
-  }
-
-  public logout() {
-    this.dialogRef.close('logout');
-  }
-
+  ngOnInit() { }
 }
