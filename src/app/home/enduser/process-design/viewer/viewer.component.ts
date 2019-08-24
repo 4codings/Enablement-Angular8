@@ -10,6 +10,9 @@ import { Http } from '@angular/http';
 import { DatePipe } from '@angular/common';
 import { OptionalValuesService } from 'src/app/services/optional-values.service';
 import { Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
+import { InputOutputElementComponent } from '../input-output-element/input-output-element.component';
+import { MatDialog } from '@angular/material';
 export interface Food {
   value: string;
   viewValue: string;
@@ -62,7 +65,7 @@ export class ViewerComponent implements OnInit, OnDestroy {
   constructor(private store: StorageSessionService, private http: Http,
     private route: Router, private toastrService: ToastrService, private optionalService: OptionalValuesService,
     private httpClient: HttpClient, private activatedRoute: ActivatedRoute, private datePipe: DatePipe,
-    private apiService: ApiService) {
+    private apiService: ApiService, private dialog: MatDialog) {
     this.selectedAppProcess$ = this.optionalService.selectedAppPrcoessValue.subscribe(res => {
       if (res) {
         this.parentapp = res.app;
@@ -128,6 +131,45 @@ export class ViewerComponent implements OnInit, OnDestroy {
               this.selectedElementOutput = keys;
               console.log('selectedElementOutput', this.selectedElementOutput);
             }
+          }
+          let startx = $event.element.x;
+          let currentx = $event.originalEvent.layerX;
+          let endx = $event.element.x + $event.element.width;
+          let starty = $event.element.y;
+          let endy = $event.element.y + $event.element.height;
+          let currenty = $event.originalEvent.layerY;
+          let section = $event.element.width / 3;
+          let isShowInput = false;
+          let isShowOutput = false;
+          let isShowInputOutput = false;
+          if (currenty >= starty && currenty <= endy) {
+            if (currentx >= startx && currentx <= startx + section) {
+              isShowInput = true;
+            } else if (currentx >= startx + section && currentx <= endx - section) {
+              isShowInputOutput = true;
+            } else if (currentx >= endx - section && currentx <= endx) {
+              isShowOutput = true;
+            }
+          }
+
+          if (isShowInput || isShowOutput || isShowInputOutput) {
+            const dialogRef = this.dialog.open(InputOutputElementComponent,
+              {
+                panelClass: 'app-dialog',
+                // width: '600px',
+                // height: '500px',
+                data: {
+                  inputElement: this.selectedElementInput,
+                  outputElement: this.selectedElementOutput,
+                  showInput: isShowInput,
+                  showOutput: isShowOutput,
+                  showInputOutput: isShowInputOutput
+                }
+              });
+            dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
+              if (flag) {
+              }
+            });
           }
           let canvas = this.viewer.get('canvas');
           canvas.addMarker($event.element.id, 'highlight');

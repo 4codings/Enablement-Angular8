@@ -1,0 +1,30 @@
+.text-center {
+  text-align: center;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+table,
+th,
+td {
+  border: 0.5px solid black;
+}
+
+td {
+  padding: 10px;
+}
+
+th {
+  padding: 15px;
+  background-color: #8080801a !important;
+}
+
+tr:nth-child(even) {
+  background-color: white;
+}
+
+tr:nth-child(odd) {
+  background-color: #ffffffb5;
+}
