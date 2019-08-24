@@ -32,8 +32,13 @@ export class AddConnectionDialogComponent implements OnInit {
     });
     this.V_SRC_CD=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
     this.V_USR_NM=JSON.parse(sessionStorage.getItem('u')).USR_NM;
-    this.http.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=EXE&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe(res => {
-      this.connectionTypes = res;
+    // this.http.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=EXE&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe(res => {
+    //   this.connectionTypes = res;
+    // });
+    this.http.get('https://enablement.us/Enablement/rest/E_DB/SPJSON?V_SRC_CD='+ this.V_SRC_CD +'&V_CXN_TYP='+ this.data.selectedConnectionType +'&REST_Service=Params_of_CXN_Type&Verb=GET').subscribe(res => {
+      this.DATA = res;
+      this.tableshow = true;
+      //console.log(this.DATA);
     })
   }
 
@@ -65,7 +70,7 @@ export class AddConnectionDialogComponent implements OnInit {
     
     var data = {
       "V_CXN_CD":connectionData.V_CXN_CD,
-      "V_CXN_TYP":connectionData.V_CXN_TYP,
+      "V_CXN_TYP":this.data.selectedConnectionType,
       "V_SRC_CD":this.V_SRC_CD,
       "V_USR_NM":this.V_USR_NM,
       "V_PARAM_N":V_PARAM_N,

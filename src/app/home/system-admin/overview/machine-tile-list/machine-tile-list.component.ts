@@ -28,6 +28,7 @@ export class MachineTileListComponent implements OnInit {
   @Input() connectionList;
   @Input() machineType;
   @Input() userAccess;
+  @Input() selectedConnectionType;
   domain_name=this.globals.domain_name;
   private apiUrlGet = "https://"+this.domain_name+"/rest/v1/secured?";
   @ViewChild('contextMenu', { static: false } as any) set contextMenu(value: ElementRef) {
@@ -62,7 +63,7 @@ export class MachineTileListComponent implements OnInit {
     const dialogRef = this.dialog.open(AddConnectionDialogComponent, {
       panelClass: 'app-dialog',
       width: '600px',
-      data: {machineType:this.machineType}
+      data: {machineType:this.machineType, selectedConnectionType:this.selectedConnectionType}
     });
 
     dialogRef.afterClosed().subscribe(result => {
