@@ -112,7 +112,7 @@ export class MachineTileListComponent implements OnInit {
       console.log('The dialog was closed');
       if(result) {
         this.systemOverview.getMachine();
-        this.systemOverview.getExe();
+        this.systemOverview.getAllExes();
       }
     });
   }

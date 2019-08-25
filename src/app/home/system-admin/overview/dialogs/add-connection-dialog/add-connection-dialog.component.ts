@@ -98,3 +98,5 @@ export class AddConnectionDialogComponent implements OnInit {
   }
 
 }
+
+//https://enablement.us/Enablement/rest/v1/securedJSON?V_CXN_TYP='+ this.data.selectedConnectionType +'&V_CXN_CD=undefined&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=ConnectionMachine&Verb=GET

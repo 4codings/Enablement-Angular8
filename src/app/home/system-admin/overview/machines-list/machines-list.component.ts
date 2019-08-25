@@ -29,20 +29,23 @@ export class MachinesListComponent implements OnInit {
   constructor(public dialog: MatDialog, private http:HttpClient, private systemOverview:SystemAdminOverviewService) { }
 
   ngOnInit() {
-    this.systemOverview.getMachine();
-    this.http.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=EXE&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe(res => {
-      this.connectionTypeOptions = res;
-      this.connectionTypeOptions.push({EXE_TYP:"All"});
-      this.connectionTypeOptions = this.connectionTypeOptions.sort((a,b) => {
-        if (a.EXE_TYP < b.EXE_TYP) //sort string ascending
-          return -1;
-        if (a.EXE_TYP > b.EXE_TYP)
-          return 1;
-        return 0; 
-      });
-    }, err => {
-       console.log(err);
-    });
+    //this.systemOverview.getAllMachineConnections();
+    this.systemOverview.typeOptions$.subscribe(types => {
+      this.connectionTypeOptions = types;
+    })
+    // this.http.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=EXE&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe(res => {
+    //   this.connectionTypeOptions = res;
+    //   this.connectionTypeOptions.push({EXE_TYP:"All"});
+    //   this.connectionTypeOptions = this.connectionTypeOptions.sort((a,b) => {
+    //     if (a.EXE_TYP < b.EXE_TYP) //sort string ascending
+    //       return -1;
+    //     if (a.EXE_TYP > b.EXE_TYP)
+    //       return 1;
+    //     return 0; 
+    //   });
+    // }, err => {
+    //    console.log(err);
+    // });
     this.systemOverview.getMachineConnection$.subscribe(res => {
       this.sortedAllConnections = res;
     })

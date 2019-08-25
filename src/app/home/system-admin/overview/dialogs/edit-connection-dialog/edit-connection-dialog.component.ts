@@ -35,8 +35,8 @@ export class EditConnectionDialogComponent implements OnInit {
       // this.PLF_CD=this.PLF_TYPE['SERVER_CD'];
     });
     this.V_SRC_CD=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
-    this.V_USR_NM=JSON.parse(sessionStorage.getItem('u')).USR_NM;
-    this.http.get('https://enablement.us/Enablement/rest/E_DB/SPJSON?V_SRC_CD='+ this.V_SRC_CD +'&V_CXN_TYP='+ this.data.cnxData.V_CXN_TYP +'&REST_Service=Params_of_CXN_Type&Verb=GET').subscribe(res => {
+    this.V_USR_NM=JSON.parse(sessionStorage.getItem('u')).USR_NM; 
+    this.http.get('https://enablement.us/Enablement/rest/v1/securedJSON?V_CXN_TYP='+ this.data.cnxData.V_CXN_TYP +'&V_CXN_CD='+ this.data.cnxData.V_CXN_CD +'&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=ConnectionMachine&Verb=GET').subscribe(res => {
       this.DATA = res;
     });
 

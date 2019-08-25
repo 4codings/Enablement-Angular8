@@ -73,13 +73,6 @@
       </div>    
       <br/>
       <div fxLayout="row" fxLayout.lt-sm="column">
-        <!-- PLATFORM DESCRIPTION -->
-        <div class="mr-3" fxFlex="48">
-          <label item-width="100"><strong>Platform Description</strong></label>
-          <mat-form-field class="form_in" style="width:100%;">
-            <textarea matInput  [(ngModel)]="data.exeData.V_SERVER_DSC" name="PLF_DSC"></textarea>
-          </mat-form-field>
-        </div>
         <!-- PLATFORM -->
         <div class="ml-3 pt-3" fxFlex="50">
           <label item-width="100"><strong>Platform</strong></label>
@@ -91,6 +84,15 @@
             </mat-select>
           </mat-form-field>
         </div>
+        
+        <!-- PLATFORM DESCRIPTION -->
+        <div class="mr-3" fxFlex="48">
+          <label item-width="100"><strong>Platform Description</strong></label>
+          <mat-form-field class="form_in" style="width:100%;">
+            <textarea matInput  [(ngModel)]="data.exeData.V_SERVER_DSC" name="PLF_DSC"></textarea>
+          </mat-form-field>
+        </div>
+
       </div>    
         
   </div>
