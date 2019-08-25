@@ -4,14 +4,16 @@
     (cdkDropListDropped)="connectionDropped($event)"
     cdkDropListOrientation="horizontal">
   <div class="tile"
-       matRipple
-       cdkDrag
-       [cdkDragData]="currConn"
-       [matTooltip]="currConn.V_CXN_CD"
-       *ngFor="let currConn of connectionList.V_CXN; let i = index"
-       (contextmenu)="openContextmenu($event, currConn, connectionList.V_PLATFORM_CD, i)"
-       (mousedown)="onTileMouseDownEventHandler($event)"
-       (click)="onConnectionTileClick(currConn)">
+      matRipple
+      cdkDrag
+      [cdkDragData]="currConn"
+      [matTooltip]="currConn.V_CXN_CD"
+      [class.active]="currConn == selectedMachine"
+      [class.highlight]="isHighLightTile(currConn)"
+      *ngFor="let currConn of connectionList.V_CXN; let i = index"
+      (contextmenu)="openContextmenu($event, currConn, connectionList.V_PLATFORM_CD, i)"
+      (mousedown)="onTileMouseDownEventHandler($event)"
+      (click)="onConnectionTileClick(currConn)">
     <!-- <mat-icon class="tile-icon">person</mat-icon> -->
     <mat-icon class="iconmod shwmaticon">insert_link</mat-icon>
    <!-- <div>{{currConn.EXE_CD}}</div> -->
@@ -30,8 +32,3 @@
     <button mat-button class="many-item" (click)="onContextMenuAssigneConnBtnClick()">Assign</button>
   </div> 
 </ng-container>  
-
-<!--
-  [class.active]="currConn == selectedMachine"
-  [class.highlight]="currConn.V_CXN_TYP == selectedExe"
--->

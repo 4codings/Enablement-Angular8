@@ -48,7 +48,7 @@ export class MachineTileListComponent implements OnInit {
       //console.log(data);
       if(data) {
         this.selectedMachine = null;
-        this.selectedExe = data.V_EXE_TYP;
+        this.selectedExe = data.V_CXN_ID;
       } else {
         this.selectedExe = '';
       }
@@ -59,6 +59,17 @@ export class MachineTileListComponent implements OnInit {
     });
   }
   
+  isHighLightTile(cxnData) { 
+    if(this.selectedExe != null) {
+      for(let i=0; i<this.selectedExe.length; i++) {
+          if(cxnData.V_CXN_ID == this.selectedExe[i]) {
+            return true;
+          }
+      }
+      return false;
+    }
+  }
+
   onAddConnTileClick() {
     const dialogRef = this.dialog.open(AddConnectionDialogComponent, {
       panelClass: 'app-dialog',

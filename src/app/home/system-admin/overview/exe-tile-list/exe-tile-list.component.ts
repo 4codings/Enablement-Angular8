@@ -23,6 +23,7 @@ export class ExeTileListComponent implements OnInit {
   subscription: Subscription;
   public selectedTile;
   public selectedCxn;
+  public selectedCxnData = [];
   @Input() exes;
   @Input() userAccess;
   @Output() selectedExeTile = new EventEmitter();
@@ -39,19 +40,29 @@ export class ExeTileListComponent implements OnInit {
   ngOnInit() {
     //console.log(this.exes);
     this.subscription = this.systemOverview.selectedCxn$.subscribe(data => {
-      //console.log(data);
       if(data) {
         this.selectedTile = null;
-        this.selectedCxn = data.V_CXN_TYP;
+        this.selectedCxn = data.V_EXE_ID;
       } else {
-        this.selectedCxn = '';
+        this.selectedCxn = [];
       }
     });
-
+  
     document.addEventListener('mousedown', event => {
       this.contextMenuActive = false;
       this.contextMenuData = null;
     });
+  }
+
+  isHighLightTile(exeData) { 
+    if(this.selectedCxn != null) {
+      for(let i=0; i<this.selectedCxn.length; i++) {
+          if(exeData.V_EXE_ID == this.selectedCxn[i]) {
+            return true;
+          }
+      }
+      return false;
+    }
   }
 
   onAddExeTileClick(exeType) {

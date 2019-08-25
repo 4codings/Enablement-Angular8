@@ -72,7 +72,7 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
 
 
   changeExeType(type): void {
-    console.log(type);
+    //console.log(type);
     this.selectedExeType = type;
     this.selectedExe.emit(type);
   }
