@@ -21,6 +21,9 @@ import { HttpClient } from '@angular/common/http';
 import { Viewer } from '../execute/bpmn-viewer';
 import { RollserviceService } from '../../../services/rollservice.service';
 import { Subscription } from 'rxjs';
+import { InstanceElementList } from '../process-design/viewer/viewer.component';
+import { InputOutputElementComponent } from '../process-design/input-output-element/input-output-element.component';
+import { take } from 'rxjs/operators';
 // import { Viewer } from '../execute/bpmn-viewer-js';
 
 @Component({
@@ -37,13 +40,15 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // myControl = new FormControl();
   columnsToDisplayKeys: string[];
-  columnsPreferences: string[] = ['chartNo','chartType', 'xaxisData', 'yaxisData', 'unit',
-   'scale', 'ystepSize', 'gridlineWidth', 'backgroundColor', 'borderColor', 'fillBackground',
-    'lineTension', 'pointSize', 'animations', 'pointStyle', 'lineStyle','addRow'];
-  Element_Preferences = [{chartNo:"1",chartType: "",xaxisData:"",yaxisData:"",unit:"",scale:"",ystepSize:"",gridlineWidth:"",
-                      backgroundColor:"",borderColor:"",fillBackground:"",lineTension:"",pointSize:"",animations:"",
-                      pointStyle:"",lineStyle:"",addRow:""}];
-  dataPreferences = new MatTableDataSource(this.Element_Preferences);                      
+  columnsPreferences: string[] = ['chartNo', 'chartType', 'xaxisData', 'yaxisData', 'unit',
+    'scale', 'ystepSize', 'gridlineWidth', 'backgroundColor', 'borderColor', 'fillBackground',
+    'lineTension', 'pointSize', 'animations', 'pointStyle', 'lineStyle', 'addRow'];
+  Element_Preferences = [{
+    chartNo: "1", chartType: "", xaxisData: "", yaxisData: "", unit: "", scale: "", ystepSize: "", gridlineWidth: "",
+    backgroundColor: "", borderColor: "", fillBackground: "", lineTension: "", pointSize: "", animations: "",
+    pointStyle: "", lineStyle: "", addRow: ""
+  }];
+  dataPreferences = new MatTableDataSource(this.Element_Preferences);
   domain_name = this.globals.domain_name;
   @ViewChild(MatSort, { static: false } as any) sort: MatSort;
   @ViewChild(BaseChartDirective, { static: false } as any) chart: BaseChartDirective;
@@ -51,6 +56,56 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
   roleValues;
   hasMonitorPermission = false;
   isMonitorClicked = false;
+  selectedInstanceElementsList: InstanceElementList[] = [];
+  selectedElement = new InstanceElementList();
+  pointer = 0;
+  V_SRC_CD: string = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+  V_USR_NM: string = JSON.parse(sessionStorage.getItem('u')).USR_NM;
+  Exe_data = this.dataStored.getCookies("executedata");
+  iddata: any[] = [];
+  table_help_text: any;
+  Table_of_Data: any[];
+  Table_of_Data1: any[];
+  Table_of_Data2: any[] = [];
+  Table_of_Data3: any[] = [];
+  Table_of_Data4: any[] = [];
+  APP_ID = "";
+  UNIQUE_ID = "";
+  PRCS_ID = "";
+  SRC_ID = "";
+  SRVC_ID = "";
+  SRVC_CD = "";
+  PRCS_TXN_ID = "";
+  F1: any[];
+  ArraData: any = [];
+  hiddencolsflag: any = [];
+  Table_of_Data5: any;
+  helpertext = {};
+  tabledata = {};
+  dispchart: boolean;
+  disptable: boolean;
+  Select_show_option: any = ["Table", "Charts", "Both"];
+  show_choice = "Table";
+  selectedchart = [];
+  selectedcustomize = "";
+  myobj = { mychartType: "", myxaxisdata: "", myyaxisdata: "", myUoM: "", mySoM: "" }
+  PersonalTableCols: any = ["Chart type", "x-axis data", "y-axis data", "Unit of measure", "Scale of measure"];
+  personalizationtable: any = [];
+  linearray: any = [];
+  bararray: any = [];
+  piearray: any = [];
+  doughnutarray: any = [];
+  APP_CD = '';
+  PRCS_CD = '';
+  private viewer: any;
+  ctrl_variables: any;
+  private downloadUrl: string;
+  private user: any;
+  private bpmnTemplate: any;
+  public path = '';
+  selectedElementInput: any;
+  selectedElementOutput: any;
+  elementClick = false;
 
   constructor(private dataStored: StorageSessionService,
     private https: Http,
@@ -124,51 +179,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.selectedchart, event.previousIndex, event.currentIndex);
   }
-  pointer = 0;
-  V_SRC_CD: string = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
-  V_USR_NM: string = JSON.parse(sessionStorage.getItem('u')).USR_NM;
-  Exe_data = this.dataStored.getCookies("executedata");
-  iddata: any[] = [];
-  table_help_text: any;
-  Table_of_Data: any[];
-  Table_of_Data1: any[];
-  Table_of_Data2: any[] = [];
-  Table_of_Data3: any[] = [];
-  Table_of_Data4: any[] = [];
-  APP_ID = "";
-  UNIQUE_ID = "";
-  PRCS_ID = "";
-  SRC_ID = "";
-  SRVC_ID = "";
-  SRVC_CD = "";
-  PRCS_TXN_ID = "";
-  F1: any[];
-  ArraData: any = [];
-  hiddencolsflag: any = [];
-  Table_of_Data5: any;
-  helpertext = {};
-  tabledata = {};
-  dispchart: boolean;
-  disptable: boolean;
-  Select_show_option: any = ["Table", "Charts", "Both"];
-  show_choice = "Table";
-  selectedchart = [];
-  selectedcustomize = "";
-  myobj = { mychartType: "", myxaxisdata: "", myyaxisdata: "", myUoM: "", mySoM: "" }
-  PersonalTableCols: any = ["Chart type", "x-axis data", "y-axis data", "Unit of measure", "Scale of measure"];
-  personalizationtable: any = [];
-  linearray: any = [];
-  bararray: any = [];
-  piearray: any = [];
-  doughnutarray: any = [];
-  APP_CD = '';
-  PRCS_CD = '';
-  private viewer: any;
-  ctrl_variables: any;
-  private downloadUrl: string;
-  private user: any;
-  private bpmnTemplate: any;
-  public path = '';
 
   ngAfterViewInit() {
     this.httpClient.get('../../../../assets/control-variable.json').subscribe((res: any) => {
@@ -178,6 +188,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dataSource.sort = this.sort;
     this.cd.detectChanges();
     this.downloadBpmn();
+    this.getInputOutput();
     this.viewer = new Viewer({
       container: '#canvas',
       width: '90%',
@@ -186,6 +197,82 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     const eventBus = this.viewer.get('eventBus');
     if (eventBus) {
       eventBus.on('element.click', ($event) => {
+        let i = this.selectedInstanceElementsList.findIndex(v => v.PRDCR_SRVC_CD.replace(new RegExp(' ', 'g'), '_') == $event.element.id);
+        if (i > -1) {
+          console.log('ele', this.selectedInstanceElementsList[i]);
+          this.selectedElement = this.selectedInstanceElementsList[i];
+          this.selectedElementInput = this.selectedElement.SRVC_INPUT;
+          this.selectedElementOutput = this.selectedElement.SRVC_OUTPUT;
+          if (this.selectedElementInput != null) {
+            this.elementClick = true;
+            let inputs = this.selectedElementInput[0].split(',');
+            let keys = [];
+            if (inputs.length) {
+              inputs.forEach(ele => {
+                let split = ele.trim().split('=');
+                let obj = { 'key': split[0], 'value': split[1] };
+                keys.push(obj);
+              })
+              this.selectedElementInput = [];
+              this.selectedElementInput = keys;
+              console.log('eleinu', this.selectedElementInput);
+            }
+          }
+          if (this.selectedElementOutput != null) {
+            this.elementClick = true;
+            let outputs = this.selectedElementOutput[0].split(',');
+            let keys = [];
+            if (outputs.length) {
+              outputs.forEach(ele => {
+                let split = ele.trim().split('=');
+                let obj = { 'key': split[0], 'value': split[1] };
+                keys.push(obj);
+              })
+              this.selectedElementOutput = [];
+              this.selectedElementOutput = keys;
+              console.log('selectedElementOutput', this.selectedElementOutput);
+            }
+          }
+          let startx = $event.element.x;
+          let currentx = $event.originalEvent.layerX;
+          let endx = $event.element.x + $event.element.width;
+          let starty = $event.element.y;
+          let endy = $event.element.y + $event.element.height;
+          let currenty = $event.originalEvent.layerY;
+          let section = $event.element.width / 3;
+          let isShowInput = false;
+          let isShowOutput = false;
+          let isShowInputOutput = false;
+          if (currenty >= starty && currenty <= endy) {
+            if (currentx >= startx && currentx <= startx + section) {
+              isShowInput = true;
+            } else if (currentx >= startx + section && currentx <= endx - section) {
+              isShowInputOutput = true;
+            } else if (currentx >= endx - section && currentx <= endx) {
+              isShowOutput = true;
+            }
+          }
+
+          if (isShowInput || isShowOutput || isShowInputOutput) {
+            const dialogRef = this.dialog.open(InputOutputElementComponent,
+              {
+                panelClass: 'app-dialog',
+                // width: '600px',
+                // height: '500px',
+                data: {
+                  inputElement: this.selectedElementInput,
+                  outputElement: this.selectedElementOutput,
+                  showInput: isShowInput,
+                  showOutput: isShowOutput,
+                  showInputOutput: isShowInputOutput
+                }
+              });
+            dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
+              if (flag) {
+              }
+            });
+          }
+        }
         if (this.isMonitorClicked) {
           console.log('element', $event.element.id)
           var canvas = this.viewer.get('canvas');
@@ -199,6 +286,17 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.viewer.destroy();
     }
     this.roleObservable$.unsubscribe();
+  }
+
+  getInputOutput() {
+    this.httpClient.get(this.apiService.endPoints.securedJSON + 'V_SRC_ID=' + this.SRC_ID +
+      '&V_APP_ID=' + this.APP_ID + '&V_PRCS_ID=' + this.PRCS_ID + '&V_USR_NM=' +
+      this.V_USR_NM + '&V_PRCS_TXN_ID=' + this.PRCS_TXN_ID +
+      '&REST_Service=Service_Instances&Verb=GET').subscribe((res: any) => {
+        if (res.length) {
+          this.selectedInstanceElementsList = res;
+        }
+      });
   }
 
   downloadBpmn() {
@@ -221,11 +319,11 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
               (x: any) => {
                 this.viewer.importXML(x, this.handleError.bind(this));
                 this.bpmnTemplate = x;
-                setTimeout(ele => {
-                  var canvas = this.viewer.get('canvas');
-                  console.log('this.viewer.get', this.viewer.get('elementRegistry'));
-                  canvas.addMarker('Start', 'highlight');
-                }, 2000);
+                // setTimeout(ele => {
+                //   var canvas = this.viewer.get('canvas');
+                //   console.log('this.viewer.get', this.viewer.get('elementRegistry'));
+                //   canvas.addMarker('Start', 'highlight');
+                // }, 2000);
               },
               this.handleError.bind(this)
             );
@@ -394,12 +492,14 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
   V_PRF_NM = [];
   V_PRF_VAL = [];
   userprefs = {};
-  chartPrefs = {backgroundcolor:"",bordercolor:"",fill:"",pointstyle:"",
-                linetension:"",animations:"",pointradius:"",linestyle:"",
-                gridlinedashed:"",linewidth:"",yautoskip:"",linexaxis:"",
-                lineyaxis:"",barxaxis:"",baryaxis:"",piexaxis:"",pieyaxis:"",
-                doughnutxaxis:"",doughnutyaxis:"",selectedchart:"",
-                personalizationtable:"",chartposition:""};
+  chartPrefs = {
+    backgroundcolor: "", bordercolor: "", fill: "", pointstyle: "",
+    linetension: "", animations: "", pointradius: "", linestyle: "",
+    gridlinedashed: "", linewidth: "", yautoskip: "", linexaxis: "",
+    lineyaxis: "", barxaxis: "", baryaxis: "", piexaxis: "", pieyaxis: "",
+    doughnutxaxis: "", doughnutyaxis: "", selectedchart: "",
+    personalizationtable: "", chartposition: ""
+  };
   chartPrefs_arr = [];
   hiddencolsconfig = {};
   _yaxisstepSize = null;
@@ -1157,6 +1257,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     }
     this.getpreferences();
+    this.getInputOutput();
   }
 
   ExecuteAgain() {
@@ -1313,16 +1414,18 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
   //__________________________Personalization Table_________________________
-  addRow_action(){
-    let chart_no = this.Element_Preferences.length+1;
-    this.Element_Preferences.push({chartNo: chart_no+"", chartType: "",xaxisData:"",yaxisData:"",unit:"",scale:"",ystepSize:"",gridlineWidth:"",
-    backgroundColor:"",borderColor:"",fillBackground:"",lineTension:"",pointSize:"",animations:"",
-    pointStyle:"",lineStyle:"",addRow:""});
+  addRow_action() {
+    let chart_no = this.Element_Preferences.length + 1;
+    this.Element_Preferences.push({
+      chartNo: chart_no + "", chartType: "", xaxisData: "", yaxisData: "", unit: "", scale: "", ystepSize: "", gridlineWidth: "",
+      backgroundColor: "", borderColor: "", fillBackground: "", lineTension: "", pointSize: "", animations: "",
+      pointStyle: "", lineStyle: "", addRow: ""
+    });
     console.log(this.dataPreferences);
     this.dataPreferences = new MatTableDataSource(this.Element_Preferences);
   }
 
-  deleteRow_action(chartNo){
+  deleteRow_action(chartNo) {
     this.Element_Preferences.pop();
     //---data move up
     this.dataPreferences = new MatTableDataSource(this.Element_Preferences);

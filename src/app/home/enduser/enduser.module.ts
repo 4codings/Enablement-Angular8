@@ -13,6 +13,7 @@ import { ArtifactFormComponent } from './execute/artifact-form/artifact-form.com
 import { NonRepeatableFormComponent } from './execute/non-repeatable-form/non-repeatable-form.component';
 import { RepeatableFormComponent } from './execute/repeatable-form/repeatable-form.component';
 import { ReportTableComponent } from './report-table/report-table.component';
+import { InputOutputElementComponent } from './process-design/input-output-element/input-output-element.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { ReportTableComponent } from './report-table/report-table.component';
     RepeatableFormComponent,
     ReportTableComponent,
     DialogChartsComponent,
+    InputOutputElementComponent
   ],
   imports: [
     EnduserRoutingModule,
@@ -32,7 +34,7 @@ import { ReportTableComponent } from './report-table/report-table.component';
     NgbModule,
     ModalModule.forRoot(),
   ],
-  entryComponents: [DialogChartsComponent]
+  entryComponents: [DialogChartsComponent,InputOutputElementComponent]
 })
 export class EnduserModule {
   constructor() {

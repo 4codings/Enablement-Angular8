@@ -15,7 +15,7 @@
 </div>
 <mat-dialog-content cdkScrollable>
   <!-- Input Table -->
-  <table class="table-responsive" *ngIf="showInput && inputElement.length">
+  <table class="table-responsive" *ngIf="showInput && inputElement !=null && inputElement.length">
     <tr class="text-center">
       <th>Key</th>
       <th>Value</th>
@@ -25,10 +25,10 @@
       <td>{{input.value}}</td>
     </tr>
   </table>
-  <span *ngIf="showInput && !inputElement.length">No Input Data Fields</span>
+  <span *ngIf="showInput && (inputElement==null || !inputElement.length)">No Input Data Fields</span>
 
   <!-- Output Table -->
-  <table class="table-responsive" *ngIf="showOutput && outputElement.length">
+  <table class="table-responsive" *ngIf="showOutput && outputElement != null && outputElement.length">
     <tr class="text-center">
       <th>Key</th>
       <th>Value</th>
@@ -39,7 +39,7 @@
       <td *ngIf="output.value == '[]'"></td>
     </tr>
   </table>
-  <span *ngIf="showOutput && !outputElement.length">No Output Data Fields</span>
+  <span *ngIf="showOutput && (outputElement== null || !outputElement.length)">No Output Data Fields</span>
 
   <!-- Input Output table -->
   <div class="row" *ngIf="showInputOutput">

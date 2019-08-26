@@ -53,9 +53,9 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     public configService: ConfigServiceService,
     public toasterService: ToastrService,
     private endUserService: EndUserService,
-    private dialog: MatDialog,
+    public dialog: MatDialog,
   ) {
-    super(StorageSessionService, http, https, router, globals, app, cdr, apiService, globalUser, configService, toasterService);
+    super(StorageSessionService, http, https, router, globals, app, cdr, apiService, globalUser, configService, toasterService, dialog);
     this.navigationSubscription = router.events
       .pipe(filter(e => e instanceof NavigationEnd))
       .subscribe((e: NavigationEnd) => {

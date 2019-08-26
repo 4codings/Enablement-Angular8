@@ -8,10 +8,9 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { SharedModule } from '../../../shared/shared.module';
 import { SchedularComponent } from './schedular/schedular.component';
 import { ViewerComponent } from './viewer/viewer.component';
-import { InputOutputElementComponent } from './input-output-element/input-output-element.component';
 
 @NgModule({
-  declarations: [ProcessDesignComponent, SchedularComponent, ViewerComponent, InputOutputElementComponent],
+  declarations: [ProcessDesignComponent, SchedularComponent, ViewerComponent],
   imports: [
     SharedModule,
     ProcessDesignRoutingModule,
@@ -19,6 +18,6 @@ import { InputOutputElementComponent } from './input-output-element/input-output
     NgbModule,
     ModalModule.forRoot(),
   ],
-  entryComponents: [InputOutputElementComponent]
+  entryComponents: []
 })
 export class ProcessDesignModule { }
