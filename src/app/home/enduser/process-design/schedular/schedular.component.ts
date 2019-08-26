@@ -41,7 +41,7 @@ export class SchedularComponent implements OnInit {
   Month_timeth: string;
   numberthDayOfEveryMonth: any;
   //______________________BLOCK
-  week_block: boolean = true;
+  week_block: boolean = false;
   month_block: boolean = false;
   year_block: boolean = false;
   Minute_block: boolean = false;
