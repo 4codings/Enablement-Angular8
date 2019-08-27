@@ -1,0 +1,278 @@
+<div fxLayout="row" id="p-table" class="mat-elevation-z8">
+  <div fxLayout="column" id="chart-no" class="table-column">
+    <div class="table-title">Chart No</div>
+    <div class="table-cell-chartno" *ngFor="let index of chartno; trackBy:indexTracker">{{index+1}}</div>
+  </div>
+  <div fxLayout="column" id="chart-type" class="table-column">
+    <div class="table-title">Chart Type</div>
+    <div class="table-cell" *ngFor="let selectedchart$ of _selectedchart; trackBy:indexTracker">
+      <mat-form-field>
+        <mat-label>Select chart type</mat-label>
+        <mat-select multiple [(value)]="selectedchart$" (selectionChange)="setchartpreferences('selectedchart',$event,i);">
+          <mat-option value="linechart_sel">Line Chart</mat-option>
+          <mat-option value="barchart_sel">Bar Chart</mat-option>
+          <mat-option value="piechart_sel">Pie Chart</mat-option>
+          <mat-option value="doughnutchart_sel">Doughnut Chart</mat-option>
+          <mat-option value="ganttchart_sel">Gantt Chart</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div fxLayout="column" id="x-axis-data" class="table-column">
+    <div class="table-title">X-Axis Dataset</div>
+    <div class="table-cell" *ngFor="let d_xaxis of doughnutxaxis; trackBy:indexTracker">
+      <mat-form-field style="width:100%">
+        <mat-select placeholder="Select X-axis Dataset" (selectionChange)="updateBarChart();setchartpreferences('xaxisdata',$event,i);"
+          [(value)]="d_xaxis">
+          <mat-option style="text-align: center;   height: 25px;   color: black; " value="">None</mat-option>
+          <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" value="{{items}}">
+            {{items}} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div fxLayout="column" id="y-axis-data" class="table-column">
+    <div class="table-title">Y-Axis Dataset</div>
+    <div class="table-cell" *ngFor="let d_yaxis of doughnutyaxis; trackBy:indexTracker">
+      <mat-form-field style="width:100%">
+        <mat-select placeholder="Select Y-axis Dataset" (selectionChange)="updateLineChart();setchartpreferences('yaxisdata',$event,i);"
+          multiple [(value)]="d_yaxis">
+          <mat-option style="text-align:center;" *ngFor="let items of columnsToDisplay" [value]="items">
+            {{items}} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div fxLayout="column" id="unit" class="table-column">
+    <div class="table-title">Unit of Measure</div>
+    <div class="table-cell" *ngFor="let unitx of UoM; trackBy:indexTracker">
+      <mat-form-field style="width:100%">
+        <input type="text" placeholder="Select Unit of measure" (input)="updateLineChart()" (blur)="setchartpreferences();"
+          matInput [matAutocomplete]="auto" [(ngModel)]="unitx">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option (click)="updateLineChart();setchartpreferences();"
+            style="text-align: center;height: 25px;color: black; " value="">None</mat-option>
+          <mat-option (click)="updateLineChart();setchartpreferences();" *ngFor="let option of yaxiscallbacks"
+            value="{{option}}">
+            {{option}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div fxLayout="column" id="scale" class="table-column">
+    <div class="table-title">Scale of Measure</div>
+    <div class="table-cell" *ngFor="let scalex of SoM; let i = index; trackBy:indexTracker">
+      <mat-form-field style="width:100%">
+        <input type="text" placeholder="Select Scale of measure" matInput [matAutocomplete]="auto1"
+          (change)="setchartpreferences('personalizationtable',i);" [(ngModel)]="scalex" name="mySoM{{i}}">
+        <mat-autocomplete #auto1="matAutocomplete">
+          <mat-option value="10" (click)="setchartpreferences('personalizationtable',i);"> 10 </mat-option>
+          <mat-option value="100" (click)="setchartpreferences('personalizationtable',i);"> 100 </mat-option>
+          <mat-option value="1000" (click)="setchartpreferences('personalizationtable',i);"> 1000 </mat-option>
+          <mat-option value="10000" (click)="setchartpreferences('personalizationtable',i);"> 10000 </mat-option>
+          <mat-option value="100000" (click)="setchartpreferences('personalizationtable',i);"> 100000 </mat-option>
+          <mat-option value="1000000" (click)="setchartpreferences('personalizationtable',i);"> Millions </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div fxLayout="column" id="y-step-size" class="table-column">
+    <div class="table-title">Y-step size</div>
+    <div class="table-cell" *ngFor="let ystep of yaxisstepSize; trackBy:indexTracker">
+      <mat-form-field>
+        <input matInput type="number" placeholder="Select Y-Step Size" min=0 [(ngModel)]="ystep">
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div fxLayout="column" id="grid-line-width" class="table-column">
+    <div class="table-title">Grid Line Width</div>
+    <div class="table-cell" *ngFor="let gwidth of gridlinewidth; let i=index; trackBy:indexTracker">
+      <mat-form-field>
+        <input matInput type="number" (ngModelChange)="setchartpreferences('gridlinewidth',$event,i);" placeholder="Select Grid line width" min=1 [(ngModel)]="gwidth">
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div fxLayout="column" id="background-color" class="table-column">
+    <div class="table-title">Background Color</div>
+    <div class="table-cell" *ngFor="let bgcolor of backgroundcolor; let i=index; trackBy:indexTracker">
+      <div fxLayout="row" class="mat-cell-div">
+        <div fxFlex="80">Background Color</div>
+        <div fxFlex="20">
+          <input class="colorselector" [(value)]="bgcolor" (colorPickerChange)="setchartpreferences('backgroundcolor',$event,i);"
+           [style.background]="bgcolor" [(colorPicker)]="bgcolor" [cpAlphaChannel]="'always'"
+            [cpOutputFormat]="'rgba'" [cpOKButton]="true" [cpCancelButton]="true" [cpSaveClickOutside]="true"
+            [cpOKButtonClass]="'btn btn-primary btn-xs'" [cpCancelButtonClass]="'btn btn-primary btn-xs'" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div fxLayout="column" id="border-color" class="table-column">
+    <div class="table-title">Border Color</div>
+    <div class="table-cell" *ngFor="let bdrcolor of bordercolor; trackBy:indexTracker">
+      <div fxLayout="row" class="mat-cell-div">
+        <div fxFlex="80">Border Color</div>
+        <div fxFlex="20">
+          <input class="colorselector" [(value)]="bdrcolor" [style.background]="bdrcolor" [(colorPicker)]="bdrcolor"
+            [cpAlphaChannel]="'always'" [cpOutputFormat]="'rgba'" [cpOKButton]="true" [cpCancelButton]="true"
+            [cpSaveClickOutside]="true" [cpOKButtonClass]="'btn btn-primary btn-xs'"
+            [cpCancelButtonClass]="'btn btn-primary btn-xs'" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div fxLayout="column" id="fill-background" class="table-column">
+    <div class="table-title">Fill Background</div>
+    <div class="table-cell" *ngFor="let fbg of fillbackground; trackBy:indexTracker">
+      <div fxLayout="row" class="mat-cell-div">
+        <div fxFlex="80">Fill Background</div>
+        <div fxFlex="20">
+          <mat-slide-toggle class="example-margin" color="primary" [(ngModel)]="fbg"></mat-slide-toggle>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div fxLayout="column" id="line-tension" class="table-column">
+    <div class="table-title">Line Tension</div>
+    <div class="table-cell" *ngFor="let lten of linetension; trackBy:indexTracker">
+      <div fxLayout="column" style="text-align:center" class="mat-cell-div">
+        <div>
+          <mat-button-toggle-group (value)="lten">
+            <mat-button-toggle value="none">None</mat-button-toggle>
+            <mat-button-toggle value="mild">Mild</mat-button-toggle>
+            <mat-button-toggle value="full">Full</mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+      </div>
+  </div>
+  </div>
+
+  <div fxLayout="column" id="point-size" class="table-column">
+    <div class="table-title">Point Size</div>
+    <div class="table-cell" *ngFor="let prad of pointradius; trackBy:indexTracker">
+      <div fxLayout="column" style="text-align:center" class="mat-cell-div">
+        <div>
+          <mat-button-toggle-group (value)="prad">
+            <mat-button-toggle value="small">Small</mat-button-toggle>
+            <mat-button-toggle value="normal">Normal</mat-button-toggle>
+            <mat-button-toggle value="large">Large</mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div fxLayout="column" id="animations" class="table-column">
+    <div class="table-title">Animations</div>
+    <div class="table-cell" *ngFor="let anim of animations; trackBy:indexTracker">
+      <mat-form-field style="width:100%">
+        <mat-select placeholder="Select Animations" [(value)]="anim">
+          <mat-option style="text-align:center;" value="linear"> linear </mat-option>
+          <mat-option style="text-align:center;" value="easeInOutQuad"> easeInOutQuad </mat-option>
+          <mat-option style="text-align:center;" value="easeInCubic"> easeInCubic </mat-option>
+          <mat-option style="text-align:center;" value="easeOutCubic"> easeOutCubic </mat-option>
+          <mat-option style="text-align:center;" value="easeInQuad"> easeInQuad </mat-option>
+          <mat-option style="text-align:center;" value="easeOutQuad"> easeOutQuad </mat-option>
+          <mat-option style="text-align:center;" value="easeInQuart"> easeInQuart </mat-option>
+          <mat-option style="text-align:center;" value="easeOutQuart"> easeOutQuart </mat-option>
+          <mat-option style="text-align:center;" value="easeInSine"> easeInSine </mat-option>
+          <mat-option style="text-align:center;" value="easeOutSine"> easeOutSine </mat-option>
+          <mat-option style="text-align:center;" value="easeInElastic"> easeInElastic </mat-option>
+          <mat-option style="text-align:center;" value="easeInBack"> easeInBack </mat-option>
+          <mat-option style="text-align:center;" value="easeOutBack"> easeOutBack </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div fxLayout="column" id="point-style" class="table-column">
+    <div class="table-title">Point Style</div>
+    <div class="table-cell" *ngFor="let pstyle of pointstyle; trackBy:indexTracker">
+      <mat-form-field style="width:100%;cursor: pointer;">
+        <input matInput placeholder="Select Point Style" [(ngModel)]="pstyle" [matAutocomplete]="auto1" class="autosel">
+        <mat-autocomplete #auto1="matAutocomplete">
+          <mat-option style="text-align:center;" value="circle">
+            <mat-icon>fiber_manual_record</mat-icon> Circle
+          </mat-option>
+          <mat-option style="text-align:center;" value="triangle">
+            <mat-icon>change_history</mat-icon> Triangle
+          </mat-option>
+          <mat-option style="text-align:center;" value="rect">
+            <mat-icon>crop_7_5</mat-icon> Rectangle
+          </mat-option>
+          <mat-option style="text-align:center;" value="rectRounded">
+            <mat-icon>check_box_outline_blank</mat-icon> RectRounded
+          </mat-option>
+          <mat-option style="text-align:center;" value="rectRot">
+            <mat-icon>layers</mat-icon>RectRot
+          </mat-option>
+          <mat-option style="text-align:center;" value="cross">
+            <mat-icon>add</mat-icon> Cross
+          </mat-option>
+          <mat-option style="text-align:center;" value="crossRot">
+            <mat-icon>clear</mat-icon> CrossRot
+          </mat-option>
+          <mat-option style="text-align:center;" value="star">
+            <mat-icon>ac_unit</mat-icon> Star
+          </mat-option>
+        </mat-autocomplete>
+        <mat-icon style="vertical-align: middle" matSuffix>arrow_drop_down</mat-icon>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div fxLayout="column" id="line-style" class="table-column">
+    <div class="table-title">Line Style</div>
+    <div class="table-cell" *ngFor="let lstyle of linestyle; trackBy:indexTracker">
+      <mat-form-field style="width:100%;cursor: pointer;">
+        <input matInput placeholder="Select Line Style" [(ngModel)]="lstyle" [matAutocomplete]="auto" class="autosel">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option style="text-align:center;" value="solid">
+            <mat-icon>remove</mat-icon>Solid
+          </mat-option>
+          <mat-option style="text-align:center;" value="dashed">
+            <mat-icon>more_horiz</mat-icon>Dashed
+          </mat-option>
+        </mat-autocomplete>
+        <mat-icon style="vertical-align: middle" matSuffix>arrow_drop_down</mat-icon>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div fxLayout="column" id="add-row" class="table-column">
+    <div class="table-title">
+      <mat-icon aria-hidden="false" (click)="addRow_action();" aria-label="Add a Row" style="cursor: pointer;">
+        add_circle</mat-icon>
+    </div>
+    <div class="table-cell" *ngFor="let index of chartno;">
+      <mat-icon aria-hidden="false" (click)="deleteRow_action(index+1);" aria-label="Delete a Row"
+        style="cursor: pointer;">
+        delete</mat-icon>
+    </div>
+  </div>
+</div>
+
+
+<!--<div fxLayout="row" class="mat-cell-div" *ngFor="let elem of SoM; trackBy:indexTracker">
+  <div fxFlex="80">Background Color</div>
+  <div fxFlex="20">
+    <input class="colorselector" (colorPickerChange)="setchartpreferences('backgroundcolor',i);" [(value)]="elem"
+      [style.background]="elem" [(colorPicker)]="elem" [cpAlphaChannel]="'always'" [cpOutputFormat]="'rgba'"
+      [cpOKButton]="true" [cpCancelButton]="true" [cpSaveClickOutside]="true"
+      [cpOKButtonClass]="'btn btn-primary btn-xs'" [cpCancelButtonClass]="'btn btn-primary btn-xs'" name="row{{i}}"
+      id="row{{i}}" />
+  </div>
+  <mat-form-field style="width:100%">
+    <input type="text" placeholder="Scale of measure" matInput [(ngModel)]="elem">
+
+  </mat-form-field>
+</div>-->
