@@ -51,7 +51,8 @@
         </span>
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <div fxFlex="100" id="canvas"></div>
+    <app-viewer-diagram [parentapp]="APP_CD" [parentpro]="PRCS_CD" [file_path]="path">
+    </app-viewer-diagram>
   </mat-expansion-panel>
 </mat-accordion>
 
@@ -831,10 +832,12 @@
 
     <ng-container matColumnDef="addRow">
       <th mat-header-cell *matHeaderCellDef>
-        <mat-icon aria-hidden="false" (click)="addRow_action();" aria-label="Add a Row" style="cursor: pointer;">add_circle</mat-icon>
+        <mat-icon aria-hidden="false" (click)="addRow_action();" aria-label="Add a Row" style="cursor: pointer;">
+          add_circle</mat-icon>
       </th>
       <td mat-cell *matCellDef="let element">
-        <mat-icon aria-hidden="false" (click)="deleteRow_action();" aria-label="Delete a Row" style="cursor: pointer;">delete</mat-icon>
+        <mat-icon aria-hidden="false" (click)="deleteRow_action();" aria-label="Delete a Row" style="cursor: pointer;">
+          delete</mat-icon>
       </td>
     </ng-container>
 

@@ -8,9 +8,11 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { SharedModule } from '../../../shared/shared.module';
 import { SchedularComponent } from './schedular/schedular.component';
 import { MonitorComponent } from './monitor/monitor.component';
+import { ResolveComponent } from './resolve/resolve.component';
+import { ApproveComponent } from './approve/approve.component';
 
 @NgModule({
-  declarations: [ProcessDesignComponent, SchedularComponent, MonitorComponent],
+  declarations: [ProcessDesignComponent, SchedularComponent, MonitorComponent, ResolveComponent, ApproveComponent],
   imports: [
     SharedModule,
     ProcessDesignRoutingModule,

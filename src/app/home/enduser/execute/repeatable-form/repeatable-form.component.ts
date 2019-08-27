@@ -17,6 +17,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { filter } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { DeleteConfirmComponent } from '../../../../shared/components/delete-confirm/delete-confirm.component';
+import { OptionalValuesService } from 'src/app/services/optional-values.service';
 
 @Component({
   selector: 'app-repeatable-form',
@@ -54,8 +55,9 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     public toasterService: ToastrService,
     private endUserService: EndUserService,
     public dialog: MatDialog,
+    public optionalService: OptionalValuesService,
   ) {
-    super(StorageSessionService, http, https, router, globals, app, cdr, apiService, globalUser, configService, toasterService, dialog);
+    super(StorageSessionService, http, https, router, globals, app, cdr, apiService, globalUser, configService, toasterService, dialog, optionalService);
     this.navigationSubscription = router.events
       .pipe(filter(e => e instanceof NavigationEnd))
       .subscribe((e: NavigationEnd) => {

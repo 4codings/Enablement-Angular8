@@ -5,7 +5,9 @@
         {{APP_CD}}<span class="selected-process-font" *ngIf="PRCS_CD!=''"> : {{PRCS_CD}}</span>
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <div fxFlex="100" id="canvas"></div>
+    <app-viewer-diagram [parentapp]="APP_CD" [parentpro]="PRCS_CD" [file_path]="bpmnFilePath">
+    </app-viewer-diagram>
+    <!-- <div fxFlex="100" id="canvas"></div> -->
   </mat-expansion-panel>
 </mat-accordion>
 <div fxLayout="row" fxLayout.lt-sm="column">

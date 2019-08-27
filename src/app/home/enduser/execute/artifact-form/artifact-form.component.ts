@@ -20,6 +20,7 @@ import { DeleteConfirmComponent } from '../../../../shared/components/delete-con
 import { take } from 'rxjs/operators';
 import { InputOutputElementComponent } from '../../../../shared/components/input-output-element/input-output-element.component';
 import { InstanceElementList } from '../../process-design/monitor/monitor.component';
+import { OptionalValuesService } from 'src/app/services/optional-values.service';
 @Component({
   selector: 'app-input-art',
   templateUrl: './artifact-form.component.html',
@@ -63,7 +64,7 @@ export class ArtifactFormComponent implements OnInit, OnDestroy {
   elementClick = false;
   selectedInstanceElementsList: InstanceElementList[] = [];
   selectedElement = new InstanceElementList();
-  V_PRCS_TXN_ID :any;
+  V_PRCS_TXN_ID: any;
 
   constructor(private storage: StorageSessionService,
     private http: HttpClient,
@@ -78,7 +79,8 @@ export class ArtifactFormComponent implements OnInit, OnDestroy {
     private StorageSessionService: StorageSessionService,
     private endUserService: EndUserService,
     private apiService: ApiService,
-    private toastrService: ToastrService) {
+    private toastrService: ToastrService,
+    private optionalService: OptionalValuesService) {
     this.reportData = new ReportData(this.storage);
     this.agencyName = this.reportData.getAgency();
     this.application = this.reportData.getProcess();
@@ -108,96 +110,104 @@ export class ArtifactFormComponent implements OnInit, OnDestroy {
       this.ctrl_variables = res;
       this.bpmnFilePath = this.ctrl_variables.bpmn_file_path;
     });
-    setTimeout(res => {
-      this.downloadBpmn();
-    }, 1000);
-    this.getInputOutput();
-    this.viewer = new Viewer({
-      container: '#canvas',
-      width: '90%',
-      height: '400px'
-    });
-    const eventBus = this.viewer.get('eventBus');
-    if (eventBus) {
-      eventBus.on('element.click', ($event) => {
-        let i = this.selectedInstanceElementsList.findIndex(v => v.PRDCR_SRVC_CD.replace(new RegExp(' ', 'g'), '_') == $event.element.id);
-        if (i > -1) {
-          console.log('ele', this.selectedInstanceElementsList[i]);
-          this.selectedElement = this.selectedInstanceElementsList[i];
-          this.selectedElementInput = this.selectedElement.SRVC_INPUT;
-          this.selectedElementOutput = this.selectedElement.SRVC_OUTPUT;
-          if (this.selectedElementInput != null) {
-            this.elementClick = true;
-            let inputs = this.selectedElementInput[0].split(',');
-            let keys = [];
-            if (inputs.length) {
-              inputs.forEach(ele => {
-                let split = ele.trim().split('=');
-                let obj = { 'key': split[0], 'value': split[1] };
-                keys.push(obj);
-              })
-              this.selectedElementInput = [];
-              this.selectedElementInput = keys;
-              console.log('eleinu', this.selectedElementInput);
-            }
-          }
-          if (this.selectedElementOutput != null) {
-            this.elementClick = true;
-            let outputs = this.selectedElementOutput[0].split(',');
-            let keys = [];
-            if (outputs.length) {
-              outputs.forEach(ele => {
-                let split = ele.trim().split('=');
-                let obj = { 'key': split[0], 'value': split[1] };
-                keys.push(obj);
-              })
-              this.selectedElementOutput = [];
-              this.selectedElementOutput = keys;
-              console.log('selectedElementOutput', this.selectedElementOutput);
-            }
-          }
-          let startx = $event.element.x;
-          let currentx = $event.originalEvent.layerX;
-          let endx = $event.element.x + $event.element.width;
-          let starty = $event.element.y;
-          let endy = $event.element.y + $event.element.height;
-          let currenty = $event.originalEvent.layerY;
-          let section = $event.element.width / 3;
-          let isShowInput = false;
-          let isShowOutput = false;
-          let isShowInputOutput = false;
-          if (currenty >= starty && currenty <= endy) {
-            if (currentx >= startx && currentx <= startx + section) {
-              isShowInput = true;
-            } else if (currentx >= startx + section && currentx <= endx - section) {
-              isShowInputOutput = true;
-            } else if (currentx >= endx - section && currentx <= endx) {
-              isShowOutput = true;
-            }
-          }
-
-          if (isShowInput || isShowOutput || isShowInputOutput) {
-            const dialogRef = this.dialog.open(InputOutputElementComponent,
-              {
-                panelClass: 'app-dialog',
-                // width: '600px',
-                // height: '500px',
-                data: {
-                  inputElement: this.selectedElementInput,
-                  outputElement: this.selectedElementOutput,
-                  showInput: isShowInput,
-                  showOutput: isShowOutput,
-                  showInputOutput: isShowInputOutput
-                }
-              });
-            dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
-              if (flag) {
-              }
-            });
-          }
-        }
-      });
+    // setTimeout(res => {
+    //   this.downloadBpmn();
+    // }, 1000);
+    let obj = {
+      'V_APP_ID': this.Execute_res_data['V_APP_ID'],
+      'V_PRCS_ID': this.Execute_res_data['V_PRCS_ID'],
+      'V_PRCS_TXN_ID': this.Execute_res_data['V_PRCS_TXN_ID'],
+      'V_SRC_ID': this.Execute_res_data['V_SRC_ID'],
+      'USR_NM': this.globals.Report.USR_NM[0]
     }
+    this.optionalService.selecetedProcessTxnValue.next(obj);
+    this.getInputOutput();
+    // this.viewer = new Viewer({
+    //   container: '#canvas',
+    //   width: '90%',
+    //   height: '400px'
+    // });
+    // const eventBus = this.viewer.get('eventBus');
+    // if (eventBus) {
+    //   eventBus.on('element.click', ($event) => {
+    //     let i = this.selectedInstanceElementsList.findIndex(v => v.PRDCR_SRVC_CD.replace(new RegExp(' ', 'g'), '_') == $event.element.id);
+    //     if (i > -1) {
+    //       console.log('ele', this.selectedInstanceElementsList[i]);
+    //       this.selectedElement = this.selectedInstanceElementsList[i];
+    //       this.selectedElementInput = this.selectedElement.SRVC_INPUT;
+    //       this.selectedElementOutput = this.selectedElement.SRVC_OUTPUT;
+    //       if (this.selectedElementInput != null) {
+    //         this.elementClick = true;
+    //         let inputs = this.selectedElementInput[0].split(',');
+    //         let keys = [];
+    //         if (inputs.length) {
+    //           inputs.forEach(ele => {
+    //             let split = ele.trim().split('=');
+    //             let obj = { 'key': split[0], 'value': split[1] };
+    //             keys.push(obj);
+    //           })
+    //           this.selectedElementInput = [];
+    //           this.selectedElementInput = keys;
+    //           console.log('eleinu', this.selectedElementInput);
+    //         }
+    //       }
+    //       if (this.selectedElementOutput != null) {
+    //         this.elementClick = true;
+    //         let outputs = this.selectedElementOutput[0].split(',');
+    //         let keys = [];
+    //         if (outputs.length) {
+    //           outputs.forEach(ele => {
+    //             let split = ele.trim().split('=');
+    //             let obj = { 'key': split[0], 'value': split[1] };
+    //             keys.push(obj);
+    //           })
+    //           this.selectedElementOutput = [];
+    //           this.selectedElementOutput = keys;
+    //           console.log('selectedElementOutput', this.selectedElementOutput);
+    //         }
+    //       }
+    //       let startx = $event.element.x;
+    //       let currentx = $event.originalEvent.layerX;
+    //       let endx = $event.element.x + $event.element.width;
+    //       let starty = $event.element.y;
+    //       let endy = $event.element.y + $event.element.height;
+    //       let currenty = $event.originalEvent.layerY;
+    //       let section = $event.element.width / 3;
+    //       let isShowInput = false;
+    //       let isShowOutput = false;
+    //       let isShowInputOutput = false;
+    //       if (currenty >= starty && currenty <= endy) {
+    //         if (currentx >= startx && currentx <= startx + section) {
+    //           isShowInput = true;
+    //         } else if (currentx >= startx + section && currentx <= endx - section) {
+    //           isShowInputOutput = true;
+    //         } else if (currentx >= endx - section && currentx <= endx) {
+    //           isShowOutput = true;
+    //         }
+    //       }
+
+    //       if (isShowInput || isShowOutput || isShowInputOutput) {
+    //         const dialogRef = this.dialog.open(InputOutputElementComponent,
+    //           {
+    //             panelClass: 'app-dialog',
+    //             // width: '600px',
+    //             // height: '500px',
+    //             data: {
+    //               inputElement: this.selectedElementInput,
+    //               outputElement: this.selectedElementOutput,
+    //               showInput: isShowInput,
+    //               showOutput: isShowOutput,
+    //               showInputOutput: isShowInputOutput
+    //             }
+    //           });
+    //         dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
+    //           if (flag) {
+    //           }
+    //         });
+    //       }
+    //     }
+    //   });
+    // }
   }
   ngOnDestroy() {
     if (this.viewer) {
@@ -216,41 +226,41 @@ export class ArtifactFormComponent implements OnInit, OnDestroy {
     //   });
   }
 
-  downloadBpmn() {
-    const formData: FormData = new FormData();
-    formData.append('FileInfo', JSON.stringify({
-      File_Path: this.bpmnFilePath + this.APP_CD + '/',
-      File_Name: this.PRCS_CD.replace(new RegExp(' ', 'g'), '_') + '.bpmn'
-    }));
-    this.https.post(this.downloadUrl, formData)
-      .subscribe(
-        (res: any) => {
-          if (res._body != "") {
-            this.viewer.importXML('');
-            this.viewer.importXML(res._body, this.handleError.bind(this));
-            this.bpmnTemplate = res._body;
-          } else {
-            this.http.get('/assets/bpmn/newDiagram.bpmn', {
-              headers: { observe: 'response' }, responseType: 'text'
-            }).subscribe(
-              (x: any) => {
-                this.viewer.importXML('');
-                this.viewer.importXML(x, this.handleError.bind(this));
-                this.bpmnTemplate = x;
-              },
-              this.handleError.bind(this)
-            );
-          }
-        },
-        this.handleError.bind(this)
-      );
-  }
-  handleError(err: any) {
-    if (err) {
-      this.toastrService.error(err);
-      console.error(err);
-    }
-  }
+  // downloadBpmn() {
+  //   const formData: FormData = new FormData();
+  //   formData.append('FileInfo', JSON.stringify({
+  //     File_Path: this.bpmnFilePath + this.APP_CD + '/',
+  //     File_Name: this.PRCS_CD.replace(new RegExp(' ', 'g'), '_') + '.bpmn'
+  //   }));
+  //   this.https.post(this.downloadUrl, formData)
+  //     .subscribe(
+  //       (res: any) => {
+  //         if (res._body != "") {
+  //           this.viewer.importXML('');
+  //           this.viewer.importXML(res._body, this.handleError.bind(this));
+  //           this.bpmnTemplate = res._body;
+  //         } else {
+  //           this.http.get('/assets/bpmn/newDiagram.bpmn', {
+  //             headers: { observe: 'response' }, responseType: 'text'
+  //           }).subscribe(
+  //             (x: any) => {
+  //               this.viewer.importXML('');
+  //               this.viewer.importXML(x, this.handleError.bind(this));
+  //               this.bpmnTemplate = x;
+  //             },
+  //             this.handleError.bind(this)
+  //           );
+  //         }
+  //       },
+  //       this.handleError.bind(this)
+  //     );
+  // }
+  // handleError(err: any) {
+  //   if (err) {
+  //     this.toastrService.error(err);
+  //     console.error(err);
+  //   }
+  // }
   /*
   Get all old files that are exist in system on server
   */

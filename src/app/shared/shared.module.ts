@@ -45,6 +45,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { InputOutputElementComponent } from './components/input-output-element/input-output-element.component';
+import { ViewerDiagramComponent } from './components/viewer-diagram/viewer-diagram.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -98,7 +99,8 @@ import { InputOutputElementComponent } from './components/input-output-element/i
     ConfirmationAlertComponent,
     DeleteConfirmComponent,
     DialogScheduleComponent,
-    InputOutputElementComponent
+    InputOutputElementComponent,
+    ViewerDiagramComponent
   ],
   entryComponents: [
     ConfirmationAlertComponent,
@@ -108,6 +110,7 @@ import { InputOutputElementComponent } from './components/input-output-element/i
   exports: [
     FormErrorMsgComponent,
     NoDataMsgComponent,
+    ViewerDiagramComponent,
     MatCardModule,
     MatIconModule,
     DragDropModule,

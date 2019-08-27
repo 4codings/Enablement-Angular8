@@ -15,6 +15,7 @@ import { take } from 'rxjs/operators';
 import { MatDialog } from '@angular/material';
 import { InputOutputElementComponent } from 'src/app/shared/components/input-output-element/input-output-element.component';
 import { InstanceElementList } from '../../process-design/monitor/monitor.component';
+import { OptionalValuesService } from 'src/app/services/optional-values.service';
 export class ReportData {
   public RESULT: string;
   public V_EXE_CD: string[];
@@ -65,7 +66,8 @@ export class FormComponent implements OnInit {
     public globarUser: Globals2,
     public configService: ConfigServiceService,
     public toasterService: ToastrService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public optionalService: OptionalValuesService
   ) { }
 
   domain_name = this.globals.domain_name;
@@ -137,105 +139,105 @@ export class FormComponent implements OnInit {
       this.bpmnFilePath = this.ctrl_variables.bpmn_file_path;
       this.successString = this.ctrl_variables.success_string;
       this.intermediateString = this.ctrl_variables.intermediate_string;
-      this.downloadBpmn();
+      // this.downloadBpmn();
     });
     this.downloadUrl = this.apiService.endPoints.downloadFile;
-    setTimeout(res => {
-      this.downloadBpmn();
-    }, 1000);
-    this.viewer = new Viewer({
-      container: '#canvas',
-      width: '90%',
-      height: '400px'
-    });
-    const eventBus = this.viewer.get('eventBus');
-    if (eventBus) {
-      eventBus.on('element.click', ($event) => {
-        let i = this.selectedInstanceElementsList.findIndex(v => v.PRDCR_SRVC_CD.replace(new RegExp(' ', 'g'), '_') == $event.element.id);
-        if (i > -1) {
-          console.log('ele', this.selectedInstanceElementsList[i]);
-          let status = this.selectedInstanceElementsList[i].TXN_STS;
-          var canvas = this.viewer.get('canvas');
-          if (status === this.successString) {
-            canvas.addMarker($event.element.id, 'success');
-          } else if(status === this.intermediateString){
-            canvas.addMarker($event.element.id, 'intermediate');
-          }
-          this.selectedElement = this.selectedInstanceElementsList[i];
-          this.selectedElementInput = this.selectedElement.SRVC_INPUT;
-          this.selectedElementOutput = this.selectedElement.SRVC_OUTPUT;
-          if (this.selectedElementInput != null) {
-            this.elementClick = true;
-            let inputs = this.selectedElementInput[0].split(',');
-            let keys = [];
-            if (inputs.length) {
-              inputs.forEach(ele => {
-                let split = ele.trim().split('=');
-                let obj = { 'key': split[0], 'value': split[1] };
-                keys.push(obj);
-              })
-              this.selectedElementInput = [];
-              this.selectedElementInput = keys;
-              console.log('eleinu', this.selectedElementInput);
-            }
-          }
-          if (this.selectedElementOutput != null) {
-            this.elementClick = true;
-            let outputs = this.selectedElementOutput[0].split(',');
-            let keys = [];
-            if (outputs.length) {
-              outputs.forEach(ele => {
-                let split = ele.trim().split('=');
-                let obj = { 'key': split[0], 'value': split[1] };
-                keys.push(obj);
-              })
-              this.selectedElementOutput = [];
-              this.selectedElementOutput = keys;
-              console.log('selectedElementOutput', this.selectedElementOutput);
-            }
-          }
-          let startx = $event.element.x;
-          let currentx = $event.originalEvent.layerX;
-          let endx = $event.element.x + $event.element.width;
-          let starty = $event.element.y;
-          let endy = $event.element.y + $event.element.height;
-          let currenty = $event.originalEvent.layerY;
-          let section = $event.element.width / 3;
-          let isShowInput = false;
-          let isShowOutput = false;
-          let isShowInputOutput = false;
-          if (currenty >= starty && currenty <= endy) {
-            if (currentx >= startx && currentx <= startx + section) {
-              isShowInput = true;
-            } else if (currentx >= startx + section && currentx <= endx - section) {
-              isShowInputOutput = true;
-            } else if (currentx >= endx - section && currentx <= endx) {
-              isShowOutput = true;
-            }
-          }
+    // setTimeout(res => {
+    //   this.downloadBpmn();
+    // }, 1000);
+    // this.viewer = new Viewer({
+    //   container: '#canvas',
+    //   width: '90%',
+    //   height: '400px'
+    // });
+    // const eventBus = this.viewer.get('eventBus');
+    // if (eventBus) {
+    //   eventBus.on('element.click', ($event) => {
+    //     let i = this.selectedInstanceElementsList.findIndex(v => v.PRDCR_SRVC_CD.replace(new RegExp(' ', 'g'), '_') == $event.element.id);
+    //     if (i > -1) {
+    //       console.log('ele', this.selectedInstanceElementsList[i]);
+    //       let status = this.selectedInstanceElementsList[i].TXN_STS;
+    //       var canvas = this.viewer.get('canvas');
+    //       if (status === this.successString) {
+    //         canvas.addMarker($event.element.id, 'success');
+    //       } else if(status === this.intermediateString){
+    //         canvas.addMarker($event.element.id, 'intermediate');
+    //       }
+    //       this.selectedElement = this.selectedInstanceElementsList[i];
+    //       this.selectedElementInput = this.selectedElement.SRVC_INPUT;
+    //       this.selectedElementOutput = this.selectedElement.SRVC_OUTPUT;
+    //       if (this.selectedElementInput != null) {
+    //         this.elementClick = true;
+    //         let inputs = this.selectedElementInput[0].split(',');
+    //         let keys = [];
+    //         if (inputs.length) {
+    //           inputs.forEach(ele => {
+    //             let split = ele.trim().split('=');
+    //             let obj = { 'key': split[0], 'value': split[1] };
+    //             keys.push(obj);
+    //           })
+    //           this.selectedElementInput = [];
+    //           this.selectedElementInput = keys;
+    //           console.log('eleinu', this.selectedElementInput);
+    //         }
+    //       }
+    //       if (this.selectedElementOutput != null) {
+    //         this.elementClick = true;
+    //         let outputs = this.selectedElementOutput[0].split(',');
+    //         let keys = [];
+    //         if (outputs.length) {
+    //           outputs.forEach(ele => {
+    //             let split = ele.trim().split('=');
+    //             let obj = { 'key': split[0], 'value': split[1] };
+    //             keys.push(obj);
+    //           })
+    //           this.selectedElementOutput = [];
+    //           this.selectedElementOutput = keys;
+    //           console.log('selectedElementOutput', this.selectedElementOutput);
+    //         }
+    //       }
+    //       let startx = $event.element.x;
+    //       let currentx = $event.originalEvent.layerX;
+    //       let endx = $event.element.x + $event.element.width;
+    //       let starty = $event.element.y;
+    //       let endy = $event.element.y + $event.element.height;
+    //       let currenty = $event.originalEvent.layerY;
+    //       let section = $event.element.width / 3;
+    //       let isShowInput = false;
+    //       let isShowOutput = false;
+    //       let isShowInputOutput = false;
+    //       if (currenty >= starty && currenty <= endy) {
+    //         if (currentx >= startx && currentx <= startx + section) {
+    //           isShowInput = true;
+    //         } else if (currentx >= startx + section && currentx <= endx - section) {
+    //           isShowInputOutput = true;
+    //         } else if (currentx >= endx - section && currentx <= endx) {
+    //           isShowOutput = true;
+    //         }
+    //       }
 
-          if (isShowInput || isShowOutput || isShowInputOutput) {
-            const dialogRef = this.dialog.open(InputOutputElementComponent,
-              {
-                panelClass: 'app-dialog',
-                // width: '600px',
-                // height: '500px',
-                data: {
-                  inputElement: this.selectedElementInput,
-                  outputElement: this.selectedElementOutput,
-                  showInput: isShowInput,
-                  showOutput: isShowOutput,
-                  showInputOutput: isShowInputOutput
-                }
-              });
-            dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
-              if (flag) {
-              }
-            });
-          }
-        }
-      });
-    }
+    //       if (isShowInput || isShowOutput || isShowInputOutput) {
+    //         const dialogRef = this.dialog.open(InputOutputElementComponent,
+    //           {
+    //             panelClass: 'app-dialog',
+    //             // width: '600px',
+    //             // height: '500px',
+    //             data: {
+    //               inputElement: this.selectedElementInput,
+    //               outputElement: this.selectedElementOutput,
+    //               showInput: isShowInput,
+    //               showOutput: isShowOutput,
+    //               showInputOutput: isShowInputOutput
+    //             }
+    //           });
+    //         dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
+    //           if (flag) {
+    //           }
+    //         });
+    //       }
+    //     }
+    //   });
+    // }
 
   }
   ngOnDestroy() {
@@ -244,41 +246,41 @@ export class FormComponent implements OnInit {
     }
   }
 
-  downloadBpmn() {
-    // `${this.ctrl_variables.bpmn_file_path}`
-    const formData: FormData = new FormData();
-    formData.append('FileInfo', JSON.stringify({
-      File_Path: this.bpmnFilePath + this.APP_CD + '/',
-      File_Name: this.PRCS_CD.replace(new RegExp(' ', 'g'), '_') + '.bpmn'
-    }));
+  // downloadBpmn() {
+  //   // `${this.ctrl_variables.bpmn_file_path}`
+  //   const formData: FormData = new FormData();
+  //   formData.append('FileInfo', JSON.stringify({
+  //     File_Path: this.bpmnFilePath + this.APP_CD + '/',
+  //     File_Name: this.PRCS_CD.replace(new RegExp(' ', 'g'), '_') + '.bpmn'
+  //   }));
 
-    this.https.post(this.downloadUrl, formData)
-      .subscribe(
-        (res: any) => {
-          if (res._body != "") {
-            this.viewer.importXML(res._body, this.handleError.bind(this));
-            this.bpmnTemplate = res._body;
-          } else {
-            this.http.get('/assets/bpmn/newDiagram.bpmn', {
-              headers: { observe: 'response' }, responseType: 'text'
-            }).subscribe(
-              (x: any) => {
-                this.viewer.importXML(x, this.handleError.bind(this));
-                this.bpmnTemplate = x;
-              },
-              this.handleError.bind(this)
-            );
-          }
-        },
-        this.handleError.bind(this)
-      );
-  }
-  handleError(err: any) {
-    if (err) {
-      this.toasterService.error(err);
-      console.error(err);
-    }
-  }
+  //   this.https.post(this.downloadUrl, formData)
+  //     .subscribe(
+  //       (res: any) => {
+  //         if (res._body != "") {
+  //           this.viewer.importXML(res._body, this.handleError.bind(this));
+  //           this.bpmnTemplate = res._body;
+  //         } else {
+  //           this.http.get('/assets/bpmn/newDiagram.bpmn', {
+  //             headers: { observe: 'response' }, responseType: 'text'
+  //           }).subscribe(
+  //             (x: any) => {
+  //               this.viewer.importXML(x, this.handleError.bind(this));
+  //               this.bpmnTemplate = x;
+  //             },
+  //             this.handleError.bind(this)
+  //           );
+  //         }
+  //       },
+  //       this.handleError.bind(this)
+  //     );
+  // }
+  // handleError(err: any) {
+  //   if (err) {
+  //     this.toasterService.error(err);
+  //     console.error(err);
+  //   }
+  // }
   getFormData(): any {
     this.Form_Data = [];
     this.Form_Data = this.StorageSessionService.getCookies('report_table');
@@ -323,7 +325,15 @@ export class FormComponent implements OnInit {
     }
     this.set_fieldType();
     this.set_fieldWidth();
-    this.getInputOutput();
+    let obj = {
+      'V_APP_ID': this.V_APP_ID,
+      'V_PRCS_ID': this.V_PRCS_ID,
+      'V_PRCS_TXN_ID': this.V_PRCS_TXN_ID,
+      'V_SRC_ID': this.V_SRC_ID,
+      'USR_NM': this.V_USR_NM
+    }
+    this.optionalService.selecetedProcessTxnValue.next(obj);
+    // this.getInputOutput();
   }
 
   getInputOutput() {
