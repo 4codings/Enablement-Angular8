@@ -11,6 +11,11 @@ import { StorageSessionService } from '../../../../services/storage-session.serv
 import { Globals2 } from '../../../../service/globals';
 import { ToastrService } from 'ngx-toastr';
 import { Viewer } from '../bpmn-viewer';
+import { take } from 'rxjs/operators';
+import { MatDialog } from '@angular/material';
+import { InputOutputElementComponent } from 'src/app/shared/components/input-output-element/input-output-element.component';
+import { InstanceElementList } from '../../process-design/monitor/monitor.component';
+import { OptionalValuesService } from 'src/app/services/optional-values.service';
 export class ReportData {
   public RESULT: string;
   public V_EXE_CD: string[];
@@ -47,7 +52,8 @@ export class FormComponent implements OnInit {
   CNSLD_VLDTN_ALERT: any;
   FLD_HLP_TXT: any;
   PARAM_DSC: any;
-
+  selectedInstanceElementsList: InstanceElementList[] = [];
+  selectedElement = new InstanceElementList();
   constructor(
     public StorageSessionService: StorageSessionService,
     public http: HttpClient,
@@ -59,7 +65,9 @@ export class FormComponent implements OnInit {
     public apiService: ApiService,
     public globarUser: Globals2,
     public configService: ConfigServiceService,
-    public toasterService: ToastrService
+    public toasterService: ToastrService,
+    public dialog: MatDialog,
+    public optionalService: OptionalValuesService
   ) { }
 
   domain_name = this.globals.domain_name;
@@ -117,26 +125,23 @@ export class FormComponent implements OnInit {
   private user: any;
   private bpmnTemplate: any;
   public bpmnFilePath = '';
+  selectedElementInput: any;
+  selectedElementOutput: any;
+  elementClick = false;
+  successString: any;
+  intermediateString: any;
   ngOnInit() {
+
   }
   ngAfterViewInit() {
-    this.http.get('../../../../assets/control-variable.json').subscribe(res => {
+    this.http.get('../../../../../assets/control-variable.json').subscribe(res => {
       this.ctrl_variables = res;
       this.bpmnFilePath = this.ctrl_variables.bpmn_file_path;
+      this.successString = this.ctrl_variables.success_string;
+      this.intermediateString = this.ctrl_variables.intermediate_string;
+      // this.downloadBpmn();
     });
     this.downloadUrl = this.apiService.endPoints.downloadFile;
-    this.downloadBpmn();
-    this.viewer = new Viewer({
-      container: '#canvas',
-      width: '90%',
-      height: '400px'
-    });
-    const eventBus = this.viewer.get('eventBus');
-    if (eventBus) {
-      eventBus.on('element.click', ($event) => {
-      });
-    }
-
   }
   ngOnDestroy() {
     if (this.viewer) {
@@ -144,41 +149,6 @@ export class FormComponent implements OnInit {
     }
   }
 
-  downloadBpmn() {
-    // `${this.ctrl_variables.bpmn_file_path}`
-    const formData: FormData = new FormData();
-    formData.append('FileInfo', JSON.stringify({
-      File_Path: this.bpmnFilePath + this.APP_CD + '/',
-      File_Name: this.PRCS_CD.replace(new RegExp(' ', 'g'), '_') + '.bpmn'
-    }));
-
-    this.https.post(this.downloadUrl, formData)
-      .subscribe(
-        (res: any) => {
-          if (res._body != "") {
-            this.viewer.importXML(res._body, this.handleError.bind(this));
-            this.bpmnTemplate = res._body;
-          } else {
-            this.http.get('/assets/bpmn/newDiagram.bpmn', {
-              headers: { observe: 'response' }, responseType: 'text'
-            }).subscribe(
-              (x: any) => {
-                this.viewer.importXML(x, this.handleError.bind(this));
-                this.bpmnTemplate = x;
-              },
-              this.handleError.bind(this)
-            );
-          }
-        },
-        this.handleError.bind(this)
-      );
-  }
-  handleError(err: any) {
-    if (err) {
-      this.toasterService.error(err);
-      console.error(err);
-    }
-  }
   getFormData(): any {
     this.Form_Data = [];
     this.Form_Data = this.StorageSessionService.getCookies('report_table');
@@ -223,8 +193,27 @@ export class FormComponent implements OnInit {
     }
     this.set_fieldType();
     this.set_fieldWidth();
+    let obj = {
+      'V_APP_ID': this.V_APP_ID,
+      'V_PRCS_ID': this.V_PRCS_ID,
+      'V_PRCS_TXN_ID': this.V_PRCS_TXN_ID,
+      'V_SRC_ID': this.V_SRC_ID,
+      'USR_NM': this.V_USR_NM
+    }
+    this.optionalService.selecetedProcessTxnValue.next(obj);
+    // this.getInputOutput();
   }
 
+  getInputOutput() {
+    this.http.get(this.apiService.endPoints.securedJSON + 'V_SRC_ID=' + this.V_SRC_ID +
+      '&V_APP_ID=' + this.V_APP_ID + '&V_PRCS_ID=' + this.V_PRCS_ID + '&V_USR_NM=' +
+      this.V_USR_NM + '&V_PRCS_TXN_ID=' + this.V_PRCS_TXN_ID +
+      '&REST_Service=Service_Instances&Verb=GET').subscribe((res: any) => {
+        if (res.length) {
+          this.selectedInstanceElementsList = res;
+        }
+      });
+  }
   labels_toShow(): any {
     //----------------Lables to Show---------------//
     for (let i = 0; i < this.RVP_Keys.length; i++) {

@@ -17,6 +17,10 @@ import { CommonUtils } from '../../../../common/utils';
 import { ToastrService } from 'ngx-toastr';
 import { Viewer } from '../bpmn-viewer';
 import { DeleteConfirmComponent } from '../../../../shared/components/delete-confirm/delete-confirm.component';
+import { take } from 'rxjs/operators';
+import { InputOutputElementComponent } from '../../../../shared/components/input-output-element/input-output-element.component';
+import { InstanceElementList } from '../../process-design/monitor/monitor.component';
+import { OptionalValuesService } from 'src/app/services/optional-values.service';
 @Component({
   selector: 'app-input-art',
   templateUrl: './artifact-form.component.html',
@@ -55,6 +59,13 @@ export class ArtifactFormComponent implements OnInit, OnDestroy {
   private user: any;
   private bpmnTemplate: any;
   public bpmnFilePath: any;
+  selectedElementInput: any;
+  selectedElementOutput: any;
+  elementClick = false;
+  selectedInstanceElementsList: InstanceElementList[] = [];
+  selectedElement = new InstanceElementList();
+  V_PRCS_TXN_ID: any;
+
   constructor(private storage: StorageSessionService,
     private http: HttpClient,
     public globals: Globals,
@@ -68,7 +79,8 @@ export class ArtifactFormComponent implements OnInit, OnDestroy {
     private StorageSessionService: StorageSessionService,
     private endUserService: EndUserService,
     private apiService: ApiService,
-    private toastrService: ToastrService) {
+    private toastrService: ToastrService,
+    private optionalService: OptionalValuesService) {
     this.reportData = new ReportData(this.storage);
     this.agencyName = this.reportData.getAgency();
     this.application = this.reportData.getProcess();
@@ -91,67 +103,28 @@ export class ArtifactFormComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.user = JSON.parse(sessionStorage.getItem('u'));
-    this.downloadUrl = this.apiService.endPoints.downloadFile;
   }
   ngAfterViewInit() {
-    this.http.get('../../../../assets/control-variable.json').subscribe(res => {
+    this.downloadUrl = this.apiService.endPoints.downloadFile;
+    this.http.get('../../../../../assets/control-variable.json').subscribe(res => {
       this.ctrl_variables = res;
       this.bpmnFilePath = this.ctrl_variables.bpmn_file_path;
     });
-    this.downloadBpmn();
-    this.viewer = new Viewer({
-      container: '#canvas',
-      width: '90%',
-      height: '400px'
-    });
-    const eventBus = this.viewer.get('eventBus');
-    if (eventBus) {
-      eventBus.on('element.click', ($event) => {
-
-      });
+    let obj = {
+      'V_APP_ID': this.Execute_res_data['V_APP_ID'],
+      'V_PRCS_ID': this.Execute_res_data['V_PRCS_ID'],
+      'V_PRCS_TXN_ID': this.Execute_res_data['V_PRCS_TXN_ID'],
+      'V_SRC_ID': this.Execute_res_data['V_SRC_ID'],
+      'USR_NM': this.globals.Report.USR_NM[0]
     }
+    this.optionalService.selecetedProcessTxnValue.next(obj);
   }
   ngOnDestroy() {
     if (this.viewer) {
       this.viewer.destroy();
     }
   }
-
-  downloadBpmn() {
-    const formData: FormData = new FormData();
-    formData.append('FileInfo', JSON.stringify({
-      File_Path: this.bpmnFilePath + this.APP_CD + '/',
-      File_Name: this.PRCS_CD.replace(new RegExp(' ', 'g'), '_') + '.bpmn'
-    }));
-    this.https.post(this.downloadUrl, formData)
-      .subscribe(
-        (res: any) => {
-          if (res._body != "") {
-            this.viewer.importXML('');
-            this.viewer.importXML(res._body, this.handleError.bind(this));
-            this.bpmnTemplate = res._body;
-          } else {
-            this.http.get('/assets/bpmn/newDiagram.bpmn', {
-              headers: { observe: 'response' }, responseType: 'text'
-            }).subscribe(
-              (x: any) => {
-                this.viewer.importXML('');
-                this.viewer.importXML(x, this.handleError.bind(this));
-                this.bpmnTemplate = x;
-              },
-              this.handleError.bind(this)
-            );
-          }
-        },
-        this.handleError.bind(this)
-      );
-  }
-  handleError(err: any) {
-    if (err) {
-      this.toastrService.error(err);
-      console.error(err);
-    }
-  }
+  
   /*
   Get all old files that are exist in system on server
   */

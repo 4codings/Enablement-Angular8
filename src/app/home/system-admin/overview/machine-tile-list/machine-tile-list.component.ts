@@ -28,6 +28,7 @@ export class MachineTileListComponent implements OnInit {
   @Input() connectionList;
   @Input() machineType;
   @Input() userAccess;
+  @Input() selectedConnectionType;
   domain_name=this.globals.domain_name;
   private apiUrlGet = "https://"+this.domain_name+"/rest/v1/secured?";
   @ViewChild('contextMenu', { static: false } as any) set contextMenu(value: ElementRef) {
@@ -47,7 +48,7 @@ export class MachineTileListComponent implements OnInit {
       //console.log(data);
       if(data) {
         this.selectedMachine = null;
-        this.selectedExe = data.V_EXE_TYP;
+        this.selectedExe = data.V_CXN_ID;
       } else {
         this.selectedExe = '';
       }
@@ -58,11 +59,22 @@ export class MachineTileListComponent implements OnInit {
     });
   }
   
+  isHighLightTile(cxnData) { 
+    if(this.selectedExe != null) {
+      for(let i=0; i<this.selectedExe.length; i++) {
+          if(cxnData.V_CXN_ID == this.selectedExe[i]) {
+            return true;
+          }
+      }
+      return false;
+    }
+  }
+
   onAddConnTileClick() {
     const dialogRef = this.dialog.open(AddConnectionDialogComponent, {
       panelClass: 'app-dialog',
       width: '600px',
-      data: {machineType:this.machineType}
+      data: {machineType:this.machineType, selectedConnectionType:this.selectedConnectionType}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -100,7 +112,7 @@ export class MachineTileListComponent implements OnInit {
       console.log('The dialog was closed');
       if(result) {
         this.systemOverview.getMachine();
-        this.systemOverview.getExe();
+        this.systemOverview.getAllExes();
       }
     });
   }

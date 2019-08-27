@@ -28,51 +28,30 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.systemOverview.getExe();
-    // this.getExe();
-    this.http.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=EXE&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe(res => {
-      this.exeTypeOptions = res;
-      this.exeTypeOptions.push({EXE_TYP:"All"});
-      this.exeTypeOptions = this.exeTypeOptions.sort((a,b) => {
-        if (a.EXE_TYP < b.EXE_TYP) //sort string ascending
-          return -1;
-        if (a.EXE_TYP > b.EXE_TYP)
-          return 1;
-        return 0; 
-      });
-    }, err => {
-       console.log(err);
+    //this.systemOverview.getTypes();
+    this.systemOverview.typeOptions$.subscribe(types => {
+      this.exeTypeOptions = types;
     });
+    // this.http.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=EXE&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe(res => {
+    //   this.exeTypeOptions = res;
+    //   this.exeTypeOptions.push({EXE_TYP:"All"});
+    //   this.exeTypeOptions = this.exeTypeOptions.sort((a,b) => {
+    //     if (a.EXE_TYP < b.EXE_TYP) //sort string ascending
+    //       return -1;
+    //     if (a.EXE_TYP > b.EXE_TYP)
+    //       return 1;
+    //     return 0; 
+    //   });
+    // }, err => {
+    //    console.log(err);
+    // });
     this.systemOverview.getExe$.subscribe(res => {
       this.sortedAllExes = res;
     })
   }
 
-  // getExe() {
-  //   this.http.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=EXE&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe((res) => {
-  //     this.exes = res;
-  //     this.getAllExes();
-  //   }, err => {
-  //      console.log(err);
-  //   })
-  // }
-
-  // getAllExes() {
-  //   this.http.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=EXES&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe((res:any) => {
-  //     this.exes.forEach(item => {
-  //       let arr = res.filter(data => {
-  //         return item.EXE_TYP == data.V_EXE_TYP
-  //       })
-  //       this.allExes.push({EXE_TYP: item.EXE_TYP, EXES:arr})
-  //     });
-  //     this.sortedAllExes = this.allExes.sort((a,b) => (a.EXES.length > b.EXES.length) ? -1 : ((b.EXES.length > a.EXES.length) ? 1 : 0));
-  //   }, err => {
-  //      console.log(err);
-  //   })
-  // }
-
-
   changeExeType(type): void {
-    console.log(type);
+    //console.log(type);
     this.selectedExeType = type;
     this.selectedExe.emit(type);
   }

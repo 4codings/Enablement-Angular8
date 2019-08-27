@@ -23,6 +23,7 @@ export class ExeTileListComponent implements OnInit {
   subscription: Subscription;
   public selectedTile;
   public selectedCxn;
+  public selectedCxnData = [];
   @Input() exes;
   @Input() userAccess;
   @Output() selectedExeTile = new EventEmitter();
@@ -39,19 +40,29 @@ export class ExeTileListComponent implements OnInit {
   ngOnInit() {
     //console.log(this.exes);
     this.subscription = this.systemOverview.selectedCxn$.subscribe(data => {
-      //console.log(data);
       if(data) {
         this.selectedTile = null;
-        this.selectedCxn = data.V_CXN_TYP;
+        this.selectedCxn = data.V_EXE_ID;
       } else {
-        this.selectedCxn = '';
+        this.selectedCxn = [];
       }
     });
-
+  
     document.addEventListener('mousedown', event => {
       this.contextMenuActive = false;
       this.contextMenuData = null;
     });
+  }
+
+  isHighLightTile(exeData) { 
+    if(this.selectedCxn != null) {
+      for(let i=0; i<this.selectedCxn.length; i++) {
+          if(exeData.V_EXE_ID == this.selectedCxn[i]) {
+            return true;
+          }
+      }
+      return false;
+    }
   }
 
   onAddExeTileClick(exeType) {
@@ -65,7 +76,7 @@ export class ExeTileListComponent implements OnInit {
       console.log('The dialog was closed');
       if(result) {
         if(result) {
-          this.systemOverview.getExe();
+          this.systemOverview.getAllExes();
         }
       }
     });
@@ -147,7 +158,7 @@ export class ExeTileListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       if(result) {
-        this.systemOverview.getExe();
+        this.systemOverview.getAllExes();
       }
     });
   }
@@ -168,7 +179,7 @@ export class ExeTileListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       if(result) {
-        this.systemOverview.getExe();
+        this.systemOverview.getAllExes();
         this.systemOverview.getMachine();
       }
     });
@@ -188,7 +199,7 @@ export class ExeTileListComponent implements OnInit {
       if(result) {
         this.http.get('https://enablement.us/Enablement/rest/v1/securedJSON?V_EXE_TYP='+ exe.EXE_TYP + '&V_EXE_CD='+ exe.exeData.V_EXE_CD + '&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=Exe&Verb=DELETE').subscribe(res => {
           console.log("res",res);
-          this.systemOverview.getExe();
+          this.systemOverview.getAllExes();
         }, err => {
           console.log("err", err)
         }); 

@@ -1,0 +1,72 @@
+<div class="dialog-wrapper" fxLayoutGap="8px" fxLayout="column" fxLayoutAlign="start stretch">
+  <div class="dialog-header content-wrapper" fxLayoutAlign="space-between center">
+    <div *ngIf="showInput">Input Data Fields</div>
+    <span *ngIf="showOutput">Output Data Fields</span>
+    <span *ngIf="showInputOutput">Input/Output Data Fields</span>
+    <button mat-icon-button (click)="onBtnCancelClick()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <mat-divider></mat-divider>
+
+  <!-- <div class="dialog-body content-wrapper">
+
+  </div> -->
+</div>
+<mat-dialog-content cdkScrollable>
+  <!-- Input Table -->
+  <table class="table-responsive" *ngIf="showInput && inputElement !=null && inputElement.length">
+    <tr class="text-center">
+      <th>Key</th>
+      <th>Value</th>
+    </tr>
+    <tr class="text-center" *ngFor="let input of inputElement">
+      <td>{{input.key}}</td>
+      <td>{{input.value}}</td>
+    </tr>
+  </table>
+  <span *ngIf="showInput && (inputElement==null || !inputElement.length)">No Input Data Fields</span>
+
+  <!-- Output Table -->
+  <table class="table-responsive" *ngIf="showOutput && outputElement != null && outputElement.length">
+    <tr class="text-center">
+      <th>Key</th>
+      <th>Value</th>
+    </tr>
+    <tr class="text-center" *ngFor="let output of outputElement">
+      <td>{{output.key}}</td>
+      <td *ngIf="output.value != '[]'">{{output.value}}</td>
+      <td *ngIf="output.value == '[]'"></td>
+    </tr>
+  </table>
+  <span *ngIf="showOutput && (outputElement== null || !outputElement.length)">No Output Data Fields</span>
+
+  <!-- Input Output table -->
+  <div class="row" *ngIf="showInputOutput">
+    <div class="col-md-6">
+      <table class="table-responsive ">
+        <tr class="text-center">
+          <th>Key</th>
+          <th>Value</th>
+        </tr>
+        <tr class="text-center" *ngFor="let input of inputElement">
+          <td>{{input.key}}</td>
+          <td>{{input.value}}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="col-md-6">
+      <table class="table-responsive">
+        <tr class="text-center">
+          <th>Key</th>
+          <th>Value</th>
+        </tr>
+        <tr class="text-center" *ngFor="let output of outputElement">
+          <td>{{output.key}}</td>
+          <td *ngIf="output.value != '[]'">{{output.value}}</td>
+          <td *ngIf="output.value == '[]'"></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</mat-dialog-content>

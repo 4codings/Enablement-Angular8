@@ -8,7 +8,7 @@
   <form #addConnectionsForm="ngForm" (ngSubmit)="onBtnAddClick(addConnectionsForm.value)"> 
     <div class="dialog-body content-wrapper">
       <div fxLayout="row" fxLayout.lt-sm="column">
-        <div class="mr-2 pt-3" fxFlex="33">
+        <!-- <div class="mr-2 pt-3" fxFlex="33">
           <label item-width="100"><strong>Connecton Type</strong></label>
           <mat-form-field class="form_in">
             <mat-select [(ngModel)]="V_CXN_TYP" name="V_CXN_TYP" required>
@@ -17,17 +17,17 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-        </div>
-        <div class="mr-2 ml-2" fxFlex="34">
+        </div> -->
+        <div class="mr-2 ml-2" fxFlex="49">
           <label>Connection Code</label>
-          <mat-form-field class="incwid">
-            <textarea matInput [(ngModel)]="V_CXN_CD" name="V_CXN_CD" required></textarea>
+          <mat-form-field class="incwid mt-3">
+            <input type="text" matInput [(ngModel)]="V_CXN_CD" name="V_CXN_CD" required>
           </mat-form-field>
         </div>
-        <div class="ml-2" fxFlex="33">
+        <div class="ml-2" fxFlex="49">
           <label>Connection Description</label>
           <mat-form-field class="incwid">
-            <textarea matInput [(ngModel)]="V_CXN_DSC" name="V_CXN_DSC" required></textarea>
+            <textarea matInput [(ngModel)]="V_CXN_DSC" name="V_CXN_DSC"></textarea>
           </mat-form-field>
         </div>
 
@@ -36,10 +36,10 @@
       <div fxLayout="row" fxLayout.lt-sm="column">
         <!-- PLATFORM -->
         <div class="ml-3 pt-3" fxFlex="50">
-          <label item-width="100"><strong>Platform</strong></label>
+          <label item-width="100"><strong>Machine</strong></label>
           <mat-form-field class="form_in">
-            <mat-select [(ngModel)]="PLF_CD" name="PLF_CD">
-              <mat-option style="text-align:center;" [value]="pf" (click)="platformDescription()" *ngFor="let pf of PLF_TYPE['SERVER_CD']">
+            <mat-select class="mat-select-dropdown" [(ngModel)]="PLF_CD" name="PLF_CD">
+              <mat-option style="text-align:center;" [value]="pf" (click)="platformDescription()" *ngFor="let pf of PLF_TYPE['PLATFORM_CD']">
                 {{pf}}
               </mat-option>
             </mat-select>
@@ -47,7 +47,7 @@
         </div>
         <!-- PLATFORM DESCRIPTION -->
         <div class="mr-3" fxFlex="48">
-          <label item-width="100"><strong>Platform Description</strong></label>
+          <label item-width="100"><strong>Machine Description</strong></label>
           <mat-form-field class="form_in" style="width:100%;">
             <textarea matInput  [(ngModel)]="PLF_DSC" name="PLF_DSC"></textarea>
           </mat-form-field>

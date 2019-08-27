@@ -13,6 +13,7 @@ export class OptionalValuesService implements OnDestroy {
   serviceOptionalValue: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   applicationProcessValue: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   selectedAppPrcoessValue: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  selecetedProcessTxnValue: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   V_SRC_CD: string;
   V_USR_NM: string;
   application_id: any;

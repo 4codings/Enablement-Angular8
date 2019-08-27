@@ -34,14 +34,16 @@
     (cdkDropListDropped)="exeDropped($event)"
     cdkDropListOrientation="horizontal">
   <div class="tile"
-       matRipple
-       cdkDrag
-       [cdkDragData]="currExe"
-       [matTooltip]="currExe.V_EXE_CD"
-       *ngFor="let currExe of exes.EXES; let i = index"
-       (contextmenu)="openContextmenu($event, currExe, exes.EXE_TYP, i)"
-       (mousedown)="onTileMouseDownEventHandler($event)"
-       (click)="onExeTileClick(currExe)">
+      matRipple
+      cdkDrag
+      [cdkDragData]="currExe"
+      [class.active]="currExe == selectedTile"
+      [class.highlight]="isHighLightTile(currExe)"
+      [matTooltip]="currExe.V_EXE_CD"
+      *ngFor="let currExe of exes.EXES; let i = index"
+      (contextmenu)="openContextmenu($event, currExe, exes.EXE_TYP, i)"
+      (mousedown)="onTileMouseDownEventHandler($event)"
+      (click)="onExeTileClick(currExe)">
        <mat-icon class="iconmod shwmaticon">cloud_upload</mat-icon>
    <!-- <div>{{currExe.EXE_CD}}</div> -->
     <div class="ellipsis-text"><strong>{{currExe.V_EXE_CD?.split('@')[0]}}</strong></div>
@@ -59,8 +61,3 @@
     <button mat-button class="many-item" (click)="onContextMenuAssigneConnBtnClick()">Assign</button>
   </div> 
 </ng-container>  
-
-<!--
-  [class.active]="currExe == selectedTile"
-  [class.highlight]="currExe.V_EXE_TYP == selectedCxn"
--->

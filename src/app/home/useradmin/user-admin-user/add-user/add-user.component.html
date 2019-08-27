@@ -1,17 +1,29 @@
 <div class="dialog-wrapper" fxLayoutGap="8px" fxLayout="column" fxLayoutAlign="start stretch">
   <div class="dialog-header content-wrapper" fxLayoutAlign="space-between center">
-    <span>Add user</span>
-    <button mat-icon-button (click)="onBtnCancelClick()"><mat-icon>close</mat-icon></button>
+    <span>Add User</span>
+    <button mat-icon-button (click)="onBtnCancelClick()">
+      <mat-icon>close</mat-icon>
+    </button>
   </div>
   <mat-divider></mat-divider>
-  <div class="dialog-body content-wrapper" fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="start stretch">
-    <mat-radio-group [(ngModel)]="selectedView" fxLayout="row" fxLayoutAlign="space-around center">
+  <!-- <div class="dialog-body content-wrapper" fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="start stretch"> -->
+  <mat-tab-group (selectedIndexChange)="OnTabChange($event)">
+    <mat-tab label="Select User">
+      <app-user-list [users]="allUsers" (userSelectEvent)="onUserSelect($event)">
+      </app-user-list>
+    </mat-tab>
+    <mat-tab label="Add New User">
+      <app-user-form [users]="allUsers"></app-user-form>
+    </mat-tab>
+  </mat-tab-group>
+  <!-- <mat-radio-group [(ngModel)]="selectedView" fxLayout="row" fxLayoutAlign="space-around center">
       <mat-radio-button value="selectUser">Select User</mat-radio-button>
       <mat-radio-button value="addNewUser">Add New User</mat-radio-button>
     </mat-radio-group>
-    <app-user-list *ngIf="selectedView == 'selectUser'" [users]="allUsers" (userSelectEvent)="onUserSelect($event)"></app-user-list>
-    <app-user-form *ngIf="selectedView == 'addNewUser'" [users]="allUsers"></app-user-form>
-  </div>
+    <app-user-list *ngIf="selectedView == 'selectUser'" [users]="allUsers" (userSelectEvent)="onUserSelect($event)">
+    </app-user-list>
+    <app-user-form *ngIf="selectedView == 'addNewUser'" [users]="allUsers"></app-user-form> -->
+  <!-- </div> -->
   <div class="dialog-footer content-wrapper" fxLayoutAlign="end center" fxLayoutGap="8px">
     <div fxFlex fxLayoutAlign="start center" style="color: #DD312E" *ngIf="userAlreadyExist">User already exist</div>
     <button mat-flat-button color="primary" (click)="onBtnAddClick()">Add</button>

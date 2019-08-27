@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { RollserviceService } from '../../../services/rollservice.service';
+import { Globals } from '../../../services/globals';
 
 @Injectable({
   providedIn: 'root'
@@ -24,8 +25,14 @@ export class SystemAdminOverviewService {
   role_machineSpec:boolean=false;
   role_platform:boolean=false;
   role_overview:boolean = false;
+  exeTypeOptions;
+  public typeOptions$: Subject<any> = new Subject();
+  domain_name=this.globals.domain_name;
 
-  constructor(private http:HttpClient, private rollserviceService: RollserviceService) { }
+  private apiUrlGet = "https://"+this.domain_name+"/rest/v1/securedJSON?";
+  private apiUrlPut = "https://"+this.domain_name+"/rest/v1/secured";
+
+  constructor(private http:HttpClient, private rollserviceService: RollserviceService, private globals:Globals) { }
 
   public selectExe(exe) {
     this.selectedExe$.next(exe);
@@ -36,18 +43,28 @@ export class SystemAdminOverviewService {
   }
 
   public getExe() {
-    //console.log("called");
-    this.http.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=EXE&V_SRC_CD="+this.V_SRC_CD+"&V_ICN_TYP=&REST_Service=Masters&Verb=GET").subscribe((res) => {
+    this.http.get(this.apiUrlGet + "V_CD_TYP=EXE&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe((res) => {
       //console.log("exe", res);
       this.exes = res;
       this.getAllExes();
+      this.getAllMachineConnections();
+      this.exeTypeOptions = res;
+      this.exeTypeOptions.push({EXE_TYP:"All"});
+      this.exeTypeOptions = this.exeTypeOptions.sort((a,b) => {
+        if (a.EXE_TYP < b.EXE_TYP) //sort string ascending
+          return -1;
+        if (a.EXE_TYP > b.EXE_TYP)
+          return 1;
+        return 0; 
+      });
+      this.typeOptions$.next(this.exeTypeOptions);
     })
   }
 
   getAllExes() {
     var sortedAllExes = [];
     var allExes = [];
-    this.http.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=EXES&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe((res:any) => {
+    this.http.get(this.apiUrlGet + "V_CD_TYP=EXES&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe((res:any) => {
       this.exes.forEach(item => {
         let arr = res.filter(data => {
           return item.EXE_TYP == data.V_EXE_TYP
@@ -63,18 +80,19 @@ export class SystemAdminOverviewService {
   }
    
   getMachine() {
-    this.http.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=MACHINES&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe((res:any) => {
-      this.machines = res;
-      this.getAllMachineConnections();
-    }, err => {
-       console.log(err);
-    })
+    // this.http.get(this.apiUrlGet + "V_CD_TYP=MACHINES&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe((res:any) => {
+    //   this.machines = res;
+    //   this.getAllMachineConnections();
+    // }, err => {
+    //    console.log(err);
+    // })
+    this.getAllMachineConnections();
   }
 
   getAllMachineConnections() {
     let connections=[];
     let sortedAllConnections = [];
-    this.http.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=CXNS&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe((res:any) => {
+    this.http.get(this.apiUrlGet + "V_CD_TYP=CXNS&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe((res:any) => {
       this.exes.forEach(item => {
         let arr = res.filter(data => {
           return item.EXE_TYP == data.V_CXN_TYP
@@ -87,6 +105,23 @@ export class SystemAdminOverviewService {
     }, err => {
        console.log(err);
     })
+  }
+  
+  getTypes() {
+    this.http.get(this.apiUrlGet + "V_CD_TYP=EXE&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe(res => {
+      this.exeTypeOptions = res;
+      this.exeTypeOptions.push({EXE_TYP:"All"});
+      this.exeTypeOptions = this.exeTypeOptions.sort((a,b) => {
+        if (a.EXE_TYP < b.EXE_TYP) //sort string ascending
+          return -1;
+        if (a.EXE_TYP > b.EXE_TYP)
+          return 1;
+        return 0; 
+      });
+      this.typeOptions$.next(this.exeTypeOptions);
+    }, err => {
+      console.log(err);
+    });
   }
   
   getRollAccess() {

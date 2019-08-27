@@ -43,6 +43,9 @@ import { DeleteConfirmComponent } from './components/delete-confirm/delete-confi
 import { DialogScheduleComponent } from './components/dialog-schedule/dialog-schedule.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { InputOutputElementComponent } from './components/input-output-element/input-output-element.component';
+import { ViewerDiagramComponent } from './components/viewer-diagram/viewer-diagram.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -84,6 +87,7 @@ import { HttpModule } from '@angular/http';
     MatButtonToggleModule,
     MatSnackBarModule,
     MatMenuModule,
+    ScrollingModule,
     TreeviewModule.forRoot(),
   ],
   declarations: [
@@ -94,15 +98,19 @@ import { HttpModule } from '@angular/http';
     SplitLastPipe,
     ConfirmationAlertComponent,
     DeleteConfirmComponent,
-    DialogScheduleComponent
+    DialogScheduleComponent,
+    InputOutputElementComponent,
+    ViewerDiagramComponent
   ],
   entryComponents: [
     ConfirmationAlertComponent,
     DeleteConfirmComponent,
-    DialogScheduleComponent],
+    DialogScheduleComponent,
+    InputOutputElementComponent],
   exports: [
     FormErrorMsgComponent,
     NoDataMsgComponent,
+    ViewerDiagramComponent,
     MatCardModule,
     MatIconModule,
     DragDropModule,
@@ -135,6 +143,7 @@ import { HttpModule } from '@angular/http';
     MatSlideToggleModule,
     MatButtonToggleModule,
     MatSnackBarModule,
+    ScrollingModule,
     MyFilterPipe,
     MyFilterPipe1,
     SplitLastPipe,

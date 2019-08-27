@@ -1,19 +1,19 @@
-import {Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {UserFormComponent} from '../user-form/user-form.component';
-import {select, Store} from '@ngrx/store';
-import {AppState} from '../../../../app.state';
+import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { UserFormComponent } from '../user-form/user-form.component';
+import { select, Store } from '@ngrx/store';
+import { AppState } from '../../../../app.state';
 import * as userActions from '../../../../store/user-admin/user/user.action';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {Actions, ofType} from '@ngrx/effects';
-import {AddUser} from '../../../../store/user-admin/user/user.action';
-import {UseradminService} from '../../../../services/useradmin.service2';
-import {User} from '../../../../store/user-admin/user/user.model';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Actions, ofType } from '@ngrx/effects';
+import { AddUser } from '../../../../store/user-admin/user/user.action';
+import { UseradminService } from '../../../../services/useradmin.service2';
+import { User } from '../../../../store/user-admin/user/user.model';
 import * as userGroupActions from '../../../../store/user-admin/user-group/usergroup.action';
-import {take} from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import * as userSelectors from '../../../../store/user-admin/user/user.selectors';
 import * as usreActions from '../../../../store/user-admin/user/user.action';
-import {UserListComponent} from '../user-list/user-list.component';
-import {Subscription} from 'rxjs';
+import { UserListComponent } from '../user-list/user-list.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-add-user',
@@ -30,10 +30,10 @@ export class AddUserComponent implements OnInit, OnDestroy {
   @ViewChild(UserListComponent, { static: false } as any) userList: UserListComponent;
 
   constructor(private store: Store<AppState>,
-              private userAdminService: UseradminService,
-              private actions$: Actions,
-              private dialogRef: MatDialogRef<AddUserComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any) {
+    private userAdminService: UseradminService,
+    private actions$: Actions,
+    private dialogRef: MatDialogRef<AddUserComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any) {
   }
 
   ngOnInit() {
@@ -50,7 +50,14 @@ export class AddUserComponent implements OnInit, OnDestroy {
   onBtnCancelClick(): void {
     this.dialogRef.close();
   }
-
+  OnTabChange(tabIndex) {
+    if (!tabIndex) {
+      this.selectedView = 'selectUser';
+    } else {
+      this.selectedView = 'addNewUser';
+    }
+    console.log('event', event);
+  }
   onBtnAddClick(): void {
     switch (this.selectedView) {
       case 'selectUser':
@@ -62,7 +69,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
         if (this.userForm.isValid()) {
           const userData = this.userForm.getValue();
           this.userAlreadyExist = this.userForm.hasUser(userData.V_USR_NM);
-          if(this.userAlreadyExist){
+          if (this.userAlreadyExist) {
             return;
           }
           this.store.dispatch(new AddUser(userData));

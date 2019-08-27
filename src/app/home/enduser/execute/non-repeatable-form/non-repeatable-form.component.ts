@@ -21,6 +21,8 @@ import { ConfigServiceService } from '../../../../services/config-service.servic
 import { EndUserService } from '../../../../services/EndUser-service';
 import { filter } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
+import { MatDialog } from '@angular/material';
+import { OptionalValuesService } from 'src/app/services/optional-values.service';
 
 @Component({
   selector: 'app-non-repeatable-form',
@@ -60,11 +62,13 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     public apiService: ApiService,
     public configService: ConfigServiceService,
     public toasterService: ToastrService,
+    public dialog: MatDialog,
+    public optionalService: OptionalValuesService,
     private endUserService: EndUserService,
     private activatedRoute: ActivatedRoute,
 
   ) {
-    super(StorageSessionService, http, https, router, globals, app, cdr, apiService, globalUser, configService, toasterService);
+    super(StorageSessionService, http, https, router, globals, app, cdr, apiService, globalUser, configService, toasterService, dialog, optionalService);
     this.navigationSubscription = router.events
       .pipe(filter(e => e instanceof NavigationEnd))
       .subscribe((e: NavigationEnd) => {
