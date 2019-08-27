@@ -1,6 +1,15 @@
-<mat-list class="scroll">
+<!-- <mat-list class="scroll">
   <mat-list-item class="list_item" *ngFor="let user of users"
                  [class.active]="user == selectedUser" (click)="onUserSelect(user)">
     <div>{{user.V_USR_NM}}</div>
   </mat-list-item>
-</mat-list>
+</mat-list> -->
+<mat-form-field class="form_input">
+  <input matInput name="app" [matAutocomplete]="auto" [formControl]="myControl">
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-option style="text-align:center;" (click)="onUserSelect(user)" *ngFor="let user of filteredOptions |async"
+      [value]="user.V_USR_NM">
+      {{user.V_USR_NM}}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>
