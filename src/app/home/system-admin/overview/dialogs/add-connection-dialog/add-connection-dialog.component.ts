@@ -18,7 +18,7 @@ export class AddConnectionDialogComponent implements OnInit {
   public V_CXN_TYP;
   public DATA; 
   public tableshow = false;
-  PLF_CD:string = "Amazon";
+  PLF_CD:string = "amazon";
   PLF_DSC:string = 'Apache Tomcat Web Server';
   PLF_TYPE=[];
   PLF_DATA;
@@ -26,7 +26,7 @@ export class AddConnectionDialogComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<AddConnectionDialogComponent>,  @Inject(MAT_DIALOG_DATA) public data: any, private http:HttpClient, private config:ConfigServiceService) { }
 
   ngOnInit() {
-    this.config.getPlatformType().subscribe(res=>{this.PLF_TYPE=res.json();
+    this.config.getMachineCode().subscribe(res=>{this.PLF_TYPE=res.json();
       (this.PLF_TYPE);
       // this.PLF_CD=this.PLF_TYPE['SERVER_CD'];
     });
@@ -48,11 +48,11 @@ export class AddConnectionDialogComponent implements OnInit {
 
   platformDescription(){
     
-    this.config.getPlatformDescription(this.PLF_CD).subscribe(
+    this.config.getMachineDetails(this.PLF_CD).subscribe(
       res=>{
         this.PLF_DATA=res.json();
         (this.PLF_DATA);
-        this.PLF_DSC=this.PLF_DATA['SERVER_DSC'];
+        this.PLF_DSC=this.PLF_DATA['PLATFORM_DSC'];
       });
   }
 
@@ -76,7 +76,7 @@ export class AddConnectionDialogComponent implements OnInit {
       "V_PARAM_N":V_PARAM_N,
       "V_PARAM_V":V_PARAM_V,
       "V_PLATFORM_CD":this.PLF_CD,
-      "V_PLATFORM_DCS":this.PLF_DSC,
+      "V_PLATFORM_DCS":this.PLF_DSC.toString(),
       "REST_Service":["CXN"],
       "Verb":["PUT"]
     }
