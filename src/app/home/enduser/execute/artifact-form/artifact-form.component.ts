@@ -17,9 +17,9 @@ import { CommonUtils } from '../../../../common/utils';
 import { ToastrService } from 'ngx-toastr';
 import { Viewer } from '../bpmn-viewer';
 import { DeleteConfirmComponent } from '../../../../shared/components/delete-confirm/delete-confirm.component';
-import { InputOutputElementComponent } from '../../process-design/input-output-element/input-output-element.component';
 import { take } from 'rxjs/operators';
-import { InstanceElementList } from '../../process-design/viewer/viewer.component';
+import { InputOutputElementComponent } from '../../../../shared/components/input-output-element/input-output-element.component';
+import { InstanceElementList } from '../../process-design/monitor/monitor.component';
 @Component({
   selector: 'app-input-art',
   templateUrl: './artifact-form.component.html',

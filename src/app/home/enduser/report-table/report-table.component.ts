@@ -21,9 +21,9 @@ import { HttpClient } from '@angular/common/http';
 import { Viewer } from '../execute/bpmn-viewer';
 import { RollserviceService } from '../../../services/rollservice.service';
 import { Subscription } from 'rxjs';
-import { InstanceElementList } from '../process-design/viewer/viewer.component';
-import { InputOutputElementComponent } from '../process-design/input-output-element/input-output-element.component';
 import { take } from 'rxjs/operators';
+import { InputOutputElementComponent } from 'src/app/shared/components/input-output-element/input-output-element.component';
+import { InstanceElementList } from '../process-design/monitor/monitor.component';
 // import { Viewer } from '../execute/bpmn-viewer-js';
 
 @Component({

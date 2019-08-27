@@ -11,21 +11,22 @@ import { DatePipe } from '@angular/common';
 import { OptionalValuesService } from 'src/app/services/optional-values.service';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { InputOutputElementComponent } from '../input-output-element/input-output-element.component';
+
 import { MatDialog } from '@angular/material';
+import { InputOutputElementComponent } from 'src/app/shared/components/input-output-element/input-output-element.component';
 export interface Food {
   value: string;
   viewValue: string;
 }
 
 @Component({
-  selector: 'app-viewer',
-  templateUrl: './viewer.component.html',
-  styleUrls: ['./viewer.component.scss'],
+  selector: 'app-monitor',
+  templateUrl: './monitor.component.html',
+  styleUrls: ['./monitor.component.scss'],
   // inputs: ['parentapp', 'parentpro', 'file_path'],
   providers: [DatePipe]
 })
-export class ViewerComponent implements OnInit, OnDestroy {
+export class MonitorComponent implements OnInit, OnDestroy {
 
   parentapp: string;
   parentpro: string;

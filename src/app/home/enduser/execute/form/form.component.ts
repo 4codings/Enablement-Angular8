@@ -11,10 +11,10 @@ import { StorageSessionService } from '../../../../services/storage-session.serv
 import { Globals2 } from '../../../../service/globals';
 import { ToastrService } from 'ngx-toastr';
 import { Viewer } from '../bpmn-viewer';
-import { InstanceElementList } from '../../process-design/viewer/viewer.component';
-import { InputOutputElementComponent } from '../../process-design/input-output-element/input-output-element.component';
 import { take } from 'rxjs/operators';
 import { MatDialog } from '@angular/material';
+import { InputOutputElementComponent } from 'src/app/shared/components/input-output-element/input-output-element.component';
+import { InstanceElementList } from '../../process-design/monitor/monitor.component';
 export class ReportData {
   public RESULT: string;
   public V_EXE_CD: string[];

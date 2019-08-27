@@ -1330,7 +1330,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         this.onTitleClickNoDelete = true;
         let obj = { 'app': this.ApplicationCD, 'process': this.ProcessCD, 'file_path': this.file_path }
         this.optionalService.selectedAppPrcoessValue.next(obj);
-        this.router.navigateByUrl('End_User/Design/viewer', { skipLocationChange: true });
+        this.router.navigateByUrl('End_User/Design/monitor', { skipLocationChange: true });
         break;
       }
       case 'Approve': {

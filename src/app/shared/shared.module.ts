@@ -44,6 +44,7 @@ import { DialogScheduleComponent } from './components/dialog-schedule/dialog-sch
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { InputOutputElementComponent } from './components/input-output-element/input-output-element.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -96,12 +97,14 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     SplitLastPipe,
     ConfirmationAlertComponent,
     DeleteConfirmComponent,
-    DialogScheduleComponent
+    DialogScheduleComponent,
+    InputOutputElementComponent
   ],
   entryComponents: [
     ConfirmationAlertComponent,
     DeleteConfirmComponent,
-    DialogScheduleComponent],
+    DialogScheduleComponent,
+    InputOutputElementComponent],
   exports: [
     FormErrorMsgComponent,
     NoDataMsgComponent,

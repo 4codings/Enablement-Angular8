@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ProcessDesignComponent } from './process-design.component';
-import { ViewerComponent } from './viewer/viewer.component';
+import { MonitorComponent } from './monitor/monitor.component';
 
 const routes: Routes = [
   {
@@ -9,8 +9,8 @@ const routes: Routes = [
     component: ProcessDesignComponent
   },
   {
-    path: 'viewer',
-    component: ViewerComponent
+    path: 'monitor',
+    component: MonitorComponent
   }
 ];
 

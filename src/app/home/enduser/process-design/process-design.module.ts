@@ -7,10 +7,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { SharedModule } from '../../../shared/shared.module';
 import { SchedularComponent } from './schedular/schedular.component';
-import { ViewerComponent } from './viewer/viewer.component';
+import { MonitorComponent } from './monitor/monitor.component';
 
 @NgModule({
-  declarations: [ProcessDesignComponent, SchedularComponent, ViewerComponent],
+  declarations: [ProcessDesignComponent, SchedularComponent, MonitorComponent],
   imports: [
     SharedModule,
     ProcessDesignRoutingModule,
