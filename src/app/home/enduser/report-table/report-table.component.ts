@@ -1283,27 +1283,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     }
   }
-<<<<<<< HEAD
   
-=======
-  //__________________________Personalization Table_________________________
-  addRow_action() {
-    let chart_no = this.Element_Preferences.length + 1;
-    this.Element_Preferences.push({
-      chartNo: chart_no + "", chartType: "", xaxisData: "", yaxisData: "", unit: "", scale: "", ystepSize: "", gridlineWidth: "",
-      backgroundColor: "", borderColor: "", fillBackground: "", lineTension: "", pointSize: "", animations: "",
-      pointStyle: "", lineStyle: "", addRow: ""
-    });
-    console.log(this.dataPreferences);
-    this.dataPreferences = new MatTableDataSource(this.Element_Preferences);
-  }
-
-  deleteRow_action(chartNo) {
-    this.Element_Preferences.pop();
-    //---data move up
-    this.dataPreferences = new MatTableDataSource(this.Element_Preferences);
-  }
->>>>>>> b386fb8d5476021add08b93fb1cf4d4e0ec7f1b1
   //currency = 'USD';
   //price: number;
 }
