@@ -87,17 +87,23 @@ export class PersonalizationTableComponent implements OnInit {
   charttype = [];
   xaxisdata = [];
   yaxisdata = [];
-  UoM = [];
-  SoM = [];
+  UoM_x = [];
+  SoM_x = [];
+  UoM_y = [];
+  SoM_y = [];
+  xaxisstepSize = [];
   yaxisstepSize = [];
   _personalizationtable = [];
+  yaxiscallbacks = ['$', '£', '€', '₹', 'm', 'km', 'k', 'gm', 'kg', 's'];
+  xaxis_datasets = [];
+  yaxis_datasets = [];
 
   rowPreference = {
-    gridlineWidth: "", chartno: "",
+    gridlinewidth: "", chartno: "",
     backgroundcolor: "", bordercolor: "", fillbackground: "", linetension: "", pointradius: "", animations: "",
     pointstyle: "", linestyle: "", gridborder: "", yaxisautoskip: "", linexaxis: "", lineyaxis: "", barxaxis: "",
     baryaxis: "", piexaxis: "", pieyaxis: "", doughnutxaxis: "", doughnutyaxis: "", selectedchart: "", chartposition: "",
-    charttype: "", xaxisdata: "", yaxisdata: "", UoM: "", SoM: "", personalizationtable: {}
+    charttype: "", xaxisdata: "", yaxisdata: "", UoM_x: "", UoM_y: "", SoM_x: "", SoM_y: "", xaxisstepsize:"", yaxisstepsize:"", personalizationtable: {}
   };
   myobj = { mychartType: "", myxaxisdata: "", myyaxisdata: "", myUoM: "", mySoM: "" }
   preservedPreferences = [];
@@ -109,7 +115,8 @@ export class PersonalizationTableComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.xaxis_datasets = this.report.columnsToDisplay;
+    this.yaxis_datasets = this.report.columnsToDisplay;
   }
   indexTracker(index: number, value: any) {
     return index;
@@ -166,10 +173,16 @@ export class PersonalizationTableComponent implements OnInit {
       this.chartPreferences[i]['xaxisdata'] = this.xaxisdata[i];
     if (pref === 'yaxisdata')
       this.chartPreferences[i]['yaxisdata'] = this.yaxisdata[i];
-    if (pref === 'UoM')
-      this.chartPreferences[i]['UoM'] = this.UoM[i];
-    if (pref === 'SoM')
-      this.chartPreferences[i]['SoM'] = this.SoM[i];
+    if (pref === 'UoM_x')
+      this.chartPreferences[i]['UoM_x'] = this.UoM_x[i];
+    if (pref === 'UoM_y')
+      this.chartPreferences[i]['UoM_y'] = this.UoM_y[i];
+    if (pref === 'SoM_x')
+      this.chartPreferences[i]['SoM_x'] = this.SoM_x[i];
+    if (pref === 'SoM_y')
+      this.chartPreferences[i]['SoM_y'] = this.SoM_y[i];
+    if (pref === 'xaxisstepSize')
+      this.chartPreferences[i]['xaxisstepSize'] = this.xaxisstepSize[i];
     if (pref === 'yaxisstepSize')
       this.chartPreferences[i]['yaxisstepSize'] = this.yaxisstepSize[i];
     if (pref === 'personalizationtable')
@@ -217,33 +230,41 @@ export class PersonalizationTableComponent implements OnInit {
       }
     }
     else {
-      /*for(let i = 0; i < this.chartPreferences.length; i++){
-        if(i!==index){
-          this.chartPreferences[i] = this.preservedPreferences[i];
-        }
-      }*/
-      //console.log(this.preservedPreferences);
-
-      //this.preservedPreferences = this.chartPreferences;
-      
       if (pref === "personalizationtable") {
-        this.set_chartPreferences_arr('charttype',index);
-        this.set_chartPreferences_arr('xaxisdata',index);
-        this.set_chartPreferences_arr('yaxisdata',index);
-        this.set_chartPreferences_arr('UoM',index);
-        this.set_chartPreferences_arr('SoM',index);
+        this.set_chartPreferences_arr('charttype', index);
+        this.set_chartPreferences_arr('xaxisdata', index);
+        this.set_chartPreferences_arr('yaxisdata', index);
+        this.set_chartPreferences_arr('UoM_x', index);
+        this.set_chartPreferences_arr('UoM_y', index);
+        this.set_chartPreferences_arr('SoM_x', index);
+        this.set_chartPreferences_arr('SoM_y', index);
         this.chartPreferences[index][pref]['charttype'] = this.chartPreferences[index]['charttype'];
         this.chartPreferences[index][pref]['xaxisdata'] = this.chartPreferences[index]['xaxisdata'];
         this.chartPreferences[index][pref]['yaxisdata'] = this.chartPreferences[index]['yaxisdata'];
-        this.chartPreferences[index][pref]['UoM'] = this.chartPreferences[index]['UoM'];
-        this.chartPreferences[index][pref]['SoM'] = this.chartPreferences[index]['SoM'];
-      } else{
-        this.set_chartPreferences_arr(pref,index);
-        console.log(pref+":"+index);
+        this.chartPreferences[index][pref]['UoM_x'] = this.chartPreferences[index]['UoM_x'];
+        this.chartPreferences[index][pref]['UoM_y'] = this.chartPreferences[index]['UoM_y'];
+        this.chartPreferences[index][pref]['SoM_x'] = this.chartPreferences[index]['SoM_x'];
+        this.chartPreferences[index][pref]['SoM_y'] = this.chartPreferences[index]['SoM_y'];
       }
+
       console.log(val);
-      this.chartPreferences[index][pref]=val;
+      this.chartPreferences[index][pref] = val;
       console.log(this.chartPreferences);
+      if(pref === "chartno"){
+        var chartFound = false;
+        var foundIndex;
+        for(let i=0; i<this.chartPreferences.length; i++){
+          if(i!== index && val === this.chartPreferences[i]['chartno']){
+            chartFound = true;
+            foundIndex = i;
+            break;
+          }
+        }
+        if(chartFound){
+          this.chartPreferences[index] = this.chartPreferences[foundIndex];
+          
+        }
+      }
       /*this.data.setchartstyling(this.report.UNIQUE_ID, this.report.SRC_ID, pref, val).subscribe(
         () => {
 
@@ -268,7 +289,7 @@ export class PersonalizationTableComponent implements OnInit {
   }
 
   addRow_action() {
-    this.chartno.push(this.chartno.length);
+    this.chartno.push(this.chartno.length+1);
     this.gridlinewidth.push("");
     this.backgroundcolor.push("");
     this.bordercolor.push("");
@@ -293,15 +314,18 @@ export class PersonalizationTableComponent implements OnInit {
     this.charttype.push("");
     this.xaxisdata.push("");
     this.yaxisdata.push("");
-    this.UoM.push("");
-    this.SoM.push("");
+    this.UoM_x.push("");
+    this.UoM_y.push("");
+    this.SoM_x.push("");
+    this.SoM_y.push("");
+    this.xaxisstepSize.push("");
     this.yaxisstepSize.push("");
     this.chartPreferences.push({
-      gridlineWidth: "", chartno: "",
+      gridlinewidth: "", chartno: "",
       backgroundcolor: "", bordercolor: "", fillbackground: "", linetension: "", pointradius: "", animations: "",
       pointstyle: "", linestyle: "", gridborder: "", yaxisautoskip: "", linexaxis: "", lineyaxis: "", barxaxis: "",
       baryaxis: "", piexaxis: "", pieyaxis: "", doughnutxaxis: "", doughnutyaxis: "", selectedchart: "", chartposition: "",
-      charttype: "", xaxisdata: "", yaxisdata: "", UoM: "", SoM: "", personalizationtable: {}
+      charttype: "", xaxisdata: "", yaxisdata: "", UoM_x: "", UoM_y: "", SoM_x: "", SoM_y: "", xaxisstepsize: "", yaxisstepsize: "", personalizationtable: {}
     });
     console.log(this.chartPreferences);
   }
@@ -370,7 +394,7 @@ export class PersonalizationTableComponent implements OnInit {
           this.updateDoughnutChart();
           break;
       }
-      this.setchartpreferences('all','nothing');
+      this.setchartpreferences('all', 'nothing');
     }
     else {
       this._snackBar.open("Data already exist in table", 'Ok', {
