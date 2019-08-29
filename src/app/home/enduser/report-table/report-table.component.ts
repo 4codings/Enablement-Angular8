@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { DialogChartsComponent } from './dialog-charts/dialog-charts.component';
+import { PersonalizationTableComponent } from './personalization-table/personalization-table.component';
 import { ConfigServiceService } from '../../../services/config-service.service';
 import { Globals } from '../../../services/globals';
 import { Globals2 } from '../../../service/globals';
@@ -188,6 +189,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.path = this.ctrl_variables.bpmn_file_path;
     });
     this.dataSource.sort = this.sort;
+    console.log(this.Table_of_Data4);
     this.cd.detectChanges();
   }
   ngOnDestroy() {
@@ -228,25 +230,25 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
           this.linearray.push(obj);
           this._yaxis_sel_line.push(obj.yaxisdata);
           this._xaxis_sel_line = obj.xaxisdata;
-          this.updateLineChart();
+          //this.updateLineChart();
           break;
         case "barchart":
           this.bararray.push(obj);
           this._yaxis_sel_bar.push(obj.yaxisdata);
           this._xaxis_sel_bar = obj.xaxisdata;
-          this.updateBarChart();
+          //this.updateBarChart();
           break;
         case "piechart":
           this.piearray.push(obj);
           this._yaxis_sel_pie.push(obj.yaxisdata);
           this._xaxis_sel_pie = obj.xaxisdata;
-          this.updatePieChart();
+          //this.updatePieChart();
           break;
         case "doughnutchart":
           this.doughnutarray.push(obj);
           this._yaxis_sel_doughnut.push(obj.yaxisdata);
           this._xaxis_sel_doughnut = obj.xaxisdata;
-          this.updateDoughnutChart();
+          //this.updateDoughnutChart();
           break;
       }
       this.setchartpreferences('all');
@@ -293,6 +295,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     // this.SRVC_ID = this.dataStored.getCookies('report_table')['SRVC_ID'][0];
     this.UNIQUE_ID = this.dataStored.getCookies('report_table')['TEMP_UNIQUE_ID'][0];
     this.Table_of_Data1 = this.dataStored.getCookies('report_table')['LOG_VAL'];
+    console.log(this.Table_of_Data1);
     this.iddata.push(this.dataStored.getCookies('iddata'));
     this.PRCS_TXN_ID = this.dataStored.getCookies('executeresdata')['V_PRCS_TXN_ID'];
     this.APP_ID = this.dataStored.getCookies('report_table')['APP_ID'][0];
@@ -892,7 +895,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   //__________________________Set Preferences_________________________________
-  setchartpreferences(pref, val?) {
+  setchartpreferences(pref, index?) {
     var cp = [];
     for (let i = 0; i < this.chartposition.length; i++) {
       cp.push(Object.values(this.chartposition[i]));
@@ -933,6 +936,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
     else {
+      var val = 
       this.data.setchartstyling(this.UNIQUE_ID, this.SRC_ID, pref, val).subscribe(
         () => {
 
@@ -1279,23 +1283,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     }
   }
-  //__________________________Personalization Table_________________________
-  addRow_action() {
-    let chart_no = this.Element_Preferences.length + 1;
-    this.Element_Preferences.push({
-      chartNo: chart_no + "", chartType: "", xaxisData: "", yaxisData: "", unit: "", scale: "", ystepSize: "", gridlineWidth: "",
-      backgroundColor: "", borderColor: "", fillBackground: "", lineTension: "", pointSize: "", animations: "",
-      pointStyle: "", lineStyle: "", addRow: ""
-    });
-    console.log(this.dataPreferences);
-    this.dataPreferences = new MatTableDataSource(this.Element_Preferences);
-  }
-
-  deleteRow_action(chartNo) {
-    this.Element_Preferences.pop();
-    //---data move up
-    this.dataPreferences = new MatTableDataSource(this.Element_Preferences);
-  }
+  
   //currency = 'USD';
   //price: number;
 }
