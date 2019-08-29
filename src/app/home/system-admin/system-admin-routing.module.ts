@@ -17,12 +17,12 @@ const routes: Routes = [{
       { path: '', redirectTo: 'AppDeploy', pathMatch: 'full' },
       { path: 'AppDeploy', component: DeployStatusComponent },
       { path: 'Install', component: InstallComponent },
-      { path: 'Machineconnection', component: MachineconnectionComponent },
-      { path: 'Deployment', component: DeploymentComponent },
-      { path: 'Connection', component: ConnectionComponent },
-      { path: 'Machine', component: MachineComponent },
-      { path: 'Machinespecs', component: MachinespecsComponent },
-      { path: 'Platform', component: PlatformComponent },
+    //   { path: 'Machineconnection', component: MachineconnectionComponent },
+    //   { path: 'Deployment', component: DeploymentComponent },
+    //   { path: 'Connection', component: ConnectionComponent },
+    //   { path: 'Machine', component: MachineComponent },
+    //   { path: 'Machinespecs', component: MachinespecsComponent },
+    //   { path: 'Platform', component: PlatformComponent },
       { path: 'SystemOverView', component: OverviewComponent }
     ]
 }];

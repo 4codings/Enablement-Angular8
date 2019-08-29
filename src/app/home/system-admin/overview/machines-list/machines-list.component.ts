@@ -7,6 +7,7 @@ import { EventEmitter } from '@angular/core';
 import { AddPlatformDialogComponent } from '../add-platform-dialog/add-platform-dialog.component';
 import { SystemAdminOverviewService } from '../system-admin-overview.service';
 import { ManageMachinesComponent } from '../dialogs/manage-machines/manage-machines.component';
+import { AssignMcnPlfComponent } from '../dialogs/assign-mcn-plf/assign-mcn-plf.component';
 
 @Component({
   selector: 'app-machines-list',
@@ -68,6 +69,19 @@ export class MachinesListComponent implements OnInit {
       console.log('The dialog was closed');
     });
   }
+
+  onAssignMcnPlfClick() {
+    const dialogRef = this.dialog.open(AssignMcnPlfComponent, {
+      panelClass: 'app-dialog',
+      width: '600px',
+      data: {isSelectedEntity: "MACHINE"}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
 
   onManageMachineBtnClick() {
     const dialogRef = this.dialog.open(ManageMachinesComponent, {

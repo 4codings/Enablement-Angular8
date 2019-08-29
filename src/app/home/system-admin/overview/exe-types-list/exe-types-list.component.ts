@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { EventEmitter } from '@angular/core';
 import { AddPlatformDialogComponent } from '../add-platform-dialog/add-platform-dialog.component';
 import { SystemAdminOverviewService } from '../system-admin-overview.service';
+import { AssignMcnPlfComponent } from '../dialogs/assign-mcn-plf/assign-mcn-plf.component';
 
 @Component({
   selector: 'app-exe-types-list',
@@ -61,6 +62,18 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
       panelClass: 'app-dialog',
       width: '600px',
       data: {platform_cd: "platform_cd", platform_des: "platform_des"}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
+  onAssignMcnPlfClick() {
+    const dialogRef = this.dialog.open(AssignMcnPlfComponent, {
+      panelClass: 'app-dialog',
+      width: '600px',
+      data: {isSelectedEntity: "PLATFORM"}
     });
 
     dialogRef.afterClosed().subscribe(result => {

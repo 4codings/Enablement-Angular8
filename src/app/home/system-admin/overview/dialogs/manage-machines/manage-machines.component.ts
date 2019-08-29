@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef, MatAutocompleteSelectedEvent } from '@angular/material';
 import { HttpClient } from '@angular/common/http';
 import { UseradminService } from '../../../../../services/useradmin.service2';
 import { Globals } from '../../../../../services/globals';
@@ -34,11 +34,11 @@ export class ManageMachinesComponent implements OnInit {
   PLATFORM_DSC = "";
   PLATFORM_CAP = "";
   RATING = "";
-  VRTL_FLG = "";
+  VRTL_FLG = "N";
   EFF_END_DT_TM = "";
   EFF_STRT_DT_TM = "";
-  MODESTATUS = "";
-  STATE_FLG = "";
+  MODESTATUS = "STANDBY";
+  STATE_FLG = "DOWN";
   PLATFORM_CD_DUP = "";
   PLATFORM_DSC_DUP = "";
   PLATFORM_CAP_DUP = "";
@@ -65,7 +65,7 @@ export class ManageMachinesComponent implements OnInit {
 
     });
   }
-  machineDetails() {
+  machineDetails(event:MatAutocompleteSelectedEvent) {
     ("Hello");
     ("Machine DETAILS");
     this.Selected = this.PLATFORM_CD;
@@ -79,8 +79,8 @@ export class ManageMachinesComponent implements OnInit {
       this.PLATFORM_DSC = this.PLF_DETAILS['PLATFORM_DSC'].toString();
       this.PLATFORM_CAP = this.PLF_DETAILS['PLATFORM_CAP'];
       this.RATING = this.PLF_DETAILS['RATING'];
-      this.EFF_STRT_DT_TM = this.PLF_DETAILS['EFF_STRT_DT_TM'];
-      this.EFF_END_DT_TM = this.PLF_DETAILS['EFF_END_DT_TM'];
+      this.EFF_STRT_DT_TM = new Date(this.PLF_DETAILS['EFF_STRT_DT_TM']).toISOString();
+      this.EFF_END_DT_TM = new Date(this.PLF_DETAILS['EFF_END_DT_TM']).toISOString();
       this.VRTL_FLG = this.PLF_DETAILS['VRTL_FLG'].toString();
       this.MODESTATUS = this.PLF_DETAILS['MODESTATUS'].toString();
 
