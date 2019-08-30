@@ -482,7 +482,7 @@
                 </mat-expansion-panel>
               </mat-accordion>
             </div>
-            <div fxFlex="100">
+            <div fxFlex="100" *ngIf="gantt">
               <mat-accordion>
                 <mat-expansion-panel>
                   <mat-expansion-panel-header>
@@ -495,7 +495,7 @@
               </mat-accordion>
 
             </div>
-            <div fxFlex="100">
+            <div fxFlex="100" *ngIf="bar">
               <mat-accordion>
                 <mat-expansion-panel>
                   <mat-expansion-panel-header>
@@ -509,7 +509,7 @@
               </mat-accordion>
 
             </div>
-            <div fxFlex="100">
+            <div fxFlex="100" *ngIf="pie">
               <mat-accordion>
                 <mat-expansion-panel>
                   <mat-expansion-panel-header>
