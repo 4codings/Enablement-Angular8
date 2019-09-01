@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ReportTableComponent } from '../report-table.component';
 import { ConfigServiceService } from '../../../../services/config-service.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { isFulfilled } from 'q';
+import { data } from 'src/app/home/useradmin/authorize/authorize.component';
 
 @Component({
   selector: 'personalization-table',
   templateUrl: './personalization-table.component.html',
-  styleUrls: ['./personalization-table.component.scss']
+  styleUrls: ['./personalization-table.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class PersonalizationTableComponent implements OnInit {
   columnsPreferences: string[] = ['chartNo', 'chartType', 'xaxisData', 'yaxisData', 'unit',
@@ -109,8 +111,8 @@ export class PersonalizationTableComponent implements OnInit {
   preservedPreferences = [];
 
   constructor(public report: ReportTableComponent,
-    private data: ConfigServiceService,
-    private _snackBar: MatSnackBar) {
+    protected data: ConfigServiceService,
+    protected _snackBar: MatSnackBar) {
 
   }
 
@@ -122,6 +124,9 @@ export class PersonalizationTableComponent implements OnInit {
     return index;
   }
 
+  getChartPreferences(){
+    return this.chartPreferences;
+  }
   set_chartPreferences_arr(pref, i) {
     if (pref === 'chartno')
       this.chartPreferences[i]['chartno'] = this.chartno[i];
@@ -265,6 +270,7 @@ export class PersonalizationTableComponent implements OnInit {
           
         }
       }
+      this.data.chartPreferences = this.chartPreferences;
       /*this.data.setchartstyling(this.report.UNIQUE_ID, this.report.SRC_ID, pref, val).subscribe(
         () => {
 
@@ -327,12 +333,15 @@ export class PersonalizationTableComponent implements OnInit {
       baryaxis: "", piexaxis: "", pieyaxis: "", doughnutxaxis: "", doughnutyaxis: "", selectedchart: "", chartposition: "",
       charttype: "", xaxisdata: "", yaxisdata: "", UoM_x: "", UoM_y: "", SoM_x: "", SoM_y: "", xaxisstepsize: "", yaxisstepsize: "", personalizationtable: {}
     });
+    this.data.chartposition.push({ x: 0, y: 0 });
     console.log(this.chartPreferences);
+    this.data.chartPreferences = this.chartPreferences;
   }
 
   deleteRow_action(chartNo) {
     this.Element_Preferences.pop();
     console.log(chartNo);
+    this.data.chartPreferences = this.chartPreferences;
     //this.chartPreferences.splice(chartNo,1);
     //---data move up
     this.dataPreferences = new MatTableDataSource(this.Element_Preferences);
