@@ -12,10 +12,15 @@
     </div>
     <div class="container-actions" *ngIf="userAccess.role_machine">
       Manage Machines <button mat-icon-button class="add-btn"
-              matTooltip="Manage Machines"
-              (click)="onManageMachineBtnClick()">
+              matTooltip="Manage Machines" [matMenuTriggerFor]="manageMachine">
         <mat-icon class="edit-icon">edit</mat-icon>
       </button>
+      
+      <mat-menu #manageMachine="matMenu">
+        <button mat-menu-item (click)="onManageMachineBtnClick()">Manage</button>
+        <button mat-menu-item (click)="onAssignMcnPlfClick()">Assign</button>
+      </mat-menu>
+
     </div> 
     <!-- <button mat-icon-button class="add-btn"
             matTooltip="Add Machines"

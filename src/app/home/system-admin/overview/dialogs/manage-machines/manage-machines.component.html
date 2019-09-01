@@ -1,15 +1,10 @@
 <div class="dialog-wrapper" fxLayoutGap="8px" fxLayout="column" fxLayoutAlign="start stretch">
   <div class="dialog-header content-wrapper" fxLayoutAlign="space-between center">
     <span>Manage Machines</span>
-    <div fxFlex="30">
+    <!-- <div fxFlex="30">
       <label>
         <strong>{{Label['PLATFORM_CD']}}</strong>
       </label>
-      <!-- <mat-list class="scroll" [(ngModel)]="PLATFORM_CD">
-                  <mat-list-item  *ngFor="let a of PLF_DATA['PLATFORM_CD']" >
-                    {{a}}
-                  </mat-list-item>
-                </mat-list> -->
       <mat-form-field class="input_control inp_design">
         <mat-select [(ngModel)]="PLATFORM_CD">
           <mat-option style="text-align:center;" *ngFor="let mc of PLF_DATA['PLATFORM_CD']" [value]="mc" (click)=machineDetails()>
@@ -19,7 +14,7 @@
         </mat-select>
       </mat-form-field>
 
-    </div>
+    </div> -->
     <button mat-icon-button (click)="onBtnCancelClick()"><mat-icon>close</mat-icon></button>
   </div>
   <mat-divider></mat-divider>
@@ -36,7 +31,12 @@
           <strong>Name</strong>
         </label>
         <mat-form-field class="input_control">
-          <input matInput [(ngModel)]="PLATFORM_CD" (ngModelChange)="machineChange()">
+          <input matInput [(ngModel)]="PLATFORM_CD" [matAutocomplete]="auto" (ngModelChange)="machineChange()">
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="machineDetails($event)">
+            <mat-option style="text-align:center;" *ngFor="let mc of PLF_DATA['PLATFORM_CD']" [value]="mc" (click)=machineDetails()>
+              <div>{{mc}}</div>
+            </mat-option>
+          </mat-autocomplete>
         </mat-form-field>
       </div>
       <div fxFlex="5"></div>
@@ -88,7 +88,9 @@
 
 
         <mat-form-field>
-          <input matInput [(ngModel)]="EFF_STRT_DT_TM">
+          <input matInput [matDatepicker]="picker" [(ngModel)]="EFF_STRT_DT_TM">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
 
 
@@ -100,7 +102,9 @@
         </label>
 
         <mat-form-field>
-          <input matInput [(ngModel)]="EFF_END_DT_TM">
+          <input matInput [matDatepicker]="picker2" [(ngModel)]="EFF_END_DT_TM">
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
         </mat-form-field>
 
 

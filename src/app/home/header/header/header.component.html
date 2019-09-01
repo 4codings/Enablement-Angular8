@@ -25,16 +25,18 @@
     <span>{{agency}}</span>
   </button>
 
-  <button mat-menu-item [matMenuTriggerFor]="profiles">
-    <mat-icon>bookmarks</mat-icon>
-    Profiles
-  </button>
+  <ng-container *ngFor="let opt of options">
+    <button [style.display]="opt=== selectedProfile ? 'none' : null" mat-menu-item (click)="optionSelecteds(opt)">
+      <mat-icon>bookmarks</mat-icon>
+      {{opt | removeWt}}
+    </button>
+  </ng-container>
 
   <button mat-menu-item (click)="logout()">
     <mat-icon>power_settings_new</mat-icon>
     <span>Logout</span>
   </button>
 
-  <mat-menu #profiles="matMenu">
+  <!-- <mat-menu #profiles="matMenu">
     <app-user-profile></app-user-profile>
-  </mat-menu>
+  </mat-menu> -->

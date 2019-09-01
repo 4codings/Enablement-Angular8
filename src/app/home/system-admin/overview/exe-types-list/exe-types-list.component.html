@@ -17,11 +17,16 @@
       <button mat-icon-button matTooltip="edit ExeType" class="add-btn" (click)="onBtnEditExeClick()">
         <mat-icon>edit</mat-icon>
       </button> -->
-      Manage Platforms <button mat-icon-button class="add-btn"
-              matTooltip="Manage Platform"
-              (click)="onAddExeBtnClick()">
+      Manage Platforms<button mat-icon-button class="add-btn" 
+      matTooltip="Manage Platform" [matMenuTriggerFor]="managePlatform">
         <mat-icon class="edit-icon">edit</mat-icon>
       </button>
+
+      <mat-menu #managePlatform="matMenu">
+        <button mat-menu-item (click)="onAddExeBtnClick()">Manage</button>
+        <button mat-menu-item (click)="onAssignMcnPlfClick()">Assign</button>
+      </mat-menu>
+
     </div>  
   </div>
   <mat-divider></mat-divider>

@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, OnDestroy, ViewEncapsulation, ElementRef } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, ViewEncapsulation, ElementRef, Directive, Output, EventEmitter, HostListener } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { saveAs } from 'file-saver';
@@ -26,6 +26,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { DialogScheduleComponent } from '../../../shared/components/dialog-schedule/dialog-schedule.component';
+import { DatePipe } from '@angular/common';
 
 export class ReportData {
   public RESULT: string;
@@ -33,6 +34,26 @@ export class ReportData {
   constructor() {
   }
 }
+@Directive({
+  selector: '[isOutside]'
+})
+export class IsOutsideDirective {
+  constructor(private elementRef: ElementRef) { }
+
+  @Output()
+  public isOutside = new EventEmitter();
+
+  @HostListener('document:click', ['$event.target'])
+  public onClick(targetElement) {
+    if (this.elementRef) {
+      const clickedInside = this.elementRef.nativeElement.contains(targetElement) || targetElement.classList.contains('open-button');
+      if (!clickedInside) {
+        this.isOutside.emit(true);
+      }
+    }
+  }
+}
+
 @Component({
   selector: 'app-process-design',
   templateUrl: './process-design.component.html',
@@ -44,7 +65,8 @@ export class ReportData {
           return 'Find a Process';
         }
       })
-    }
+    },
+    DatePipe
   ]
 })
 export class ProcessDesignComponent implements OnInit, OnDestroy {
@@ -74,6 +96,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   applicationProcessValuesObservable: ApplicationProcessObservable[] = [];
   appProcessList = [];
   item: TreeviewItem[] = [];
+  oneAppItem: TreeviewItem[] = [];
   chilItem: TreeviewItem[] = [];
   config = TreeviewConfig.create({
     hasAllCheckBox: false,
@@ -83,6 +106,13 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     maxHeight: 400,
 
 
+  });
+  oneAppConfig = TreeviewConfig.create({
+    hasAllCheckBox: false,
+    hasFilter: false,
+    hasCollapseExpand: false,
+    decoupleChildFromParent: false,
+    maxHeight: 400,
   });
   parentMenuItems = [
     { item: 'New Process', value: 'Add', havePermission: 0, icon: 'create', iconType: 'mat' },
@@ -146,6 +176,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   addUpdateSequenceFlag = false;
   deleteUpdateSequenceFlag = false; // used to call update sequence api once only not with the service call again while delete sequence
   addUpdateServiceFlag = false; // to call update  api for service (i.e defined service) and not put api 
+  serviceTypeChangeFlag = false;
   oldAppId = '';
   oldTaskId = '';
   oldIconType = '';
@@ -272,6 +303,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     private router: Router,
     private dialog: MatDialog,
     private StorageSessionService: StorageSessionService,
+    private datePipe: DatePipe
   ) {
     this.applicationProcessObservable$ = this.optionalService.applicationProcessValue.subscribe(data => {
       if (data != null) {
@@ -726,8 +758,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       'V_PRIORITY': this.priority,
       "V_SYNC_FLG": this.async_sync === 'sync' ? 'Y' : 'N',
       'V_SRVC_JOB_LMT': this.job_instance,
-      'V_EFF_STRT_DT_TM': this.currentDate,
-      'V_EFF_END_DT_TM': this.afterFiveDays,
+      'V_EFF_STRT_DT_TM': this.datePipe.transform(this.currentDate, 'yyyy-MM-dd HH:mm:ss.SSS'),
+      'V_EFF_END_DT_TM': this.datePipe.transform(this.afterFiveDays, 'yyyy-MM-dd HH:mm:ss.SSS'),
       'V_DSPLY_OUTPUT': this.display_output ? 'Y' : 'N',
       'V_SRVC_ACTIVE_FLG': this.isServiceActive ? 'Y' : 'N',
       'V_ADD_TO_SMMRY_RESULT': this.summary_output ? 'Y' : 'N',
@@ -829,9 +861,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           document.getElementById("processId").focus();
         }
       });
-    // setTimeout(() => {
-    //   this.upload(this.selectedApp, this.selectedProcess);
-    // }, this.ctrl_variables.delay_timeout);
+    setTimeout(() => {
+      this.upload(this.selectedApp, this.selectedProcess);
+    }, this.ctrl_variables.delay_timeout);
   }
 
   upload(vAppCd, vPrcsCd) {
@@ -884,7 +916,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
 
   newBpmn() {
-    this.selectedProcess = 'newProcess';
+    this.selectedProcess = this.autoGenerate();
+    // this.selectedProcess = 'newProcess';
     this.V_OLD_PRCS_CD = this.selectedProcess;
     this.documentation = '';
     this.processName = '';
@@ -899,6 +932,17 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       (x: any) => {
         this.modeler.importXML(x, this.handleError.bind(this));
         this.bpmnTemplate = x;
+        setTimeout(() => {
+          let elementRegistry = this.modeler.get('elementRegistry');
+          let element = elementRegistry.get('newProcess');
+          let modeling = this.modeler.get('modeling');
+          const doc = [{ 'text': this.documentation }];
+          let id = this.selectedProcess;
+          modeling.updateProperties(element, {
+            name: id,
+            id: id.replace(new RegExp(' ', 'g'), '_'),
+          })
+        })
       },
       this.handleError.bind(this)
     );
@@ -1130,6 +1174,11 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     if (!item.children) {
       this.selectedApp = item.value;
       this.selectedProcess = item.text;
+      let index = this.item.findIndex(v => v.text == this.selectedApp);
+      if (index > -1) {
+        this.oneAppItem = [];
+        this.oneAppItem.push(this.item[index]);
+      }
       const formData: FormData = new FormData();
       formData.append('FileInfo', JSON.stringify({
         File_Path: `${this.ctrl_variables.bpmn_file_path}` + item.value + '/',
@@ -1164,6 +1213,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                       id: id.replace(new RegExp(' ', 'g'), '_'),
                     })
                     document.getElementById("processId").focus();
+                    this.upload(this.selectedApp, this.selectedProcess);
                   })
                 },
                 this.handleError.bind(this)
@@ -1172,20 +1222,15 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           },
           this.handleError.bind(this)
         );
-      // this.httpClient.get('/assets/bpmn/diagram.bpmn', {
-      //   headers: { observe: 'response' }, responseType: 'text'
-      // }).subscribe(
-      //   (x: any) => {
-      //     this.modeler.importXML(x, this.handleError.bind(this));
-      //     this.bpmnTemplate = x;
-      //   },
-      //   this.handleError.bind(this)
-      // );
       this.Execute_AP_PR();
+    } else {
+      this.selectedApp = item.value;
+      this.oneAppItem = [];
+      this.oneAppItem.push(item);
     }
-    if (!parentTitleClick) {
-      this.treesidenav.opened = false;
-    }
+    // if (!parentTitleClick) {
+    //   this.treesidenav.opened = false;
+    // }
     this.selectedItem = item;
   }
   onParentMenuItemClick(actionValue, parentValue, selectedItem?) {
@@ -1202,7 +1247,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         this.isApp = false;
         this.isProcess = true;
         this.isService = false;
-        this.generalId = "newProcess";
+        // this.generalId = "newProcess";
+        this.generalId = this.selectedProcess;
         this.showRightIcon = true;
         this.opened = true;
         this.showCondtionType = false;
@@ -1230,6 +1276,11 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.treesidenav.opened = false;
   }
 
+  autoGenerate() {
+    return Math.random().toString(36).split('').filter(function (value, index, self) {
+      return self.indexOf(value) === index;
+    }).join('').substr(2, 8);
+  }
   closeSchedulePanel() {
     this.newScheduleView = false;
     this.Pause_btn = false;

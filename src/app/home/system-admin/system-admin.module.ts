@@ -31,9 +31,10 @@ import { AddConnectionDialogComponent } from './overview/dialogs/add-connection-
 import { EditConnectionDialogComponent } from './overview/dialogs/edit-connection-dialog/edit-connection-dialog.component';
 import { ManageMachinesComponent } from './overview/dialogs/manage-machines/manage-machines.component';
 import { AssignConnectionExeComponent } from './overview/dialogs/assign-connection-exe/assign-connection-exe.component';
+import { AssignMcnPlfComponent } from './overview/dialogs/assign-mcn-plf/assign-mcn-plf.component';
 
 @NgModule({
-  declarations: [SystemAdminComponent, PlatformComponent, ConnectionComponent, DeployStatusComponent, DeploymentComponent, DeploymentsnavbarComponent, InstallComponent, MachineComponent, MachineconnectionComponent, MachinespecsComponent, OverviewComponent, MachinesListComponent, SingleExeComponent, ExeTileListComponent, AddPlatformDialogComponent, EditExeTypeDialogComponent, ExeTypesListComponent, SingleMachineComponent, MachineTileListComponent, FilterExetypePipe, FilterMachinesPipe, AddExeDialogComponent, AddConnectionDialogComponent, EditConnectionDialogComponent, ManageMachinesComponent,AssignConnectionExeComponent],
+  declarations: [SystemAdminComponent, PlatformComponent, ConnectionComponent, DeployStatusComponent, DeploymentComponent, DeploymentsnavbarComponent, InstallComponent, MachineComponent, MachineconnectionComponent, MachinespecsComponent, OverviewComponent, MachinesListComponent, SingleExeComponent, ExeTileListComponent, AddPlatformDialogComponent, EditExeTypeDialogComponent, ExeTypesListComponent, SingleMachineComponent, MachineTileListComponent, FilterExetypePipe, FilterMachinesPipe, AddExeDialogComponent, AddConnectionDialogComponent, EditConnectionDialogComponent, ManageMachinesComponent,AssignConnectionExeComponent, AssignMcnPlfComponent],
   imports: [
     CommonModule,
     SystemAdminRoutingModule,
@@ -43,7 +44,7 @@ import { AssignConnectionExeComponent } from './overview/dialogs/assign-connecti
     DragDropModule,
     ReactiveFormsModule.withConfig({ warnOnNgModelWithFormControl: 'never' })
   ],
-  entryComponents: [AddPlatformDialogComponent, AssignConnectionExeComponent, EditExeTypeDialogComponent, AddExeDialogComponent, AddConnectionDialogComponent, EditConnectionDialogComponent, ManageMachinesComponent]
+  entryComponents: [AddPlatformDialogComponent, AssignConnectionExeComponent, EditExeTypeDialogComponent, AddExeDialogComponent, AddConnectionDialogComponent, EditConnectionDialogComponent, ManageMachinesComponent, AssignMcnPlfComponent]
 })
 export class SystemAdminModule {
   constructor(){

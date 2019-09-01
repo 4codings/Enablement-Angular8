@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 
 import { Router, ActivatedRoute } from "@angular/router";
 import { UserService } from '../../../core/user.service';
@@ -18,6 +19,9 @@ export class HeaderComponent implements OnInit {
   public userName: string = '';
   public agency: string = '';
   public index: any;
+  public selectedProfile = '';
+  optionSelected: string = "";
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -25,6 +29,7 @@ export class HeaderComponent implements OnInit {
     private optionalService: OptionalValuesService,
     private apiService: ApiService,
     private rollserviceService: RollserviceService,
+    public toastr: ToastrService
   ) {
     this.index = this.userName.indexOf('@');
     this.userName = this.userName.substring(0, this.index).toUpperCase();
@@ -37,10 +42,19 @@ export class HeaderComponent implements OnInit {
   }
   ngOnInit() {
     this.userName = this.userService.getDetailFromStorage().USR_NM;
+    this.userName = this.userName.substring(0, this.userName.lastIndexOf("@"))
     this.agency = this.userService.getDetailFromStorage().SRC_CD;
-    //this.options=this.StorageSessionService.getLocalS("profileopt");
-    if (this.options) this.options.length == 0 ? this.showprofilebtn = false : this.showprofilebtn = true;
 
+    this.chooworkingProfile();
+    // let url:string="user";
+    // this.router.navigateByUrl(url);
+    if(this.router.url == "/End_User/Design") {
+      this.selectedProfile = "End_User";
+    } else if(this.router.url == "/User_Admin/Adminuser") {
+      this.selectedProfile = "User_Admin";
+    } else if(this.router.url == "/System_Admin/AppDeploy") {
+      this.selectedProfile = "System_Admin";
+    }
   }
 
   logout() {
@@ -56,6 +70,33 @@ export class HeaderComponent implements OnInit {
     this.userService.clear();
     this.rollserviceService.clear();
     this.router.navigateByUrl('/login', { skipLocationChange: true });
+  }
+
+  //Selected option in the profile section
+  optionSelecteds(e: any) {
+      this.selectedProfile = e;
+    //if(e.split(" ") > 0)
+    // this.toastr.info("your profile "+e+"profile");
+    this.router.navigateByUrl(e.replace(" ", "_"), { skipLocationChange: true });
+    //this.router.navigateByUrl(e);
+  }
+
+  chooworkingProfile() {
+    this.rollserviceService.getRollCd().then((res) => {
+      for (let i = 0; i < res.length; i++) {
+        if (res[i] == "End User Role") {
+          this.options.push("End_User");
+        } else if (res[i] == 'System Admin Role') {
+          this.options.push("System_Admin");
+        } else if (res[i] == 'Finance Role') {
+          this.options.push("Cost");
+        } else if (res[i] == 'IT Asset Role') {
+          this.options.push("Assets");
+        } else if (res[i] == 'User Admin Role') {
+          this.options.push("User_Admin");
+        }
+      }
+    });
   }
 
 }

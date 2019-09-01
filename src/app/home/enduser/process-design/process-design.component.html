@@ -13,7 +13,7 @@
         (click)="onTitleClick(item,false)">
         {{item.text}}
       </label>
-      <label *ngIf="item.children" class="form-check-label">
+      <!-- <label *ngIf="item.children" class="form-check-label">
         <button id="side-nav-menu" mat-mini-fab [matMenuTriggerFor]="parentMenu"
           aria-label="Example icon-button with a menu">
           <mat-icon class="parent-color more-vert-font">more_vert</mat-icon>
@@ -46,6 +46,34 @@
             </button>
           </div>
         </mat-menu>
+      </label> -->
+    </div>
+  </div>
+</ng-template>
+<ng-template #appItemTemplate let-item="item" let-index let-onCollapseExpand="onCollapseExpand"
+  let-onCheckedChange="onCheckedChange">
+  <div class="form-inline row-item" [ngClass]="item.children?'parent-menu':'child-menu'">
+    <i *ngIf="item.children" (click)="onCollapseExpand()" aria-hidden="true" class="fa caret-font"
+      [class.fa-caret-right]="item.collapsed" [class.fa-caret-down]="!item.collapsed"></i>
+    <div class="form-check" *ngIf="item.text!=='NULL'">
+      <label *ngIf="item.children" class="form-check-label parent-color"
+        [ngClass]="item.value == selectedApp?'active-menu':''" (click)="onTitleClick(item, true)"
+        [matMenuTriggerFor]="parentMenu">
+        {{item.text}}
+      </label>
+      <mat-menu class="headerParentMenu" #parentMenu="matMenu">
+        <span *ngFor="let pitem of parentobj[selectedApp]" [ngClass]="pitem.iconType=='mat' ? pitem.icon : ''">
+          <button (click)="onParentMenuItemClick(pitem.value,selectedApp)" *ngIf="pitem.havePermission" mat-menu-item>
+            <mat-icon *ngIf="pitem.iconType=='mat'" title="{{pitem.item}}">{{pitem.icon}}</mat-icon>
+            <div *ngIf="pitem.iconType=='bpmn'" title="{{pitem.item}}" class="{{pitem.icon}}" draggable="true">
+            </div>
+          </button>
+        </span>
+      </mat-menu>
+      <label *ngIf="!item.children" class="form-check-label child-color"
+        [ngClass]="(item.text == selectedProcess && item.value == selectedApp)?'active-menu':''"
+        (click)="onTitleClick(item,false)">
+        {{item.text}}
       </label>
     </div>
   </div>
@@ -70,7 +98,10 @@
     <div fxFlex="100">
       <div class="parent">
         <h5 class="parent-font m-t-10" *ngIf="selectedApp!=''">
-          <button class="mr-2" [matMenuTriggerFor]="parentMenu" aria-label="Example icon-button with a menu">
+          <ngx-treeview [config]="oneAppConfig" [items]="oneAppItem" [itemTemplate]="appItemTemplate">
+            <!-- (selectedChange)="onSelectedChange($event)" (filterChange)="onFilterChange($event)" -->
+          </ngx-treeview>
+          <!-- <button class="mr-2" [matMenuTriggerFor]="parentMenu" aria-label="Example icon-button with a menu">
             {{selectedApp}}
           </button>
           <mat-menu class="headerParentMenu" #parentMenu="matMenu">
@@ -82,8 +113,8 @@
                 </div>
               </button>
             </span>
-          </mat-menu>
-          <span class="selected-process-font" *ngIf="selectedProcess!=''">
+          </mat-menu> -->
+          <!-- <span class="selected-process-font" *ngIf="selectedProcess!=''">
             <button (click)="onChildMenuClick(selectedItem)" [matMenuTriggerFor]="childMenu"
               aria-label="Example icon-button with a menu">
               {{selectedProcess}}
@@ -100,7 +131,7 @@
                 </div>
               </button>
             </span>
-          </mat-menu>
+          </mat-menu> -->
         </h5>
       </div>
       <section>
@@ -113,301 +144,384 @@
           </div>
           <div fxFlex="100" fxLayout="column">
             <div fxFlex="100" [ngClass]="opened?'stage-show':'stage-hide'">
-              <div id="canvas"></div>
+              <mat-accordion>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <span class="selected-process-font" *ngIf="selectedProcess==''"> Process Diagram</span>
+                      <span class="selected-process-font" *ngIf="selectedProcess!=''">
+                        <button (click)="onChildMenuClick(selectedItem)" [matMenuTriggerFor]="childMenu"
+                          aria-label="Example icon-button with a menu">
+                          {{selectedProcess}}
+                        </button>
+                      </span>
+                      <mat-menu class="headerChildMenu" #childMenu="matMenu">
+                        <span *ngFor="let citem of childobj[selectedProcess]">
+                          <button (click)="onChildMenuItemClick(citem.value,selectedItem)" *ngIf="citem.havePermission"
+                            mat-menu-item>
+                            <mat-icon *ngIf="citem.iconType=='mat'" title="{{citem.item}}">{{citem.icon}}</mat-icon>
+                            <i *ngIf="citem.iconType=='material'" class="material-icons"
+                              title="{{citem.item}}">{{citem.icon}}</i>
+                            <i *ngIf="citem.iconType=='fa'" class="{{citem.icon}}" title="{{citem.item}}"></i>
+                            <div *ngIf="citem.iconType=='bpmn'" title="{{citem.item}}" class="{{citem.icon}}"
+                              draggable="true">
+                            </div>
+                          </button>
+                        </span>
+                      </mat-menu>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div id="canvas"></div>
+                </mat-expansion-panel>
+              </mat-accordion>
             </div>
+
             <!-- <div fxFlex="100" [ngClass]="opened?'stage-show':'stage-hide'">
-              <app-viewer [parentapp]="ApplicationCD" [parentpro]="ProcessCD" [file_path]="file_path">
-              </app-viewer>
+              <div id="canvas"></div>
             </div> -->
 
             <div fxFlex="100">
-              <div class="dynamicFormContent">
-                <!-- <h3 style="text-align: center;" *ngIf="resFormData!='' &&  resFormData!=undefined">
-                  {{Label['Parameters']}}</h3> -->
-                <div class="dynamicContent">
-                  <form name="form" #processForm="ngForm" novalidate>
-                    <div class="padding-input flexLeft" *ngFor="let pr of resFormData"
-                      [ngClass]="data.getFieldClass(pr.name)">
-                      <ng-container *ngIf="!data.isFieldHidden(pr.name)">
-                        <label class="f_label">{{pr.display | removeWt}}<span
-                            *ngIf="data.isFieldMendatory(pr.name)">*</span></label>
-                        <mat-icon *ngIf="pr.helptext!= null" matTooltip="{{pr.helptext}}" class="field-help"
-                          matTooltipPosition="after">help</mat-icon>
-                        <div *ngIf="pr.hasfield">
-                          <ng-container [ngSwitch]="pr.type">
-                            <ng-container *ngSwitchCase="'Radio Button'">
-                              <mat-form-field class="form_input form_list" style="background-color: #f4f6f7">
-                                <input matInput style="display: none">
-                                <mat-radio-group #name="ngModel" [required]="data.isFieldMendatory()"
-                                  [disabled]="data.isFieldDisabled()" [(ngModel)]="pr.value"
-                                  (ngModelChange)="Update_value(pr.value,pr.placeholder)" [name]="pr.name">
-                                  <mat-radio-button style="background-color: #f4f6f7" [value]="listOption"
-                                    *ngFor="let listOption of getListOptions(pr.name)">{{listOption}}</mat-radio-button>
-                                </mat-radio-group>
-                              </mat-form-field>
-                            </ng-container>
-                            <ng-container *ngSwitchCase="'Checkbox'">
-                              <mat-form-field class="form_input form_list" style="background-color: #f4f6f7">
-                                <input matInput style="display: none">
-                                <mat-selection-list #name="ngModel" [disabled]="data.isFieldDisabled()"
-                                  [(ngModel)]="pr.value" (ngModelChange)="Update_value(pr.value,pr.placeholder)"
-                                  style="background-color: #f4f6f7">
-                                  <mat-list-option checkboxPosition="before" [value]="listOption"
-                                    *ngFor="let listOption of getListOptions(pr.name)">
-                                    {{listOption}}
-                                  </mat-list-option>
-                                </mat-selection-list>
-                              </mat-form-field>
-                            </ng-container>
-                            <ng-container *ngSwitchCase="'date'">
-                              <mat-form-field class="form_input">
-                                <input #name="ngModel" [required]="data.isFieldMendatory()"
-                                  [disabled]="data.isFieldDisabled()" [name]="pr.name" [value]="pr.value"
-                                  (keyup)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value"
-                                  matInput [matDatepicker]="picker" class="f_inp">
-                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-datepicker #picker></mat-datepicker>
-                              </mat-form-field>
-                              <div [style.visibility]="data.isFieldInvalid(name) ? 'visible': 'hidden'">
-                                {{data.getFieldInValidMsg(name, pr.name)}}
-                              </div>
-                            </ng-container>
-                            <ng-container *ngSwitchCase="'time'">
-                              <mat-form-field class="form_input">
-                                <input #name="ngModel" [required]="data.isFieldMendatory()"
-                                  [disabled]="data.isFieldDisabled()" matInput [type]="pr.type" [name]="pr.name"
-                                  [value]="pr.value" (change)="Update_value($event.target.value,pr.placeholder)"
-                                  [(ngModel)]="pr.value" class="f_inp">
-                              </mat-form-field>
-                              <div [style.visibility]="data.isFieldInvalid(name) ? 'visible': 'hidden'">
-                                {{data.getFieldInValidMsg(name, pr.name)}}
-                              </div>
-                            </ng-container>
-                            <ng-container *ngSwitchCase="'datetime'">
-                              <mat-form-field class="form_input" style="background-color: #f4f6f7">
-                                <input #name="ngModel" [required]="data.isFieldMendatory()"
-                                  [disabled]="data.isFieldDisabled()" matInput [name]="pr.name" [value]="pr.value"
-                                  (change)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value"
-                                  [owlDateTimeTrigger]="fdate" [owlDateTime]="fdate">
-                                <owl-date-time [attr.id]="pr.name"></owl-date-time>
-                              </mat-form-field>
-                              <div [style.visibility]="data.isFieldInvalid(name) ? 'visible': 'hidden'">
-                                {{data.getFieldInValidMsg(name, pr.name)}}
-                              </div>
-                            </ng-container>
-                            <ng-container *ngSwitchCase="'password'">
-                              <mat-form-field class="form_input">
-                                <input matInput #name="ngModel" [required]="data.isFieldMendatory(pr.name)"
-                                  [readonly]="data.isFieldDisabled(pr.name)" [type]="pr.type" [name]="pr.name"
-                                  [value]="pr.value" (change)="Update_value($event.target.value,pr.placeholder)"
-                                  [(ngModel)]="pr.value" #name="ngModel" class="f_inp">
-                              </mat-form-field>
-                              <div [style.visibility]="data.isFieldInvalid(name) ? 'visible': 'hidden'">
-                                {{data.getFieldInValidMsg(name, pr.name)}}
-                              </div>
-                            </ng-container>
-                            <ng-container *ngSwitchCase="'range'">
-                              <mat-slider #name="ngModel" [(ngModel)]="pr.value" value="1" step="1" min="1" max="100"
-                                (change)="Update_value($event.target.value,pr.placeholder)"
-                                style="background-color: #f4f6f7">
-                              </mat-slider>
-                            </ng-container>
-                            <ng-container *ngSwitchCase="color">
-                              <mat-form-field class="form_input">
-                                <input #name="ngModel" [(colorPicker)]="_backgroundColor"
-                                  [style.background]="_backgroundColor" [(ngModel)]="pr.value" class="f_inp">
-                              </mat-form-field>
-                            </ng-container>
-                            <ng-container *ngSwitchCase="'Text Area'">
-                              <mat-form-field class="form_input">
-                                <textarea matInput #name="ngModel" [required]="data.isFieldMendatory(pr.name)"
-                                  [readonly]="data.isFieldDisabled(pr.name)" [name]="pr.name"
-                                  [maxLength]="data.getFieldMaxLength(pr.name)" (value)="pr.value"
-                                  (change)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value"
-                                  class="f_inp">
-                                    </textarea>
-                              </mat-form-field>
-                              <div [style.visibility]="data.isFieldInvalid(name) ? 'visible': 'hidden'">
-                                {{data.getFieldInValidMsg(name, pr.name)}}
-                              </div>
-                            </ng-container>
-                            <ng-container *ngSwitchCase="data.getFieldTypeForChange(pr.type)">
-                              <mat-form-field class="form_input">
-                                <input matInput [required]="data.isFieldMendatory(pr.name)"
-                                  maxlength="data.getMaxLengthForField(pr.type)" [name]="pr.name" (value)="pr.value"
-                                  (change)="Update_value($event.target.value,pr.placeholder)"
-                                  (change)="data.transformFieldValueOnChange($event,pr.type)" [(ngModel)]="pr.value"
-                                  class="f_inp" #name="ngModel">
-                                <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
-                                  <mat-option (click)="Update_value(pr.value ,pr.placeholder)"
-                                    style="text-align:center;"
-                                    *ngFor="let option of options[pr.name]| myfilter:FilterAutoValue" [value]="option">
-                                    {{option}}
-                                  </mat-option>
-                                </mat-autocomplete>
-                              </mat-form-field>
-                              <div [style.visibility]="data.isFieldInvalid(name) ? 'visible': 'hidden'">
-                                {{data.getFieldInValidMsg(name, pr.name)}}
-                              </div>
-                            </ng-container>
-                            <ng-container *ngSwitchCase="'Zip'">
-                              <mat-form-field class="form_input">
-                                <input type="text" pattern="^[0-9]{5}?$" [required]="data.isFieldMendatory(pr.name)"
-                                  maxlength="5" matInput [disabled]="data.isFieldDisabled(pr.name)" [name]="pr.name"
-                                  (value)="pr.value" [matAutocomplete]="auto"
-                                  (key)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value"
-                                  class="f_inp" #name="ngModel">
+              <mat-accordion>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      Parameters
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div class="dynamicFormContent">
+                    <!-- <h3 style="text-align: center;" *ngIf="resFormData!='' &&  resFormData!=undefined">
+                        {{Label['Parameters']}}</h3> -->
+                    <div class="dynamicContent">
+                      <form name="form" #processForm="ngForm" novalidate>
+                        <div class="padding-input flexLeft" *ngFor="let pr of resFormData"
+                          [ngClass]="data.getFieldClass(pr.name)">
+                          <ng-container *ngIf="!data.isFieldHidden(pr.name)">
+                            <label class="f_label">{{pr.display | removeWt}}<span
+                                *ngIf="data.isFieldMendatory(pr.name)">*</span></label>
+                            <mat-icon *ngIf="pr.helptext!= null" matTooltip="{{pr.helptext}}" class="field-help"
+                              matTooltipPosition="after">help</mat-icon>
+                            <div *ngIf="pr.hasfield">
+                              <ng-container [ngSwitch]="pr.type">
+                                <ng-container *ngSwitchCase="'Radio Button'">
+                                  <mat-form-field class="form_input form_list" style="background-color: #f4f6f7">
+                                    <input matInput style="display: none">
+                                    <mat-radio-group #name="ngModel" [required]="data.isFieldMendatory()"
+                                      [disabled]="data.isFieldDisabled()" [(ngModel)]="pr.value"
+                                      (ngModelChange)="Update_value(pr.value,pr.placeholder)" [name]="pr.name">
+                                      <mat-radio-button style="background-color: #f4f6f7" [value]="listOption"
+                                        *ngFor="let listOption of getListOptions(pr.name)">{{listOption}}
+                                      </mat-radio-button>
+                                    </mat-radio-group>
+                                  </mat-form-field>
+                                </ng-container>
+                                <ng-container *ngSwitchCase="'Checkbox'">
+                                  <mat-form-field class="form_input form_list" style="background-color: #f4f6f7">
+                                    <input matInput style="display: none">
+                                    <mat-selection-list #name="ngModel" [disabled]="data.isFieldDisabled()"
+                                      [(ngModel)]="pr.value" (ngModelChange)="Update_value(pr.value,pr.placeholder)"
+                                      style="background-color: #f4f6f7">
+                                      <mat-list-option checkboxPosition="before" [value]="listOption"
+                                        *ngFor="let listOption of getListOptions(pr.name)">
+                                        {{listOption}}
+                                      </mat-list-option>
+                                    </mat-selection-list>
+                                  </mat-form-field>
+                                </ng-container>
+                                <ng-container *ngSwitchCase="'date'">
+                                  <mat-form-field class="form_input">
+                                    <input #name="ngModel" [required]="data.isFieldMendatory()"
+                                      [disabled]="data.isFieldDisabled()" [name]="pr.name" [value]="pr.value"
+                                      (keyup)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value"
+                                      matInput [matDatepicker]="picker" class="f_inp">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                  </mat-form-field>
+                                  <div [style.visibility]="data.isFieldInvalid(name) ? 'visible': 'hidden'">
+                                    {{data.getFieldInValidMsg(name, pr.name)}}
+                                  </div>
+                                </ng-container>
+                                <ng-container *ngSwitchCase="'time'">
+                                  <mat-form-field class="form_input">
+                                    <input #name="ngModel" [required]="data.isFieldMendatory()"
+                                      [disabled]="data.isFieldDisabled()" matInput [type]="pr.type" [name]="pr.name"
+                                      [value]="pr.value" (change)="Update_value($event.target.value,pr.placeholder)"
+                                      [(ngModel)]="pr.value" class="f_inp">
+                                  </mat-form-field>
+                                  <div [style.visibility]="data.isFieldInvalid(name) ? 'visible': 'hidden'">
+                                    {{data.getFieldInValidMsg(name, pr.name)}}
+                                  </div>
+                                </ng-container>
+                                <ng-container *ngSwitchCase="'datetime'">
+                                  <mat-form-field class="form_input" style="background-color: #f4f6f7">
+                                    <input #name="ngModel" [required]="data.isFieldMendatory()"
+                                      [disabled]="data.isFieldDisabled()" matInput [name]="pr.name" [value]="pr.value"
+                                      (change)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value"
+                                      [owlDateTimeTrigger]="fdate" [owlDateTime]="fdate">
+                                    <owl-date-time [attr.id]="pr.name"></owl-date-time>
+                                  </mat-form-field>
+                                  <div [style.visibility]="data.isFieldInvalid(name) ? 'visible': 'hidden'">
+                                    {{data.getFieldInValidMsg(name, pr.name)}}
+                                  </div>
+                                </ng-container>
+                                <ng-container *ngSwitchCase="'password'">
+                                  <mat-form-field class="form_input">
+                                    <input matInput #name="ngModel" [required]="data.isFieldMendatory(pr.name)"
+                                      [readonly]="data.isFieldDisabled(pr.name)" [type]="pr.type" [name]="pr.name"
+                                      [value]="pr.value" (change)="Update_value($event.target.value,pr.placeholder)"
+                                      [(ngModel)]="pr.value" #name="ngModel" class="f_inp">
+                                  </mat-form-field>
+                                  <div [style.visibility]="data.isFieldInvalid(name) ? 'visible': 'hidden'">
+                                    {{data.getFieldInValidMsg(name, pr.name)}}
+                                  </div>
+                                </ng-container>
+                                <ng-container *ngSwitchCase="'range'">
+                                  <mat-slider #name="ngModel" [(ngModel)]="pr.value" value="1" step="1" min="1"
+                                    max="100" (change)="Update_value($event.target.value,pr.placeholder)"
+                                    style="background-color: #f4f6f7">
+                                  </mat-slider>
+                                </ng-container>
+                                <ng-container *ngSwitchCase="color">
+                                  <mat-form-field class="form_input">
+                                    <input #name="ngModel" [(colorPicker)]="_backgroundColor"
+                                      [style.background]="_backgroundColor" [(ngModel)]="pr.value" class="f_inp">
+                                  </mat-form-field>
+                                </ng-container>
+                                <ng-container *ngSwitchCase="'Text Area'">
+                                  <mat-form-field class="form_input">
+                                    <textarea matInput #name="ngModel" [required]="data.isFieldMendatory(pr.name)"
+                                      [readonly]="data.isFieldDisabled(pr.name)" [name]="pr.name"
+                                      [maxLength]="data.getFieldMaxLength(pr.name)" (value)="pr.value"
+                                      (change)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value"
+                                      class="f_inp">
+                                          </textarea>
+                                  </mat-form-field>
+                                  <div [style.visibility]="data.isFieldInvalid(name) ? 'visible': 'hidden'">
+                                    {{data.getFieldInValidMsg(name, pr.name)}}
+                                  </div>
+                                </ng-container>
+                                <ng-container *ngSwitchCase="data.getFieldTypeForChange(pr.type)">
+                                  <mat-form-field class="form_input">
+                                    <input matInput [required]="data.isFieldMendatory(pr.name)"
+                                      maxlength="data.getMaxLengthForField(pr.type)" [name]="pr.name" (value)="pr.value"
+                                      (change)="Update_value($event.target.value,pr.placeholder)"
+                                      (change)="data.transformFieldValueOnChange($event,pr.type)" [(ngModel)]="pr.value"
+                                      class="f_inp" #name="ngModel">
+                                    <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
+                                      <mat-option (click)="Update_value(pr.value ,pr.placeholder)"
+                                        style="text-align:center;"
+                                        *ngFor="let option of options[pr.name]| myfilter:FilterAutoValue"
+                                        [value]="option">
+                                        {{option}}
+                                      </mat-option>
+                                    </mat-autocomplete>
+                                  </mat-form-field>
+                                  <div [style.visibility]="data.isFieldInvalid(name) ? 'visible': 'hidden'">
+                                    {{data.getFieldInValidMsg(name, pr.name)}}
+                                  </div>
+                                </ng-container>
+                                <ng-container *ngSwitchCase="'Zip'">
+                                  <mat-form-field class="form_input">
+                                    <input type="text" pattern="^[0-9]{5}?$" [required]="data.isFieldMendatory(pr.name)"
+                                      maxlength="5" matInput [disabled]="data.isFieldDisabled(pr.name)" [name]="pr.name"
+                                      (value)="pr.value" [matAutocomplete]="auto"
+                                      (key)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value"
+                                      class="f_inp" #name="ngModel">
 
-                                <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
-                                  <mat-option style="text-align:center;"
-                                    (click)="Update_value(pr.value ,pr.placeholder)"
-                                    *ngFor="let option of options[pr.name]| myfilter:FilterAutoValue" [value]="option">
-                                    {{option}}
-                                  </mat-option>
-                                </mat-autocomplete>
-                              </mat-form-field>
-                              <div [style.visibility]="data.isFieldInvalid(name) ? 'visible': 'hidden'">
-                                {{data.getFieldInValidMsg(name, pr.name)}}
-                              </div>
-                            </ng-container>
-                            <ng-container *ngSwitchCase="'Email'">
-                              <mat-form-field class="form_input">
-                                <input type="email" [required]="data.isFieldMendatory(pr.name)" matInput
-                                  [readonly]="data.isFieldDisabled(pr.name)" [name]="pr.name" (value)="pr.value"
-                                  [matAutocomplete]="auto" (change)="Update_value($event.target.value,pr.placeholder)"
-                                  [(ngModel)]="pr.value" class="f_inp" #name="ngModel" email="true"
-                                  pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}">
+                                    <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
+                                      <mat-option style="text-align:center;"
+                                        (click)="Update_value(pr.value ,pr.placeholder)"
+                                        *ngFor="let option of options[pr.name]| myfilter:FilterAutoValue"
+                                        [value]="option">
+                                        {{option}}
+                                      </mat-option>
+                                    </mat-autocomplete>
+                                  </mat-form-field>
+                                  <div [style.visibility]="data.isFieldInvalid(name) ? 'visible': 'hidden'">
+                                    {{data.getFieldInValidMsg(name, pr.name)}}
+                                  </div>
+                                </ng-container>
+                                <ng-container *ngSwitchCase="'Email'">
+                                  <mat-form-field class="form_input">
+                                    <input type="email" [required]="data.isFieldMendatory(pr.name)" matInput
+                                      [readonly]="data.isFieldDisabled(pr.name)" [name]="pr.name" (value)="pr.value"
+                                      [matAutocomplete]="auto"
+                                      (change)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value"
+                                      class="f_inp" #name="ngModel" email="true"
+                                      pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}">
 
-                                <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
-                                  <mat-option style="text-align:center;"
-                                    (click)="Update_value(pr.value ,pr.placeholder)"
-                                    *ngFor="let option of options[pr.name]| myfilter:FilterAutoValue" [value]="option">
-                                    {{option}}
-                                  </mat-option>
-                                </mat-autocomplete>
-                              </mat-form-field>
-                              <div [style.visibility]=" data.isFieldInvalid(name) ? 'visible': 'hidden'">
-                                {{data.getFieldInValidMsg(name, pr.name)}}
-                              </div>
-                            </ng-container>
-                            <ng-container *ngSwitchDefault>
-                              <mat-form-field class="form_input">
-                                <input matInput [name]="pr.name" [required]="data.isFieldMendatory(pr.name)"
-                                  #name="ngModel" [readonly]="data.isFieldDisabled(pr.name)"
-                                  (change)="Update_value(pr.value ,pr.placeholder)"
-                                  [maxLength]="data.getFieldMaxLength(pr.name)" [matAutocomplete]="auto"
-                                  [(ngModel)]="pr.value" class="f_inp">
-                                <mat-autocomplete #auto="matAutocomplete">
-                                  <mat-option style="text-align:center;"
-                                    (click)="Update_value(pr.value ,pr.placeholder)"
-                                    *ngFor="let option of options[pr.name]| myfilter:FilterAutoValue" [value]="option">
-                                    {{option}}
-                                  </mat-option>
-                                </mat-autocomplete>
-                              </mat-form-field>
-                              <div [style.visibility]=" data.isFieldInvalid(name) ? 'visible': 'hidden'">
-                                {{data.getFieldInValidMsg(name, pr.name)}}
-                              </div>
-                            </ng-container>
+                                    <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
+                                      <mat-option style="text-align:center;"
+                                        (click)="Update_value(pr.value ,pr.placeholder)"
+                                        *ngFor="let option of options[pr.name]| myfilter:FilterAutoValue"
+                                        [value]="option">
+                                        {{option}}
+                                      </mat-option>
+                                    </mat-autocomplete>
+                                  </mat-form-field>
+                                  <div [style.visibility]=" data.isFieldInvalid(name) ? 'visible': 'hidden'">
+                                    {{data.getFieldInValidMsg(name, pr.name)}}
+                                  </div>
+                                </ng-container>
+                                <ng-container *ngSwitchDefault>
+                                  <mat-form-field class="form_input">
+                                    <input matInput [name]="pr.name" [required]="data.isFieldMendatory(pr.name)"
+                                      #name="ngModel" [readonly]="data.isFieldDisabled(pr.name)"
+                                      (change)="Update_value(pr.value ,pr.placeholder)"
+                                      [maxLength]="data.getFieldMaxLength(pr.name)" [matAutocomplete]="auto"
+                                      [(ngModel)]="pr.value" class="f_inp">
+                                    <mat-autocomplete #auto="matAutocomplete">
+                                      <mat-option style="text-align:center;"
+                                        (click)="Update_value(pr.value ,pr.placeholder)"
+                                        *ngFor="let option of options[pr.name]| myfilter:FilterAutoValue"
+                                        [value]="option">
+                                        {{option}}
+                                      </mat-option>
+                                    </mat-autocomplete>
+                                  </mat-form-field>
+                                  <div [style.visibility]=" data.isFieldInvalid(name) ? 'visible': 'hidden'">
+                                    {{data.getFieldInValidMsg(name, pr.name)}}
+                                  </div>
+                                </ng-container>
+                              </ng-container>
+                            </div>
                           </ng-container>
                         </div>
-                      </ng-container>
+                      </form>
                     </div>
-                  </form>
-                </div>
 
-              </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+
             </div>
 
             <div fxFlex="100" id="schedule" *ngIf="newScheduleView || Pause_btn || Resume_btn || Kill_btn">
-              <div>
-                <hr />
-                <h4 class="text-center">Schedule</h4>
-                <hr />
+              <!-- <h4 class="text-center">Schedule</h4>
+                <hr /> -->
+              <mat-accordion>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      Schedule
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div>
+                    <div *ngIf="display_process_table">
+                      <mat-form-field *ngIf="show_filter_input">
+                        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                      </mat-form-field>
+                      <img src="/assets/img/progress.gif" style="height:20px;width:20px;" *ngIf="progressImg" alt="" />
+                      <mat-table #table [dataSource]="dataSource" MatSort style="width: 100%">
 
+                        <!-- Checkbox Column -->
+                        <ng-container matColumnDef="#">
+                          <mat-header-cell *matHeaderCellDef>
+                            <mat-checkbox (change)="$event ? masterToggle() : null"
+                              [checked]="selection.hasValue() && isAllSelected()"
+                              [indeterminate]="selection.hasValue() && !isAllSelected()">
+                            </mat-checkbox>
+                          </mat-header-cell>
+                          <mat-cell *matCellDef="let dataSource">
+                            <mat-checkbox (click)="$event.stopPropagation();Check_process_id(dataSource.job_name)"
+                              (change)="$event ? selection.toggle(dataSource) : null"
+                              [checked]="selection.isSelected(dataSource)">
+                            </mat-checkbox>
+                            <!-- <mat-checkbox [class]="checkbox_color_value"
+                                    (click)="$event.stopPropagation();Check_process_id(dataSource.job_name)"></mat-checkbox> -->
+                          </mat-cell>
+                        </ng-container>
 
-                <div *ngIf="display_process_table">
-                  <mat-form-field *ngIf="show_filter_input">
-                    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
-                  </mat-form-field>
-                  <img src="/assets/img/progress.gif" style="height:20px;width:20px;" *ngIf="progressImg" alt="" />
-                  <mat-table #table [dataSource]="dataSource" MatSort style="width: 100%">
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="status">
+                          <mat-header-cell *matHeaderCellDef style="color: white"> Status </mat-header-cell>
+                          <mat-cell *matCellDef="let element"> {{element.status}} </mat-cell>
+                        </ng-container>
 
-                    <!-- Checkbox Column -->
-                    <ng-container matColumnDef="#">
-                      <mat-header-cell *matHeaderCellDef>
-                        <mat-checkbox (change)="$event ? masterToggle() : null"
-                          [checked]="selection.hasValue() && isAllSelected()"
-                          [indeterminate]="selection.hasValue() && !isAllSelected()">
-                        </mat-checkbox>
-                      </mat-header-cell>
-                      <mat-cell *matCellDef="let dataSource">
-                        <mat-checkbox (click)="$event.stopPropagation();Check_process_id(dataSource.job_name)"
-                          (change)="$event ? selection.toggle(dataSource) : null"
-                          [checked]="selection.isSelected(dataSource)">
-                        </mat-checkbox>
-                        <!-- <mat-checkbox [class]="checkbox_color_value"
-                      (click)="$event.stopPropagation();Check_process_id(dataSource.job_name)"></mat-checkbox> -->
-                      </mat-cell>
-                    </ng-container>
+                        <!-- Weight Column -->
+                        <ng-container matColumnDef="lastrun">
+                          <mat-header-cell *matHeaderCellDef style="color: white"> Last Run </mat-header-cell>
+                          <mat-cell *matCellDef="let element"> {{element.lastrun}} </mat-cell>
+                        </ng-container>
 
-                    <!-- Name Column -->
-                    <ng-container matColumnDef="status">
-                      <mat-header-cell *matHeaderCellDef style="color: white"> Status </mat-header-cell>
-                      <mat-cell *matCellDef="let element"> {{element.status}} </mat-cell>
-                    </ng-container>
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="nextrun">
+                          <mat-header-cell *matHeaderCellDef style="color: white"> Next Run </mat-header-cell>
+                          <mat-cell *matCellDef="let element"> {{element.nextrun}} </mat-cell>
+                        </ng-container>
 
-                    <!-- Weight Column -->
-                    <ng-container matColumnDef="lastrun">
-                      <mat-header-cell *matHeaderCellDef style="color: white"> Last Run </mat-header-cell>
-                      <mat-cell *matCellDef="let element"> {{element.lastrun}} </mat-cell>
-                    </ng-container>
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="details">
+                          <mat-header-cell *matHeaderCellDef style="color: white"> Details </mat-header-cell>
+                          <mat-cell *matCellDef="let element"> {{element.details}} </mat-cell>
+                        </ng-container>
 
-                    <!-- Symbol Column -->
-                    <ng-container matColumnDef="nextrun">
-                      <mat-header-cell *matHeaderCellDef style="color: white"> Next Run </mat-header-cell>
-                      <mat-cell *matCellDef="let element"> {{element.nextrun}} </mat-cell>
-                    </ng-container>
-
-                    <!-- Symbol Column -->
-                    <ng-container matColumnDef="details">
-                      <mat-header-cell *matHeaderCellDef style="color: white"> Details </mat-header-cell>
-                      <mat-cell *matCellDef="let element"> {{element.details}} </mat-cell>
-                    </ng-container>
-
-                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)"
-                      (click)="onRowClick(row)">
-                    </mat-row>
-                  </mat-table>
-                </div>
-                <div *ngIf="newScheduleView">
-                  <app-schedular [parentapp]="ApplicationCD" [parentpro]="ProcessCD" [changing]="changingValue">
-                  </app-schedular>
-                  <hr />
-                </div>
-              </div>
-              <!-- ______________________________________________________CLOSE TABLE________________________________ -->
-              <div class="row">
-                <div class="col-md-5"></div>
-                <div class="col-md-5">
-                  <br />
-                  <!-- <button mat-raised-button color="primary" *ngIf="Save_btn" [disabled]="save_shedule_btn" (click)="repeatURL()">Save the Schedule</button> -->
-                  <button mat-raised-button color="primary" (click)="onPause()" *ngIf="Pause_btn">Pause </button>
-                  <button mat-raised-button color="primary" (click)="onResume()" *ngIf="Resume_btn">Resume</button>
-                  <button mat-raised-button color="primary" (click)="onKill()" *ngIf="Kill_btn">Kill</button>
-                  <br />
-                </div>
-              </div>
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)"
+                          (click)="onRowClick(row)">
+                        </mat-row>
+                      </mat-table>
+                    </div>
+                    <div *ngIf="newScheduleView">
+                      <app-schedular [parentapp]="ApplicationCD" [parentpro]="ProcessCD" [changing]="changingValue">
+                      </app-schedular>
+                      <hr />
+                    </div>
+                  </div>
+                  <!-- ______________________________________________________CLOSE TABLE________________________________ -->
+                  <div class="row">
+                    <div class="col-md-5"></div>
+                    <div class="col-md-5">
+                      <br />
+                      <!-- <button mat-raised-button color="primary" *ngIf="Save_btn" [disabled]="save_shedule_btn" (click)="repeatURL()">Save the Schedule</button> -->
+                      <button mat-raised-button color="primary" (click)="onPause()" *ngIf="Pause_btn">Pause </button>
+                      <button mat-raised-button color="primary" (click)="onResume()" *ngIf="Resume_btn">Resume</button>
+                      <button mat-raised-button color="primary" (click)="onKill()" *ngIf="Kill_btn">Kill</button>
+                      <br />
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
             </div>
-            <div fxFlex="100">
-              <canvas id="myGanttchart" *ngIf="gantt" fxFlex="100"></canvas>
+            <div fxFlex="100" *ngIf="gantt">
+              <mat-accordion>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      Gantt Chart
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <canvas id="myGanttchart" *ngIf="gantt" fxFlex="100"></canvas>
+                </mat-expansion-panel>
+              </mat-accordion>
+
             </div>
-            <div fxFlex="100">
-              <canvas id="myBarchart" *ngIf="bar" fxFlex="100"></canvas>
+            <div fxFlex="100" *ngIf="bar">
+              <mat-accordion>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      Bar Chart
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <canvas id="myBarchart" *ngIf="bar" fxFlex="100"></canvas>
+
+                </mat-expansion-panel>
+              </mat-accordion>
+
             </div>
-            <div fxFlex="100">
-              <canvas id="myPie" *ngIf="pie" fxFlex="100"></canvas>
+            <div fxFlex="100" *ngIf="pie">
+              <mat-accordion>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      Pie Chart
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <canvas id="myPie" *ngIf="pie" fxFlex="100"></canvas>
+
+                </mat-expansion-panel>
+              </mat-accordion>
+
             </div>
           </div>
           <div fxFlex="20px" class="toggle">
@@ -420,6 +534,7 @@
         </div>
       </section>
     </div>
+    <!-- (isOutside)="hide($event)"  -->
     <mat-sidenav class="properties-bg-color" #sidenav position="end" mode="side" [(opened)]="opened">
       <div id="properties">
 
