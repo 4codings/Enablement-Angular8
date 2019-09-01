@@ -13,8 +13,8 @@ import * as pluginAnnotations from 'chartjs-plugin-annotation';
 export class ChartsComponent implements OnInit {
 
   constructor(public report: ReportTableComponent,
-    protected data: ConfigServiceService,
-    protected _snackBar: MatSnackBar) {
+    public data: ConfigServiceService,
+    public  _snackBar: MatSnackBar) {
 
   }
 

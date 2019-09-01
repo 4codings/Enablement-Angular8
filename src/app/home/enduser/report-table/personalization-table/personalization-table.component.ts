@@ -111,8 +111,8 @@ export class PersonalizationTableComponent implements OnInit {
   preservedPreferences = [];
 
   constructor(public report: ReportTableComponent,
-    protected data: ConfigServiceService,
-    protected _snackBar: MatSnackBar) {
+    public  data: ConfigServiceService,
+    public  _snackBar: MatSnackBar) {
 
   }
 
