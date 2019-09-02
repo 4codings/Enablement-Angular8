@@ -116,6 +116,14 @@ export class EndUserService {
         return this.http.get(this.baseSecureUrl + 'V_CD_TYP=' + v_type + '&V_CD=' + v_cd + '&V_SRC_CD=' + this.V_SRC_CD + '&REST_Service=Description&Verb=GET', this.apiService.setHeaders());
     }
 
+    /*
+          To GET SERVICES NAME LIST
+      */
+    getServices(v_app_cd, v_prcs_cd) {
+        return this.http.get(this.baseSecureJsonUrl + "V_SRC_CD=" + this.V_SRC_CD + "&V_APP_CD=" + v_app_cd + "&V_PRCS_CD=" + v_prcs_cd + "&V_USR_NM=" + this.V_USR_NM + "&REST_Service=ProcessServices" + "&Verb=GET", this.apiService.setHeaders());
+    }
+
+
 
     /*
         To list all executable types
