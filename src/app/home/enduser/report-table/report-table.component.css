@@ -244,6 +244,10 @@ th.mat-sort-header {
   width: 95% !important;
   margin: 0 auto;
 }
+#all-charts{
+  width: 95% !important;
+  margin: 0 auto;
+}
 /*::ng-deep td.mat-cell, ::ng-deep td.mat-header-cell{
   padding: 20px !important;
   min-width: 150px !important;

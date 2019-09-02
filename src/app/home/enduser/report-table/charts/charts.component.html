@@ -1,0 +1,19 @@
+<div class="chart-boundary" fxLayoutGap="10">
+
+    <div *ngFor="let cpref of data.chartPreferences; let i=index;"
+        class="chart-box" (cdkDragEnded)="dragEndChart($event,i)" [style.top.px]="data.chartposition[i].y"
+        [style.left.px]="data.chartposition[i].x" cdkDragBoundary=".chart-boundary" cdkDrag fxLayout="column" fxFlex="50%"
+        fxFlex.lt-sm="100%">
+        <canvas baseChart *ngIf="cpref['selectedchart']==='linechart_sel' && lineChartData" [datasets]="lineChartData" [labels]="lineChartLabels"
+            [options]="lineChartOptions" [colors]="lineChartColors" [chartType]="lineChartType">
+        </canvas>
+        <canvas baseChart *ngIf="cpref['selectedchart']==='barchart_sel' && barChartData" [datasets]="barChartData" [labels]="barChartLabels"
+            [options]="barChartOptions" [colors]="barChartColors" [chartType]="barChartType">
+        </canvas>
+        <canvas baseChart [datasets]="pieChartData" *ngIf="cpref['selectedchart']==='piechart_sel' && pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType">
+        </canvas>
+        <canvas baseChart [datasets]="doughnutChartData" *ngIf="cpref['selectedchart']==='doughnutchart_sel' && doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType">
+        </canvas>
+    </div>
+    
+</div>

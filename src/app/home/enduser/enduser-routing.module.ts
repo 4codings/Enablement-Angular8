@@ -5,6 +5,7 @@ import { ArtifactFormComponent } from './execute/artifact-form/artifact-form.com
 import { RepeatableFormComponent } from './execute/repeatable-form/repeatable-form.component';
 import { NonRepeatableFormComponent } from './execute/non-repeatable-form/non-repeatable-form.component';
 import { ReportTableComponent } from './report-table/report-table.component';
+import { PersonalizationTableComponent } from './report-table/personalization-table/personalization-table.component';
 
 const routes: Routes = [{
   path: '',
@@ -33,6 +34,7 @@ const routes: Routes = [{
 { path: 'RepeatForm', component: RepeatableFormComponent, runGuardsAndResolvers: 'always' },
 { path: 'NonRepeatForm', component: NonRepeatableFormComponent, runGuardsAndResolvers: 'always' },
 { path: 'ReportTable', component: ReportTableComponent },
+{ path: 'ptable', component: PersonalizationTableComponent },
 
   // { path: 'InputArtForm', loadChildren: () => ArtifactFormModule, runGuardsAndResolvers: 'always' },
   // { path: 'RepeatForm', loadChildren: () => RepeatableFormModule, runGuardsAndResolvers: 'always' },
