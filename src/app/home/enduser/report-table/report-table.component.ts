@@ -123,7 +123,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private toasterService: ToastrService,
     private httpClient: HttpClient,
     private roleService: RollserviceService,
-    private optionalService: OptionalValuesService
+    private optionalService: OptionalValuesService,
   ) {
     this.roleObservable$ = this.roleService.roleValue.subscribe(data => {
       if (data != null) {
@@ -729,9 +729,11 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.barChartData[i].data = this.yaxis_data_bar[i];
         this.barChartData[i].label = this._yaxis_sel_bar[i];
       }
+      console.log(this._yaxis_sel_bar);
     }
     else {
       this.barChartData = this.bardata;
+      console.log("Inside else");
     }
     this.barChartOptions = {
       scaleShowVerticalLines: false,
@@ -1042,9 +1044,10 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
   getpreferences() {
+    console.log("getpref");
     this.data.getchartstyling(this.UNIQUE_ID, this.SRC_ID).subscribe(
       res => {
-        (res.json());
+        console.log(res.json());
         var result = res.json();
 
         var name = result.PRF_NM;
@@ -1055,6 +1058,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
           this.userprefs[name[i]] = value[i];
         }
         if (name.length) {
+          console.log(this.userprefs);
           this.gettablepreferences();
           this.getchartpreferences();
         } else {
@@ -1127,6 +1131,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
       'USR_NM': this.V_USR_NM
     }
     this.optionalService.selecetedProcessTxnValue.next(obj);
+    this.data.ReportTable_data = this.Table_of_Data5;
     // this.getInputOutput();
   }
 

@@ -45,7 +45,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
   toDate = new Date();
   apiUrl: any;
   apiJSONUrl: any;
-  numbersOfTransactions = 100;
+  numbersOfTransactions = 3;
   V_SRC_CD: string = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
   V_USR_NM: string = JSON.parse(sessionStorage.getItem('u')).USR_NM;
   PRCS_TXN_ID: any = [];
@@ -130,7 +130,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
   onInstanceChange(instance) {
     if (this.PRCS_TXN_ID.length) {
       this.PRCS_TXN_ID.forEach((element, index) => {
-        if (element === instance) {
+        if (element === instance.value) {
           this.selectedUserName = this.USR_NM[index];
           this.getServicesInstances(index);
         }

@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, OnDestroy, ViewEncapsulation, ElementRef } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, ViewEncapsulation, ElementRef, Directive, Output, EventEmitter, HostListener } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { saveAs } from 'file-saver';
@@ -26,6 +26,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { DialogScheduleComponent } from '../../../shared/components/dialog-schedule/dialog-schedule.component';
+import { DatePipe } from '@angular/common';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 export class ReportData {
   public RESULT: string;
@@ -33,6 +35,26 @@ export class ReportData {
   constructor() {
   }
 }
+@Directive({
+  selector: '[isOutside]'
+})
+export class IsOutsideDirective {
+  constructor(private elementRef: ElementRef) { }
+
+  @Output()
+  public isOutside = new EventEmitter();
+
+  @HostListener('document:click', ['$event.target'])
+  public onClick(targetElement) {
+    if (this.elementRef) {
+      const clickedInside = this.elementRef.nativeElement.contains(targetElement) || targetElement.classList.contains('open-button');
+      if (!clickedInside) {
+        this.isOutside.emit(true);
+      }
+    }
+  }
+}
+
 @Component({
   selector: 'app-process-design',
   templateUrl: './process-design.component.html',
@@ -44,7 +66,8 @@ export class ReportData {
           return 'Find a Process';
         }
       })
-    }
+    },
+    DatePipe
   ]
 })
 export class ProcessDesignComponent implements OnInit, OnDestroy {
@@ -70,10 +93,12 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   changingValue: Subject<boolean> = new Subject();
   private currentXml: any;
   private uploadLocked: boolean;
+  public expandPanel: boolean = true;
   applicationProcessObservable$: Subscription;
   applicationProcessValuesObservable: ApplicationProcessObservable[] = [];
   appProcessList = [];
   item: TreeviewItem[] = [];
+  oneAppItem: TreeviewItem[] = [];
   chilItem: TreeviewItem[] = [];
   config = TreeviewConfig.create({
     hasAllCheckBox: false,
@@ -83,6 +108,13 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     maxHeight: 400,
 
 
+  });
+  oneAppConfig = TreeviewConfig.create({
+    hasAllCheckBox: false,
+    hasFilter: false,
+    hasCollapseExpand: false,
+    decoupleChildFromParent: false,
+    maxHeight: 400,
   });
   parentMenuItems = [
     { item: 'New Process', value: 'Add', havePermission: 0, icon: 'create', iconType: 'mat' },
@@ -146,6 +178,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   addUpdateSequenceFlag = false;
   deleteUpdateSequenceFlag = false; // used to call update sequence api once only not with the service call again while delete sequence
   addUpdateServiceFlag = false; // to call update  api for service (i.e defined service) and not put api 
+  serviceTypeChangeFlag = false;
   oldAppId = '';
   oldTaskId = '';
   oldIconType = '';
@@ -255,6 +288,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   bar = false;
   pie = false;
   file_path: any;
+  serviceList = [];
 
   constructor(
     private httpClient: HttpClient,
@@ -272,6 +306,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     private router: Router,
     private dialog: MatDialog,
     private StorageSessionService: StorageSessionService,
+    private datePipe: DatePipe,
+    public deviceService: DeviceDetectorService
   ) {
     this.applicationProcessObservable$ = this.optionalService.applicationProcessValue.subscribe(data => {
       if (data != null) {
@@ -332,6 +368,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.expandPanel = this.deviceService.isDesktop();
     this.user = JSON.parse(sessionStorage.getItem('u'));
     if (this.user) {
       this.userEmail = this.user.USR_NM;
@@ -561,6 +598,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                     }, () => this.uploadLocked = false);
                   }
                 });
+                this.getServices();
               }
             }
             setTimeout(() => {
@@ -606,6 +644,15 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       }
     })
   }
+  getServices() {
+    this.endUserService.getServices(this.selectedApp, this.selectedProcess).subscribe((res: any) => {
+      if (res) {
+        this.serviceList = res;
+        console.log('service', this.serviceList);
+      }
+    })
+  }
+
   ngOnDestroy() {
     if (this.applicationProcessObservable$) {
       this.applicationProcessObservable$.unsubscribe();
@@ -636,26 +683,54 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       let elementRegistry = this.modeler.get('elementRegistry');
       let element = elementRegistry.get(this.oldStateId);
       let modeling = this.modeler.get('modeling');
-      const doc = [{ 'text': this.documentation }];
       let id = this.generalId;
       modeling.updateProperties(element, {
         name: name,
         id: id.replace(new RegExp(' ', 'g'), '_'),
-      });
+      }, error => this.handleError(error));
       this.oldStateId = id.replace(new RegExp(' ', 'g'), '_');
     }
     if (this.isApp) {
-      this.addApplicationOnBE();
+      if (this.appProcessList.length) {
+        let i = this.appProcessList.findIndex(v => v.app === this.generalId);
+        if (i > -1) {
+          this.toastrService.info("Application Name Already exists");
+          this.generalId = this.oldAppId;
+        } else {
+          this.addApplicationOnBE();
+        }
+      }
     }
     // on service id update , we do not have to send sequence flow update call to the backend. 
     if (this.isService && !this.isSequenceFlow) {
-      this.updateService();
+      if (this.serviceList.length) {
+        let i = this.serviceList.findIndex(v => v.V_SRVC_CD === this.generalId);
+        if (i > -1) {
+          this.toastrService.info("Service Name Already exists");
+          this.generalId = this.old_srvc_cd;
+        } else {
+          this.updateService();
+        }
+      } else {
+        this.updateService();
+      }
     }
     if (this.isSequenceFlow) {
       this.updatesequenceFlow();
     }
     if (this.isProcess) {
-      this.updateProcess();
+      let processList = this.chilItem.filter(v => v.value == this.selectedApp);
+      if (processList.length) {
+        let i = processList.findIndex(v => v.text === this.generalId);
+        if (i > -1) {
+          this.toastrService.info("Process Name Already exists");
+          this.generalId = this.selectedProcess;
+        } else {
+          this.updateProcess();
+        }
+      } else {
+        this.updateProcess();
+      }
     }
   }
 
@@ -726,8 +801,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       'V_PRIORITY': this.priority,
       "V_SYNC_FLG": this.async_sync === 'sync' ? 'Y' : 'N',
       'V_SRVC_JOB_LMT': this.job_instance,
-      'V_EFF_STRT_DT_TM': this.currentDate,
-      'V_EFF_END_DT_TM': this.afterFiveDays,
+      'V_EFF_STRT_DT_TM': this.datePipe.transform(this.currentDate, 'yyyy-MM-dd HH:mm:ss.SSS'),
+      'V_EFF_END_DT_TM': this.datePipe.transform(this.afterFiveDays, 'yyyy-MM-dd HH:mm:ss.SSS'),
       'V_DSPLY_OUTPUT': this.display_output ? 'Y' : 'N',
       'V_SRVC_ACTIVE_FLG': this.isServiceActive ? 'Y' : 'N',
       'V_ADD_TO_SMMRY_RESULT': this.summary_output ? 'Y' : 'N',
@@ -829,9 +904,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           document.getElementById("processId").focus();
         }
       });
-    // setTimeout(() => {
-    //   this.upload(this.selectedApp, this.selectedProcess);
-    // }, this.ctrl_variables.delay_timeout);
+    setTimeout(() => {
+      this.upload(this.selectedApp, this.selectedProcess);
+    }, this.ctrl_variables.delay_timeout);
   }
 
   upload(vAppCd, vPrcsCd) {
@@ -884,7 +959,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
 
   newBpmn() {
-    this.selectedProcess = 'newProcess';
+    this.selectedProcess = this.autoGenerate();
+    // this.selectedProcess = 'newProcess';
     this.V_OLD_PRCS_CD = this.selectedProcess;
     this.documentation = '';
     this.processName = '';
@@ -899,6 +975,17 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       (x: any) => {
         this.modeler.importXML(x, this.handleError.bind(this));
         this.bpmnTemplate = x;
+        setTimeout(() => {
+          let elementRegistry = this.modeler.get('elementRegistry');
+          let element = elementRegistry.get('newProcess');
+          let modeling = this.modeler.get('modeling');
+          const doc = [{ 'text': this.documentation }];
+          let id = this.selectedProcess;
+          modeling.updateProperties(element, {
+            name: id,
+            id: id.replace(new RegExp(' ', 'g'), '_'),
+          })
+        })
       },
       this.handleError.bind(this)
     );
@@ -920,7 +1007,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   handleError(err: any) {
     if (err) {
       this.toastrService.error(err);
-      console.error(err);
+      // console.error(err);
     }
   }
   addApplication() {
@@ -936,7 +1023,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.isApp = true;
     this.isProcess = false;
     this.isService = false;
-    this.generalId = 'newApplication';
+    this.generalId = this.autoGenerate();
+    this.oldAppId = this.generalId;
     let x = '<?xml version="1.0" encoding="UTF-8"?><bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="2.0.3"></bpmn:definitions>';
     this.modeler.importXML(x);
     // setTimeout(() => {
@@ -979,6 +1067,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.editProcessFlag = false;
           this.showAllTabFlag = false;
           this.showRightIcon = false;
+          this.oldAppId = '';
         }
       })
   }
@@ -1130,6 +1219,11 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     if (!item.children) {
       this.selectedApp = item.value;
       this.selectedProcess = item.text;
+      let index = this.item.findIndex(v => v.text == this.selectedApp);
+      if (index > -1) {
+        this.oneAppItem = [];
+        this.oneAppItem.push(this.item[index]);
+      }
       const formData: FormData = new FormData();
       formData.append('FileInfo', JSON.stringify({
         File_Path: `${this.ctrl_variables.bpmn_file_path}` + item.value + '/',
@@ -1164,6 +1258,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                       id: id.replace(new RegExp(' ', 'g'), '_'),
                     })
                     document.getElementById("processId").focus();
+                    this.upload(this.selectedApp, this.selectedProcess);
                   })
                 },
                 this.handleError.bind(this)
@@ -1172,20 +1267,15 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           },
           this.handleError.bind(this)
         );
-      // this.httpClient.get('/assets/bpmn/diagram.bpmn', {
-      //   headers: { observe: 'response' }, responseType: 'text'
-      // }).subscribe(
-      //   (x: any) => {
-      //     this.modeler.importXML(x, this.handleError.bind(this));
-      //     this.bpmnTemplate = x;
-      //   },
-      //   this.handleError.bind(this)
-      // );
       this.Execute_AP_PR();
+    } else {
+      this.selectedApp = item.value;
+      this.oneAppItem = [];
+      this.oneAppItem.push(item);
     }
-    if (!parentTitleClick) {
-      this.treesidenav.opened = false;
-    }
+    // if (!parentTitleClick) {
+    //   this.treesidenav.opened = false;
+    // }
     this.selectedItem = item;
   }
   onParentMenuItemClick(actionValue, parentValue, selectedItem?) {
@@ -1202,7 +1292,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         this.isApp = false;
         this.isProcess = true;
         this.isService = false;
-        this.generalId = "newProcess";
+        // this.generalId = "newProcess";
+        this.generalId = this.selectedProcess;
         this.showRightIcon = true;
         this.opened = true;
         this.showCondtionType = false;
@@ -1230,6 +1321,11 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.treesidenav.opened = false;
   }
 
+  autoGenerate() {
+    return Math.random().toString(36).split('').filter(function (value, index, self) {
+      return self.indexOf(value) === index;
+    }).join('').substr(2, 8);
+  }
   closeSchedulePanel() {
     this.newScheduleView = false;
     this.Pause_btn = false;
@@ -1261,6 +1357,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       }
       case 'Edit': {
         console.log('selected', this.selectedItem);
+        this.getServices();
         // if (this.isMonitor) {
         //   this.modeler = new Modeler({
         //     container: '#canvas',

@@ -8,7 +8,7 @@
   <div fxFlex class="text-center">
     <label>Executed At</label>
     <mat-form-field class="label-bottom">
-      <mat-select class="bg-white" [(ngModel)]="selectedInstance" (selectionChange)="onInstanceChange($event.target)">
+      <mat-select class="bg-white" [(ngModel)]="selectedInstance" (selectionChange)="onInstanceChange($event)">
         <mat-option *ngFor="let dateTime of PRCS_TXN_ID;let i = index" [value]="dateTime">
           {{StartDateTime[i]}}
         </mat-option>
