@@ -27,6 +27,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { DialogScheduleComponent } from '../../../shared/components/dialog-schedule/dialog-schedule.component';
 import { DatePipe } from '@angular/common';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 export class ReportData {
   public RESULT: string;
@@ -92,6 +93,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   changingValue: Subject<boolean> = new Subject();
   private currentXml: any;
   private uploadLocked: boolean;
+  public expandPanel: boolean = true;
   applicationProcessObservable$: Subscription;
   applicationProcessValuesObservable: ApplicationProcessObservable[] = [];
   appProcessList = [];
@@ -304,7 +306,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     private router: Router,
     private dialog: MatDialog,
     private StorageSessionService: StorageSessionService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    public deviceService: DeviceDetectorService
   ) {
     this.applicationProcessObservable$ = this.optionalService.applicationProcessValue.subscribe(data => {
       if (data != null) {
@@ -365,6 +368,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.expandPanel = this.deviceService.isDesktop();
     this.user = JSON.parse(sessionStorage.getItem('u'));
     if (this.user) {
       this.userEmail = this.user.USR_NM;
