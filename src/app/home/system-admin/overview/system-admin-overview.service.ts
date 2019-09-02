@@ -49,7 +49,7 @@ export class SystemAdminOverviewService {
       this.getAllExes();
       this.getAllMachineConnections();
       this.exeTypeOptions = res;
-      this.exeTypeOptions.push({EXE_TYP:"All"});
+      //this.exeTypeOptions.push({EXE_TYP:"All"});
       this.exeTypeOptions = this.exeTypeOptions.sort((a,b) => {
         if (a.EXE_TYP < b.EXE_TYP) //sort string ascending
           return -1;

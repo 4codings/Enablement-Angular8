@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
 import { ConfigServiceService } from '../../../../../services/config-service.service';
 import { Globals } from '../../../../../services/globals';
+import { UseradminService } from '../../../../../services/useradmin.service2';
 
 @Component({
   selector: 'app-assign-mcn-plf',
@@ -12,19 +13,30 @@ import { Globals } from '../../../../../services/globals';
 export class AssignMcnPlfComponent implements OnInit {
   
   public V_SRC_CD:string;
+  public V_USR_NM:string;
+  public selctedEntityId;
+  public selectedplat;
   public lists;
   public clone_lists;
   public addList = [];
   public deleteList = [];
+  public platforms = [];
+  public machines = [];
+  public Label:any[]=[];
   controlVariables;
   domain_name=this.globals.domain_name;
   private apiUrlGet = "https://"+this.domain_name+"/rest/v1/securedJSON?";
   private apiUrlPut = "https://"+this.domain_name+"/rest/v1/secured?";
 
-  constructor(public dialogRef: MatDialogRef<AssignMcnPlfComponent>,  @Inject(MAT_DIALOG_DATA) public data: any, private http:HttpClient, private config:ConfigServiceService, private globals:Globals) { }
+  constructor(public dialogRef: MatDialogRef<AssignMcnPlfComponent>,  @Inject(MAT_DIALOG_DATA) public data: any, private http:HttpClient, private config:ConfigServiceService, private globals:Globals, private UseradminService:UseradminService) { }
 
   ngOnInit() {
     this.V_SRC_CD=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+    this.V_USR_NM=JSON.parse(sessionStorage.getItem('u')).USR_NM;
+
+    this.UseradminService.getJSON().subscribe(data => {
+      this.Label=data.json();
+    })
 
     this.http.get('../../../../../../assets/control-variable.json').subscribe(data => {
       this.controlVariables = data;
@@ -40,16 +52,18 @@ export class AssignMcnPlfComponent implements OnInit {
   }
 
   getAssignedPlatform() {
-    this.http.get(this.apiUrlGet+'SELECTED_ENTITY=PLATFORM&SELECTED_ENTITY_ID='+this.data.exe.exeData.V_EXE_ID+'&V_SRC_CD='+this.V_SRC_CD+'&REST_Service=Platform_Machine&Verb=GET').subscribe(res => {
+    this.http.get(this.apiUrlGet+'SELECTED_ENTITY=PLATFORM&SELECTED_ENTITY_ID='+this.data.server.SERVER_ID+'&V_SRC_CD='+this.V_SRC_CD+'&REST_Service=Platform_Machine&Verb=GET').subscribe(res => {
       this.lists = res;
       this.clone_lists = this.deepClone(this.lists);
+      this.selctedEntityId = this.data.server.SERVER_ID;
     })
   }
 
   getAssignedMachine() {
-    this.http.get(this.apiUrlGet+'SELECTED_ENTITY=MACHINE&SELECTED_ENTITY_ID='+this.data.cxn.cnxData.V_CXN_ID+'&V_SRC_CD='+this.V_SRC_CD+'&REST_Service=Platform_Machine&Verb=GET').subscribe(res => {
+    this.http.get(this.apiUrlGet+'SELECTED_ENTITY=MACHINE&SELECTED_ENTITY_ID='+this.data.machine.PLATFORM_ID+'&V_SRC_CD='+this.V_SRC_CD+'&REST_Service=Platform_Machine&Verb=GET').subscribe(res => {
       this.lists = res;
       this.clone_lists = this.deepClone(this.lists);
+      this.selctedEntityId = this.data.machine.SERVER_ID;
     })
   }
 
@@ -66,7 +80,7 @@ export class AssignMcnPlfComponent implements OnInit {
   }
 
   changeAssignItem(list, i) {
-    if(this.data.isSelectedEntity == 'CXN') {
+    if(this.data.isSelectedEntity == 'PLATFORM') {
       if(!list.is_selected) {
         this.lists[i].is_selected = !this.lists[i].is_selected;
       } else {
@@ -74,7 +88,7 @@ export class AssignMcnPlfComponent implements OnInit {
       }
     }
 
-    if(this.data.isSelectedEntity == 'EXE') {
+    if(this.data.isSelectedEntity == 'MACHINE') {
       if(!list.is_selected) {
         this.lists[i].is_selected = !this.lists[i].is_selected;
       } else {
@@ -85,23 +99,19 @@ export class AssignMcnPlfComponent implements OnInit {
   }
 
   onBtnSaveClick(): void {
-    let selctedEntityId ;
-    let type;
     
     if(this.data.isSelectedEntity == 'PLATFORM') {
-      selctedEntityId = this.data.exe.exeData.V_EXE_ID;
-      type = this.data.exe.EXE_TYP;
       this.deleteList = [];
       this.addList = [];
       
       this.clone_lists.forEach(data => {
         this.lists.forEach(val => {
-          if(data.V_CXN_ID == val.V_CXN_ID && data.is_selected != val.is_selected) {
+          if(data.V_PLATFORM_ID == val.V_PLATFORM_ID && data.is_selected != val.is_selected) {
             if(data.is_selected) {
-              this.deleteList.push(val.V_CXN_ID);
+              this.deleteList.push(val.V_PLATFORM_ID);
             }
             if(!data.is_selected) {
-              this.addList.push(val.V_CXN_ID);
+              this.addList.push(val.V_PLATFORM_ID);
             }
           }
         })
@@ -111,34 +121,29 @@ export class AssignMcnPlfComponent implements OnInit {
     if(this.data.isSelectedEntity == 'MACHINE') {
       this.deleteList = [];
       this.addList = [];
-      selctedEntityId = this.data.cxn.cnxData.V_CXN_ID;
-      type = this.data.cxn.cnxData.V_CXN_TYP;
 
       this.clone_lists.forEach(data => {
         this.lists.forEach(val => {
-          if(data.V_EXE_ID == val.V_EXE_ID && data.is_selected != val.is_selected) {
+          if(data.V_SERVER_ID == val.V_SERVER_ID && data.is_selected != val.is_selected) {
             if(data.is_selected) {
-              this.deleteList.push(val.V_EXE_ID);
+              this.deleteList.push(val.V_SERVER_ID);
             }
             if(!data.is_selected) {
-              this.addList.push(val.V_EXE_ID);
+              this.addList.push(val.V_SERVER_ID);
             }
           }
         })
       })
     }
-    //console.log(this.deleteList, this.addList);
+    console.log(this.deleteList, this.addList);
     
     let json = {
       'V_DELETED_ID_ARRAY': this.deleteList.toString(),
       'V_ADDED_ID_ARRAY': this.addList.toString(),
       'SELECTED_ENTITY': this.data.isSelectedEntity,
-      'SELECTED_ENTITY_ID': selctedEntityId,
-      "V_TYP": type,
+      'SELECTED_ENTITY_ID': this.selctedEntityId.toString(),
       "V_SRC_CD": this.V_SRC_CD,
-      'V_EFF_STRT_DT_TM': new Date(Date.now()),
-      'V_EFF_END_DT_TM': new Date(Date.now() + this.controlVariables.effectiveEndDate),
-      'REST_Service': 'EXE_CXN',
+      'REST_Service': 'Platform_Machine',
       'Verb': 'PUT'
     };
 
@@ -146,7 +151,7 @@ export class AssignMcnPlfComponent implements OnInit {
       if (result) {
         this.dialogRef.close(true);
       }
-    }, error => {
+      }, error => {
     });
     
   }

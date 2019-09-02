@@ -18,6 +18,8 @@ export class AddPlatformDialogComponent implements OnInit {
   desktopView=true;
   isPlatformChange:boolean = false;
   isPlatformDesChange:boolean = false;
+  EFF_END_DT_TM;
+  EFF_STRT_DT_TM;
   @HostListener('window:resize', ['$event'])
     onResize(event?) {
       this.screenHeight = window.innerHeight;
@@ -93,6 +95,8 @@ export class AddPlatformDialogComponent implements OnInit {
       "V_SERVER_CD":this.p_plat,
       "V_SRC_CD":this.V_SRC_CD,
       "V_SERVER_DSC":this.p_desc,
+      "V_EFF_STRT_DT_TM":this.EFF_STRT_DT_TM,
+      "V_EFF_END_DT_TM":this.EFF_END_DT_TM,
       "REST_Service":"Platform_Master",
       "Verb":"PUT"
     };
@@ -119,6 +123,10 @@ export class AddPlatformDialogComponent implements OnInit {
 
   ngOnInit() {
     this.getPlatforms();
+    this.p_plat=this.data.SERVER_CD;
+    this.p_desc=this.data.SERVER_DSC;
+    this.p_plat_dup=this.data.SERVER_CD;
+    this.p_desc_dup=this.data.SERVER_DSC;
   }
 
   onBtnCancelClick(): void {

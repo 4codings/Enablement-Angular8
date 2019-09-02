@@ -33,7 +33,7 @@
         <mat-form-field class="input_control">
           <input matInput [(ngModel)]="PLATFORM_CD" [matAutocomplete]="auto" (ngModelChange)="machineChange()">
           <mat-autocomplete #auto="matAutocomplete" (optionSelected)="machineDetails($event)">
-            <mat-option style="text-align:center;" *ngFor="let mc of PLF_DATA['PLATFORM_CD']" [value]="mc" (click)=machineDetails()>
+            <mat-option style="text-align:center;" *ngFor="let mc of PLF_DATA['PLATFORM_CD']" [value]="mc">
               <div>{{mc}}</div>
             </mat-option>
           </mat-autocomplete>
@@ -88,9 +88,10 @@
 
 
         <mat-form-field>
-          <input matInput [matDatepicker]="picker" [(ngModel)]="EFF_STRT_DT_TM">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
+          <input matInput [(ngModel)]="EFF_STRT_DT_TM" [owlDateTimeTrigger]="fromDate" [owlDateTime]="fromDate">
+          <!-- <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker> -->
+          <owl-date-time #fromDate></owl-date-time>
         </mat-form-field>
 
 
@@ -102,9 +103,10 @@
         </label>
 
         <mat-form-field>
-          <input matInput [matDatepicker]="picker2" [(ngModel)]="EFF_END_DT_TM">
-          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-          <mat-datepicker #picker2></mat-datepicker>
+          <input matInput [(ngModel)]="EFF_END_DT_TM" [owlDateTimeTrigger]="toDate" [owlDateTime]="toDate">
+          <!-- <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker> -->
+          <owl-date-time #toDate></owl-date-time>
         </mat-form-field>
 
 

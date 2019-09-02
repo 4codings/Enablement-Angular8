@@ -29,6 +29,7 @@ export class MachineTileListComponent implements OnInit {
   @Input() machineType;
   @Input() userAccess;
   @Input() selectedConnectionType;
+  @Input() machine;
   domain_name=this.globals.domain_name;
   private apiUrlGet = "https://"+this.domain_name+"/rest/v1/secured?";
   @ViewChild('contextMenu', { static: false } as any) set contextMenu(value: ElementRef) {

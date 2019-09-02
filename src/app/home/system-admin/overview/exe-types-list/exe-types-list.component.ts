@@ -7,6 +7,7 @@ import { EventEmitter } from '@angular/core';
 import { AddPlatformDialogComponent } from '../add-platform-dialog/add-platform-dialog.component';
 import { SystemAdminOverviewService } from '../system-admin-overview.service';
 import { AssignMcnPlfComponent } from '../dialogs/assign-mcn-plf/assign-mcn-plf.component';
+import { Globals } from 'src/app/services/globals';
 
 @Component({
   selector: 'app-exe-types-list',
@@ -17,6 +18,7 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
 
   V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
   public exes;
+  public plat;
   public allExes = [];
   public sortedAllExes = [];
   @Input() selectedExeType;
@@ -25,7 +27,12 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
   exeTypeOptions;
   @Output() selectedExe: EventEmitter<any> = new EventEmitter();
 
-  constructor(public dialog: MatDialog, private http:HttpClient, private systemOverview:SystemAdminOverviewService) { }
+  domain_name=this.globals.domain_name; private apiUrlGet = "https://"+this.domain_name+"/rest/v1/securedJSON?";
+  private apiUrlPost = "https://"+this.domain_name+"/rest/v1/secured";
+  private apiUrlPut = "https://"+this.domain_name+"/rest/v1/secured";
+  private apiUrldelete = "https://"+this.domain_name+"/rest/v1/secured";
+
+  constructor(public dialog: MatDialog, private http:HttpClient, private systemOverview:SystemAdminOverviewService, private globals:Globals) { }
 
   ngOnInit() {
     this.systemOverview.getExe();
@@ -49,6 +56,14 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
     this.systemOverview.getExe$.subscribe(res => {
       this.sortedAllExes = res;
     })
+    this.getPlatforms();
+  }
+
+  getPlatforms(){
+    this.http.get(this.apiUrlGet+"V_SRC_CD="+this.V_SRC_CD+"&V_CD_TYP=SERVER&REST_Service=Masters&Verb=GET").subscribe(
+      (res:any)=>{
+        this.plat=res;
+      });
   }
 
   changeExeType(type): void {

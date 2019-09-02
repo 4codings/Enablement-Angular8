@@ -9,7 +9,7 @@
   </div>
   <div fxFlex="3"></div>
   <div fxFlex="48">
-    <strong>
+    <!-- <strong>
       <label style="text-align:center;width:100%;">Platforms</label>
     </strong>
     <mat-list *ngIf="desktopView" class="scroll">
@@ -23,12 +23,17 @@
           [value]="a">{{a}}</mat-option>
       </mat-select>
     </mat-form-field>
-    <br />
+    <br /> -->
     <strong>
       <label style="text-align:center;width:100%;">Platform</label>
     </strong>
     <mat-form-field style="width:100%;">
-      <input matInput [(ngModel)]="p_plat" (ngModelChange)="platFormChange()">
+      <input matInput [(ngModel)]="p_plat" [matAutocomplete]="auto" (ngModelChange)="platFormChange()">
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option style="text-align:center;" *ngFor="let a of plat ; let i = index;" [value]="a" (click)="getplatformdesc(a);onpselect(i);">
+          <div>{{a}}</div>
+        </mat-option>
+      </mat-autocomplete>
     </mat-form-field>
     <br />
     <strong>
@@ -39,6 +44,31 @@
 
                 </textarea>
     </mat-form-field>
+    <br />
+    
+    <strong>
+      <label style="text-align:center;width:100%;">Start Date</label>
+    </strong>
+    <mat-form-field style="width:100%;">
+      <input matInput [(ngModel)]="EFF_STRT_DT_TM" [owlDateTimeTrigger]="fromDate" [owlDateTime]="fromDate">
+      <!-- <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker> -->
+      <owl-date-time #fromDate></owl-date-time>
+    </mat-form-field>
+    <br />
+
+
+    <strong>
+      <label style="text-align:center;width:100%;">End Date</label>
+    </strong>
+    <mat-form-field style="width:100%;">
+      <input matInput [(ngModel)]="EFF_END_DT_TM" [owlDateTimeTrigger]="toDate" [owlDateTime]="toDate">
+      <!-- <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker #picker2></mat-datepicker> -->
+      <owl-date-time #toDate></owl-date-time>
+    </mat-form-field>
+
+
   </div>
   <div fxFlex="3"></div>
   <div fxFlex="26">
