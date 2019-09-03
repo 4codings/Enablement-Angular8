@@ -145,7 +145,7 @@
           <div fxFlex="100" fxLayout="column">
             <div fxFlex="100" [ngClass]="opened?'stage-show':'stage-hide'">
               <mat-accordion>
-                <mat-expansion-panel>
+                <mat-expansion-panel [expanded]="expandPanel">
                   <mat-expansion-panel-header>
                     <mat-panel-title>
                       <span class="selected-process-font" *ngIf="selectedProcess==''"> Process Diagram</span>
@@ -182,7 +182,7 @@
 
             <div fxFlex="100">
               <mat-accordion>
-                <mat-expansion-panel>
+                <mat-expansion-panel [expanded]="expandPanel"> 
                   <mat-expansion-panel-header>
                     <mat-panel-title>
                       Parameters

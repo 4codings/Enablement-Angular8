@@ -40,7 +40,7 @@
       [class.active]="currExe == selectedTile"
       [class.highlight]="isHighLightTile(currExe)"
       [matTooltip]="currExe.V_EXE_CD"
-      *ngFor="let currExe of exes.EXES; let i = index"
+      *ngFor="let currExe of exes.EXES | filterPlfExes:platData:'plf'; let i = index"
       (contextmenu)="openContextmenu($event, currExe, exes.EXE_TYP, i)"
       (mousedown)="onTileMouseDownEventHandler($event)"
       (click)="onExeTileClick(currExe)">
