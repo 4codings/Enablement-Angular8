@@ -79,7 +79,7 @@ export class EditConnectionDialogComponent implements OnInit {
       "V_PARAM_N":V_PARAM_N,
       "V_PARAM_V":V_PARAM_V,
       "V_PLATFORM_CD":this.PLF_CD,
-      "V_PLATFORM_DCS":this.PLF_DSC.toString(),
+      "V_PLATFORM_DSC":this.PLF_DSC.toString(),
       "REST_Service":["CXN"],
       "Verb":["PUT"]
     }
