@@ -10,7 +10,7 @@
       [matTooltip]="currConn.V_CXN_CD"
       [class.active]="currConn == selectedMachine"
       [class.highlight]="isHighLightTile(currConn)"
-      *ngFor="let currConn of connectionList.V_CXN; let i = index"
+      *ngFor="let currConn of connectionList.V_CXN | filterPlfExes:machine.PLATFORM_CD:'mcn'; let i = index"
       (contextmenu)="openContextmenu($event, currConn, connectionList.V_PLATFORM_CD, i)"
       (mousedown)="onTileMouseDownEventHandler($event)"
       (click)="onConnectionTileClick(currConn)">

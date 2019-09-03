@@ -39,7 +39,10 @@ export class AddConnectionDialogComponent implements OnInit {
       this.DATA = res;
       this.tableshow = true;
       //console.log(this.DATA);
-    })
+    });
+
+    this.PLF_CD = this.data.machineData.PLATFORM_CD;
+    this.PLF_DSC = this.data.machineData.PLATFORM_DSC;
   }
 
   onBtnCancelClick(): void {
@@ -76,7 +79,7 @@ export class AddConnectionDialogComponent implements OnInit {
       "V_PARAM_N":V_PARAM_N,
       "V_PARAM_V":V_PARAM_V,
       "V_PLATFORM_CD":this.PLF_CD,
-      "V_PLATFORM_DCS":this.PLF_DSC.toString(),
+      "V_PLATFORM_DSC":this.PLF_DSC.toString(),
       "REST_Service":["CXN"],
       "Verb":["PUT"]
     }

@@ -70,7 +70,7 @@ export class ExeTileListComponent implements OnInit {
     const dialogRef = this.dialog.open(AddExeDialogComponent, {
       panelClass: 'app-dialog',
       width: '600px',
-      data: {EXE_TYP:exeType}
+      data: {EXE_TYP:exeType, platformData: this.platData}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -125,7 +125,8 @@ export class ExeTileListComponent implements OnInit {
       this.contextMenuData = {
         EXE_TYP: exeType,
         exeData:data,
-        index:index
+        index:index,
+        platFormData: this.platData
       }
     }
     this.contextMenuStyle = {

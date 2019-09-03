@@ -75,7 +75,7 @@ export class MachineTileListComponent implements OnInit {
     const dialogRef = this.dialog.open(AddConnectionDialogComponent, {
       panelClass: 'app-dialog',
       width: '600px',
-      data: {machineType:this.machineType, selectedConnectionType:this.selectedConnectionType}
+      data: {machineType:this.machineType, selectedConnectionType:this.selectedConnectionType, machineData:this.machine}
     });
 
     dialogRef.afterClosed().subscribe(result => {

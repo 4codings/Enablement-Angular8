@@ -39,6 +39,9 @@ export class AddExeDialogComponent implements OnInit {
     this.config.getICN().subscribe(res => {
       this.V_ICN_TYP=res;
     });
+
+    this.PLF_CD = this.data.platformData.SERVER_CD;
+    this.PLF_DSC = this.data.platformData.SERVER_DSC;
   }
   
   onBtnCancelClick(): void {
