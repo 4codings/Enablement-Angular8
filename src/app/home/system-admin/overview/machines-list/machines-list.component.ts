@@ -8,6 +8,7 @@ import { AddPlatformDialogComponent } from '../add-platform-dialog/add-platform-
 import { SystemAdminOverviewService } from '../system-admin-overview.service';
 import { ManageMachinesComponent } from '../dialogs/manage-machines/manage-machines.component';
 import { AssignMcnPlfComponent } from '../dialogs/assign-mcn-plf/assign-mcn-plf.component';
+import { Globals } from 'src/app/services/globals';
 
 @Component({
   selector: 'app-machines-list',
@@ -17,7 +18,8 @@ import { AssignMcnPlfComponent } from '../dialogs/assign-mcn-plf/assign-mcn-plf.
 export class MachinesListComponent implements OnInit {
 
   V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
-  public machines;
+  V_USR_NM=JSON.parse(sessionStorage.getItem('u')).USR_NM;
+  machines = [];
   public connections=[];
   public sortedAllConnections = [];
   @Input() selectedConnectionType;
@@ -26,32 +28,31 @@ export class MachinesListComponent implements OnInit {
   unsubscribeAll: Subject<boolean> = new Subject<boolean>();
   connectionTypeOptions;
   @Output() selectedMachine: EventEmitter<any> = new EventEmitter();
+  domain_name=this.globals.domain_name;
 
-  constructor(public dialog: MatDialog, private http:HttpClient, private systemOverview:SystemAdminOverviewService) { }
+  private apiUrlGet = "https://"+this.domain_name+"/rest/v1/securedJSON?";
+  private apiUrlPut = "https://"+this.domain_name+"/rest/v1/secured";
+
+  constructor(public dialog: MatDialog, private http:HttpClient, private systemOverview:SystemAdminOverviewService, private globals:Globals) { }
 
   ngOnInit() {
     //this.systemOverview.getAllMachineConnections();
     this.systemOverview.typeOptions$.subscribe(types => {
       this.connectionTypeOptions = types;
     })
-    // this.http.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=EXE&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe(res => {
-    //   this.connectionTypeOptions = res;
-    //   this.connectionTypeOptions.push({EXE_TYP:"All"});
-    //   this.connectionTypeOptions = this.connectionTypeOptions.sort((a,b) => {
-    //     if (a.EXE_TYP < b.EXE_TYP) //sort string ascending
-    //       return -1;
-    //     if (a.EXE_TYP > b.EXE_TYP)
-    //       return 1;
-    //     return 0; 
-    //   });
-    // }, err => {
-    //    console.log(err);
-    // });
+   
     this.systemOverview.getMachineConnection$.subscribe(res => {
       this.sortedAllConnections = res;
-    })
+    });
+
+    this.MachineCode();
   }
 
+  MachineCode() {
+    this.http.get(this.apiUrlGet+"V_SRC_CD="+this.V_SRC_CD+"&V_USR_NM="+this.V_USR_NM+"&REST_Service=Users_Machines&Verb=GET").subscribe((res:any)=>{
+      this.machines=res;
+    });
+  }
 
   changeMachineType(type) {
     this.selectedConnectionType = type.EXE_TYP;

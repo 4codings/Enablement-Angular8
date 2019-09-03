@@ -27,6 +27,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { DialogScheduleComponent } from '../../../shared/components/dialog-schedule/dialog-schedule.component';
 import { DatePipe } from '@angular/common';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 export class ReportData {
   public RESULT: string;
@@ -92,6 +93,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   changingValue: Subject<boolean> = new Subject();
   private currentXml: any;
   private uploadLocked: boolean;
+  public expandPanel: boolean = true;
   applicationProcessObservable$: Subscription;
   applicationProcessValuesObservable: ApplicationProcessObservable[] = [];
   appProcessList = [];
@@ -286,6 +288,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   bar = false;
   pie = false;
   file_path: any;
+  serviceList = [];
 
   constructor(
     private httpClient: HttpClient,
@@ -303,7 +306,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     private router: Router,
     private dialog: MatDialog,
     private StorageSessionService: StorageSessionService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    public deviceService: DeviceDetectorService
   ) {
     this.applicationProcessObservable$ = this.optionalService.applicationProcessValue.subscribe(data => {
       if (data != null) {
@@ -364,6 +368,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.expandPanel = this.deviceService.isDesktop();
     this.user = JSON.parse(sessionStorage.getItem('u'));
     if (this.user) {
       this.userEmail = this.user.USR_NM;
@@ -450,6 +455,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         this.closeSchedulePanel();
       }),
         eventBus.on('element.changed', ($event) => {
+          console.log('element.changed', $event);
           this.iconType = $event.element.type;
           this.showCondtionType = false;
           const businessObject = $event.element.businessObject;
@@ -593,6 +599,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                     }, () => this.uploadLocked = false);
                   }
                 });
+                this.getServices();
               }
             }
             setTimeout(() => {
@@ -615,11 +622,12 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.closeSchedulePanel();
         }),
         eventBus.on("shape.remove", (event) => {
-          // if (event && event.element && this.taskList.indexOf(event.element.type) >= 0) {
-          //   if (!this.onTitleClickNoDelete) {
-          //     this.deleteService(event.element.id.replace(new RegExp('_', 'g'), ' '));
-          //   }
-          // }
+          console.log('shape.remove', event)
+          if (event && event.element && this.taskList.indexOf(event.element.type) >= 0) {
+            if (!this.onTitleClickNoDelete && this.isService) {
+              this.deleteService(event.element.id.replace(new RegExp('_', 'g'), ' '));
+            }
+          }
           // if (event && event.element && event.element.type === 'bpmn:SequenceFlow') {
           //   if (!this.onTitleClickNoDelete) {
           //     this.deleteSequence(event.element.id.replace(new RegExp('_', 'g'), ' '));
@@ -638,6 +646,15 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       }
     })
   }
+  getServices() {
+    this.endUserService.getServices(this.selectedApp, this.selectedProcess).subscribe((res: any) => {
+      if (res) {
+        this.serviceList = res;
+        console.log('service', this.serviceList);
+      }
+    })
+  }
+
   ngOnDestroy() {
     if (this.applicationProcessObservable$) {
       this.applicationProcessObservable$.unsubscribe();
@@ -650,13 +667,13 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   onInputChange() {
     // replace(new RegExp(' ', 'g'), '_')
     this.generalId = this.generalId;
-    if (this.documentation == '') {
+    if (this.documentation == undefined || this.documentation === '') {
       // .replace(new RegExp('_', 'g'), ' ')
       this.documentation = this.generalId;
     }
-    // if (this.processName == '') {
-    //   this.processName = this.generalId.replace(new RegExp('_', 'g'), ' ');
-    // }
+    if (this.processName === '' && !this.isSequenceFlow) {
+      this.processName = this.generalId.replace(new RegExp('_', 'g'), ' ');
+    }
     const name = this.processName;
     if (this.isService) {
       this.addUpdateServiceFlag = true;
@@ -668,26 +685,54 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       let elementRegistry = this.modeler.get('elementRegistry');
       let element = elementRegistry.get(this.oldStateId);
       let modeling = this.modeler.get('modeling');
-      const doc = [{ 'text': this.documentation }];
       let id = this.generalId;
       modeling.updateProperties(element, {
         name: name,
         id: id.replace(new RegExp(' ', 'g'), '_'),
-      });
+      }, error => this.handleError(error));
       this.oldStateId = id.replace(new RegExp(' ', 'g'), '_');
     }
     if (this.isApp) {
-      this.addApplicationOnBE();
+      if (this.appProcessList.length) {
+        let i = this.appProcessList.findIndex(v => v.app === this.generalId);
+        if (i > -1) {
+          this.toastrService.info("Application Name Already exists");
+          this.generalId = this.oldAppId;
+        } else {
+          this.addApplicationOnBE();
+        }
+      }
     }
     // on service id update , we do not have to send sequence flow update call to the backend. 
     if (this.isService && !this.isSequenceFlow) {
-      this.updateService();
+      if (this.serviceList.length) {
+        let i = this.serviceList.findIndex(v => v.V_SRVC_CD === this.generalId);
+        if (i > -1) {
+          this.toastrService.info("Service Name Already exists");
+          this.generalId = this.old_srvc_cd;
+        } else {
+          this.updateService();
+        }
+      } else {
+        this.updateService();
+      }
     }
     if (this.isSequenceFlow) {
       this.updatesequenceFlow();
     }
     if (this.isProcess) {
-      this.updateProcess();
+      let processList = this.chilItem.filter(v => v.value == this.selectedApp);
+      if (processList.length) {
+        let i = processList.findIndex(v => v.text === this.generalId);
+        if (i > -1) {
+          this.toastrService.info("Process Name Already exists");
+          this.generalId = this.selectedProcess;
+        } else {
+          this.updateProcess();
+        }
+      } else {
+        this.updateProcess();
+      }
     }
   }
 
@@ -892,6 +937,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
               this.deleteUpdateSequenceFlag = false;
               this.addUpdateServiceFlag = false;
               this.addUpdateSequenceFlag = false;
+              if (this.isSequenceFlow) {
+                this.showAllTabFlag = true;
+              }
               document.getElementById('processId').focus();
             }
           }
@@ -964,7 +1012,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   handleError(err: any) {
     if (err) {
       this.toastrService.error(err);
-      console.error(err);
+      // console.error(err);
     }
   }
   addApplication() {
@@ -980,7 +1028,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.isApp = true;
     this.isProcess = false;
     this.isService = false;
-    this.generalId = 'newApplication';
+    this.generalId = this.autoGenerate();
+    this.oldAppId = this.generalId;
     let x = '<?xml version="1.0" encoding="UTF-8"?><bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="2.0.3"></bpmn:definitions>';
     this.modeler.importXML(x);
     // setTimeout(() => {
@@ -1023,6 +1072,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.editProcessFlag = false;
           this.showAllTabFlag = false;
           this.showRightIcon = false;
+          this.oldAppId = '';
         }
       })
   }
@@ -1312,6 +1362,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       }
       case 'Edit': {
         console.log('selected', this.selectedItem);
+        this.getServices();
         // if (this.isMonitor) {
         //   this.modeler = new Modeler({
         //     container: '#canvas',

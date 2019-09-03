@@ -32,9 +32,10 @@ import { EditConnectionDialogComponent } from './overview/dialogs/edit-connectio
 import { ManageMachinesComponent } from './overview/dialogs/manage-machines/manage-machines.component';
 import { AssignConnectionExeComponent } from './overview/dialogs/assign-connection-exe/assign-connection-exe.component';
 import { AssignMcnPlfComponent } from './overview/dialogs/assign-mcn-plf/assign-mcn-plf.component';
+import { FilterPlfExesPipe } from './overview/pipes/filter-plf-exes.pipe';
 
 @NgModule({
-  declarations: [SystemAdminComponent, PlatformComponent, ConnectionComponent, DeployStatusComponent, DeploymentComponent, DeploymentsnavbarComponent, InstallComponent, MachineComponent, MachineconnectionComponent, MachinespecsComponent, OverviewComponent, MachinesListComponent, SingleExeComponent, ExeTileListComponent, AddPlatformDialogComponent, EditExeTypeDialogComponent, ExeTypesListComponent, SingleMachineComponent, MachineTileListComponent, FilterExetypePipe, FilterMachinesPipe, AddExeDialogComponent, AddConnectionDialogComponent, EditConnectionDialogComponent, ManageMachinesComponent,AssignConnectionExeComponent, AssignMcnPlfComponent],
+  declarations: [SystemAdminComponent, PlatformComponent, ConnectionComponent, DeployStatusComponent, DeploymentComponent, DeploymentsnavbarComponent, InstallComponent, MachineComponent, MachineconnectionComponent, MachinespecsComponent, OverviewComponent, MachinesListComponent, SingleExeComponent, ExeTileListComponent, AddPlatformDialogComponent, EditExeTypeDialogComponent, ExeTypesListComponent, SingleMachineComponent, MachineTileListComponent, FilterExetypePipe, FilterMachinesPipe, AddExeDialogComponent, AddConnectionDialogComponent, EditConnectionDialogComponent, ManageMachinesComponent,AssignConnectionExeComponent, AssignMcnPlfComponent, FilterPlfExesPipe],
   imports: [
     CommonModule,
     SystemAdminRoutingModule,

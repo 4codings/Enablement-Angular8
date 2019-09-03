@@ -1,8 +1,8 @@
-<div class="tile-container">
+<!-- <div class="tile-container">
   <div class="container-header" fxLayoutAlign="space-between center">
     <span class="container-title">{{exeType.EXE_TYP}}</span>
     <div class="container-actions">
-      <!-- <button mat-icon-button matTooltip="delete exetype" (click)="onBtnDeleteExeClick(exeType)">
+      <button mat-icon-button matTooltip="delete exetype" (click)="onBtnDeleteExeClick(exeType)">
         <mat-icon>delete</mat-icon>
       </button>
       <button mat-icon-button matTooltip="edit exetype" (click)="onBtnEditExeClick(exeType)">
@@ -10,9 +10,27 @@
       </button>
       <button mat-icon-button matTooltip="Assign" (click)="onBtnAssignRoleClick(exeType)">
         <mat-icon>link</mat-icon>
-      </button> -->
+      </button>
     </div>
   </div>
   <app-exe-tile-list [userAccess]="userRoleAccess" [exes]="exeType" (selectedExeTile)="selectedExeTile($event)"></app-exe-tile-list>
+</div> -->
+
+<div class="tile-container" *ngFor="let p of plat ; let i = index;">
+  <div class="container-header" fxLayoutAlign="space-between center">
+    <span class="container-title">{{p.SERVER_CD}}</span>
+    <div class="container-actions" *ngIf="userRoleAccess.role_platform">
+      <button mat-icon-button matTooltip="Delete Platform" (click)="onBtnDeleteExeClick(p)">
+        <mat-icon>delete</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="Edit Platform" (click)="onBtnEditExeClick(p)">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="Assign Platform" (click)="onBtnAssignRoleClick(p)">
+        <mat-icon>link</mat-icon>
+      </button>
+    </div>
+  </div>
+  <app-exe-tile-list [userAccess]="userRoleAccess" [platData]="p.SERVER_CD" [exes]="exeType" (selectedExeTile)="selectedExeTile($event)"></app-exe-tile-list>
 </div>
 

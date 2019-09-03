@@ -26,6 +26,7 @@ export class ExeTileListComponent implements OnInit {
   public selectedCxnData = [];
   @Input() exes;
   @Input() userAccess;
+  @Input() platData;
   @Output() selectedExeTile = new EventEmitter();
   @Output() deleteExeEvent = new EventEmitter();
   public selectedMachine;

@@ -105,8 +105,38 @@ export class ManageMachinesComponent implements OnInit {
   ngOnInit() {
     this.MachineCode();
     this.data2.getJSON().subscribe(data2 => { 
-    this.Label=data2.json();    
-        })
+      this.Label=data2.json();    
+    });
+   
+    this.PLATFORM_CD = this.data.PLATFORM_CD;
+    this.Selected = this.data.PLATFORM_CD;
+    this.PLATFORM_CD_DUP = this.data.PLATFORM_CD;
+    this.isMachineChange = false;
+    this.isMachineDesChange =false;
+    this.data3.getMachineDetails(this.PLATFORM_CD).subscribe(res => {
+      // ("Machine List!");
+      this.PLF_DETAILS = res.json();
+      (this.PLF_DETAILS);
+      this.PLATFORM_DSC = this.PLF_DETAILS['PLATFORM_DSC'].toString();
+      this.PLATFORM_CAP = this.PLF_DETAILS['PLATFORM_CAP'];
+      this.RATING = this.PLF_DETAILS['RATING'];
+      this.EFF_STRT_DT_TM = new Date(this.PLF_DETAILS['EFF_STRT_DT_TM']).toISOString();
+      this.EFF_END_DT_TM = new Date(this.PLF_DETAILS['EFF_END_DT_TM']).toISOString();
+      this.VRTL_FLG = this.PLF_DETAILS['VRTL_FLG'].toString();
+      this.MODESTATUS = this.PLF_DETAILS['MODESTATUS'].toString();
+
+      this.STATE_FLG = this.PLF_DETAILS['STATE_FLG'].toString();
+
+      this.PLATFORM_DSC_DUP = this.PLF_DETAILS['PLATFORM_DSC'].toString();
+      this.PLATFORM_CAP_DUP = this.PLF_DETAILS['PLATFORM_CAP'];
+      this.RATING_DUP = this.PLF_DETAILS['RATING'];
+      this.EFF_STRT_DT_TM_DUP = this.PLF_DETAILS['EFF_STRT_DT_TM'];
+      this.EFF_END_DT_TM_DUP = this.PLF_DETAILS['EFF_END_DT_TM'];
+      this.VRTL_FLG_DUP = this.PLF_DETAILS['VRTL_FLG'].toString();
+      this.MODESTATUS_DUP = this.PLF_DETAILS['MODESTATUS'].toString();
+
+      this.STATE_FLG_DUP = this.PLF_DETAILS['STATE_FLG'].toString();
+    })
   }
 
   onBtnCancelClick(): void {
