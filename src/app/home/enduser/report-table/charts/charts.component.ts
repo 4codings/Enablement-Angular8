@@ -14,7 +14,7 @@ export class ChartsComponent implements OnInit {
 
   constructor(public report: ReportTableComponent,
     public data: ConfigServiceService,
-    public  _snackBar: MatSnackBar) {
+    public _snackBar: MatSnackBar) {
 
   }
 
@@ -171,17 +171,30 @@ export class ChartsComponent implements OnInit {
   _yaxis_sel_doughnut = [];
   _yaxisCB_doughnut = '';
   yaxis_data_doughnut = [];
+  yaxis_data = [];
+  xaxis_data = [];
   myobj = { mychartType: "", myxaxisdata: "", myyaxisdata: "", myUoM: "", mySoM: "" }
   linearray: any = [];
   bararray: any = [];
   piearray: any = [];
   doughnutarray: any = [];
-
+  chartarray: any = [];
+  subscription: any;
+  chartData: any = [];
+  chartLabels: any = [];
+  chartOptions: any = [];
   ngOnInit() {
+    this.subscription = this.data.chartPreferencesChange
+      .subscribe(value => {
+        console.log(value);
+        if (value != [] && this.data.chartSelection['update'] === true && this.data.chartSelection['chartNo'] !== '')
+          this.updatechart(this.data.chartSelection['chartNo'], this.data.chartPreferences[this.data.chartSelection['chartNo']]['selectedchart']);
+      });
     console.log(this.chartPreferences);
     this.UNIQUE_ID = this.report.UNIQUE_ID;
     this.SRC_ID = this.report.SRC_ID;
     this.columnsToDisplay = this.report.columnsToDisplay;
+    console.log(this.data.ReportTable_data);
   }
 
   printcpref() {
@@ -192,22 +205,23 @@ export class ChartsComponent implements OnInit {
     var offset = { ...(<any>event.source._dragRef)._passiveTransform };
     this.data.chartposition[i] = offset;
     console.log(this.data.chartposition[i]);
-
   }
 
-  updateLineChart() {
+  /*updateLineChart(chartNo) {
     var unit = '';
     var scale;
     if (this.linearray.length) {
-      unit = this.linearray[0].UoM;
-      scale = this.linearray[0].SoM;
+      //unit = this.linearray[0].UoM;
+      unit = this.data.chartPreferences[chartNo]['UoM_y'];
+      //scale = this.linearray[0].SoM;
+      scale = this.data.chartPreferences[chartNo]['SoM_y'];
     }
     this.lineChartData = [];
     this.lineChartLabels = [];
     this.yaxis_data_line = [];
     this.lineChartOptions = null;
-
-    switch (this._linetension) {
+    switch (this.data.chartPreferences[chartNo]['linetension']) {
+      //switch (this._linetension) {
       case 'none': this.lineten = 0;
         break;
       case 'mild': this.lineten = 0.2;
@@ -217,7 +231,8 @@ export class ChartsComponent implements OnInit {
       default: this.lineten = 0;
         break;
     }
-    switch (this._pointradius) {
+    switch (this.data.chartPreferences[chartNo]['pointradius']) {
+      //switch (this._pointradius) {
       case 'small': this.pointrad = 6;
         break;
       case 'normal': this.pointrad = 8;
@@ -400,30 +415,44 @@ export class ChartsComponent implements OnInit {
         });
       }
     }
-  }
-  updateBarChart() {
-    var unit = this._yaxisCB_bar;
-    this.barChartData = [];
-    this.barChartLabels = [];
-    this.barChartOptions = null;
+  }*/
+  updateBarChart(chartNo) {
+    //var unit = this._yaxisCB_bar;
+    this.updatecustoms(chartNo);
+    var unit = this.data.chartPreferences[chartNo]['UoM_y']
 
-    if (this._yaxis_sel_bar != [] && this._yaxis_sel_bar != undefined) {
-      for (let i = 0; i < this._yaxis_sel_bar.length; i++) {
-        this.yaxis_data_bar[i] = this.data.ReportTable_data[this._yaxis_sel_bar[i]].map(Number);
-        this.barChartData[i] = {
+    this.chartData[chartNo] = [];
+    this.chartLabels[chartNo] = [];
+    this.chartOptions[chartNo] = null;
+    var yaxis_data_bar = [];
+    console.log('inside bar chart update');
+    if (this.yaxis_data[chartNo] != [] && this.yaxis_data[chartNo] != undefined && this.data.chartSelection['selection'] !== 'selectedchart') {
+      for (let i = 0; i < this.yaxis_data[chartNo].length; i++) {
+        yaxis_data_bar[i] = this.data.ReportTable_data[this.yaxis_data[chartNo][i]].map(Number);
+        this.chartData[chartNo][i] = {
           label: "",
           data: Array<any>()
         }
-        this.barChartData[i].data = this.yaxis_data_bar[i];
-        this.barChartData[i].label = this._yaxis_sel_bar[i];
+        this.chartData[i][chartNo].data = yaxis_data_bar[i];
+        this.chartData[i][chartNo].label = this.yaxis_data[chartNo][i];
       }
-      console.log(this._yaxis_sel_bar);
+      console.log(this.yaxis_data[chartNo]);
     }
     else {
-      this.barChartData = this.bardata;
-      console.log("Inside else");
+      this.chartData[chartNo] = this.bardata;
     }
-    this.barChartOptions = {
+    var gridlinedashed = [];
+    var yaxisdata = 'Not provided';
+    if (this.yaxis_data[chartNo] !== undefined) {
+      yaxisdata = this.yaxis_data[chartNo][0];
+    }
+    var xaxisdata = 'Not Provided';
+    if (this.xaxis_data[chartNo] !== undefined) {
+      xaxisdata = this.xaxis_data[chartNo];
+    }
+
+    this.data.chartPreferences['gridborder'] == true ? gridlinedashed = [10, 10] : gridlinedashed = [];
+    this.chartOptions[chartNo] = {
       scaleShowVerticalLines: false,
       responsive: true,
       legend: {
@@ -436,7 +465,7 @@ export class ChartsComponent implements OnInit {
       {
         animation: {
           duration: 3000,
-          easing: this._animations
+          easing: this.data.chartPreferences['animations']
         }
       },
 
@@ -459,7 +488,7 @@ export class ChartsComponent implements OnInit {
           },
           scaleLabel: {
             display: true,
-            labelString: this._xaxis_sel_bar
+            labelString: xaxisdata
           },
           display: true
         }],
@@ -474,23 +503,23 @@ export class ChartsComponent implements OnInit {
         mode: 'xy',
       }
     };
-    for (let i = 0; i < this.barChartData.length; i++) {
+    for (let i = 0; i < this.chartData[chartNo].length; i++) {
       if (i == 0) {
-        this.barChartOptions.scales.yAxes[0] = {
+        this.chartOptions[chartNo].scales.yAxes[0] = {
           position: 'left',
           type: 'linear',
           display: true,
           id: 'y-1',
           gridLines: {
             drawOnChartAdrawBorder: false,
-            borderDash: this._gridlinedash,
-            lineWidth: this._gridlinewidth
+            borderDash: gridlinedashed,
+            lineWidth: this.data.chartPreferences['gridlinewidth']
           },
           ticks: {
             // min: this._yaxismin,
             // max: this._yaxismax,
-            stepSize: this._yaxisstepSize,
-            autoSkip: this._yaxisAutoskip,
+            stepSize: this.data.chartPreferences['yaxisstepsize'],
+            autoSkip: this.data.chartPreferences['yaxisautoskip'],
             fontColor: this.barChartColors[0].borderColor,
             beginAtZero: true,
             callback: function (label) {
@@ -504,13 +533,13 @@ export class ChartsComponent implements OnInit {
           },
           scaleLabel: {
             display: true,
-            labelString: this._yaxis_sel_bar[0],
+            labelString: yaxisdata,
             fontColor: this.barChartColors[0].borderColor
           }
         };
       }
       if (i > 0) {
-        this.barChartOptions.scales.yAxes[i] = {
+        this.chartOptions[chartNo].scales.yAxes[i] = {
           position: 'right',
           type: 'linear',
           display: true,
@@ -536,16 +565,18 @@ export class ChartsComponent implements OnInit {
           },
           scaleLabel: {
             display: true,
-            labelString: this._yaxis_sel_bar[i],
+            labelString: this.yaxis_data[chartNo][i],
             fontColor: this.barChartColors[i].borderColor
           }
         };
       }
     }
-    this._xaxis_sel_bar != "" ? this.barChartLabels = this.data.ReportTable_data[this._xaxis_sel_bar]
-      : this.barChartLabels = this.chartlabels;
+    this.xaxis_data[chartNo] != "" ? this.chartLabels[chartNo] = this.data.ReportTable_data[this.xaxis_data[chartNo]]
+      : this.chartLabels[chartNo] = this.chartlabels;
+
   }
-  updatePieChart() {
+
+  updatePieChart(chartNo) {
     this.pieChartData = [];
     this.pieChartLabels = [];
 
@@ -561,7 +592,7 @@ export class ChartsComponent implements OnInit {
     this._xaxis_sel_pie != "" ? this.pieChartLabels = this.data.ReportTable_data[this._xaxis_sel_pie]
       : this.pieChartLabels = this.chartlabels;
   }
-  updateDoughnutChart() {
+  updateDoughnutChart(chartNo) {
     this.doughnutChartData = [];
     this.doughnutChartLabels = [];
 
@@ -578,11 +609,68 @@ export class ChartsComponent implements OnInit {
       : this.doughnutChartLabels = this.chartlabels;
   }
 
-  updatechart() {
-    this.updateLineChart();
-    this.updateBarChart();
-    this.updatePieChart();
-    this.updateDoughnutChart();
+  updatechart(chartNo, chart_type) {
+    console.log(chartNo);
+    console.log(chart_type);
+    if (chart_type === 'linechart_sel') { }
+    //this.updateLineChart(chartNo);
+    if (chart_type === 'barchart_sel')
+      this.updateBarChart(chartNo);
+    if (chart_type === 'piechart_sel') { }
+    //this.updatePieChart(chartNo);
+    if (chart_type === 'doughnutchart_sel') { }
+    //this.updateDoughnutChart(chartNo);
+  }
+
+  updatecustoms(chartNo) {
+    var test = 0;
+
+    /*if (this.personalizationtable != undefined && (this.myobj.mychartType != "" || this.myobj.myxaxisdata != "" || this.myobj.myyaxisdata != "")) {
+      for (let i = 0; i < this.personalizationtable.length; i++) {
+        if ((this.data.chartPreferences[chartNo]['selectedchart'] != this.personalizationtable[i].chartType ||
+          this.data.chartPreferences[chartNo]['xaxisdata'] != this.personalizationtable[i].xaxisdata ||
+          this.data.chartPreferences[chartNo]['yaxisdata'] != this.personalizationtable[i].yaxisdata)) {
+          test = 0;
+        }
+        else {
+          test = 1;
+        }
+      }
+    }
+    else {
+      test = 1;
+    }*/
+    if (test == 0 && this.data.chartSelection['update'] && (this.data.chartSelection['selection'] === 'xaxisdata'
+      || this.data.chartSelection['selection'] === 'yaxisdata' || this.data.chartSelection['selection'] === 'UoM_y'
+      || this.data.chartSelection['selection'] === 'SoM_y')) {
+      var obj = {
+        chartType: this.data.chartPreferences[chartNo]['selectedchart'],
+        xaxisdata: this.data.chartPreferences[chartNo]['xaxisdata'],
+        yaxisdata: this.data.chartPreferences[chartNo]['yaxisdata'],
+        UoM: this.data.chartPreferences[chartNo]['UoM_y'],
+        SoM: this.data.chartPreferences[chartNo]['SoM_y'],
+      }
+      this.personalizationtable.push(obj);
+      if (this.data.chartSelection['selection'] === 'yaxisdata') {
+        this.yaxis_data[chartNo] = [];
+        this.yaxis_data[chartNo].push(obj.yaxisdata);
+      }
+      if (this.data.chartSelection['selection'] === 'xaxisdata') {
+        this.xaxis_data[chartNo] = obj.xaxisdata;
+      }
+      this.chartarray[chartNo] = [];
+      this.chartarray[chartNo].push(obj);
+      //this.updatechart(chartNo, obj.chartType);
+
+      console.log(this.yaxis_data);
+      console.log(this.xaxis_data);
+      //this.setchartpreferences('all');
+    }
+    else {
+      this._snackBar.open("Data already exist in table", 'Ok', {
+        duration: 2000
+      });
+    }
   }
 
   getchartpreferences() {
@@ -643,7 +731,7 @@ export class ChartsComponent implements OnInit {
     this.chartposition[2].y = cp[5];
     this.chartposition[3].y = cp[7];*/
 
-    this.updatechart();
+    //this.updatechart();
   }
 
   remove(item: string): void {
@@ -666,7 +754,7 @@ export class ChartsComponent implements OnInit {
     }
     this.settablepreferences();
   }
-  
+
   settablepreferences() {
     if (this.hiddencols.length > -1) {
       var abc = this.hiddencols.toString();
@@ -704,7 +792,7 @@ export class ChartsComponent implements OnInit {
     }
   }
 
-  getpreferences() {
+  /*getpreferences() {
     console.log("getpref");
     this.data.getchartstyling(this.UNIQUE_ID, this.SRC_ID).subscribe(
       res => {
@@ -726,7 +814,8 @@ export class ChartsComponent implements OnInit {
           this.showhide(this.show_choice);
         }
       });
-  }
+  }*/
+
   showhide(abc) {
     this.show_choice = abc;
     switch (abc) {

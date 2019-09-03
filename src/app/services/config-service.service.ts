@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { Globals } from './globals';
 import { CommonUtils } from '../common/utils';
 import { ApiService } from '../service/api/api.service';
+import { BehaviorSubject } from 'rxjs';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Injectable({
@@ -16,13 +17,20 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 export class ConfigServiceService {
   domain_name = this.globals.domain_name;
-  chartPreferences= [];
+  chartPreferences: any = [];
+
+  chartSelection: any = {chartNo:'',chartPreferences:[],update:false,selection:''};
   chartposition: any = [];
   ReportTable_data: any;
+
+  chartPreferencesChange = new BehaviorSubject<any>(this.chartPreferences);
+
   V_SRC_CD: string = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
   V_USR_NM: string = JSON.parse(sessionStorage.getItem('u')).USR_NM;
   constructor(private http: Http, private https: HttpClient, private apiService: ApiService,
-    private StorageSessionService: StorageSessionService, private globals: Globals) { }
+    private StorageSessionService: StorageSessionService, private globals: Globals) {
+
+  }
 
   private apiUrlGet = this.apiService.endPoints.insecure;
   private apiUrlGetSecure = this.apiService.endPoints.secure;

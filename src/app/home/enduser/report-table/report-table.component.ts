@@ -735,6 +735,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.barChartData = this.bardata;
       console.log("Inside else");
     }
+    console.log(this.Table_of_Data5);
+    console.log(this.barChartData);
     this.barChartOptions = {
       scaleShowVerticalLines: false,
       responsive: true,

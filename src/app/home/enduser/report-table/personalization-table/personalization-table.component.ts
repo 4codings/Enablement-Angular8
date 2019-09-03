@@ -105,14 +105,14 @@ export class PersonalizationTableComponent implements OnInit {
     backgroundcolor: "", bordercolor: "", fillbackground: "", linetension: "", pointradius: "", animations: "",
     pointstyle: "", linestyle: "", gridborder: "", yaxisautoskip: "", linexaxis: "", lineyaxis: "", barxaxis: "",
     baryaxis: "", piexaxis: "", pieyaxis: "", doughnutxaxis: "", doughnutyaxis: "", selectedchart: "", chartposition: "",
-    charttype: "", xaxisdata: "", yaxisdata: "", UoM_x: "", UoM_y: "", SoM_x: "", SoM_y: "", xaxisstepsize:"", yaxisstepsize:"", personalizationtable: {}
+    charttype: "", xaxisdata: "", yaxisdata: "", UoM_x: "", UoM_y: "", SoM_x: "", SoM_y: "", xaxisstepsize: "", yaxisstepsize: "", personalizationtable: {}
   };
   myobj = { mychartType: "", myxaxisdata: "", myyaxisdata: "", myUoM: "", mySoM: "" }
   preservedPreferences = [];
 
   constructor(public report: ReportTableComponent,
-    public  data: ConfigServiceService,
-    public  _snackBar: MatSnackBar) {
+    public data: ConfigServiceService,
+    public _snackBar: MatSnackBar) {
 
   }
 
@@ -124,9 +124,10 @@ export class PersonalizationTableComponent implements OnInit {
     return index;
   }
 
-  getChartPreferences(){
+  getChartPreferences() {
     return this.chartPreferences;
   }
+
   set_chartPreferences_arr(pref, i) {
     if (pref === 'chartno')
       this.chartPreferences[i]['chartno'] = this.chartno[i];
@@ -195,107 +196,84 @@ export class PersonalizationTableComponent implements OnInit {
   }
 
   setchartpreferences(pref, val, index?) {
-    var cp = [];
+
+    /*var cp = [];
     for (let i = 0; i < this.chartposition.length; i++) {
       cp.push(Object.values(this.chartposition[i]));
     }
     cp = [].concat.apply([], cp);
-    console.log(cp);
-    if (pref === 'all') {
-      this.userprefs['backgroundcolor'] = this._backgroundColor;
-      this.userprefs['bordercolor'] = this._borderColor;
-      this.userprefs['fill'] = this._fill.toString().toLocaleUpperCase();
-      this.userprefs['pointstyle'] = this._pointstyle;
-      this.userprefs['linetension'] = this._linetension;
-      this.userprefs['animations'] = this._animations;
-      this.userprefs['pointradius'] = this._pointradius;
-      this.userprefs['linestyle'] = this._linestyle;
-      this.userprefs['gridlinedashed'] = this._gridborder.toString().toLocaleUpperCase();
-      this.userprefs['linewidth'] = this._gridlinewidth;
-      this.userprefs['yautoskip'] = this._yaxisAutoskip.toString().toLocaleUpperCase();
-      this.userprefs['linexaxis'] = this._xaxis_sel_line;
-      this.userprefs['lineyaxis'] = this._yaxis_sel_line;
-      this.userprefs['barxaxis'] = this._xaxis_sel_bar;
-      this.userprefs['baryaxis'] = this._yaxis_sel_bar;
-      this.userprefs['piexaxis'] = this._xaxis_sel_pie;
-      this.userprefs['pieyaxis'] = this._yaxis_sel_pie;
-      this.userprefs['doughnutxaxis'] = this._xaxis_sel_doughnut;
-      this.userprefs['doughnutyaxis'] = this._yaxis_sel_doughnut;
-      this.userprefs['selectedchart'] = this.selectedchart;
-      this.userprefs['personalizationtable'] = this.personalizationtable;
-      this.userprefs['chartposition'] = cp;
-      console.log(this.userprefs);
-      this.report.V_PRF_NM = Object.keys(this.userprefs);
-      this.report.V_PRF_VAL = Object.values(this.userprefs);
-      for (let j = 0; j < this.report.V_PRF_NM.length; j++) {
-        this.data.setchartstyling(this.report.UNIQUE_ID, this.report.SRC_ID, this.report.V_PRF_NM[j], this.report.V_PRF_VAL[j]).subscribe(
-          () => {
+    console.log(cp);*/
+    /*if (pref === "personalizationtable") {
+      this.chartPreferences[index][pref]['charttype'] = this.chartPreferences[index]['charttype'];
+      this.chartPreferences[index][pref]['xaxisdata'] = this.chartPreferences[index]['xaxisdata'];
+      this.chartPreferences[index][pref]['yaxisdata'] = this.chartPreferences[index]['yaxisdata'];
+      this.chartPreferences[index][pref]['UoM_x'] = this.chartPreferences[index]['UoM_x'];
+      this.chartPreferences[index][pref]['UoM_y'] = this.chartPreferences[index]['UoM_y'];
+      this.chartPreferences[index][pref]['SoM_x'] = this.chartPreferences[index]['SoM_x'];
+      this.chartPreferences[index][pref]['SoM_y'] = this.chartPreferences[index]['SoM_y'];
+    }*/
 
-          });
-      }
-    }
-    else {
-      if (pref === "personalizationtable") {
-        this.set_chartPreferences_arr('charttype', index);
-        this.set_chartPreferences_arr('xaxisdata', index);
-        this.set_chartPreferences_arr('yaxisdata', index);
-        this.set_chartPreferences_arr('UoM_x', index);
-        this.set_chartPreferences_arr('UoM_y', index);
-        this.set_chartPreferences_arr('SoM_x', index);
-        this.set_chartPreferences_arr('SoM_y', index);
-        this.chartPreferences[index][pref]['charttype'] = this.chartPreferences[index]['charttype'];
-        this.chartPreferences[index][pref]['xaxisdata'] = this.chartPreferences[index]['xaxisdata'];
-        this.chartPreferences[index][pref]['yaxisdata'] = this.chartPreferences[index]['yaxisdata'];
-        this.chartPreferences[index][pref]['UoM_x'] = this.chartPreferences[index]['UoM_x'];
-        this.chartPreferences[index][pref]['UoM_y'] = this.chartPreferences[index]['UoM_y'];
-        this.chartPreferences[index][pref]['SoM_x'] = this.chartPreferences[index]['SoM_x'];
-        this.chartPreferences[index][pref]['SoM_y'] = this.chartPreferences[index]['SoM_y'];
-      }
-
-      console.log(val);
-      this.chartPreferences[index][pref] = val;
-      console.log(this.chartPreferences);
-      if(pref === "chartno"){
-        var chartFound = false;
-        var foundIndex;
-        for(let i=0; i<this.chartPreferences.length; i++){
-          if(i!== index && val === this.chartPreferences[i]['chartno']){
-            chartFound = true;
-            foundIndex = i;
-            break;
-          }
-        }
-        if(chartFound){
-          this.chartPreferences[index] = this.chartPreferences[foundIndex];
-          
+    console.log(val);
+    this.chartPreferences[index][pref] = val;
+    console.log(this.chartPreferences);
+    if (pref === "chartno") {
+      var chartFound = false;
+      var foundIndex;
+      for (let i = 0; i < this.chartPreferences.length; i++) {
+        if (i !== index && val === this.chartPreferences[i]['chartno']) {
+          chartFound = true;
+          foundIndex = i;
+          break;
         }
       }
-      this.data.chartPreferences = this.chartPreferences;
-      /*this.data.setchartstyling(this.report.UNIQUE_ID, this.report.SRC_ID, pref, val).subscribe(
-        () => {
-
-        });*/
+      if (chartFound) {
+        this.chartPreferences[index] = this.chartPreferences[foundIndex];
+        //update the values in the row
+      }
     }
+    this.data.chartPreferences = this.chartPreferences;
+    this.data.chartSelection['chartPreferences'] = this.data.chartPreferences;
+    this.data.chartSelection['chartNo'] = index;
+    this.data.chartSelection['update'] = true;
+    this.data.chartSelection['selection'] = pref;
+    this.data.chartPreferencesChange.next(this.data.chartPreferences);
+    /*this.userprefs['backgroundcolor'] = this._backgroundColor;
+    this.userprefs['bordercolor'] = this._borderColor;
+    this.userprefs['fill'] = this._fill.toString().toLocaleUpperCase();
+    this.userprefs['pointstyle'] = this._pointstyle;
+    this.userprefs['linetension'] = this._linetension;
+    this.userprefs['animations'] = this._animations;
+    this.userprefs['pointradius'] = this._pointradius;
+    this.userprefs['linestyle'] = this._linestyle;
+    this.userprefs['gridlinedashed'] = this._gridborder.toString().toLocaleUpperCase();
+    this.userprefs['linewidth'] = this._gridlinewidth;
+    this.userprefs['yautoskip'] = this._yaxisAutoskip.toString().toLocaleUpperCase();
+    this.userprefs['linexaxis'] = this._xaxis_sel_line;
+    this.userprefs['lineyaxis'] = this._yaxis_sel_line;
+    this.userprefs['barxaxis'] = this._xaxis_sel_bar;
+    this.userprefs['baryaxis'] = this._yaxis_sel_bar;
+    this.userprefs['piexaxis'] = this._xaxis_sel_pie;
+    this.userprefs['pieyaxis'] = this._yaxis_sel_pie;
+    this.userprefs['doughnutxaxis'] = this._xaxis_sel_doughnut;
+    this.userprefs['doughnutyaxis'] = this._yaxis_sel_doughnut;
+    this.userprefs['selectedchart'] = this.selectedchart;
+    this.userprefs['personalizationtable'] = this.personalizationtable;
+    this.userprefs['chartposition'] = cp;
+    console.log(this.userprefs);
+    this.report.V_PRF_NM = Object.keys(this.userprefs);
+    this.report.V_PRF_VAL = Object.values(this.userprefs);*/
+    this.data.setchartstyling(this.report.UNIQUE_ID, this.report.SRC_ID, pref, this.chartPreferences[index][pref]).subscribe(
+      () => {
 
+      });
   }
-  updateBarChart() {
-    this.report.updateBarChart();
-  }
-  updateLineChart() {
-    this.report.updateLineChart();
-  }
-  updateDoughnutChart() {
-    this.report.updateDoughnutChart();
-  }
-  updatePieChart() {
-    this.report.updatePieChart();
-  }
-  updateChart() {
+
+  updateChart(chartNo, chart_type) {
     this.report.updatechart();
   }
 
   addRow_action() {
-    this.chartno.push(this.chartno.length+1);
+    this.chartno.push(this.chartno.length + 1);
     this.gridlinewidth.push("");
     this.backgroundcolor.push("");
     this.bordercolor.push("");
@@ -336,18 +314,26 @@ export class PersonalizationTableComponent implements OnInit {
     this.data.chartposition.push({ x: 0, y: 0 });
     console.log(this.chartPreferences);
     this.data.chartPreferences = this.chartPreferences;
+    this.data.chartSelection['chartPreferences'] = this.data.chartPreferences;
+    this.data.chartSelection['chartNo'] = this.chartno.length;
+    this.data.chartSelection['update'] = false;
+    this.data.chartPreferencesChange.next(this.data.chartPreferences);
   }
 
   deleteRow_action(chartNo) {
     this.Element_Preferences.pop();
     console.log(chartNo);
     this.data.chartPreferences = this.chartPreferences;
+    this.data.chartSelection['chartPreferences'] = this.data.chartPreferences;
+    this.data.chartSelection['chartNo'] = chartNo;
+    this.data.chartSelection['update'] = false;
+    this.data.chartPreferencesChange.next(this.data.chartPreferences);
     //this.chartPreferences.splice(chartNo,1);
     //---data move up
     this.dataPreferences = new MatTableDataSource(this.Element_Preferences);
   }
 
-  updatecustoms() {
+  /*updatecustoms() {
     var test = 0;
 
     if (this.personalizationtable != undefined && (this.myobj.mychartType != "" || this.myobj.myxaxisdata != "" || this.myobj.myyaxisdata != "")) {
@@ -410,5 +396,5 @@ export class PersonalizationTableComponent implements OnInit {
         duration: 2000
       });
     }
-  }
+  }*/
 }
