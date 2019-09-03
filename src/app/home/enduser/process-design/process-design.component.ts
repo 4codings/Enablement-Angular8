@@ -451,6 +451,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         this.closeSchedulePanel();
       }),
         eventBus.on('element.changed', ($event) => {
+          console.log('element.changed', $event);
           this.iconType = $event.element.type;
           this.showCondtionType = false;
           const businessObject = $event.element.businessObject;
@@ -617,11 +618,12 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.closeSchedulePanel();
         }),
         eventBus.on("shape.remove", (event) => {
-          // if (event && event.element && this.taskList.indexOf(event.element.type) >= 0) {
-          //   if (!this.onTitleClickNoDelete) {
-          //     this.deleteService(event.element.id.replace(new RegExp('_', 'g'), ' '));
-          //   }
-          // }
+          console.log('shape.remove', event)
+          if (event && event.element && this.taskList.indexOf(event.element.type) >= 0) {
+            if (!this.onTitleClickNoDelete && this.isService) {
+              this.deleteService(event.element.id.replace(new RegExp('_', 'g'), ' '));
+            }
+          }
           // if (event && event.element && event.element.type === 'bpmn:SequenceFlow') {
           //   if (!this.onTitleClickNoDelete) {
           //     this.deleteSequence(event.element.id.replace(new RegExp('_', 'g'), ' '));
@@ -661,13 +663,13 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   onInputChange() {
     // replace(new RegExp(' ', 'g'), '_')
     this.generalId = this.generalId;
-    if (this.documentation == '') {
+    if (this.documentation == undefined || this.documentation === '') {
       // .replace(new RegExp('_', 'g'), ' ')
       this.documentation = this.generalId;
     }
-    // if (this.processName == '') {
-    //   this.processName = this.generalId.replace(new RegExp('_', 'g'), ' ');
-    // }
+    if (this.processName === '' && !this.isSequenceFlow) {
+      this.processName = this.generalId.replace(new RegExp('_', 'g'), ' ');
+    }
     const name = this.processName;
     if (this.isService) {
       this.addUpdateServiceFlag = true;
@@ -931,6 +933,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
               this.deleteUpdateSequenceFlag = false;
               this.addUpdateServiceFlag = false;
               this.addUpdateSequenceFlag = false;
+              if (this.isSequenceFlow) {
+                this.showAllTabFlag = true;
+              }
               document.getElementById('processId').focus();
             }
           }
