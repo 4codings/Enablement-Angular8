@@ -1347,7 +1347,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.selectedProcess = childValue ? childValue.text : this.selectedProcess;
     this.selectedItem = childValue ? childValue : this.selectedItem;
     this.closeSchedulePanel();
-
+    console.log(actionValue, childValue);
     switch (actionValue) {
       case 'Run': {
         this.add();
@@ -1494,8 +1494,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
 
       };
       Object.assign(body, this.ts);
+      console.log('execute now');
       this.http.post(this.apiService.endPoints.secureProcessStart, body, this.apiService.setHeaders())
         .subscribe(res => {
+          console.log(res.json());
           this.executedata = { SL_APP_CD: this.selectedApp, SL_PRC_CD: this.selectedProcess };
 
           this.StorageSessionService.setCookies('executedata', this.executedata);
@@ -1649,6 +1651,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       REST_Service: 'Report',
       Verb: 'POST'
     };
+    console.log('rpt table');
+    console.log(body);
     this.http.post(this.apiService.endPoints.secureProcessReport, body, this.apiService.setHeaders())
       .subscribe(
         (res: any) => {
@@ -1659,6 +1663,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             this.app.loadingCharts = false;
             this.report = res.json();
             var timeout = res.json().RESULT.toString().substring(0, 7) == "TIMEOUT";
+            console.log(this.report.RESULT);
             if (timeout && this.ctrl_variables.call_repeat_on_TIMEOUT) {
               this.repeatCallTable(true);
             } else if (this.report.RESULT == 'TABLE') {
