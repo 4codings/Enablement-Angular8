@@ -902,7 +902,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         if (res) {
           this.getApplicationProcess();
-          this.oldStateId = this.selectedProcess;
+          this.oldStateId = this.selectedProcess.replace(new RegExp(' ', 'g'), '_');
           document.getElementById("processId").focus();
         }
       });
@@ -939,6 +939,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
               this.addUpdateSequenceFlag = false;
               if (this.isSequenceFlow) {
                 this.showAllTabFlag = true;
+                this.oldStateId = this.generalId.replace(new RegExp(' ', 'g'), '_');
+                this.isService = true;
+                this.selectedService = this.generalId
+                this.showCondtionType = false;
               }
               document.getElementById('processId').focus();
             }
