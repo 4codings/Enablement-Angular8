@@ -55,14 +55,19 @@ mat-list {
 }
 
 .candence_choice {
-    width: 162px;
+    width: 100%;
     border-color: #000;
+    text-align-last: center;
 }
-
+:host ::ng-deep .week_block .mat-form-field-infix {
+    border: none !important;
+}
 .repeat_after {
-    margin: 5px 4px 6px 4px;
+    margin-top: 13px;
 }
-
+:host ::ng-deep .repeatAfter .mat-form-field-infix {
+    border: none !important;
+}
 :host ::ng-deep .day_of_month .mat-form-field-infix {
     line-height: 24px !important;
 }

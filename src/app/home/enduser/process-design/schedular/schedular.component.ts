@@ -264,6 +264,7 @@ export class SchedularComponent implements OnInit {
   }
   ngOnInit() {
     this.start_date = new Date();
+    this.Repeat_after = 1;
     this.getEndYear();
     this.changing.subscribe(v => {
       this.addClass = v;

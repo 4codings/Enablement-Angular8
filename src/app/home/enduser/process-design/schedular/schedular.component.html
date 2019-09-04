@@ -1,24 +1,24 @@
-<div fxLayout="row" fxLayoutAlign="center">
+<div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center center">
   <!-- <div fxFlex></div> -->
-
-  <div flex fxLayout="column" style="text-align: center;">
+  <div fxFlex="8"></div>
+  <div fxFlex="25">
     <label>Start At</label>
-    <mat-form-field class="form_input" style="width: 160px;">
+    <mat-form-field class="form_input">
       <input matInput placeholder="" [min]="min_start" [(ngModel)]="start_date" [owlDateTimeTrigger]="dtPicker11"
         [owlDateTime]="dtPicker11" style="text-align: center;" />
       <owl-date-time #dtPicker11></owl-date-time>
     </mat-form-field>
   </div>
-  <div fxFlex="5" style="width: 100%;"></div>
-  <div flex fxLayout="column" style="text-align: center;">
+  <div fxFlex="8"></div>
+  <div fxFlex="25">
     <label>End At</label>
-    <mat-form-field class="form_input" style="width: 160px;">
+    <mat-form-field class="form_input">
       <input [(ngModel)]="End_date" [min]="min_start" matInput placeholder="" [owlDateTimeTrigger]="dtPicker1"
         [owlDateTime]="dtPicker1" style="text-align: center;">
       <owl-date-time #dtPicker1></owl-date-time>
     </mat-form-field>
   </div>
-  <div fxFlex="5" style="width: 100%;"></div>
+  <div fxFlex="8"></div>
   <!-- <div fxFlex></div> -->
 </div>
 <!-- <mat-radio-group (onclick)="check_end_date_start_date()" [(ngModel)]="end_and_start_date">
@@ -42,7 +42,7 @@
     </div>
 </mat-radio-group> -->
 <!-- expression -->
-<div flex fxLayout="row" fxLayoutAlign="center" [ngClass]="addClass ? 'ml-5':'ml-0'">
+<div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center center">
 
   <!--<div  fxShow="true" fxHide.gt-sm="true">
 
@@ -63,7 +63,8 @@
   <!--  <label style="text-align:center;width:100%;margin-top: 5px;">
             <strong>Select a Candence</strong>
         </label>&nbsp;-->
-  <div flex fxLayout="column" style="text-align: center;">
+  <div fxFlex="8"></div>
+  <div fxFlex="25">
     <!-- <mat-radio-group class="example-radio-group" [(ngModel)]="candence_choice">
                 <mat-radio-button style="margin-left:15px;" class="example-radio-button" (click)="changeView(cn);fooo(cn)" *ngFor="let cn of Select_candence_option"
                     [value]="cn">
@@ -88,23 +89,25 @@
     </select>
   </div>
 
-  <div fxFlex="5" style="width: 100%;"></div>
-  <div flex fxLayout="column" fxFlex="25" style="text-align: center;">
+  <div fxFlex="8"></div>
+  <div fxFlex="25">
 
-    <mat-form-field class="form_input" style="width: 100px;resize: none">
+    <mat-form-field class="form_input repeatAfter">
       <label for="repeat_after" class="repeat_after">Repeat After</label>
       <input matInput type="number" [(ngModel)]="Repeat_after" min="1" max="86400">
     </mat-form-field>
 
   </div>
+  <div fxFlex="8"></div>
 </div>
 <!-- hide show  -->
-<div fxLayoutAlign="center" fxLayout="row" class="my-2">
+<div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center center" class="my-2">
 
-  <div *ngIf="week_block" fxLayoutAlign="center">
-    <mat-form-field style="width:123px;">
-      <mat-select [formControl]="toppings" multiple placeholder="Select Day" [(ngModel)]="week_day_selected"
-        style="text-align:center;">
+  <div *ngIf="week_block">
+    <mat-form-field class="week_block form_input" style="width:123px;">
+      <label>Select Day</label>
+      <mat-select [formControl]="toppings" multiple [(ngModel)]="week_day_selected"
+        style="text-align:center;border:1px solid;">
         <mat-option style="text-align:center;" value="Sunday">Sunday</mat-option>
         <mat-option style="text-align:center;" value="Monday">Monday</mat-option>
         <mat-option style="text-align:center;" value="Tuesday">Tuesday</mat-option>
@@ -125,11 +128,11 @@
   </div>
 
 </div>
-<div flex fxLayout="row" fxLayoutAlign="center" fxLayout.lt-sm="column" class="mt-2" [ngClass]="addClass ? 'ml-5':''">
+<div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center center" class="mt-2">
   <div fxFlex="25">
 
   </div>
-  <div fxFlex="50">
+  <div fxFlex="50" fxLayoutAlign="center center">
 
     <!-- this is for month select                          -->
     <div *ngIf="month_block">
