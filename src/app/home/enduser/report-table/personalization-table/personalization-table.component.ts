@@ -306,8 +306,8 @@ export class PersonalizationTableComponent implements OnInit {
     this.yaxisstepSize.push("");
     this.chartPreferences.push({
       gridlinewidth: "", chartno: "",
-      backgroundcolor: "", bordercolor: "", fillbackground: "", linetension: "", pointradius: "", animations: "",
-      pointstyle: "", linestyle: "", gridborder: "", yaxisautoskip: "", linexaxis: "", lineyaxis: "", barxaxis: "",
+      backgroundcolor: "", bordercolor: "", fillbackground: false, linetension: "", pointradius: "", animations: "",
+      pointstyle: "rectRot", linestyle: "", gridborder: "", yaxisautoskip: "", linexaxis: "", lineyaxis: "", barxaxis: "",
       baryaxis: "", piexaxis: "", pieyaxis: "", doughnutxaxis: "", doughnutyaxis: "", selectedchart: "", chartposition: "",
       charttype: "", xaxisdata: "", yaxisdata: "", UoM_x: "", UoM_y: "", SoM_x: "", SoM_y: "", xaxisstepsize: "", yaxisstepsize: "", personalizationtable: {}
     });

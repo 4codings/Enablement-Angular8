@@ -38,7 +38,7 @@
     <div class="table-cell" *ngFor="let d_yaxis of doughnutyaxis; let i=index; trackBy:indexTracker">
       <mat-form-field style="width:100%">
         <mat-select placeholder="Select Y-axis Dataset" (selectionChange)="setchartpreferences('yaxisdata',$event.value,i);"
-          multiple [(value)]="d_yaxis">
+          [(value)]="d_yaxis">
           <mat-option style="text-align:center;" *ngFor="let items of yaxis_datasets" [value]="items">
             {{items}} </mat-option>
         </mat-select>

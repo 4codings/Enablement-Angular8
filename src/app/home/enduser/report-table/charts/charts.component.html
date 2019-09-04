@@ -4,9 +4,9 @@
         class="chart-box" (cdkDragEnded)="dragEndChart($event,i)" [style.top.px]="data.chartposition[i].y"
         [style.left.px]="data.chartposition[i].x" cdkDragBoundary=".chart-boundary" cdkDrag fxLayout="column" fxFlex="50%"
         fxFlex.lt-sm="100%">
-        <!--<canvas baseChart *ngIf="cpref['selectedchart']==='linechart_sel' && lineChartData" [datasets]="lineChartData" [labels]="lineChartLabels"
-            [options]="lineChartOptions" [colors]="lineChartColors" [chartType]="lineChartType">
-        </canvas>-->
+        <canvas baseChart *ngIf="cpref['selectedchart']==='linechart_sel'" [datasets]="chartData[i]" [labels]="chartLabels[i]"
+            [options]="chartOptions[i]" [colors]="lineChartColors" [chartType]="lineChartType">
+        </canvas>
         <canvas baseChart *ngIf="cpref['selectedchart']==='barchart_sel'" [datasets]="chartData[i]" [labels]="chartLabels[i]"
             [options]="chartOptions[i]" [colors]="barChartColors" [chartType]="barChartType">
         </canvas>

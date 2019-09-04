@@ -109,10 +109,10 @@ export class ChartsComponent implements OnInit {
   linedata = [{
     data: [10, 25, 31, 19, 42],
     label: ["Sample Dataset"],
-    fill: this._fill,
-    borderDash: this._borderdash,
-    pointRadius: this.pointrad,
-    pointStyle: this._pointstyle,
+    fill: false,
+    borderDash: [],
+    pointRadius: 6,
+    pointStyle: 'rectRot',
     yAxisID: "y-1"
   }];
   bardata = [{ data: [10, 20, 30, 40, 50], label: ["Sample Dataset"] }];
@@ -183,12 +183,21 @@ export class ChartsComponent implements OnInit {
   chartData: any = [];
   chartLabels: any = [];
   chartOptions: any = [];
+  lastPrefernce: any = [];
   ngOnInit() {
     this.subscription = this.data.chartPreferencesChange
       .subscribe(value => {
         console.log(value);
+        if (this.lastPrefernce.length < this.data.chartPreferences.length) {
+          this.chartData.push([]);
+          this.chartLabels.push([]);
+          this.chartOptions.push(null);
+        } else {
+
+        }
         if (value != [] && this.data.chartSelection['update'] === true && this.data.chartSelection['chartNo'] !== '')
           this.updatechart(this.data.chartSelection['chartNo'], this.data.chartPreferences[this.data.chartSelection['chartNo']]['selectedchart']);
+        this.lastPrefernce = this.data.chartPreferences;
       });
     console.log(this.chartPreferences);
     this.UNIQUE_ID = this.report.UNIQUE_ID;
@@ -207,68 +216,70 @@ export class ChartsComponent implements OnInit {
     console.log(this.data.chartposition[i]);
   }
 
-  /*updateLineChart(chartNo) {
-    var unit = '';
-    var scale;
-    if (this.linearray.length) {
-      //unit = this.linearray[0].UoM;
-      unit = this.data.chartPreferences[chartNo]['UoM_y'];
-      //scale = this.linearray[0].SoM;
-      scale = this.data.chartPreferences[chartNo]['SoM_y'];
-    }
-    this.lineChartData = [];
-    this.lineChartLabels = [];
-    this.yaxis_data_line = [];
-    this.lineChartOptions = null;
-    switch (this.data.chartPreferences[chartNo]['linetension']) {
-      //switch (this._linetension) {
-      case 'none': this.lineten = 0;
-        break;
-      case 'mild': this.lineten = 0.2;
-        break;
-      case 'full': this.lineten = 0.5;
-        break;
-      default: this.lineten = 0;
-        break;
-    }
-    switch (this.data.chartPreferences[chartNo]['pointradius']) {
-      //switch (this._pointradius) {
-      case 'small': this.pointrad = 6;
-        break;
-      case 'normal': this.pointrad = 8;
-        break;
-      case 'large': this.pointrad = 10;
-        break;
-      default: this.pointrad = 6;
-        break;
-    }
-    this._linestyle == "dashed" ? this._borderdash = [5, 5] : this._borderdash = [];
-    this._gridborder == true ? this._gridlinedash = [10, 10] : this._gridlinedash = [];
-    this._xaxis_sel_line != "" ? this.lineChartLabels = this.data.ReportTable_data[this._xaxis_sel_line]
-      : this.lineChartLabels = this.chartlabels;
+  updateLineChart(chartNo) {
+    this.updatecustoms(chartNo);
+    var unit = this.data.chartPreferences[chartNo]['UoM_y'];
+    var scale = this.data.chartPreferences[chartNo]['SoM_y'];
 
-    if (this._yaxis_sel_line != [] && this._yaxis_sel_line != undefined) {
-      // this.yaxis_data = this.data.ReportTable_data[this._yaxis1_sel].map(Number);
-      for (let i = 0; i < this._yaxis_sel_line.length; i++) {
-        this.yaxis_data_line[i] = this.data.ReportTable_data[this._yaxis_sel_line[i]].map(Number);
-        this.lineChartData[i] = {
-          label: this._yaxis_sel_line[i],
-          fill: this._fill,
-          borderDash: this._borderdash,
-          pointRadius: this.pointrad,
-          pointStyle: this._pointstyle,
-          data: this.yaxis_data_line[i],
+    var yaxis_data_line = [];
+    var lineten = 0;
+    var yaxisdata = ['Not provided'];
+    if (this.yaxis_data[chartNo] !== undefined) {
+      yaxisdata[0] = this.yaxis_data[chartNo][0];
+    }
+    var xaxisdata = 'Not Provided';
+    if (this.xaxis_data[chartNo] !== undefined) {
+      xaxisdata = this.xaxis_data[chartNo];
+    }
+    switch (this.data.chartPreferences[chartNo]['linetension']) {
+      case 'none': lineten = 0;
+        break;
+      case 'mild': lineten = 0.2;
+        break;
+      case 'full': lineten = 0.5;
+        break;
+      default: lineten = 0;
+        break;
+    }
+    var pointrad = 6;
+    switch (this.data.chartPreferences[chartNo]['pointradius']) {
+      case 'small': pointrad = 6;
+        break;
+      case 'normal': pointrad = 8;
+        break;
+      case 'large': pointrad = 10;
+        break;
+      default: pointrad = 6;
+        break;
+    }
+    var borderdash = [];
+    var gridlinedash = [];
+    this.data.chartPreferences[chartNo]['linestyle'] == "dashed" ? borderdash = [5, 5] : borderdash = [];
+    this.data.chartPreferences[chartNo]['gridborder'] == true ? gridlinedash = [10, 10] : gridlinedash = [];
+
+    this.xaxis_data[chartNo] != "" ? this.chartLabels[chartNo] = this.data.ReportTable_data[this.xaxis_data[chartNo]]
+      : this.chartLabels[chartNo] = this.chartlabels;
+
+    if (this.yaxis_data[chartNo] != [] && this.yaxis_data[chartNo] != undefined && this.data.chartSelection['selection'] !== 'selectedchart') {
+      for (let i = 0; i < this.yaxis_data[chartNo].length; i++) {
+        yaxis_data_line[i] = this.data.ReportTable_data[this.yaxis_data[chartNo][i]].map(Number);
+        this.chartData[chartNo][i] = {
+          label: [this.yaxis_data[chartNo][i]],
+          fill: this.data.chartPreferences[chartNo]['fillbackground'],
+          borderDash: borderdash,
+          pointRadius: pointrad,
+          pointStyle: this.data.chartPreferences[chartNo]['pointstyle'],
+          data: yaxis_data_line[i],
           yAxisID: "y-".concat((i + 1).toString())
         }
       }
+      console.log(this.chartData[chartNo]);
     }
     else {
-      this.lineChartData = this.linedata;
+      this.chartData[chartNo] = this.linedata;
     }
-    // if (this._yaxismax == null || this._yaxismax == undefined || this._yaxismax == -Infinity) {
-    //   this._yaxismax = Math.max.apply(null, this.yaxis_data[0]);
-    // }
-    this.lineChartOptions = {
+    console.log(this.chartData[chartNo]);
+    this.chartOptions[chartNo] = {
       responsive: true,
       stacked: false,
       hoverMode: 'index',
@@ -301,12 +312,12 @@ export class ChartsComponent implements OnInit {
       elements:
       {
         point: {
-          pointStyle: this._pointstyle
+          pointStyle: this.data.chartPreferences[chartNo]['pointstyle']
         },
-        line: { tension: this.lineten },
+        line: { tension: lineten },
         animation: {
           duration: 4000,
-          easing: this._animations
+          easing: this.data.chartPreferences[chartNo]['animations']
         }
       },
 
@@ -330,7 +341,7 @@ export class ChartsComponent implements OnInit {
           id: 'x-1',
           scaleLabel: {
             display: true,
-            labelString: this._xaxis_sel_line
+            labelString: xaxisdata
           },
           display: true
         }],
@@ -346,51 +357,43 @@ export class ChartsComponent implements OnInit {
         speed: 0.1
       }
     };
-    for (let i = 0; i < this.lineChartData.length; i++) {
-      if (i == 0) {
-        this.lineChartOptions.scales.yAxes[i] = {
+    //for (let i = 0; i < this.chartData[chartNo].length; i++) {
+      //if (i == 0) {
+        this.chartOptions[chartNo].scales.yAxes[0] = {
           position: 'left',
           type: 'linear',
           display: true,
           id: 'y-1',
           scaleLabel: {
             display: true,
-            labelString: this._yaxis_sel_line[i],
-            fontColor: this.lineChartColors[i].borderColor
+            labelString: yaxisdata[0],
+            fontColor: this.lineChartColors[0].borderColor
           },
           gridLines: {
             drawOnChartAdrawBorder: false,
-            borderDash: this._gridlinedash,
-            lineWidth: this._gridlinewidth
+            borderDash: gridlinedash,
+            lineWidth: this.data.chartPreferences[chartNo]['gridlinewidth']
           },
           ticks: {
-            fontColor: this.lineChartColors[i].borderColor,
-            // min: this._yaxismin,
-            // max: this._yaxismax,
-            stepSize: this._yaxisstepSize,
-            autoSkip: this._yaxisAutoskip,
+            fontColor: this.lineChartColors[0].borderColor,
+            stepSize: this.data.chartPreferences[chartNo]['yaxisstepsize'],
+            autoSkip: this.data.chartPreferences[chartNo]['yaxisautoskip'],
             beginAtZero: true,
             callback: function (label) {
-              // if (label > 1000) {
-              //   return unit + " " + label/1000 + " k";
-              // }
-              // else {
-              //   return unit + " " + label;
-              // }
               return unit + " " + label / scale;
             }
           }
         };
-      }
-      if (i > 0) {
-        this.lineChartOptions.scales.yAxes.push({
+      //}
+      /*if (i > 0) {
+        this.chartOptions[chartNo].scales.yAxes.push({
           position: 'right',
           type: 'linear',
           display: true,
           id: "y-".concat((i + 1).toString()),
           scaleLabel: {
             display: true,
-            labelString: this._yaxis_sel_line[i],
+            labelString: this.yaxis_data[chartNo][i],
             fontColor: this.lineChartColors[i].borderColor
           },
           gridLines: {
@@ -398,10 +401,8 @@ export class ChartsComponent implements OnInit {
           },
           ticks: {
             fontColor: this.lineChartColors[i].borderColor,
-            // min: this._yaxismin,
-            // max: this._yaxismax,
-            stepSize: this._yaxisstepSize,
-            autoSkip: this._yaxisAutoskip,
+            stepSize: this.data.chartPreferences[chartNo]['yaxisstepsize'],
+            autoSkip: this.data.chartPreferences[chartNo]['yaxisautoskip'],
             beginAtZero: true,
             callback: function (label) {
               if (label > 1000) {
@@ -413,17 +414,13 @@ export class ChartsComponent implements OnInit {
             }
           }
         });
-      }
-    }
-  }*/
+      }*/
+    //}
+  }
   updateBarChart(chartNo) {
     //var unit = this._yaxisCB_bar;
     this.updatecustoms(chartNo);
     var unit = this.data.chartPreferences[chartNo]['UoM_y']
-
-    this.chartData[chartNo] = [];
-    this.chartLabels[chartNo] = [];
-    this.chartOptions[chartNo] = null;
     var yaxis_data_bar = [];
     console.log('inside bar chart update');
     if (this.yaxis_data[chartNo] != [] && this.yaxis_data[chartNo] != undefined && this.data.chartSelection['selection'] !== 'selectedchart') {
@@ -433,8 +430,8 @@ export class ChartsComponent implements OnInit {
           label: "",
           data: Array<any>()
         }
-        this.chartData[i][chartNo].data = yaxis_data_bar[i];
-        this.chartData[i][chartNo].label = this.yaxis_data[chartNo][i];
+        this.chartData[chartNo][i].data = yaxis_data_bar[i];
+        this.chartData[chartNo][i].label = this.yaxis_data[chartNo][i];
       }
       console.log(this.yaxis_data[chartNo]);
     }
@@ -612,8 +609,9 @@ export class ChartsComponent implements OnInit {
   updatechart(chartNo, chart_type) {
     console.log(chartNo);
     console.log(chart_type);
-    if (chart_type === 'linechart_sel') { }
-    //this.updateLineChart(chartNo);
+    if (chart_type === 'linechart_sel') {
+      this.updateLineChart(chartNo);
+    }
     if (chart_type === 'barchart_sel')
       this.updateBarChart(chartNo);
     if (chart_type === 'piechart_sel') { }
