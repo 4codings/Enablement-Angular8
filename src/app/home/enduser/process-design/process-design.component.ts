@@ -401,6 +401,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     const eventBus = this.modeler.get('eventBus');
     if (eventBus) {
       eventBus.on('element.click', ($event) => {
+        console.log('element.click', $event)
         this.onTitleClickNoDelete = false;
         this.processName = '';
         this.documentation = '';
@@ -423,6 +424,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.selectedService = $event.element.id.replace(new RegExp('_', 'g'), ' ');
           this.showAllTabFlag = true;
           this.showCondtionType = false;
+          this.old_srvc_cd = this.generalId; // added latest
           this.getAllTabs(this.generalId);
         }
         if ($event && $event.element && ['bpmn:Process'].indexOf($event.element.type) > -1) {
@@ -448,6 +450,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           if (isConditional) {
             this.showCondtionType = true;
             this.getConditionType();
+          } else {
+            this.showCondtionType = false;
           }
 
           // this.getAllTabs(this.generalId);
@@ -634,6 +638,18 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           //   }
           // }
           this.closeSchedulePanel();
+        }),
+        eventBus.on(['commandStack.element.updateProperties.execute'], (event) => {
+          console.log('commandStack.element.updateProperties.execute', event)
+          // The newly created element, which has a temporary ID
+          var element = event.context.element;
+
+          // properties.id is the old ID which will be copied to the new element
+          var properties = event.context.properties;
+          if (properties.id) {
+            // every time the id is changing
+            // do your stuff
+          }
         });
     }
   }
@@ -792,8 +808,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       'V_OLD_SRVC_CD': this.old_srvc_cd.replace(new RegExp('_', 'g'), ' '),
       'V_EXE_TYP': this.selectedExecutableType,
       'V_EXE_CD': this.selectedExecutable,
-      'V_PARAM_NM_IN': this.executableInput,
-      'V_PARAM_NM_OUT': this.executableOutput,
+      'V_EXE_SIGN': this.executableInput,
+      'V_EXE_OUT_PARAMS': this.executableOutput,
       'V_NOTIF_GRP': this.userEmail,
       'V_RESTART_FLG': this.restorability === 'AUTO' || this.restorability === 'MANUAL' ? 'Y' : 'N',
       'V_RSTN_TYP': this.restorability,
@@ -1527,8 +1543,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           if (this.propertyPanelAllTabsData && this.propertyPanelAllTabsData.length) {
             this.documentation = this.propertyPanelAllTabsData[0]["V_SRVC_DSC"];
             this.executableDesc = this.propertyPanelAllTabsData[0]['V_EXE_DSC'];
-            this.executableInput = this.propertyPanelAllTabsData[0]['V_PARAM_NM_IN'];
-            this.executableOutput = this.propertyPanelAllTabsData[0]['V_PARAM_NM_OUT'];
+            this.executableInput = this.propertyPanelAllTabsData[0]['V_EXE_SIGN'];
+            this.executableOutput = this.propertyPanelAllTabsData[0]['V_EXE_OUT_PARAMS'];
             this.selectedExecutable = this.propertyPanelAllTabsData[0]['V_EXE_CD'];
             this.selectedExecutableType = this.propertyPanelAllTabsData[0]['V_EXE_TYP'];
             this.attemps = this.propertyPanelAllTabsData[0]['V_MAX_ATTMPT'];

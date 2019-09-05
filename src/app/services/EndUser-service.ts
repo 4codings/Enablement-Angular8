@@ -106,7 +106,7 @@ export class EndUserService {
         To populate General, Enable and Properties tabs
     */
     getAllTabs(application: string, process: string, srcCode: string) {
-        return this.http.get(this.baseSecureJsonUrl + "V_SRC_CD=" + this.V_SRC_CD + "&V_APP_CD=" + application + "&V_PRCS_CD=" + process + "&V_SRVC_CD=" + srcCode + "&REST_Service=DefinedService" + "&Verb=GET", this.apiService.setHeaders());
+        return this.http.get(this.baseSecureJsonUrl + "V_SRC_CD=" + this.V_SRC_CD + "&V_APP_CD=" + application + "&V_PRCS_CD=" + process + "&V_SRVC_CD=" + srcCode + "&V_USR_NM=" + this.V_USR_NM + "&REST_Service=DefinedService" + "&Verb=GET", this.apiService.setHeaders());
     }
 
     /*
