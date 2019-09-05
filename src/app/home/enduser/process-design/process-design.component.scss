@@ -322,7 +322,7 @@ input {
 }
 
 :host ::ng-deep .mat-tab-body-content {
-    padding: 0 36px;
+    padding: 0 12px;
 }
 
 :host ::ng-deep .generalTabV {
@@ -664,3 +664,76 @@ mat-header-cell {
 :host ::ng-deep .dynamicContent .f_label {
     display: inline-block;
 }
+
+:host ::ng-deep .start_date .mat-form-field-infix {
+    border: none !important;
+} 
+/*mat-row {
+    border-width: 1px;
+    border-color: rgba(0,0,0,.12);
+}*/
+/*
+    .mat-table .mat-row:nth-child(even) {background: #CCC}
+    .mat-table .mat-row:nth-child(odd) {background: #FFF}
+    */
+/*mat-header-row {
+    background-color: rgba(66, 63, 63, 0.78);
+}
+
+@media screen and (max-width: 960px) {
+    .mat-table {
+      border: 0;
+      vertical-align: middle
+    }
+  
+    .mat-table caption {
+      font-size: 1em;
+    }
+    
+    /*  Enable this to hide header
+    .mat-table .mat-header-cell {
+      
+      border: 10px solid;
+      clip: rect(0 0 0 0);
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      position: absolute;
+      width: 1px;
+    }
+    
+    .mat-table .mat-row {
+      border-bottom: 5px solid #ddd;
+      display: block;
+    }
+    
+    .mat-table .mat-cell {
+      border-bottom: 1px solid #ddd;
+      display: block;
+      font-size: 1em;
+      text-align: right;
+      font-weight: bold;
+      height:30px;
+      margin-bottom: 3%;
+    }
+    .mat-cell {
+        border: none;
+    }
+    .mat-table .mat-cell:before {*/
+      /*
+      * aria-label has no advantage, it won't be read inside a table content: attr(aria-label);
+      */
+     /* content: attr(data-label);
+      float: left;
+      text-transform: uppercase;
+      font-weight: normal;
+      
+      font-size: .85em;
+    }
+    .mat-table .mat-cell:last-child {
+      border-bottom: 0;
+    }
+      .mat-table .mat-cell:first-child {
+      margin-top: 4%;
+    }
+  }*/
