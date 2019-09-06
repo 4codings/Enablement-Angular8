@@ -288,8 +288,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   bar = false;
   pie = false;
   file_path: any;
-  serviceList = [];
-
+  elementExistError = false;
   constructor(
     private httpClient: HttpClient,
     private http: Http,
@@ -603,26 +602,12 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                     }, () => this.uploadLocked = false);
                   }
                 });
-                this.getServices();
               }
             }
             setTimeout(() => {
               this.upload(vAppCd, this.selectedProcess);
             }, this.ctrl_variables.delay_timeout);
           }
-          this.closeSchedulePanel();
-        }),
-        eventBus.on("element.delete", (event) => {
-          // if (event && event.element && this.taskList.indexOf(event.element.type) >= 0) {
-          //   if (!this.onTitleClickNoDelete) {
-          //     this.deleteService(event.element.id.replace(new RegExp('_', 'g'), ' '));
-          //   }
-          // }
-          // if (event && event.element && event.element.type === 'bpmn:SequenceFlow') {
-          //   if (!this.onTitleClickNoDelete) {
-          //     this.deleteSequence(event.element.id.replace(new RegExp('_', 'g'), ' '));
-          //   }
-          // }
           this.closeSchedulePanel();
         }),
         eventBus.on("shape.remove", (event) => {
@@ -653,20 +638,17 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         });
     }
   }
+  idAssigned(id, businessObject) {
+    console.log('businessObject.$model.ids.assigned(id)', businessObject.$model.ids.assigned(id));
+    // every business object has a reference to the model which has a reference to the ids
+    return businessObject.$model.ids.assigned(id);
+  }
 
   getDocumentation(v_type, v_cd) {
     this.endUserService.getDocumentation(v_type, v_cd).subscribe(res => {
       if (res) {
         let result = res.json();
         this.documentation = result["DSC"][0];
-      }
-    })
-  }
-  getServices() {
-    this.endUserService.getServices(this.selectedApp, this.selectedProcess).subscribe((res: any) => {
-      if (res) {
-        this.serviceList = res;
-        console.log('service', this.serviceList);
       }
     })
   }
@@ -681,6 +663,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     }
   }
   onInputChange() {
+    this.elementExistError = false;
     // replace(new RegExp(' ', 'g'), '_')
     this.generalId = this.generalId;
     if (this.documentation == undefined || this.documentation === '') {
@@ -702,11 +685,18 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       let element = elementRegistry.get(this.oldStateId);
       let modeling = this.modeler.get('modeling');
       let id = this.generalId;
-      modeling.updateProperties(element, {
-        name: name,
-        id: id.replace(new RegExp(' ', 'g'), '_'),
-      }, error => this.handleError(error));
-      this.oldStateId = id.replace(new RegExp(' ', 'g'), '_');
+      if (this.idAssigned(id, element.businessObject)) {
+        modeling.updateProperties(element, {
+          name: name,
+          id: id.replace(new RegExp(' ', 'g'), '_'),
+        }, error => this.handleError(error));
+        this.oldStateId = id.replace(new RegExp(' ', 'g'), '_');
+        console.log('businessObject', element.businessObject);
+      } else {
+        this.elementExistError = true;
+        this.generalId = this.oldStateId.replace(new RegExp('_', 'g'), ' ');
+        this.toastrService.error('Element Id already exists!');
+      }
     }
     if (this.isApp) {
       if (this.appProcessList.length) {
@@ -720,18 +710,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       }
     }
     // on service id update , we do not have to send sequence flow update call to the backend. 
-    if (this.isService && !this.isSequenceFlow) {
-      if (this.serviceList.length) {
-        let i = this.serviceList.findIndex(v => v.V_SRVC_CD === this.generalId);
-        if (i > -1) {
-          this.toastrService.info("Service Name Already exists");
-          this.generalId = this.old_srvc_cd;
-        } else {
-          this.updateService();
-        }
-      } else {
-        this.updateService();
-      }
+    if (this.isService && !this.isSequenceFlow && !this.elementExistError) {
+      this.updateService();
     }
     if (this.isSequenceFlow) {
       this.updatesequenceFlow();
@@ -1382,21 +1362,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       }
       case 'Edit': {
         console.log('selected', this.selectedItem);
-        this.getServices();
-        // if (this.isMonitor) {
-        //   this.modeler = new Modeler({
-        //     container: '#canvas',
-        //     width: '90%',
-        //     height: '500px',
-        //     additionalModules: [
-        //       PropertiesPanelModule,
-        //       OriginalPropertiesProvider,
-        //       { [InjectionNames.bpmnPropertiesProvider]: ['type', OriginalPropertiesProvider.propertiesProvider[1]] },
-        //       // { [InjectionNames.propertiesProvider]: ['type', CustomPropsProvider] },
-        //     ]
-        //   });
-        //   this.onTitleClick(this.selectedItem, false);
-        // }
         this.isMonitor = false;
         this.editProcessFlag = true;
         this.showRightIcon = true;

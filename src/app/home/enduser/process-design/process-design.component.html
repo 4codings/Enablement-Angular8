@@ -50,7 +50,8 @@
     </div>
   </div>
 </ng-template>
-<ng-template #appItemTemplate let-item="item" let-index let-onCollapseExpand="onCollapseExpand"
+<!-- was used for appItem tree (selected app and process tree) -->
+<!-- <ng-template #appItemTemplate let-item="item" let-index let-onCollapseExpand="onCollapseExpand"
   let-onCheckedChange="onCheckedChange">
   <div class="form-inline row-item" [ngClass]="item.children?'parent-menu':'child-menu'">
     <i *ngIf="item.children" (click)="onCollapseExpand()" aria-hidden="true" class="fa caret-font"
@@ -77,7 +78,7 @@
       </label>
     </div>
   </div>
-</ng-template>
+</ng-template> -->
 <div fxLayout="row">
   <mat-sidenav-container fxFlex="100">
     <mat-sidenav class="tree-bg-color" #treesidenav mode="side" [opened]="true" style="width:270px">
@@ -98,10 +99,9 @@
     <div fxFlex="100">
       <div class="parent">
         <h5 class="parent-font m-t-10" *ngIf="selectedApp!=''">
-          <ngx-treeview [config]="oneAppConfig" [items]="oneAppItem" [itemTemplate]="appItemTemplate">
-            <!-- (selectedChange)="onSelectedChange($event)" (filterChange)="onFilterChange($event)" -->
-          </ngx-treeview>
-          <!-- <button class="mr-2" [matMenuTriggerFor]="parentMenu" aria-label="Example icon-button with a menu">
+          <!-- <ngx-treeview [config]="oneAppConfig" [items]="oneAppItem" [itemTemplate]="appItemTemplate">
+          </ngx-treeview> -->
+          <button class="mr-2" [matMenuTriggerFor]="parentMenu" aria-label="Example icon-button with a menu">
             {{selectedApp}}
           </button>
           <mat-menu class="headerParentMenu" #parentMenu="matMenu">
@@ -113,8 +113,8 @@
                 </div>
               </button>
             </span>
-          </mat-menu> -->
-          <!-- <span class="selected-process-font" *ngIf="selectedProcess!=''">
+          </mat-menu>
+          <span class="selected-process-font" *ngIf="selectedProcess!=''">
             <button (click)="onChildMenuClick(selectedItem)" [matMenuTriggerFor]="childMenu"
               aria-label="Example icon-button with a menu">
               {{selectedProcess}}
@@ -131,7 +131,7 @@
                 </div>
               </button>
             </span>
-          </mat-menu> -->
+          </mat-menu>
         </h5>
       </div>
       <section>
@@ -148,13 +148,13 @@
                 <mat-expansion-panel [expanded]="expandPanel">
                   <mat-expansion-panel-header>
                     <mat-panel-title>
-                      <span class="selected-process-font" *ngIf="selectedProcess==''"> Process Diagram</span>
-                      <span class="selected-process-font" *ngIf="selectedProcess!=''">
+                      <span class="selected-process-font"> Process Diagram</span>
+                      <!-- <span class="selected-process-font" *ngIf="selectedProcess!=''">
                         <button (click)="onChildMenuClick(selectedItem)" [matMenuTriggerFor]="childMenu"
                           aria-label="Example icon-button with a menu">
                           {{selectedProcess}}
                         </button>
-                      </span>
+                      </span> -->
                       <mat-menu class="headerChildMenu" #childMenu="matMenu">
                         <span *ngFor="let citem of childobj[selectedProcess]">
                           <button (click)="onChildMenuItemClick(citem.value,selectedItem)" *ngIf="citem.havePermission"
@@ -182,7 +182,7 @@
 
             <div fxFlex="100">
               <mat-accordion>
-                <mat-expansion-panel [expanded]="expandPanel"> 
+                <mat-expansion-panel [expanded]="expandPanel">
                   <mat-expansion-panel-header>
                     <mat-panel-title>
                       Parameters
@@ -545,13 +545,13 @@
               <mat-expansion-panel class="mt-2">
                 <mat-expansion-panel-header>
                   <mat-panel-title>
-                      {{Label['ID']}}
+                    {{Label['ID']}}
                   </mat-panel-title>
                 </mat-expansion-panel-header>
                 <div class="generalTabV">
-                    <label class="m-t-10">{{Label['ID']}} </label>
-                    <input id="processId" tabindex="-1" onfocus="this.select();" (change)="onInputChange()"
-                      [(ngModel)]="generalId">
+                  <label class="m-t-10">{{Label['ID']}} </label>
+                  <input id="processId" tabindex="-1" onfocus="this.select();" (change)="onInputChange()"
+                    [(ngModel)]="generalId">
                 </div>
                 <div class="oneSpace"></div>
                 <div class="generalTabV">
@@ -567,7 +567,7 @@
               <mat-expansion-panel class="mb-2">
                 <mat-expansion-panel-header>
                   <mat-panel-title>
-                      {{Label['DOCUMENTATION']}}
+                    {{Label['DOCUMENTATION']}}
                   </mat-panel-title>
                 </mat-expansion-panel-header>
                 <div class="generalTabV">
@@ -607,13 +607,14 @@
                 <mat-expansion-panel class="mt-2">
                   <mat-expansion-panel-header>
                     <mat-panel-title>
-                        {{Label['EXECUTABLE_TYPES']}}
+                      {{Label['EXECUTABLE_TYPES']}}
                     </mat-panel-title>
                   </mat-expansion-panel-header>
                   <label class="m-t-10">{{Label['EXECUTABLE_TYPES']}}</label>
                   <select [(ngModel)]="selectedExecutableType" (click)="getAllExecutableTypes()"
                     (change)="updateselectedExecutableType($event.target.value)">
-                    <option *ngIf="!executableTypesData.length" [value]="selectedExecutableType">{{selectedExecutableType}}
+                    <option *ngIf="!executableTypesData.length" [value]="selectedExecutableType">
+                      {{selectedExecutableType}}
                     </option>
                     <option *ngFor="let exeType of executableTypesData " [value]="exeType">
                       {{ exeType}}
@@ -636,19 +637,19 @@
                 <mat-expansion-panel>
                   <mat-expansion-panel-header>
                     <mat-panel-title>
-                        Executable
+                      Executable
                     </mat-panel-title>
                   </mat-expansion-panel-header>
                   <!--            <div class="oneSpace"></div>-->
-                <label class="m-t-10">{{Label['EXECUTABLE_INPUT']}}</label>
-                <textarea [ngClass]="selectedExecutableType !== 'MANUAL'?'exe_disable':''"
-                  [disabled]="selectedExecutableType !== 'MANUAL'" [(ngModel)]="executableInput"></textarea>
-                <!--            <div class="oneSpace"></div>-->
-                <label>{{Label['EXECUTABLE_OUTPUT']}}</label>
-                <textarea class="exe_disable" disabled [(ngModel)]="executableOutput"></textarea>
-                <!--            <div class="oneSpace"></div>-->
-                <label>{{Label['EXECUTABLE_DSC']}}</label>
-                <textarea class="exe_disable" disabled [(ngModel)]="executableDesc"></textarea>
+                  <label class="m-t-10">{{Label['EXECUTABLE_INPUT']}}</label>
+                  <textarea [ngClass]="selectedExecutableType !== 'MANUAL'?'exe_disable':''"
+                    [disabled]="selectedExecutableType !== 'MANUAL'" [(ngModel)]="executableInput"></textarea>
+                  <!--            <div class="oneSpace"></div>-->
+                  <label>{{Label['EXECUTABLE_OUTPUT']}}</label>
+                  <textarea class="exe_disable" disabled [(ngModel)]="executableOutput"></textarea>
+                  <!--            <div class="oneSpace"></div>-->
+                  <label>{{Label['EXECUTABLE_DSC']}}</label>
+                  <textarea class="exe_disable" disabled [(ngModel)]="executableDesc"></textarea>
                 </mat-expansion-panel>
               </mat-accordion>
               <div class="spaceDiv">
@@ -658,7 +659,7 @@
                 <mat-expansion-panel>
                   <mat-expansion-panel-header>
                     <mat-panel-title>
-                        {{Label['ASYNCHRONOUS']}}
+                      {{Label['ASYNCHRONOUS']}}
                     </mat-panel-title>
                   </mat-expansion-panel-header>
                   <mat-radio-group disabled [(ngModel)]="async_sync">
@@ -683,7 +684,7 @@
                 <mat-expansion-panel class="my-2">
                   <mat-expansion-panel-header>
                     <mat-panel-title>
-                        Display
+                      Display
                     </mat-panel-title>
                   </mat-expansion-panel-header>
                   <mat-checkbox class="m-t-10" [(ngModel)]="display_output">{{Label['DISPLAY_OUTPUT']}}</mat-checkbox>
@@ -692,29 +693,29 @@
                     {{Label['SERVICE_ACTIVE']}}
                   </mat-checkbox>
                 </mat-expansion-panel>
-              </mat-accordion>             
+              </mat-accordion>
               <div *ngIf="isServiceActive">
                 <mat-accordion>
                   <mat-expansion-panel>
                     <mat-expansion-panel-header>
                       <mat-panel-title>
-                          {{Label['START_DATE']}}
+                        {{Label['START_DATE']}}
                       </mat-panel-title>
                     </mat-expansion-panel-header>
                     <mat-form-field class="start_date form_input">
-                        <label class="m-b-10">{{Label['START_DATE']}}</label>
-                        <input matInput class="bg-white" [(ngModel)]="currentDate" [owlDateTimeTrigger]="startDate"
-                          [owlDateTime]="startDate">
-                        <owl-date-time #startDate></owl-date-time>
-                      </mat-form-field>
-                      <mat-form-field class="start_date form_input">
-                        <label class="m-b-10">{{Label['END_DATE']}}</label>
-                        <input matInput class="bg-white" [(ngModel)]="afterFiveDays" [owlDateTimeTrigger]="endDate"
-                          [owlDateTime]="endDate">
-                        <owl-date-time #endDate></owl-date-time>
-                      </mat-form-field>
+                      <label class="m-b-10">{{Label['START_DATE']}}</label>
+                      <input matInput class="bg-white" [(ngModel)]="currentDate" [owlDateTimeTrigger]="startDate"
+                        [owlDateTime]="startDate">
+                      <owl-date-time #startDate></owl-date-time>
+                    </mat-form-field>
+                    <mat-form-field class="start_date form_input">
+                      <label class="m-b-10">{{Label['END_DATE']}}</label>
+                      <input matInput class="bg-white" [(ngModel)]="afterFiveDays" [owlDateTimeTrigger]="endDate"
+                        [owlDateTime]="endDate">
+                      <owl-date-time #endDate></owl-date-time>
+                    </mat-form-field>
                   </mat-expansion-panel>
-                </mat-accordion>               
+                </mat-accordion>
               </div>
               <div class="spaceDiv">
                 <mat-divider></mat-divider>
@@ -723,14 +724,15 @@
                 <mat-expansion-panel>
                   <mat-expansion-panel-header>
                     <mat-panel-title>
-                        {{Label['NOTIFICATION_EMAIL']}}
+                      {{Label['NOTIFICATION_EMAIL']}}
                     </mat-panel-title>
                   </mat-expansion-panel-header>
                   <label>{{Label['NOTIFICATION_EMAIL']}} </label>
-                  <input type="email" [(ngModel)]="userEmail" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}">
+                  <input type="email" [(ngModel)]="userEmail"
+                    pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}">
                 </mat-expansion-panel>
               </mat-accordion>
-              
+
               <div class="spaceDiv">
                 <mat-divider></mat-divider>
               </div>
@@ -791,7 +793,7 @@
                     </div>
                   </mat-radio-group>
                 </mat-expansion-panel>
-              </mat-accordion>           
+              </mat-accordion>
             </div>
           </mat-tab>
         </mat-tab-group>
