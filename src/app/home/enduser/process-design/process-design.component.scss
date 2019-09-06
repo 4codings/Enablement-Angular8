@@ -676,21 +676,26 @@ mat-header-cell {
     .mat-table .mat-row:nth-child(even) {background: #CCC}
     .mat-table .mat-row:nth-child(odd) {background: #FFF}
     */
-/*mat-header-row {
+mat-header-row {
     background-color: rgba(66, 63, 63, 0.78);
 }
-
+.mat-table {
+    min-width: 100% !important;
+    max-height: 100% !important;
+}
 @media screen and (max-width: 960px) {
     .mat-table {
       border: 0;
       vertical-align: middle
     }
-  
+    mat-header-row {
+        background-color: #fff;
+    }
     .mat-table caption {
       font-size: 1em;
     }
     
-    /*  Enable this to hide header
+    /*  Enable this to hide header*/
     .mat-table .mat-header-cell {
       
       border: 10px solid;
@@ -719,16 +724,18 @@ mat-header-cell {
     .mat-cell {
         border: none;
     }
-    .mat-table .mat-cell:before {*/
+    .mat-table .mat-cell:before {
       /*
       * aria-label has no advantage, it won't be read inside a table content: attr(aria-label);
       */
-     /* content: attr(data-label);
+      content: attr(data-label);
       float: left;
       text-transform: uppercase;
-      font-weight: normal;
-      
+      font-weight: normal;  
       font-size: .85em;
+      background-color: rgba(66, 63, 63, 0.78);
+      color: #fff;
+      padding: 5px;
     }
     .mat-table .mat-cell:last-child {
       border-bottom: 0;
@@ -736,4 +743,4 @@ mat-header-cell {
       .mat-table .mat-cell:first-child {
       margin-top: 4%;
     }
-  }*/
+  }

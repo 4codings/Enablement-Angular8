@@ -405,8 +405,8 @@
                       Schedule
                     </mat-panel-title>
                   </mat-expansion-panel-header>
-                  <div>
-                    <div *ngIf="display_process_table">
+                  <div class="row">
+                    <div class="col-md-12" *ngIf="display_process_table">
                       <mat-form-field *ngIf="show_filter_input">
                         <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
                       </mat-form-field>
