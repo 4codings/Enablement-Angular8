@@ -71,3 +71,9 @@ mat-list {
 :host ::ng-deep .day_of_month .mat-form-field-infix {
     line-height: 24px !important;
 }
+
+@media screen and (max-width: 767px) { 
+    :host ::ng-deep .repeatAfter {
+        width: 130px !important;
+    }
+}

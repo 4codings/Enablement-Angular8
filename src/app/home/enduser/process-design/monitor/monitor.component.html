@@ -1,13 +1,14 @@
 <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center center">
-  <div fxFlex="20">
+  <div fxFlex="15">
     <label class="text-center mb-0"> Executed By</label>
     <mat-form-field class="mt-1 form_input">
       <input matInput [ngModel]="selectedUserName" disabled>
     </mat-form-field>
   </div>
-  <div fxFlex="20">
+  <div fxFlex="5"></div>
+  <div fxFlex="15">
     <label class="text-center mb-0">Executed At</label>
-    <mat-form-field class="mt-1 px-1 form_input">
+    <mat-form-field class="mt-1 form_input">
       <mat-select class="bg-white" [(ngModel)]="selectedInstance" (selectionChange)="onInstanceChange($event)">
         <mat-option *ngFor="let dateTime of PRCS_TXN_ID;let i = index" [value]="dateTime">
           {{StartDateTime[i]}}
@@ -15,7 +16,8 @@
       </mat-select>
     </mat-form-field>
   </div>
-  <div fxFlex="20">
+  <div fxFlex="5"></div>
+  <div fxFlex="15">
     <label class="mb-1 text-center">From</label>
     <mat-form-field class="form_input">
       <input matInput class="bg-white" [max]="toDate" [(ngModel)]="fromDate" [owlDateTimeTrigger]="FromDate"
@@ -23,7 +25,8 @@
       <owl-date-time #FromDate></owl-date-time>
     </mat-form-field>
   </div>
-  <div fxFlex="20">
+  <div fxFlex="5"></div>
+  <div fxFlex="15">
     <label class="mb-1 text-center">To</label>
     <mat-form-field class="form_input">
       <input matInput class="bg-white" [min]="fromDate" [(ngModel)]="toDate" [owlDateTimeTrigger]="EndDate"
