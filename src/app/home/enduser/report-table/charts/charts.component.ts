@@ -136,6 +136,13 @@ export class ChartsComponent implements OnInit {
   public pieChartLabels: string[] = this.chartlabels;
   public pieChartData: Array<any> = this.piedata;
   public pieChartType: string = 'pie';
+  public pieChartColors = [
+    {
+      backgroundColor: ['rgba(255,0,0,0.3)', 'rgba(0,255,0,0.3)', 'rgba(0,0,255,0.3)',
+        'rgba(255,255,0,0.3)', 'rgba(0,255,255,0.3)', 'rgba(255,0,255,0.3)',
+        'rgba(155,0,155,0.3)', 'rgba(155,155,0,0.3)']
+    },
+  ];
 
   // Doughnut Chart Configuration
   public doughnutChartLabels: string[] = this.chartlabels;
@@ -358,63 +365,63 @@ export class ChartsComponent implements OnInit {
       }
     };
     //for (let i = 0; i < this.chartData[chartNo].length; i++) {
-      //if (i == 0) {
-        this.chartOptions[chartNo].scales.yAxes[0] = {
-          position: 'left',
-          type: 'linear',
+    //if (i == 0) {
+    this.chartOptions[chartNo].scales.yAxes[0] = {
+      position: 'left',
+      type: 'linear',
+      display: true,
+      id: 'y-1',
+      scaleLabel: {
+        display: true,
+        labelString: yaxisdata[0],
+        fontColor: this.lineChartColors[0].borderColor
+      },
+      gridLines: {
+        drawOnChartAdrawBorder: false,
+        borderDash: gridlinedash,
+        lineWidth: this.data.chartPreferences[chartNo]['gridlinewidth']
+      },
+      ticks: {
+        fontColor: this.lineChartColors[0].borderColor,
+        stepSize: this.data.chartPreferences[chartNo]['yaxisstepsize'],
+        autoSkip: this.data.chartPreferences[chartNo]['yaxisautoskip'],
+        beginAtZero: true,
+        callback: function (label) {
+          return unit + " " + label / scale;
+        }
+      }
+    };
+    //}
+    /*if (i > 0) {
+      this.chartOptions[chartNo].scales.yAxes.push({
+        position: 'right',
+        type: 'linear',
+        display: true,
+        id: "y-".concat((i + 1).toString()),
+        scaleLabel: {
           display: true,
-          id: 'y-1',
-          scaleLabel: {
-            display: true,
-            labelString: yaxisdata[0],
-            fontColor: this.lineChartColors[0].borderColor
-          },
-          gridLines: {
-            drawOnChartAdrawBorder: false,
-            borderDash: gridlinedash,
-            lineWidth: this.data.chartPreferences[chartNo]['gridlinewidth']
-          },
-          ticks: {
-            fontColor: this.lineChartColors[0].borderColor,
-            stepSize: this.data.chartPreferences[chartNo]['yaxisstepsize'],
-            autoSkip: this.data.chartPreferences[chartNo]['yaxisautoskip'],
-            beginAtZero: true,
-            callback: function (label) {
-              return unit + " " + label / scale;
+          labelString: this.yaxis_data[chartNo][i],
+          fontColor: this.lineChartColors[i].borderColor
+        },
+        gridLines: {
+          drawOnChartArea: false,
+        },
+        ticks: {
+          fontColor: this.lineChartColors[i].borderColor,
+          stepSize: this.data.chartPreferences[chartNo]['yaxisstepsize'],
+          autoSkip: this.data.chartPreferences[chartNo]['yaxisautoskip'],
+          beginAtZero: true,
+          callback: function (label) {
+            if (label > 1000) {
+              return unit + " " + label / 1000 + " k";
+            }
+            else {
+              return unit + " " + label;
             }
           }
-        };
-      //}
-      /*if (i > 0) {
-        this.chartOptions[chartNo].scales.yAxes.push({
-          position: 'right',
-          type: 'linear',
-          display: true,
-          id: "y-".concat((i + 1).toString()),
-          scaleLabel: {
-            display: true,
-            labelString: this.yaxis_data[chartNo][i],
-            fontColor: this.lineChartColors[i].borderColor
-          },
-          gridLines: {
-            drawOnChartArea: false,
-          },
-          ticks: {
-            fontColor: this.lineChartColors[i].borderColor,
-            stepSize: this.data.chartPreferences[chartNo]['yaxisstepsize'],
-            autoSkip: this.data.chartPreferences[chartNo]['yaxisautoskip'],
-            beginAtZero: true,
-            callback: function (label) {
-              if (label > 1000) {
-                return unit + " " + label / 1000 + " k";
-              }
-              else {
-                return unit + " " + label;
-              }
-            }
-          }
-        });
-      }*/
+        }
+      });
+    }*/
     //}
   }
   updateBarChart(chartNo) {
@@ -574,36 +581,67 @@ export class ChartsComponent implements OnInit {
   }
 
   updatePieChart(chartNo) {
-    this.pieChartData = [];
-    this.pieChartLabels = [];
-
-    if (this._yaxis_sel_pie != [] && this._yaxis_sel_pie != undefined) {
-      for (let i = 0; i < this._yaxis_sel_pie.length; i++) {
-        this.yaxis_data_pie[i] = this.data.ReportTable_data[this._yaxis_sel_pie[i]].map(Number);
-        this.pieChartData.push({
-          labels: this._yaxis_sel_pie[i],
-          data: this.yaxis_data_pie[i]
-        })
+    this.updatecustoms(chartNo);
+    this.chartData[chartNo] = [];
+    this.chartLabels[chartNo] = [];
+    var yaxis_data_pie = [];
+    var xaxis_data_pie = [];
+    if (this.yaxis_data[chartNo] != [] && this.yaxis_data[chartNo] != undefined && this.data.chartSelection['selection'] !== 'selectedchart') {
+      for (let i = 0; i < this.yaxis_data[chartNo].length; i++) {
+        yaxis_data_pie[i] = this.data.ReportTable_data[this.yaxis_data[chartNo][i]].map(Number);
+        if (this.xaxis_data != undefined || this.xaxis_data.length > 0) {
+          console.log(this.data.ReportTable_data[this.yaxis_data[chartNo][i]]);
+          console.log(this.data.ReportTable_data[this.xaxis_data[chartNo]]);
+          xaxis_data_pie = this.data.ReportTable_data[this.xaxis_data[chartNo]];
+        } else {
+          xaxis_data_pie[i] = 'Not provided';
+        }
+        this.chartData[chartNo].push({
+          labels: xaxis_data_pie,
+          data: yaxis_data_pie[i]
+        });
       }
+    } else {
+      this.chartData[chartNo].push({
+        labels: ['Not provided'],
+        data: [100]
+      })
     }
-    this._xaxis_sel_pie != "" ? this.pieChartLabels = this.data.ReportTable_data[this._xaxis_sel_pie]
-      : this.pieChartLabels = this.chartlabels;
+    console.log(this.chartData);
+    this.xaxis_data[chartNo] != "" ? this.chartLabels[chartNo] = this.data.ReportTable_data[this.xaxis_data[chartNo]]
+      : this.chartLabels[chartNo] = this.chartlabels;
   }
-  updateDoughnutChart(chartNo) {
-    this.doughnutChartData = [];
-    this.doughnutChartLabels = [];
 
-    if (this._yaxis_sel_doughnut != [] && this._yaxis_sel_doughnut != undefined) {
-      for (let i = 0; i < this._yaxis_sel_doughnut.length; i++) {
-        this.yaxis_data_doughnut[i] = this.data.ReportTable_data[this._yaxis_sel_doughnut[i]].map(Number);
-        this.doughnutChartData.push({
-          labels: this._yaxis_sel_doughnut[i],
-          data: this.yaxis_data_doughnut[i]
+  updateDoughnutChart(chartNo) {
+    this.updatecustoms(chartNo);
+    this.chartData[chartNo] = [];
+    this.chartLabels[chartNo] = [];
+    var yaxis_data_doughnut = [];
+    var xaxis_data_doughnut = [];
+    if (this.yaxis_data[chartNo] != [] && this.yaxis_data[chartNo] != undefined && this.data.chartSelection['selection'] !== 'selectedchart') {
+      for (let i = 0; i < this.yaxis_data[chartNo].length; i++) {
+        yaxis_data_doughnut[i] = this.data.ReportTable_data[this.yaxis_data[chartNo][i]].map(Number);
+        if (this.xaxis_data != undefined || this.xaxis_data.length > 0) {
+          console.log(this.data.ReportTable_data[this.yaxis_data[chartNo][i]]);
+          console.log(this.data.ReportTable_data[this.xaxis_data[chartNo]]);
+          xaxis_data_doughnut = this.data.ReportTable_data[this.xaxis_data[chartNo]];
+        } else {
+          xaxis_data_doughnut[i] = 'Not provided';
+        }
+        this.chartData[chartNo].push({
+          labels: xaxis_data_doughnut,
+          data: yaxis_data_doughnut[i]
         })
       }
+    } else {
+      this.chartData[chartNo].push({
+        labels: ['Not provided'],
+        data: [100]
+      })
     }
-    this._xaxis_sel_doughnut != "" ? this.doughnutChartLabels = this.data.ReportTable_data[this._xaxis_sel_doughnut]
-      : this.doughnutChartLabels = this.chartlabels;
+    console.log(this.chartData);
+    this.xaxis_data[chartNo] != "" ? this.chartLabels[chartNo] = this.data.ReportTable_data[this.xaxis_data[chartNo]]
+      : this.chartLabels[chartNo] = this.chartlabels;
   }
 
   updatechart(chartNo, chart_type) {
@@ -614,10 +652,10 @@ export class ChartsComponent implements OnInit {
     }
     if (chart_type === 'barchart_sel')
       this.updateBarChart(chartNo);
-    if (chart_type === 'piechart_sel') { }
-    //this.updatePieChart(chartNo);
-    if (chart_type === 'doughnutchart_sel') { }
-    //this.updateDoughnutChart(chartNo);
+    if (chart_type === 'piechart_sel')
+      this.updatePieChart(chartNo);
+    if (chart_type === 'doughnutchart_sel')
+      this.updateDoughnutChart(chartNo);
   }
 
   updatecustoms(chartNo) {

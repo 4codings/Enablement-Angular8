@@ -10,10 +10,10 @@
         <canvas baseChart *ngIf="cpref['selectedchart']==='barchart_sel'" [datasets]="chartData[i]" [labels]="chartLabels[i]"
             [options]="chartOptions[i]" [colors]="barChartColors" [chartType]="barChartType">
         </canvas>
-        <!--<canvas baseChart [datasets]="pieChartData" *ngIf="cpref['selectedchart']==='piechart_sel' && pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType">
+        <canvas baseChart [datasets]="chartData[i]" [colors]="pieChartColors" *ngIf="cpref['selectedchart']==='piechart_sel'" [labels]="chartLabels[i]" [chartType]="pieChartType">
         </canvas>
-        <canvas baseChart [datasets]="doughnutChartData" *ngIf="cpref['selectedchart']==='doughnutchart_sel' && doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType">
-        </canvas>-->
+        <canvas baseChart [datasets]="chartData[i]" [colors]="pieChartColors" *ngIf="cpref['selectedchart']==='doughnutchart_sel'" [labels]="chartLabels[i]" [chartType]="doughnutChartType">
+        </canvas>
     </div>
     
 </div>
