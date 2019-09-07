@@ -268,10 +268,6 @@ export class PersonalizationTableComponent implements OnInit {
       });
   }
 
-  updateChart(chartNo, chart_type) {
-    this.report.updatechart();
-  }
-
   addRow_action() {
     this.chartno.push(this.chartno.length + 1);
     this.gridlinewidth.push("");
