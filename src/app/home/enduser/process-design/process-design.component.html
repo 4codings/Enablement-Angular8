@@ -542,14 +542,14 @@
         <mat-tab-group mat-align-tabs="start" (selectedTabChange)="updateTabs()">
           <mat-tab label="General">
             <mat-accordion>
-              <mat-expansion-panel class="mt-2">
+              <mat-expansion-panel class="mt-2" [expanded]="expandPanel">
                 <mat-expansion-panel-header>
                   <mat-panel-title>
                     {{Label['ID']}}
                   </mat-panel-title>
                 </mat-expansion-panel-header>
                 <div class="generalTabV">
-                  <label class="m-t-10">{{Label['ID']}} </label>
+                  <!--<label class="m-t-10">{{Label['ID']}} </label>-->
                   <input id="processId" tabindex="-1" onfocus="this.select();" (change)="onInputChange()"
                     [(ngModel)]="generalId">
                 </div>
@@ -564,14 +564,14 @@
               <mat-divider></mat-divider>
             </div>
             <mat-accordion>
-              <mat-expansion-panel class="mb-2">
+              <mat-expansion-panel class="mb-2" [expanded]="expandPanel">
                 <mat-expansion-panel-header>
                   <mat-panel-title>
                     {{Label['DOCUMENTATION']}}
                   </mat-panel-title>
                 </mat-expansion-panel-header>
                 <div class="generalTabV">
-                  <label>{{Label['DOCUMENTATION']}}</label>
+                  <!--<label>{{Label['DOCUMENTATION']}}</label>-->
                   <textarea (change)="onInputChange()" [(ngModel)]="documentation"></textarea>
                 </div>
               </mat-expansion-panel>
@@ -604,13 +604,13 @@
           <mat-tab *ngIf="showAllTabFlag" label="Enable">
             <div class="generalTabV">
               <mat-accordion>
-                <mat-expansion-panel class="mt-2">
+                <mat-expansion-panel class="mt-2" [expanded]="expandPanel">
                   <mat-expansion-panel-header>
                     <mat-panel-title>
                       {{Label['EXECUTABLE_TYPES']}}
                     </mat-panel-title>
                   </mat-expansion-panel-header>
-                  <label class="m-t-10">{{Label['EXECUTABLE_TYPES']}}</label>
+                  <!--<label class="m-t-10">{{Label['EXECUTABLE_TYPES']}}</label>-->
                   <select [(ngModel)]="selectedExecutableType" (click)="getAllExecutableTypes()"
                     (change)="updateselectedExecutableType($event.target.value)">
                     <option *ngIf="!executableTypesData.length" [value]="selectedExecutableType">
@@ -634,21 +634,21 @@
                 <mat-divider></mat-divider>
               </div>
               <mat-accordion>
-                <mat-expansion-panel>
+                <mat-expansion-panel [expanded]="expandPanel">
                   <mat-expansion-panel-header>
                     <mat-panel-title>
-                      Executable
+                      {{Label['EXECUTABLE']}}
                     </mat-panel-title>
                   </mat-expansion-panel-header>
                   <!--            <div class="oneSpace"></div>-->
-                  <label class="m-t-10">{{Label['EXECUTABLE_INPUT']}}</label>
+                  <label class="m-t-10">{{Label['INPUT']}}</label>
                   <textarea [ngClass]="selectedExecutableType !== 'MANUAL'?'exe_disable':''"
                     [disabled]="selectedExecutableType !== 'MANUAL'" [(ngModel)]="executableInput"></textarea>
                   <!--            <div class="oneSpace"></div>-->
-                  <label>{{Label['EXECUTABLE_OUTPUT']}}</label>
+                  <label>{{Label['OUTPUT']}}</label>
                   <textarea class="exe_disable" disabled [(ngModel)]="executableOutput"></textarea>
                   <!--            <div class="oneSpace"></div>-->
-                  <label>{{Label['EXECUTABLE_DSC']}}</label>
+                  <label>{{Label['FUNCTIONALITY']}}</label>
                   <textarea class="exe_disable" disabled [(ngModel)]="executableDesc"></textarea>
                 </mat-expansion-panel>
               </mat-accordion>
@@ -656,10 +656,10 @@
                 <mat-divider></mat-divider>
               </div>
               <mat-accordion>
-                <mat-expansion-panel>
+                <mat-expansion-panel [expanded]="expandPanel">
                   <mat-expansion-panel-header>
                     <mat-panel-title>
-                      {{Label['ASYNCHRONOUS']}}
+                      {{Label['INVOCATION']}}
                     </mat-panel-title>
                   </mat-expansion-panel-header>
                   <mat-radio-group disabled [(ngModel)]="async_sync">
@@ -681,35 +681,35 @@
           <mat-tab *ngIf="showAllTabFlag" label="Properties">
             <div class="generalTabV">
               <mat-accordion>
-                <mat-expansion-panel class="my-2">
+                <mat-expansion-panel class="my-2" [expanded]="expandPanel">
                   <mat-expansion-panel-header>
                     <mat-panel-title>
-                      Display
+                      {{Label['DISPLAY']}}
                     </mat-panel-title>
                   </mat-expansion-panel-header>
                   <mat-checkbox class="m-t-10" [(ngModel)]="display_output">{{Label['DISPLAY_OUTPUT']}}</mat-checkbox>
-                  <mat-checkbox [(ngModel)]="summary_output">{{Label['SUMMARY_OUTPUT']}}</mat-checkbox>
-                  <mat-checkbox [(ngModel)]="isServiceActive" (change)="serviceActiveSelected($event.checked)">
-                    {{Label['SERVICE_ACTIVE']}}
-                  </mat-checkbox>
+                  <mat-checkbox [(ngModel)]="summary_output">{{Label['SUMMARY_OUTPUT']}}</mat-checkbox>                  
                 </mat-expansion-panel>
               </mat-accordion>
               <div *ngIf="isServiceActive">
                 <mat-accordion>
-                  <mat-expansion-panel>
+                  <mat-expansion-panel [expanded]="expandPanel">
                     <mat-expansion-panel-header>
                       <mat-panel-title>
-                        {{Label['START_DATE']}}
+                        {{Label['AVAILABILITY']}}
                       </mat-panel-title>
                     </mat-expansion-panel-header>
+                    <mat-checkbox class="text-center" [(ngModel)]="isServiceActive" (change)="serviceActiveSelected($event.checked)">
+                      {{Label['SERVICE_ACTIVE']}}
+                    </mat-checkbox>
                     <mat-form-field class="start_date form_input">
-                      <label class="m-b-10">{{Label['START_DATE']}}</label>
+                      <label class="m-b-10">{{Label['FROM']}}</label>
                       <input matInput class="bg-white" [(ngModel)]="currentDate" [owlDateTimeTrigger]="startDate"
                         [owlDateTime]="startDate">
                       <owl-date-time #startDate></owl-date-time>
                     </mat-form-field>
                     <mat-form-field class="start_date form_input">
-                      <label class="m-b-10">{{Label['END_DATE']}}</label>
+                      <label class="m-b-10">{{Label['TO']}}</label>
                       <input matInput class="bg-white" [(ngModel)]="afterFiveDays" [owlDateTimeTrigger]="endDate"
                         [owlDateTime]="endDate">
                       <owl-date-time #endDate></owl-date-time>
@@ -721,37 +721,28 @@
                 <mat-divider></mat-divider>
               </div>
               <mat-accordion>
-                <mat-expansion-panel>
+                <mat-expansion-panel [expanded]="expandPanel">
                   <mat-expansion-panel-header>
                     <mat-panel-title>
                       {{Label['NOTIFICATION_EMAIL']}}
                     </mat-panel-title>
                   </mat-expansion-panel-header>
-                  <label>{{Label['NOTIFICATION_EMAIL']}} </label>
+                  <!--<label>{{Label['NOTIFICATION_EMAIL']}} </label>-->
                   <input type="email" [(ngModel)]="userEmail"
                     pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}">
                 </mat-expansion-panel>
               </mat-accordion>
-
-              <div class="spaceDiv">
-                <mat-divider></mat-divider>
-              </div>
-              <div class="oneSpace"></div>
-              <div class="row row1">
-                <input id="priority" type="number" [(ngModel)]="priority" min="1">
-                <label id="priority_label">{{Label['PRIORITY']}}</label>
-              </div>
               <div class="spaceDiv">
                 <mat-divider></mat-divider>
               </div>
               <mat-accordion>
-                <mat-expansion-panel>
+                <mat-expansion-panel [expanded]="expandPanel">
                   <mat-expansion-panel-header>
                     <mat-panel-title>
                       {{Label['RESTORABILITY']}}
                     </mat-panel-title>
                   </mat-expansion-panel-header>
-                  <label class="tabTitle">{{Label['RESTORABILITY']}}</label>
+                  <!--<label class="tabTitle">{{Label['RESTORABILITY']}}</label>-->
                   <mat-radio-group [(ngModel)]="restorability">
                     <mat-radio-button value="NONE">{{Label['NONE']}}</mat-radio-button>
                     <mat-radio-button value="MANUAL">{{Label['MANUAL']}}</mat-radio-button>
@@ -774,13 +765,13 @@
                 <mat-divider></mat-divider>
               </div>
               <mat-accordion>
-                <mat-expansion-panel>
+                <mat-expansion-panel [expanded]="expandPanel">
                   <mat-expansion-panel-header>
                     <mat-panel-title>
                       {{Label['INSTANCES']}}
                     </mat-panel-title>
                   </mat-expansion-panel-header>
-                  <label class="tabTitle">{{Label['INSTANCES']}}</label>
+                  <!--<label class="tabTitle">{{Label['INSTANCES']}}</label>-->
                   <mat-radio-group [(ngModel)]="instances">
                     <mat-radio-button value="single">{{Label['SINGLE']}}</mat-radio-button>
                     <mat-radio-button value="unlimited">{{Label['UNLIMITED']}}</mat-radio-button>
@@ -794,6 +785,14 @@
                   </mat-radio-group>
                 </mat-expansion-panel>
               </mat-accordion>
+              <div class="spaceDiv">
+                <mat-divider></mat-divider>
+              </div>
+              <div class="oneSpace"></div>
+              <div class="row row1">
+                <input id="priority" type="number" [(ngModel)]="priority" min="1">
+                <label id="priority_label">{{Label['PRIORITY']}}</label>
+              </div>
             </div>
           </mat-tab>
         </mat-tab-group>
