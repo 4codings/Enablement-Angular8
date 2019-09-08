@@ -555,7 +555,7 @@
                 </div>
                 <div class="oneSpace"></div>
                 <div class="generalTabV">
-                  <label class="m-t-5">{{Label['NAME']}} </label>
+                  <label class="mt-3 tabTitle text-left">{{Label['NAME']}} </label>
                   <input (change)="onInputChange()" [(ngModel)]="processName">
                 </div>
               </mat-expansion-panel>
@@ -576,29 +576,35 @@
                 </div>
               </mat-expansion-panel>
             </mat-accordion>
-            <div *ngIf="showCondtionType">
-              <div class="spaceDiv">
-                <mat-divider></mat-divider>
-              </div>
-              <label>{{Label['CONDITION_TYPE']}}</label>
-              <select [(ngModel)]="selectedConditionType" (change)="updatesequenceConditionType($event.target.value)">
-                <!-- <option>{{Label['PLEASE_SELECT']}}</option> -->
-                <option *ngFor="let condition of sequenceConditionType " [value]="condition">
-                  {{ condition}}
-                </option>
-              </select>
-              <div>
-                <div class="oneSpace"></div>
-                <label>{{Label['CONDITION']}}</label>
-                <textarea type="text" name="condition" (change)="onInputChange()" [(ngModel)]="sequenceCondition"
-                  #seq_condition="ngModel" required></textarea>
-                <div *ngIf="seq_condition.invalid && (seq_condition.dirty || seq_condition.touched)" class="errors">
-                  <div *ngIf="seq_condition.errors && seq_condition.errors.required">
-                    {{selectedConditionType}} Condition is required.
+            <mat-accordion>
+              <mat-expansion-panel class="mb-2" [expanded]="expandPanel">
+                <mat-expansion-panel-header>
+                  <mat-panel-title class="tabTitle">
+                    {{Label['CONDITION_TYPE']}}
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div *ngIf="showCondtionType">
+                  <!--<label class="tabTitle">{{Label['CONDITION_TYPE']}}</label>-->
+                  <select [(ngModel)]="selectedConditionType" (change)="updatesequenceConditionType($event.target.value)">
+                    <!-- <option>{{Label['PLEASE_SELECT']}}</option> -->
+                    <option *ngFor="let condition of sequenceConditionType " [value]="condition">
+                      {{ condition}}
+                    </option>
+                  </select>
+                  <div>
+                    <div class="oneSpace"></div>
+                    <label class="tabTitle mt-3">{{Label['CONDITION']}}</label>
+                    <textarea type="text" name="condition" (change)="onInputChange()" [(ngModel)]="sequenceCondition"
+                      #seq_condition="ngModel" required></textarea>
+                    <div *ngIf="seq_condition.invalid && (seq_condition.dirty || seq_condition.touched)" class="errors">
+                      <div *ngIf="seq_condition.errors && seq_condition.errors.required">
+                        {{selectedConditionType}} Condition is required.
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
+              </mat-expansion-panel>
+            </mat-accordion>
           </mat-tab>
 
           <mat-tab *ngIf="showAllTabFlag" label="Enable">
@@ -620,7 +626,7 @@
                       {{ exeType}}
                     </option>
                   </select>
-                  <label>{{Label['EXECUTABLES']}}</label>
+                  <label class="tabTitle">{{Label['EXECUTABLES']}}</label>
                   <select [(ngModel)]="selectedExecutable" (click)="getExecutablesForSelctedExecutableType()"
                     (change)="updateselectedExecutable($event.target.value)">
                     <option value="">{{Label['PLEASE_SELECT']}}</option>
@@ -641,14 +647,14 @@
                     </mat-panel-title>
                   </mat-expansion-panel-header>
                   <!--            <div class="oneSpace"></div>-->
-                  <label class="m-t-10">{{Label['INPUT']}}</label>
+                  <label class="tabTitle">{{Label['INPUT']}}</label>
                   <textarea [ngClass]="selectedExecutableType !== 'MANUAL'?'exe_disable':''"
                     [disabled]="selectedExecutableType !== 'MANUAL'" [(ngModel)]="executableInput"></textarea>
                   <!--            <div class="oneSpace"></div>-->
-                  <label>{{Label['OUTPUT']}}</label>
+                  <label class="tabTitle">{{Label['OUTPUT']}}</label>
                   <textarea class="exe_disable" disabled [(ngModel)]="executableOutput"></textarea>
                   <!--            <div class="oneSpace"></div>-->
-                  <label>{{Label['FUNCTIONALITY']}}</label>
+                  <label class="tabTitle">{{Label['FUNCTIONALITY']}}</label>
                   <textarea class="exe_disable" disabled [(ngModel)]="executableDesc"></textarea>
                 </mat-expansion-panel>
               </mat-accordion>
@@ -687,7 +693,7 @@
                       {{Label['DISPLAY']}}
                     </mat-panel-title>
                   </mat-expansion-panel-header>
-                  <mat-checkbox class="m-t-10" [(ngModel)]="display_output">{{Label['DISPLAY_OUTPUT']}}</mat-checkbox>
+                  <mat-checkbox [(ngModel)]="display_output">{{Label['DISPLAY_OUTPUT']}}</mat-checkbox>
                   <mat-checkbox [(ngModel)]="summary_output">{{Label['SUMMARY_OUTPUT']}}</mat-checkbox>
                   <mat-checkbox [(ngModel)]="isServiceActive" (change)="serviceActiveSelected($event.checked)">
                     {{Label['SERVICE_ACTIVE']}}
