@@ -270,6 +270,10 @@
     margin: 2px 2px
 }
 
+:host ::ng-deep .treeview-header label {
+    text-align: center;
+}
+
 :host ::ng-deep select {
     width: 178px;
     height: 26px;

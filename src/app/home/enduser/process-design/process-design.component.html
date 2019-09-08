@@ -4,11 +4,11 @@
     <i *ngIf="item.children" (click)="onCollapseExpand()" aria-hidden="true" class="fa caret-font"
       [class.fa-caret-right]="item.collapsed" [class.fa-caret-down]="!item.collapsed"></i>
     <div class="form-check" *ngIf="item.text!=='NULL'">
-      <label *ngIf="item.children" class="form-check-label parent-color"
+      <label *ngIf="item.children" class="form-check-label parent-color text-center"
         [ngClass]="item.value == selectedApp?'active-menu':''" (click)="onTitleClick(item, true)">
         {{item.text}}
       </label>
-      <label *ngIf="!item.children" class="form-check-label child-color"
+      <label *ngIf="!item.children" class="form-check-label child-color text-center"
         [ngClass]="(item.text == selectedProcess && item.value == selectedApp)?'active-menu':''"
         (click)="onTitleClick(item,false)">
         {{item.text}}
@@ -196,7 +196,7 @@
                         <div class="padding-input flexLeft" *ngFor="let pr of resFormData"
                           [ngClass]="data.getFieldClass(pr.name)">
                           <ng-container *ngIf="!data.isFieldHidden(pr.name)">
-                            <label class="f_label">{{pr.display | removeWt}}<span
+                            <label class="f_label text-center">{{pr.display | removeWt}}<span
                                 *ngIf="data.isFieldMendatory(pr.name)">*</span></label>
                             <mat-icon *ngIf="pr.helptext!= null" matTooltip="{{pr.helptext}}" class="field-help"
                               matTooltipPosition="after">help</mat-icon>
@@ -538,7 +538,7 @@
     <mat-sidenav class="properties-bg-color" #sidenav position="end" mode="side" [(opened)]="opened">
       <div id="properties">
 
-        <label><b> {{ generalId }} </b></label>
+        <label class="text-center"><b> {{ generalId }} </b></label>
         <mat-tab-group mat-align-tabs="start" (selectedTabChange)="updateTabs()">
           <mat-tab label="General">
             <mat-accordion>
