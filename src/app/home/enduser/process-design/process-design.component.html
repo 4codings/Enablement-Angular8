@@ -576,14 +576,14 @@
                 </div>
               </mat-expansion-panel>
             </mat-accordion>
-            <mat-accordion>
+            <mat-accordion  *ngIf="showCondtionType">
               <mat-expansion-panel class="mb-2" [expanded]="expandPanel">
                 <mat-expansion-panel-header>
                   <mat-panel-title class="tabTitle">
                     {{Label['CONDITION_TYPE']}}
                   </mat-panel-title>
                 </mat-expansion-panel-header>
-                <div *ngIf="showCondtionType">
+                <div>
                   <!--<label class="tabTitle">{{Label['CONDITION_TYPE']}}</label>-->
                   <select [(ngModel)]="selectedConditionType" (change)="updatesequenceConditionType($event.target.value)">
                     <!-- <option>{{Label['PLEASE_SELECT']}}</option> -->
