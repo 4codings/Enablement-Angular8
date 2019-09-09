@@ -9,6 +9,7 @@ import { Globals } from '../../../services/globals';
 })
 export class SystemAdminOverviewService {
   V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+  V_USR_NM=JSON.parse(sessionStorage.getItem('u')).USR_NM;
   public selectedExe$: Subject<any> = new Subject();
   public selectedCxn$: Subject<any> = new Subject();
   public getExe$: Subject<any> = new Subject();
@@ -45,6 +46,7 @@ export class SystemAdminOverviewService {
 
   public getExe() {
     this.getPlatforms();
+    this.getMachine();
     this.http.get(this.apiUrlGet + "V_CD_TYP=EXE&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe((res) => {
       //console.log("exe", res);
       this.exes = res;
@@ -88,24 +90,26 @@ export class SystemAdminOverviewService {
   }
    
   getMachine() {
-    // this.http.get(this.apiUrlGet + "V_CD_TYP=MACHINES&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe((res:any) => {
-    //   this.machines = res;
-    //   this.getAllMachineConnections();
-    // }, err => {
-    //    console.log(err);
-    // })
-    this.getAllMachineConnections();
+    this.http.get(this.apiUrlGet+"V_SRC_CD="+this.V_SRC_CD+"&V_USR_NM="+this.V_USR_NM+"&REST_Service=Users_Machines&Verb=GET").subscribe((res:any)=>{
+      this.machines=res;
+    });
   }
 
   getAllMachineConnections() {
     let connections=[];
     let sortedAllConnections = [];
     this.http.get(this.apiUrlGet + "V_CD_TYP=CXNS&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe((res:any) => {
-      this.exes.forEach(item => {
+      // this.exes.forEach(item => {
+      //   let arr = res.filter(data => {
+      //     return item.EXE_TYP == data.V_CXN_TYP
+      //   })
+      //   connections.push({V_PLATFORM_CD: item.EXE_TYP, V_CXN:arr});
+      // });
+      this.machines.forEach(item => {
         let arr = res.filter(data => {
-          return item.EXE_TYP == data.V_CXN_TYP
+          return item.PLATFORM_CD == data.V_PLATFORM_CD.toString()
         })
-        connections.push({V_PLATFORM_CD: item.EXE_TYP, V_CXN:arr});
+        connections.push({PLATFORM_TYP: item, V_CXN:arr})
       });
       sortedAllConnections = connections.sort((a,b) => (a.V_CXN.length > b.V_CXN.length) ? -1 : ((b.V_CXN.length > a.V_CXN.length) ? 1 : 0));
       this.getMachineConnection$.next(sortedAllConnections);

@@ -16,20 +16,20 @@
   <app-machine-tile-list [selectedConnectionType]="selectedConnectionType" [userAccess]="userRoleAccess" [machineType]="cxnData.V_PLATFORM_CD" [connectionList]="cxnData" (selectedMachineTile)="selectedMachineTile($event)"></app-machine-tile-list>
 </div> -->
 
-<div class="tile-container" *ngFor="let machine of machineData;">
+<div class="tile-container">
   <div class="container-header" fxLayoutAlign="space-between center">
-    <span class="container-title">{{machine.PLATFORM_CD}}</span>
+    <span class="container-title">{{machineData.PLATFORM_TYP.PLATFORM_CD}}</span>
     <div class="container-actions" *ngIf="userRoleAccess.role_machine">
-      <button mat-icon-button matTooltip="Delete Machine" (click)="onBtnDeleteMachineClick(machine)">
+      <button mat-icon-button matTooltip="Delete Machine" (click)="onBtnDeleteMachineClick(machineData.PLATFORM_TYP)">
         <mat-icon>delete</mat-icon>
       </button>
-      <button mat-icon-button matTooltip="Edit Machine" (click)="onBtnEditMachineClick(machine)">
+      <button mat-icon-button matTooltip="Edit Machine" (click)="onBtnEditMachineClick(machineData.PLATFORM_TYP)">
         <mat-icon>edit</mat-icon>
       </button>
-      <button mat-icon-button matTooltip="Assign" (click)="onBtnAssignRoleClick(machine)">
+      <button mat-icon-button matTooltip="Assign" (click)="onBtnAssignRoleClick(machineData.PLATFORM_TYP)">
         <mat-icon>link</mat-icon>
       </button>
     </div>
   </div>
-  <app-machine-tile-list [machine]="machine" [selectedConnectionType]="selectedConnectionType" [userAccess]="userRoleAccess" [machineType]="cxnData.V_PLATFORM_CD" [connectionList]="cxnData" (selectedMachineTile)="selectedMachineTile($event)"></app-machine-tile-list>
+  <app-machine-tile-list [machine]="machineData.PLATFORM_TYP" [selectedConnectionType]="selectedConnectionType" [userAccess]="userRoleAccess" [machineType]="cxnData.V_PLATFORM_CD" [connectionList]="cxnData" (selectedMachineTile)="selectedMachineTile($event)"></app-machine-tile-list>
 </div>

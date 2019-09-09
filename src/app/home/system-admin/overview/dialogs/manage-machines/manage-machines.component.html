@@ -31,12 +31,12 @@
           <strong>Name</strong>
         </label>
         <mat-form-field class="input_control">
-          <input matInput [(ngModel)]="PLATFORM_CD" [matAutocomplete]="auto" (ngModelChange)="machineChange()">
-          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="machineDetails($event)">
+          <input matInput [(ngModel)]="PLATFORM_CD" (ngModelChange)="machineChange()">
+          <!-- <mat-autocomplete #auto="matAutocomplete" (optionSelected)="machineDetails($event)">
             <mat-option style="text-align:center;" *ngFor="let mc of PLF_DATA['PLATFORM_CD']" [value]="mc">
               <div>{{mc}}</div>
             </mat-option>
-          </mat-autocomplete>
+          </mat-autocomplete> -->
         </mat-form-field>
       </div>
       <div fxFlex="5"></div>

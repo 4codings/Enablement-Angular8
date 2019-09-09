@@ -45,14 +45,14 @@ export class MachinesListComponent implements OnInit {
       this.sortedAllConnections = res;
     });
 
-    this.MachineCode();
+    //this.MachineCode();
   }
 
-  MachineCode() {
-    this.http.get(this.apiUrlGet+"V_SRC_CD="+this.V_SRC_CD+"&V_USR_NM="+this.V_USR_NM+"&REST_Service=Users_Machines&Verb=GET").subscribe((res:any)=>{
-      this.machines=res;
-    });
-  }
+  // MachineCode() {
+  //   this.http.get(this.apiUrlGet+"V_SRC_CD="+this.V_SRC_CD+"&V_USR_NM="+this.V_USR_NM+"&REST_Service=Users_Machines&Verb=GET").subscribe((res:any)=>{
+  //     this.machines=res;
+  //   });
+  // }
 
   changeMachineType(type) {
     this.selectedConnectionType = type.EXE_TYP;
