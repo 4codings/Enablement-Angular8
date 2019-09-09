@@ -5,7 +5,7 @@
       <input matInput type="number" style="font-weight: bold;" (ngModelChange)="setchartpreferences('chartno',$event,i);" [(ngModel)]="cno">
     </div>
   </div>
-  <div fxLayout="column" id="chart-type" class="table-column">
+  <div fxLayout="column" id="selectedchart" class="table-column">
     <div class="table-title">Chart Type</div>
     <div class="table-cell" *ngFor="let selectedchart$ of _selectedchart; let i=index; trackBy:indexTracker">
       <mat-form-field>
@@ -20,7 +20,7 @@
       </mat-form-field>
     </div>
   </div>
-  <div fxLayout="column" id="x-axis-data" class="table-column">
+  <div fxLayout="column" id="xaxisdata" class="table-column">
     <div class="table-title">X-Axis Dataset</div>
     <div class="table-cell" *ngFor="let d_xaxis of doughnutxaxis; let i=index; trackBy:indexTracker">
       <mat-form-field style="width:100%">
@@ -33,7 +33,7 @@
     </div>
   </div>
 
-  <div fxLayout="column" id="y-axis-data" class="table-column">
+  <div fxLayout="column" id="yaxisdata" class="table-column">
     <div class="table-title">Y-Axis Dataset</div>
     <div class="table-cell" *ngFor="let d_yaxis of doughnutyaxis; let i=index; trackBy:indexTracker">
       <mat-form-field style="width:100%">
@@ -46,7 +46,7 @@
     </div>
   </div>
 
-  <div fxLayout="column" id="unitx" class="table-column">
+  <div fxLayout="column" id="UoM_x" class="table-column">
     <div class="table-title">Unit of Measure (x-axis)</div>
     <div class="table-cell" *ngFor="let unitx of UoM_x; let i=index; trackBy:indexTracker">
       <mat-form-field style="width:100%">
@@ -59,7 +59,7 @@
     </div>
   </div>
 
-  <div fxLayout="column" id="unity" class="table-column">
+  <div fxLayout="column" id="UoM_y" class="table-column">
     <div class="table-title">Unit of Measure (y-axis)</div>
     <div class="table-cell" *ngFor="let unity of UoM_y; let i=index; trackBy:indexTracker">
       <mat-form-field style="width:100%">
@@ -72,7 +72,7 @@
     </div>
   </div>
 
-  <div fxLayout="column" id="scale_x" class="table-column">
+  <div fxLayout="column" id="SoM_x" class="table-column">
     <div class="table-title">Scale of Measure (x-axis)</div>
     <div class="table-cell" *ngFor="let scalex of SoM_x; let i = index; trackBy:indexTracker">
       <mat-form-field style="width:100%">
@@ -90,7 +90,7 @@
     </div>
   </div>
 
-  <div fxLayout="column" id="scale_y" class="table-column">
+  <div fxLayout="column" id="SoM_y" class="table-column">
     <div class="table-title">Scale of Measure (y-axis)</div>
     <div class="table-cell" *ngFor="let scaley of SoM_y; let i = index; trackBy:indexTracker">
       <mat-form-field style="width:100%">
@@ -108,7 +108,7 @@
     </div>
   </div>
 
-  <div fxLayout="column" id="x-step-size" class="table-column">
+  <div fxLayout="column" id="xaxisstepsize" class="table-column">
     <div class="table-title">X-step size</div>
     <div class="table-cell" *ngFor="let xstep of xaxisstepSize; let i=index; trackBy:indexTracker">
       <mat-form-field>
@@ -117,7 +117,7 @@
     </div>
   </div>
 
-  <div fxLayout="column" id="y-step-size" class="table-column">
+  <div fxLayout="column" id="yaxisstepsize" class="table-column">
     <div class="table-title">Y-step size</div>
     <div class="table-cell" *ngFor="let ystep of yaxisstepSize; let i=index; trackBy:indexTracker">
       <mat-form-field>
@@ -126,14 +126,14 @@
     </div>
   </div>
 
-  <div fxLayout="column" id="yaxis-autoskip" class="table-column">
+  <div fxLayout="column" id="yaxisautoskip" class="table-column">
     <div class="table-title">Y-axis auto skip</div>
     <div class="table-cell" *ngFor="let yxs_askp of yaxisautoskip; let i=index; trackBy:indexTracker">
       <mat-slide-toggle color="primary" [(ngModel)]="yxs_askp" (ngModelChange)="setchartpreferences('yaxisautoskip',$event,i);">Y-Autoskip</mat-slide-toggle>
     </div>
   </div>
 
-  <div fxLayout="column" id="grid-line-width" class="table-column">
+  <div fxLayout="column" id="gridlinewidth" class="table-column">
     <div class="table-title">Grid Line Width</div>
     <div class="table-cell" *ngFor="let gwidth of gridlinewidth; let i=index; trackBy:indexTracker">
       <mat-form-field>
@@ -142,14 +142,14 @@
     </div>
   </div>
 
-  <div fxLayout="column" id="grid-type" class="table-column">
+  <div fxLayout="column" id="gridborder" class="table-column">
     <div class="table-title">Grid Type</div>
     <div class="table-cell" *ngFor="let gborder of gridborder; let i=index; trackBy:indexTracker">
       <mat-slide-toggle color="primary" [(ngModel)]="gborder" (ngModelChange)="setchartpreferences('gridborder',$event,i);">Dashed Grid</mat-slide-toggle>
     </div>
   </div>
   
-  <div fxLayout="column" id="background-color" class="table-column">
+  <div fxLayout="column" id="backgroundcolor" class="table-column">
     <div class="table-title">Background Color</div>
     <div class="table-cell" *ngFor="let bgcolor of backgroundcolor; let i=index; trackBy:indexTracker">
       <div fxLayout="row" class="mat-cell-div">
@@ -164,7 +164,7 @@
     </div>
   </div>
 
-  <div fxLayout="column" id="border-color" class="table-column">
+  <div fxLayout="column" id="bordercolor" class="table-column">
     <div class="table-title">Border Color</div>
     <div class="table-cell" *ngFor="let bdrcolor of bordercolor; let i=index; trackBy:indexTracker">
       <div fxLayout="row" class="mat-cell-div">
@@ -179,7 +179,7 @@
     </div>
   </div>
 
-  <div fxLayout="column" id="fill-background" class="table-column">
+  <div fxLayout="column" id="fillbackground" class="table-column">
     <div class="table-title">Fill Background</div>
     <div class="table-cell" *ngFor="let fbg of fillbackground; let i=index; trackBy:indexTracker">
       <div fxLayout="row" class="mat-cell-div">
@@ -191,7 +191,7 @@
     </div>
   </div>
 
-  <div fxLayout="column" id="line-tension" class="table-column">
+  <div fxLayout="column" id="linetension" class="table-column">
     <div class="table-title">Line Tension</div>
     <div class="table-cell" *ngFor="let lten of linetension; let i=index; trackBy:indexTracker">
       <div fxLayout="column" style="text-align:center" class="mat-cell-div">
@@ -206,7 +206,7 @@
   </div>
   </div>
 
-  <div fxLayout="column" id="point-size" class="table-column">
+  <div fxLayout="column" id="pointsize" class="table-column">
     <div class="table-title">Point Size</div>
     <div class="table-cell" *ngFor="let prad of pointradius; let i=index; trackBy:indexTracker">
       <div fxLayout="column" style="text-align:center" class="mat-cell-div">
@@ -244,7 +244,7 @@
     </div>
   </div>
 
-  <div fxLayout="column" id="point-style" class="table-column">
+  <div fxLayout="column" id="pointstyle" class="table-column">
     <div class="table-title">Point Style</div>
     <div class="table-cell" *ngFor="let pstyle of pointstyle; let i=index; trackBy:indexTracker">
       <mat-form-field style="width:100%;cursor: pointer;">
@@ -278,7 +278,7 @@
     </div>
   </div>
 
-  <div fxLayout="column" id="line-style" class="table-column">
+  <div fxLayout="column" id="linestyle" class="table-column">
     <div class="table-title">Line Style</div>
     <div class="table-cell" *ngFor="let lstyle of linestyle; let i=index; trackBy:indexTracker">
       <mat-form-field style="width:100%;cursor: pointer;">

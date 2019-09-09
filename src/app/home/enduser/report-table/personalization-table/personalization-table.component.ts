@@ -103,9 +103,8 @@ export class PersonalizationTableComponent implements OnInit {
   rowPreference = {
     gridlinewidth: "", chartno: "",
     backgroundcolor: "", bordercolor: "", fillbackground: "", linetension: "", pointradius: "", animations: "",
-    pointstyle: "", linestyle: "", gridborder: "", yaxisautoskip: "", linexaxis: "", lineyaxis: "", barxaxis: "",
-    baryaxis: "", piexaxis: "", pieyaxis: "", doughnutxaxis: "", doughnutyaxis: "", selectedchart: "", chartposition: "",
-    charttype: "", xaxisdata: "", yaxisdata: "", UoM_x: "", UoM_y: "", SoM_x: "", SoM_y: "", xaxisstepsize: "", yaxisstepsize: "", personalizationtable: {}
+    pointstyle: "", linestyle: "", gridborder: "", yaxisautoskip: "", selectedchart: "", chartposition: "",
+    xaxisdata: "", yaxisdata: "", UoM_x: "", UoM_y: "", SoM_x: "", SoM_y: "", xaxisstepsize: "", yaxisstepsize: "", personalizationtable: {}
   };
   myobj = { mychartType: "", myxaxisdata: "", myyaxisdata: "", myUoM: "", mySoM: "" }
   preservedPreferences = [];
@@ -117,15 +116,19 @@ export class PersonalizationTableComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.xaxis_datasets = this.report.columnsToDisplay;
-    this.yaxis_datasets = this.report.columnsToDisplay;
+    this.getChartPreferences();
   }
+
   indexTracker(index: number, value: any) {
     return index;
   }
 
   getChartPreferences() {
-    return this.chartPreferences;
+    this.data.getchartstyling(this.report.UNIQUE_ID, this.report.SRC_ID).subscribe(
+      res => {
+        console.log('chartpreferences = >');
+        console.log(res.json());
+      });
   }
 
   set_chartPreferences_arr(pref, i) {
@@ -195,6 +198,15 @@ export class PersonalizationTableComponent implements OnInit {
       this.chartPreferences[i]['personalizationtable'] = this._personalizationtable[i];
   }
 
+  populateRow(index) {
+    var fieldKeys = Object.keys(this.data.chartPreferences[index]);
+    for (let i = 0; i < fieldKeys.length; i++) {
+      var field = fieldKeys[i];
+      console.log((<HTMLElement>document.querySelectorAll('#' + field + ' ' + '.table-cell')[index]));
+    }
+    (<HTMLElement>document.querySelectorAll("mat-list")[2])
+  }
+
   setchartpreferences(pref, val, index?) {
 
     /*var cp = [];
@@ -203,15 +215,6 @@ export class PersonalizationTableComponent implements OnInit {
     }
     cp = [].concat.apply([], cp);
     console.log(cp);*/
-    /*if (pref === "personalizationtable") {
-      this.chartPreferences[index][pref]['charttype'] = this.chartPreferences[index]['charttype'];
-      this.chartPreferences[index][pref]['xaxisdata'] = this.chartPreferences[index]['xaxisdata'];
-      this.chartPreferences[index][pref]['yaxisdata'] = this.chartPreferences[index]['yaxisdata'];
-      this.chartPreferences[index][pref]['UoM_x'] = this.chartPreferences[index]['UoM_x'];
-      this.chartPreferences[index][pref]['UoM_y'] = this.chartPreferences[index]['UoM_y'];
-      this.chartPreferences[index][pref]['SoM_x'] = this.chartPreferences[index]['SoM_x'];
-      this.chartPreferences[index][pref]['SoM_y'] = this.chartPreferences[index]['SoM_y'];
-    }*/
 
     console.log(val);
     this.chartPreferences[index][pref] = val;
@@ -219,6 +222,7 @@ export class PersonalizationTableComponent implements OnInit {
     if (pref === "chartno") {
       var chartFound = false;
       var foundIndex;
+      console.log(chartFound);
       for (let i = 0; i < this.chartPreferences.length; i++) {
         if (i !== index && val === this.chartPreferences[i]['chartno']) {
           chartFound = true;
@@ -228,6 +232,9 @@ export class PersonalizationTableComponent implements OnInit {
       }
       if (chartFound) {
         this.chartPreferences[index] = this.chartPreferences[foundIndex];
+        //console.log(foundIndex);
+        //console.log(this.chartPreferences[foundIndex]);
+        this.populateRow(index);
         //update the values in the row
       }
     }
@@ -237,6 +244,13 @@ export class PersonalizationTableComponent implements OnInit {
     this.data.chartSelection['update'] = true;
     this.data.chartSelection['selection'] = pref;
     this.data.chartPreferencesChange.next(this.data.chartPreferences);
+
+    /*this.data.setchartstyling(this.report.UNIQUE_ID, this.report.SRC_ID, pref+'_'+index, this.chartPreferences[index][pref]).subscribe(
+      (res) => {
+        console.log(res.json());
+      });*/
+
+
     /*this.userprefs['backgroundcolor'] = this._backgroundColor;
     this.userprefs['bordercolor'] = this._borderColor;
     this.userprefs['fill'] = this._fill.toString().toLocaleUpperCase();
@@ -262,10 +276,6 @@ export class PersonalizationTableComponent implements OnInit {
     console.log(this.userprefs);
     this.report.V_PRF_NM = Object.keys(this.userprefs);
     this.report.V_PRF_VAL = Object.values(this.userprefs);*/
-    this.data.setchartstyling(this.report.UNIQUE_ID, this.report.SRC_ID, pref, this.chartPreferences[index][pref]).subscribe(
-      () => {
-
-      });
   }
 
   addRow_action() {
@@ -301,19 +311,35 @@ export class PersonalizationTableComponent implements OnInit {
     this.xaxisstepSize.push("");
     this.yaxisstepSize.push("");
     this.chartPreferences.push({
-      gridlinewidth: "", chartno: "",
+      gridlinewidth: "", chartno: this.chartno.length,
       backgroundcolor: "", bordercolor: "", fillbackground: false, linetension: "", pointradius: "", animations: "",
-      pointstyle: "rectRot", linestyle: "", gridborder: "", yaxisautoskip: "", linexaxis: "", lineyaxis: "", barxaxis: "",
-      baryaxis: "", piexaxis: "", pieyaxis: "", doughnutxaxis: "", doughnutyaxis: "", selectedchart: "", chartposition: "",
-      charttype: "", xaxisdata: "", yaxisdata: "", UoM_x: "", UoM_y: "", SoM_x: "", SoM_y: "", xaxisstepsize: "", yaxisstepsize: "", personalizationtable: {}
+      pointstyle: "rectRot", linestyle: "", gridborder: "", yaxisautoskip: "", selectedchart: "", chartposition: "",
+      xaxisdata: "", yaxisdata: "", UoM_x: "", UoM_y: "", SoM_x: "", SoM_y: "", xaxisstepsize: "", yaxisstepsize: "", personalizationtable: {}
     });
     this.data.chartposition.push({ x: 0, y: 0 });
-    console.log(this.chartPreferences);
+
     this.data.chartPreferences = this.chartPreferences;
     this.data.chartSelection['chartPreferences'] = this.data.chartPreferences;
     this.data.chartSelection['chartNo'] = this.chartno.length;
     this.data.chartSelection['update'] = false;
     this.data.chartPreferencesChange.next(this.data.chartPreferences);
+
+    /*this.data.deletepreferencerow(this.report.UNIQUE_ID, this.report.SRC_ID, '0').subscribe(
+      (res) => {
+        console.log(res.json());
+      });*/
+    //this.initializeChartPreferences(this.data.chartPreferences.length - 1);
+  }
+
+  initializeChartPreferences(index) {
+    var V_PRF_NM = Object.keys(this.data.chartPreferences[index]);
+    
+    for (let i = 0; i < V_PRF_NM.length; i++) {
+      this.data.setchartstyling(this.report.UNIQUE_ID, this.report.SRC_ID, V_PRF_NM[i]+'_'+index, this.chartPreferences[index][V_PRF_NM[i]]).subscribe(
+        (res) => {
+          console.log(res.json());
+        });
+    }
   }
 
   deleteRow_action(chartNo) {

@@ -220,7 +220,13 @@ export class ChartsComponent implements OnInit {
   dragEndChart(event, i) {
     var offset = { ...(<any>event.source._dragRef)._passiveTransform };
     this.data.chartposition[i] = offset;
-    console.log(this.data.chartposition[i]);
+    //console.log(this.data.chartposition[i]);
+    this.data.chartPreferences[i]['chartposition'] = JSON.stringify(this.data.chartposition[i]);
+    console.log(this.data.chartPreferences);
+    /*this.data.setchartstyling(this.report.UNIQUE_ID, this.report.SRC_ID, 'chartposition'+'_'+i, this.data.chartPreferences[i]['chartposition']).subscribe(
+      (res) => {
+        console.log(res.json());
+      });*/
   }
 
   updateLineChart(chartNo) {
@@ -687,6 +693,7 @@ export class ChartsComponent implements OnInit {
         SoM: this.data.chartPreferences[chartNo]['SoM_y'],
       }
       this.personalizationtable.push(obj);
+      this.data.chartPreferences[chartNo]['personalizationtable'] = obj;
       if (this.data.chartSelection['selection'] === 'yaxisdata') {
         this.yaxis_data[chartNo] = [];
         this.yaxis_data[chartNo].push(obj.yaxisdata);
