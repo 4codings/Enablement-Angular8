@@ -744,6 +744,18 @@ export class ConfigServiceService {
     return this.http.get(this.apiUrlGetSecure + "V_USR_NM=" + this.V_USR_NM + "&V_PRF_NM=" + V_PRF_NM + "&V_PRF_VAL=" + V_PRF_VAL + "&V_SRC_ID=" + V_SRC_ID + "&V_UNIQUE_ID=" + UNIQUE_ID + "&REST_Service=User_Preference&Verb=PATCH", this.apiService.setHeaders());
   }
 
+  deletechartstyling(UNIQUE_ID, V_SRC_ID, V_PRF_NM, V_ITM_ID){
+    return this.http.get(this.apiUrlGetSecure + "V_USR_NM=" + this.V_USR_NM + "&V_PRF_NM=" + V_PRF_NM + "&V_UNIQUE_ID=" + UNIQUE_ID + "&V_ITM_ID=" + V_ITM_ID + "&V_SRC_ID=" + V_SRC_ID + "&REST_Service=User_Preference&Verb=DELETE", this.apiService.setHeaders());
+    //enablement.us/Enablement/rest/v1/secured?V_USR_NM=VARCHAR&V_PRF_NM=VARCHAR&V_UNIQUE_ID=BIGINT&V_ITM_ID=INT&V_SRC_ID=INT&REST_Service=User_Preference&Verb=DELETE
+  }
+
+  deletepreferencerow(UNIQUE_ID, V_SRC_ID, V_ITM_ID){
+    return this.http.get(this.apiUrlGetSecure + "V_USR_NM=" + this.V_USR_NM + "&V_UNIQUE_ID=" + UNIQUE_ID + "&V_ITM_ID=" + V_ITM_ID + "&V_SRC_ID=" + V_SRC_ID + "&REST_Service=User_Preference&Verb=DELETE", this.apiService.setHeaders());
+  }
+
+  deleteallpreferences(V_SRC_ID){
+    return this.http.get(this.apiUrlGetSecure + "V_USR_NM=" + this.V_USR_NM + "&V_SRC_ID=" + V_SRC_ID + "&REST_Service=User_Preference&Verb=DELETE", this.apiService.setHeaders());
+  }
   //________________________________________________________________________________________
 }
 
