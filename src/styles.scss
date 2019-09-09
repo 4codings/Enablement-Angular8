@@ -531,4 +531,9 @@ button:focus {
   border: none;
   min-height: 580px;
   height: 100%;
+  padding: 0px !important;
+}
+
+.mat-card {
+  background-color: #fff;
 }
