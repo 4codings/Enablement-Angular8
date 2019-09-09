@@ -16,21 +16,21 @@
   <app-exe-tile-list [userAccess]="userRoleAccess" [exes]="exeType" (selectedExeTile)="selectedExeTile($event)"></app-exe-tile-list>
 </div> -->
 
-<div class="tile-container" *ngFor="let p of plat ; let i = index;">
+<div class="tile-container">
   <div class="container-header" fxLayoutAlign="space-between center">
-    <span class="container-title">{{p.SERVER_CD}}</span>
+    <span class="container-title">{{exeType.SERVER_TYP.SERVER_CD}}</span>
     <div class="container-actions" *ngIf="userRoleAccess.role_platform">
-      <button mat-icon-button matTooltip="Delete Platform" (click)="onBtnDeleteExeClick(p)">
+      <button mat-icon-button matTooltip="Delete Platform" (click)="onBtnDeleteExeClick(exeType.SERVER_TYP)">
         <mat-icon>delete</mat-icon>
       </button>
-      <button mat-icon-button matTooltip="Edit Platform" (click)="onBtnEditExeClick(p)">
+      <button mat-icon-button matTooltip="Edit Platform" (click)="onBtnEditExeClick(exeType.SERVER_TYP)">
         <mat-icon>edit</mat-icon>
       </button>
-      <button mat-icon-button matTooltip="Assign Platform" (click)="onBtnAssignRoleClick(p)">
+      <button mat-icon-button matTooltip="Assign Platform" (click)="onBtnAssignRoleClick(exeType.SERVER_TYP)">
         <mat-icon>link</mat-icon>
       </button>
     </div>
   </div>
-  <app-exe-tile-list [userAccess]="userRoleAccess" [platData]="p" [exes]="exeType" (selectedExeTile)="selectedExeTile($event)"></app-exe-tile-list>
+  <app-exe-tile-list [userAccess]="userRoleAccess" [selectedExeType]="selectedExeType" [platData]="exeType.SERVER_TYP" [exes]="exeType" (selectedExeTile)="selectedExeTile($event)"></app-exe-tile-list>
 </div>
 

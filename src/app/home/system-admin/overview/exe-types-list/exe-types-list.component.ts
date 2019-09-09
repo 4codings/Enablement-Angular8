@@ -56,15 +56,15 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
     this.systemOverview.getExe$.subscribe(res => {
       this.sortedAllExes = res;
     })
-    this.getPlatforms();
+    //this.getPlatforms();
   }
 
-  getPlatforms(){
-    this.http.get(this.apiUrlGet+"V_SRC_CD="+this.V_SRC_CD+"&V_CD_TYP=SERVER&REST_Service=Masters&Verb=GET").subscribe(
-      (res:any)=>{
-        this.plat=res;
-      });
-  }
+  // getPlatforms(){
+  //   this.http.get(this.apiUrlGet+"V_SRC_CD="+this.V_SRC_CD+"&V_CD_TYP=SERVER&REST_Service=Masters&Verb=GET").subscribe(
+  //     (res:any)=>{
+  //       this.plat=res;
+  //     });
+  // }
 
   changeExeType(type): void {
     //console.log(type);

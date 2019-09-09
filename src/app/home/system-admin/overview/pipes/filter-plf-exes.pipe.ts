@@ -12,7 +12,8 @@ export class FilterPlfExesPipe implements PipeTransform {
 
         args = args.toLowerCase();
         return value.filter(function(item){
-          return item.V_SERVER_CD.toString().toLowerCase() == args;
+          //return item.V_SERVER_CD.toString().toLowerCase() == args;
+          return item.V_EXE_TYP.toLowerCase() == args;
         });
     }
 

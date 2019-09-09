@@ -40,15 +40,15 @@
       [class.active]="currExe == selectedTile"
       [class.highlight]="isHighLightTile(currExe)"
       [matTooltip]="currExe.V_EXE_CD"
-      *ngFor="let currExe of exes.EXES | filterPlfExes:platData.SERVER_CD:'plf'; let i = index"
-      (contextmenu)="openContextmenu($event, currExe, exes.EXE_TYP, i)"
+      *ngFor="let currExe of exes.EXES; let i = index"
+      (contextmenu)="openContextmenu($event, currExe, selectedExeType, i)"
       (mousedown)="onTileMouseDownEventHandler($event)"
       (click)="onExeTileClick(currExe)">
        <mat-icon class="iconmod shwmaticon">cloud_upload</mat-icon>
    <!-- <div>{{currExe.EXE_CD}}</div> -->
     <div class="ellipsis-text"><strong>{{currExe.V_EXE_CD?.split('@')[0]}}</strong></div>
   </div>
-  <div class="tile add-new-tile" (click)="onAddExeTileClick(exes.EXE_TYP)"
+  <div class="tile add-new-tile" (click)="onAddExeTileClick(selectedExeType)"
        matTooltip="Add Exe" matRipple *ngIf="userAccess.role_connection">
     <mat-icon>add_circle</mat-icon>
   </div>

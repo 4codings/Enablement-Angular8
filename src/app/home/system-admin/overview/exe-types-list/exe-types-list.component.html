@@ -31,6 +31,6 @@
   </div>
   <mat-divider></mat-divider>
   <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="16px" cdkDropListGroup>
-    <app-single-exe [userRoleAccess]="userAccess" *ngFor="let currExe of sortedAllExes | filterExetype:selectedExeType:'exe'" [exeType]="currExe" [exes]="currExe.EXES" [plat]="plat"></app-single-exe>
+    <app-single-exe [userRoleAccess]="userAccess" *ngFor="let currExe of sortedAllExes | filterExetype:selectedExeType:'exe'" [exeType]="currExe" [exes]="currExe.EXES" [selectedExeType]="selectedExeType"></app-single-exe>
   </div>
 </div>

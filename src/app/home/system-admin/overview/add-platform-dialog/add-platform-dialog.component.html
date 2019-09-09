@@ -28,12 +28,12 @@
       <label style="text-align:center;width:100%;">Platform</label>
     </strong>
     <mat-form-field style="width:100%;">
-      <input matInput [(ngModel)]="p_plat" [matAutocomplete]="auto" (ngModelChange)="platFormChange()">
-      <mat-autocomplete #auto="matAutocomplete">
+      <input matInput [(ngModel)]="p_plat" (ngModelChange)="platFormChange()" required>
+      <!-- <mat-autocomplete #auto="matAutocomplete">
         <mat-option style="text-align:center;" *ngFor="let a of plat ; let i = index;" [value]="a" (click)="getplatformdesc(a);onpselect(i);">
           <div>{{a}}</div>
         </mat-option>
-      </mat-autocomplete>
+      </mat-autocomplete> -->
     </mat-form-field>
     <br />
     <strong>
@@ -82,7 +82,7 @@
   <div fxFlex="34" fxLayoutAlign="space-around center">
     <!-- <button mat-raised-button color="secondary" (click)="dataplat()">
       <mat-icon>cloud_upload</mat-icon> Data Load</button> -->
-    <button *ngIf="!isPlatformDesChange || isPlatformChange" [disabled]="!isPlatformChange" class="mr-2" mat-raised-button color="primary" (click)="addplat()">
+    <button *ngIf="!isPlatformDesChange || isPlatformChange" [disabled]="!isPlatformChange || p_plat == ''" class="mr-2" mat-raised-button color="primary" (click)="addplat()">
       <mat-icon>add</mat-icon> Add</button>
     <button *ngIf="isPlatformDesChange && !isPlatformChange" class="mr-2" mat-raised-button color="primary" (click)="addplat()">
       <mat-icon>add</mat-icon> Update</button>

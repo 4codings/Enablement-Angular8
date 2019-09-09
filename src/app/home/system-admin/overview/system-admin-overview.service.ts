@@ -13,6 +13,7 @@ export class SystemAdminOverviewService {
   public selectedCxn$: Subject<any> = new Subject();
   public getExe$: Subject<any> = new Subject();
   public exes;
+  public plat;
   public getMachineConnection$: Subject<any> = new Subject();
   public machines;
   ctrl_variables: any;
@@ -43,6 +44,7 @@ export class SystemAdminOverviewService {
   }
 
   public getExe() {
+    this.getPlatforms();
     this.http.get(this.apiUrlGet + "V_CD_TYP=EXE&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe((res) => {
       //console.log("exe", res);
       this.exes = res;
@@ -65,11 +67,17 @@ export class SystemAdminOverviewService {
     var sortedAllExes = [];
     var allExes = [];
     this.http.get(this.apiUrlGet + "V_CD_TYP=EXES&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe((res:any) => {
-      this.exes.forEach(item => {
+      // this.exes.forEach(item => {
+      //   let arr = res.filter(data => {
+      //     return item.EXE_TYP == data.V_EXE_TYP
+      //   })
+      //   allExes.push({EXE_TYP: item.EXE_TYP, EXES:arr})
+      // });
+      this.plat.forEach(item => {
         let arr = res.filter(data => {
-          return item.EXE_TYP == data.V_EXE_TYP
+          return item.SERVER_CD == data.V_SERVER_CD.toString()
         })
-        allExes.push({EXE_TYP: item.EXE_TYP, EXES:arr})
+        allExes.push({SERVER_TYP: item, EXES:arr})
       });
       sortedAllExes = allExes.sort((a,b) => (a.EXES.length > b.EXES.length) ? -1 : ((b.EXES.length > a.EXES.length) ? 1 : 0));
       this.getExe$.next(sortedAllExes);
@@ -122,6 +130,13 @@ export class SystemAdminOverviewService {
     }, err => {
       console.log(err);
     });
+  }
+
+  getPlatforms(){
+    this.http.get(this.apiUrlGet+"V_SRC_CD="+this.V_SRC_CD+"&V_CD_TYP=SERVER&REST_Service=Masters&Verb=GET").subscribe(
+      res=>{
+        this.plat=res;
+      });
   }
   
   getRollAccess() {

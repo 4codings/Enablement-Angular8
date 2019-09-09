@@ -17,7 +17,7 @@ export class SingleExeComponent implements OnInit {
 
   @Input() exeType;
   @Input() exes;
-  @Input() plat;
+  @Input() selectedExeType;
   @Input() userRoleAccess;
   
   V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
