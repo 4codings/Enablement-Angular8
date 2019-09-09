@@ -266,8 +266,12 @@
 }
 
 :host ::ng-deep label {
-    text-align: center;
+    text-align: left;
     margin: 2px 2px
+}
+
+:host ::ng-deep .treeview-header label {
+    text-align: center;
 }
 
 :host ::ng-deep select {
@@ -667,7 +671,10 @@ mat-header-cell {
 
 :host ::ng-deep .start_date .mat-form-field-infix {
     border: none !important;
-} 
+}
+:host ::ng-deep #properties .mat-expansion-panel-header {
+    height: 52px !important;
+}
 /*mat-row {
     border-width: 1px;
     border-color: rgba(0,0,0,.12);
