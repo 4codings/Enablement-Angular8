@@ -7,7 +7,7 @@
       <mat-error *ngIf="userForm.get('V_USR_NM').errors?.groupError">Valid User is required.</mat-error>
     </mat-form-field>
     <mat-form-field>
-      <input type="text" matInput placeholder="Description" formControlName="V_USR_DSC">
+      <textarea type="text" matInput placeholder="Description" formControlName="V_USR_DSC"></textarea>
     </mat-form-field>
     <mat-form-field>
       <mat-select formControlName="V_STS" placeholder="Status">

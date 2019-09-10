@@ -30,7 +30,7 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
   selecteduser: string;
   authD = new data;
   V_SRC_CD_DATA;
-  radioList = ['PROCESS', 'SERVICE', 'EXE', 'ARTIFACT', 'PLATFORM', 'SERVER', 'SLA'];
+  radioList = ['ARTIFACT', 'EXE', 'PLATFORM', 'PROCESS', 'SERVER', 'SERVICE', 'SLA'];
   authValues: AuthorizationData[] = [];
   filteredAuthValues: AuthorizationData[] = [];
   authValueObj: data;
@@ -48,6 +48,7 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
   selectedService = '';
   addFlag = false;
   radioSelected;
+  oldRadioSelected;
   enableAddButtonFlag = false;
   constructor(
     public noAuthData: NoAuthDataService,
@@ -296,7 +297,7 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
     this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', body)
       .subscribe(res => {
         this.store.dispatch(new authActions.getAuth(this.V_SRC_CD_DATA));
-      },err => {
+      }, err => {
       });
   }
   delete_click(index) {
@@ -304,10 +305,10 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
     this.http.delete(this.apiServcie.endPoints.securedJSON + `V_AUTH_CD=${data.V_AUTH_CD}&V_AUTH_TYP=${data.V_AUTH_TYP}&V_SRC_CD=${this.V_SRC_CD_DATA.V_SRC_CD}&REST_Service=Auth&Verb=DELETE`)
       .subscribe(res => {
         this.store.dispatch(new authActions.getAuth(this.V_SRC_CD_DATA));
-      },err => {
+      }, err => {
       });
   }
-  onAddSubmit(){
+  onAddSubmit() {
     const data = this.authValueObj;
     let body = {
       "V_AUTH_DSC": data.V_AUTH_DSC,
@@ -330,11 +331,11 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
     };
     let obs = this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', body)
     obs.subscribe(res => {
-        this.addFlag = false;
-        this.store.dispatch(new authActions.getAuth(this.V_SRC_CD_DATA));
-      },
-    err => {
-    });
+      this.addFlag = false;
+      this.store.dispatch(new authActions.getAuth(this.V_SRC_CD_DATA));
+    },
+      err => {
+      });
   }
   // showAuthData(authData) {
   //   this.authD.AUTH_DSC = authData.AUTH_DSC;
@@ -379,8 +380,9 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
   //     }
   //   }
   // }
-  onItemSelect(event: MatRadioChange) {
-    this.getFilterData(event.value);
+  onItemSelect(event: any) {
+    this.getFilterData(event);
+    this.radioSelected = event;
     this.addFlag = false;
     this.authValueObj = new data();
   }

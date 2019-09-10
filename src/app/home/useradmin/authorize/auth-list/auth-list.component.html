@@ -1,6 +1,15 @@
-<mat-list class="scroll">
+<!-- <mat-list class="scroll">
   <mat-list-item class="list_item" *ngFor="let auth of auths"
                  [class.active]="auth == selectedAuth" (click)="onAuthSelect(auth)">
     <div>{{auth.V_AUTH_CD}}</div>
   </mat-list-item>
-</mat-list>
+</mat-list> -->
+<mat-form-field class="form_input">
+    <input (keyup)="0" matInput name="app" [matAutocomplete]="auto" [formControl]="myControl">
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option style="text-align:center;" (click)="onAuthSelect(auth)" *ngFor="let auth of filteredOptions |async"
+        [value]="auth.V_AUTH_CD">
+        {{auth.V_AUTH_CD}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>

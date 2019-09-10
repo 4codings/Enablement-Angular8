@@ -22,7 +22,9 @@ export class UserListComponent implements OnInit {
 
   ngOnInit() {
     this.filteredOptions = this.myControl.valueChanges
-      .pipe(map(state => state ? this._filter(state) : this.users.slice())
+      .pipe(
+        startWith(''),
+        map(state => state ? this._filter(state) : this.users.slice())
       );
   }
 

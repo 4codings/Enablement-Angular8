@@ -533,7 +533,9 @@ button:focus {
   height: 100%;
   padding: 0px !important;
 }
-
-.mat-card {
-  background-color: #fff;
+.mat-card, body {
+  background-color: #F2F2F2;
+}
+.mat-card-content {
+  margin: 10px !important;
 }
