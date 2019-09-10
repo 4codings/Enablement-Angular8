@@ -1,59 +1,46 @@
-<div class="tiles-wrapper" fxLayout="row wrap"
-     cdkDropList
-     [cdkDropListDisabled]="!authorizationPermission"
-     [cdkDropListData]="auths"
-     (cdkDropListDropped)="authDropped($event)"
-     cdkDropListOrientation="horizontal">
-  <div class="tile"
-       matRipple
-       cdkDrag
-       cdkDropListSortingDisabled
-       [cdkDragData]="currAuth"
-       [matTooltip]="currAuth.V_AUTH_CD.split(';')[0]"
-       *ngFor="let currAuth of auths | authType: selectedAuthType?.key"
-       [class.active]="currAuth == selectedAuth"
-       [class.highlight]="highlightedAuths.isSelected(currAuth)"
-       (contextmenu)="openContextmenu($event, currAuth)"
-       (mousedown)="onTileMouseDownEventHandler($event)"
-       (click)="onAuthTileClick(currAuth)">
-    <div class="tile-icons-wrapper"
-         fxLayout="row wrap"
-         fxLayoutAlign="space-around">
-      <mat-icon class="tile-icon"
-                *ngIf="currAuth.V_CREATE==='Y'">
+<div class="tiles-wrapper" fxLayout="row wrap" cdkDropList [cdkDropListDisabled]="!authorizationPermission"
+  [cdkDropListData]="auths" (cdkDropListDropped)="authDropped($event)" cdkDropListOrientation="horizontal">
+  <div class="tile" matRipple cdkDrag cdkDropListSortingDisabled [cdkDragData]="currAuth"
+    [matTooltip]="currAuth.V_AUTH_CD.split(';')[0]" *ngFor="let currAuth of auths | authType: selectedAuthType?.key"
+    [class.active]="currAuth == selectedAuth" [class.highlight]="highlightedAuths.isSelected(currAuth)"
+    (contextmenu)="openContextmenu($event, currAuth)" (mousedown)="onTileMouseDownEventHandler($event)"
+    (click)="onAuthTileClick(currAuth)">
+    <div class="tile-icons-wrapper" fxLayout="row wrap" fxLayoutAlign="space-around">
+      <mat-icon class="tile-icon" *ngIf="currAuth.V_CREATE==='Y'">
         add
       </mat-icon>
-      <mat-icon class="tile-icon"
-                *ngIf="currAuth.V_UPDATE==='Y'">
+      <mat-icon class="tile-icon" *ngIf="currAuth.V_UPDATE==='Y'">
         create
       </mat-icon>
-      <mat-icon class="tile-icon"
-                *ngIf="currAuth.V_READ==='Y'">
+      <mat-icon class="tile-icon" *ngIf="currAuth.V_READ==='Y'">
         remove_red_eye
       </mat-icon>
-      <mat-icon class="tile-icon"
-                *ngIf="currAuth.V_DELETE==='Y'">
+      <mat-icon class="tile-icon" *ngIf="currAuth.V_DELETE==='Y'">
         delete
       </mat-icon>
-      <mat-icon class="tile-icon"
-                *ngIf="currAuth.V_EXECUTE==='Y'">
+      <mat-icon class="tile-icon" *ngIf="currAuth.V_EXECUTE==='Y'">
         launch
       </mat-icon>
     </div>
-<!--    <div *ngIf="!environment.production">{{currAuth.V_AUTH_ID}}</div>-->
+    <!--    <div *ngIf="!environment.production">{{currAuth.V_AUTH_ID}}</div>-->
     <div class="tile-text">
       <strong>
         {{ currAuth.V_AUTH_CD.split(';')[0] }}
       </strong>
     </div>
   </div>
-  <div class="tile add-new-tile" cdkDrag [cdkDragDisabled]="true" *ngIf="authPermission || authorizationPermission" (click)="onAddAuthTileClick()"
-       matTooltip="Add Auth" matRipple>
+  <div class="tile add-new-tile" cdkDrag [cdkDragDisabled]="true" *ngIf="authPermission || authorizationPermission"
+    (click)="onAddAuthTileClick()" matTooltip="Add Auth" matRipple>
     <mat-icon>add_circle</mat-icon>
   </div>
 </div>
-<div fxLayout="column" fxLayoutAlign="start stretch" class="context-menu" #contextMenu *ngIf="contextMenuActive && (authPermission || authorizationPermission)"
-     [ngStyle]="contextMenuStyle">
+<div fxLayout="column" fxLayoutAlign="start stretch" class="context-menu" #contextMenu
+  *ngIf="contextMenuActive && (authPermission || authorizationPermission)" [ngStyle]="contextMenuStyle">
   <button mat-button class="menu-item" *ngIf="authPermission" (click)="onContextMenuEditAuthBtnClick()">Edit</button>
-  <button mat-button class="many-item" *ngIf="authPermission || authorizationPermission" (click)="onContextMenuDeleteAuthBtnClick()">Delete</button>
+  <button mat-button class="many-item" *ngIf="authPermission || authorizationPermission"
+    (click)="onContextMenuRemoveAuthBtnClick('')">Delete Auth</button>
+  <button mat-button class="many-item" *ngIf="authPermission || authorizationPermission"
+    (click)="onContextMenuRemoveAuthBtnClick(true)">Remove from All Roles</button>
+  <button mat-button class="many-item" *ngIf="authPermission || authorizationPermission"
+    (click)="onContextMenuRemoveAuthBtnClick(false)">Remove from the Role</button>
 </div>

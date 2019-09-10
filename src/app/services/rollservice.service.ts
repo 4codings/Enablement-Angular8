@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Globals } from './globals';
 import { Observable, BehaviorSubject } from 'rxjs';
+import { ApiService } from '../service/api/api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,8 @@ export class RollserviceService {
 
   constructor(
     private http: HttpClient,
-    private globals: Globals
+    private globals: Globals,
+    private apiService: ApiService
   ) {
   }
 
@@ -46,9 +48,12 @@ export class RollserviceService {
   }
 
   assignAuthToRole(data: any): Observable<any> {
-    return this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', data);
+    return this.http.post(this.apiService.endPoints.securedJSON, data);
   }
 
+  deleteAuth(data: any): Observable<any> {
+    return this.http.delete(this.apiService.endPoints.secure + data);
+  }
   clear() {
     this.Roll_cd = null;
     this.roleValue.next(null);

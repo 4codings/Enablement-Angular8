@@ -1,10 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Subject} from 'rxjs';
-import {OverviewService} from '../overview.service';
-import {takeUntil} from 'rxjs/operators';
-import {userRole} from '../../../../store/user-admin/user-role/userrole.model';
-import {AuthorizationData} from '../../../../store/user-admin/user-authorization/authorization.model';
-import {userGroup} from '../../../../store/user-admin/user-group/usergroup.model';
+import { Component, Input, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { OverviewService } from '../overview.service';
+import { takeUntil } from 'rxjs/operators';
+import { userRole } from '../../../../store/user-admin/user-role/userrole.model';
+import { AuthorizationData } from '../../../../store/user-admin/user-authorization/authorization.model';
+import { userGroup } from '../../../../store/user-admin/user-group/usergroup.model';
 
 @Component({
   selector: 'app-single-role',
@@ -48,9 +48,9 @@ export class SingleRoleComponent implements OnInit {
       this.overviewService.openAddAuthDialog(this.role.id);
     }
   }
-
-  onDeleteAuthEventHandler(auth: AuthorizationData): void {
-    this.overviewService.deleteAuthFromRole(this.role, auth);
+  // auth: AuthorizationData
+  onDeleteAuthEventHandler(data: any): void {
+    this.overviewService.deleteAuthFromRole(this.role, data['authData'], data['deleteFromAllRoles']);
   }
 
   onBtnAssignGroupClick(role: userRole): void {

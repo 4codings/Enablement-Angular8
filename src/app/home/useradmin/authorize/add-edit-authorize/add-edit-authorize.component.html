@@ -1,29 +1,188 @@
 <div class="dialog-wrapper" fxLayoutGap="8px" fxLayout="column" fxLayoutAlign="start stretch">
   <div class="dialog-header content-wrapper" fxLayoutAlign="space-between center">
     <span>{{isEditMode ? 'Edit ' : 'Add '}}Authorization</span>
-    <button mat-icon-button (click)="onBtnCancelClick()"><mat-icon>close</mat-icon></button>
+    <button mat-icon-button (click)="onBtnCancelClick()">
+      <mat-icon>close</mat-icon>
+    </button>
   </div>
   <mat-divider></mat-divider>
   <div class="content-wrapper" *ngIf="!isEditMode">
-    <mat-radio-group [(ngModel)]="selectedView" fxLayout="row" fxLayoutAlign="space-around center">
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="center start" *ngIf="oldRadioSelected == ''">
+      <div fxFlex="100">
+        <span>Role Types : </span>
+        <button [disabled]="isEditMode" mat-button [matMenuTriggerFor]="groupTypeMenu">{{radioSelected}}
+          <mat-icon matSuffix>arrow_drop_down</mat-icon>
+        </button>
+        <mat-menu #groupTypeMenu="matMenu">
+          <button mat-menu-item *ngFor="let item of radioList" (click)="onItemSelect(item)">{{item}}</button>
+        </mat-menu>
+      </div>
+    </div>
+    <mat-divider *ngIf="oldRadioSelected == ''"></mat-divider>
+    <mat-tab-group (selectedIndexChange)="OnTabChange($event)">
+      <mat-tab label="Select Auth">
+        <app-auth-list *ngIf="selectedView == 'selectAuth'" [auths]="filteredAuthValues"
+          (authSelectEvent)="onAuthSelect($event)"></app-auth-list>
+      </mat-tab>
+      <mat-tab label="Add New Auth">
+        <div *ngIf="selectedView == 'addNewAuth'" fxLayout="row" fxLayoutAlign="center start">
+          <div fxFlex="100" fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="start stretch">
+            <div fxFlex="100" fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="start stretch">
+              <div>
+                <strong>
+                  <span *ngIf="radioSelected === 'PROCESS' ||radioSelected === 'SERVICE'">
+                    Application
+                  </span>
+                  <span *ngIf="radioSelected === 'EXE'">
+                    Executable Type
+                  </span>
+                  <span *ngIf="radioSelected === 'ARTIFACT' ">
+                    Artifact Type
+                  </span>
+                  <span *ngIf="radioSelected === 'SERVER'">
+                    Server
+                  </span>
+                  <span *ngIf="radioSelected === 'PLATFORM'">
+                    Platform
+                  </span>
+                  <span *ngIf="radioSelected === 'SLA'">
+                    SLA
+                  </span>
+                </strong>
+              </div>
+              <div>
+                <mat-form-field *ngIf="radioSelected !== 'ARTIFACT'">
+                  <input matInput name="app" [disabled]="isEditMode"
+                    [value]="authValueObj?.V_APP_CD ? authValueObj?.V_APP_CD : ''"
+                    (change)="onAppSelect($event.target.value)" [matAutocomplete]="auto" cdkFocusInitial>
+                  <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option style="text-align:center;" (click)="onAppSelect(app)"
+                      *ngFor="let app of applicationValues" [value]="app">
+                      {{app}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <mat-form-field *ngIf="radioSelected === 'ARTIFACT'">
+                  <input matInput name="app" [disabled]="isEditMode"
+                    [value]="authValueObj?.V_PRCS_CD ? authValueObj?.V_PRCS_CD : ''"
+                    (change)="onProcessSelect($event.target.value)" [matAutocomplete]="auto">
+                  <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option style="text-align:center;" (click)="onProcessSelect(process)"
+                      *ngFor="let process of processValues" [value]="process">
+                      {{process}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </div>
+            </div>
+            <div fxFlex="100"
+              *ngIf="radioSelected === 'PROCESS' ||radioSelected === 'SERVICE' || radioSelected === 'EXE' || radioSelected === 'ARTIFACT'"
+              fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="start stretch">
+              <div>
+                <strong>
+                  <span *ngIf="radioSelected === 'EXE'">
+                    Executable Name
+                  </span>
+                  <span *ngIf="radioSelected === 'PROCESS' ||radioSelected === 'SERVICE'">
+                    Process
+                  </span>
+                  <span *ngIf="radioSelected === 'ARTIFACT' ">
+                    Artifact
+                  </span>
+                </strong>
+              </div>
+              <div>
+                <mat-form-field *ngIf="radioSelected !== 'ARTIFACT'">
+                  <input matInput name="app" [disabled]="isEditMode"
+                    [value]="authValueObj?.V_PRCS_CD ? authValueObj?.V_PRCS_CD : ''"
+                    (change)="onProcessSelect($event.target.value)" [matAutocomplete]="auto">
+                  <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option style="text-align:center;" (click)="onProcessSelect(process)"
+                      *ngFor="let process of processValues" [value]="process">
+                      {{process}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <mat-form-field *ngIf="radioSelected === 'ARTIFACT'">
+                  <input matInput name="app" [disabled]="isEditMode"
+                    [value]="authValueObj?.V_APP_CD ? authValueObj?.V_APP_CD : ''"
+                    (change)="onAppSelect($event.target.value)" [matAutocomplete]="auto" cdkFocusInitial>
+                  <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option style="text-align:center;" (click)="onAppSelect(app)"
+                      *ngFor="let app of applicationValues" [value]="app">
+                      {{app}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </div>
+            </div>
+            <div fxFlex="100" *ngIf="radioSelected === 'SERVICE'" fxLayout="column" fxLayoutGap="8px"
+              fxLayoutAlign="start stretch">
+              <div><strong>Service</strong></div>
+              <div>
+                <mat-form-field>
+                  <input matInput name="app" [disabled]="isEditMode"
+                    [value]="authValueObj.V_AUTH_CD ? authValueObj.V_AUTH_CD : ''"
+                    (change)="onServiceSelect($event.target.value)" [matAutocomplete]="auto">
+                  <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option style="text-align:center;" (click)="onServiceSelect(service)"
+                      *ngFor="let service of serviceValues" [value]="service">
+                      {{service}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </div>
+            </div>
+            <div fxFlex="100" fxLayout="row" fxLayoutGap="24px" fxLayoutAlign="start center">
+              <div fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="center center">
+                <div><strong>Create</strong></div>
+                <mat-checkbox class="example-margin" (change)="onPermissionChange(authValueObj,'V_CREATE')"
+                  [checked]="authValueObj.V_CREATE === 'Y'"></mat-checkbox>
+              </div>
+              <div fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="center center">
+                <div><strong>Update</strong></div>
+                <mat-checkbox class="example-margin" (change)="onPermissionChange(authValueObj,'V_UPDATE')"
+                  [checked]="authValueObj.V_UPDATE === 'Y'"></mat-checkbox>
+              </div>
+              <div fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="center center">
+                <div><strong>Read</strong></div>
+                <mat-checkbox class="example-margin" (change)="onPermissionChange(authValueObj,'V_READ')"
+                  [checked]="authValueObj.V_READ === 'Y'"></mat-checkbox>
+              </div>
+              <div fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="center center">
+                <div><strong>Delete</strong></div>
+                <mat-checkbox class="example-margin" (change)="onPermissionChange(authValueObj,'V_DELETE')"
+                  [checked]="authValueObj.V_DELETE === 'Y'"></mat-checkbox>
+              </div>
+              <div fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="center center">
+                <div><strong>Execute</strong></div>
+                <mat-checkbox class="example-margin" (change)="onPermissionChange(authValueObj,'V_EXECUTE')"
+                  [checked]="authValueObj.V_EXECUTE === 'Y'"></mat-checkbox>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+    <!-- <mat-radio-group [(ngModel)]="selectedView" fxLayout="row" fxLayoutAlign="space-around center">
       <mat-radio-button value="selectAuth">Select Auth</mat-radio-button>
       <mat-radio-button value="addNewAuth">Add New Auth</mat-radio-button>
-    </mat-radio-group>
+    </mat-radio-group> -->
   </div>
   <div class="dialog-body content-wrapper app-form-wrapper">
-    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="center start">
+    <!-- <div *ngIf="radioSelected == ''" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="center start">
       <div fxFlex="100">
         <mat-radio-group #matRadioBtn="matRadioGroup" (change)="onItemSelect($event)" [(ngModel)]="radioSelected"
-                         fxLayout="row" fxLayoutAlign="space-between center">
+          fxLayout="row" fxLayoutAlign="space-between center">
           <mat-radio-button [disabled]="isEditMode" *ngFor="let item of radioList" [value]="item">
             {{item}}
           </mat-radio-button>
         </mat-radio-group>
       </div>
-    </div>
+    </div> -->
     <div fxLayout="column" fxLayoutGap="8px">
-      <app-auth-list *ngIf="selectedView == 'selectAuth'" [auths]="filteredAuthValues" (authSelectEvent)="onAuthSelect($event)"></app-auth-list>
-      <div *ngIf="selectedView == 'addNewAuth'" fxLayout="row" fxLayoutAlign="center start">
+      <!-- <app-auth-list *ngIf="selectedView == 'selectAuth'" [auths]="filteredAuthValues" (authSelectEvent)="onAuthSelect($event)"></app-auth-list> -->
+      <!-- <div *ngIf="selectedView == 'addNewAuth'" fxLayout="row" fxLayoutAlign="center start">
         <div fxFlex="100" fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="start stretch">
           <div fxFlex="100" fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="start stretch">
             <div>
@@ -50,37 +209,32 @@
             </div>
             <div>
               <mat-form-field *ngIf="matRadioBtn.value !== 'ARTIFACT'">
-                <input matInput name="app" [disabled]="isEditMode" [value]="authValueObj?.V_APP_CD ? authValueObj?.V_APP_CD : ''" (change)="onAppSelect($event.target.value)" [matAutocomplete]="auto" cdkFocusInitial>
+                <input matInput name="app" [disabled]="isEditMode"
+                  [value]="authValueObj?.V_APP_CD ? authValueObj?.V_APP_CD : ''"
+                  (change)="onAppSelect($event.target.value)" [matAutocomplete]="auto" cdkFocusInitial>
                 <mat-autocomplete #auto="matAutocomplete">
-                  <mat-option style="text-align:center;" (click)="onAppSelect(app)" *ngFor="let app of applicationValues"
-                              [value]="app">
+                  <mat-option style="text-align:center;" (click)="onAppSelect(app)"
+                    *ngFor="let app of applicationValues" [value]="app">
                     {{app}}
                   </mat-option>
                 </mat-autocomplete>
               </mat-form-field>
               <mat-form-field *ngIf="matRadioBtn.value === 'ARTIFACT'">
-                <input matInput name="app" [disabled]="isEditMode" [value]="authValueObj?.V_PRCS_CD ? authValueObj?.V_PRCS_CD : ''" (change)="onProcessSelect($event.target.value)" [matAutocomplete]="auto">
+                <input matInput name="app" [disabled]="isEditMode"
+                  [value]="authValueObj?.V_PRCS_CD ? authValueObj?.V_PRCS_CD : ''"
+                  (change)="onProcessSelect($event.target.value)" [matAutocomplete]="auto">
                 <mat-autocomplete #auto="matAutocomplete">
                   <mat-option style="text-align:center;" (click)="onProcessSelect(process)"
-                              *ngFor="let process of processValues" [value]="process">
+                    *ngFor="let process of processValues" [value]="process">
                     {{process}}
                   </mat-option>
                 </mat-autocomplete>
               </mat-form-field>
-              <!--<mat-form-field>
-                <mat-select (selectionChange)="onAppSelect($event)" *ngIf="applicationValues.length">
-                  <mat-option *ngFor="let app of applicationValues" [value]="app">
-                    {{app}}
-                  </mat-option>
-                </mat-select>
-                <input matInput type="text" name="app" (change)="onAppSelect($event.target.value)"
-                       *ngIf="!applicationValues.length"/>
-              </mat-form-field>-->
             </div>
           </div>
           <div fxFlex="100"
-               *ngIf="matRadioBtn.value === 'PROCESS' ||matRadioBtn.value === 'SERVICE' || matRadioBtn.value === 'EXE' || matRadioBtn.value === 'ARTIFACT'"
-               fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="start stretch">
+            *ngIf="matRadioBtn.value === 'PROCESS' ||matRadioBtn.value === 'SERVICE' || matRadioBtn.value === 'EXE' || matRadioBtn.value === 'ARTIFACT'"
+            fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="start stretch">
             <div>
               <strong>
                 <span *ngIf="matRadioBtn.value === 'EXE'">
@@ -96,88 +250,75 @@
             </div>
             <div>
               <mat-form-field *ngIf="matRadioBtn.value !== 'ARTIFACT'">
-                <input matInput name="app" [disabled]="isEditMode" [value]="authValueObj?.V_PRCS_CD ? authValueObj?.V_PRCS_CD : ''" (change)="onProcessSelect($event.target.value)" [matAutocomplete]="auto">
+                <input matInput name="app" [disabled]="isEditMode"
+                  [value]="authValueObj?.V_PRCS_CD ? authValueObj?.V_PRCS_CD : ''"
+                  (change)="onProcessSelect($event.target.value)" [matAutocomplete]="auto">
                 <mat-autocomplete #auto="matAutocomplete">
                   <mat-option style="text-align:center;" (click)="onProcessSelect(process)"
-                              *ngFor="let process of processValues" [value]="process">
+                    *ngFor="let process of processValues" [value]="process">
                     {{process}}
                   </mat-option>
                 </mat-autocomplete>
               </mat-form-field>
               <mat-form-field *ngIf="matRadioBtn.value === 'ARTIFACT'">
-                <input matInput name="app" [disabled]="isEditMode" [value]="authValueObj?.V_APP_CD ? authValueObj?.V_APP_CD : ''" (change)="onAppSelect($event.target.value)" [matAutocomplete]="auto" cdkFocusInitial>
+                <input matInput name="app" [disabled]="isEditMode"
+                  [value]="authValueObj?.V_APP_CD ? authValueObj?.V_APP_CD : ''"
+                  (change)="onAppSelect($event.target.value)" [matAutocomplete]="auto" cdkFocusInitial>
                 <mat-autocomplete #auto="matAutocomplete">
-                  <mat-option style="text-align:center;" (click)="onAppSelect(app)" *ngFor="let app of applicationValues"
-                              [value]="app">
+                  <mat-option style="text-align:center;" (click)="onAppSelect(app)"
+                    *ngFor="let app of applicationValues" [value]="app">
                     {{app}}
                   </mat-option>
                 </mat-autocomplete>
               </mat-form-field>
-              <!--<mat-form-field>
-                <mat-select (selectionChange)="onProcessSelect($event)" *ngIf="processValues.length">
-                  <mat-option *ngFor="let process of processValues" [value]="process">
-                    {{process}}
-                  </mat-option>
-                </mat-select>
-                <input matInput type="text" name="process" (change)="onProcessSelect($event.target.value)"
-                       *ngIf="!processValues.length"/>
-              </mat-form-field>-->
             </div>
           </div>
-          <div fxFlex="100"
-               *ngIf="matRadioBtn.value === 'SERVICE'"
-               fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="start stretch">
+          <div fxFlex="100" *ngIf="matRadioBtn.value === 'SERVICE'" fxLayout="column" fxLayoutGap="8px"
+            fxLayoutAlign="start stretch">
             <div><strong>Service</strong></div>
             <div>
               <mat-form-field>
-                <input matInput name="app" [disabled]="isEditMode" [value]="authValueObj.V_AUTH_CD ? authValueObj.V_AUTH_CD : ''" (change)="onServiceSelect($event.target.value)" [matAutocomplete]="auto">
+                <input matInput name="app" [disabled]="isEditMode"
+                  [value]="authValueObj.V_AUTH_CD ? authValueObj.V_AUTH_CD : ''"
+                  (change)="onServiceSelect($event.target.value)" [matAutocomplete]="auto">
                 <mat-autocomplete #auto="matAutocomplete">
                   <mat-option style="text-align:center;" (click)="onServiceSelect(service)"
-                              *ngFor="let service of serviceValues" [value]="service">
+                    *ngFor="let service of serviceValues" [value]="service">
                     {{service}}
                   </mat-option>
                 </mat-autocomplete>
               </mat-form-field>
-              <!--<mat-form-field>
-                <mat-select (selectionChange)="onServiceSelect($event)" *ngIf="serviceValues.length">
-                  <mat-option *ngFor="let service of serviceValues" [value]="service">
-                    {{service}}
-                  </mat-option>
-                </mat-select>
-                <input matInput type="text" name="service" (change)="onServiceSelect($event.target.value)"
-                       *ngIf="!serviceValues.length"/>
-              </mat-form-field>-->
             </div>
           </div>
           <div fxFlex="100" fxLayout="row" fxLayoutGap="24px" fxLayoutAlign="start center">
             <div fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="center center">
               <div><strong>Create</strong></div>
               <mat-checkbox class="example-margin" (change)="onPermissionChange(authValueObj,'V_CREATE')"
-                            [checked]="authValueObj.V_CREATE === 'Y'"></mat-checkbox>
+                [checked]="authValueObj.V_CREATE === 'Y'"></mat-checkbox>
             </div>
             <div fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="center center">
               <div><strong>Update</strong></div>
               <mat-checkbox class="example-margin" (change)="onPermissionChange(authValueObj,'V_UPDATE')"
-                            [checked]="authValueObj.V_UPDATE === 'Y'"></mat-checkbox>
+                [checked]="authValueObj.V_UPDATE === 'Y'"></mat-checkbox>
             </div>
             <div fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="center center">
               <div><strong>Read</strong></div>
               <mat-checkbox class="example-margin" (change)="onPermissionChange(authValueObj,'V_READ')"
-                            [checked]="authValueObj.V_READ === 'Y'"></mat-checkbox>
+                [checked]="authValueObj.V_READ === 'Y'"></mat-checkbox>
             </div>
             <div fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="center center">
               <div><strong>Delete</strong></div>
               <mat-checkbox class="example-margin" (change)="onPermissionChange(authValueObj,'V_DELETE')"
-                            [checked]="authValueObj.V_DELETE === 'Y'"></mat-checkbox>
+                [checked]="authValueObj.V_DELETE === 'Y'"></mat-checkbox>
             </div>
             <div fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="center center">
               <div><strong>Execute</strong></div>
               <mat-checkbox class="example-margin" (change)="onPermissionChange(authValueObj,'V_EXECUTE')"
-                            [checked]="authValueObj.V_EXECUTE === 'Y'"></mat-checkbox>
+                [checked]="authValueObj.V_EXECUTE === 'Y'"></mat-checkbox>
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
   <div class="dialog-footer content-wrapper" fxLayoutAlign="end center" fxLayoutGap="8px">
@@ -185,4 +326,3 @@
     <button mat-flat-button color="primary" *ngIf="isEditMode" (click)="onUpdateBtnSubmit()">Update</button>
   </div>
 </div>
-

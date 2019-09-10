@@ -1,11 +1,11 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {SelectionModel} from '@angular/cdk/collections';
-import {Subject} from 'rxjs';
-import {OverviewService} from '../overview.service';
-import {takeUntil} from 'rxjs/operators';
-import {CdkDragDrop, copyArrayItem, moveItemInArray} from '@angular/cdk/drag-drop';
-import {AuthorizationData} from '../../../../store/user-admin/user-authorization/authorization.model';
-import {environment} from '../../../../../environments/environment';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { SelectionModel } from '@angular/cdk/collections';
+import { Subject } from 'rxjs';
+import { OverviewService } from '../overview.service';
+import { takeUntil } from 'rxjs/operators';
+import { CdkDragDrop, copyArrayItem, moveItemInArray } from '@angular/cdk/drag-drop';
+import { AuthorizationData } from '../../../../store/user-admin/user-authorization/authorization.model';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-auth-tile-list',
@@ -21,7 +21,7 @@ export class AuthTileListComponent implements OnInit {
   @Input() controlVariables: any;
   environment = environment;
   @Output() addAuthEvent: EventEmitter<AuthorizationData> = new EventEmitter<AuthorizationData>();
-  @Output() deleteAuthEvent: EventEmitter<AuthorizationData> = new EventEmitter<AuthorizationData>();
+  @Output() deleteAuthEvent: EventEmitter<any> = new EventEmitter<any>();
 
   @ViewChild('contextMenu', { static: false } as any) set contextMenu(value: ElementRef) {
     if (value) {
@@ -87,9 +87,9 @@ export class AuthTileListComponent implements OnInit {
     this.contextMenuData = null;
   }
 
-  onContextMenuDeleteAuthBtnClick(): void {
+  onContextMenuRemoveAuthBtnClick(deleteFromAllRoles): void {
     this.contextMenuActive = false;
-    this.deleteAuthEvent.emit(this.contextMenuData);
+    this.deleteAuthEvent.emit({ 'authData': this.contextMenuData, 'deleteFromAllRoles': deleteFromAllRoles });
     this.contextMenuData = null;
   }
 

@@ -1,39 +1,39 @@
-import {Injectable, OnDestroy} from '@angular/core';
-import {User} from '../../../store/user-admin/user/user.model';
-import {userGroup} from '../../../store/user-admin/user-group/usergroup.model';
-import {userRole} from '../../../store/user-admin/user-role/userrole.model';
-import {AuthorizationData} from '../../../store/user-admin/user-authorization/authorization.model';
-import {select, Store} from '@ngrx/store';
+import { Injectable, OnDestroy } from '@angular/core';
+import { User } from '../../../store/user-admin/user/user.model';
+import { userGroup } from '../../../store/user-admin/user-group/usergroup.model';
+import { userRole } from '../../../store/user-admin/user-role/userrole.model';
+import { AuthorizationData } from '../../../store/user-admin/user-authorization/authorization.model';
+import { select, Store } from '@ngrx/store';
 import * as userSelectors from '../../../store/user-admin/user/user.selectors';
 import * as userGroupSelectors from '../../../store/user-admin/user-group/usergroup.selectors';
 import * as userRoleSelectors from '../../../store/user-admin/user-role/userrole.selectors';
 import * as authSelectors from '../../../store/user-admin/user-authorization/authorization.selectors';
-import {BehaviorSubject, combineLatest, Observable, Subject, Subscription} from 'rxjs';
-import {AppState} from '../../../app.state';
-import {SelectionModel} from '@angular/cdk/collections';
+import { BehaviorSubject, combineLatest, Observable, Subject, Subscription } from 'rxjs';
+import { AppState } from '../../../app.state';
+import { SelectionModel } from '@angular/cdk/collections';
 import * as usreActions from '../../../store/user-admin/user/user.action';
 import * as userGroupActions from '../../../store/user-admin/user-group/usergroup.action';
 import * as userRoleActions from '../../../store/user-admin/user-role/userrole.action';
 import * as authActions from '../../../store/user-admin/user-authorization/authorization.actions';
-import {take, takeUntil} from 'rxjs/operators';
-import {AddUserComponent} from '../user-admin-user/add-user/add-user.component';
+import { take, takeUntil } from 'rxjs/operators';
+import { AddUserComponent } from '../user-admin-user/add-user/add-user.component';
 import { MatDialog } from '@angular/material/dialog';
-import {EditUserComponent} from '../user-admin-user/edit-user/edit-user.component';
-import {ConfirmationAlertComponent} from '../../../shared/components/confirmation-alert/confirmation-alert.component';
-import {UseradminService} from '../../../services/useradmin.service2';
+import { EditUserComponent } from '../user-admin-user/edit-user/edit-user.component';
+import { ConfirmationAlertComponent } from '../../../shared/components/confirmation-alert/confirmation-alert.component';
+import { UseradminService } from '../../../services/useradmin.service2';
 import * as fromUserMembership from '../../../store/user-admin/user-membership/usermembership.action';
-import {AddGroupComponent} from '../user-admin-group/add-group/add-group.component';
-import {EditGroupComponent} from '../user-admin-group/edit-group/edit-group.component';
-import {DeleteUserGroup} from '../../../store/user-admin/user-group/usergroup.action';
-import {AddRoleComponent} from '../role/add-role/add-role.component';
-import {EditRoleComponent} from '../role/edit-role/edit-role.component';
-import {AddEditAuthorizeComponent} from '../authorize/add-edit-authorize/add-edit-authorize.component';
-import {RollserviceService} from '../../../services/rollservice.service';
-import {authorizationTypeOptions, groupTypeOptions} from '../useradmin.constants';
-import {Actions, ofType} from '@ngrx/effects';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {AssignRoleModalComponent} from '../assignrole/assign-role-modal/assign-role-modal.component';
-import {AssignGroupModalComponent} from '../assignrole/assign-group-modal/assign-group-modal.component';
+import { AddGroupComponent } from '../user-admin-group/add-group/add-group.component';
+import { EditGroupComponent } from '../user-admin-group/edit-group/edit-group.component';
+import { DeleteUserGroup } from '../../../store/user-admin/user-group/usergroup.action';
+import { AddRoleComponent } from '../role/add-role/add-role.component';
+import { EditRoleComponent } from '../role/edit-role/edit-role.component';
+import { AddEditAuthorizeComponent } from '../authorize/add-edit-authorize/add-edit-authorize.component';
+import { RollserviceService } from '../../../services/rollservice.service';
+import { authorizationTypeOptions, groupTypeOptions } from '../useradmin.constants';
+import { Actions, ofType } from '@ngrx/effects';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AssignRoleModalComponent } from '../assignrole/assign-role-modal/assign-role-modal.component';
+import { AssignGroupModalComponent } from '../assignrole/assign-group-modal/assign-group-modal.component';
 
 @Injectable()
 export class OverviewService implements OnDestroy {
@@ -78,10 +78,10 @@ export class OverviewService implements OnDestroy {
 
   V_SRC_CD_DATA: any;
   constructor(private store: Store<AppState>,
-              private userAdminService: UseradminService,
-              private roleService: RollserviceService,
-              private actions: Actions,
-              private dialog: MatDialog) {
+    private userAdminService: UseradminService,
+    private roleService: RollserviceService,
+    private actions: Actions,
+    private dialog: MatDialog) {
     this.V_SRC_CD_DATA = {
       V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
     };
@@ -315,7 +315,7 @@ export class OverviewService implements OnDestroy {
       {
         panelClass: 'app-dialog',
         width: '600px',
-        data: {groupId: groupId, allUsers: this.allUsers}
+        data: { groupId: groupId, allUsers: this.allUsers }
       });
     dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
       if (flag) {
@@ -382,7 +382,7 @@ export class OverviewService implements OnDestroy {
       {
         width: '600px',
         panelClass: 'app-dialog',
-        data: {allGroups: this.allGroups, controlVariables: this.userAdminService.controlVariables}
+        data: { allGroups: this.allGroups, controlVariables: this.userAdminService.controlVariables }
       });
   }
 
@@ -391,7 +391,7 @@ export class OverviewService implements OnDestroy {
       {
         panelClass: 'app-dialog',
         width: '600px',
-        data: {group: group, controlVariables: this.userAdminService.controlVariables}
+        data: { group: group, controlVariables: this.userAdminService.controlVariables }
       });
   }
 
@@ -427,7 +427,7 @@ export class OverviewService implements OnDestroy {
       {
         width: '600px',
         panelClass: 'app-dialog',
-        data: {allRoles: this.allRoles}
+        data: { allRoles: this.allRoles }
       });
     dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
       if (flag) {
@@ -441,7 +441,7 @@ export class OverviewService implements OnDestroy {
       {
         panelClass: 'app-dialog',
         width: '600px',
-        data: {role: role}
+        data: { role: role }
       });
     dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
       if (flag) {
@@ -479,7 +479,7 @@ export class OverviewService implements OnDestroy {
       {
         width: '700px',
         panelClass: 'app-dialog',
-        data: {roleId: roleId, authType: this.selectedAuthType.key}
+        data: { roleId: roleId, authType: this.selectedAuthType.key }
       });
     dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
       if (flag) {
@@ -493,7 +493,7 @@ export class OverviewService implements OnDestroy {
       {
         width: '700px',
         panelClass: 'app-dialog',
-        data: {auth: auth}
+        data: { auth: auth }
       });
     dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
       if (flag) {
@@ -522,30 +522,60 @@ export class OverviewService implements OnDestroy {
     });
   }
 
-  deleteAuthFromRole(role: userRole, auth: AuthorizationData): void {
+  deleteAuthFromRole(role: userRole, auth: AuthorizationData, deleteFromAllRoles): void {
+    let title = '';
+    let message = '';
+    let SELECTED_ENTITY_ID = [];
+    let authCode = auth.V_AUTH_CD.split(';');
+    if (deleteFromAllRoles === true) {
+      title = 'Remove Authorization';
+      message = `Are you sure, you want to remove auth <strong>${authCode[0]}</strong> from all roles?`;
+    } else if (deleteFromAllRoles === false) {
+      title = 'Remove Authorization';
+      message = `Are you sure, you want to remove auth <strong>${authCode[0]}</strong> from the role <strong>${role.V_ROLE_CD}</strong>?`;
+      SELECTED_ENTITY_ID = [role.id];
+    } else {
+      title = 'Delete Authorization';
+      message = `Are you sure, you want to delete auth <strong>${authCode[0]}</strong>?`;
+    }
     const dialogRef = this.dialog.open(ConfirmationAlertComponent,
       {
         panelClass: 'app-dialog',
         width: '600px',
       });
-    dialogRef.componentInstance.title = `Delete Authorization from Role`;
-    dialogRef.componentInstance.message = `Are you sure, you want to delete auth <strong>${auth.V_AUTH_CD}</strong> from role <strong>${role.V_ROLE_CD}</strong>?`;
+    dialogRef.componentInstance.title = title;
+    dialogRef.componentInstance.message = message;
     dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
       if (flag) {
-        let json = {
-          'V_DELETED_ID_ARRAY': auth.id,
-          'V_ADDED_ID_ARRAY': '',
-          'SELECTED_ENTITY': ['ROLE'],
-          'SELECTED_ENTITY_ID': [role.id],
-          'V_EFF_STRT_DT_TM': [new Date(Date.now())],
-          'V_EFF_END_DT_TM': [new Date(Date.now() + this.userAdminService.controlVariables.effectiveEndDate)],
-          'REST_Service': ['Role_Auth'],
-          'Verb': ['POST']
-        };
-        this.roleService.assignAuthToRole(json).subscribe(res => {
-          this.store.dispatch(new userRoleActions.getUserRole(this.V_SRC_CD_DATA));
-        }, err => {
-        });
+        if (deleteFromAllRoles === true) {
+          let deleteUrl = 'V_AUTH_CD=' + auth.V_AUTH_CD + '&V_AUTH_TYP=' + auth.V_AUTH_TYP + '&V_SRC_CD=' + JSON.parse(sessionStorage.getItem('u')).SRC_CD + '&V_USR_NM=' + JSON.parse(sessionStorage.getItem('u')).USR_NM + '&REST_Service=Auth&Verb=DELETE';
+          this.roleService.deleteAuth(deleteUrl).subscribe(res => {
+            this.store.dispatch(new userRoleActions.getUserRole(this.V_SRC_CD_DATA));
+          }, err => {
+          });
+        } else if (deleteFromAllRoles === false) {
+          let json = {
+            'V_DELETED_ID_ARRAY': auth.id,
+            'V_ADDED_ID_ARRAY': '',
+            'SELECTED_ENTITY': ['ROLE'],
+            'SELECTED_ENTITY_ID': SELECTED_ENTITY_ID,
+            'V_EFF_STRT_DT_TM': [new Date(Date.now())],
+            'V_USR_NM': JSON.parse(sessionStorage.getItem('u')).USR_NM,
+            'V_EFF_END_DT_TM': [new Date(Date.now() + this.userAdminService.controlVariables.effectiveEndDate)],
+            'REST_Service': ['Role_Auth'],
+            'Verb': ['POST']
+          };
+          this.roleService.assignAuthToRole(json).subscribe(res => {
+            this.store.dispatch(new userRoleActions.getUserRole(this.V_SRC_CD_DATA));
+          }, err => {
+          });
+        } else {
+          let deleteUrl = 'V_AUTH_CD=' + auth.V_AUTH_CD + '&V_AUTH_TYP=' + auth.V_AUTH_TYP + '&V_SRC_CD=' + JSON.parse(sessionStorage.getItem('u')).SRC_CD + '&V_USR_NM=' + JSON.parse(sessionStorage.getItem('u')).USR_NM + '&REST_Service=Auth&Verb=DELETE';
+          this.roleService.deleteAuth(deleteUrl).subscribe(res => {
+            this.store.dispatch(new userRoleActions.getUserRole(this.V_SRC_CD_DATA));
+          }, err => {
+          });
+        }
       }
     });
   }
@@ -577,7 +607,7 @@ export class OverviewService implements OnDestroy {
       {
         width: '600px',
         panelClass: 'app-dialog',
-        data: {group: group, roles: this.allRoles, controlVariables: this.userAdminService.controlVariables}
+        data: { group: group, roles: this.allRoles, controlVariables: this.userAdminService.controlVariables }
       });
     dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
       if (flag) {
@@ -592,7 +622,7 @@ export class OverviewService implements OnDestroy {
       {
         width: '600px',
         panelClass: 'app-dialog',
-        data: {role: role, groups: this.allGroups, controlVariables: this.userAdminService.controlVariables}
+        data: { role: role, groups: this.allGroups, controlVariables: this.userAdminService.controlVariables }
       });
     dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
       if (flag) {
