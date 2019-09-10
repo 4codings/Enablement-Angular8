@@ -80,11 +80,12 @@ export class MachineTileListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
+      this.systemOverview.getAllMachineConnections();
     });
   }
 
   connectionDropped(event: CdkDragDrop<any[]>) {
-    console.log(event.item.data);
+    // console.log(event.item.data);
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -92,7 +93,38 @@ export class MachineTileListComponent implements OnInit {
         event.container.data,
         event.previousIndex,
         event.currentIndex);
-      //this.addAuthEvent.emit(event.item.data);
+        let eventData = event.container.data[event.currentIndex]; 
+        
+        // let V_PARAM_N = '';
+        // let V_PARAM_V = '';
+        // Object.keys(eventData).forEach((key, index) => {
+        //   if(key == "V_CXN_CD" || key == "V_CXN_DSC" || key == "V_CXN_TYP" || key == "PLF_CD" || key == "PLF_DSC") {
+
+        //   } else {
+        //     V_PARAM_N += key + "|";
+        //     V_PARAM_V += eventData[key] + "|"
+        //   }
+        // })
+        
+        var data = {
+          "V_CXN_CD":eventData.V_CXN_CD,
+          "V_CXN_TYP":eventData.V_CXN_TYP,
+          "V_SRC_CD":this.V_SRC_CD,
+          "V_USR_NM":this.V_USR_NM,
+          "V_PARAM_N":eventData.V_PARAM_NM,
+          "V_PARAM_V":eventData.V_PARAM_VAL,
+          "V_PLATFORM_CD": this.connectionList.PLATFORM_TYP.PLATFORM_CD,
+          "V_PLATFORM_DSC": this.connectionList.PLATFORM_TYP.PLATFORM_DSC,
+          "REST_Service":["CXN"],
+          "Verb":["PUT"]
+        }
+      
+        this.systemOverview.addCxn(data).subscribe(res => {
+          console.log("res",res);
+          this.systemOverview.getAllMachineConnections();
+        }, err => {
+           
+        })
     }
   }
 
@@ -112,7 +144,7 @@ export class MachineTileListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       if(result) {
-        this.systemOverview.getMachine();
+        this.systemOverview.getAllMachineConnections();
         this.systemOverview.getAllExes();
       }
     });
@@ -167,7 +199,7 @@ export class MachineTileListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       if(result) {
-        this.systemOverview.getMachine();
+        this.systemOverview.getAllMachineConnections();
       }
     });
   }
@@ -201,7 +233,7 @@ export class MachineTileListComponent implements OnInit {
 
         this.http.delete(this.apiUrlGet+'V_CXN_TYP='+ cnx.cnxData.V_CXN_TYP + '&V_CXN_CD='+ cnx.cnxData.V_CXN_CD + '&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=CXN&Verb=DELETE').subscribe(res => {
           console.log("res",res);
-          this.systemOverview.getMachine();
+          this.systemOverview.getAllMachineConnections();
         }, err => {
           console.log("err", err)
         }); 

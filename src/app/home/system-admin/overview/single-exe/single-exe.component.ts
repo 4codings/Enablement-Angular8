@@ -73,7 +73,7 @@ export class SingleExeComponent implements OnInit {
         this.http.delete(this.apiUrlGet+"V_SERVER_CD="+p.SERVER_CD+"&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Platform_Master&Verb=DELETE").subscribe(
           res=>{
             (res);
-            
+            this.systemOverview.getExe();
           });
       }
       console.log('The dialog was closed');

@@ -85,21 +85,42 @@ export class ExeTileListComponent implements OnInit {
   }
 
   exeDropped(event: CdkDragDrop<any[]>) {
-    console.log("event.previousContainer", event.previousContainer);
-    console.log("event.container", event.container);
     if (event.previousContainer === event.container) {
-      console.log("event",event);
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
       copyArrayItem(event.previousContainer.data,
         event.container.data,
         event.previousIndex,
         event.currentIndex);
-        console.log("event.previousContainer.data",event.previousContainer.data);
-        console.log("event.container.data", event.container.data);
-        console.log("event.previousIndex", event.previousIndex);
-        console.log("event.currentIndex", event.currentIndex);
-      //this.addAuthEvent.emit(event.item.data);
+        // console.log("event.previousContainer.data",event.previousContainer.data);
+        // console.log("event.container.data", event.container.data[event.currentIndex]);
+        let eventData = event.container.data[event.currentIndex]; 
+        let data = {
+          "V_EXE_CD": eventData.V_EXE_CD,
+          "V_SRC_CD": this.V_SRC_CD,
+          "V_EXE_SIGN": eventData.V_EXE_SIGN,
+          "V_PARAM_DLMTR_STRT": eventData.V_PARAM_DLMTR_STRT,
+          "V_PARAM_DLMTR_END":eventData.V_PARAM_DLMTR_END,
+          "V_EXE_VRSN": eventData.V_EXE_VRSN,
+          "V_EXE_TYP": eventData.V_EXE_TYP,
+          "V_SYNC_FLG": eventData.V_SYNC_FLG,
+          "V_EXE_DSC": eventData.V_EXE_DSC,
+          "V_EXE_OUT_PARAMS": eventData.V_EXE_OUT_PARAMS,
+          "V_USR_NM": this.V_USR_NM,
+          "V_EXE_IN_ARTFCTS": eventData.V_EXE_IN_ARTFCTS,
+          "V_EXE_OUT_ARTFCTS":eventData.V_EXE_OUT_ARTFCTS,
+          "V_SERVER_CD":this.exes.SERVER_TYP.SERVER_CD,
+          "V_COMMNT": '',
+          "V_ICN_TYP":eventData.V_ICN_TYP,
+          "REST_Service":["Exe"],
+          "Verb":["PUT"]
+        }
+        this.systemOverview.addExe(data).subscribe(res => {
+          console.log("res",res);
+          this.systemOverview.getAllExes();
+        }, err => {
+           
+        })
     }
   }
 
@@ -183,7 +204,7 @@ export class ExeTileListComponent implements OnInit {
       console.log('The dialog was closed');
       if(result) {
         this.systemOverview.getAllExes();
-        this.systemOverview.getMachine();
+        this.systemOverview.getAllMachineConnections();
       }
     });
   }

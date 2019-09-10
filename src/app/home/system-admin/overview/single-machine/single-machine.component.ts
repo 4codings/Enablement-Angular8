@@ -43,6 +43,7 @@ export class SingleMachineComponent implements OnInit {
       if(result) {
         this.http.delete(this.apiUrlGet+"V_PLATFORM_CD="+machine.PLATFORM_CD+"&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Machine&Verb=DELETE").subscribe(
           res=>{
+            this.systemOverview.getExe();
             console.log('The dialog was closed');
           });
       }

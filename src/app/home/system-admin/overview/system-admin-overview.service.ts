@@ -201,4 +201,12 @@ export class SystemAdminOverviewService {
       });
     });
   }
+
+  addExe(body) {
+    return this.http.put(this.apiUrlGet, body)
+  }
+
+  addCxn(body) {
+    return this.http.put(this.apiUrlGet, body)
+  }
 }

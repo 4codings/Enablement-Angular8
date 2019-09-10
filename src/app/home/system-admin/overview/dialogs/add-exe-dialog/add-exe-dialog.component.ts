@@ -63,7 +63,7 @@ export class AddExeDialogComponent implements OnInit {
     "V_EXE_CD": this.F_EXE_CD,
     "V_SRC_CD": this.V_SRC_CD,
     "V_EXE_SIGN": this.F_EXE_SIGN,
-    "V_PARAM_DLMTR": this.F_EXE_S_DLMTR,
+    "V_PARAM_DLMTR_STRT": this.F_EXE_S_DLMTR,
     "V_PARAM_DLMTR_END":this.F_EXE_E_DLMTR,
     "V_EXE_VRSN": this.F_EXE_VRSN,
     "V_EXE_TYP": this.data.EXE_TYP,
