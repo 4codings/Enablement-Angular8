@@ -400,7 +400,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     const eventBus = this.modeler.get('eventBus');
     if (eventBus) {
       eventBus.on('element.click', ($event) => {
-        console.log('element.click', $event)
         this.onTitleClickNoDelete = false;
         this.processName = '';
         this.documentation = '';
@@ -458,7 +457,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         this.closeSchedulePanel();
       }),
         eventBus.on('element.changed', ($event) => {
-          console.log('element.changed', $event);
           this.iconType = $event.element.type;
           this.showCondtionType = false;
           const businessObject = $event.element.businessObject;
@@ -625,7 +623,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.closeSchedulePanel();
         }),
         eventBus.on(['commandStack.element.updateProperties.execute'], (event) => {
-          console.log('commandStack.element.updateProperties.execute', event)
           // The newly created element, which has a temporary ID
           var element = event.context.element;
 
@@ -685,13 +682,12 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       let element = elementRegistry.get(this.oldStateId);
       let modeling = this.modeler.get('modeling');
       let id = this.generalId;
-      if (this.idAssigned(id, element.businessObject)) {
+      if (!this.idAssigned(id.replace(new RegExp(' ', 'g'), '_'), element.businessObject)) {
         modeling.updateProperties(element, {
           name: name,
           id: id.replace(new RegExp(' ', 'g'), '_'),
         }, error => this.handleError(error));
         this.oldStateId = id.replace(new RegExp(' ', 'g'), '_');
-        console.log('businessObject', element.businessObject);
       } else {
         this.elementExistError = true;
         this.generalId = this.oldStateId.replace(new RegExp('_', 'g'), ' ');
