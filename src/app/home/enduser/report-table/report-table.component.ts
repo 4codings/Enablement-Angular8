@@ -245,55 +245,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
   
 
   //__________________________Set Preferences_________________________________
-  setchartpreferences(pref, index?) {
-    var cp = [];
-    for (let i = 0; i < this.chartposition.length; i++) {
-      cp.push(Object.values(this.chartposition[i]));
-    }
-    cp = [].concat.apply([], cp);
-    console.log(cp);
-    if (pref === 'all') {
-      /*this.userprefs['backgroundcolor'] = this._backgroundColor;
-      this.userprefs['bordercolor'] = this._borderColor;
-      this.userprefs['fill'] = this._fill.toString().toLocaleUpperCase();
-      this.userprefs['pointstyle'] = this._pointstyle;
-      this.userprefs['linetension'] = this._linetension;
-      this.userprefs['animations'] = this._animations;
-      this.userprefs['pointradius'] = this._pointradius;
-      this.userprefs['linestyle'] = this._linestyle;
-      this.userprefs['gridlinedashed'] = this._gridborder.toString().toLocaleUpperCase();
-      this.userprefs['linewidth'] = this._gridlinewidth;
-      this.userprefs['yautoskip'] = this._yaxisAutoskip.toString().toLocaleUpperCase();
-      this.userprefs['linexaxis'] = this._xaxis_sel_line;
-      this.userprefs['lineyaxis'] = this._yaxis_sel_line;
-      this.userprefs['barxaxis'] = this._xaxis_sel_bar;
-      this.userprefs['baryaxis'] = this._yaxis_sel_bar;
-      this.userprefs['piexaxis'] = this._xaxis_sel_pie;
-      this.userprefs['pieyaxis'] = this._yaxis_sel_pie;
-      this.userprefs['doughnutxaxis'] = this._xaxis_sel_doughnut;
-      this.userprefs['doughnutyaxis'] = this._yaxis_sel_doughnut;
-      this.userprefs['selectedchart'] = this.selectedchart;
-      this.userprefs['personalizationtable'] = this.personalizationtable;
-      this.userprefs['chartposition'] = cp;
-      console.log(this.userprefs);*/
-      this.V_PRF_NM = Object.keys(this.userprefs);
-      this.V_PRF_VAL = Object.values(this.userprefs);
-      for (let j = 0; j < this.V_PRF_NM.length; j++) {
-        this.data.setchartstyling(this.UNIQUE_ID, this.SRC_ID, this.V_PRF_NM[j], this.V_PRF_VAL[j]).subscribe(
-          () => {
-
-          });
-      }
-    }
-    else {
-      var val = 
-      this.data.setchartstyling(this.UNIQUE_ID, this.SRC_ID, pref, val).subscribe(
-        () => {
-
-        });
-    }
-
-  }
+  
   settablepreferences() {
     if (this.hiddencols.length > -1) {
       var abc = this.hiddencols.toString();
@@ -303,7 +255,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.V_PRF_NM = Object.keys(this.userprefs);
     this.V_PRF_VAL = Object.values(this.userprefs);
     for (let j = 0; j < this.V_PRF_NM.length; j++) {
-      this.data.setchartstyling(this.UNIQUE_ID, this.SRC_ID, this.V_PRF_NM[j], this.V_PRF_VAL[j]).subscribe(
+      this.data.setchartstyling(this.UNIQUE_ID, this.SRC_ID, '-1', this.V_PRF_NM[j], this.V_PRF_VAL[j]).subscribe(
         () => {
           //(res);
         });

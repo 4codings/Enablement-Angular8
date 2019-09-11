@@ -5,6 +5,7 @@ import { ConfigServiceService } from '../../../../services/config-service.servic
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { isFulfilled } from 'q';
 import { data } from 'src/app/home/useradmin/authorize/authorize.component';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'personalization-table',
@@ -111,12 +112,15 @@ export class PersonalizationTableComponent implements OnInit {
 
   constructor(public report: ReportTableComponent,
     public data: ConfigServiceService,
-    public _snackBar: MatSnackBar) {
+    public _snackBar: MatSnackBar,
+    private fbuilder: FormBuilder) {
 
   }
 
   ngOnInit() {
+    this.xaxis_datasets = this.yaxis_datasets = this.report.columnsToDisplay;
     this.getChartPreferences();
+    //this.data.deleteallpreferences(this.report.SRC_ID).subscribe((res)=>{});
   }
 
   indexTracker(index: number, value: any) {
@@ -198,13 +202,32 @@ export class PersonalizationTableComponent implements OnInit {
       this.chartPreferences[i]['personalizationtable'] = this._personalizationtable[i];
   }
 
-  populateRow(index) {
-    var fieldKeys = Object.keys(this.data.chartPreferences[index]);
-    for (let i = 0; i < fieldKeys.length; i++) {
-      var field = fieldKeys[i];
-      console.log((<HTMLElement>document.querySelectorAll('#' + field + ' ' + '.table-cell')[index]));
-    }
-    (<HTMLElement>document.querySelectorAll("mat-list")[2])
+  populateRow(index,foundIndex) {
+    console.log('inside populaterow');
+    this._selectedchart[index]=this.data.chartPreferences[foundIndex]['selectedchart'];
+    this.gridlinewidth[index]=this.data.chartPreferences[foundIndex]['gridlinewidth']
+    this.backgroundcolor[index]=this.data.chartPreferences[foundIndex]['backgroundcolor']
+    this.bordercolor[index]=this.data.chartPreferences[foundIndex]['bordercolor']
+    this.fillbackground[index]=this.data.chartPreferences[foundIndex]['fillbackground']
+    this.linetension[index]=this.data.chartPreferences[foundIndex]['linetension']
+    this.pointradius[index]=this.data.chartPreferences[foundIndex]['pointradius']
+    this.animations[index]=this.data.chartPreferences[foundIndex]['animations']
+    this.pointstyle[index]=this.data.chartPreferences[foundIndex]['pointstyle']
+    this.linestyle[index]=this.data.chartPreferences[foundIndex]['linestyle']
+    this.gridborder[index]=this.data.chartPreferences[foundIndex]['gridborder']
+    this.yaxisautoskip[index]=this.data.chartPreferences[foundIndex]['yaxisautoskip']
+    this.xaxisdata[index]=this.data.chartPreferences[foundIndex]['xaxisdata']
+    this.yaxisdata[index]=this.data.chartPreferences[foundIndex]['yaxisdata']
+    this.UoM_x[index]=this.data.chartPreferences[foundIndex]['UoM_x']
+    this.UoM_y[index]=this.data.chartPreferences[foundIndex]['UoM_y']
+    this.SoM_x[index]=this.data.chartPreferences[foundIndex]['SoM_x']
+    this.SoM_y[index]=this.data.chartPreferences[foundIndex]['SoM_y']
+    this.xaxisstepSize[index]=this.data.chartPreferences[foundIndex]['xaxisstepsize']
+    this.yaxisstepSize[index]=this.data.chartPreferences[foundIndex]['yaxisstepsize']
+  }
+
+  set_domProperty(event){
+    console.log(event.source._elementRef.nativeElement);
   }
 
   setchartpreferences(pref, val, index?) {
@@ -219,23 +242,32 @@ export class PersonalizationTableComponent implements OnInit {
     console.log(val);
     this.chartPreferences[index][pref] = val;
     console.log(this.chartPreferences);
-    if (pref === "chartno") {
+    if (this.chartPreferences[index]['chartno']!== '') {
       var chartFound = false;
-      var foundIndex;
+      var foundIndex = 0;
       console.log(chartFound);
+      var checkcno = this.data.chartPreferences[index]['chartno'];
+      if(pref === 'chartno')
+        checkcno = val;
       for (let i = 0; i < this.chartPreferences.length; i++) {
-        if (i !== index && val === this.chartPreferences[i]['chartno']) {
+        if (i !== index && checkcno === this.chartPreferences[i]['chartno']) {
           chartFound = true;
           foundIndex = i;
           break;
         }
       }
       if (chartFound) {
-        this.chartPreferences[index] = this.chartPreferences[foundIndex];
-        //console.log(foundIndex);
-        //console.log(this.chartPreferences[foundIndex]);
-        this.populateRow(index);
-        //update the values in the row
+        console.log('match found');
+        
+        if(pref === 'chartno'){
+          this.chartPreferences[index] = this.chartPreferences[foundIndex];
+          this.populateRow(index,foundIndex);
+        }
+        else{
+          this.chartPreferences[foundIndex] = this.chartPreferences[index];
+          this.populateRow(foundIndex,index);
+        }
+
       }
     }
     this.data.chartPreferences = this.chartPreferences;
@@ -278,6 +310,7 @@ export class PersonalizationTableComponent implements OnInit {
     this.report.V_PRF_VAL = Object.values(this.userprefs);*/
   }
 
+  selectedchart_Form: FormGroup;
   addRow_action() {
     this.chartno.push(this.chartno.length + 1);
     this.gridlinewidth.push("");
@@ -324,7 +357,7 @@ export class PersonalizationTableComponent implements OnInit {
     this.data.chartSelection['update'] = false;
     this.data.chartPreferencesChange.next(this.data.chartPreferences);
 
-    /*this.data.deletepreferencerow(this.report.UNIQUE_ID, this.report.SRC_ID, '0').subscribe(
+    /*this.data.deletepreferencerow(this.report.UNIQUE_ID, this.report.SRC_ID, '-1').subscribe(
       (res) => {
         console.log(res.json());
       });*/
@@ -335,7 +368,7 @@ export class PersonalizationTableComponent implements OnInit {
     var V_PRF_NM = Object.keys(this.data.chartPreferences[index]);
     
     for (let i = 0; i < V_PRF_NM.length; i++) {
-      this.data.setchartstyling(this.report.UNIQUE_ID, this.report.SRC_ID, V_PRF_NM[i]+'_'+index, this.chartPreferences[index][V_PRF_NM[i]]).subscribe(
+      this.data.setchartstyling(this.report.UNIQUE_ID, this.report.SRC_ID, index, V_PRF_NM[i], this.chartPreferences[index][V_PRF_NM[i]]).subscribe(
         (res) => {
           console.log(res.json());
         });
@@ -343,8 +376,38 @@ export class PersonalizationTableComponent implements OnInit {
   }
 
   deleteRow_action(chartNo) {
-    this.Element_Preferences.pop();
     console.log(chartNo);
+    this.chartno.splice(chartNo,1);
+    this.gridlinewidth.splice(chartNo,1);
+    this.backgroundcolor.splice(chartNo,1);
+    this.bordercolor.splice(chartNo,1);
+    this.fillbackground.splice(chartNo,1);
+    this.linetension.splice(chartNo,1);
+    this.pointradius.splice(chartNo,1);
+    this.animations.splice(chartNo,1);
+    this.pointstyle.splice(chartNo,1);
+    this.linestyle.splice(chartNo,1);
+    this.gridborder.splice(chartNo,1);
+    this.yaxisautoskip.splice(chartNo,1);
+    this.linexaxis.splice(chartNo,1);
+    this.lineyaxis.splice(chartNo,1);
+    this.barxaxis.splice(chartNo,1);
+    this.baryaxis.splice(chartNo,1);
+    this.piexaxis.splice(chartNo,1);
+    this.pieyaxis.splice(chartNo,1);
+    this.doughnutxaxis.splice(chartNo,1);
+    this.doughnutyaxis.splice(chartNo,1);
+    this._selectedchart.splice(chartNo,1);
+    this._chartposition.splice(chartNo,1);
+    this.charttype.splice(chartNo,1);
+    this.xaxisdata.splice(chartNo,1);
+    this.yaxisdata.splice(chartNo,1);
+    this.UoM_x.splice(chartNo,1);
+    this.UoM_y.splice(chartNo,1);
+    this.SoM_x.splice(chartNo,1);
+    this.SoM_y.splice(chartNo,1);
+    this.xaxisstepSize.splice(chartNo,1);
+    this.yaxisstepSize.splice(chartNo,1);
     this.data.chartPreferences = this.chartPreferences;
     this.data.chartSelection['chartPreferences'] = this.data.chartPreferences;
     this.data.chartSelection['chartNo'] = chartNo;
@@ -352,6 +415,7 @@ export class PersonalizationTableComponent implements OnInit {
     this.data.chartPreferencesChange.next(this.data.chartPreferences);
     //this.chartPreferences.splice(chartNo,1);
     //---data move up
+
     this.dataPreferences = new MatTableDataSource(this.Element_Preferences);
   }
 }

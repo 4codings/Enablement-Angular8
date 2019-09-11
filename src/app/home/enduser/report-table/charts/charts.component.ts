@@ -777,64 +777,6 @@ export class ChartsComponent implements OnInit {
     //this.updatechart();
   }
 
-  remove(item: string): void {
-    const index = this.hiddencols.indexOf(item);
-    if (index >= 0) {
-      this.hiddencols.splice(index, 1);
-      this.columnsToDisplay.splice(0, 0, item);
-    }
-    this.settablepreferences();
-  }
-
-  showhidecol(col) {
-
-    if (this.columnsToDisplay.includes(col)) {
-      this.hiddencols.push(col);
-      var index = this.columnsToDisplay.indexOf(col);
-      if (index > -1) {
-        this.columnsToDisplay.splice(index, 1);
-      }
-    }
-    this.settablepreferences();
-  }
-
-  settablepreferences() {
-    if (this.hiddencols.length > -1) {
-      var abc = this.hiddencols.toString();
-      this.userprefs['hiddencolname'] = abc;
-    }
-    this.userprefs['displaychoice'] = this.show_choice;
-    this.V_PRF_NM = Object.keys(this.userprefs);
-    this.V_PRF_VAL = Object.values(this.userprefs);
-    for (let j = 0; j < this.V_PRF_NM.length; j++) {
-      this.data.setchartstyling(this.UNIQUE_ID, this.SRC_ID, this.V_PRF_NM[j], this.V_PRF_VAL[j]).subscribe(
-        () => {
-          //(res);
-        });
-    }
-  }
-
-  gettablepreferences() {
-    if (this.userprefs['displaychoice'] != undefined) {
-      this.show_choice = this.userprefs['displaychoice'];
-      this.showhide(this.userprefs['displaychoice'])
-    }
-    if (this.userprefs['hiddencolname'] != undefined) {
-      var a = this.userprefs['hiddencolname'].toString();
-      this.hiddencols = a.split(',');
-      for (let i = 0; i < this.hiddencols.length; i++) {
-        if (this.hiddencols.includes("")) {
-          var emptyindex = this.columnsToDisplay.indexOf(this.hiddencols[""]);
-          this.hiddencols.splice(emptyindex, 1);
-        }
-        var index = this.columnsToDisplay.indexOf(this.hiddencols[i]);
-        if (index > -1) {
-          this.columnsToDisplay.splice(index, 1);
-        }
-      }
-    }
-  }
-
   /*getpreferences() {
     console.log("getpref");
     this.data.getchartstyling(this.UNIQUE_ID, this.SRC_ID).subscribe(
@@ -859,28 +801,4 @@ export class ChartsComponent implements OnInit {
       });
   }*/
 
-  showhide(abc) {
-    this.show_choice = abc;
-    switch (abc) {
-      case 'Table':
-        this.disptable = true;
-        this.dispchart = false;
-        break;
-      case 'Charts':
-        this.disptable = false;
-        this.dispchart = true;
-        if (this.V_PRF_NM.length) {
-          this.getchartpreferences();
-        }
-        break;
-      case 'Both':
-        this.disptable = true;
-        this.dispchart = true;
-        if (this.V_PRF_NM.length) {
-          this.getchartpreferences();
-        }
-        break;
-    }
-    this.settablepreferences();
-  }
 }

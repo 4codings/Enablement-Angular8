@@ -1,5 +1,5 @@
 <div fxLayout="row" id="p-table" class="mat-elevation-z8">
-  <div fxLayout="column" id="chart-no" class="table-column">
+  <div fxLayout="column" id="chartno" class="table-column">
     <div class="table-title">Chart No</div>
     <div class="table-cell-chartno" *ngFor="let cno of chartno; let i=index; trackBy:indexTracker">
       <input matInput type="number" style="font-weight: bold;" (ngModelChange)="setchartpreferences('chartno',$event,i);" [(ngModel)]="cno">
@@ -10,7 +10,7 @@
     <div class="table-cell" *ngFor="let selectedchart$ of _selectedchart; let i=index; trackBy:indexTracker">
       <mat-form-field>
         <mat-label>Select chart type</mat-label>
-        <mat-select [(value)]="selectedchart$" (selectionChange)="setchartpreferences('selectedchart',$event.value,i);">
+        <mat-select [(value)]="selectedchart$" [(ngModel)]="selectedchart$" (selectionChange)="setchartpreferences('selectedchart',$event.value,i);set_domProperty($event);">
           <mat-option value="linechart_sel">Line Chart</mat-option>
           <mat-option value="barchart_sel">Bar Chart</mat-option>
           <mat-option value="piechart_sel">Pie Chart</mat-option>
@@ -22,10 +22,10 @@
   </div>
   <div fxLayout="column" id="xaxisdata" class="table-column">
     <div class="table-title">X-Axis Dataset</div>
-    <div class="table-cell" *ngFor="let d_xaxis of doughnutxaxis; let i=index; trackBy:indexTracker">
+    <div class="table-cell" *ngFor="let xaxis of xaxisdata; let i=index; trackBy:indexTracker">
       <mat-form-field style="width:100%">
         <mat-select placeholder="Select X-axis Dataset" (selectionChange)="setchartpreferences('xaxisdata',$event.value,i);"
-          [(value)]="d_xaxis">
+          [(value)]="xaxis">
           <mat-option style="text-align:center;" *ngFor="let items of xaxis_datasets" value="{{items}}">
             {{items}} </mat-option>
         </mat-select>
@@ -35,10 +35,10 @@
 
   <div fxLayout="column" id="yaxisdata" class="table-column">
     <div class="table-title">Y-Axis Dataset</div>
-    <div class="table-cell" *ngFor="let d_yaxis of doughnutyaxis; let i=index; trackBy:indexTracker">
+    <div class="table-cell" *ngFor="let yaxis of yaxisdata; let i=index; trackBy:indexTracker">
       <mat-form-field style="width:100%">
         <mat-select placeholder="Select Y-axis Dataset" (selectionChange)="setchartpreferences('yaxisdata',$event.value,i);"
-          [(value)]="d_yaxis">
+          [(value)]="yaxis">
           <mat-option style="text-align:center;" *ngFor="let items of yaxis_datasets" [value]="items">
             {{items}} </mat-option>
         </mat-select>
@@ -196,7 +196,7 @@
     <div class="table-cell" *ngFor="let lten of linetension; let i=index; trackBy:indexTracker">
       <div fxLayout="column" style="text-align:center" class="mat-cell-div">
         <div>
-          <mat-button-toggle-group (value)="lten">
+          <mat-button-toggle-group [value]="lten">
             <mat-button-toggle (change)="setchartpreferences('linetension',$event.value,i);" value="none">None</mat-button-toggle>
             <mat-button-toggle (change)="setchartpreferences('linetension',$event.value,i);" value="mild">Mild</mat-button-toggle>
             <mat-button-toggle (change)="setchartpreferences('linetension',$event.value,i);" value="full">Full</mat-button-toggle>
@@ -211,7 +211,7 @@
     <div class="table-cell" *ngFor="let prad of pointradius; let i=index; trackBy:indexTracker">
       <div fxLayout="column" style="text-align:center" class="mat-cell-div">
         <div>
-          <mat-button-toggle-group (value)="prad">
+          <mat-button-toggle-group [value]="prad">
             <mat-button-toggle (change)="setchartpreferences('pointsize',$event.value,i);" value="small">Small</mat-button-toggle>
             <mat-button-toggle (change)="setchartpreferences('pointsize',$event.value,i);" value="normal">Normal</mat-button-toggle>
             <mat-button-toggle (change)="setchartpreferences('pointsize',$event.value,i);" value="large">Large</mat-button-toggle>
@@ -299,8 +299,8 @@
       <mat-icon aria-hidden="false" (click)="addRow_action();" aria-label="Add a Row" style="cursor: pointer;">
         add_circle</mat-icon>
     </div>
-    <div class="table-cell" *ngFor="let index of chartno;">
-      <mat-icon aria-hidden="false" (click)="deleteRow_action(index+1);" aria-label="Delete a Row"
+    <div class="table-cell" *ngFor="let indx of chartno; let i=index;">
+      <mat-icon aria-hidden="false" (click)="deleteRow_action(i);" aria-label="Delete a Row"
         style="cursor: pointer;">
         delete</mat-icon>
     </div>

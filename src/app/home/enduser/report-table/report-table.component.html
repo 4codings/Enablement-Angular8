@@ -28,11 +28,11 @@
 <!-- --------------------Chart------------------------- -->
 
 
-<div id='all-charts'>
+<div id='all-charts' *ngIf='dispchart'>
   <app-charts></app-charts>
 </div>
 
-<div id='tableContainer'>
+<div id='tableContainer' *ngIf='dispchart'>
   <personalization-table></personalization-table>
 </div>
 

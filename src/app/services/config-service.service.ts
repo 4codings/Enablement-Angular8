@@ -737,11 +737,11 @@ export class ConfigServiceService {
     return this.http.get(this.apiUrlGetSecure + "V_USR_NM=" + this.V_USR_NM + "&V_SRC_ID=" + V_SRC_ID + "&V_UNIQUE_ID=" + UNIQUE_ID + "&REST_Service=User_Preference&Verb=GET", this.apiService.setHeaders());
   }
 
-  setchartstyling(UNIQUE_ID, V_SRC_ID, V_PRF_NM, V_PRF_VAL) {
+  setchartstyling(UNIQUE_ID, V_SRC_ID, V_ITM_ID, V_PRF_NM, V_PRF_VAL) {
     // return this.http.get(this.apiUrlGet + "V_USR_NM=" + this.V_USR_NM + "&V_PRF_NM=" + V_PRF_NM + "&V_PRF_VAL=" + V_PRF_VAL + "&V_SRC_ID=" + V_SRC_ID + "&V_APP_ID=" + V_APP_ID + "&V_PRCS_ID=" + V_PRCS_ID + "&REST_Service=User_Preference&Verb=PATCH" );
 
     // secure
-    return this.http.get(this.apiUrlGetSecure + "V_USR_NM=" + this.V_USR_NM + "&V_PRF_NM=" + V_PRF_NM + "&V_PRF_VAL=" + V_PRF_VAL + "&V_SRC_ID=" + V_SRC_ID + "&V_UNIQUE_ID=" + UNIQUE_ID + "&REST_Service=User_Preference&Verb=PATCH", this.apiService.setHeaders());
+    return this.http.get(this.apiUrlGetSecure + "V_USR_NM=" + this.V_USR_NM + "&V_ITM_ID=" + V_ITM_ID + "&V_PRF_NM=" + V_PRF_NM + "&V_PRF_VAL=" + V_PRF_VAL + "&V_SRC_ID=" + V_SRC_ID + "&V_UNIQUE_ID=" + UNIQUE_ID + "&REST_Service=User_Preference&Verb=PATCH", this.apiService.setHeaders());
   }
 
   deletechartstyling(UNIQUE_ID, V_SRC_ID, V_PRF_NM, V_ITM_ID){
