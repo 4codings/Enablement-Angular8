@@ -11,6 +11,16 @@
       </mat-menu>
     </div>
     <div class="container-actions" *ngIf="userAccess.role_platform">
+        <div style="padding-left: 8px">
+          <span>Platforms : </span>
+          <button mat-button [matMenuTriggerFor]="platformMenu">{{selectedPlatform}}
+            <mat-icon matSuffix>arrow_drop_down</mat-icon>
+          </button>
+          <mat-menu #platformMenu="matMenu">
+            <button mat-menu-item *ngFor="let item of platformOptions"
+                    (click)="changePlatform(item.SERVER_CD)">{{item.SERVER_CD}}</button>
+          </mat-menu>
+        </div>
       <!-- <button mat-icon-button matTooltip="delete ExeType" class="add-btn" (click)="onBtnDeleteExeClick()">
         <mat-icon>delete</mat-icon>
       </button>
@@ -31,6 +41,6 @@
   </div>
   <mat-divider></mat-divider>
   <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="16px" cdkDropListGroup>
-    <app-single-exe [userRoleAccess]="userAccess" *ngFor="let currExe of sortedAllExes | filterExetype:selectedExeType:'exe'" [exeType]="currExe" [exes]="currExe.EXES" [selectedExeType]="selectedExeType"></app-single-exe>
+    <app-single-exe [userRoleAccess]="userAccess" *ngFor="let currExe of sortedAllExes | filterExetype:selectedExeType:'exe':selectedPlatform" [exeType]="currExe" [exes]="currExe.EXES" [selectedExeType]="selectedExeType"></app-single-exe>
   </div>
 </div>

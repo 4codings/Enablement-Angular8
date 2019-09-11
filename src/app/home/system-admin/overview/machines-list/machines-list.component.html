@@ -10,8 +10,8 @@
                 (click)="changeMachineType(item)">{{item.EXE_TYP}}</button>
       </mat-menu> 
     </div>
-    <!-- <div class="container-actions" *ngIf="userAccess.role_machine">
-      Manage Machines <button mat-icon-button class="add-btn"
+    <div class="container-actions" *ngIf="userAccess.role_machine">
+      <!-- Manage Machines <button mat-icon-button class="add-btn"
               matTooltip="Manage Machines" [matMenuTriggerFor]="manageMachine">
         <mat-icon class="edit-icon">edit</mat-icon>
       </button>
@@ -19,9 +19,20 @@
       <mat-menu #manageMachine="matMenu">
         <button mat-menu-item (click)="onManageMachineBtnClick()">Manage</button>
         <button mat-menu-item (click)="onAssignMcnPlfClick()">Assign</button>
-      </mat-menu>
+      </mat-menu> -->
+      
+      <div style="padding-left: 8px">
+        <span>Machines : </span>
+        <button mat-button [matMenuTriggerFor]="machineMenu">{{selectedMachineType}}
+          <mat-icon matSuffix>arrow_drop_down</mat-icon>
+        </button>
+        <mat-menu #machineMenu="matMenu">
+          <button mat-menu-item *ngFor="let item of machineTypeOptions"
+                  (click)="changeMachine(item.PLATFORM_CD)">{{item.PLATFORM_CD}}</button>
+        </mat-menu> 
+      </div>
 
-    </div>  -->
+    </div> 
     <!-- <button mat-icon-button class="add-btn"
             matTooltip="Add Machines"
             (click)="onAddMachineBtnClick()">
@@ -30,6 +41,6 @@
   </div>
   <mat-divider></mat-divider>
   <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="16px" cdkDropListGroup>
-    <app-single-machine [userRoleAccess]="userAccess" *ngFor="let currMachine of sortedAllConnections | filterExetype:selectedConnectionType:'cxn'" [cxnData]="currMachine" [machineData]="currMachine" [machines]="currMachine.V_CXN" [selectedConnectionType]="selectedConnectionType"></app-single-machine>
+    <app-single-machine [userRoleAccess]="userAccess" *ngFor="let currMachine of sortedAllConnections | filterExetype:selectedConnectionType:'cxn':selectedMachineType" [cxnData]="currMachine" [machineData]="currMachine" [machines]="currMachine.V_CXN" [selectedConnectionType]="selectedConnectionType"></app-single-machine>
   </div>
 </div>

@@ -241,6 +241,80 @@ export class MachineTileListComponent implements OnInit {
     });
   }
 
+  onContextMenuRemoveConnBtnClick(): void {
+    this.contextMenuActive = false;
+    this.onBtnRemoveConnectionClick(this.contextMenuData);
+    this.contextMenuData = null;
+  }
+
+  onBtnRemoveConnectionClick(cnx) {
+    //console.log(cnx);
+    const dialogRef = this.dialog.open(ConfirmationAlertComponent, {
+      panelClass: 'app-dialog',
+      width: '600px',
+    });
+
+    dialogRef.componentInstance.title = `Remove Machine- ${cnx.V_PLATFORM_CD} connection`;
+    dialogRef.componentInstance.message = `Are you sure, you want to remove Connection <strong>${cnx.cnxData.V_CXN_CD}</strong> from machine?`;
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        let body = {
+          "V_CXN_CD": cnx.cnxData.V_CXN_CD,
+          "V_SRC_CD": this.V_SRC_CD,
+          "V_CXN_TYP": cnx.cnxData.V_CXN_TYP,
+          "REST_Service": "Connection",
+          "Verb": "DELETE",
+          "RESULT": "@RESULT"
+        };
+
+        this.http.delete(this.apiUrlGet+'V_CXN_TYP='+ cnx.cnxData.V_CXN_TYP + '&V_CXN_CD='+ cnx.cnxData.V_CXN_CD + '&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=CXN&Verb=DELETE').subscribe(res => {
+          console.log("res",res);
+          this.systemOverview.getAllMachineConnections();
+        }, err => {
+          console.log("err", err)
+        }); 
+      }
+    });
+  }
+
+  onContextMenuRemoveFromAllConnBtnClick(): void {
+    this.contextMenuActive = false;
+    this.onBtnRemoveFromAllConnectionClick(this.contextMenuData);
+    this.contextMenuData = null;
+  }
+
+  onBtnRemoveFromAllConnectionClick(cnx) {
+    //console.log(cnx);
+    const dialogRef = this.dialog.open(ConfirmationAlertComponent, {
+      panelClass: 'app-dialog',
+      width: '600px',
+    });
+
+    dialogRef.componentInstance.title = `Remove Machine- ${cnx.V_PLATFORM_CD} connection`;
+    dialogRef.componentInstance.message = `Are you sure, you want to remove Connection <strong>${cnx.cnxData.V_CXN_CD}</strong> from all machines?`;
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        let body = {
+          "V_CXN_CD": cnx.cnxData.V_CXN_CD,
+          "V_SRC_CD": this.V_SRC_CD,
+          "V_CXN_TYP": cnx.cnxData.V_CXN_TYP,
+          "REST_Service": "Connection",
+          "Verb": "DELETE",
+          "RESULT": "@RESULT"
+        };
+
+        this.http.delete(this.apiUrlGet+'V_CXN_TYP='+ cnx.cnxData.V_CXN_TYP + '&V_CXN_CD='+ cnx.cnxData.V_CXN_CD + '&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=CXN&Verb=DELETE').subscribe(res => {
+          console.log("res",res);
+          this.systemOverview.getAllMachineConnections();
+        }, err => {
+          console.log("err", err)
+        }); 
+      }
+    });
+  }
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }

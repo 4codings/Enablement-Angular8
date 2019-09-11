@@ -171,6 +171,20 @@ export class ExeTileListComponent implements OnInit {
     this.contextMenuData = null;
   }
 
+  onContextMenuRemoveFromAllExeBtnClick(): void {
+    this.contextMenuActive = false;
+    // this.deleteExeEvent.emit(this.contextMenuData);
+    this.onBtnRemoveFromAllExeClick(this.contextMenuData);
+    this.contextMenuData = null;
+  }
+
+  onContextMenuRemoveExeBtnClick(): void {
+    this.contextMenuActive = false;
+    // this.deleteExeEvent.emit(this.contextMenuData);
+    this.onBtnRemoveExeClick(this.contextMenuData);
+    this.contextMenuData = null;
+  }
+
   onBtnEditExeClick(exeData) {
     //console.log(exeData);
     const dialogRef = this.dialog.open(EditExeTypeDialogComponent, {
@@ -218,6 +232,50 @@ export class ExeTileListComponent implements OnInit {
 
     dialogRef.componentInstance.title = `Delete Exe- ${exe.EXE_TYP}`;
     dialogRef.componentInstance.message = `Are you sure, you want to delete Exe <strong>${exe.exeData.V_EXE_CD}</strong>?`;
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.http.get('https://enablement.us/Enablement/rest/v1/securedJSON?V_EXE_TYP='+ exe.EXE_TYP + '&V_EXE_CD='+ exe.exeData.V_EXE_CD + '&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=Exe&Verb=DELETE').subscribe(res => {
+          console.log("res",res);
+          this.systemOverview.getAllExes();
+        }, err => {
+          console.log("err", err)
+        }); 
+      }
+    });
+  }
+
+  onBtnRemoveFromAllExeClick(exe) {
+    //console.log(exe);
+    const dialogRef = this.dialog.open(ConfirmationAlertComponent, {
+      panelClass: 'app-dialog',
+      width: '600px',
+    });
+
+    dialogRef.componentInstance.title = `Remove Exe- ${exe.EXE_TYP}`;
+    dialogRef.componentInstance.message = `Are you sure, you want to remove Exe <strong>${exe.exeData.V_EXE_CD}</strong> from all platforms?`;
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.http.get('https://enablement.us/Enablement/rest/v1/securedJSON?V_EXE_TYP='+ exe.EXE_TYP + '&V_EXE_CD='+ exe.exeData.V_EXE_CD + '&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=Exe&Verb=DELETE').subscribe(res => {
+          console.log("res",res);
+          this.systemOverview.getAllExes();
+        }, err => {
+          console.log("err", err)
+        }); 
+      }
+    });
+  }
+
+  onBtnRemoveExeClick(exe) {
+    //console.log(exe);
+    const dialogRef = this.dialog.open(ConfirmationAlertComponent, {
+      panelClass: 'app-dialog',
+      width: '600px',
+    });
+
+    dialogRef.componentInstance.title = `Remove Exe- ${exe.EXE_TYP}`;
+    dialogRef.componentInstance.message = `Are you sure, you want to remove Exe <strong>${exe.exeData.V_EXE_CD}</strong> from the platform?`;
 
     dialogRef.afterClosed().subscribe(result => {
       if(result) {

@@ -22,6 +22,8 @@ export class MachinesListComponent implements OnInit {
   machines = [];
   public connections=[];
   public sortedAllConnections = [];
+  public selectedMachineType = 'All';
+  public machineTypeOptions;
   @Input() selectedConnectionType;
   @Input() userAccess;
   
@@ -45,6 +47,9 @@ export class MachinesListComponent implements OnInit {
       this.sortedAllConnections = res;
     });
 
+    this.systemOverview.machineOptions$.subscribe(machine => {
+      this.machineTypeOptions = machine;
+    });
     //this.MachineCode();
   }
 
@@ -57,6 +62,10 @@ export class MachinesListComponent implements OnInit {
   changeMachineType(type) {
     this.selectedConnectionType = type.EXE_TYP;
     this.selectedMachine.emit(type.EXE_TYP);
+  }
+
+  changeMachine(machine) {
+    this.selectedMachineType = machine;
   }
   
   onAddMachineBtnClick() {

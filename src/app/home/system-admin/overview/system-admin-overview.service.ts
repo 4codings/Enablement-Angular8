@@ -29,6 +29,8 @@ export class SystemAdminOverviewService {
   role_overview:boolean = false;
   exeTypeOptions;
   public typeOptions$: Subject<any> = new Subject();
+  public platformOptions$: Subject<any> = new Subject();
+  public machineOptions$: Subject<any> = new Subject();
   domain_name=this.globals.domain_name;
 
   private apiUrlGet = "https://"+this.domain_name+"/rest/v1/securedJSON?";
@@ -90,8 +92,24 @@ export class SystemAdminOverviewService {
   }
    
   getMachine() {
+    let arr = [];
     this.http.get(this.apiUrlGet+"V_SRC_CD="+this.V_SRC_CD+"&V_USR_NM="+this.V_USR_NM+"&REST_Service=Users_Machines&Verb=GET").subscribe((res:any)=>{
       this.machines=res;
+      
+      res.forEach((item) => {
+        arr.push(Object.assign({}, item));
+      });
+    
+      arr.push({CREATE: "", DELETE: "", EXECUTE: "", PLATFORM_CD: "All", PLATFORM_ID: '', READ: "", UPDATE: ""});
+      arr = arr.sort((a,b) => {
+        if (a.PLATFORM_CD < b.PLATFORM_CD) //sort string ascending
+          return -1;
+        if (a.PLATFORM_CD > b.PLATFORM_CD)
+          return 1;
+        return 0; 
+      });
+      
+      this.machineOptions$.next(arr);
     });
   }
 
@@ -137,9 +155,23 @@ export class SystemAdminOverviewService {
   }
 
   getPlatforms(){
+    let arr = [];
     this.http.get(this.apiUrlGet+"V_SRC_CD="+this.V_SRC_CD+"&V_CD_TYP=SERVER&REST_Service=Masters&Verb=GET").subscribe(
-      res=>{
+      (res:any)=>{
         this.plat=res;
+        res.forEach((item) => {
+          arr.push(Object.assign({}, item));
+        });
+        arr.push({SERVER_CD:"All", SERVER_DSC:'', SERVER_Id:''});
+        arr = arr.sort((a,b) => {
+          if (a.SERVER_CD < b.SERVER_CD) //sort string ascending
+            return -1;
+          if (a.SERVER_CD > b.SERVER_CD)
+            return 1;
+          return 0; 
+        });
+        
+        this.platformOptions$.next(arr);
       });
   }
   

@@ -22,9 +22,11 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
   public allExes = [];
   public sortedAllExes = [];
   @Input() selectedExeType;
+  public selectedPlatform = 'All';
   @Input() userAccess;
   unsubscribeAll: Subject<boolean> = new Subject<boolean>();
   exeTypeOptions;
+  platformOptions;
   @Output() selectedExe: EventEmitter<any> = new EventEmitter();
 
   domain_name=this.globals.domain_name; private apiUrlGet = "https://"+this.domain_name+"/rest/v1/securedJSON?";
@@ -40,19 +42,11 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
     this.systemOverview.typeOptions$.subscribe(types => {
       this.exeTypeOptions = types;
     });
-    // this.http.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=EXE&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe(res => {
-    //   this.exeTypeOptions = res;
-    //   this.exeTypeOptions.push({EXE_TYP:"All"});
-    //   this.exeTypeOptions = this.exeTypeOptions.sort((a,b) => {
-    //     if (a.EXE_TYP < b.EXE_TYP) //sort string ascending
-    //       return -1;
-    //     if (a.EXE_TYP > b.EXE_TYP)
-    //       return 1;
-    //     return 0; 
-    //   });
-    // }, err => {
-    //    console.log(err);
-    // });
+    
+    this.systemOverview.platformOptions$.subscribe(platform => {
+      this.platformOptions = platform;
+    });
+
     this.systemOverview.getExe$.subscribe(res => {
       this.sortedAllExes = res;
     })
@@ -70,6 +64,11 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
     //console.log(type);
     this.selectedExeType = type;
     this.selectedExe.emit(type);
+  }
+
+  changePlatform(platform): void {
+    //console.log(type);
+    this.selectedPlatform = platform;
   }
 
   onAddExeBtnClick() {

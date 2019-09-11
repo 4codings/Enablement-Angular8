@@ -59,6 +59,19 @@ export class AddExeDialogComponent implements OnInit {
   }
 
   onBtnAddClick() {
+    let Input = '';
+    let Output = '';
+    if(this.ipart) {
+      Input = "Y"
+    } else {
+      Input = "N"
+    }
+
+    if(this.opart) {
+      Output = "Y"
+    } else {
+      Output = "N"
+    }
     let data = {
     "V_EXE_CD": this.F_EXE_CD,
     "V_SRC_CD": this.V_SRC_CD,
@@ -71,8 +84,8 @@ export class AddExeDialogComponent implements OnInit {
     "V_EXE_DSC": this.F_EXE_DSC,
     "V_EXE_OUT_PARAMS": this.F_EXE_OUT_PARAM,
     "V_USR_NM": this.V_USR_NM,
-    "V_EXE_IN_ARTFCTS": this.ipart,
-    "V_EXE_OUT_ARTFCTS":this.opart,
+    "V_EXE_IN_ARTFCTS": Input,
+    "V_EXE_OUT_ARTFCTS":Output,
     "V_SERVER_CD":this.PLF_CD,
     "V_COMMNT": '',
     "V_ICN_TYP":this.ICN_TYP,
