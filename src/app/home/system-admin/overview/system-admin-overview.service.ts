@@ -14,6 +14,8 @@ export class SystemAdminOverviewService {
   public selectedCxn$: Subject<any> = new Subject();
   public getExe$: Subject<any> = new Subject();
   public exes;
+  public exesData;
+  public connectionData;
   public plat;
   public getMachineConnection$: Subject<any> = new Subject();
   public machines;
@@ -77,6 +79,7 @@ export class SystemAdminOverviewService {
       //   })
       //   allExes.push({EXE_TYP: item.EXE_TYP, EXES:arr})
       // });
+      this.exesData = res;
       this.plat.forEach(item => {
         let arr = res.filter(data => {
           return item.SERVER_CD == data.V_SERVER_CD.toString()
@@ -123,6 +126,7 @@ export class SystemAdminOverviewService {
       //   })
       //   connections.push({V_PLATFORM_CD: item.EXE_TYP, V_CXN:arr});
       // });
+      this.connectionData = res;
       this.machines.forEach(item => {
         let arr = res.filter(data => {
           return item.PLATFORM_CD == data.V_PLATFORM_CD.toString()

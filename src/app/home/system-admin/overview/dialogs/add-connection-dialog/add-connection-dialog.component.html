@@ -21,7 +21,12 @@
         <div class="mr-2 ml-2" fxFlex="49">
           <label>Connection Code</label>
           <mat-form-field class="incwid mt-3">
-            <input type="text" matInput [(ngModel)]="V_CXN_CD" name="V_CXN_CD" required>
+            <input type="text" matInput [formControl]="myControl" [(ngModel)]="V_CXN_CD" name="V_CXN_CD" (ngModelChange)="connChange()" [matAutocomplete]="auto" required>
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let option of filteredOptions | async" [value]="option.V_CXN_CD">
+                {{option.V_CXN_CD}}
+              </mat-option>
+            </mat-autocomplete>
           </mat-form-field>
         </div>
         <div class="ml-2" fxFlex="49">
@@ -71,7 +76,7 @@
     </div>
 
     <div class="dialog-footer content-wrapper" fxLayoutAlign="end center" fxLayoutGap="8px">
-      <button [disabled]="addConnectionsForm.invalid" mat-flat-button color="primary">Add</button>
+      <button [disabled]="V_CXN_CD == '' || isConnExist" mat-flat-button color="primary">Add</button>
     </div>
   </form>  
 </div>

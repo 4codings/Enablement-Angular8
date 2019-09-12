@@ -2,6 +2,10 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { HttpClient } from '@angular/common/http';
 import { ConfigServiceService } from '../../../../../services/config-service.service';
+import { SystemAdminOverviewService } from '../../system-admin-overview.service';
+import { startWith, map } from 'rxjs/operators';
+import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-add-exe-dialog',
@@ -27,23 +31,39 @@ export class AddExeDialogComponent implements OnInit {
   V_ICN_TYP;
   ICN_TYP;
   PLF_DATA;
+  exesData = [];
+  myControl = new FormControl();
+  filteredOptions: Observable<string[]>;
+  isExeExist:boolean = true;
 
-  constructor(public dialogRef: MatDialogRef<AddExeDialogComponent>,  @Inject(MAT_DIALOG_DATA) public data: any, private http:HttpClient, private config:ConfigServiceService) { }
+  constructor(public dialogRef: MatDialogRef<AddExeDialogComponent>,  @Inject(MAT_DIALOG_DATA) public data: any, private http:HttpClient, private config:ConfigServiceService, public SystemAdminOverviewService:SystemAdminOverviewService) { }
 
   ngOnInit() {
     this.config.getPlatformType().subscribe(res=>{this.PLF_TYPE=res.json();
       (this.PLF_TYPE);
       // this.PLF_CD=this.PLF_TYPE['SERVER_CD'];
     });
-
+    
     this.config.getICN().subscribe(res => {
       this.V_ICN_TYP=res;
     });
 
     this.PLF_CD = this.data.platformData.SERVER_CD;
     this.PLF_DSC = this.data.platformData.SERVER_DSC;
+    this.exesData = this.SystemAdminOverviewService.exesData;
+    this.filteredOptions = this.myControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      );
   }
-  
+ 
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.exesData.filter(option => option.V_EXE_CD.toLowerCase().includes(filterValue));
+  }
+ 
   onBtnCancelClick(): void {
     this.dialogRef.close();
   }
@@ -56,6 +76,25 @@ export class AddExeDialogComponent implements OnInit {
         (this.PLF_DATA);
         this.PLF_DSC=this.PLF_DATA['SERVER_DSC'];
       });
+  }
+
+  selectedExe(exe) {
+    
+  }
+
+  exeChange() {
+    let find = false;
+    this.exesData.filter(option => {
+      if(option.V_EXE_CD.toLowerCase() == this.F_EXE_CD.toLowerCase()) {
+        find = true;
+      }
+    });
+
+    if(find) {
+      this.isExeExist = true;
+    } else {
+      this.isExeExist = false;
+    }
   }
 
   onBtnAddClick() {

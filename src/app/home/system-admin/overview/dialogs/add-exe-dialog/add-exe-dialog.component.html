@@ -26,7 +26,12 @@
           <div fxFlex="48" class="mr-2">
             <label item-width="100"><strong>Executable Name</strong></label>
             <mat-form-field style="width:100%;">
-              <input matInput  [(ngModel)]="F_EXE_CD" name="exe" />
+              <input matInput [formControl]="myControl"  [(ngModel)]="F_EXE_CD" name="exe" (ngModelChange)="exeChange()" [matAutocomplete]="auto"/>
+              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedExe($event)">
+                <mat-option *ngFor="let option of filteredOptions | async" [value]="option.V_EXE_CD">
+                  {{option.V_EXE_CD}}
+                </mat-option>
+              </mat-autocomplete>
             </mat-form-field>
           </div>  
           <div class="ml-2" fxFlex="48">  
@@ -126,6 +131,6 @@
         
   </div>
   <div class="dialog-footer content-wrapper" fxLayoutAlign="end center" fxLayoutGap="8px">
-    <button mat-flat-button color="primary" [disabled]="F_EXE_CD == ''" (click)="onBtnAddClick()">Add</button>
+    <button mat-flat-button color="primary" [disabled]="F_EXE_CD == '' || isExeExist" (click)="onBtnAddClick()">Add</button>
   </div>
 </div>

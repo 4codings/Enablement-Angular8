@@ -2,6 +2,10 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { HttpClient } from '@angular/common/http';
 import { ConfigServiceService } from '../../../../../services/config-service.service';
+import { Observable } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { SystemAdminOverviewService } from '../../system-admin-overview.service';
+import { startWith, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-connection-dialog',
@@ -13,7 +17,7 @@ export class AddConnectionDialogComponent implements OnInit {
   public connectionTypes;
   public V_SRC_CD:string;
   public V_USR_NM:string;
-  public V_CXN_CD;
+  public V_CXN_CD = '';
   public V_CXN_DSC;
   public V_CXN_TYP;
   public DATA; 
@@ -22,8 +26,12 @@ export class AddConnectionDialogComponent implements OnInit {
   PLF_DSC:string = 'Apache Tomcat Web Server';
   PLF_TYPE=[];
   PLF_DATA;
+  connectionData = [];
+  myControl = new FormControl();
+  filteredOptions: Observable<string[]>;
+  isConnExist:boolean = true;
 
-  constructor(public dialogRef: MatDialogRef<AddConnectionDialogComponent>,  @Inject(MAT_DIALOG_DATA) public data: any, private http:HttpClient, private config:ConfigServiceService) { }
+  constructor(public dialogRef: MatDialogRef<AddConnectionDialogComponent>,  @Inject(MAT_DIALOG_DATA) public data: any, private http:HttpClient, private config:ConfigServiceService, public SystemAdminOverviewService:SystemAdminOverviewService) { }
 
   ngOnInit() {
     this.config.getMachineCode().subscribe(res=>{this.PLF_TYPE=res.json();
@@ -43,6 +51,34 @@ export class AddConnectionDialogComponent implements OnInit {
 
     this.PLF_CD = this.data.machineData.PLATFORM_CD;
     this.PLF_DSC = this.data.machineData.PLATFORM_DSC;
+
+    this.connectionData = this.SystemAdminOverviewService.connectionData;
+    this.filteredOptions = this.myControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this._filter(value))
+    );
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.connectionData.filter(option => option.V_CXN_CD.toLowerCase().includes(filterValue));
+  }
+
+  connChange() {
+    let find = false;
+    this.connectionData.filter(option => {
+      if(option.V_CXN_CD.toLowerCase() == this.V_CXN_CD.toLowerCase()) {
+        find = true;
+      }
+    });
+
+    if(find) {
+      this.isConnExist = true;
+    } else {
+      this.isConnExist = false;
+    }
   }
 
   onBtnCancelClick(): void {
