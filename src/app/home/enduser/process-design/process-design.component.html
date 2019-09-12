@@ -1,8 +1,8 @@
 <ng-template #itemTemplate let-item="item" let-index let-onCollapseExpand="onCollapseExpand"
   let-onCheckedChange="onCheckedChange">
   <div class="form-inline row-item" [ngClass]="item.children?'parent-menu':'child-menu'">
-    <i *ngIf="item.children" (click)="onCollapseExpand()" aria-hidden="true" class="fa caret-font"
-      [class.fa-caret-right]="item.collapsed" [class.fa-caret-down]="!item.collapsed"></i>
+    <i *ngIf="item.children" (click)="onCollapseExpand()" aria-hidden="true" class="fa"
+      [class.fa-folder]="item.collapsed" [class.fa-folder-open]="!item.collapsed"></i>
     <div class="form-check" *ngIf="item.text!=='NULL'">
       <label *ngIf="item.children" class="form-check-label parent-color text-center"
         [ngClass]="item.value == selectedApp?'active-menu':''" (click)="onTitleClick(item, true)">
@@ -464,7 +464,6 @@
                     <div class="col-md-12" *ngIf="newScheduleView">
                       <app-schedular [parentapp]="ApplicationCD" [parentpro]="ProcessCD" [changing]="changingValue">
                       </app-schedular>
-                      <hr />
                     </div>
                   </div>
                   <!-- ______________________________________________________CLOSE TABLE________________________________ -->
@@ -524,7 +523,7 @@
 
             </div>
           </div>
-          <div fxFlex="20px" class="toggle">
+          <div fxFlex="2" class="toggle">
             <a *ngIf="showRightIcon" href="javascript:void(0)"
               matTooltip="{{opened ? 'Hide properties' : 'Show properties'}}"
               (click)="changeTrigger(opened);sidenav.toggle()">
@@ -576,6 +575,9 @@
                 </div>
               </mat-expansion-panel>
             </mat-accordion>
+            <div *ngIf="showCondtionType" class="spaceDiv">
+              <mat-divider></mat-divider>
+            </div>
             <mat-accordion  *ngIf="showCondtionType">
               <mat-expansion-panel class="mb-2" [expanded]="expandPanel">
                 <mat-expansion-panel-header>
@@ -617,7 +619,7 @@
                     </mat-panel-title>
                   </mat-expansion-panel-header>
                   <!--<label class="m-t-10">{{Label['EXECUTABLE_TYPES']}}</label>-->
-                  <select [(ngModel)]="selectedExecutableType" (click)="getAllExecutableTypes()"
+                  <select class="mb-3" [(ngModel)]="selectedExecutableType" (click)="getAllExecutableTypes()"
                     (change)="updateselectedExecutableType($event.target.value)">
                     <option *ngIf="!executableTypesData.length" [value]="selectedExecutableType">
                       {{selectedExecutableType}}
@@ -648,11 +650,11 @@
                   </mat-expansion-panel-header>
                   <!--            <div class="oneSpace"></div>-->
                   <label class="tabTitle">{{Label['INPUT']}}</label>
-                  <textarea [ngClass]="selectedExecutableType !== 'MANUAL'?'exe_disable':''"
+                  <textarea class="mb-3" [ngClass]="selectedExecutableType !== 'MANUAL'?'exe_disable':''"
                     [disabled]="selectedExecutableType !== 'MANUAL'" [(ngModel)]="executableInput"></textarea>
                   <!--            <div class="oneSpace"></div>-->
                   <label class="tabTitle">{{Label['OUTPUT']}}</label>
-                  <textarea class="exe_disable" disabled [(ngModel)]="executableOutput"></textarea>
+                  <textarea class="exe_disable mb-3" disabled [(ngModel)]="executableOutput"></textarea>
                   <!--            <div class="oneSpace"></div>-->
                   <label class="tabTitle">{{Label['FUNCTIONALITY']}}</label>
                   <textarea class="exe_disable" disabled [(ngModel)]="executableDesc"></textarea>
