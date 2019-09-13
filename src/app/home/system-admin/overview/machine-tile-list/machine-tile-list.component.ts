@@ -107,20 +107,27 @@ export class MachineTileListComponent implements OnInit {
         // })
         
         var data = {
-          "V_CXN_CD":eventData.V_CXN_CD,
-          "V_CXN_TYP":eventData.V_CXN_TYP,
+          // "V_CXN_CD":eventData.V_CXN_CD,
+          // "V_CXN_TYP":eventData.V_CXN_TYP,
+          // "V_SRC_CD":this.V_SRC_CD,
+          // "V_USR_NM":this.V_USR_NM,
+          // "V_PARAM_N":eventData.V_PARAM_NM,
+          // "V_PARAM_V":eventData.V_PARAM_VAL,
+          // "V_PLATFORM_CD": this.connectionList.PLATFORM_TYP.PLATFORM_CD,
+          // "V_PLATFORM_DSC": this.connectionList.PLATFORM_TYP.PLATFORM_DSC,
+          // "REST_Service":["CXN"],
+          // "Verb":["PUT"]
+          "V_PLATFORM_CD":this.connectionList.PLATFORM_TYP.PLATFORM_CD,
           "V_SRC_CD":this.V_SRC_CD,
+          "V_CXN_CD":eventData.V_CXN_CD,
           "V_USR_NM":this.V_USR_NM,
-          "V_PARAM_N":eventData.V_PARAM_NM,
-          "V_PARAM_V":eventData.V_PARAM_VAL,
-          "V_PLATFORM_CD": this.connectionList.PLATFORM_TYP.PLATFORM_CD,
-          "V_PLATFORM_DSC": this.connectionList.PLATFORM_TYP.PLATFORM_DSC,
-          "REST_Service":["CXN"],
-          "Verb":["PUT"]
+          "V_CXN_TYP":eventData.V_CXN_TYP,
+          "V_COMMNT":"initial comment",
+          "REST_Service":"Machine_Connection",
+          "Verb":"PUT"
         }
       
         this.systemOverview.addCxn(data).subscribe(res => {
-          console.log("res",res);
           this.systemOverview.getAllMachineConnections();
         }, err => {
            
@@ -173,7 +180,8 @@ export class MachineTileListComponent implements OnInit {
       this.contextMenuData = {
         V_PLATFORM_CD: machineType,
         cnxData:data,
-        index:index
+        index:index,
+        machineData: this.machine
       };
     }
     this.contextMenuStyle = {
@@ -222,17 +230,7 @@ export class MachineTileListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
-        let body = {
-          "V_CXN_CD": cnx.cnxData.V_CXN_CD,
-          "V_SRC_CD": this.V_SRC_CD,
-          "V_CXN_TYP": cnx.cnxData.V_CXN_TYP,
-          "REST_Service": "Connection",
-          "Verb": "DELETE",
-          "RESULT": "@RESULT"
-        };
-
         this.http.delete(this.apiUrlGet+'V_CXN_TYP='+ cnx.cnxData.V_CXN_TYP + '&V_CXN_CD='+ cnx.cnxData.V_CXN_CD + '&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=CXN&Verb=DELETE').subscribe(res => {
-          console.log("res",res);
           this.systemOverview.getAllMachineConnections();
         }, err => {
           console.log("err", err)
@@ -259,17 +257,8 @@ export class MachineTileListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
-        let body = {
-          "V_CXN_CD": cnx.cnxData.V_CXN_CD,
-          "V_SRC_CD": this.V_SRC_CD,
-          "V_CXN_TYP": cnx.cnxData.V_CXN_TYP,
-          "REST_Service": "Connection",
-          "Verb": "DELETE",
-          "RESULT": "@RESULT"
-        };
 
-        this.http.delete(this.apiUrlGet+'V_CXN_TYP='+ cnx.cnxData.V_CXN_TYP + '&V_CXN_CD='+ cnx.cnxData.V_CXN_CD + '&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=CXN&Verb=DELETE').subscribe(res => {
-          console.log("res",res);
+        this.http.delete(this.apiUrlGet+'V_PLATFORM_CD='+ cnx.machineData.PLATFORM_CD +'&V_CXN_TYP='+ cnx.cnxData.V_CXN_TYP +'&V_COMMNT="initial comment"&V_USR_NM='+ this.V_USR_NM +'&V_CXN_CD='+ cnx.cnxData.V_CXN_CD +'&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=Machine_Connection&Verb=DELETE').subscribe(res => {
           this.systemOverview.getAllMachineConnections();
         }, err => {
           console.log("err", err)
@@ -285,7 +274,6 @@ export class MachineTileListComponent implements OnInit {
   }
 
   onBtnRemoveFromAllConnectionClick(cnx) {
-    //console.log(cnx);
     const dialogRef = this.dialog.open(ConfirmationAlertComponent, {
       panelClass: 'app-dialog',
       width: '600px',
@@ -296,17 +284,8 @@ export class MachineTileListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
-        let body = {
-          "V_CXN_CD": cnx.cnxData.V_CXN_CD,
-          "V_SRC_CD": this.V_SRC_CD,
-          "V_CXN_TYP": cnx.cnxData.V_CXN_TYP,
-          "REST_Service": "Connection",
-          "Verb": "DELETE",
-          "RESULT": "@RESULT"
-        };
-
-        this.http.delete(this.apiUrlGet+'V_CXN_TYP='+ cnx.cnxData.V_CXN_TYP + '&V_CXN_CD='+ cnx.cnxData.V_CXN_CD + '&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=CXN&Verb=DELETE').subscribe(res => {
-          console.log("res",res);
+        
+        this.http.delete(this.apiUrlGet+'V_PLATFORM_CD=""&V_CXN_TYP='+ cnx.cnxData.V_CXN_TYP +'&V_COMMNT="initial comment"&V_USR_NM='+ this.V_USR_NM +'&V_CXN_CD='+ cnx.cnxData.V_CXN_CD +'&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=Machine_Connection&Verb=DELETE').subscribe(res => {
           this.systemOverview.getAllMachineConnections();
         }, err => {
           console.log("err", err)
