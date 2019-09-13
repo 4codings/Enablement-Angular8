@@ -62,6 +62,7 @@ export class UserAdminUserComponent implements OnInit {
   public mobileView = false;
   public desktopView = true;
   initial_setup: any;
+  domainErrorMsg = '';
   @HostListener('window:resize', ['$event'])
   onResize(event?) {
     this.screenHeight = window.innerHeight;
@@ -252,8 +253,12 @@ export class UserAdminUserComponent implements OnInit {
 
   protected checkUserDomain() {
     this.emailIds = this.initial_setup.restricted_email_id;
+    let index_start = this.user.V_USR_NM.indexOf("@");
+    let index_end = this.user.V_USR_NM.indexOf(".");
+    let sub_string = this.user.V_USR_NM.substring(index_start + 1, index_end);
     for (let i = 0; i < this.emailIds.length; i++) {
       if (this.user.V_USR_NM.indexOf(this.emailIds[i]) > -1) {
+        this.domainErrorMsg = `${this.user.V_USR_NM} email can not be used.`;
         this.domainError = true;
         return;
       } else {

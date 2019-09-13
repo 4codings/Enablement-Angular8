@@ -338,14 +338,25 @@ export class OverviewService implements OnDestroy {
     });
   }
 
-  deleteUserFromGroup(group: userGroup, user: User): void {
+  deleteUserFromGroup(group: userGroup, user: User, deleteFromAllGroups): void {
+    let title = '';
+    let message = '';
+    let SELECTED_ENTITY_ID = [];
+    if (deleteFromAllGroups === true) {
+      title = 'Remove User from Group';
+      message = `Are you sure, you want to remove user <strong>${user.V_USR_NM}</strong> from all groups?`;
+    } else if (deleteFromAllGroups === false) {
+      title = 'Remove User from Group';
+      message = `Are you sure, you want to remove user <strong>${user.V_USR_NM}</strong> from group <strong>${group.V_USR_GRP_CD}</strong>?`;
+      // SELECTED_ENTITY_ID = [role.id];
+    }
     const dialogRef = this.dialog.open(ConfirmationAlertComponent,
       {
         panelClass: 'app-dialog',
         width: '600px',
       });
-    dialogRef.componentInstance.title = `Delete User from Group`;
-    dialogRef.componentInstance.message = `Are you sure, you want to delete user <strong>${user.V_USR_NM}</strong> from group <strong>${group.V_USR_GRP_CD}</strong>?`;
+    dialogRef.componentInstance.title = title;
+    dialogRef.componentInstance.message = message;
     dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
       if (flag) {
         let json = {

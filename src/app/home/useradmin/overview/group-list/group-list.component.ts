@@ -1,17 +1,19 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {userGroup} from '../../../../store/user-admin/user-group/usergroup.model';
-import {groupTypeOptions} from '../../useradmin.constants';
-import {AddGroupComponent} from '../../user-admin-group/add-group/add-group.component';
-import {take, takeUntil} from 'rxjs/operators';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { userGroup } from '../../../../store/user-admin/user-group/usergroup.model';
+import { groupTypeOptions, groupTypeConstant } from '../../useradmin.constants';
+import { AddGroupComponent } from '../../user-admin-group/add-group/add-group.component';
+import { take, takeUntil } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
-import {UseradminService} from '../../../../services/useradmin.service2';
-import {OverviewService} from '../overview.service';
-import {Subject} from 'rxjs';
+import { UseradminService } from '../../../../services/useradmin.service2';
+import { OverviewService } from '../overview.service';
+import { Subject } from 'rxjs';
+import { SortPipe } from 'src/app/shared/pipes/sort.pipe';
 
 @Component({
   selector: 'app-group-list',
   templateUrl: './group-list.component.html',
-  styleUrls: ['./group-list.component.scss']
+  styleUrls: ['./group-list.component.scss'],
+  providers: [SortPipe]
 })
 export class GroupListComponent implements OnInit, OnDestroy {
   @Input() membershipPermission: boolean;
@@ -21,8 +23,10 @@ export class GroupListComponent implements OnInit, OnDestroy {
   @Input() controlVariables: any;
 
   groups: userGroup[];
-  groupTypeOptions = groupTypeOptions;
+  groupTypeOptions = this.sortPipe.transform(groupTypeOptions, 'label');
   selectedGroupType;
+  // index = this.groupTypeOptions.findIndex(v => v.key == groupTypeConstant.CUSTOM);
+  // selectedGroupType = this.groupTypeOptions[this.index];
   V_SRC_CD_DATA: any;
   unsubscribeAll: Subject<boolean> = new Subject<boolean>();
 
@@ -30,6 +34,7 @@ export class GroupListComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private userAdminService: UseradminService,
     public overviewService: OverviewService,
+    public sortPipe: SortPipe
   ) {
     this.overviewService.groups$.pipe(takeUntil(this.unsubscribeAll)).subscribe((groups) => {
       this.groups = groups.sort((a, b) => {
@@ -50,6 +55,8 @@ export class GroupListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // this.index = this.groupTypeOptions.findIndex(v => v.key == groupTypeConstant.CUSTOM);
+    // this.selectedGroupType = this.groupTypeOptions[this.index];
     this.controlVariables = this.userAdminService.controlVariables;
     this.V_SRC_CD_DATA = {
       V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
