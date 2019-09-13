@@ -46,6 +46,7 @@ import { HttpModule } from '@angular/http';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { InputOutputElementComponent } from './components/input-output-element/input-output-element.component';
 import { ViewerDiagramComponent } from './components/viewer-diagram/viewer-diagram.component';
+import { SortPipe } from './pipes/sort.pipe';
 @NgModule({
   imports: [
     CommonModule,
@@ -100,7 +101,8 @@ import { ViewerDiagramComponent } from './components/viewer-diagram/viewer-diagr
     DeleteConfirmComponent,
     DialogScheduleComponent,
     InputOutputElementComponent,
-    ViewerDiagramComponent
+    ViewerDiagramComponent,
+    SortPipe
   ],
   entryComponents: [
     ConfirmationAlertComponent,

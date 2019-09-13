@@ -18,12 +18,12 @@ export class UserFormComponent implements OnInit, OnChanges {
   @Input() user: User;
   @Input() users: User[];
   @Input() groupId: string;
-
+  @Output() userFormValidation: EventEmitter<any> = new EventEmitter<any>();
   userForm: FormGroup;
   userStatusOptions = userStatusOptions;
   protected emailIds: string[] = [];
   initial_setup: any;
-
+  domainErrorMessage = '';
   constructor(protected store: Store<AppState>, protected httpClient: HttpClient) {
     this.httpClient.get('../../../../../assets/initial-setup.json').subscribe(res => {
       this.initial_setup = res;
@@ -46,7 +46,10 @@ export class UserFormComponent implements OnInit, OnChanges {
       this.setFormValue(this.user, this.groupId);
     }
     if (changes.hasOwnProperty('users')) {
-      this.userForm.get('V_USR_NM').setValidators([Validators.required, Validators.email, userNameValidator(this.users), this.userNameGroupValidator()]);
+      this.userForm.get('V_USR_NM').setValidators([Validators.required, Validators.email, this.userNameValidator(this.users), this.userNameDomainValidator()]);
+    }
+    if (this.isValid()) {
+      this.userFormValidation.emit(true);
     }
   }
 
@@ -66,6 +69,7 @@ export class UserFormComponent implements OnInit, OnChanges {
   }
 
   isValid(): boolean {
+    this.userFormValidation.emit(this.userForm.valid);
     return this.userForm.valid;
   }
 
@@ -83,35 +87,39 @@ export class UserFormComponent implements OnInit, OnChanges {
   hasUser(userName: string): boolean {
     return !!this.users.filter(user => user.V_USR_NM.toLowerCase() === userName.toLowerCase()).length;
   }
-  userNameGroupValidator(): ValidatorFn {
+  userNameDomainValidator(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
       this.emailIds = this.initial_setup != undefined ? this.initial_setup.restricted_email_id : [];
       for (let i = 0; i < this.emailIds.length; i++) {
         if (control.value.indexOf(this.emailIds[i]) > -1) {
+          this.domainErrorMessage = this.userForm.value.V_USR_NM + ' email can not be used';
+          this.userFormValidation.emit(false);
           return {
-            groupError: {
+            domainError: {
               userName: true
             }
           };
         } else {
+          this.isValid();
           return null;
         }
       }
     };
   }
 
-
+  userNameValidator(allUsers: User[]): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      if (allUsers && control.value && (!!allUsers.filter(user => user.V_USR_NM.toLowerCase() === control.value.toLowerCase()).length)) {
+        return {
+          userError: {
+            userName: true
+          }
+        };
+      }
+      this.isValid();
+      return null;
+    };
+  }
 }
 
-export function userNameValidator(allUsers: User[]): ValidatorFn {
-  return (control: AbstractControl): { [key: string]: any } | null => {
-    if (allUsers && control.value && (!!allUsers.filter(user => user.V_USR_NM.toLowerCase() === control.value.toLowerCase()).length)) {
-      return {
-        userError: {
-          userName: true
-        }
-      };
-    }
-    return null;
-  };
-}
+

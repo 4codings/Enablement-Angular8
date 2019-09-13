@@ -28,6 +28,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
   allUsers: User[] = [];
   @ViewChild(UserFormComponent, { static: false } as any) userForm: UserFormComponent;
   @ViewChild(UserListComponent, { static: false } as any) userList: UserListComponent;
+  userFormValid = false;
 
   constructor(private store: Store<AppState>,
     private userAdminService: UseradminService,
@@ -107,5 +108,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.actionSubscription ? this.actionSubscription.unsubscribe() : '';
   }
-
+  onUserFormVallidation(event) {
+    this.userFormValid = event;
+  }
 }

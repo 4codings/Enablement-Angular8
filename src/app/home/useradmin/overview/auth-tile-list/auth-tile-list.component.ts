@@ -49,6 +49,9 @@ export class AuthTileListComponent implements OnInit {
     });
   }
 
+  method2CallForDblClick() {
+  }
+
   authDropped(event: CdkDragDrop<AuthorizationData[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);

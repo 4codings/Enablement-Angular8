@@ -1,15 +1,15 @@
-import {Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
-import {User} from '../../../../store/user-admin/user/user.model';
-import {CdkDragDrop, copyArrayItem, moveItemInArray} from '@angular/cdk/drag-drop';
-import {userGroup} from '../../../../store/user-admin/user-group/usergroup.model';
-import {SelectionModel} from '@angular/cdk/collections';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { User } from '../../../../store/user-admin/user/user.model';
+import { CdkDragDrop, copyArrayItem, moveItemInArray } from '@angular/cdk/drag-drop';
+import { userGroup } from '../../../../store/user-admin/user-group/usergroup.model';
+import { SelectionModel } from '@angular/cdk/collections';
 import * as fromUserMembership from '../../../../store/user-admin/user-membership/usermembership.action';
-import {AddUserComponent} from '../../user-admin-user/add-user/add-user.component';
-import {take, takeUntil} from 'rxjs/operators';
+import { AddUserComponent } from '../../user-admin-user/add-user/add-user.component';
+import { take, takeUntil } from 'rxjs/operators';
 import * as usreActions from '../../../../store/user-admin/user/user.action';
-import {OverviewService} from '../overview.service';
-import {Observable, Subject} from 'rxjs';
-import {environment} from '../../../../../environments/environment';
+import { OverviewService } from '../overview.service';
+import { Observable, Subject } from 'rxjs';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-user-tile-list',
@@ -26,7 +26,7 @@ export class UserTileListComponent implements OnInit, OnDestroy {
   @Input() controlVariables: any;
   environment = environment;
   @Output() addUserEvent: EventEmitter<User> = new EventEmitter<User>();
-  @Output() deleteUserEvent: EventEmitter<User> = new EventEmitter<User>();
+  @Output() deleteUserEvent: EventEmitter<any> = new EventEmitter<any>();
 
   @ViewChild('contextMenu', { static: false } as any) set contextMenu(value: ElementRef) {
     if (value) {
@@ -90,9 +90,9 @@ export class UserTileListComponent implements OnInit, OnDestroy {
     this.contextMenuData = null;
   }
 
-  onContextMenuDeleteUserBtnClick(): void {
+  onContextMenuDeleteUserBtnClick(deleteFromAllGroups): void {
     this.contextMenuActive = false;
-    this.deleteUserEvent.emit(this.contextMenuData);
+    this.deleteUserEvent.emit({ 'userData': this.contextMenuData, 'deleteFromAllGroups': deleteFromAllGroups });
     this.contextMenuData = null;
   }
 

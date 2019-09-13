@@ -1,14 +1,14 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {userGroup} from '../../../../store/user-admin/user-group/usergroup.model';
-import {User} from '../../../../store/user-admin/user/user.model';
-import {CdkDragDrop, copyArrayItem, moveItemInArray} from '@angular/cdk/drag-drop';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { userGroup } from '../../../../store/user-admin/user-group/usergroup.model';
+import { User } from '../../../../store/user-admin/user/user.model';
+import { CdkDragDrop, copyArrayItem, moveItemInArray } from '@angular/cdk/drag-drop';
 import * as fromUserMembership from '../../../../store/user-admin/user-membership/usermembership.action';
-import {SelectionModel} from '@angular/cdk/collections';
-import {ConfirmationAlertComponent} from '../../../../shared/components/confirmation-alert/confirmation-alert.component';
-import {take, takeUntil} from 'rxjs/operators';
-import {EditGroupComponent} from '../../user-admin-group/edit-group/edit-group.component';
-import {OverviewService} from '../overview.service';
-import {BehaviorSubject, Subject} from 'rxjs';
+import { SelectionModel } from '@angular/cdk/collections';
+import { ConfirmationAlertComponent } from '../../../../shared/components/confirmation-alert/confirmation-alert.component';
+import { take, takeUntil } from 'rxjs/operators';
+import { EditGroupComponent } from '../../user-admin-group/edit-group/edit-group.component';
+import { OverviewService } from '../overview.service';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-single-group',
@@ -53,8 +53,8 @@ export class SingleGroupComponent implements OnInit, OnDestroy {
     }
   }
 
-  onDeleteUserEventHandler(user: User): void {
-    this.overviewService.deleteUserFromGroup(this.group, user);
+  onDeleteUserEventHandler(user): void {
+    this.overviewService.deleteUserFromGroup(this.group, user['userData'], user['deleteFromAllGroups']);
   }
 
   onBtnAssignRoleClick(group: userGroup): void {

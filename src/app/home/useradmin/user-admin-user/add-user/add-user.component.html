@@ -13,7 +13,7 @@
       </app-user-list>
     </mat-tab>
     <mat-tab label="Add New User">
-      <app-user-form [users]="allUsers"></app-user-form>
+      <app-user-form [users]="allUsers" (userFormValidation)="onUserFormVallidation($event)"></app-user-form>
     </mat-tab>
   </mat-tab-group>
   <!-- <mat-radio-group [(ngModel)]="selectedView" fxLayout="row" fxLayoutAlign="space-around center">
@@ -26,6 +26,6 @@
   <!-- </div> -->
   <div class="dialog-footer content-wrapper" fxLayoutAlign="end center" fxLayoutGap="8px">
     <div fxFlex fxLayoutAlign="start center" style="color: #DD312E" *ngIf="userAlreadyExist">User already exist</div>
-    <button mat-flat-button color="primary" (click)="onBtnAddClick()">Add</button>
+    <button mat-flat-button color="primary" [disabled]="!userFormValid" (click)="onBtnAddClick()">Add</button>
   </div>
 </div>
