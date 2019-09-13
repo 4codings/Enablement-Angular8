@@ -6,19 +6,19 @@
     (contextmenu)="openContextmenu($event, currAuth)" (mousedown)="onTileMouseDownEventHandler($event)"
     (click)="onAuthTileClick(currAuth)">
     <div class="tile-icons-wrapper" fxLayout="row wrap" fxLayoutAlign="space-around">
-      <mat-icon class="tile-icon" *ngIf="currAuth.V_CREATE==='Y'">
+      <mat-icon class="tile-icon" (dblclick)="method2CallForDblClick('add')" *ngIf="currAuth.V_CREATE==='Y'" >
         add
       </mat-icon>
-      <mat-icon class="tile-icon" *ngIf="currAuth.V_UPDATE==='Y'">
+      <mat-icon class="tile-icon" (dblclick)="method2CallForDblClick('create')" *ngIf="currAuth.V_UPDATE==='Y'">
         create
       </mat-icon>
-      <mat-icon class="tile-icon" *ngIf="currAuth.V_READ==='Y'">
+      <mat-icon class="tile-icon" (dblclick)="method2CallForDblClick('read')" *ngIf="currAuth.V_READ==='Y'">
         remove_red_eye
       </mat-icon>
-      <mat-icon class="tile-icon" *ngIf="currAuth.V_DELETE==='Y'">
+      <mat-icon class="tile-icon" (dblclick)="method2CallForDblClick('delete')" *ngIf="currAuth.V_DELETE==='Y'">
         delete
       </mat-icon>
-      <mat-icon class="tile-icon" *ngIf="currAuth.V_EXECUTE==='Y'">
+      <mat-icon class="tile-icon" (dblclick)="method2CallForDblClick('execute')" *ngIf="currAuth.V_EXECUTE==='Y'">
         launch
       </mat-icon>
     </div>
