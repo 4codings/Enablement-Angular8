@@ -580,24 +580,16 @@ mat-header-cell {
     outline: none;
 }
 
-.fa-file-download {
-    padding-left: 5px;
-}
-
 .fa-download {
     color: orange;
-}
-
-.fa-resolving {
-    color: #00ff00;
 }
 
 .fa-desktop {
     color: #ff1a1a;
 }
 
-.fa-play-circle {
-    color: #4d0026;
+.fa-play-circle, .fa-clock {
+    color: #ff0000;
 }
 
 .fa-skull-crossbones {
@@ -616,7 +608,7 @@ mat-header-cell {
     color: #99cc00;
 }
 
-.fa-pencil-square-o {
+.fa-pencil-square-o, .fa-plane {
     color: rgb(255, 116, 0);
 }
 
@@ -657,6 +649,10 @@ mat-header-cell {
 
 .mat-menu-item .mat-icon:first-child {
     color: #99cc00;
+}
+
+.contact_phone .mat-menu-item .mat-icon {
+    color: #ff7400;
 }
 
 .attach_file .mat-menu-item .mat-icon {

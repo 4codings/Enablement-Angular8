@@ -23,13 +23,19 @@
       
       <div style="padding-left: 8px">
         <span>Machines : </span>
-        <button mat-button [matMenuTriggerFor]="machineMenu">{{selectedMachineType}}
+        <!-- <button mat-button [matMenuTriggerFor]="machineMenu">{{selectedMachineType}}
           <mat-icon matSuffix>arrow_drop_down</mat-icon>
         </button>
         <mat-menu #machineMenu="matMenu">
           <button mat-menu-item *ngFor="let item of machineTypeOptions"
                   (click)="changeMachine(item.PLATFORM_CD)">{{item.PLATFORM_CD}}</button>
-        </mat-menu> 
+        </mat-menu>  -->
+        <input type="text" matInput [formControl]="myControl" [(ngModel)]="selectedMachineType" name="V_CXN_CD" (ngModelChange)="onChange()" [matAutocomplete]="auto" required>
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option.PLATFORM_CD">
+              {{option.PLATFORM_CD}}
+            </mat-option>
+          </mat-autocomplete>
       </div>
 
     </div> 

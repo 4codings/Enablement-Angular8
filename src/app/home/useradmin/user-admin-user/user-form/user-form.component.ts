@@ -101,7 +101,7 @@ export class UserFormComponent implements OnInit, OnChanges {
           };
         } else {
           this.isValid();
-          return null;
+          // return null;
         }
       }
     };

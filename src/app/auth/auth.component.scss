@@ -7,8 +7,9 @@
 // 	Author: PIXINVENT
 // 	Author URL: http://www.themeforest.net/user/pixinvent
 // ================================================================================================
-
-.profileCard {
-    box-shadow: none;
-    border: none;
+@media screen and (max-width: 768px) {
+    .profileCard {
+        box-shadow: none;
+        border: none;
+    }
 }

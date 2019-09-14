@@ -17,8 +17,8 @@ export class EditConnectionDialogComponent implements OnInit {
   public V_CXN_DSC;
   public V_CXN_TYP;
   public DATA; 
-  PLF_CD:string = "amazon";
-  PLF_DSC:string = 'Apache Tomcat Web Server';
+  PLF_CD:string = "";
+  PLF_DSC:string = "";
   PLF_TYPE=[];
   PLF_DATA;
   V_CXN_CD_DUP='';
@@ -41,6 +41,8 @@ export class EditConnectionDialogComponent implements OnInit {
     });
 
     this.V_CXN_CD_DUP = this.data.cnxData.V_CXN_CD;
+    this.PLF_CD = this.data.machineData.PLATFORM_CD;
+    this.platformDescription();
   }
 
   onBtnCancelClick(): void {
@@ -58,7 +60,6 @@ export class EditConnectionDialogComponent implements OnInit {
   }
 
   onBtnEditClick(connectionData) {
-    console.log(connectionData);
     let V_PARAM_N = '';
     let V_PARAM_V = '';
     Object.keys(connectionData).forEach((key, index) => {
@@ -84,7 +85,6 @@ export class EditConnectionDialogComponent implements OnInit {
       "Verb":["PUT"]
     }
     this.http.put(this.apiUrlGet, data).subscribe(res => {
-      console.log("res",res);
       this.dialogRef.close(true);
     }, err => {
   

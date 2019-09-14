@@ -95,28 +95,36 @@ export class ExeTileListComponent implements OnInit {
         // console.log("event.previousContainer.data",event.previousContainer.data);
         // console.log("event.container.data", event.container.data[event.currentIndex]);
         let eventData = event.container.data[event.currentIndex]; 
+        
         let data = {
-          "V_EXE_CD": eventData.V_EXE_CD,
-          "V_SRC_CD": this.V_SRC_CD,
-          "V_EXE_SIGN": eventData.V_EXE_SIGN,
-          "V_PARAM_DLMTR_STRT": eventData.V_PARAM_DLMTR_STRT,
-          "V_PARAM_DLMTR_END":eventData.V_PARAM_DLMTR_END,
-          "V_EXE_VRSN": eventData.V_EXE_VRSN,
-          "V_EXE_TYP": eventData.V_EXE_TYP,
-          "V_SYNC_FLG": eventData.V_SYNC_FLG,
-          "V_EXE_DSC": eventData.V_EXE_DSC,
-          "V_EXE_OUT_PARAMS": eventData.V_EXE_OUT_PARAMS,
-          "V_USR_NM": this.V_USR_NM,
-          "V_EXE_IN_ARTFCTS": eventData.V_EXE_IN_ARTFCTS,
-          "V_EXE_OUT_ARTFCTS":eventData.V_EXE_OUT_ARTFCTS,
+          // "V_EXE_CD": eventData.V_EXE_CD,
+          // "V_SRC_CD": this.V_SRC_CD,
+          // "V_EXE_SIGN": eventData.V_EXE_SIGN,
+          // "V_PARAM_DLMTR_STRT": eventData.V_PARAM_DLMTR_STRT,
+          // "V_PARAM_DLMTR_END":eventData.V_PARAM_DLMTR_END,
+          // "V_EXE_VRSN": eventData.V_EXE_VRSN,
+          // "V_EXE_TYP": eventData.V_EXE_TYP,
+          // "V_SYNC_FLG": eventData.V_SYNC_FLG,
+          // "V_EXE_DSC": eventData.V_EXE_DSC,
+          // "V_EXE_OUT_PARAMS": eventData.V_EXE_OUT_PARAMS,
+          // "V_USR_NM": this.V_USR_NM,
+          // "V_EXE_IN_ARTFCTS": eventData.V_EXE_IN_ARTFCTS,
+          // "V_EXE_OUT_ARTFCTS":eventData.V_EXE_OUT_ARTFCTS,
+          // "V_SERVER_CD":this.exes.SERVER_TYP.SERVER_CD,
+          // "V_COMMNT": '',
+          // "V_ICN_TYP":eventData.V_ICN_TYP,
+          // "REST_Service":["Exe"],
+          // "Verb":["PUT"]
           "V_SERVER_CD":this.exes.SERVER_TYP.SERVER_CD,
-          "V_COMMNT": '',
-          "V_ICN_TYP":eventData.V_ICN_TYP,
-          "REST_Service":["Exe"],
-          "Verb":["PUT"]
+          "V_SRC_CD":this.V_SRC_CD,
+          "V_EXE_CD":eventData.V_EXE_CD,
+          "V_EXE_TYP":eventData.V_EXE_TYP,
+          "V_USR_NM":this.V_USR_NM,
+          "V_COMMNT":"",
+          "REST_Service":"Exe_Server",
+          "Verb":"PUT"
         }
         this.systemOverview.addExe(data).subscribe(res => {
-          console.log("res",res);
           this.systemOverview.getAllExes();
         }, err => {
            
@@ -236,7 +244,6 @@ export class ExeTileListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
         this.http.get('https://enablement.us/Enablement/rest/v1/securedJSON?V_EXE_TYP='+ exe.EXE_TYP + '&V_EXE_CD='+ exe.exeData.V_EXE_CD + '&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=Exe&Verb=DELETE').subscribe(res => {
-          console.log("res",res);
           this.systemOverview.getAllExes();
         }, err => {
           console.log("err", err)
@@ -254,11 +261,10 @@ export class ExeTileListComponent implements OnInit {
 
     dialogRef.componentInstance.title = `Remove Exe- ${exe.EXE_TYP}`;
     dialogRef.componentInstance.message = `Are you sure, you want to remove Exe <strong>${exe.exeData.V_EXE_CD}</strong> from all platforms?`;
-
+    
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
-        this.http.get('https://enablement.us/Enablement/rest/v1/securedJSON?V_EXE_TYP='+ exe.EXE_TYP + '&V_EXE_CD='+ exe.exeData.V_EXE_CD + '&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=Exe&Verb=DELETE').subscribe(res => {
-          console.log("res",res);
+        this.http.get('https://enablement.us/Enablement/rest/v1/secured?V_EXE_CD='+exe.exeData.V_EXE_CD+'&V_USR_NM='+ this.V_USR_NM +'&V_EXE_TYP='+exe.EXE_TYP+'&V_SERVER_CD=&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=Exe_Server&Verb=DELETE').subscribe(res => {
           this.systemOverview.getAllExes();
         }, err => {
           console.log("err", err)
@@ -279,8 +285,7 @@ export class ExeTileListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
-        this.http.get('https://enablement.us/Enablement/rest/v1/securedJSON?V_EXE_TYP='+ exe.EXE_TYP + '&V_EXE_CD='+ exe.exeData.V_EXE_CD + '&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=Exe&Verb=DELETE').subscribe(res => {
-          console.log("res",res);
+        this.http.get('https://enablement.us/Enablement/rest/v1/secured?V_EXE_CD='+exe.exeData.V_EXE_CD+'&V_EXE_TYP='+exe.EXE_TYP+'&V_SERVER_CD='+ exe.platFormData.SERVER_CD +'&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=Exe_Server&Verb=DELETE').subscribe(res => {
           this.systemOverview.getAllExes();
         }, err => {
           console.log("err", err)
