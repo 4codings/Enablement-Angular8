@@ -3,14 +3,17 @@ import { PersonalizationTableComponent } from '../personalization-table/personal
 import { ReportTableComponent } from '../report-table.component';
 import { ConfigServiceService } from '../../../../services/config-service.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ChartDataSets, ChartOptions } from 'chart.js';
+import { Color, BaseChartDirective } from 'ng2-charts-x';
 import * as pluginAnnotations from 'chartjs-plugin-annotation';
+import { Chart } from 'chart.js';
 
 @Component({
   selector: 'app-charts',
-  templateUrl: './charts.component.html',
-  styleUrls: ['./charts.component.scss']
+  templateUrl: './report-charts.component.html',
+  styleUrls: ['./report-charts.component.scss']
 })
-export class ChartsComponent implements OnInit {
+export class ReportChartsComponent implements OnInit {
 
   constructor(public report: ReportTableComponent,
     public data: ConfigServiceService,
@@ -192,6 +195,7 @@ export class ChartsComponent implements OnInit {
   chartOptions: any = [];
   lastPrefernce: any = [];
   ngOnInit() {
+    Chart.pluginService.register(pluginAnnotations);
     this.subscription = this.data.chartPreferencesChange
       .subscribe(value => {
         console.log(value);
