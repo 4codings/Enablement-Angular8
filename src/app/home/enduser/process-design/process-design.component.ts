@@ -120,13 +120,13 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     { item: 'New Process', value: 'Add', havePermission: 0, icon: 'create', iconType: 'mat' },
     { item: 'Open BPMN File', value: 'Import', havePermission: 0, icon: 'attach_file', iconType: 'mat' },
     { item: 'Edit Application', value: 'Edit', havePermission: 0, icon: 'entry bpmn-icon-screw-wrench mr-10', iconType: 'bpmn' },
-    { item: 'Delete Application', value: 'Delete', havePermission: 0, icon: 'delete_outline', iconType: 'mat' }];
+    { item: 'Delete Application', value: 'Delete', havePermission: 0, icon: 'entry bpmn-icon-trash', iconType: 'bpmn' }];
   childrenMenuItems = [
     { item: 'Run', value: 'Run', havePermission: 0, icon: 'directions_run', iconType: 'mat' },
-    { item: 'Run At', value: 'RunAt', havePermission: 0, icon: 'fa fa-plane fa-lg', iconType: 'fa' },
+    { item: 'Run At', value: 'RunAt', havePermission: 0, icon: 'fas fa-clock fa-lg', iconType: 'fa' },
     { item: 'Approve', value: 'Approve', havePermission: 0, icon: 'fas fa-thumbs-up fa-lg', iconType: 'fa' },
     { item: 'Monitor', value: 'Monitor', havePermission: 0, icon: 'fas fa-desktop fa-lg', iconType: 'fa' },
-    { item: 'Resolve', value: 'Resolve', havePermission: 0, icon: 'fab fa-resolving fa-lg', iconType: 'fa' },
+    { item: 'Resolve', value: 'Resolve', havePermission: 0, icon: 'contact_phone', iconType: 'mat' },
     { item: 'Schedule', value: 'Schedule', havePermission: 0, icon: 'fa fa-calendar fa-lg', iconType: 'fa' },
     { item: 'Pause Schedule', value: 'SchedulePause', havePermission: 0, icon: 'far fa-pause-circle fa-lg', iconType: 'fa' },
     { item: 'Kill Schedule', value: 'ScheduleKill', havePermission: 0, icon: 'far fa-trash fa-lg', iconType: 'fa' }, { item: 'Resume Schedule', value: 'ScheduleResume', havePermission: 0, icon: 'far fa-play-circle mr-2 fa-lg', iconType: 'fa' },
@@ -289,6 +289,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   pie = false;
   file_path: any;
   elementExistError = false;
+  closePanelOnSchedule: boolean = true;
   constructor(
     private httpClient: HttpClient,
     private http: Http,
@@ -1335,6 +1336,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
 
     this.display_process_table = false;
     this.show_filter_input = false;
+    this.closePanelOnSchedule = true;
   }
 
   onChildMenuItemClick(actionValue, childValue) {
@@ -1376,6 +1378,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       }
       case 'Schedule': {
         this.newScheduleView = true;
+        this.closePanelOnSchedule = false;
         break;
       }
       case 'SchedulePause': {
