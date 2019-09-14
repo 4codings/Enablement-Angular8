@@ -9,7 +9,7 @@ export class FilterExetypePipe implements PipeTransform {
     if(type == 'exe') {
       if(!value)return null;
       if(!args)return value;
-      if(!selectedPlatOrMcn)return value;
+     
       args = args.toLowerCase();
       selectedPlatOrMcn = selectedPlatOrMcn.toLowerCase();
       if(args == 'all') {
@@ -18,7 +18,7 @@ export class FilterExetypePipe implements PipeTransform {
         let exes = [];
         let arr = [];
         let sortedAllExes = [];
- 
+        
         if(selectedPlatOrMcn == 'all') {
           value.forEach(function(exe){
             exes = exe.EXES.filter((item) => {

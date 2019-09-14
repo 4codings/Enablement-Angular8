@@ -66,6 +66,7 @@ export class PersonalizationTableComponent implements OnInit {
   chartposition: any = [{ x: 0, y: 0 }, { x: 0, y: 0 }, { x: 0, y: 0 }, { x: 0, y: 0 }];
   chartPreferences = [];
   chartno = [];
+  annotation = [];
   gridlinewidth = [];
   backgroundcolor = [];
   bordercolor = [];
@@ -104,7 +105,7 @@ export class PersonalizationTableComponent implements OnInit {
   rowPreference = {
     gridlinewidth: "", chartno: "",
     backgroundcolor: "", bordercolor: "", fillbackground: "", linetension: "", pointradius: "", animations: "",
-    pointstyle: "", linestyle: "", gridborder: "", yaxisautoskip: "", selectedchart: "", chartposition: "",
+    pointstyle: "", linestyle: "", gridborder: "", yaxisautoskip: "", annotation: "", selectedchart: "", chartposition: "",
     xaxisdata: "", yaxisdata: "", UoM_x: "", UoM_y: "", SoM_x: "", SoM_y: "", xaxisstepsize: "", yaxisstepsize: "", personalizationtable: {}
   };
   myobj = { mychartType: "", myxaxisdata: "", myyaxisdata: "", myUoM: "", mySoM: "" }
@@ -216,6 +217,7 @@ export class PersonalizationTableComponent implements OnInit {
     this.linestyle[index]=this.data.chartPreferences[foundIndex]['linestyle']
     this.gridborder[index]=this.data.chartPreferences[foundIndex]['gridborder']
     this.yaxisautoskip[index]=this.data.chartPreferences[foundIndex]['yaxisautoskip']
+    this.annotation[index]=this.data.chartPreferences[foundIndex]['annotation']
     this.xaxisdata[index]=this.data.chartPreferences[foundIndex]['xaxisdata']
     this.yaxisdata[index]=this.data.chartPreferences[foundIndex]['yaxisdata']
     this.UoM_x[index]=this.data.chartPreferences[foundIndex]['UoM_x']
@@ -310,7 +312,7 @@ export class PersonalizationTableComponent implements OnInit {
     this.report.V_PRF_VAL = Object.values(this.userprefs);*/
   }
 
-  selectedchart_Form: FormGroup;
+  
   addRow_action() {
     this.chartno.push(this.chartno.length + 1);
     this.gridlinewidth.push("");
@@ -343,10 +345,11 @@ export class PersonalizationTableComponent implements OnInit {
     this.SoM_y.push("");
     this.xaxisstepSize.push("");
     this.yaxisstepSize.push("");
+    this.annotation.push("");
     this.chartPreferences.push({
       gridlinewidth: "", chartno: this.chartno.length,
       backgroundcolor: "", bordercolor: "", fillbackground: false, linetension: "", pointradius: "", animations: "",
-      pointstyle: "rectRot", linestyle: "", gridborder: "", yaxisautoskip: "", selectedchart: "", chartposition: "",
+      pointstyle: "rectRot", linestyle: "", gridborder: "", yaxisautoskip: "", annotation: "", selectedchart: "", chartposition: "",
       xaxisdata: "", yaxisdata: "", UoM_x: "", UoM_y: "", SoM_x: "", SoM_y: "", xaxisstepsize: "", yaxisstepsize: "", personalizationtable: {}
     });
     this.data.chartposition.push({ x: 0, y: 0 });

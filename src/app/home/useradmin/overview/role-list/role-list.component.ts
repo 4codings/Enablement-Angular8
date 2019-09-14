@@ -58,6 +58,7 @@ export class RoleListComponent implements OnInit {
     };
     this.index = this.authorizationTypeOptions.findIndex(v => v.key == authorizationTypeConstants.PROCESS);
     this.selectedAuthType = this.authorizationTypeOptions[this.index];
+    this.selectAuthType(this.selectedAuthType);
   }
 
   selectAuthType(authType): void {

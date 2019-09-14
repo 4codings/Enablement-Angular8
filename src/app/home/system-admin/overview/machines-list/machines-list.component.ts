@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, Input } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { takeUntil, map, startWith } from 'rxjs/operators';
+import { Subject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { EventEmitter } from '@angular/core';
 import { AddPlatformDialogComponent } from '../add-platform-dialog/add-platform-dialog.component';
@@ -9,6 +9,7 @@ import { SystemAdminOverviewService } from '../system-admin-overview.service';
 import { ManageMachinesComponent } from '../dialogs/manage-machines/manage-machines.component';
 import { AssignMcnPlfComponent } from '../dialogs/assign-mcn-plf/assign-mcn-plf.component';
 import { Globals } from 'src/app/services/globals';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-machines-list',
@@ -26,6 +27,8 @@ export class MachinesListComponent implements OnInit {
   public machineTypeOptions;
   @Input() selectedConnectionType;
   @Input() userAccess;
+  myControl = new FormControl();
+  filteredOptions: Observable<string[]>;
   
   unsubscribeAll: Subject<boolean> = new Subject<boolean>();
   connectionTypeOptions;
@@ -50,6 +53,12 @@ export class MachinesListComponent implements OnInit {
     this.systemOverview.machineOptions$.subscribe(machine => {
       this.machineTypeOptions = machine;
     });
+
+    this.filteredOptions = this.myControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this._filter(value))
+    );
     //this.MachineCode();
   }
 
@@ -58,6 +67,16 @@ export class MachinesListComponent implements OnInit {
   //     this.machines=res;
   //   });
   // }
+  
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.machineTypeOptions.filter(option => option.PLATFORM_CD.toLowerCase().includes(filterValue));
+  }
+
+  onChange() {
+
+  }
 
   changeMachineType(type) {
     this.selectedConnectionType = type.EXE_TYP;

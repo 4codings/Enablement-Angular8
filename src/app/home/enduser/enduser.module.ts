@@ -14,7 +14,7 @@ import { NonRepeatableFormComponent } from './execute/non-repeatable-form/non-re
 import { RepeatableFormComponent } from './execute/repeatable-form/repeatable-form.component';
 import { ReportTableComponent } from './report-table/report-table.component';
 import { PersonalizationTableComponent } from './report-table/personalization-table/personalization-table.component';
-import { ChartsComponent } from './report-table/charts/charts.component';
+import { ReportChartsComponent } from './report-table/report-charts/report-charts.component';
 
 
 @NgModule({
@@ -28,7 +28,7 @@ import { ChartsComponent } from './report-table/charts/charts.component';
     ReportTableComponent,
     DialogChartsComponent,
     PersonalizationTableComponent,
-    ChartsComponent
+    ReportChartsComponent
   ],
   imports: [
     EnduserRoutingModule,

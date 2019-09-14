@@ -133,6 +133,19 @@
     </div>
   </div>
 
+  <div fxLayout="column" id="annotations" class="table-column">
+    <div class="table-title">Annotations</div>
+    <div class="table-cell" *ngFor="let ann of annotation; let i=index; trackBy:indexTracker">
+      <mat-form-field style="width:100%">
+        <mat-select placeholder="Select Annotation" (selectionChange)="setchartpreferences('annotation',$event.value,i);" [(value)]="ann">
+          <mat-option *ngFor="let option of yaxis_datasets" value="{{option}}">
+            {{option}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
   <div fxLayout="column" id="gridlinewidth" class="table-column">
     <div class="table-title">Grid Line Width</div>
     <div class="table-cell" *ngFor="let gwidth of gridlinewidth; let i=index; trackBy:indexTracker">
