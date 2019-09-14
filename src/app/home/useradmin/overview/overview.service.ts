@@ -341,14 +341,14 @@ export class OverviewService implements OnDestroy {
   deleteUserFromGroup(group: userGroup, user: User, deleteFromAllGroups): void {
     let title = '';
     let message = '';
-    let SELECTED_ENTITY_ID = [];
+    let V_DELETED_ID_ARRAY = '';
     if (deleteFromAllGroups === true) {
       title = 'Remove User from Group';
       message = `Are you sure, you want to remove user <strong>${user.V_USR_NM}</strong> from all groups?`;
     } else if (deleteFromAllGroups === false) {
       title = 'Remove User from Group';
       message = `Are you sure, you want to remove user <strong>${user.V_USR_NM}</strong> from group <strong>${group.V_USR_GRP_CD}</strong>?`;
-      // SELECTED_ENTITY_ID = [role.id];
+      V_DELETED_ID_ARRAY = group.id;
     }
     const dialogRef = this.dialog.open(ConfirmationAlertComponent,
       {
@@ -360,7 +360,7 @@ export class OverviewService implements OnDestroy {
     dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
       if (flag) {
         let json = {
-          'V_DELETED_ID_ARRAY': group.id,
+          'V_DELETED_ID_ARRAY': V_DELETED_ID_ARRAY,
           'V_ADDED_ID_ARRAY': '',
           'SELECTED_ENTITY': ['USER'],
           'SELECTED_ENTITY_ID': user.id.split(' '),
@@ -499,6 +499,10 @@ export class OverviewService implements OnDestroy {
     });
   }
 
+  afterEditAuth(flag): void {
+    if (flag)
+      this.store.dispatch(new userRoleActions.getUserRole(this.V_SRC_CD_DATA));
+  }
   openEditAuthDialog(auth: AuthorizationData): void {
     const dialogRef = this.dialog.open(AddEditAuthorizeComponent,
       {
