@@ -81,8 +81,13 @@ export class SystemAdminOverviewService {
       // });
       this.exesData = res;
       this.plat.forEach(item => {
-        let arr = res.filter(data => {
-          return item.SERVER_CD == data.V_SERVER_CD.toString()
+        let arr = [];
+        res.filter(data => {
+          data.V_SERVER_CD.forEach(data1 => { 
+            if(item.SERVER_CD == data1) {
+              arr.push(data);
+            }
+          })
         })
         allExes.push({SERVER_TYP: item, EXES:arr})
       });
@@ -128,8 +133,13 @@ export class SystemAdminOverviewService {
       // });
       this.connectionData = res;
       this.machines.forEach(item => {
-        let arr = res.filter(data => {
-          return item.PLATFORM_CD == data.V_PLATFORM_CD.toString()
+        let arr = []
+        res.filter(data => {
+          data.V_PLATFORM_CD.forEach(data1 => {
+            if(item.PLATFORM_CD == data1) {
+              arr.push(data);
+            }
+          })
         })
         connections.push({PLATFORM_TYP: item, V_CXN:arr})
       });
@@ -239,10 +249,10 @@ export class SystemAdminOverviewService {
   }
 
   addExe(body) {
-    return this.http.put(this.apiUrlGet, body)
+    return this.http.put(this.apiUrlPut, body)
   }
 
   addCxn(body) {
-    return this.http.put(this.apiUrlGet, body)
+    return this.http.put(this.apiUrlPut, body)
   }
 }

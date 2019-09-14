@@ -1,13 +1,14 @@
 import { Component, OnInit, OnDestroy, Output, Input } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { takeUntil, startWith, map } from 'rxjs/operators';
+import { Subject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { EventEmitter } from '@angular/core';
 import { AddPlatformDialogComponent } from '../add-platform-dialog/add-platform-dialog.component';
 import { SystemAdminOverviewService } from '../system-admin-overview.service';
 import { AssignMcnPlfComponent } from '../dialogs/assign-mcn-plf/assign-mcn-plf.component';
 import { Globals } from 'src/app/services/globals';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-exe-types-list',
@@ -28,6 +29,8 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
   exeTypeOptions;
   platformOptions;
   @Output() selectedExe: EventEmitter<any> = new EventEmitter();
+  myControl = new FormControl();
+  filteredOptions: Observable<string[]>;
 
   domain_name=this.globals.domain_name; private apiUrlGet = "https://"+this.domain_name+"/rest/v1/securedJSON?";
   private apiUrlPost = "https://"+this.domain_name+"/rest/v1/secured";
@@ -51,6 +54,17 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
       this.sortedAllExes = res;
     })
     //this.getPlatforms();
+    this.filteredOptions = this.myControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this._filter(value))
+    );
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.platformOptions.filter(option => option.SERVER_CD.toLowerCase().includes(filterValue));
   }
 
   // getPlatforms(){
@@ -59,6 +73,10 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
   //       this.plat=res;
   //     });
   // }
+
+  onChange() {
+
+  }
 
   changeExeType(type): void {
     //console.log(type);

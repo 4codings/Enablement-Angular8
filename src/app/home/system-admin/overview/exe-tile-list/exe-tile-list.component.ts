@@ -261,10 +261,10 @@ export class ExeTileListComponent implements OnInit {
 
     dialogRef.componentInstance.title = `Remove Exe- ${exe.EXE_TYP}`;
     dialogRef.componentInstance.message = `Are you sure, you want to remove Exe <strong>${exe.exeData.V_EXE_CD}</strong> from all platforms?`;
-
+    
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
-        this.http.get('https://enablement.us/Enablement/rest/v1/secured?V_EXE_CD='+exe.exeData.V_EXE_CD+'&V_EXE_TYP='+exe.EXE_TYP+'&V_SERVER_CD=&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=Exe_Server&Verb=DELETE').subscribe(res => {
+        this.http.get('https://enablement.us/Enablement/rest/v1/secured?V_EXE_CD='+exe.exeData.V_EXE_CD+'&V_USR_NM='+ this.V_USR_NM +'&V_EXE_TYP='+exe.EXE_TYP+'&V_SERVER_CD=&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=Exe_Server&Verb=DELETE').subscribe(res => {
           this.systemOverview.getAllExes();
         }, err => {
           console.log("err", err)
