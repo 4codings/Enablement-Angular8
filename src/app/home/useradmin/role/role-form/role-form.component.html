@@ -5,7 +5,7 @@
       <mat-error *ngIf="form.get('V_ROLE_CD').errors?.roleError">Role already exist.</mat-error>
     </mat-form-field>
     <mat-form-field>
-      <input type="text" matInput placeholder="Description" formControlName="V_ROLE_DSC">
+      <textarea matInput placeholder="Description" formControlName="V_ROLE_DSC"></textarea>
     </mat-form-field>
   </form>
 </div>
