@@ -122,16 +122,16 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     { item: 'Edit Application', value: 'Edit', havePermission: 0, icon: 'entry bpmn-icon-screw-wrench mr-10', iconType: 'bpmn' },
     { item: 'Delete Application', value: 'Delete', havePermission: 0, icon: 'entry bpmn-icon-trash', iconType: 'bpmn' }];
   childrenMenuItems = [
-    { item: 'Run', value: 'Run', havePermission: 0, icon: 'get_app', iconType: 'mat' },
+    { item: 'Run', value: 'Run', havePermission: 0, icon: 'fas fa-play-circle fa-lg', iconType: 'fa' },
     { item: 'Run At', value: 'RunAt', havePermission: 0, icon: 'fas fa-clock fa-lg', iconType: 'fa' },
     { item: 'Approve', value: 'Approve', havePermission: 0, icon: 'fas fa-thumbs-up fa-lg', iconType: 'fa' },
     { item: 'Monitor', value: 'Monitor', havePermission: 0, icon: 'fas fa-desktop fa-lg', iconType: 'fa' },
     { item: 'Resolve', value: 'Resolve', havePermission: 0, icon: 'contact_phone', iconType: 'mat' },
     { item: 'Schedule', value: 'Schedule', havePermission: 0, icon: 'fa fa-calendar fa-lg', iconType: 'fa' },
     { item: 'Pause Schedule', value: 'SchedulePause', havePermission: 0, icon: 'far fa-pause-circle fa-lg', iconType: 'fa' },
-    { item: 'Kill Schedule', value: 'ScheduleKill', havePermission: 0, icon: 'far fa-trash fa-lg', iconType: 'fa' }, { item: 'Resume Schedule', value: 'ScheduleResume', havePermission: 0, icon: 'far fa-play-circle mr-2 fa-lg', iconType: 'fa' },
+    { item: 'Kill Schedule', value: 'ScheduleKill', havePermission: 0, icon: 'not_interested', iconType: 'mat' }, { item: 'Resume Schedule', value: 'ScheduleResume', havePermission: 0, icon: 'undo', iconType: 'mat' },
     { item: 'Download BPNM', value: 'BPNM', havePermission: 0, icon: 'fa fa-file-download fa-lg', iconType: 'fa' },
-    { item: 'Download SVG', value: 'SVG', havePermission: 0, icon: 'photo_size_select_actual', iconType: 'mat' },
+    { item: 'Download SVG', value: 'SVG', havePermission: 0, icon: 'insert_photo', iconType: 'mat' },
     { item: 'Edit', value: 'Edit', havePermission: 0, icon: 'entry bpmn-icon-screw-wrench mr-2', iconType: 'bpmn' },
     { item: 'Delete', value: 'Delete', havePermission: 0, icon: 'entry bpmn-icon-trash', iconType: 'bpmn' }];
   roleObservable$: Subscription;
