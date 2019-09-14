@@ -529,12 +529,12 @@ button:focus {
 .CustomeLayout {
   box-shadow: none !important;
   border: none;
-  min-height: 580px;
-  height: 100%;
+  min-height: 100%;
   padding: 0px !important;
 }
 .mat-card, body {
   background-color: #F2F2F2;
+  min-height: 100% !important;
 }
 .mat-card-content {
   margin: 10px !important;

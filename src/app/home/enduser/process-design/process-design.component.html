@@ -145,7 +145,7 @@
           <div fxFlex="100" fxLayout="column">
             <div fxFlex="100" [ngClass]="opened?'stage-show':'stage-hide'">
               <mat-accordion>
-                <mat-expansion-panel [expanded]="expandPanel">
+                <mat-expansion-panel [expanded]="expandPanel && closePanelOnSchedule">
                   <mat-expansion-panel-header>
                     <mat-panel-title>
                       <span class="selected-process-font"> Process Diagram</span>
@@ -182,7 +182,7 @@
 
             <div fxFlex="100">
               <mat-accordion>
-                <mat-expansion-panel [expanded]="expandPanel">
+                <mat-expansion-panel [expanded]="expandPanel && closePanelOnSchedule">
                   <mat-expansion-panel-header>
                     <mat-panel-title>
                       Parameters
@@ -399,7 +399,7 @@
               <!-- <h4 class="text-center">Schedule</h4>
                 <hr /> -->
               <mat-accordion>
-                <mat-expansion-panel>
+                <mat-expansion-panel [expanded]="newScheduleView">
                   <mat-expansion-panel-header>
                     <mat-panel-title>
                       Schedule
