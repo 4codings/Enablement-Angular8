@@ -592,7 +592,7 @@ mat-header-cell {
     color: #ff0000;
 }
 
-.fa-skull-crossbones {
+.fa-skull-crossbones, .fa-address-card {
     color: #0066ff;
 }
 
@@ -753,3 +753,13 @@ mat-header-row {
       margin-top: 4%;
     }
   }
+
+.application-open, .properties-open {
+    margin-top: 50px;
+    display: block;
+    transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg); 
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+}
