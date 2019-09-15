@@ -48,17 +48,18 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
     
     this.systemOverview.platformOptions$.subscribe(platform => {
       this.platformOptions = platform;
+      this.filteredOptions = this.myControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      );
     });
 
     this.systemOverview.getExe$.subscribe(res => {
       this.sortedAllExes = res;
     })
     //this.getPlatforms();
-    this.filteredOptions = this.myControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(value => this._filter(value))
-    );
+    
   }
 
   private _filter(value: string): string[] {

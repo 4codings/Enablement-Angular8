@@ -52,13 +52,13 @@ export class MachinesListComponent implements OnInit {
 
     this.systemOverview.machineOptions$.subscribe(machine => {
       this.machineTypeOptions = machine;
-    });
-
-    this.filteredOptions = this.myControl.valueChanges
+      this.filteredOptions = this.myControl.valueChanges
       .pipe(
         startWith(''),
         map(value => this._filter(value))
-    );
+      );
+    });
+
     //this.MachineCode();
   }
 
