@@ -20,12 +20,14 @@
             <button mat-menu-item *ngFor="let item of platformOptions"
                     (click)="changePlatform(item.SERVER_CD)">{{item.SERVER_CD}}</button>
           </mat-menu> -->
-          <input type="text" matInput [formControl]="myControl" [(ngModel)]="selectedPlatform" name="V_CXN_CD" (ngModelChange)="onChange()" [matAutocomplete]="auto" required>
-            <mat-autocomplete #auto="matAutocomplete">
-              <mat-option *ngFor="let option of filteredOptions | async" [value]="option.SERVER_CD">
-                {{option.SERVER_CD}}
-              </mat-option>
-            </mat-autocomplete>
+          <mat-form-field class="incwid mt-3">
+            <input type="text" matInput [formControl]="myControl" [(ngModel)]="selectedPlatform" name="V_CXN_CD" (ngModelChange)="onChange()" [matAutocomplete]="auto" required>
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptions | async" [value]="option.SERVER_CD">
+                  {{option.SERVER_CD}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>  
         </div>
       <!-- <button mat-icon-button matTooltip="delete ExeType" class="add-btn" (click)="onBtnDeleteExeClick()">
         <mat-icon>delete</mat-icon>
@@ -47,6 +49,6 @@
   </div>
   <mat-divider></mat-divider>
   <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="16px" cdkDropListGroup>
-    <app-single-exe [userRoleAccess]="userAccess" *ngFor="let currExe of sortedAllExes | filterExetype:selectedExeType:'exe':selectedPlatform" [exeType]="currExe" [exes]="currExe.EXES" [selectedExeType]="selectedExeType"></app-single-exe>
+    <app-single-exe [selectedExe]="selectedExeTile" [userRoleAccess]="userAccess" *ngFor="let currExe of sortedAllExes | filterExetype:selectedExeType:'exe':selectedPlatform" [exeType]="currExe" [exes]="currExe.EXES" [selectedExeType]="selectedExeType" (selectedExetile)="selectedExeTileData($event)"></app-single-exe>
   </div>
 </div>

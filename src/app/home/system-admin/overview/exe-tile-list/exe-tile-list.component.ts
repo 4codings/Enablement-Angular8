@@ -22,6 +22,7 @@ export class ExeTileListComponent implements OnInit {
   contextMenuActive: boolean = false;
   subscription: Subscription;
   public selectedTile;
+  @Input() selectedExe;
   public selectedCxn;
   public selectedCxnData = [];
   @Input() exes;
@@ -44,6 +45,7 @@ export class ExeTileListComponent implements OnInit {
     this.subscription = this.systemOverview.selectedCxn$.subscribe(data => {
       if(data) {
         this.selectedTile = null;
+        this.selectedExeTile.emit("connectionSelect");
         this.selectedCxn = data.V_EXE_ID;
       } else {
         this.selectedCxn = [];

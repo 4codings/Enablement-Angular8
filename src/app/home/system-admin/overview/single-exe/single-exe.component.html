@@ -31,6 +31,6 @@
       </button>
     </div>
   </div>
-  <app-exe-tile-list [userAccess]="userRoleAccess" [selectedExeType]="selectedExeType" [platData]="exeType.SERVER_TYP" [exes]="exeType" (selectedExeTile)="selectedExeTile($event)"></app-exe-tile-list>
+  <app-exe-tile-list [selectedExe]="selectedExe" [userAccess]="userRoleAccess" [selectedExeType]="selectedExeType" [platData]="exeType.SERVER_TYP" [exes]="exeType" (selectedExeTile)="selectedExeTile($event)"></app-exe-tile-list>
 </div>
 

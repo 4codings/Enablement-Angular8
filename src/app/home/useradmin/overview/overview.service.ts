@@ -314,7 +314,7 @@ export class OverviewService implements OnDestroy {
     const dialogRef = this.dialog.open(AddUserComponent,
       {
         panelClass: 'app-dialog',
-        width: '600px',
+        width: '300px',
         data: { groupId: groupId, allUsers: this.allUsers }
       });
     dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
@@ -328,7 +328,7 @@ export class OverviewService implements OnDestroy {
     const dialogRef = this.dialog.open(EditUserComponent,
       {
         panelClass: 'app-dialog',
-        width: '600px',
+        width: '300px',
         data: { user, groupId }
       });
     dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
@@ -353,7 +353,7 @@ export class OverviewService implements OnDestroy {
     const dialogRef = this.dialog.open(ConfirmationAlertComponent,
       {
         panelClass: 'app-dialog',
-        width: '600px',
+        width: '300px',
       });
     dialogRef.componentInstance.title = title;
     dialogRef.componentInstance.message = message;
@@ -391,7 +391,7 @@ export class OverviewService implements OnDestroy {
   openAddGroupDialog(): void {
     this.dialog.open(AddGroupComponent,
       {
-        width: '600px',
+        width: '300px',
         panelClass: 'app-dialog',
         data: { allGroups: this.allGroups, controlVariables: this.userAdminService.controlVariables }
       });
@@ -401,7 +401,7 @@ export class OverviewService implements OnDestroy {
     this.dialog.open(EditGroupComponent,
       {
         panelClass: 'app-dialog',
-        width: '600px',
+        width: '300px',
         data: { group: group, controlVariables: this.userAdminService.controlVariables }
       });
   }
@@ -422,7 +422,7 @@ export class OverviewService implements OnDestroy {
     const dialogRef = this.dialog.open(ConfirmationAlertComponent,
       {
         panelClass: 'app-dialog',
-        width: '600px',
+        width: '300px',
       });
     dialogRef.componentInstance.title = `Delete Group - ${group.V_USR_GRP_CD}`;
     dialogRef.componentInstance.message = `Are you sure, you want to delete group <strong>${group.V_USR_GRP_CD}</strong>?`;
@@ -436,7 +436,7 @@ export class OverviewService implements OnDestroy {
   openAddRoleDialog(): void {
     const dialogRef = this.dialog.open(AddRoleComponent,
       {
-        width: '600px',
+        width: '300px',
         panelClass: 'app-dialog',
         data: { allRoles: this.allRoles }
       });
@@ -451,7 +451,7 @@ export class OverviewService implements OnDestroy {
     const dialogRef = this.dialog.open(EditRoleComponent,
       {
         panelClass: 'app-dialog',
-        width: '600px',
+        width: '300px',
         data: { role: role }
       });
     dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
@@ -474,7 +474,7 @@ export class OverviewService implements OnDestroy {
     const dialogRef = this.dialog.open(ConfirmationAlertComponent,
       {
         panelClass: 'app-dialog',
-        width: '600px',
+        width: '300px',
       });
     dialogRef.componentInstance.title = `Delete Role - ${role.V_ROLE_CD}`;
     dialogRef.componentInstance.message = `Are you sure, you want to delete role <strong>${role.V_ROLE_CD}</strong>?`;
@@ -488,7 +488,7 @@ export class OverviewService implements OnDestroy {
   openAddAuthDialog(roleId: string): void {
     const dialogRef = this.dialog.open(AddEditAuthorizeComponent,
       {
-        width: '700px',
+        width: '300px',
         panelClass: 'app-dialog',
         data: { roleId: roleId, authType: this.selectedAuthType.key }
       });
@@ -506,7 +506,7 @@ export class OverviewService implements OnDestroy {
   openEditAuthDialog(auth: AuthorizationData): void {
     const dialogRef = this.dialog.open(AddEditAuthorizeComponent,
       {
-        width: '700px',
+        width: '300px',
         panelClass: 'app-dialog',
         data: { auth: auth }
       });
@@ -556,7 +556,7 @@ export class OverviewService implements OnDestroy {
     const dialogRef = this.dialog.open(ConfirmationAlertComponent,
       {
         panelClass: 'app-dialog',
-        width: '600px',
+        width: '300px',
       });
     dialogRef.componentInstance.title = title;
     dialogRef.componentInstance.message = message;
@@ -620,7 +620,7 @@ export class OverviewService implements OnDestroy {
   openAssignRoleToGroupDialog(group: userGroup): void {
     const dialogRef = this.dialog.open(AssignRoleModalComponent,
       {
-        width: '600px',
+        width: '300px',
         panelClass: 'app-dialog',
         data: { group: group, roles: this.allRoles, controlVariables: this.userAdminService.controlVariables }
       });
@@ -635,7 +635,7 @@ export class OverviewService implements OnDestroy {
   openAssignGroupToRoleDialog(role: userRole): void {
     const dialogRef = this.dialog.open(AssignGroupModalComponent,
       {
-        width: '600px',
+        width: '300px',
         panelClass: 'app-dialog',
         data: { role: role, groups: this.allGroups, controlVariables: this.userAdminService.controlVariables }
       });

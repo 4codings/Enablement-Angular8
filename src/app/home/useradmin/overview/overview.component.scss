@@ -75,7 +75,7 @@
         background-color: #F2F2F4;
         transition: box-shadow 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
         box-shadow: none;
-        border-radius: 3px;
+        border-radius: 15px;
          color: #999 !important;
 
         &:hover {
@@ -121,6 +121,9 @@
         .tile-text {
           margin-top: 8px;
           text-align: center;
+            span {
+              font-size: 12px;
+            }
         }
       }
     }

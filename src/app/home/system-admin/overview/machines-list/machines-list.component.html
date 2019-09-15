@@ -30,12 +30,14 @@
           <button mat-menu-item *ngFor="let item of machineTypeOptions"
                   (click)="changeMachine(item.PLATFORM_CD)">{{item.PLATFORM_CD}}</button>
         </mat-menu>  -->
-        <input type="text" matInput [formControl]="myControl" [(ngModel)]="selectedMachineType" name="V_CXN_CD" (ngModelChange)="onChange()" [matAutocomplete]="auto" required>
-          <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let option of filteredOptions | async" [value]="option.PLATFORM_CD">
-              {{option.PLATFORM_CD}}
-            </mat-option>
-          </mat-autocomplete>
+        <mat-form-field class="incwid mt-3">
+          <input type="text" matInput [formControl]="myControl" [(ngModel)]="selectedMachineType" name="V_CXN_CD" (ngModelChange)="onChange()" [matAutocomplete]="auto1" required>
+            <mat-autocomplete #auto1="matAutocomplete">
+              <mat-option *ngFor="let option of filteredOptions | async" [value]="option.PLATFORM_CD">
+                {{option.PLATFORM_CD}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>  
       </div>
 
     </div> 
@@ -47,6 +49,6 @@
   </div>
   <mat-divider></mat-divider>
   <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="16px" cdkDropListGroup>
-    <app-single-machine [userRoleAccess]="userAccess" *ngFor="let currMachine of sortedAllConnections | filterExetype:selectedConnectionType:'cxn':selectedMachineType" [cxnData]="currMachine" [machineData]="currMachine" [machines]="currMachine.V_CXN" [selectedConnectionType]="selectedConnectionType"></app-single-machine>
+    <app-single-machine [selectedConn]="selectedConnTile" [userRoleAccess]="userAccess" *ngFor="let currMachine of sortedAllConnections | filterExetype:selectedConnectionType:'cxn':selectedMachineType" [cxnData]="currMachine" [machineData]="currMachine" [machines]="currMachine.V_CXN" [selectedConnectionType]="selectedConnectionType" (selectedConntile)="selectedConnTileData($event)"></app-single-machine>
   </div>
 </div>

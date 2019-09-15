@@ -8,7 +8,7 @@
   <mat-divider></mat-divider>
   <!-- <div class="dialog-body content-wrapper" fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="start stretch"> -->
   <mat-tab-group (selectedIndexChange)="OnTabChange($event)">
-    <mat-tab label="Select User">
+    <mat-tab label="Select an existing user">
       <app-user-list [users]="allUsers" (userSelectEvent)="onUserSelect($event)">
       </app-user-list>
     </mat-tab>

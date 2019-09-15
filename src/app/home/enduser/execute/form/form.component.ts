@@ -54,6 +54,8 @@ export class FormComponent implements OnInit {
   PARAM_DSC: any;
   selectedInstanceElementsList: InstanceElementList[] = [];
   selectedElement = new InstanceElementList();
+  showReportTable = false;
+  showform: boolean = false;
   constructor(
     public StorageSessionService: StorageSessionService,
     public http: HttpClient,
@@ -130,6 +132,8 @@ export class FormComponent implements OnInit {
   elementClick = false;
   successString: any;
   intermediateString: any;
+  submitClicked = false;
+  endClicked = false;
   ngOnInit() {
 
   }
@@ -340,6 +344,7 @@ export class FormComponent implements OnInit {
   invoke_router(res) {
     let serviceCode = null;
     if (CommonUtils.isValidValue(res['SRVC_CD']) && res['SRVC_CD'][0] === "END") {
+      this.submitClicked = false;
       this.router.navigate(["/End_User/Design"], { skipLocationChange: true });
     } else {
       var timeout = res['RESULT'][0].toString().substring(0, 7) == "TIMEOUT";
@@ -347,14 +352,17 @@ export class FormComponent implements OnInit {
         this.app.fromNonRepForm = true;
         this.repeatCallTable(true);
       } else if (res['RESULT'][0] === 'SUCCESS' || res['RESULT'][0] === 'COMPLETED') {
+        this.submitClicked = false;
         this.router.navigate(["/End_User/Design"], { skipLocationChange: true });
       } else {
+        this.submitClicked = false;
         this.StorageSessionService.setCookies('report_table', res);
         if (res['RESULT'] == 'INPUT_ARTFCT_TASK') {
           this.router.navigate(['/End_User/InputArtForm'], {
             skipLocationChange: true, queryParams: { page: 1 }
           });
         } else if (res['RESULT'][0] == 'NONREPEATABLE_MANUAL_TASK') {
+          // this.showform = true;
           this.router.navigate(['/End_User/NonRepeatForm'], {
             skipLocationChange: true,
             queryParams: { page: 1 }
@@ -364,6 +372,7 @@ export class FormComponent implements OnInit {
             skipLocationChange: true, queryParams: { page: 1 }
           });
         } else if (res['RESULT'] == 'TABLE') {
+          // this.showReportTable = true;
           this.router.navigate(['/End_User/ReportTable'], {
             skipLocationChange: true, queryParams: { page: 1 }
           });
@@ -380,6 +389,7 @@ export class FormComponent implements OnInit {
       this.GenerateReportTable();
     } else {
       this.repeat = 0;
+      this.submitClicked = false;
       this.router.navigate(["/End_User/Design"], { skipLocationChange: true });
     }
   }
@@ -404,6 +414,7 @@ export class FormComponent implements OnInit {
       .subscribe(
         (res: any) => {
           if (res._body !== '{}') {
+            this.submitClicked = false;
             this.globals.Report = JSON.parse(res._body)
             this.StorageSessionService.setCookies('report_table', res.json());
             this.check_data = res.json();

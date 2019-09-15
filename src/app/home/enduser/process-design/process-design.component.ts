@@ -98,21 +98,11 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   applicationProcessValuesObservable: ApplicationProcessObservable[] = [];
   appProcessList = [];
   item: TreeviewItem[] = [];
-  oneAppItem: TreeviewItem[] = [];
   chilItem: TreeviewItem[] = [];
   config = TreeviewConfig.create({
     hasAllCheckBox: false,
     hasFilter: true,
     hasCollapseExpand: true,
-    decoupleChildFromParent: false,
-    maxHeight: 400,
-
-
-  });
-  oneAppConfig = TreeviewConfig.create({
-    hasAllCheckBox: false,
-    hasFilter: false,
-    hasCollapseExpand: false,
     decoupleChildFromParent: false,
     maxHeight: 400,
   });
@@ -126,11 +116,11 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     { item: 'Run At', value: 'RunAt', havePermission: 0, icon: 'fas fa-clock fa-lg', iconType: 'fa' },
     { item: 'Approve', value: 'Approve', havePermission: 0, icon: 'fas fa-thumbs-up fa-lg', iconType: 'fa' },
     { item: 'Monitor', value: 'Monitor', havePermission: 0, icon: 'fas fa-desktop fa-lg', iconType: 'fa' },
-    { item: 'Resolve', value: 'Resolve', havePermission: 0, icon: 'contact_phone', iconType: 'mat' },
-    { item: 'Schedule', value: 'Schedule', havePermission: 0, icon: 'fa fa-calendar fa-lg', iconType: 'fa' },
+    { item: 'Resolve', value: 'Resolve', havePermission: 0, icon: 'fa fa-address-card fa-lg ml-1', iconType: 'fa' },
+    { item: 'Schedule', value: 'Schedule', havePermission: 0, icon: 'fa fa-calendar fa-lg ml-2', iconType: 'fa' },
     { item: 'Pause Schedule', value: 'SchedulePause', havePermission: 0, icon: 'far fa-pause-circle fa-lg', iconType: 'fa' },
     { item: 'Kill Schedule', value: 'ScheduleKill', havePermission: 0, icon: 'not_interested', iconType: 'mat' }, { item: 'Resume Schedule', value: 'ScheduleResume', havePermission: 0, icon: 'undo', iconType: 'mat' },
-    { item: 'Download BPNM', value: 'BPNM', havePermission: 0, icon: 'fa fa-file-download fa-lg', iconType: 'fa' },
+    { item: 'Download BPNM', value: 'BPNM', havePermission: 0, icon: 'fa fa-file-download fa-lg ml-2', iconType: 'fa' },
     { item: 'Download SVG', value: 'SVG', havePermission: 0, icon: 'insert_photo', iconType: 'mat' },
     { item: 'Edit', value: 'Edit', havePermission: 0, icon: 'entry bpmn-icon-screw-wrench mr-2', iconType: 'bpmn' },
     { item: 'Delete', value: 'Delete', havePermission: 0, icon: 'entry bpmn-icon-trash', iconType: 'bpmn' }];
@@ -290,6 +280,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   file_path: any;
   elementExistError = false;
   closePanelOnSchedule: boolean = true;
+  selectedAppProcess$: Subscription;
+
   constructor(
     private httpClient: HttpClient,
     private http: Http,
@@ -358,6 +350,13 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         }
       }
     });
+    this.selectedAppProcess$ = this.optionalService.selectedAppPrcoessValue.subscribe(res => {
+      if (res) {
+        console.log('res', res);
+        this.selectedApp = res.app;
+        this.selectedProcess = res.process;
+      }
+    })
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       if (e instanceof NavigationEnd) {
         this.router.navigated = false;
@@ -1186,6 +1185,28 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         });
         this.item.push(treeObj);
       })
+      setTimeout(() => {
+        if (this.selectedApp != '' || this.selectedProcess != '') {
+          if (this.selectedProcess != '') {
+            let index = this.item.findIndex(v => v.text == this.selectedApp);
+            if (index > -1) {
+              if (this.item[index].children && this.item[index].children.length) {
+                let childIndex = this.item[index].children.findIndex(v => v.text == this.selectedProcess);
+                if (childIndex > -1) {
+                  this.onTitleClick(this.item[index].children[childIndex]);
+                }
+              } else {
+                this.onTitleClick(this.item[index]);
+              }
+            }
+          } else {
+            let index = this.item.findIndex(v => v.text == this.selectedApp);
+            if (index > -1) {
+              this.onTitleClick(this.item[index]);
+            }
+          }
+        }
+      }, 1000);
     }
   }
   getApplicationProcess() {
@@ -1208,7 +1229,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     }
   }
 
-  onTitleClick(item, parentTitleClick) {
+  onTitleClick(item, parentTitleClick?) {
     this.closeSchedulePanel();
     this.onTitleClickNoDelete = true;
     this.isApp = false;
@@ -1221,11 +1242,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     if (!item.children) {
       this.selectedApp = item.value;
       this.selectedProcess = item.text;
-      let index = this.item.findIndex(v => v.text == this.selectedApp);
-      if (index > -1) {
-        this.oneAppItem = [];
-        this.oneAppItem.push(this.item[index]);
-      }
       const formData: FormData = new FormData();
       formData.append('FileInfo', JSON.stringify({
         File_Path: `${this.ctrl_variables.bpmn_file_path}` + item.value + '/',
@@ -1272,8 +1288,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       this.Execute_AP_PR();
     } else {
       this.selectedApp = item.value;
-      this.oneAppItem = [];
-      this.oneAppItem.push(item);
+      this.selectedProcess = '';
+      let x = '<?xml version="1.0" encoding="UTF-8"?><bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="2.0.3"></bpmn:definitions>';
+      this.modeler.importXML(x);
     }
     // if (!parentTitleClick) {
     //   this.treesidenav.opened = false;

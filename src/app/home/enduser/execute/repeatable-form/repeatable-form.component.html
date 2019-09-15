@@ -258,12 +258,13 @@
           <div fxFlex="40">
           </div>
           <div fxFlex="48">
-            <button mat-raised-button (click)="onCancel();" id="cancel">
+            <button mat-raised-button [disabled]="endClicked" (click)="onCancel();" id="cancel">
               <mat-icon class="iconmod">clear</mat-icon>End
             </button>
             <div flex fxFlex="5"></div>
 
-            <button mat-raised-button (click)="onSubmit();" id="submit" *ngIf="V_EXECUTE==='Y'">
+            <button mat-raised-button [disabled]="submitClicked" (click)="onSubmit();" id="submit"
+              *ngIf="V_EXECUTE==='Y'">
               <mat-icon class="iconmod">done_all</mat-icon>Submit
             </button>
           </div>

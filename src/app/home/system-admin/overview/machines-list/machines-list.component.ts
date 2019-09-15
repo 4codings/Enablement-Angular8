@@ -27,12 +27,14 @@ export class MachinesListComponent implements OnInit {
   public machineTypeOptions;
   @Input() selectedConnectionType;
   @Input() userAccess;
+  @Input() selectedConnTile;
   myControl = new FormControl();
   filteredOptions: Observable<string[]>;
   
   unsubscribeAll: Subject<boolean> = new Subject<boolean>();
   connectionTypeOptions;
   @Output() selectedMachine: EventEmitter<any> = new EventEmitter();
+  @Output() selectedConntile: EventEmitter<any> = new EventEmitter();
   domain_name=this.globals.domain_name;
 
   private apiUrlGet = "https://"+this.domain_name+"/rest/v1/securedJSON?";
@@ -52,13 +54,13 @@ export class MachinesListComponent implements OnInit {
 
     this.systemOverview.machineOptions$.subscribe(machine => {
       this.machineTypeOptions = machine;
-    });
-
-    this.filteredOptions = this.myControl.valueChanges
+      this.filteredOptions = this.myControl.valueChanges
       .pipe(
         startWith(''),
         map(value => this._filter(value))
-    );
+      );
+    });
+
     //this.MachineCode();
   }
 
@@ -122,6 +124,10 @@ export class MachinesListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });
+  }
+
+  selectedConnTileData(exe) {
+    this.selectedConntile.emit(exe);
   }
   
   ngOnDestroy(): void {

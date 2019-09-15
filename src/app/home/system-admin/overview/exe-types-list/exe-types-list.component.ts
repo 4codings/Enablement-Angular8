@@ -23,12 +23,14 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
   public allExes = [];
   public sortedAllExes = [];
   @Input() selectedExeType;
+  @Input() selectedExeTile;
   public selectedPlatform = 'All';
   @Input() userAccess;
   unsubscribeAll: Subject<boolean> = new Subject<boolean>();
   exeTypeOptions;
   platformOptions;
   @Output() selectedExe: EventEmitter<any> = new EventEmitter();
+  @Output() selectedExetile: EventEmitter<any> = new EventEmitter();
   myControl = new FormControl();
   filteredOptions: Observable<string[]>;
 
@@ -48,17 +50,18 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
     
     this.systemOverview.platformOptions$.subscribe(platform => {
       this.platformOptions = platform;
+      this.filteredOptions = this.myControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      );
     });
 
     this.systemOverview.getExe$.subscribe(res => {
       this.sortedAllExes = res;
     })
     //this.getPlatforms();
-    this.filteredOptions = this.myControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(value => this._filter(value))
-    );
+    
   }
 
   private _filter(value: string): string[] {
@@ -141,6 +144,10 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
       console.log('The dialog was closed');
     });
     */
+  }
+
+  selectedExeTileData(exe) {
+    this.selectedExetile.emit(exe);
   }
   
   ngOnDestroy(): void {

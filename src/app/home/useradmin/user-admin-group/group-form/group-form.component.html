@@ -5,19 +5,17 @@
       <mat-error *ngIf="form.get('V_USR_GRP_CD').errors?.groupError">Group already exist.</mat-error>
     </mat-form-field>
     <mat-form-field>
-      <input type="text" matInput placeholder="Description" formControlName="V_USR_GRP_DSC">
+      <textarea type="text" matInput placeholder="Description" formControlName="V_USR_GRP_DSC"></textarea>
     </mat-form-field>
-    <div fxLayout="row" fxLayoutGap="8px">
-      <mat-form-field>
-        <input matInput [matDatepicker]="startDate" placeholder="Start date" formControlName="V_EFF_STRT_DT_TM">
-        <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
-        <mat-datepicker #startDate></mat-datepicker>
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput [matDatepicker]="endDate" placeholder="End date" formControlName="V_EFF_END_DT_TM">
-        <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
-        <mat-datepicker #endDate></mat-datepicker>
-      </mat-form-field>
-    </div>
+    <mat-form-field>
+      <input matInput [matDatepicker]="startDate" placeholder="Start date" formControlName="V_EFF_STRT_DT_TM">
+      <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+      <mat-datepicker #startDate></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput [matDatepicker]="endDate" placeholder="End date" formControlName="V_EFF_END_DT_TM">
+      <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+      <mat-datepicker #endDate></mat-datepicker>
+    </mat-form-field>
   </form>
 </div>
