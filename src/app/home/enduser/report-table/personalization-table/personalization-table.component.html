@@ -309,7 +309,7 @@
 
   <div fxLayout="column" id="add-row" class="table-column">
     <div class="table-title">
-      <mat-icon aria-hidden="false" (click)="addRow_action();" aria-label="Add a Row" style="cursor: pointer;">
+      <mat-icon aria-hidden="false" (click)="addRow_action('init');" aria-label="Add a Row" style="cursor: pointer;">
         add_circle</mat-icon>
     </div>
     <div class="table-cell" *ngFor="let indx of chartno; let i=index;">
