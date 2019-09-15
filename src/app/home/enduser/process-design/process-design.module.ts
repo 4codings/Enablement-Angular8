@@ -10,9 +10,10 @@ import { SchedularComponent } from './schedular/schedular.component';
 import { MonitorComponent } from './monitor/monitor.component';
 import { ResolveComponent } from './resolve/resolve.component';
 import { ApproveComponent } from './approve/approve.component';
+import { ViewerTreeComponent } from './viewer-tree/viewer-tree.component';
 
 @NgModule({
-  declarations: [ProcessDesignComponent, SchedularComponent, MonitorComponent, ResolveComponent, ApproveComponent, IsOutsideDirective],
+  declarations: [ProcessDesignComponent, SchedularComponent, MonitorComponent, ResolveComponent, ApproveComponent, IsOutsideDirective, ViewerTreeComponent],
   imports: [
     SharedModule,
     ProcessDesignRoutingModule,

@@ -13,72 +13,9 @@
         (click)="onTitleClick(item,false)">
         {{item.text}}
       </label>
-      <!-- <label *ngIf="item.children" class="form-check-label">
-        <button id="side-nav-menu" mat-mini-fab [matMenuTriggerFor]="parentMenu"
-          aria-label="Example icon-button with a menu">
-          <mat-icon class="parent-color more-vert-font">more_vert</mat-icon>
-        </button>
-        <mat-menu #parentMenu="matMenu" class="sideNavChildMenu">
-          <div *ngFor="let pitem of parentobj[item.text]" [ngClass]="pitem.iconType=='mat' ? pitem.icon : ''">
-            <button (click)="onParentMenuItemClick(pitem.value,item.value, item)" *ngIf="pitem.havePermission"
-              mat-menu-item>
-              <mat-icon *ngIf="pitem.iconType=='mat'" title="{{pitem.item}}">{{pitem.icon}}</mat-icon>
-              <div *ngIf="pitem.iconType=='bpmn'" title="{{pitem.item}}" class="{{pitem.icon}}" draggable="true"></div>
-              <span>{{pitem.item}}</span>
-            </button>
-          </div>
-        </mat-menu>
-      </label>
-      <label *ngIf="!item.children" class="form-check-label">
-        <button (click)="onChildMenuClick(item)" id="side-nav-menu" mat-mini-fab [matMenuTriggerFor]="childMenu"
-          aria-label="Example icon-button with a menu">
-          <mat-icon class="child-color more-vert-font">more_vert</mat-icon>
-        </button>
-        <mat-menu #childMenu="matMenu" class="sideNavChildMenu">
-          <div *ngFor="let citem of childobj[item.text]">
-            <button (click)="onChildMenuItemClick(citem.value,item)" *ngIf="citem.havePermission" mat-menu-item>
-              <mat-icon *ngIf="citem.iconType=='mat'">{{citem.icon}}</mat-icon>
-              <i *ngIf="citem.iconType=='material'" class="material-icons">{{citem.icon}}</i>
-              <i *ngIf="citem.iconType=='fa'" class="{{citem.icon}}"></i>
-              <div *ngIf="citem.iconType=='bpmn'" class="{{citem.icon}}" draggable="true" data-action="delete"
-                title="Remove"></div>
-              <span *ngIf="citem.havePermission">{{citem.item}}</span>
-            </button>
-          </div>
-        </mat-menu>
-      </label> -->
     </div>
   </div>
 </ng-template>
-<!-- was used for appItem tree (selected app and process tree) -->
-<!-- <ng-template #appItemTemplate let-item="item" let-index let-onCollapseExpand="onCollapseExpand"
-  let-onCheckedChange="onCheckedChange">
-  <div class="form-inline row-item" [ngClass]="item.children?'parent-menu':'child-menu'">
-    <i *ngIf="item.children" (click)="onCollapseExpand()" aria-hidden="true" class="fa caret-font"
-      [class.fa-caret-right]="item.collapsed" [class.fa-caret-down]="!item.collapsed"></i>
-    <div class="form-check" *ngIf="item.text!=='NULL'">
-      <label *ngIf="item.children" class="form-check-label parent-color"
-        [ngClass]="item.value == selectedApp?'active-menu':''" (click)="onTitleClick(item, true)"
-        [matMenuTriggerFor]="parentMenu">
-        {{item.text}}
-      </label>
-      <mat-menu class="headerParentMenu" #parentMenu="matMenu">
-        <span *ngFor="let pitem of parentobj[selectedApp]" [ngClass]="pitem.iconType=='mat' ? pitem.icon : ''">
-          <button (click)="onParentMenuItemClick(pitem.value,selectedApp)" *ngIf="pitem.havePermission" mat-menu-item>
-            <mat-icon *ngIf="pitem.iconType=='mat'" title="{{pitem.item}}">{{pitem.icon}}</mat-icon>
-            <div *ngIf="pitem.iconType=='bpmn'" title="{{pitem.item}}" class="{{pitem.icon}}" draggable="true">
-            </div>
-          </button>
-        </span>
-      </mat-menu>
-      <label *ngIf="!item.children" class="form-check-label child-color"
-        [ngClass]="(item.text == selectedProcess && item.value == selectedApp)?'active-menu':''"
-        (click)="onTitleClick(item,false)">
-        {{item.text}}
-      </label>
-    </div>
-  </div>
-</ng-template> -->
 <div fxLayout="row">
   <mat-sidenav-container fxFlex="100">
     <mat-sidenav class="tree-bg-color" #treesidenav mode="side" [opened]="true" style="width:270px">
@@ -578,7 +515,7 @@
             <div *ngIf="showCondtionType" class="spaceDiv">
               <mat-divider></mat-divider>
             </div>
-            <mat-accordion  *ngIf="showCondtionType">
+            <mat-accordion *ngIf="showCondtionType">
               <mat-expansion-panel class="mb-2" [expanded]="expandPanel">
                 <mat-expansion-panel-header>
                   <mat-panel-title class="tabTitle">
@@ -587,7 +524,8 @@
                 </mat-expansion-panel-header>
                 <div>
                   <!--<label class="tabTitle">{{Label['CONDITION_TYPE']}}</label>-->
-                  <select [(ngModel)]="selectedConditionType" (change)="updatesequenceConditionType($event.target.value)">
+                  <select [(ngModel)]="selectedConditionType"
+                    (change)="updatesequenceConditionType($event.target.value)">
                     <!-- <option>{{Label['PLEASE_SELECT']}}</option> -->
                     <option *ngFor="let condition of sequenceConditionType " [value]="condition">
                       {{ condition}}
@@ -699,7 +637,7 @@
                   <mat-checkbox [(ngModel)]="summary_output">{{Label['SUMMARY_OUTPUT']}}</mat-checkbox>
                   <mat-checkbox [(ngModel)]="isServiceActive" (change)="serviceActiveSelected($event.checked)">
                     {{Label['SERVICE_ACTIVE']}}
-                  </mat-checkbox>                 
+                  </mat-checkbox>
                 </mat-expansion-panel>
               </mat-accordion>
               <div *ngIf="isServiceActive">

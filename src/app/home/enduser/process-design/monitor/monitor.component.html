@@ -1,43 +1,90 @@
-<div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center center" class="bg-white">
-  <div fxFlex="15">
-    <label class="text-center mb-0"> Executed By</label>
-    <mat-form-field class="mt-1 form_input">
-      <input matInput [ngModel]="selectedUserName" disabled>
-    </mat-form-field>
-  </div>
-  <div fxFlex="5"></div>
-  <div fxFlex="15">
-    <label class="text-center mb-0">Executed At</label>
-    <mat-form-field class="mt-1 form_input">
-      <mat-select class="bg-white" [(ngModel)]="selectedInstance" (selectionChange)="onInstanceChange($event)">
-        <mat-option *ngFor="let dateTime of PRCS_TXN_ID;let i = index" [value]="dateTime">
-          {{StartDateTime[i]}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-  <div fxFlex="5"></div>
-  <div fxFlex="15">
-    <label class="mb-1 text-center">From</label>
-    <mat-form-field class="form_input">
-      <input matInput class="bg-white" [max]="toDate" [(ngModel)]="fromDate" [owlDateTimeTrigger]="FromDate"
-        [owlDateTime]="FromDate" (dateTimeInput)="onDateChange()">
-      <owl-date-time #FromDate></owl-date-time>
-    </mat-form-field>
-  </div>
-  <div fxFlex="5"></div>
-  <div fxFlex="15">
-    <label class="mb-1 text-center">To</label>
-    <mat-form-field class="form_input">
-      <input matInput class="bg-white" [min]="fromDate" [(ngModel)]="toDate" [owlDateTimeTrigger]="EndDate"
-        [owlDateTime]="EndDate" (dateTimeInput)="onDateChange()">
-      <owl-date-time #EndDate></owl-date-time>
-    </mat-form-field>
-  </div>
+<div fxLayout="row">
+  <mat-sidenav-container fxFlex="100">
+    <mat-sidenav class="tree-bg-color" #treesidenav mode="side" [opened]="true" style="width:270px">
+      <div flex fxLayout="column">
+        <div fxFlex="100">
+          <app-viewer-tree></app-viewer-tree>
+        </div>
+        <!-- <div fxFlex="100">
+          <button *ngIf="item.length" mat-icon-button matTooltip="Add Application" (click)="addApplication()">
+            <mat-icon class="add-btn add-font">add</mat-icon>
+          </button>
+        </div> -->
+        <hr>
+      </div>
+    </mat-sidenav>
+    <div fxFlex="100">
+      <div class="parent">
+        <h5 class="parent-font m-t-10" *ngIf="parentapp!=''">
+          <button class="mr-2" aria-label="Example icon-button with a menu">
+            {{parentapp}}
+          </button>
+          <span class="selected-process-font" *ngIf="parentpro!=''">
+            <button aria-label="Example icon-button with a menu">
+              {{parentpro}}
+            </button>
+          </span>
+        </h5>
+      </div>
+      <section>
+        <div fxLayout="row" style="padding-bottom: 2px;">
+          <div fxFlex="20px" class="toggle">
+            <a href="javascript:void(0)" matTooltip="{{treesidenav.opened ? 'Hide Application' : 'Show Application'}}"
+              (click)="treesidenav.toggle();">
+              <mat-icon aria-hidden="false">{{treesidenav.opened ? 'arrow_left' : 'arrow_right'}}</mat-icon>
+            </a>
+          </div>
+          <div fxFlex="100" fxLayout="column">
+            <div fxFlex="100" [ngClass]="opened?'stage-show':'stage-hide'">
+              <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center center" class="bg-white">
+                <div fxFlex="15">
+                  <label class="text-center mb-0"> Executed By</label>
+                  <mat-form-field class="mt-1 form_input">
+                    <input matInput [ngModel]="selectedUserName" disabled>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="5"></div>
+                <div fxFlex="15">
+                  <label class="text-center mb-0">Executed At</label>
+                  <mat-form-field class="mt-1 form_input">
+                    <mat-select class="bg-white" [(ngModel)]="selectedInstance"
+                      (selectionChange)="onInstanceChange($event)">
+                      <mat-option *ngFor="let dateTime of PRCS_TXN_ID;let i = index" [value]="dateTime">
+                        {{StartDateTime[i]}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="5"></div>
+                <div fxFlex="15">
+                  <label class="mb-1 text-center">From</label>
+                  <mat-form-field class="form_input">
+                    <input matInput class="bg-white" [max]="toDate" [(ngModel)]="fromDate"
+                      [owlDateTimeTrigger]="FromDate" [owlDateTime]="FromDate" (dateTimeInput)="onDateChange()">
+                    <owl-date-time #FromDate></owl-date-time>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="5"></div>
+                <div fxFlex="15">
+                  <label class="mb-1 text-center">To</label>
+                  <mat-form-field class="form_input">
+                    <input matInput class="bg-white" [min]="fromDate" [(ngModel)]="toDate"
+                      [owlDateTimeTrigger]="EndDate" [owlDateTime]="EndDate" (dateTimeInput)="onDateChange()">
+                    <owl-date-time #EndDate></owl-date-time>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <app-viewer-diagram [parentapp]="parentapp" [parentpro]="parentpro" [file_path]="file_path">
+              </app-viewer-diagram>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </mat-sidenav-container>
 </div>
 
-<app-viewer-diagram [parentapp]="parentapp" [parentpro]="parentpro" [file_path]="file_path">
-</app-viewer-diagram>
 <!-- <div *ngIf="elementClick">
   <div class="row">
     <table>

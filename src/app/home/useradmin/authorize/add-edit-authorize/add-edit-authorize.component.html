@@ -133,33 +133,33 @@
                 </mat-form-field>
               </div>
             </div>
-            <div fxFlex="100" fxLayout="row" fxLayoutGap="24px" fxLayoutAlign="start center">
-              <div fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="center center">
-                <div><strong>Create</strong></div>
+            <!--<div fxFlex="100" fxLayout="row" fxLayoutGap="24px" fxLayoutAlign="start center">-->
+              <div fxLayout="row" fxFlex="100" fxLayoutAlign="start center">
+                <div fxFlex="25"><strong>Create</strong></div>
                 <mat-checkbox class="example-margin" (change)="onPermissionChange(authValueObj,'V_CREATE')"
                   [checked]="authValueObj.V_CREATE === 'Y'"></mat-checkbox>
               </div>
-              <div fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="center center">
-                <div><strong>Update</strong></div>
+              <div fxLayout="row" fxFlex="100" fxLayoutAlign="start center">
+                <div fxFlex="25"><strong>Update</strong></div>
                 <mat-checkbox class="example-margin" (change)="onPermissionChange(authValueObj,'V_UPDATE')"
                   [checked]="authValueObj.V_UPDATE === 'Y'"></mat-checkbox>
               </div>
-              <div fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="center center">
-                <div><strong>Read</strong></div>
+              <div fxLayout="row" fxFlex="100" fxLayoutAlign="start center">
+                <div fxFlex="25"><strong>Read</strong></div>
                 <mat-checkbox class="example-margin" (change)="onPermissionChange(authValueObj,'V_READ')"
                   [checked]="authValueObj.V_READ === 'Y'"></mat-checkbox>
               </div>
-              <div fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="center center">
-                <div><strong>Delete</strong></div>
+              <div fxLayout="row" fxFlex="100" fxLayoutAlign="start center">
+                <div fxFlex="25"><strong>Delete</strong></div>
                 <mat-checkbox class="example-margin" (change)="onPermissionChange(authValueObj,'V_DELETE')"
                   [checked]="authValueObj.V_DELETE === 'Y'"></mat-checkbox>
               </div>
-              <div fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="center center">
-                <div><strong>Execute</strong></div>
+              <div fxLayout="row" fxFlex="100" fxLayoutAlign="start center">
+                <div fxFlex="25"><strong>Execute</strong></div>
                 <mat-checkbox class="example-margin" (change)="onPermissionChange(authValueObj,'V_EXECUTE')"
                   [checked]="authValueObj.V_EXECUTE === 'Y'"></mat-checkbox>
               </div>
-            </div>
+           <!-- </div>-->
           </div>
         </div>
       </mat-tab>
