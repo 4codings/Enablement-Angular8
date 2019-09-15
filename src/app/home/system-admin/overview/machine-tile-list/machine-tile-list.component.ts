@@ -30,6 +30,7 @@ export class MachineTileListComponent implements OnInit {
   @Input() userAccess;
   @Input() selectedConnectionType;
   @Input() machine;
+  @Input() selectedConn;
   domain_name=this.globals.domain_name;
   private apiUrlGet = "https://"+this.domain_name+"/rest/v1/secured?";
   @ViewChild('contextMenu', { static: false } as any) set contextMenu(value: ElementRef) {
@@ -49,6 +50,7 @@ export class MachineTileListComponent implements OnInit {
       //console.log(data);
       if(data) {
         this.selectedMachine = null;
+        this.selectedMachineTile.emit('exeSelect');
         this.selectedExe = data.V_CXN_ID;
       } else {
         this.selectedExe = '';

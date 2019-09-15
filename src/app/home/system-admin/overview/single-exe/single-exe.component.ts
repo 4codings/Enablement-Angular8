@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material';
 import { EditExeTypeDialogComponent } from '../dialogs/edit-exe-type-dialog/edit-exe-type-dialog.component';
@@ -18,7 +18,10 @@ export class SingleExeComponent implements OnInit {
   @Input() exeType;
   @Input() exes;
   @Input() selectedExeType;
+  @Input() selectedExe;
   @Input() userRoleAccess;
+
+  @Output() selectedExetile = new EventEmitter();
   
   V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
   V_USR_NM:string=JSON.parse(sessionStorage.getItem('u')).USR_NM;
@@ -82,7 +85,12 @@ export class SingleExeComponent implements OnInit {
 
   selectedExeTile(exe) {
     //console.log("parent", exe);
-    this.systemOverview.selectExe(exe);
+    if(exe === 'connectionSelect') {
+      this.selectedExetile.emit(null);
+    } else {
+      this.systemOverview.selectExe(exe);
+      this.selectedExetile.emit(exe);
+    }
   }
 
 }

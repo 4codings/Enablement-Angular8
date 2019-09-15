@@ -37,7 +37,7 @@
       matRipple
       cdkDrag
       [cdkDragData]="currExe"
-      [class.active]="currExe == selectedTile"
+      [class.active]="currExe == selectedExe"
       [class.highlight]="isHighLightTile(currExe)"
       [matTooltip]="currExe.V_EXE_CD"
       *ngFor="let currExe of exes.EXES; let i = index"

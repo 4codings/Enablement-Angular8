@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { SystemAdminOverviewService } from '../system-admin-overview.service';
 import { MatDialog } from '@angular/material';
 import { ManageMachinesComponent } from '../dialogs/manage-machines/manage-machines.component';
@@ -19,6 +19,10 @@ export class SingleMachineComponent implements OnInit {
   @Input() machines;
   @Input() userRoleAccess;
   @Input() selectedConnectionType;
+  @Input() selectedExe;
+  @Input() selectedConn;
+  @Output() selectedConntile = new EventEmitter();
+
   V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
   V_USR_NM:string=JSON.parse(sessionStorage.getItem('u')).USR_NM;
   domain_name=this.globals.domain_name; private apiUrlGet = "https://"+this.domain_name+"/rest/v1/secured?";
@@ -76,7 +80,12 @@ export class SingleMachineComponent implements OnInit {
 
   selectedMachineTile(connection) {
     //console.log("connection", connection);
-    this.systemOverview.selectCxn(connection);
+    if(connection === 'exeSelect') {
+      this.selectedConntile.emit(null);
+    } else {
+      this.systemOverview.selectCxn(connection);
+      this.selectedConntile.emit(connection);
+    }
   }
 
 }

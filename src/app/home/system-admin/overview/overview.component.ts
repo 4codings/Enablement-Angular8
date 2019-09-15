@@ -15,6 +15,8 @@ export class OverviewComponent implements OnInit,OnDestroy {
 
   unsubscribeAll: Subject<boolean> = new Subject<boolean>();
   selectedExeType: string = 'E_REST';
+  selectedExeTile;
+  selectedConnTile;
   //selectedMachineType: string = 'All';
   ctrl_variables;
 
@@ -54,6 +56,14 @@ export class OverviewComponent implements OnInit,OnDestroy {
 
   selectedMachine(type) {
      this.selectedExeType = type
+  }
+
+  selectedExetile(exe) {
+    this.selectedExeTile = exe;
+  }
+
+  selectedConntile(conn) {
+    this.selectedConnTile = conn;
   }
 
   getRollAccess() {
