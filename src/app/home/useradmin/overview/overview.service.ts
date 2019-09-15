@@ -488,7 +488,7 @@ export class OverviewService implements OnDestroy {
   openAddAuthDialog(roleId: string): void {
     const dialogRef = this.dialog.open(AddEditAuthorizeComponent,
       {
-        width: '700px',
+        width: '300px',
         panelClass: 'app-dialog',
         data: { roleId: roleId, authType: this.selectedAuthType.key }
       });
@@ -506,7 +506,7 @@ export class OverviewService implements OnDestroy {
   openEditAuthDialog(auth: AuthorizationData): void {
     const dialogRef = this.dialog.open(AddEditAuthorizeComponent,
       {
-        width: '700px',
+        width: '300px',
         panelClass: 'app-dialog',
         data: { auth: auth }
       });
