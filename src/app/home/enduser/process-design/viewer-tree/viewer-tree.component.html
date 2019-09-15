@@ -1,0 +1,20 @@
+<ng-template #itemTemplate let-item="item" let-index let-onCollapseExpand="onCollapseExpand"
+  let-onCheckedChange="onCheckedChange">
+  <div class="form-inline row-item" [ngClass]="item.children?'parent-menu':'child-menu'">
+    <i *ngIf="item.children" (click)="onCollapseExpand()" aria-hidden="true" class="fa"
+      [class.fa-folder]="item.collapsed" [class.fa-folder-open]="!item.collapsed"></i>
+    <div class="form-check" *ngIf="item.text!=='NULL'">
+      <label *ngIf="item.children" class="form-check-label parent-color text-center"
+        [ngClass]="item.value == parentapp?'active-menu':''" (click)="onTitleClick(item, true)">
+        {{item.text}}
+      </label>
+      <label *ngIf="!item.children" class="form-check-label child-color text-center"
+        [ngClass]="(item.text == parentpro && item.value == parentapp)?'active-menu':''"
+        (click)="onTitleClick(item,false)">
+        {{item.text}}
+      </label>
+    </div>
+  </div>
+</ng-template>
+<ngx-treeview [config]="config" [items]="item" [itemTemplate]="itemTemplate">
+</ngx-treeview>
