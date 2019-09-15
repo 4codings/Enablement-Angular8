@@ -34,9 +34,9 @@
     </div>
     <!--    <div *ngIf="!environment.production">{{currAuth.V_AUTH_ID}}</div>-->
     <div class="tile-text">
-      <strong>
+      <span>
         {{ currAuth.V_AUTH_CD.split(';')[0] }}
-      </strong>
+      </span>
     </div>
   </div>
   <div class="tile add-new-tile" cdkDrag [cdkDragDisabled]="true" *ngIf="authPermission || authorizationPermission"
