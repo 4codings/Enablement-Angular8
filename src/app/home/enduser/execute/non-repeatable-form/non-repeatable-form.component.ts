@@ -157,6 +157,7 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
   }
 
   onSubmit() {
+    this.submitClicked = true;
     if (this.nrpForm.valid) {
       if (this.V_TABLE_NAME !== '') {
         this.submit_formsRecord();
@@ -228,6 +229,7 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
           this.invoke_router(res);
         }
         else {
+          this.submitClicked = false;
           this.router.navigate(['/End_User'], { skipLocationChange: true });
         }
       });
@@ -237,12 +239,15 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     // secure
     this.https.post(this.apiService.endPoints.secureProcessReport, data, this.apiService.setHeaders()).subscribe(
       res => {
+        this.submitClicked = false;
       });
 
   }
   onCancel() {
+    this.endClicked = true;
     this.endUserService.processCancel(this.V_SRVC_ID, this.V_PRCS_TXN_ID, this.V_UNIQUE_ID[0]).subscribe(
       res => {
+        this.endClicked = false;
         this.router.navigateByUrl('End_User', { skipLocationChange: true });
       });
   }

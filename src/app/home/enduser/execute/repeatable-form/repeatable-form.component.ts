@@ -281,14 +281,17 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
   }
 
   onCancel() {
+    this.endClicked = true;
     this.endUserService.processCancel(this.V_SRVC_ID, this.V_PRCS_TXN_ID, this.V_UNIQUE_ID[0]).subscribe(
       res => {
+        this.endClicked = false;
         this.router.navigateByUrl('End_User', { skipLocationChange: true });
       });
   }
 
   onSubmit() {
     if (this.rpForm.valid) {
+      this.submitClicked = true;
       var form: any = [];
       var temp: any;
       for (let i = 0; i < this.RVP_labels.length; i++) {

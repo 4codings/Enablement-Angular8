@@ -108,7 +108,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedElementInput: any;
   selectedElementOutput: any;
   elementClick = false;
-
+  endClicked = false;
+  submitClicked = false;
   constructor(private dataStored: StorageSessionService,
     private https: Http,
     private route: Router,
@@ -144,7 +145,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   chartposition: any = [{ x: 0, y: 0 }, { x: 0, y: 0 }, { x: 0, y: 0 }, { x: 0, y: 0 }];
-  
+
   onMonitorClick() {
     this.isMonitorClicked = true;
   }
@@ -242,10 +243,10 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
   V_PRF_VAL = [];
   userprefs = {};
   hiddencolsconfig = {};
-  
+
 
   //__________________________Set Preferences_________________________________
-  
+
   settablepreferences() {
     if (this.hiddencols.length > -1) {
       var abc = this.hiddencols.toString();
@@ -436,6 +437,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ExecuteAgain() {
+    this.submitClicked = true;
     this.Execute_Now();
 
   }
@@ -462,8 +464,10 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     //       //(res);
 
     //  });
+    this.endClicked = true;
     this.endUserService.processCancel(this.SRVC_ID, this.PRCS_TXN_ID, this.globals.Report.TEMP_UNIQUE_ID[0]).subscribe(
       () => {
+        this.endClicked = false;
         this.route.navigateByUrl('End_User', { skipLocationChange: true });
       });
   }
@@ -496,6 +500,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.https.post(this.apiService.endPoints.secureProcessReport, body, this.apiService.setHeaders()).subscribe(
       res => {
         this.Execute_res_data = res.json();
+        this.submitClicked = false;
         this.route.navigateByUrl('End_User', { skipLocationChange: true });
       }
     );
@@ -588,7 +593,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     }
   }
-  
+
   //currency = 'USD';
   //price: number;
 }

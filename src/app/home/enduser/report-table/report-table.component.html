@@ -52,13 +52,13 @@
     <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay;"></tr>
 
   </table>
-  
+
 </div>
 
 <div class="mat-elevation-z8" fxHide="true" fxShow.xs="true" *ngIf="disptable">
   <table mat-table [dataSource]="dataSource" matSort>
     <ng-container *ngFor="let a of columnsToDisplay" matColumnDef="{{a}}">
-      
+
       <th mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="{{helpertext[a]}}" matTooltipPosition='above'>
         {{a}}<mat-icon class="del_icon" (click)="showhidecol(a)">delete_forever</mat-icon>
       </th>
@@ -69,7 +69,7 @@
     <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay;"></tr>
 
   </table>
-  
+
 </div>
 <div *ngIf="disptable && hiddencols.length > 0" style="width: 100%">
   <br>
@@ -83,11 +83,13 @@
 </div>
 <br>
 <div flex fxLayout="row" fxLayoutAlign="center">
-  <button mat-raised-button (click)="Redirect_to_user()" style="background-color: rgba(187, 38, 38, 0.700);">
+  <button mat-raised-button [disabled]="endClicked" (click)="Redirect_to_user()"
+    style="background-color: rgba(187, 38, 38, 0.700);">
     <mat-icon style="vertical-align: middle;margin-right: 5px">clear</mat-icon>Exit
   </button>
   <div fxFlex="5"></div>
-  <button mat-raised-button style="background-color: rgba(65, 204, 65, 0.700);" (click)="ExecuteAgain()">
+  <button mat-raised-button [disabled]="submitClicked" style="background-color: rgba(65, 204, 65, 0.700);"
+    (click)="ExecuteAgain()">
     <mat-icon style="vertical-align: middle;margin-right: 5px">done_all</mat-icon>Submit
   </button>
 </div>
