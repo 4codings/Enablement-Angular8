@@ -22,7 +22,13 @@ export class ConfigServiceService {
   chartSelection: any = {chartNo:'',chartPreferences:[],update:false,selection:''};
   chartposition: any = [];
   ReportTable_data: any;
+  chart_translate: any = [];
 
+  position_status = "not-received";
+  chart_status = "not-rendered";
+  chartposition_change = new BehaviorSubject<any>(this.chart_translate);
+  positionstatus_changed = new BehaviorSubject<any>(this.position_status);
+  chartstatus_changed = new BehaviorSubject<any>(this.chart_status);
   chartPreferencesChange = new BehaviorSubject<any>(this.chartPreferences);
 
   V_SRC_CD: string = JSON.parse(sessionStorage.getItem('u')).SRC_CD;

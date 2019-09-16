@@ -124,8 +124,8 @@ export class PersonalizationTableComponent implements OnInit, AfterViewInit {
     this.xaxis_datasets = this.yaxis_datasets = this.report.columnsToDisplay;
     this.data.chartPreferences = [];
     this.chartPreferences = [];
-
-
+    this.data.chart_status = "not-rendered";
+    this.data.position_status = "not-received";
   }
   ngAfterViewInit() {
     this.getChartPreferences();
@@ -141,15 +141,34 @@ export class PersonalizationTableComponent implements OnInit, AfterViewInit {
         console.log('chartpreferences = >');
         console.log(res.json());
         var cpref = res.json();
-        cpref['PRF_NM']
-        cpref['PRF_VAL']
-        cpref['ITM_ID']
-        this.restore_ptable(cpref);
-        this.restore_charts(cpref);
+        this.restore_styling(cpref);
       });
   }
 
-  restore_ptable(cpref) {
+  restore_position(cpref) {
+    var itm_set = new Set();
+    for (let i = 0; i < cpref['ITM_ID'].length; i++) {
+      if (cpref['ITM_ID'][i] !== '-1')
+        itm_set.add(cpref['ITM_ID'][i]);
+    }
+    var itm_arr = [];
+    if (itm_set.size > 0) {
+      itm_arr = Array.from(itm_set);
+    }
+    for (let i = 0; i < itm_arr.length; i++) {
+      if (this.data.chartPreferences[i]['chartposition'].length === 0) {
+        this.data.chartposition[i].x = 0;
+        this.data.chartposition[i].y = 0;
+      } else {
+        this.data.chartposition[i] = JSON.parse(this.data.chartPreferences[i]['chartposition']);
+      }
+      this.data.chart_translate[i] = 'translate3d('+this.data.chartposition[i].x +'px, '+this.data.chartposition[i].y+'px, 0px'+')';
+    }
+    this.data.position_status = "received";
+    this.data.positionstatus_changed.next(this.data.position_status);
+  }
+
+  restore_styling(cpref) {
     var itm_set = new Set();
     for (let i = 0; i < cpref['ITM_ID'].length; i++) {
       if (cpref['ITM_ID'][i] !== '-1')
@@ -175,6 +194,7 @@ export class PersonalizationTableComponent implements OnInit, AfterViewInit {
       this.populateRow(i, i);
       console.log(this.data.chartPreferences[i]);
     }
+    this.restore_position(cpref);
   }
 
   restore_charts(cpref) {
@@ -277,14 +297,6 @@ export class PersonalizationTableComponent implements OnInit, AfterViewInit {
   }
 
   setchartpreferences(pref, val, index?) {
-
-    /*var cp = [];
-    for (let i = 0; i < this.chartposition.length; i++) {
-      cp.push(Object.values(this.chartposition[i]));
-    }
-    cp = [].concat.apply([], cp);
-    console.log(cp);*/
-
     console.log(val);
     this.chartPreferences[index][pref] = val;
     for (let i = 0; i < this.chartPreferences.length; i++) {
@@ -338,33 +350,6 @@ export class PersonalizationTableComponent implements OnInit, AfterViewInit {
       (res) => {
         console.log(res.json());
       });
-
-
-    /*this.userprefs['backgroundcolor'] = this._backgroundColor;
-    this.userprefs['bordercolor'] = this._borderColor;
-    this.userprefs['fill'] = this._fill.toString().toLocaleUpperCase();
-    this.userprefs['pointstyle'] = this._pointstyle;
-    this.userprefs['linetension'] = this._linetension;
-    this.userprefs['animations'] = this._animations;
-    this.userprefs['pointradius'] = this._pointradius;
-    this.userprefs['linestyle'] = this._linestyle;
-    this.userprefs['gridlinedashed'] = this._gridborder.toString().toLocaleUpperCase();
-    this.userprefs['linewidth'] = this._gridlinewidth;
-    this.userprefs['yautoskip'] = this._yaxisAutoskip.toString().toLocaleUpperCase();
-    this.userprefs['linexaxis'] = this._xaxis_sel_line;
-    this.userprefs['lineyaxis'] = this._yaxis_sel_line;
-    this.userprefs['barxaxis'] = this._xaxis_sel_bar;
-    this.userprefs['baryaxis'] = this._yaxis_sel_bar;
-    this.userprefs['piexaxis'] = this._xaxis_sel_pie;
-    this.userprefs['pieyaxis'] = this._yaxis_sel_pie;
-    this.userprefs['doughnutxaxis'] = this._xaxis_sel_doughnut;
-    this.userprefs['doughnutyaxis'] = this._yaxis_sel_doughnut;
-    this.userprefs['selectedchart'] = this.selectedchart;
-    this.userprefs['personalizationtable'] = this.personalizationtable;
-    this.userprefs['chartposition'] = cp;
-    console.log(this.userprefs);
-    this.report.V_PRF_NM = Object.keys(this.userprefs);
-    this.report.V_PRF_VAL = Object.values(this.userprefs);*/
   }
 
 

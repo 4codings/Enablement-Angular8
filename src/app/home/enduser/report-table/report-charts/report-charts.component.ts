@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { PersonalizationTableComponent } from '../personalization-table/personalization-table.component';
 import { ReportTableComponent } from '../report-table.component';
 import { ConfigServiceService } from '../../../../services/config-service.service';
@@ -13,7 +13,7 @@ import { Chart } from 'chart.js';
   templateUrl: './report-charts.component.html',
   styleUrls: ['./report-charts.component.scss']
 })
-export class ReportChartsComponent implements OnInit {
+export class ReportChartsComponent implements OnInit, AfterViewInit {
 
   constructor(public report: ReportTableComponent,
     public data: ConfigServiceService,
@@ -194,6 +194,9 @@ export class ReportChartsComponent implements OnInit {
   chartLabels: any = [];
   chartOptions: any = [];
   lastPrefernce: any = [];
+  position_subs: any;
+  chart_status: any;
+  position_status: any;
   ngOnInit() {
     Chart.pluginService.register(pluginAnnotations);
     this.subscription = this.data.chartPreferencesChange
@@ -209,7 +212,14 @@ export class ReportChartsComponent implements OnInit {
         if (value != [] && this.data.chartSelection['update'] === true && this.data.chartSelection['chartNo'] !== '')
           this.updatechart(this.data.chartSelection['chartNo'], this.data.chartPreferences[this.data.chartSelection['chartNo']]['selectedchart']);
         this.lastPrefernce = this.data.chartPreferences;
+        this.data.chart_status = "rendered";
+        this.data.chartstatus_changed.next(this.data.chart_status);
       });
+
+    this.position_subs = this.data.chartposition_change.subscribe(value => {
+
+    });
+
     console.log(this.chartPreferences);
     this.UNIQUE_ID = this.report.UNIQUE_ID;
     this.SRC_ID = this.report.SRC_ID;
@@ -217,6 +227,42 @@ export class ReportChartsComponent implements OnInit {
     console.log(this.data.ReportTable_data);
   }
 
+  ngAfterViewInit() {
+    this.chart_status = this.data.chartstatus_changed.subscribe(value => {
+      this.setposition();
+    });
+
+    this.position_status = this.data.positionstatus_changed.subscribe(value => {
+      this.setposition();
+    });
+  }
+
+  attempt_position = 0;
+  setposition() {
+    if (this.data.chart_status === "rendered" && this.data.position_status === "received") {
+      this.attempt_position = 0;
+      while (true) {
+        this.attempt_position++;
+        var curr = this;
+        var complete = false;
+        setTimeout(function () {
+          if ((<NodeList>document.querySelectorAll(".chart-box")).length > 0) {
+            for (let i = 0; i < curr.data.chart_translate.length; i++) {
+              if ((<HTMLElement>document.querySelectorAll(".chart-box")[i]).style.transform !== curr.data.chart_translate[i]) {
+                console.log('Chart-' + curr.data.chartPreferences[i]['chartno'] + ' position set at : ' + JSON.stringify(curr.data.chartposition[i]));
+                console.log((<HTMLElement>document.querySelectorAll(".chart-box")[i]));
+                (<HTMLElement>document.querySelectorAll(".chart-box")[i]).style.transform = curr.data.chart_translate[i];
+              }
+            }
+            complete = true;
+          }
+        }, 500);
+        if (this.attempt_position >= 20 || complete) {
+          break;
+        }
+      }
+    }
+  }
   printcpref() {
     console.log(this.data.chartPreferences);
   }
@@ -224,13 +270,13 @@ export class ReportChartsComponent implements OnInit {
   dragEndChart(event, i) {
     var offset = { ...(<any>event.source._dragRef)._passiveTransform };
     this.data.chartposition[i] = offset;
-    //console.log(this.data.chartposition[i]);
     this.data.chartPreferences[i]['chartposition'] = JSON.stringify(this.data.chartposition[i]);
-    console.log(this.data.chartPreferences);
-    /*this.data.setchartstyling(this.report.UNIQUE_ID, this.report.SRC_ID, 'chartposition'+'_'+i, this.data.chartPreferences[i]['chartposition']).subscribe(
+    console.log(JSON.parse(this.data.chartPreferences[i]['chartposition']));
+
+    this.data.setchartstyling(this.report.UNIQUE_ID, this.report.SRC_ID, this.data.chartPreferences[i]['chartno'], 'chartposition', this.data.chartPreferences[i]['chartposition']).subscribe(
       (res) => {
         console.log(res.json());
-      });*/
+      });
   }
 
   updateLineChart(chartNo) {
