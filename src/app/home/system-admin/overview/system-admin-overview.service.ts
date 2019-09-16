@@ -42,10 +42,12 @@ export class SystemAdminOverviewService {
 
   public selectExe(exe) {
     this.selectedExe$.next(exe);
+    this.selectedCxn$.next(null);
   }
 
   public selectCxn(cxn) {
     this.selectedCxn$.next(cxn);
+    this.selectedExe$.next(null);
   }
 
   public getExe() {
