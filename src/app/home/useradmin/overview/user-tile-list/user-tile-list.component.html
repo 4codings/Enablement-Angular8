@@ -6,7 +6,7 @@
     (mousedown)="onTileMouseDownEventHandler($event)" (click)="onUserTileClick(currUser)">
     <mat-icon class="tile-icon">person</mat-icon>
     <!--    <div *ngIf="!environment.production">{{currUser.V_USR_ID}}</div>-->
-    <div class="ellipsis-text"><strong>{{currUser.V_USR_NM?.split('@')[0]}}</strong></div>
+    <div class="ellipsis-text"><span>{{currUser.V_USR_NM?.split('@')[0]}}</span></div>
   </div>
   <div class="tile add-new-tile" cdkDrag [cdkDragDisabled]="true" *ngIf="userPermission || membershipPermission"
     (click)="onAddUserTileClick()" matTooltip="Add User" matRipple>

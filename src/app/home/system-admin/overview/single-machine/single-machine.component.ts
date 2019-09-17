@@ -37,7 +37,7 @@ export class SingleMachineComponent implements OnInit {
   onBtnDeleteMachineClick(machine) {
     const dialogRef = this.dialog.open(ConfirmationAlertComponent, {
       panelClass: 'app-dialog',
-      width: '600px',
+      width: '300px',
     });
 
     dialogRef.componentInstance.title = `Delete Machine - ${machine.PLATFORM_CD}`;
@@ -57,7 +57,7 @@ export class SingleMachineComponent implements OnInit {
   onBtnEditMachineClick(machine) {
     const dialogRef = this.dialog.open(ManageMachinesComponent, {
       panelClass: 'app-dialog',
-      width: '600px',
+      width: '300px',
       data: machine
     });
 
@@ -69,7 +69,7 @@ export class SingleMachineComponent implements OnInit {
   onBtnAssignRoleClick(machine) {
     const dialogRef = this.dialog.open(AssignMcnPlfComponent, {
       panelClass: 'app-dialog',
-      width: '600px',
+      width: '300px',
       data: {isSelectedEntity: "MACHINE", machine:machine}
     });
 

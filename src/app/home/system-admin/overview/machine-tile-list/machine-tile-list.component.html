@@ -17,7 +17,7 @@
     <!-- <mat-icon class="tile-icon">person</mat-icon> -->
     <mat-icon class="iconmod shwmaticon">insert_link</mat-icon>
    <!-- <div>{{currConn.EXE_CD}}</div> -->
-    <div class="ellipsis-text"><strong>{{currConn.V_CXN_CD}}</strong></div>
+    <div class="ellipsis-text"><span>{{currConn.V_CXN_CD}}</span></div>
   </div>
   <div class="tile add-new-tile" (click)="onAddConnTileClick()" *ngIf="userAccess.role_connection"
        matTooltip="Add Connection" matRipple>
