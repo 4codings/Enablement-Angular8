@@ -25,12 +25,14 @@
   </div>
 </div>
 <ng-container *ngIf="userAccess.role_connection">
-<div fxLayout="column" fxLayoutAlign="start stretch" class="context-menu" #contextMenu *ngIf="contextMenuActive"
+<div fxLayout="column" fxLayoutAlign="start stretch" class="mat-menu-content context-menu" #contextMenu *ngIf="contextMenuActive"
       [ngStyle]="contextMenuStyle">
-    <button mat-button class="menu-item" (click)="onContextMenuEditConnBtnClick()">Edit</button>
-    <button mat-button class="many-item" (click)="onContextMenuDeleteConnBtnClick()">Delete</button>
-    <button mat-button class="many-item" (click)="onContextMenuRemoveConnBtnClick()">Remove from machine</button>
-    <button mat-button class="many-item" (click)="onContextMenuRemoveFromAllConnBtnClick()">Remove from all machines</button>
-    <button mat-button class="many-item" (click)="onContextMenuAssigneConnBtnClick()">Assign</button>
+    <button mat-menu-item class="menu-item" (click)="onContextMenuEditConnBtnClick()"><span class="entry bpmn-icon-screw-wrench fa-lg mr-4" draggable="true">
+    </span> <span>Edit</span></button>
+    <button mat-menu-item class="many-item" (click)="onContextMenuDeleteConnBtnClick()"><span class="entry bpmn-icon-trash fa-lg mr-4" draggable="true">
+    </span> <span>Delete</span></button>
+    <button mat-menu-item class="many-item" (click)="onContextMenuRemoveConnBtnClick()"><span><i class="fa fa-times fa-lg mr-4 ml-1"></i></span> <span>Remove from machine</span></button>
+    <button mat-menu-item class="many-item" (click)="onContextMenuRemoveFromAllConnBtnClick()"><mat-icon>remove_circle_outline</mat-icon> <span>Remove from all machines</span></button>
+    <button mat-menu-item class="many-item" (click)="onContextMenuAssigneConnBtnClick()"><mat-icon>link</mat-icon> <span>Assign</span></button>
   </div> 
 </ng-container>  

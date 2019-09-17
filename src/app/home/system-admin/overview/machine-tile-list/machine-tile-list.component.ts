@@ -76,7 +76,7 @@ export class MachineTileListComponent implements OnInit {
   onAddConnTileClick() {
     const dialogRef = this.dialog.open(AddConnectionDialogComponent, {
       panelClass: 'app-dialog',
-      width: '300px',
+      width: '385px',
       data: {machineType:this.machineType, selectedConnectionType:this.selectedConnectionType, machineData:this.machine}
     });
 
@@ -202,7 +202,7 @@ export class MachineTileListComponent implements OnInit {
   onBtnEditExeClick(cxn) {
     const dialogRef = this.dialog.open(EditConnectionDialogComponent, {
       panelClass: 'app-dialog',
-      width: '300px',
+      width: '385px',
       data: cxn
     });
 

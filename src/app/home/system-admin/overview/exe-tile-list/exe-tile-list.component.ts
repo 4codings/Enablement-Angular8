@@ -72,7 +72,7 @@ export class ExeTileListComponent implements OnInit {
   onAddExeTileClick(exeType) {
     const dialogRef = this.dialog.open(AddExeDialogComponent, {
       panelClass: 'app-dialog',
-      width: '300px',
+      width: '400px',
       data: {EXE_TYP:exeType, platformData: this.platData}
     });
 
@@ -199,7 +199,7 @@ export class ExeTileListComponent implements OnInit {
     //console.log(exeData);
     const dialogRef = this.dialog.open(EditExeTypeDialogComponent, {
       panelClass: 'app-dialog',
-      width: '300px',
+      width: '400px',
       data: exeData
     });
 
