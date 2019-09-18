@@ -76,7 +76,7 @@ export class MachineTileListComponent implements OnInit {
   onAddConnTileClick() {
     const dialogRef = this.dialog.open(AddConnectionDialogComponent, {
       panelClass: 'app-dialog',
-      width: '600px',
+      width: '385px',
       data: {machineType:this.machineType, selectedConnectionType:this.selectedConnectionType, machineData:this.machine}
     });
 
@@ -146,7 +146,7 @@ export class MachineTileListComponent implements OnInit {
   onBtnAssignCxnClick(cxn) {
     const dialogRef = this.dialog.open(AssignConnectionExeComponent, {
       panelClass: 'app-dialog',
-      width: '600px',
+      width: '300px',
       data: {cxn:cxn, isSelectedEntity:'CXN', type:'Executable'}
     });
 
@@ -202,7 +202,7 @@ export class MachineTileListComponent implements OnInit {
   onBtnEditExeClick(cxn) {
     const dialogRef = this.dialog.open(EditConnectionDialogComponent, {
       panelClass: 'app-dialog',
-      width: '600px',
+      width: '385px',
       data: cxn
     });
 
@@ -224,7 +224,7 @@ export class MachineTileListComponent implements OnInit {
     //console.log(cnx);
     const dialogRef = this.dialog.open(ConfirmationAlertComponent, {
       panelClass: 'app-dialog',
-      width: '600px',
+      width: '300px',
     });
 
     dialogRef.componentInstance.title = `Delete Machine- ${cnx.V_PLATFORM_CD} connection`;
@@ -251,7 +251,7 @@ export class MachineTileListComponent implements OnInit {
     //console.log(cnx);
     const dialogRef = this.dialog.open(ConfirmationAlertComponent, {
       panelClass: 'app-dialog',
-      width: '600px',
+      width: '300px',
     });
 
     dialogRef.componentInstance.title = `Remove Machine- ${cnx.V_PLATFORM_CD} connection`;
@@ -278,7 +278,7 @@ export class MachineTileListComponent implements OnInit {
   onBtnRemoveFromAllConnectionClick(cnx) {
     const dialogRef = this.dialog.open(ConfirmationAlertComponent, {
       panelClass: 'app-dialog',
-      width: '600px',
+      width: '300px',
     });
 
     dialogRef.componentInstance.title = `Remove Machine- ${cnx.V_PLATFORM_CD} connection`;

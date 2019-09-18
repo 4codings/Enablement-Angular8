@@ -92,7 +92,7 @@ export class MachinesListComponent implements OnInit {
   onAddMachineBtnClick() {
     const dialogRef = this.dialog.open(AddPlatformDialogComponent, {
       panelClass: 'app-dialog',
-      width: '600px',
+      width: '300px',
       data: {platform_cd: "platform_cd", platform_des: "platform_des"}
     });
 
@@ -104,7 +104,7 @@ export class MachinesListComponent implements OnInit {
   onAssignMcnPlfClick() {
     const dialogRef = this.dialog.open(AssignMcnPlfComponent, {
       panelClass: 'app-dialog',
-      width: '600px',
+      width: '300px',
       data: {isSelectedEntity: "MACHINE"}
     });
 
@@ -117,7 +117,7 @@ export class MachinesListComponent implements OnInit {
   onManageMachineBtnClick() {
     const dialogRef = this.dialog.open(ManageMachinesComponent, {
       panelClass: 'app-dialog',
-      width: '650px',
+      width: '350px',
       data: {platform_cd: "platform_cd", platform_des: "platform_des"}
     });
 

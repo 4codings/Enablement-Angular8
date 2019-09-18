@@ -41,7 +41,7 @@ export class SingleExeComponent implements OnInit {
   onBtnEditExeClick(plat) {
     const dialogRef = this.dialog.open(AddPlatformDialogComponent, {
       panelClass: 'app-dialog',
-      width: '600px',
+      width: '300px',
       data: plat
     });
 
@@ -53,7 +53,7 @@ export class SingleExeComponent implements OnInit {
   onBtnAssignRoleClick(plat) {
     const dialogRef = this.dialog.open(AssignMcnPlfComponent, {
       panelClass: 'app-dialog',
-      width: '600px',
+      width: '300px',
       data: {isSelectedEntity: "PLATFORM", server:plat}
     });
 
@@ -65,7 +65,7 @@ export class SingleExeComponent implements OnInit {
   onBtnDeleteExeClick(p) {
     const dialogRef = this.dialog.open(ConfirmationAlertComponent, {
       panelClass: 'app-dialog',
-      width: '600px',
+      width: '300px',
     });
 
     dialogRef.componentInstance.title = `Delete Server - ${p.SERVER_CD}`;

@@ -72,7 +72,7 @@ export class ExeTileListComponent implements OnInit {
   onAddExeTileClick(exeType) {
     const dialogRef = this.dialog.open(AddExeDialogComponent, {
       panelClass: 'app-dialog',
-      width: '600px',
+      width: '400px',
       data: {EXE_TYP:exeType, platformData: this.platData}
     });
 
@@ -199,7 +199,7 @@ export class ExeTileListComponent implements OnInit {
     //console.log(exeData);
     const dialogRef = this.dialog.open(EditExeTypeDialogComponent, {
       panelClass: 'app-dialog',
-      width: '600px',
+      width: '400px',
       data: exeData
     });
 
@@ -220,7 +220,7 @@ export class ExeTileListComponent implements OnInit {
   onBtnAssignCxnClick(exe) {
     const dialogRef = this.dialog.open(AssignConnectionExeComponent, {
       panelClass: 'app-dialog',
-      width: '600px',
+      width: '300px',
       data: {exe:exe, isSelectedEntity:'EXE', type:'Connections'}
     });
 
@@ -237,7 +237,7 @@ export class ExeTileListComponent implements OnInit {
     //console.log(exe);
     const dialogRef = this.dialog.open(ConfirmationAlertComponent, {
       panelClass: 'app-dialog',
-      width: '600px',
+      width: '300px',
     });
 
     dialogRef.componentInstance.title = `Delete Exe- ${exe.EXE_TYP}`;
@@ -258,7 +258,7 @@ export class ExeTileListComponent implements OnInit {
     //console.log(exe);
     const dialogRef = this.dialog.open(ConfirmationAlertComponent, {
       panelClass: 'app-dialog',
-      width: '600px',
+      width: '300px',
     });
 
     dialogRef.componentInstance.title = `Remove Exe- ${exe.EXE_TYP}`;
@@ -279,7 +279,7 @@ export class ExeTileListComponent implements OnInit {
     //console.log(exe);
     const dialogRef = this.dialog.open(ConfirmationAlertComponent, {
       panelClass: 'app-dialog',
-      width: '600px',
+      width: '300px',
     });
 
     dialogRef.componentInstance.title = `Remove Exe- ${exe.EXE_TYP}`;

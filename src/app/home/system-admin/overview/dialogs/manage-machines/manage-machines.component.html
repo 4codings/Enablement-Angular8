@@ -21,10 +21,10 @@
   <br/>
   <div class="dialog-body content-wrapper">  
     <!-- _________START ROW____________ -->
-    <div flex style="text-align:center;" fxLayout="row" fxLayout.gt-sm="row" fxLayout.lt-sm="column" fxLayout.sm="column">
+    <div flex style="text-align:center;" fxLayout="column" fxLayout.lt-sm="column" fxLayout.sm="column">
       <!-- ______________MACHINE BOX START__________ -->
 
-      <div style="text-align:center;" fxFlex="30">
+      <div style="text-align:center;" fxFlex="100" fxLayout.sm="column">
 
         <!-- _______MACHINE NAME__________ -->
         <label>
@@ -40,7 +40,7 @@
         </mat-form-field>
       </div>
       <div fxFlex="5"></div>
-      <div style="text-align:center;" fxFlex="30">
+      <div style="text-align:center;" fxFlex="100">
         <label>
           <strong>{{Label['PLATFORM_DSC']}}</strong>
         </label>
@@ -53,7 +53,7 @@
       </div>
       
       <div fxFlex="5"></div>
-      <div style="text-align:center;" fxFlex="30">
+      <div style="text-align:center;" fxFlex="100">
         <label>
           <strong>{{Label['PLATFORM_CAP']}}</strong>
         </label>
@@ -67,9 +67,9 @@
 
 
     <!-- ________ROW 2 START___________ -->
-    <div flex fxLayout="row" fxLayout.gt-sm="row" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayoutGap="5px">
+    <div flex fxLayout="column" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayoutGap="5px">
       <!-- _______MACHINE NAME__________ -->
-      <div style="text-align:center;" fxFlex="30">
+      <div style="text-align:center;" fxFlex="100">
         <label>
           <strong>{{Label['RATING']}}</strong>
         </label>
@@ -81,7 +81,7 @@
 
       </div>
       <div fxFlex="5"></div>
-      <div style="text-align:center;" fxFlex="30">
+      <div style="text-align:center;" fxFlex="100">
         <label>
           <strong>{{Label['EFF_STRT_DT_TM']}}</strong>
         </label>
@@ -97,7 +97,7 @@
 
       </div>
       <div fxFlex="5"></div>
-      <div style="text-align:center;" fxFlex="30">
+      <div style="text-align:center;" fxFlex="100">
         <label>
           <strong>{{Label['EFF_END_DT_TM']}}</strong>
         </label>
@@ -116,8 +116,8 @@
     <!-- ______ROW 3 END____________ -->
     <!-- _______________ROW 4 START______________ -->
 
-    <div flex fxLayout="row" fxLayout.gt-sm="row" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayoutGap="5px">
-      <div style="text-align:center;" fxFlex="30">
+    <div flex fxLayout="column" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayoutGap="5px">
+      <div style="text-align:center;" fxFlex="100">
         <label>
           <strong>{{Label['VRTL_FLG']}}</strong>
         </label>
@@ -128,7 +128,7 @@
         </mat-radio-group>
       </div>
       <div fxFlex="5"></div>
-      <div style="text-align:center;" fxFlex="30">
+      <div style="text-align:center;" fxFlex="100">
         <label>
           <strong>{{Label['MODESTATUS']}}</strong>
         </label>
@@ -139,7 +139,7 @@
         </mat-radio-group>
       </div>
       <div fxFlex="5"></div>
-      <div style="text-align:center;" fxFlex="30">
+      <div style="text-align:center;" fxFlex="100">
         <label>
           <strong>{{Label['STATE_FLG']}}</strong>
         </label>

@@ -95,7 +95,7 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
   onAddExeBtnClick() {
     const dialogRef = this.dialog.open(AddPlatformDialogComponent, {
       panelClass: 'app-dialog',
-      width: '600px',
+      width: '300px',
       data: {platform_cd: "platform_cd", platform_des: "platform_des"}
     });
 
@@ -107,7 +107,7 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
   onAssignMcnPlfClick() {
     const dialogRef = this.dialog.open(AssignMcnPlfComponent, {
       panelClass: 'app-dialog',
-      width: '600px',
+      width: '300px',
       data: {isSelectedEntity: "PLATFORM"}
     });
 
@@ -120,7 +120,7 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
     /*
     const dialogRef = this.dialog.open(ConfirmationAlertComponent, {
       panelClass: 'app-dialog',
-      width: '600px',
+      width: '300px',
     });
 
     dialogRef.componentInstance.title = `Delete ExeType - ${exe.EXE_TYP}`;
@@ -136,7 +136,7 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
     /*
     const dialogRef = this.dialog.open(EditExeTypeDialogComponent, {
       panelClass: 'app-dialog',
-      width: '600px',
+      width: '300px',
       data: {platform_cd: "platform_cd", platform_des: "platform_des"}
     });
 
