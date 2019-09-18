@@ -339,7 +339,7 @@
               <!-- <h4 class="text-center">Schedule</h4>
                 <hr /> -->
               <mat-accordion>
-                <mat-expansion-panel [expanded]="newScheduleView">
+                <mat-expansion-panel [expanded]="newScheduleView || Pause_btn || Resume_btn || Kill_btn">
                   <mat-expansion-panel-header>
                     <mat-panel-title>
                       Schedule

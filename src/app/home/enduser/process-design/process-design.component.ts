@@ -1399,6 +1399,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         break;
       }
       case 'SchedulePause': {
+        this.closePanelOnSchedule = false;
         this.Pause_btn = true;
         this.display_process_table = true;
         this.checkbox_color_value = 'checkbox_blue';
@@ -1406,6 +1407,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         break;
       }
       case 'ScheduleResume': {
+        this.closePanelOnSchedule = false;
         this.Resume_btn = true;
         this.display_process_table = true;
         this.checkbox_color_value = 'checkbox_green';
@@ -1413,6 +1415,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         break;
       }
       case 'ScheduleKill': {
+        this.closePanelOnSchedule = false;
         this.Kill_btn = true;
         this.display_process_table = true;
         this.show_filter_input = true;
