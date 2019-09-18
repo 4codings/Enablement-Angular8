@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModalModule } from 'ngx-bootstrap/modal';
-
+import { ResizableModule } from 'angular-resizable-element';
 import { EnduserRoutingModule } from './enduser-routing.module';
 import { EnduserComponent } from '../enduser/enduser.component';
 import { UsernavbarComponent } from './usernavbar/usernavbar.component';
@@ -15,6 +15,8 @@ import { RepeatableFormComponent } from './execute/repeatable-form/repeatable-fo
 import { ReportTableComponent } from './report-table/report-table.component';
 import { PersonalizationTableComponent } from './report-table/personalization-table/personalization-table.component';
 import { ReportChartsComponent } from './report-table/report-charts/report-charts.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { AngularResizedEventModule } from 'angular-resize-event';
 
 
 @NgModule({
@@ -35,6 +37,9 @@ import { ReportChartsComponent } from './report-table/report-charts/report-chart
     SharedModule,
     HeaderModule,
     NgbModule,
+    ResizableModule,
+    DragDropModule,
+    AngularResizedEventModule,
     ModalModule.forRoot(),
   ],
   entryComponents: [DialogChartsComponent]

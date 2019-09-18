@@ -23,6 +23,8 @@ export class ConfigServiceService {
   chartposition: any = [];
   ReportTable_data: any;
   chart_translate: any = [];
+  width = [];
+  height = [];
 
   position_status = "not-received";
   chart_status = "not-rendered";

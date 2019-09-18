@@ -1,20 +1,27 @@
-<div class="chart-boundary" fxLayoutGap="10">
+<div class="chart-boundary" fxLayoutGap="10" [ngStyle]="style">
 
-    <div *ngFor="let cpref of data.chartPreferences; let i=index;"
-        class="chart-box" (cdkDragEnded)="dragEndChart($event,i)" [style.top.px]="data.chartposition[i].y"
-        [style.left.px]="data.chartposition[i].x" cdkDragBoundary=".chart-boundary" cdkDrag fxLayout="column" fxFlex="50%"
-        fxFlex.lt-sm="100%">
+    <div *ngFor="let cpref of data.chartPreferences; let i=index;" class="chart-box" style="position: absolute;"
+        [style.width.px]="data.width[i]" [style.height.px]="data.height[i]" (cdkDragEnded)="dragEndChart($event,i)"
+        cdkDragBoundary=".chart-boundary" cdkDrag fxLayout="column" fxFlex="50%" fxFlex.lt-sm="100%">
+
         <h4>Chart : {{data.chartPreferences[i]['chartno']}}</h4>
-        <canvas baseChart *ngIf="cpref['selectedchart']==='linechart_sel'" [datasets]="chartData[i]" [labels]="chartLabels[i]"
-            [options]="chartOptions[i]" [colors]="lineChartColors" [chartType]="lineChartType">
+        <canvas baseChart *ngIf="cpref['selectedchart']==='linechart_sel'" [datasets]="chartData[i]"
+            [labels]="chartLabels[i]" [options]="chartOptions[i]" [colors]="lineChartColors"
+            [chartType]="lineChartType">
         </canvas>
-        <canvas baseChart *ngIf="cpref['selectedchart']==='barchart_sel'" [datasets]="chartData[i]" [labels]="chartLabels[i]"
-            [options]="chartOptions[i]" [colors]="barChartColors" [chartType]="barChartType">
+        <canvas baseChart *ngIf="cpref['selectedchart']==='barchart_sel'" [datasets]="chartData[i]"
+            [labels]="chartLabels[i]" [options]="chartOptions[i]" [colors]="barChartColors" [chartType]="barChartType">
         </canvas>
-        <canvas baseChart [datasets]="chartData[i]" [colors]="pieChartColors" *ngIf="cpref['selectedchart']==='piechart_sel'" [labels]="chartLabels[i]" [chartType]="pieChartType">
+        <canvas baseChart [datasets]="chartData[i]" [colors]="pieChartColors"
+            *ngIf="cpref['selectedchart']==='piechart_sel'" [labels]="chartLabels[i]" [chartType]="pieChartType">
         </canvas>
-        <canvas baseChart [datasets]="chartData[i]" [colors]="pieChartColors" *ngIf="cpref['selectedchart']==='doughnutchart_sel'" [labels]="chartLabels[i]" [chartType]="doughnutChartType">
+        <canvas baseChart [datasets]="chartData[i]" [colors]="pieChartColors"
+            *ngIf="cpref['selectedchart']==='doughnutchart_sel'" [labels]="chartLabels[i]"
+            [chartType]="doughnutChartType">
         </canvas>
     </div>
-    
+
+    <div *ngFor="let cpref of data.chartPreferences; let i=index;" class="chart-wrapper" (resized)="onResized($event,i)"
+        [style.width.px]="data.width[i]+8" [style.height.px]="data.height[i]+8">
+    </div>
 </div>

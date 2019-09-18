@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, NgZone } from '@angular/core';
 import { PersonalizationTableComponent } from '../personalization-table/personalization-table.component';
 import { ReportTableComponent } from '../report-table.component';
 import { ConfigServiceService } from '../../../../services/config-service.service';
@@ -6,6 +6,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ChartDataSets, ChartOptions } from 'chart.js';
 import { Color, BaseChartDirective } from 'ng2-charts-x';
 import * as pluginAnnotations from 'chartjs-plugin-annotation';
+import { ResizeEvent } from 'angular-resizable-element';
+import { CdkDragMove } from '@angular/cdk/drag-drop';
 import { Chart } from 'chart.js';
 
 @Component({
@@ -15,9 +17,15 @@ import { Chart } from 'chart.js';
 })
 export class ReportChartsComponent implements OnInit, AfterViewInit {
 
+  @ViewChild('resizeBox',{ static: false } as any) resizeBox: ElementRef;
+  @ViewChild('dragHandleCorner',{ static: false } as any) dragHandleCorner: ElementRef;
+  @ViewChild('dragHandleRight',{ static: false } as any) dragHandleRight: ElementRef;
+  @ViewChild('dragHandleBottom',{ static: false } as any) dragHandleBottom: ElementRef;
+  
   constructor(public report: ReportTableComponent,
     public data: ConfigServiceService,
-    public _snackBar: MatSnackBar) {
+    public _snackBar: MatSnackBar,
+    private ngZone: NgZone) {
 
   }
 
@@ -197,6 +205,23 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
   position_subs: any;
   chart_status: any;
   position_status: any;
+
+  get resizeBoxElement(): HTMLElement {
+    return this.resizeBox.nativeElement;
+  }
+
+  get dragHandleCornerElement(): HTMLElement {
+    return this.dragHandleCorner.nativeElement;
+  }
+
+  get dragHandleRightElement(): HTMLElement {
+    return this.dragHandleRight.nativeElement;
+  }
+
+  get dragHandleBottomElement(): HTMLElement {
+    return this.dragHandleBottom.nativeElement;
+  }
+
   ngOnInit() {
     Chart.pluginService.register(pluginAnnotations);
     this.subscription = this.data.chartPreferencesChange
@@ -235,8 +260,22 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
     this.position_status = this.data.positionstatus_changed.subscribe(value => {
       this.setposition();
     });
+   
   }
-
+  style = {};
+  onResized(event,i): void {
+    //console.log('Element was resized', event);
+    this.data.width[i] = event.element.nativeElement.offsetWidth-8;
+    this.data.height[i] = event.element.nativeElement.offsetHeight-8;
+    /*this.style = {
+      position: 'fixed',
+      left: `${event.rectangle.left}px`,
+      top: `${event.rectangle.top}px`,
+      width: `${event.rectangle.width}px`,
+      height: `${event.rectangle.height}px`
+    };*/
+  }
+  
   attempt_position = 0;
   setposition() {
     if (this.data.chart_status === "rendered" && this.data.position_status === "received") {
@@ -252,6 +291,7 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
                 console.log('Chart-' + curr.data.chartPreferences[i]['chartno'] + ' position set at : ' + JSON.stringify(curr.data.chartposition[i]));
                 console.log((<HTMLElement>document.querySelectorAll(".chart-box")[i]));
                 (<HTMLElement>document.querySelectorAll(".chart-box")[i]).style.transform = curr.data.chart_translate[i];
+                (<HTMLElement>document.querySelectorAll(".chart-wrapper")[i]).style.transform = 'translate3d('+(curr.data.chartposition[i].x-4) +'px, '+(curr.data.chartposition[i].y-4)+'px, 0px'+')';
               }
             }
             complete = true;
@@ -269,7 +309,14 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
 
   dragEndChart(event, i) {
     var offset = { ...(<any>event.source._dragRef)._passiveTransform };
-    this.data.chartposition[i] = offset;
+    //this.data.chartposition[i] = offset;
+    console.log(event.source.element.nativeElement);
+    var source = event.source.element.nativeElement;
+    var rect = source.getBoundingClientRect();
+    var parentRect = (<HTMLElement>document.querySelector('.chart-boundary')).getBoundingClientRect();
+    this.data.chartposition[i].x = rect.left - parentRect.left;
+    this.data.chartposition[i].y = rect.top - parentRect.top;
+    (<HTMLElement>document.querySelectorAll(".chart-wrapper")[i]).style.transform = 'translate3d('+(this.data.chartposition[i].x-4) +'px, '+(this.data.chartposition[i].y-4)+'px, 0px'+')';
     this.data.chartPreferences[i]['chartposition'] = JSON.stringify(this.data.chartposition[i]);
     console.log(JSON.parse(this.data.chartPreferences[i]['chartposition']));
 
@@ -715,24 +762,8 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
   }
 
   updatecustoms(chartNo) {
-    var test = 0;
 
-    /*if (this.personalizationtable != undefined && (this.myobj.mychartType != "" || this.myobj.myxaxisdata != "" || this.myobj.myyaxisdata != "")) {
-      for (let i = 0; i < this.personalizationtable.length; i++) {
-        if ((this.data.chartPreferences[chartNo]['selectedchart'] != this.personalizationtable[i].chartType ||
-          this.data.chartPreferences[chartNo]['xaxisdata'] != this.personalizationtable[i].xaxisdata ||
-          this.data.chartPreferences[chartNo]['yaxisdata'] != this.personalizationtable[i].yaxisdata)) {
-          test = 0;
-        }
-        else {
-          test = 1;
-        }
-      }
-    }
-    else {
-      test = 1;
-    }*/
-    if (test == 0 && this.data.chartSelection['update'] && (this.data.chartSelection['selection'] === 'xaxisdata'
+    if (this.data.chartSelection['update'] && (this.data.chartSelection['selection'] === 'xaxisdata'
       || this.data.chartSelection['selection'] === 'yaxisdata' || this.data.chartSelection['selection'] === 'UoM_y'
       || this.data.chartSelection['selection'] === 'SoM_y')) {
       var obj = {
@@ -753,16 +784,14 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
       }
       this.chartarray[chartNo] = [];
       this.chartarray[chartNo].push(obj);
-      //this.updatechart(chartNo, obj.chartType);
 
       console.log(this.yaxis_data);
       console.log(this.xaxis_data);
-      //this.setchartpreferences('all');
     }
     else {
-      this._snackBar.open("Data already exist in table", 'Ok', {
+      /*this._snackBar.open("Data already exist in table", 'Ok', {
         duration: 2000
-      });
+      });*/
     }
   }
 

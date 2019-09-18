@@ -269,6 +269,11 @@ export class PersonalizationTableComponent implements OnInit, AfterViewInit {
 
   populateRow(index, foundIndex) {
     console.log('inside populaterow');
+    if(this.data.chartPreferences[foundIndex]['chartposition'].length>0){
+      this.data.chartposition[index] = this.data.chartPreferences[foundIndex]['chartposition'];
+    }
+    this.data.width[index] = 6*this.data.chartPreferences[foundIndex]['chartsize'];
+    this.data.height[index] = 4*this.data.chartPreferences[foundIndex]['chartsize'];
     this._selectedchart[index] = this.data.chartPreferences[foundIndex]['selectedchart'];
     this.gridlinewidth[index] = this.data.chartPreferences[foundIndex]['gridlinewidth']
     this.backgroundcolor[index] = this.data.chartPreferences[foundIndex]['backgroundcolor']
@@ -394,9 +399,11 @@ export class PersonalizationTableComponent implements OnInit, AfterViewInit {
     this.xaxisstepSize.push("");
     this.yaxisstepSize.push("");
     this.annotation.push("");
+    this.data.width.push(600);
+    this.data.height.push(400);
     this.chartPreferences.push({
       gridlinewidth: "", chartno: this.chartno[this.chartno.length - 1],
-      backgroundcolor: "", bordercolor: "", fillbackground: false, linetension: "", pointradius: "", animations: "",
+      backgroundcolor: "", bordercolor: "", fillbackground: false, linetension: "", pointradius: "", animations: "", chartsize: "100",
       pointstyle: "rectRot", linestyle: "", gridborder: "", yaxisautoskip: "", annotation: "", selectedchart: "", chartposition: "",
       xaxisdata: "", yaxisdata: "", UoM_x: "", UoM_y: "", SoM_x: "", SoM_y: "", xaxisstepsize: "", yaxisstepsize: "", personalizationtable: {}
     });
