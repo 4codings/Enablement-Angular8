@@ -17,11 +17,11 @@ import { Chart } from 'chart.js';
 })
 export class ReportChartsComponent implements OnInit, AfterViewInit {
 
-  @ViewChild('resizeBox',{ static: false } as any) resizeBox: ElementRef;
-  @ViewChild('dragHandleCorner',{ static: false } as any) dragHandleCorner: ElementRef;
-  @ViewChild('dragHandleRight',{ static: false } as any) dragHandleRight: ElementRef;
-  @ViewChild('dragHandleBottom',{ static: false } as any) dragHandleBottom: ElementRef;
-  
+  @ViewChild('resizeBox', { static: false } as any) resizeBox: ElementRef;
+  @ViewChild('dragHandleCorner', { static: false } as any) dragHandleCorner: ElementRef;
+  @ViewChild('dragHandleRight', { static: false } as any) dragHandleRight: ElementRef;
+  @ViewChild('dragHandleBottom', { static: false } as any) dragHandleBottom: ElementRef;
+
   constructor(public report: ReportTableComponent,
     public data: ConfigServiceService,
     public _snackBar: MatSnackBar,
@@ -259,24 +259,59 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
 
     this.position_status = this.data.positionstatus_changed.subscribe(value => {
       this.setposition();
+
     });
-   
+
   }
   style = {};
-  onResized(event,i): void {
+
+  timer: any;
+  timerStarted: boolean = false;
+  curr_width: any = 0;
+  curr_height: any = 0;
+  onResized(event, i): void {
     //console.log('Element was resized', event);
-    this.data.width[i] = event.element.nativeElement.offsetWidth-8;
-    this.data.height[i] = event.element.nativeElement.offsetHeight-8;
-    /*this.style = {
-      position: 'fixed',
-      left: `${event.rectangle.left}px`,
-      top: `${event.rectangle.top}px`,
-      width: `${event.rectangle.width}px`,
-      height: `${event.rectangle.height}px`
-    };*/
+    this.data.width[i] = event.element.nativeElement.offsetWidth - 8;
+    this.data.height[i] = event.element.nativeElement.offsetHeight - 8;
+    if (!this.timerStarted) {
+      this.timerStarted = true;
+      var now = this;
+      this.timer = setInterval(function () {
+        if (now.curr_width != now.data.width[i] || now.curr_height != now.data.height[i]) {
+          //console.log("changing size");
+        } else {
+          var saveWidth = now.data.width[i] / 6.0;
+          var saveHeight = now.data.height[i] / 4.0;
+          console.log("sending size = > "+saveWidth+ "x" +saveHeight);
+
+          now.data.setchartstyling(now.report.UNIQUE_ID, now.report.SRC_ID, now.data.chartPreferences[i]['chartno'], 'chartwidth', saveWidth+"").subscribe(
+            (res) => {
+              console.log(res.json());
+            });
+          now.data.setchartstyling(now.report.UNIQUE_ID, now.report.SRC_ID, now.data.chartPreferences[i]['chartno'], 'chartheight', saveHeight+"").subscribe(
+            (res) => {
+              console.log(res.json());
+            });
+
+          now.timerStarted = false;
+          clearInterval(now.timer);
+        }
+        now.curr_width = now.data.width[i];
+        now.curr_height = now.data.height[i];
+      }, 1000);
+    }
   }
-  
+
+  onDragStart(event, i) {
+
+    (<HTMLElement>document.querySelectorAll(".chart-wrapper")[i]).style.visibility = "hidden";
+    (<HTMLElement>document.querySelectorAll(".chart-box")[i]).style.boxShadow = "0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12)";
+    (<HTMLElement>document.querySelectorAll(".chart-box")[i]).style.transition = "box-shadow 200ms cubic-bezier(0, 0, 0.2, 1)";
+    (<HTMLElement>document.querySelectorAll(".chart-box")[i]).style.border = "1px solid #ccc";
+  }
+
   attempt_position = 0;
+
   setposition() {
     if (this.data.chart_status === "rendered" && this.data.position_status === "received") {
       this.attempt_position = 0;
@@ -291,7 +326,9 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
                 console.log('Chart-' + curr.data.chartPreferences[i]['chartno'] + ' position set at : ' + JSON.stringify(curr.data.chartposition[i]));
                 console.log((<HTMLElement>document.querySelectorAll(".chart-box")[i]));
                 (<HTMLElement>document.querySelectorAll(".chart-box")[i]).style.transform = curr.data.chart_translate[i];
-                (<HTMLElement>document.querySelectorAll(".chart-wrapper")[i]).style.transform = 'translate3d('+(curr.data.chartposition[i].x-4) +'px, '+(curr.data.chartposition[i].y-4)+'px, 0px'+')';
+                (<HTMLElement>document.querySelectorAll(".chart-wrapper")[i]).style.transform = 'translate3d(' + (curr.data.chartposition[i].x - 4) + 'px, ' + (curr.data.chartposition[i].y - 4) + 'px, 0px' + ')';
+                curr.data.width[i]= 6*parseInt(curr.data.chartPreferences[i]['chartwidth']);
+                curr.data.height[i]= 4*parseInt(curr.data.chartPreferences[i]['chartheight']);
               }
             }
             complete = true;
@@ -316,7 +353,11 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
     var parentRect = (<HTMLElement>document.querySelector('.chart-boundary')).getBoundingClientRect();
     this.data.chartposition[i].x = rect.left - parentRect.left;
     this.data.chartposition[i].y = rect.top - parentRect.top;
-    (<HTMLElement>document.querySelectorAll(".chart-wrapper")[i]).style.transform = 'translate3d('+(this.data.chartposition[i].x-4) +'px, '+(this.data.chartposition[i].y-4)+'px, 0px'+')';
+    (<HTMLElement>document.querySelectorAll(".chart-wrapper")[i]).style.visibility = "visible";
+    (<HTMLElement>document.querySelectorAll(".chart-box")[i]).style.boxShadow = "none";
+    (<HTMLElement>document.querySelectorAll(".chart-box")[i]).style.transition = "none";
+    (<HTMLElement>document.querySelectorAll(".chart-box")[i]).style.border = "none";
+    (<HTMLElement>document.querySelectorAll(".chart-wrapper")[i]).style.transform = 'translate3d(' + (this.data.chartposition[i].x - 4) + 'px, ' + (this.data.chartposition[i].y - 4) + 'px, 0px' + ')';
     this.data.chartPreferences[i]['chartposition'] = JSON.stringify(this.data.chartposition[i]);
     console.log(JSON.parse(this.data.chartPreferences[i]['chartposition']));
 
