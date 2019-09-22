@@ -495,13 +495,14 @@ export class OverviewService implements OnDestroy {
     dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
       if (flag) {
         this.store.dispatch(new userRoleActions.getUserRole(this.V_SRC_CD_DATA));
+        this.store.dispatch(new authActions.getAuth(this.V_SRC_CD_DATA));
       }
     });
   }
 
   afterEditAuth(flag): void {
     if (flag)
-      this.store.dispatch(new userRoleActions.getUserRole(this.V_SRC_CD_DATA));
+      this.store.dispatch(new authActions.getAuth(this.V_SRC_CD_DATA));
   }
   openEditAuthDialog(auth: AuthorizationData): void {
     const dialogRef = this.dialog.open(AddEditAuthorizeComponent,
@@ -512,7 +513,7 @@ export class OverviewService implements OnDestroy {
       });
     dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
       if (flag) {
-        this.store.dispatch(new userRoleActions.getUserRole(this.V_SRC_CD_DATA));
+        this.store.dispatch(new authActions.getAuth(this.V_SRC_CD_DATA));
       }
     });
   }
@@ -565,7 +566,8 @@ export class OverviewService implements OnDestroy {
         if (deleteFromAllRoles === true) {
           let deleteUrl = 'V_AUTH_CD=' + auth.V_AUTH_CD + '&V_AUTH_TYP=' + auth.V_AUTH_TYP + '&V_SRC_CD=' + JSON.parse(sessionStorage.getItem('u')).SRC_CD + '&V_USR_NM=' + JSON.parse(sessionStorage.getItem('u')).USR_NM + '&REST_Service=Auth&Verb=DELETE';
           this.roleService.deleteAuth(deleteUrl).subscribe(res => {
-            this.store.dispatch(new userRoleActions.getUserRole(this.V_SRC_CD_DATA));
+            this.store.dispatch(new authActions.DeleteAuth(auth));
+            this.store.dispatch(new authActions.getAuth(this.V_SRC_CD_DATA));
           }, err => {
           });
         } else if (deleteFromAllRoles === false) {
@@ -581,13 +583,15 @@ export class OverviewService implements OnDestroy {
             'Verb': ['POST']
           };
           this.roleService.assignAuthToRole(json).subscribe(res => {
-            this.store.dispatch(new userRoleActions.getUserRole(this.V_SRC_CD_DATA));
+            this.store.dispatch(new authActions.DeleteAuth(auth));
+            this.store.dispatch(new authActions.getAuth(this.V_SRC_CD_DATA));
           }, err => {
           });
         } else {
           let deleteUrl = 'V_AUTH_CD=' + auth.V_AUTH_CD + '&V_AUTH_TYP=' + auth.V_AUTH_TYP + '&V_SRC_CD=' + JSON.parse(sessionStorage.getItem('u')).SRC_CD + '&V_USR_NM=' + JSON.parse(sessionStorage.getItem('u')).USR_NM + '&REST_Service=Auth&Verb=DELETE';
           this.roleService.deleteAuth(deleteUrl).subscribe(res => {
-            this.store.dispatch(new userRoleActions.getUserRole(this.V_SRC_CD_DATA));
+            this.store.dispatch(new authActions.DeleteAuth(auth));
+            this.store.dispatch(new authActions.getAuth(this.V_SRC_CD_DATA));
           }, err => {
           });
         }

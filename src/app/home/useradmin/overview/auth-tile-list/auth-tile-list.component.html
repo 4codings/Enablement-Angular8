@@ -7,27 +7,27 @@
     (click)="onAuthTileClick(currAuth)">
     <div class="tile-icons-wrapper" fxLayout="row wrap" fxLayoutAlign="space-around">
       <!-- *ngIf="currAuth.V_CREATE==='Y'" -->
-      <mat-icon class="tile-icon" [ngStyle]="{'color': currAuth.V_CREATE==='N' ?'light-grey':'grey'}"
+      <mat-icon class="tile-icon" [ngStyle]="{'color': currAuth.V_CREATE==='N' ?'lightgrey':'grey'}"
         (dblclick)="method2CallForDblClick('add',currAuth)">
         add
       </mat-icon>
       <!-- *ngIf="currAuth.V_UPDATE==='Y'" -->
-      <mat-icon class="tile-icon" [ngStyle]="{'color': currAuth.V_UPDATE==='N' ? 'light-grey':'grey'}"
+      <mat-icon class="tile-icon" [ngStyle]="{'color': currAuth.V_UPDATE==='N' ? 'lightgrey':'grey'}"
         (dblclick)="method2CallForDblClick('update',currAuth)">
         create
       </mat-icon>
       <!-- *ngIf="currAuth.V_READ==='Y'" -->
-      <mat-icon class="tile-icon" [ngStyle]="{'color': currAuth.V_READ==='N' ?'light-grey':'grey'}"
+      <mat-icon class="tile-icon" [ngStyle]="{'color': currAuth.V_READ==='N' ?'lightgrey':'grey'}"
         (dblclick)="method2CallForDblClick('read',currAuth)">
         remove_red_eye
       </mat-icon>
       <!-- *ngIf="currAuth.V_DELETE==='Y'" -->
-      <mat-icon class="tile-icon" [ngStyle]="{'color': currAuth.V_DELETE==='N' ?'light-grey':'grey'}"
+      <mat-icon class="tile-icon" [ngStyle]="{'color': currAuth.V_DELETE==='N' ?'lightgrey':'grey'}"
         (dblclick)="method2CallForDblClick('delete',currAuth)">
         delete
       </mat-icon>
       <!-- *ngIf="currAuth.V_EXECUTE==='Y'" -->
-      <mat-icon class="tile-icon" [ngStyle]="{'color': currAuth.V_EXECUTE==='N' ?'light-grey':'grey'}"
+      <mat-icon class="tile-icon" [ngStyle]="{'color': currAuth.V_EXECUTE==='N' ?'lightgrey':'grey'}"
         (dblclick)="method2CallForDblClick('execute',currAuth)">
         launch
       </mat-icon>
@@ -56,9 +56,9 @@
 </div>-->
 <div fxLayout="column" fxLayoutAlign="start stretch" class="mat-menu-content context-menu" #contextMenu
   *ngIf="contextMenuActive && (authPermission || authorizationPermission)" [ngStyle]="contextMenuStyle">
-  <button mat-menu-item class="menu-item" *ngIf="authPermission" (click)="onContextMenuEditAuthBtnClick()"><span
+  <!-- <button mat-menu-item class="menu-item" *ngIf="authPermission" (click)="onContextMenuEditAuthBtnClick()"><span
       class="entry bpmn-icon-screw-wrench fa-lg mr-4" draggable="true">
-    </span><span>Edit</span></button>
+    </span><span>Edit</span></button> -->
   <button mat-menu-item class="many-item" *ngIf="authPermission || authorizationPermission"
     (click)="onContextMenuRemoveAuthBtnClick('')"><span class="entry bpmn-icon-trash fa-lg mr-4" draggable="true">
     </span><span>Delete Auth</span></button>

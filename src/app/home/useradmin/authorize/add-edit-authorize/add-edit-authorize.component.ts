@@ -40,7 +40,7 @@ export class AddEditAuthorizeComponent extends AuthorizeComponent implements OnI
       this.authValueObj = data.auth;
       this.radioSelected = this.authValueObj.V_AUTH_TYP;
       this.oldRadioSelected = this.radioSelected;
-      if(this.oldRadioSelected === ''){
+      if (this.oldRadioSelected === '') {
         this.radioSelected = this.radioList[0];
       }
     }
@@ -50,7 +50,7 @@ export class AddEditAuthorizeComponent extends AuthorizeComponent implements OnI
     super.ngOnInit();
     this.radioSelected = this.data.authType;
     this.oldRadioSelected = this.radioSelected;
-    if(this.oldRadioSelected === ''){
+    if (this.oldRadioSelected === '') {
       this.radioSelected = this.radioList[0];
     }
     this.getFilterData(this.radioSelected);
@@ -87,6 +87,7 @@ export class AddEditAuthorizeComponent extends AuthorizeComponent implements OnI
         };
         this.http.put('https://enablement.us/Enablement/rest/v1/securedJSON', body).subscribe(res => {
           this.addFlag = false;
+          this.store.dispatch(new authActions.AddAuth(data));
           this.assignAuthToRole(this.data.roleId, res[0] ? res[0].id + '' : '');
         },
           err => {
@@ -173,6 +174,7 @@ export class AddEditAuthorizeComponent extends AuthorizeComponent implements OnI
       'Verb': 'PUT'
     };
     this.http.put('https://enablement.us/Enablement/rest/v1/securedJSON', body).subscribe(res => {
+      this.store.dispatch(new authActions.UpdateAuth(data));
       this.dialogRef.close(true);
     },
       err => {
