@@ -1,0 +1,24 @@
+<div class="dialog-wrapper" fxLayoutGap="8px" fxLayout="column" fxLayoutAlign="start stretch">
+    <div class="dialog-header content-wrapper" fxLayoutAlign="space-between center">
+      <span>Upload {{data.heading}}</span>
+      <button mat-icon-button (click)="onBtnCancelClick()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="dialog-body content-wrapper" fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="start stretch">
+        <ng-container *ngIf="data.name == 'logo'">
+          <input type="file" (change)="onFileSelectEvent($event)" name="logo" id="Upload_Image1" accept="image/*"/>
+        </ng-container>   
+        <ng-container *ngIf="data.name == 'profile-pic'">
+          <input type="file" (change)="onFileSelectEvent($event)" name="user" id="Upload_Image" accept="image/*"/>
+        </ng-container> 
+        <!-- <button mat-raised-button color="primary" (click)="uploadBtnClick('Upload_Image')">Upload</button> -->
+    </div>    
+      
+    <div class="dialog-footer content-wrapper" fxLayoutAlign="end center" fxLayoutGap="8px">
+      <button mat-flat-button color="primary" (click)="uploadBtnClick()">Upload</button>
+    </div>
+</div>
+
+

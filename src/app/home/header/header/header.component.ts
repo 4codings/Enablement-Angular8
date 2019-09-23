@@ -6,7 +6,8 @@ import { UserService } from '../../../core/user.service';
 import { OptionalValuesService } from '../../../services/optional-values.service';
 import { ApiService } from '../../../service/api/api.service';
 import { RollserviceService } from '../../../services/rollservice.service';
-
+import { MatDialog } from '@angular/material';
+import { ChangeImageComponent } from '../../../shared/components/change-image/change-image.component';
 
 @Component({
   selector: 'app-header',
@@ -21,6 +22,7 @@ export class HeaderComponent implements OnInit {
   public index: any;
   public selectedProfile = '';
   optionSelected: string = "";
+  imageUrl;
 
   constructor(
     private route: ActivatedRoute,
@@ -29,7 +31,8 @@ export class HeaderComponent implements OnInit {
     private optionalService: OptionalValuesService,
     private apiService: ApiService,
     private rollserviceService: RollserviceService,
-    public toastr: ToastrService
+    public toastr: ToastrService,
+    public dialog: MatDialog
   ) {
     this.index = this.userName.indexOf('@');
     this.userName = this.userName.substring(0, this.index).toUpperCase();
@@ -41,9 +44,9 @@ export class HeaderComponent implements OnInit {
     this.router.navigateByUrl('/user', { skipLocationChange: true });
   }
   ngOnInit() {
-    this.userName = this.userService.getDetailFromStorage().USR_NM;
-    this.userName = this.userName.substring(0, this.userName.lastIndexOf("@"))
-    this.agency = this.userService.getDetailFromStorage().SRC_CD;
+    this.userName = JSON.parse(sessionStorage.getItem('u')).USR_NM
+    this.agency = JSON.parse(sessionStorage.getItem('u')).SRC_CD;;
+    this.imageUrl = "https://enablement.us/FileAPIs/api/file/v1/download/FileInfo?V_SRC_CD="+this.agency+"&V_USR_NM="+this.userName+"&Type=PIC"
 
     this.chooworkingProfile();
     // let url:string="user";
@@ -96,6 +99,30 @@ export class HeaderComponent implements OnInit {
           this.options.push("User_Admin");
         }
       }
+    });
+  }
+
+  changeProfileImg() {
+    const dialogRef = this.dialog.open(ChangeImageComponent, {
+      panelClass: 'app-dialog',
+      width: '400px',
+      data: {heading:"Profile Image", name:'profile-pic'}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
+  changeAgencyLogo() {
+    const dialogRef = this.dialog.open(ChangeImageComponent, {
+      panelClass: 'app-dialog',
+      width: '400px',
+      data: {heading:"Agency Image", name:'logo'}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
     });
   }
 

@@ -24,6 +24,7 @@ export class UserAdminNavComponent implements OnInit {
   roll_authorization: boolean = false;
 
   ctrl_variables: any;
+  imageUrl;
 
   constructor(
     private rollserviceService: RollserviceService,
@@ -33,6 +34,9 @@ export class UserAdminNavComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.V_SRC_CD=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+    this.V_USR_NM=JSON.parse(sessionStorage.getItem('u')).USR_NM;
+    this.imageUrl = " https://enablement.us/FileAPIs/api/file/v1/download/FileInfo?V_SRC_CD="+ this.V_SRC_CD +"&Type=Logo";
     this.rollserviceService.getRollCd().then((res) => {
       this.httpClient.get('../../../../assets/control-variable.json').subscribe(cvres => {
         this.ctrl_variables = cvres;

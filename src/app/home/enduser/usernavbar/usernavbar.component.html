@@ -6,7 +6,7 @@
       <mat-nav-list>
         <div class="list-wrapper" flex fxLayout="row" fxLayout.lt-sm="row">
           <div class="nav-link pl-3 mb-2">
-            <img src="/assets/logo.png" class="logo-img" />
+            <img [src]="imageUrl" onerror="this.src='/assets/logo.png'" alt="" class="logo-img" />
           </div>
           <div class="ml-auto pr-4">
             <button mat-raised-button color="primary" *ngIf="roll_myTask"><a [routerLink]="['Mytask']"
@@ -29,14 +29,15 @@
                 <mat-icon class="iconmod shwmaticon">dashboard</mat-icon>
                 <mat-icon class="iconmod shwsvgicon deskicon" svgIcon="dashboard"></mat-icon>Dashboard
               </a></button>
-
-            <button matTooltip="View profile" mat-mini-fab class="ml-5" [matMenuTriggerFor]="menu">
+            
+            <app-header></app-header>
+            <!-- <button matTooltip="View profile" mat-mini-fab class="ml-5" [matMenuTriggerFor]="menu">
               <mat-icon>more_vert</mat-icon>
-            </button>
+            </button> -->
 
-            <mat-menu #menu="matMenu" xPosition="before">
+            <!-- <mat-menu #menu="matMenu" xPosition="before">
               <app-header></app-header>
-            </mat-menu>
+            </mat-menu> -->
 
           </div>
         </div>
@@ -46,7 +47,7 @@
     <div class="w-100" fxHide="true" fxShow.xs="true">
       <mat-nav-list>
         <div class="text-center">
-          <img src="/assets/logo.png" class="logo-img" />
+         <img [src]="imageUrl" onerror="this.src='/assets/logo.png'" alt="" class="logo-img" />
         </div>
         <div class="" style="display:flex;">
           <button mat-icon-button matTooltip="My Tasks" matTooltipPosition='above' *ngIf="roll_myTask"><a
@@ -69,23 +70,21 @@
               <mat-icon class="iconmod shwmaticon">dashboard</mat-icon>
               <mat-icon class="iconmod shwsvgicon" svgIcon="dashboard"></mat-icon>
             </a></button>
-          <button class="profile-btn" mat-mini-fab [matMenuTriggerFor]="menu">
-            <a class="nav-link">
-              <mat-icon>more_vert</mat-icon>
-            </a>
-          </button>
+            <div class="profile-btn">
+              <app-header></app-header>
+            </div>
         </div>
 
-        <mat-menu #menu="matMenu" xPosition="before">
+        <!-- <mat-menu #menu="matMenu" xPosition="before">
           <app-header></app-header>
-        </mat-menu>
+        </mat-menu> -->
       </mat-nav-list>
     </div>
     <!-- Tab View -->
     <div class="w-100" fxHide="true" fxShow.sm="true">
       <mat-nav-list>
         <div class="text-center">
-          <img src="/assets/logo.png" class="logo-img" />
+          <img [src]="imageUrl" onerror="this.src='/assets/logo.png'" alt="" class="logo-img" />
         </div>
         <div class="" style="display:flex;">
           <button mat-mini-fab color="primary" matTooltip="My Tasks" matTooltipPosition='above' *ngIf="roll_myTask"><a
@@ -111,15 +110,17 @@
               <mat-icon class="iconmod shwmaticon">dashboard</mat-icon>
               <mat-icon class="iconmod shwsvgicon" svgIcon="dashboard"></mat-icon>
             </a></button>
-          <button class="profile-btn" mat-mini-fab [matMenuTriggerFor]="menu">
+          
+          <app-header></app-header>  
+          <!-- <button class="profile-btn" mat-mini-fab [matMenuTriggerFor]="menu">
             <a class="nav-link">
               <mat-icon>more_vert</mat-icon>
             </a>
-          </button>
+          </button> -->
 
-          <mat-menu #menu="matMenu" xPosition="before">
+          <!-- <mat-menu #menu="matMenu" xPosition="before">
             <app-header></app-header>
-          </mat-menu>
+          </mat-menu> -->
         </div>
       </mat-nav-list>
     </div>

@@ -7,7 +7,7 @@
 <mat-nav-list>
   <div class="list-wrapper" flex fxLayout="row" fxLayout.lt-sm="row">
       <div class="nav-link pl-3 mb-2">
-        <img src="/assets/logo.png" class="logo-img" />
+        <img [src]="imageUrl" onerror="this.src='/assets/logo.png'" alt="" class="logo-img" />
       </div>
       <div class="ml-auto pr-4">
         <button mat-raised-button *ngIf="roll_user">
@@ -22,12 +22,13 @@
         <button mat-raised-button *ngIf="roll_auth"><a [routerLink]="['UserAuthorize']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">account_balance</mat-icon><mat-icon class="iconmod shwsvgicon deskicon deskicon" svgIcon="home"></mat-icon><span class="link-content">Auth</span></a></button>
         <button mat-raised-button *ngIf="roll_authorization"><a [routerLink]="['Authorizerole']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">lock</mat-icon><mat-icon class="iconmod shwsvgicon deskicon deskicon" svgIcon="lock_red"></mat-icon><span class="link-content">Authorization</span></a></button>
         <button mat-raised-button *ngIf="roll_overview"><a [routerLink]="['UserAuth']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">remove_red_eye</mat-icon><mat-icon class="iconmod shwsvgicon deskicon deskicon" style="color:orange;">remove_red_eye</mat-icon><span class="link-content">Overview</span></a></button>
-        <button matTooltip="View profile" mat-mini-fab class="ml-5" [matMenuTriggerFor]="menu">
+        <!-- <button matTooltip="View profile" mat-mini-fab class="ml-5" [matMenuTriggerFor]="menu">
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu" xPosition="before">
           <app-header></app-header>
-        </mat-menu>
+        </mat-menu> -->
+        <app-header></app-header>
 
       </div>
   </div>
@@ -39,7 +40,7 @@
 <mat-nav-list>
 
     <div class="text-center">
-      <img src="/assets/logo.png" class="logo-img" />
+      <img [src]="imageUrl" onerror="this.src='/assets/logo.png'" alt="" class="logo-img" />
     </div>
     <div class="" style="display:flex;">
       <button matTooltip="User" matTooltipPosition='below' mat-icon-button *ngIf="roll_user"><a [routerLink]="['Adminuser']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">person</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" style="color:orange;">person</mat-icon></a></button>
@@ -50,14 +51,17 @@
       <button matTooltip="Auth" matTooltipPosition='below' mat-icon-button *ngIf="roll_auth"><a [routerLink]="['UserAuthorize']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">account_balance</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="home"></mat-icon></a></button>
       <button matTooltip="Authorizerole" matTooltipPosition='below' mat-icon-button *ngIf="roll_authorization"><a [routerLink]="['Authorizerole']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">lock</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="lock_red"></mat-icon></a></button>
       <button matTooltip="Overview" matTooltipPosition='below' mat-icon-button *ngIf="roll_overview"><a [routerLink]="['UserAuth']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">remove_red_eye</mat-icon><mat-icon class="iconmod shwsvgicon deskicon deskicon" style="color:orange;">remove_red_eye</mat-icon></a></button>
-      <button class="profile-btn" mat-mini-fab [matMenuTriggerFor]="menu">
+      <!-- <button class="profile-btn" mat-mini-fab [matMenuTriggerFor]="menu">
           <a class="nav-link"><mat-icon>more_vert</mat-icon></a>
-      </button>
+      </button> -->
+      <div class="profile-btn">
+        <app-header></app-header>
+      </div>  
     </div>
 
-    <mat-menu #menu="matMenu" xPosition="before">
+    <!-- <mat-menu #menu="matMenu" xPosition="before">
       <app-header></app-header>
-    </mat-menu>
+    </mat-menu> -->
 
 </mat-nav-list>
 </div>
@@ -65,7 +69,7 @@
 <div class="w-100" fxHide="true" fxShow.sm="true">
   <mat-nav-list>
       <div class="text-center">
-        <img src="/assets/logo.png" class="logo-img" />
+        <img [src]="imageUrl" onerror="this.src='/assets/logo.png'" alt="" class="logo-img" />
       </div>
         <div class="" style="display:flex;">
         <button matTooltip="User" matTooltipPosition='below' mat-mini-fab *ngIf="roll_user"><a [routerLink]="['Adminuser']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">person</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" style="color:orange;">person</mat-icon></a></button>
@@ -76,13 +80,14 @@
         <button matTooltip="Auth" matTooltipPosition='below' mat-mini-fab *ngIf="roll_auth"><a [routerLink]="['UserAuthorize']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">account_balance</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="home"></mat-icon></a></button>
         <button matTooltip="Authorizerole" matTooltipPosition='below' mat-mini-fab *ngIf="roll_authorization"><a [routerLink]="['Authorizerole']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">lock</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="lock_red"></mat-icon></a></button>
         <button matTooltip="Overview" matTooltipPosition='below' mat-mini-fab *ngIf="roll_overview"><a [routerLink]="['UserAuth']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">remove_red_eye</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" style="color:orange;">remove_red_eye</mat-icon></a></button>
-        <button class="profile-btn" mat-mini-fab [matMenuTriggerFor]="menu">
+        <!-- <button class="profile-btn" mat-mini-fab [matMenuTriggerFor]="menu">
           <a class="nav-link"><mat-icon>more_vert</mat-icon></a>
         </button>
 
         <mat-menu #menu="matMenu" xPosition="before">
           <app-header></app-header>
-        </mat-menu>
+        </mat-menu> -->
+        <app-header></app-header>
       </div>
   </mat-nav-list>
   </div>

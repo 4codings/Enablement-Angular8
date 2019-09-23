@@ -20,6 +20,9 @@ export class DeploymentsnavbarComponent implements OnInit {
   role_machineSpec:boolean=false;
   role_platform:boolean=false;
   role_overview:boolean = true;
+  imageUrl;
+  V_SRC_CD;
+  V_USR_NM;
 
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private rollserviceService: RollserviceService,
     private httpClient: HttpClient) {
@@ -30,6 +33,9 @@ export class DeploymentsnavbarComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.V_SRC_CD=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+    this.V_USR_NM=JSON.parse(sessionStorage.getItem('u')).USR_NM;
+    this.imageUrl = " https://enablement.us/FileAPIs/api/file/v1/download/FileInfo?V_SRC_CD="+ this.V_SRC_CD +"&Type=Logo";
     this.rollserviceService.getRollCd().then((res) => {
       this.httpClient.get('../../../../assets/control-variable.json').subscribe(cvres => {
         this.ctrl_variables = cvres;

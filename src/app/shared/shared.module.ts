@@ -47,6 +47,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { InputOutputElementComponent } from './components/input-output-element/input-output-element.component';
 import { ViewerDiagramComponent } from './components/viewer-diagram/viewer-diagram.component';
 import { SortPipe } from './pipes/sort.pipe';
+import { ChangeImageComponent } from './components/change-image/change-image.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -102,13 +103,16 @@ import { SortPipe } from './pipes/sort.pipe';
     DialogScheduleComponent,
     InputOutputElementComponent,
     ViewerDiagramComponent,
-    SortPipe
+    SortPipe,
+    ChangeImageComponent
   ],
   entryComponents: [
     ConfirmationAlertComponent,
     DeleteConfirmComponent,
     DialogScheduleComponent,
-    InputOutputElementComponent],
+    InputOutputElementComponent,
+    ChangeImageComponent
+  ],
   exports: [
     FormErrorMsgComponent,
     NoDataMsgComponent,
@@ -155,7 +159,8 @@ import { SortPipe } from './pipes/sort.pipe';
     HttpModule,
     FormsModule,
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
+    ChangeImageComponent
   ]
 })
 export class SharedModule {
