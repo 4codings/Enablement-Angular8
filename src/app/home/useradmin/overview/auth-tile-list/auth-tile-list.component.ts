@@ -7,6 +7,9 @@ import { CdkDragDrop, copyArrayItem, moveItemInArray } from '@angular/cdk/drag-d
 import { AuthorizationData } from '../../../../store/user-admin/user-authorization/authorization.model';
 import { environment } from '../../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/app.state';
+import * as authActions from '../../../../store/user-admin/user-authorization/authorization.actions';
 
 @Component({
   selector: 'app-auth-tile-list',
@@ -37,7 +40,7 @@ export class AuthTileListComponent implements OnInit {
   unsubscribeAll: Subject<boolean> = new Subject<boolean>();
   selectedAuthType: { key: string, label: string };
 
-  constructor(public overviewService: OverviewService, private http: HttpClient) {
+  constructor(public overviewService: OverviewService, private http: HttpClient, protected store: Store<AppState>, ) {
     this.overviewService.selectedAuth$.pipe(takeUntil(this.unsubscribeAll)).subscribe(auth => this.selectedAuth = auth);
     this.overviewService.selectedAuthType$.pipe(takeUntil(this.unsubscribeAll)).subscribe(type => this.selectedAuthType = type);
     this.overviewService.highlightedAuths$.pipe(takeUntil(this.unsubscribeAll)).subscribe(auths => this.highlightedAuths = auths);
@@ -52,6 +55,39 @@ export class AuthTileListComponent implements OnInit {
 
   method2CallForDblClick(item, data) {
     if (this.authPermission) {
+      switch (item) {
+        case 'read':
+          if (data.V_READ === 'Y')
+            data.V_READ = 'N';
+          else
+            data.V_READ = 'Y'
+          break;
+        case 'update':
+          if (data.V_UPDATE === 'Y')
+            data.V_UPDATE = 'N';
+          else
+            data.V_UPDATE = 'Y'
+          break;
+        case 'delete':
+          if (data.V_DELETE === 'Y')
+            data.V_DELETE = 'N';
+          else
+            data.V_DELETE = 'Y'
+          break;
+        case 'add':
+          if (data.V_CREATE === 'Y')
+            data.V_CREATE = 'N';
+          else
+            data.V_CREATE = 'Y'
+          break;
+        case 'execute':
+          if (data.V_EXECUTE === 'Y')
+            data.V_EXECUTE = 'N';
+          else
+            data.V_EXECUTE = 'Y'
+          break;
+      }
+
       let body = {
         'V_AUTH_DSC': data.V_AUTH_DSC,
         'V_AUTH_CD': data.V_AUTH_CD,
@@ -61,17 +97,21 @@ export class AuthTileListComponent implements OnInit {
         'V_PRCS_CD': data.V_PRCS_CD,
         'V_ARTFCT_TYP': data.V_ARTFCT_TYP,
         'V_EXE_TYP': data.V_EXE_TYP,
-        'V_READ': item === 'read' ? (data.V_READ === 'Y' ? 'N' : 'Y') : data.V_READ,
-        'V_UPDATE': item === 'update' ? (data.V_UPDATE === 'Y' ? 'N' : 'Y') : data.V_UPDATE,
-        'V_DELETE': item === 'delete' ? (data.V_DELETE === 'Y' ? 'N' : 'Y') : data.V_DELETE,
-        'V_CREATE': item === 'add' ? (data.V_CREATE === 'Y' ? 'N' : 'Y') : data.V_CREATE,
-        'V_EXECUTE': item === 'execute' ? (data.V_EXECUTE === 'Y' ? 'N' : 'Y') : data.V_EXECUTE,
+        'V_READ': data.V_READ,
+        'V_UPDATE': data.V_UPDATE,
+        'V_DELETE': data.V_DELETE,
+        'V_CREATE': data.V_CREATE,
+        'V_EXECUTE': data.V_EXECUTE,
         'V_USR_NM': JSON.parse(sessionStorage.getItem('u')).USR_NM,
         'V_COMMNT': '',
         'REST_Service': 'Auth',
         'Verb': 'PUT'
       };
+
+      console.log('data', data);
       this.http.put('https://enablement.us/Enablement/rest/v1/securedJSON', body).subscribe(res => {
+        this.store.dispatch(new authActions.UpdateAuth(data));
+
         this.overviewService.afterEditAuth(true);
       },
         err => {
