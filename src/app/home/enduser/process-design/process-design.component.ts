@@ -1236,7 +1236,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.isProcess = true;
     this.isService = false;
     this.showRightIcon = false;
-    this.opened = false;
+    if(parentTitleClick)
+      this.opened = false;
     this.editProcessFlag = false;
     this.V_OLD_PRCS_CD = item.text;
     if (!item.children) {

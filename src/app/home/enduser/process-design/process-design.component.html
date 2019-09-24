@@ -10,7 +10,7 @@
       </label>
       <label *ngIf="!item.children" class="form-check-label child-color text-center"
         [ngClass]="(item.text == selectedProcess && item.value == selectedApp)?'active-menu':''"
-        (click)="onTitleClick(item,false)">
+        (click)="onTitleClick(item, true)">
         {{item.text}}
       </label>
     </div>
