@@ -43,6 +43,10 @@
   .mat-form-field-underline {
     display: none;
   }
+  .mat-select {
+    background: #fff;
+    padding: 3px;
+  }
 }
 
 ::ng-deep .form_list .mat-input-infix {

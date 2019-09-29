@@ -34,7 +34,7 @@
               </mat-autocomplete>
             </mat-form-field>
           </div>  
-          <div class="ml-2" fxFlex="48">  
+          <div class="ml-md-2" fxFlex="48">  
             <label item-width="100"><strong>Executable Description</strong></label>
             <mat-form-field class="form_in" style="width:100%;">
               <input matInput  [(ngModel)]="F_EXE_DSC" name="exedsc" value="" />
@@ -50,7 +50,7 @@
             </mat-form-field>
           </div>
           <!-- OUTPUT PARAMETERS -->
-          <div class="ml-2" fxFlex="48">  
+          <div class="ml-md-2" fxFlex="48">  
             <label item-width="100"><strong>Output Parameters</strong></label>
             <mat-form-field class="form_in" style="width:100%;">
               <input matInput  [(ngModel)]="F_EXE_OUT_PARAM" name="outparam" />
@@ -66,7 +66,7 @@
               <input matInput [(ngModel)]="F_EXE_VRSN" name="version" />
             </mat-form-field>
           </div>
-          <div fxFlex="50" class="ml-2">
+          <div fxFlex="50" class="ml-md-2">
             <!-- ICN_TYP -->
             <label item-width="100"><strong>BPNM Icon Type</strong></label>
             <mat-form-field class="form_in">
@@ -80,29 +80,30 @@
         </div>    
         <br>
         <!-- SYNCH ASYNCH -->
-        <mat-radio-group flex fxLayout="row" [(ngModel)]="F_SYNC_FLG" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="row" fxLayoutAlign="space-around center">
+        <mat-radio-group class="ml-md-2" flex fxLayout="row" [(ngModel)]="F_SYNC_FLG" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="row">
           <mat-radio-button  value="Y">Synch</mat-radio-button>
           <mat-radio-button  value="N">Asynch </mat-radio-button>
         </mat-radio-group>
         <!-- INPUT OUTPUT ARTIFACT -->
         <br>
-        <div flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="row" fxLayoutAlign="space-around center">
-          <mat-checkbox [checked]="ipart">Input Artifact</mat-checkbox>
+        <div class="ml-md-2" flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="row">
+          <mat-checkbox [checked]="ipart" class="mr-2">Input Artifact</mat-checkbox>
           <mat-checkbox [checked]="opart">Output Artifact</mat-checkbox>
         </div>
       <br/>
       <div fxLayout="row" fxLayout.lt-sm="column">
-        <div class="mr-2" fxFlex="48">
+        <div class="mr-2" fxFlex="45">
           <!-- START DELIMITER -->
           <label item-width="100"><strong>Start Delimiter</strong></label>
-          <mat-form-field class="form_in" style="width:100%;">
+          <mat-form-field class="form_in">
             <input matInput [(ngModel)]="F_EXE_S_DLMTR" name="startdelimiter" />
           </mat-form-field>
-        </div>  
-        <div class="ml-2" fxFlex="48">
+        </div>
+        <div fxFlex="2"></div>
+        <div class="ml-md-2" fxFlex="45">
           <!-- END DELIMITER -->
           <label item-width="100"><strong>End Delimiter</strong></label>
-          <mat-form-field class="form_in" style="width:100%;">
+          <mat-form-field class="form_in">
             <input matInput [(ngModel)]="F_EXE_E_DLMTR" name="enddelimiter" />
           </mat-form-field>
         </div>  

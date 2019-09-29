@@ -1,4 +1,4 @@
-<div class="dialog-wrapper" fxLayoutGap="8px" fxLayout="column" fxLayoutAlign="start stretch">
+<div class="dialog-wrapper add-user-admin" fxLayoutGap="8px" fxLayout="column" fxLayoutAlign="start stretch">
   <div class="dialog-header content-wrapper" fxLayoutAlign="space-between center">
     <span>Add User</span>
     <button mat-icon-button (click)="onBtnCancelClick()">
@@ -8,11 +8,11 @@
   <mat-divider></mat-divider>
   <!-- <div class="dialog-body content-wrapper" fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="start stretch"> -->
   <mat-tab-group (selectedIndexChange)="OnTabChange($event)">
-    <mat-tab label="Select an existing user">
+    <mat-tab label="Select Existing">
       <app-user-list [users]="allUsers" (userSelectEvent)="onUserSelect($event)">
       </app-user-list>
     </mat-tab>
-    <mat-tab label="Add New User">
+    <mat-tab label="Add New">
       <app-user-form [users]="allUsers" (userFormValidation)="onUserFormVallidation($event)"></app-user-form>
     </mat-tab>
   </mat-tab-group>

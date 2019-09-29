@@ -550,3 +550,18 @@ button:focus {
   margin:0;
   background-color: #fff;
 }
+
+.mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+  background-color: rgba(66, 63, 63, 0.78) !important;
+}
+.mat-radio-button.mat-accent .mat-radio-inner-circle, .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element:not(.mat-radio-persistent-ripple), .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-persistent-ripple, .mat-radio-button.mat-accent:active .mat-radio-persistent-ripple {
+  background-color: rgba(66, 63, 63, 0.78) !important;
+}
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+  border-color: rgba(66, 63, 63, 0.78) !important;
+}
+
+.add-user-admin .mat-tab-label, .add-auth .mat-tab-label {
+  min-width: 100px !important;
+  padding: 0px 4px !important;
+}
