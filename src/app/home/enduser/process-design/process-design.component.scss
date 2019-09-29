@@ -754,8 +754,33 @@ mat-header-row {
     }
   }
 
-.application-open, .properties-open {
-    margin-top: 50px;
+.properties-open {
+    height: 23px;
+    width: 88px;
+    position: absolute;
+    right: -33px;
+    top: 46px;
+    background: #ededed;
+    padding: 0px 10px;
+    border: 1px solid rgba(0,0,0,.12);
+    border-top: none;
+    display: block;
+    transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg); 
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+}
+.application-open {
+    height: 20px;
+    width: 88px;
+    position: absolute;
+    left: -35px;
+    top: 48px;
+    background: #ededed;
+    padding: 0px 10px;
+    border: 1px solid rgba(0,0,0,.12);
+    border-top: none;
     display: block;
     transform: rotate(-90deg);
     -webkit-transform: rotate(-90deg); 

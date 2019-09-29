@@ -1081,9 +1081,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.isApp = false;
           this.isProcess = false;
           this.isService = false;
+          this.treesidenav.opened = true;
           this.getApplicationProcess();
         },
-          this.handleError.bind(this))
+          this.handleError.bind(this));
     }
   }
   editApplication(appName) {
