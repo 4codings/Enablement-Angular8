@@ -9,6 +9,10 @@
     </app-viewer-diagram>
   </mat-expansion-panel>
 </mat-accordion>
+<div *ngIf="topFlag">
+  <app-non-repeatable-form *ngIf="showRepForm"></app-non-repeatable-form>
+  <app-report-table *ngIf="showReportTable"></app-report-table>
+</div>
 <div fxLayout="row" fxLayout.lt-sm="column">
   <div fxFlex="9">
   </div>
@@ -275,4 +279,8 @@
       </mat-card-content>
     </mat-card>
   </div>
+</div>
+<div *ngIf="bottomFlag">
+  <app-non-repeatable-form *ngIf="showRepForm"></app-non-repeatable-form>
+  <app-report-table *ngIf="showReportTable"></app-report-table>
 </div>

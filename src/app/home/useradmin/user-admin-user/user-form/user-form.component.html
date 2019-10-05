@@ -1,7 +1,7 @@
 <div class="app-form-wrapper">
   <form [formGroup]="userForm" fxLayoutGap="8px" fxLayout="column">
     <mat-form-field>
-      <input type="text" matInput placeholder="Name" #htmlInputElement formControlName="V_USR_NM" cdkFocusInitial>
+      <input type="text" (change)="onChange($event)" matInput placeholder="Name" #htmlInputElement formControlName="V_USR_NM" cdkFocusInitial>
       <mat-error *ngIf="userForm.get('V_USR_NM').errors?.userError">User already exist.</mat-error>
       <mat-error *ngIf="f.V_USR_NM.errors?.email">Provide a valid email.</mat-error>
       <mat-error *ngIf="userForm.get('V_USR_NM').errors?.domainError">{{domainErrorMessage}}</mat-error>

@@ -5,9 +5,9 @@
   </mat-list-item>
 </mat-list> -->
 <mat-form-field class="form_input">
-  <input matInput name="app" [matAutocomplete]="auto" [formControl]="myControl">
+  <input matInput name="app" (change)="onInputChange($event.target.value)" [matAutocomplete]="auto" [formControl]="myControl">
   <mat-autocomplete #auto="matAutocomplete">
-    <mat-option style="text-align:center;" (click)="onUserSelect(user)" *ngFor="let user of filteredOptions |async"
+    <mat-option style="text-align:center;"  (click)="onUserSelect(user)" *ngFor="let user of filteredOptions |async"
       [value]="user.V_USR_NM">
       {{user.V_USR_NM}}
     </mat-option>
