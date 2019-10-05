@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, Output, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {userRole} from '../../../../store/user-admin/user-role/userrole.model';
 import {User} from '../../../../store/user-admin/user/user.model';
@@ -13,7 +13,7 @@ export class RoleFormComponent implements OnInit, OnChanges {
   form: FormGroup;
   @Input() role: userRole;
   @Input() roles: userRole[];
-
+  @Output() roleFormValidation: EventEmitter<any> = new EventEmitter<any>();
   constructor() {
     this.form = new FormGroup({
       V_ROLE_CD: new FormControl('', Validators.required),
@@ -22,7 +22,7 @@ export class RoleFormComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-
+    this.onChanges();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -32,6 +32,12 @@ export class RoleFormComponent implements OnInit, OnChanges {
     if (changes.hasOwnProperty('roles')) {
       this.form.get('V_ROLE_CD').setValidators([Validators.required, roleNameValidator(this.roles)]);
     }
+  }
+
+  onChanges(): void {
+    this.form.valueChanges.subscribe(val => {
+      this.roleFormValidation.emit(this.form.valid);
+    });
   }
 
   setFormValue(role: userRole): void {

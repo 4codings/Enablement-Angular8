@@ -5,10 +5,10 @@
   </div>
   <mat-divider></mat-divider>
   <div class="dialog-body content-wrapper">
-    <app-role-form [roles]="allRoles"></app-role-form>
+    <app-role-form [roles]="allRoles" (roleFormValidation)="onRoleFormValidation($event)"></app-role-form>
   </div>
   <div class="dialog-footer content-wrapper" fxLayoutAlign="end center" fxLayoutGap="8px">
     <div fxFlex fxLayoutAlign="start center" style="color: #DD312E" *ngIf="roleAlreadyExist">Role already exist</div>
-    <button mat-flat-button color="primary" (click)="onBtnAddClick()">Add</button>
+    <button mat-flat-button color="primary" [disabled]="!roleFormValid" (click)="onBtnAddClick()">Add</button>
   </div>
 </div>

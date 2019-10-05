@@ -20,7 +20,7 @@ export class AddRoleComponent implements OnInit, OnDestroy {
   actionSubscription: Subscription;
   roleAlreadyExist: boolean = false;
   allRoles: userRole[];
-
+  roleFormValid: boolean = false;
   constructor(private store: Store<AppState>,
               private actions$: Actions,
               private dialogRef: MatDialogRef<AddRoleComponent>,
@@ -54,6 +54,10 @@ export class AddRoleComponent implements OnInit, OnDestroy {
       };
       this.store.dispatch(new userRoleActions.AddUserRole(data));
     }
+  }
+
+  onRoleFormValidation(event) {
+    this.roleFormValid = event;
   }
 
   ngOnDestroy(): void {
