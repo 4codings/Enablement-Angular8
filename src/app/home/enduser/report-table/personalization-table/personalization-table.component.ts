@@ -101,6 +101,8 @@ export class PersonalizationTableComponent implements OnInit, AfterViewInit {
   yaxiscallbacks = ['$', '£', '€', '₹', 'm', 'km', 'k', 'gm', 'kg', 's'];
   xaxis_datasets = [];
   yaxis_datasets = [];
+  xaxisnames = [];
+  yaxisnames = [];
 
   rowPreference = {
     gridlinewidth: "", chartno: "",
@@ -127,6 +129,8 @@ export class PersonalizationTableComponent implements OnInit, AfterViewInit {
     this.data.chart_status = "not-rendered";
     this.data.position_status = "not-received";
   }
+  chart_status: any;
+  position_status: any;
   ngAfterViewInit() {
     this.getChartPreferences();
   }
@@ -162,7 +166,7 @@ export class PersonalizationTableComponent implements OnInit, AfterViewInit {
       } else {
         this.data.chartposition[i] = JSON.parse(this.data.chartPreferences[i]['chartposition']);
       }
-      this.data.chart_translate[i] = 'translate3d('+this.data.chartposition[i].x +'px, '+this.data.chartposition[i].y+'px, 0px'+')';
+      this.data.chart_translate[i] = 'translate3d(' + this.data.chartposition[i].x + 'px, ' + this.data.chartposition[i].y + 'px, 0px' + ')';
     }
     this.data.position_status = "received";
     this.data.positionstatus_changed.next(this.data.position_status);
@@ -269,11 +273,11 @@ export class PersonalizationTableComponent implements OnInit, AfterViewInit {
 
   populateRow(index, foundIndex) {
     console.log('inside populaterow');
-    if(this.data.chartPreferences[foundIndex]['chartposition'].length>0){
+    if (this.data.chartPreferences[foundIndex]['chartposition'].length > 0) {
       this.data.chartposition[index] = this.data.chartPreferences[foundIndex]['chartposition'];
     }
-    this.data.width[index] = 6*this.data.chartPreferences[foundIndex]['chartwidth'];
-    this.data.height[index] = 4*this.data.chartPreferences[foundIndex]['chartheight'];
+    this.data.width[index] = 6 * this.data.chartPreferences[foundIndex]['chartwidth'];
+    this.data.height[index] = 4 * this.data.chartPreferences[foundIndex]['chartheight'];
     this._selectedchart[index] = this.data.chartPreferences[foundIndex]['selectedchart'];
     this.gridlinewidth[index] = this.data.chartPreferences[foundIndex]['gridlinewidth']
     this.backgroundcolor[index] = this.data.chartPreferences[foundIndex]['backgroundcolor']
@@ -368,6 +372,8 @@ export class PersonalizationTableComponent implements OnInit, AfterViewInit {
     } else {
       this.chartno.push(parseInt(option));
     }
+    this.xaxisnames.push("");
+    this.yaxisnames.push("");
     this.gridlinewidth.push("");
     this.backgroundcolor.push("");
     this.bordercolor.push("");
@@ -404,7 +410,7 @@ export class PersonalizationTableComponent implements OnInit, AfterViewInit {
     this.chartPreferences.push({
       gridlinewidth: "", chartno: this.chartno[this.chartno.length - 1],
       backgroundcolor: "", bordercolor: "", fillbackground: false, linetension: "", pointradius: "", animations: "", chartwidth: "100", chartheight: "100",
-      pointstyle: "rectRot", linestyle: "", gridborder: "", yaxisautoskip: "", annotation: "", selectedchart: "", chartposition: "",
+      pointstyle: "rectRot", linestyle: "", gridborder: "", yaxisautoskip: "", annotation: "", selectedchart: "", chartposition: "", xaxisname:"", yaxisname:"",
       xaxisdata: "", yaxisdata: "", UoM_x: "", UoM_y: "", SoM_x: "", SoM_y: "", xaxisstepsize: "", yaxisstepsize: "", personalizationtable: {}
     });
     this.data.chartposition.push({ x: 0, y: 0 });

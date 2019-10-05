@@ -130,7 +130,7 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
   piedata = [{ data: [10, 20, 30, 40, 50], labels: ["Sample Dataset"] }];
   doughnutdata = [{ data: [10, 20, 30, 40, 50], labels: ["Sample Dataset"] }];
   // Line Chart Configuration
-  public lineChartColors = this.chartcolors;
+  public lineChartColors = [];
   public lineChartData: Array<any> = this.linedata;
   public lineChartLabels: Array<any> = this.chartlabels;
   public lineChartType: string = 'line';
@@ -222,15 +222,20 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
     return this.dragHandleBottom.nativeElement;
   }
 
+
   ngOnInit() {
     Chart.pluginService.register(pluginAnnotations);
     this.subscription = this.data.chartPreferencesChange
       .subscribe(value => {
         console.log(value);
         if (this.lastPrefernce.length < this.data.chartPreferences.length) {
-          this.chartData.push([]);
-          this.chartLabels.push([]);
-          this.chartOptions.push(null);
+          for (let i = 0; i < this.data.chartPreferences.length - this.lastPrefernce.length; i++) {
+            this.chartData.push([]);
+            this.chartLabels.push([]);
+            this.chartOptions.push(null);
+
+          }
+
         } else {
 
         }
@@ -238,6 +243,7 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
           this.updatechart(this.data.chartSelection['chartNo'], this.data.chartPreferences[this.data.chartSelection['chartNo']]['selectedchart']);
         this.lastPrefernce = this.data.chartPreferences;
         this.data.chart_status = "rendered";
+
         this.data.chartstatus_changed.next(this.data.chart_status);
       });
 
@@ -259,7 +265,7 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
 
     this.position_status = this.data.positionstatus_changed.subscribe(value => {
       this.setposition();
-
+      this.data.position_status = "set";
     });
 
   }
@@ -282,13 +288,13 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
         } else {
           var saveWidth = now.data.width[i] / 6.0;
           var saveHeight = now.data.height[i] / 4.0;
-          console.log("sending size = > "+saveWidth+ "x" +saveHeight);
+          console.log("sending size = > " + saveWidth + "x" + saveHeight);
 
-          now.data.setchartstyling(now.report.UNIQUE_ID, now.report.SRC_ID, now.data.chartPreferences[i]['chartno'], 'chartwidth', saveWidth+"").subscribe(
+          now.data.setchartstyling(now.report.UNIQUE_ID, now.report.SRC_ID, now.data.chartPreferences[i]['chartno'], 'chartwidth', saveWidth + "").subscribe(
             (res) => {
               console.log(res.json());
             });
-          now.data.setchartstyling(now.report.UNIQUE_ID, now.report.SRC_ID, now.data.chartPreferences[i]['chartno'], 'chartheight', saveHeight+"").subscribe(
+          now.data.setchartstyling(now.report.UNIQUE_ID, now.report.SRC_ID, now.data.chartPreferences[i]['chartno'], 'chartheight', saveHeight + "").subscribe(
             (res) => {
               console.log(res.json());
             });
@@ -327,8 +333,8 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
                 console.log((<HTMLElement>document.querySelectorAll(".chart-box")[i]));
                 (<HTMLElement>document.querySelectorAll(".chart-box")[i]).style.transform = curr.data.chart_translate[i];
                 (<HTMLElement>document.querySelectorAll(".chart-wrapper")[i]).style.transform = 'translate3d(' + (curr.data.chartposition[i].x - 4) + 'px, ' + (curr.data.chartposition[i].y - 4) + 'px, 0px' + ')';
-                curr.data.width[i]= 6*parseInt(curr.data.chartPreferences[i]['chartwidth']);
-                curr.data.height[i]= 4*parseInt(curr.data.chartPreferences[i]['chartheight']);
+                curr.data.width[i] = 6 * parseInt(curr.data.chartPreferences[i]['chartwidth']);
+                curr.data.height[i] = 4 * parseInt(curr.data.chartPreferences[i]['chartheight']);
               }
             }
             complete = true;
@@ -369,9 +375,16 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
 
   updateLineChart(chartNo) {
     this.updatecustoms(chartNo);
+    var iterations = this.data.chartPreferences.length - this.lineChartColors.length;;
+    for (let i = 0; i < iterations; i++) {
+      this.lineChartColors.push(this.chartcolors[0]);
+    }
     var unit = this.data.chartPreferences[chartNo]['UoM_y'];
     var scale = this.data.chartPreferences[chartNo]['SoM_y'];
-
+    this.lineChartColors[chartNo]['backgroundColor'] = this.data.chartPreferences[chartNo]['backgroundcolor'];
+    this.lineChartColors[chartNo]['borderColor'] = this.data.chartPreferences[chartNo]['bordercolor'];
+    this.lineChartColors[chartNo]['pointBorderColor'] = this.data.chartPreferences[chartNo]['bordercolor'];
+    this.lineChartColors[chartNo]['pointBackgroundColor'] = this.data.chartPreferences[chartNo]['bordercolor'];
     var yaxis_data_line = [];
     var lineten = 0;
     var yaxisdata = ['Not provided'];
@@ -393,7 +406,7 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
         break;
     }
     var pointrad = 6;
-    switch (this.data.chartPreferences[chartNo]['pointradius']) {
+    switch (this.data.chartPreferences[chartNo]['pointsize']) {
       case 'small': pointrad = 6;
         break;
       case 'normal': pointrad = 8;
@@ -413,9 +426,17 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
 
     if (this.yaxis_data[chartNo] != [] && this.yaxis_data[chartNo] != undefined && this.data.chartSelection['selection'] !== 'selectedchart') {
       for (let i = 0; i < this.yaxis_data[chartNo].length; i++) {
-        yaxis_data_line[i] = this.data.ReportTable_data[this.yaxis_data[chartNo][i]].map(Number);
+        if (this.data.ReportTable_data[this.yaxis_data[chartNo][i]] === undefined) {
+          yaxis_data_line[i] = 'not found';
+        } else {
+          yaxis_data_line[i] = this.data.ReportTable_data[this.yaxis_data[chartNo][i]].map(Number);
+        }
+        var yaxisname = this.yaxis_data[chartNo][i];
+        if (this.data.chartPreferences[chartNo]['yaxisname'] !== "") {
+          yaxisname = this.data.chartPreferences[chartNo]['yaxisname'];
+        }
         this.chartData[chartNo][i] = {
-          label: [this.yaxis_data[chartNo][i]],
+          label: [yaxisname],
           fill: this.data.chartPreferences[chartNo]['fillbackground'],
           borderDash: borderdash,
           pointRadius: pointrad,
@@ -430,6 +451,10 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
       this.chartData[chartNo] = this.linedata;
     }
     console.log(this.chartData[chartNo]);
+    var xaxisname = xaxisdata;
+    if (this.data.chartPreferences[chartNo]['xaxisname'] !== "") {
+      xaxisname = this.data.chartPreferences[chartNo]['xaxisname'];
+    }
     this.chartOptions[chartNo] = {
       responsive: true,
       stacked: false,
@@ -492,7 +517,7 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
           id: 'x-1',
           scaleLabel: {
             display: true,
-            labelString: xaxisdata
+            labelString: xaxisname
           },
           display: true
         }],
@@ -510,6 +535,7 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
     };
     //for (let i = 0; i < this.chartData[chartNo].length; i++) {
     //if (i == 0) {
+
     this.chartOptions[chartNo].scales.yAxes[0] = {
       position: 'left',
       type: 'linear',
@@ -518,7 +544,7 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
       scaleLabel: {
         display: true,
         labelString: yaxisdata[0],
-        fontColor: this.lineChartColors[0].borderColor
+        fontColor: "#4b72ff"
       },
       gridLines: {
         drawOnChartAdrawBorder: false,

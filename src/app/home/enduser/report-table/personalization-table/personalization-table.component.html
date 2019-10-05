@@ -1,8 +1,8 @@
 <div fxLayout="row" id="p-table" class="mat-elevation-z8">
   <div fxLayout="column" id="chartno" class="table-column">
-    <div class="table-title">Chart No</div>
+    <div class="table-title">Chart Name</div>
     <div class="table-cell-chartno" *ngFor="let cno of chartno; let i=index; trackBy:indexTracker">
-      <input matInput type="number" style="font-weight: bold;" (ngModelChange)="setchartpreferences('chartno',$event,i);" [(ngModel)]="cno">
+      <input matInput style="font-weight: bold;" (ngModelChange)="setchartpreferences('chartno',$event,i);" [(ngModel)]="cno">
     </div>
   </div>
   <div fxLayout="column" id="selectedchart" class="table-column">
@@ -20,6 +20,7 @@
       </mat-form-field>
     </div>
   </div>
+  
   <div fxLayout="column" id="xaxisdata" class="table-column">
     <div class="table-title">X-Axis Dataset</div>
     <div class="table-cell" *ngFor="let xaxis of xaxisdata; let i=index; trackBy:indexTracker">
@@ -32,6 +33,13 @@
       </mat-form-field>
     </div>
   </div>
+  <div fxLayout="column" id="xaxisname" class="table-column">
+    <div class="table-title">X-Axis Name</div>
+    <div class="table-cell" *ngFor="let xaxisname of xaxisnames; let i=index; trackBy:indexTracker">
+      <input matInput style="font-weight: bold;" (ngModelChange)="setchartpreferences('xaxisname',$event,i);" [(ngModel)]="xaxisname">
+    </div>
+  </div>
+  
 
   <div fxLayout="column" id="yaxisdata" class="table-column">
     <div class="table-title">Y-Axis Dataset</div>
@@ -45,7 +53,12 @@
       </mat-form-field>
     </div>
   </div>
-
+  <div fxLayout="column" id="yaxisname" class="table-column">
+    <div class="table-title">Y-Axis Name</div>
+    <div class="table-cell" *ngFor="let yaxisname of yaxisnames; let i=index; trackBy:indexTracker">
+        <input matInput style="font-weight: bold;" (ngModelChange)="setchartpreferences('yaxisname',$event,i);" [(ngModel)]="yaxisname">
+    </div>
+  </div>
   <div fxLayout="column" id="UoM_x" class="table-column">
     <div class="table-title">Unit of Measure (x-axis)</div>
     <div class="table-cell" *ngFor="let unitx of UoM_x; let i=index; trackBy:indexTracker">
