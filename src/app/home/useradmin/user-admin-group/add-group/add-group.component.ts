@@ -22,6 +22,7 @@ export class AddGroupComponent implements OnInit, OnDestroy {
   actionSubscription: Subscription;
   groupAlreadyExist: boolean = false;
   allGroups: userGroup[];
+  groupFormValid: boolean = false;
   constructor(private store: Store<AppState>,
               private userAdminService: UseradminService,
               private actions$: Actions,
@@ -57,6 +58,11 @@ export class AddGroupComponent implements OnInit, OnDestroy {
       };
       this.store.dispatch(new addUserGroup(data));
     }
+  }
+
+  
+  onGroupFormValidation(event) {
+    this.groupFormValid = event;
   }
 
   ngOnDestroy(): void {

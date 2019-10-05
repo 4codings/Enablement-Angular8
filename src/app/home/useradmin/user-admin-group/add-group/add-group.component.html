@@ -5,10 +5,10 @@
   </div>
   <mat-divider></mat-divider>
   <div class="dialog-body content-wrapper">
-    <app-group-form [groups]="allGroups" [controlVariables]="data?.controlVariables"></app-group-form>
+    <app-group-form [groups]="allGroups" (groupFormValidation)="onGroupFormValidation($event)" [controlVariables]="data?.controlVariables"></app-group-form>
   </div>
   <div class="dialog-footer content-wrapper" fxLayoutAlign="end center" fxLayoutGap="8px">
     <div fxFlex fxLayoutAlign="start center" style="color: #DD312E" *ngIf="groupAlreadyExist">Group already exist</div>
-    <button mat-flat-button color="primary" (click)="onBtnAddClick()">Add</button>
+    <button mat-flat-button color="primary" (click)="onBtnAddClick()" [disabled]="!groupFormValid">Add</button>
   </div>
 </div>
