@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, Output, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {userGroup} from '../../../../store/user-admin/user-group/usergroup.model';
 import {User} from '../../../../store/user-admin/user/user.model';
@@ -14,6 +14,7 @@ export class GroupFormComponent implements OnInit, OnChanges {
   @Input() groups: userGroup[];
   @Input() controlVariables: any;
   form: FormGroup;
+  @Output() groupFormValidation: EventEmitter<any> = new EventEmitter<any>();
 
   constructor() {
     this.form = new FormGroup({
@@ -25,7 +26,7 @@ export class GroupFormComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-
+    this.onChanges();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -38,6 +39,12 @@ export class GroupFormComponent implements OnInit, OnChanges {
     if (changes.hasOwnProperty('groups')) {
       this.form.get('V_USR_GRP_CD').setValidators([Validators.required, groupNameValidator(this.groups)]);
     }
+  }
+
+  onChanges(): void {
+    this.form.valueChanges.subscribe(val => {
+      this.groupFormValidation.emit(this.form.valid);
+    });
   }
 
   setFormValue(group: userGroup): void {
