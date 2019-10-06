@@ -659,6 +659,19 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       this.modeler.destroy();
     }
   }
+  onInputNameChange() {
+    this.elementExistError = false;
+    const name = this.processName;
+    if (!this.isApp && this.oldStateId) {
+      let elementRegistry = this.modeler.get('elementRegistry');
+      let element = elementRegistry.get(this.oldStateId);
+      let modeling = this.modeler.get('modeling');
+      modeling.updateProperties(element, {
+          name: name,
+        }, error => this.handleError(error));
+    }
+    this.commonInputChangeFunction();
+  }
   onInputChange() {
     this.elementExistError = false;
     // replace(new RegExp(' ', 'g'), '_')
@@ -694,6 +707,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         this.toastrService.error('Element Id already exists!');
       }
     }
+    this.commonInputChangeFunction();
+  }
+
+  commonInputChangeFunction(){
     if (this.isApp) {
       if (this.appProcessList.length) {
         let i = this.appProcessList.findIndex(v => v.app === this.generalId);
@@ -727,7 +744,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       }
     }
   }
-
   updatesequenceFlow() {
     const vAppCd = this.selectedApp;
     const vPrcsCd = this.selectedProcess;

@@ -4,7 +4,7 @@
         [style.width.px]="data.width[i]" [style.height.px]="data.height[i]" (cdkDragEnded)="dragEndChart($event,i)"
         cdkDragBoundary=".chart-boundary" cdkDrag fxLayout="column" fxFlex="50%" (cdkDragStarted)="onDragStart($event,i);" fxFlex.lt-sm="100%">
 
-        <h4>Chart : {{data.chartPreferences[i]['chartno']}}</h4>
+        <h4>-: {{data.chartPreferences[i]['chartno']}} :-</h4>
         <canvas baseChart *ngIf="cpref['selectedchart']==='linechart_sel'" [datasets]="chartData[i]"
             [labels]="chartLabels[i]" [options]="chartOptions[i]" [colors]="lineChartColors"
             [chartType]="lineChartType">
