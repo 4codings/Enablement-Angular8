@@ -459,7 +459,8 @@
     </div>
   </div>
   <div class="dialog-footer content-wrapper" fxLayoutAlign="end center" fxLayoutGap="8px">
-    <button mat-flat-button color="primary" *ngIf="!isEditMode" (click)="onAddSubmit()">Add</button>
+    <button mat-flat-button color="primary" [disabled]="!selectedAuth" *ngIf="!isEditMode && selectedView == 'selectAuth'" (click)="onAddSubmit()">Add</button>
+    <button mat-flat-button color="primary" *ngIf="!isEditMode && selectedView == 'addNewAuth'" (click)="onAddSubmit()">Add</button>
     <button mat-flat-button color="primary" *ngIf="isEditMode" (click)="onUpdateBtnSubmit()">Update</button>
   </div>
 </div>
