@@ -236,10 +236,10 @@ export class FormComponent implements OnInit {
     //----------------Lables to Show---------------//
     for (let i = 0; i < this.RVP_Keys.length; i++) {
       console.log("keys", this.RVP_Keys[i]);
-      if (this.RVP_Keys[i] == "V_HOLD_BOTTOM") {
+      if (this.RVP_Keys[i].toLowerCase() == "v_hold_bottom") {
         this.bottomFlag = true;
         this.topFlag = false;
-      } else if (this.RVP_Keys[i] == "V_HOLD_TOP") {
+      } else if (this.RVP_Keys[i].toLowerCase() == "v_hold_top") {
         this.bottomFlag = false;
         this.topFlag = true;
       }

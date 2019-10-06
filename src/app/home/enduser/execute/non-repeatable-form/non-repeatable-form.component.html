@@ -52,7 +52,7 @@
                   matTooltipPosition="after">help</mat-icon> -->
                 <br />
                 <div *ngIf="DSPLY_FLD[i]">
-                  <ng-container [ngSwitch]="fieldType[label]">
+                  <ng-container [ngSwitch]="fieldType[label].toLowerCase()">
                     <ng-container *ngSwitchCase="'date'">
                       <mat-form-field class="form_input">
                         <input #name="ngModel" [required]="data.isFieldMendatory(label)"
@@ -100,7 +100,7 @@
                         {{data.getFieldInValidMsg(name, label)}}
                       </div>
                     </ng-container>
-                    <ng-container *ngSwitchCase="'Radio Button'">
+                    <ng-container *ngSwitchCase="'radio button'">
                       <mat-form-field class="form_input form_list">
                         <input matInput style="display: none">
                         <mat-radio-group [name]="label" [(ngModel)]="input[label]"
@@ -117,7 +117,7 @@
                         {{configService.getFieldInValidMsg(name, label)}}
                       </div>
                     </ng-container>
-                    <ng-container *ngSwitchCase="'Checkbox'">
+                    <ng-container *ngSwitchCase="'checkbox'">
                       <mat-form-field class="form_input form_list">
                         <input matInput style="display: none">
                         <mat-selection-list [(ngModel)]="input[label]" [(ngModel)]="input[label]"
@@ -134,7 +134,7 @@
                         {{configService.getFieldInValidMsg(name, label)}}
                       </div>
                     </ng-container>
-                    <ng-container *ngSwitchCase="'Text Area'">
+                    <ng-container *ngSwitchCase="'text area'">
                       <mat-form-field class="form_input">
                         <textarea [required]="configService.isFieldMendatory(label)" matInput
                           [readonly]="configService.isFieldDisabled(label)" [name]="label"
@@ -166,7 +166,7 @@
                         {{configService.getFieldInValidMsg(name, label)}}
                       </div>
                     </ng-container>
-                    <ng-container *ngSwitchCase="'Zip'">
+                    <ng-container *ngSwitchCase="'zip'">
                       <mat-form-field class="form_input">
                         <input type="text" pattern="^[0-9]{5}?$" [required]="configService.isFieldMendatory(label)"
                           maxlength="5" matInput [disabled]="configService.isFieldDisabled(label)" [name]="label"
@@ -186,7 +186,7 @@
                         {{configService.getFieldInValidMsg(name, label)}}
                       </div>
                     </ng-container>
-                    <ng-container *ngSwitchCase="'Email'">
+                    <ng-container *ngSwitchCase="'email'">
                       <mat-form-field class="form_input">
                         <input type="email" [required]="configService.isFieldMendatory(label)" matInput
                           [readonly]="configService.isFieldDisabled(label)" [name]="label" (value)="input[label]"

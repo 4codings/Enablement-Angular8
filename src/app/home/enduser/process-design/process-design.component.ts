@@ -389,7 +389,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.modeler = new Modeler({
       container: '#canvas',
       width: '90%',
-      height: '500px',
+      height: '400px',
       additionalModules: [
         PropertiesPanelModule,
         OriginalPropertiesProvider,
