@@ -1,3 +1,7 @@
 .dialog-wrapper {
     height:80vh;
 }
+
+::ng-deep .addConnection .mat-form-field-appearance-legacy .mat-form-field-underline {
+    height: 0px;
+  }

@@ -52,4 +52,8 @@
     border:none!important;
     border-radius: 3px!important;
   }
+
+  ::ng-deep .addConnection .mat-form-field-appearance-legacy .mat-form-field-underline {
+    height: 0px;
+  }
   

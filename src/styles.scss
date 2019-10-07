@@ -565,3 +565,17 @@ button:focus {
   min-width: 100px !important;
   padding: 0px 4px !important;
 }
+
+.dialog-wrapper .dialog-header .material-icons {
+  font-size: 16px !important;
+}
+
+.dialog-wrapper .dialog-header .mat-icon-button {
+  width: 34px !important;
+  height: 34px !important;
+  line-height: 23px !important;
+}
+
+.dialog-wrapper .dialog-header .mat-button-wrapper {
+  margin: 3px 0px 0px 1px !important;
+}
