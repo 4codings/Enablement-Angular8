@@ -1,12 +1,12 @@
 <div class="auth-user-wrapper" fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="8px">
   <div class="content-wrapper" fxLayoutAlign="start center" fxLayoutGap="8px">
-    <button mat-raised-button [matMenuTriggerFor]="uploadMenu">
-      Upload
-      <mat-icon matSuffix>cloud_upload</mat-icon>
-    </button>
-    <button mat-raised-button [matMenuTriggerFor]="downloadMenu">
+    <button mat-raised-button matTooltip="Download Template" [matMenuTriggerFor]="downloadMenu">
       Download
       <mat-icon matSuffix>cloud_download</mat-icon>
+    </button>
+    <button mat-raised-button matTooltip="Upload Template" [matMenuTriggerFor]="uploadMenu">
+      Upload
+      <mat-icon matSuffix>cloud_upload</mat-icon>
     </button>
     <div>
       <mat-menu #uploadMenu="matMenu">

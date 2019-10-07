@@ -18,7 +18,7 @@ const routes: Routes = [
         path: '',
         component: UseradminComponent,
         children: [
-            {path: '', redirectTo: 'Adminuser', pathMatch: 'full'},
+            {path: '', redirectTo: 'UserAuth', pathMatch: 'full'},
             {path: 'Adminuser', component: UserAdminUserComponent},
             {path: 'UserGroup', component: UserAdminGroupComponent},
             {path: 'UserRole', component: RoleComponent},

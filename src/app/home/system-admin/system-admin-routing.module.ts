@@ -14,7 +14,7 @@ import { OverviewComponent } from './overview/overview.component';
 const routes: Routes = [{
     path: '', component: SystemAdminComponent,
     children: [
-      { path: '', redirectTo: 'AppDeploy', pathMatch: 'full' },
+      { path: '', redirectTo: 'SystemOverView', pathMatch: 'full' },
       { path: 'AppDeploy', component: DeployStatusComponent },
       { path: 'Install', component: InstallComponent },
     //   { path: 'Machineconnection', component: MachineconnectionComponent },

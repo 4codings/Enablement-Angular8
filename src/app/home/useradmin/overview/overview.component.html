@@ -1,12 +1,12 @@
 <div class="auth-user-wrapper" fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="8px">
   <div class="content-wrapper" fxLayoutAlign="start center" fxLayoutGap="8px">
-    <button mat-raised-button [matMenuTriggerFor]="uploadMenu">
-      Upload
-      <mat-icon matSuffix>cloud_upload</mat-icon>
-    </button>
-    <button mat-raised-button [matMenuTriggerFor]="downloadMenu">
+    <button mat-raised-button matTooltip="Download Template" [matMenuTriggerFor]="downloadMenu">
       Download
       <mat-icon matSuffix>cloud_download</mat-icon>
+    </button>
+    <button mat-raised-button matTooltip="Upload Template" [matMenuTriggerFor]="uploadMenu">
+      Upload
+      <mat-icon matSuffix>cloud_upload</mat-icon>
     </button>
     <div>
       <mat-menu #uploadMenu="matMenu">
@@ -23,24 +23,21 @@
   </div>
   <div fxLayout="row" fxLayoutGap="8px" class="content-wrapper">
     <app-group-list [ngClass]="{'content-wrapper-smallTile': selectedGroupType != groupTypes.CUSTOM }"
-                    [fxFlex]="selectedGroupType == groupTypes.CUSTOM ? 50 : 100"
-                    [membershipPermission]="roll_membership"
-                    [groupPermission]="roll_group"
-                    [userPermission]="roll_user"
-                    [assignPermission]="roll_assignRole"
-                    *ngIf="roll_user || roll_group || roll_membership">
+      [fxFlex]="selectedGroupType == groupTypes.CUSTOM ? 50 : 100" [membershipPermission]="roll_membership"
+      [groupPermission]="roll_group" [userPermission]="roll_user" [assignPermission]="roll_assignRole"
+      *ngIf="roll_user || roll_group || roll_membership">
     </app-group-list>
     <mat-divider [vertical]="true"></mat-divider>
-    <app-role-list fxFlex="50"
-                   [authorizationPermission]="roll_authorization"
-                   [rolePermission]="roll_role"
-                   [authPermission]="roll_auth"
-                   [assignPermission]="roll_assignRole"
-                   *ngIf="selectedGroupType == groupTypes.CUSTOM && (roll_role || roll_auth || roll_authorization)">
+    <app-role-list fxFlex="50" [authorizationPermission]="roll_authorization" [rolePermission]="roll_role"
+      [authPermission]="roll_auth" [assignPermission]="roll_assignRole"
+      *ngIf="selectedGroupType == groupTypes.CUSTOM && (roll_role || roll_auth || roll_authorization)">
     </app-role-list>
   </div>
 </div>
 
-<input type="file" (change)="onFileSelectEvent($event, 'UserDL.xlsx', 'user')" name="Upload_User_File" id="Upload_User_File" style="display:none"/>
-<input type="file" (change)="onFileSelectEvent($event, 'GroupDL.xlsx', 'usr_grp')" name="Upload_Group_File" id="Upload_Group_File" style="display:none"/>
-<input type="file" (change)="onFileSelectEvent($event, 'RoleDL.xlsx', 'role')" name="Upload_Role_File" id="Upload_Role_File" style="display:none"/>
+<input type="file" (change)="onFileSelectEvent($event, 'UserDL.xlsx', 'user')" name="Upload_User_File"
+  id="Upload_User_File" style="display:none" />
+<input type="file" (change)="onFileSelectEvent($event, 'GroupDL.xlsx', 'usr_grp')" name="Upload_Group_File"
+  id="Upload_Group_File" style="display:none" />
+<input type="file" (change)="onFileSelectEvent($event, 'RoleDL.xlsx', 'role')" name="Upload_Role_File"
+  id="Upload_Role_File" style="display:none" />
