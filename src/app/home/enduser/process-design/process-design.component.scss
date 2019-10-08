@@ -756,6 +756,7 @@ mat-header-row {
 
 .properties-open:hover, .application-open:hover {
     text-decoration: none;
+    background: #c2c4c3;
 }
 .properties-open {
     height: 23px;
@@ -763,7 +764,7 @@ mat-header-row {
     position: absolute;
     right: -33px;
     top: 46px;
-    background: #999999;
+    background: #ededed;
     opacity: 0.8;
     padding: 0px 10px;
     border: 1px solid rgba(0,0,0,.12);
@@ -782,7 +783,7 @@ mat-header-row {
     left: -35px;
     top: 48px;
     opacity: 0.8;
-    background: #999999;
+    background: #ededed;
     padding: 0px 10px;
     border: 1px solid rgba(0,0,0,.12);
     border-top: none;

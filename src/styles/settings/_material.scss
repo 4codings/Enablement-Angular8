@@ -177,6 +177,10 @@ mat-table {
   padding: 0;
 }
 
+.mat-list-base {
+  padding-top: 0px !important;
+}
+
 mat-list {
   border: 1px solid #ccc;
   border-radius: 0.25rem;

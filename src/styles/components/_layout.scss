@@ -49,6 +49,11 @@
   }
 }
 
+.dialog-wrapper .dialog-body .mat-form-field-underline, .dialog-wrapper .mat-tab-body .mat-form-field-underline, 
+.mat-dialog-container .dialog-body .mat-form-field-underline {
+  display: none;
+}
+
 ::ng-deep .form_list .mat-input-infix {
   background: none !important;
   border: none !important;
