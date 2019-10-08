@@ -13,7 +13,7 @@
               <input matInput  [(ngModel)]="data.exeData.V_EXE_CD" name="exe" (ngModelChange)="isExeChange()"/>
             </mat-form-field>
           </div>  
-          <div class="ml-2" fxFlex="48">  
+          <div class="ml-md-2" fxFlex="48">  
             <label item-width="100"><strong>Executable Description</strong></label>
             <mat-form-field class="form_in" style="width:100%;">
               <input matInput  [(ngModel)]="data.exeData.V_EXE_DSC" name="exedsc" value="" />
@@ -29,7 +29,7 @@
             </mat-form-field>
           </div>
           <!-- OUTPUT PARAMETERS -->
-          <div class="ml-2" fxFlex="48">  
+          <div class="ml-md-2" fxFlex="48">  
             <label item-width="100"><strong>Output Parameters</strong></label>
             <mat-form-field class="form_in" style="width:100%;">
               <input matInput  [(ngModel)]="data.exeData.V_EXE_OUT_PARAMS" name="outparam" />
@@ -56,14 +56,14 @@
         </div> -->
       <br/>
       <div fxLayout="row" fxLayout.lt-sm="column">
-        <div class="mr-2" fxFlex="48">
+        <div class="mr-3" fxFlex="45">
           <!-- START DELIMITER -->
           <label item-width="100"><strong>Start Delimiter</strong></label>
           <mat-form-field class="form_in" style="width:100%;">
             <input matInput [(ngModel)]="data.exeData.V_PARAM_DLMTR_STRT" name="startdelimiter" />
           </mat-form-field>
         </div>  
-        <div class="ml-2" fxFlex="48">
+        <div class="ml-md-2" fxFlex="45">
           <!-- END DELIMITER -->
           <label item-width="100"><strong>End Delimiter</strong></label>
           <mat-form-field class="form_in" style="width:100%;">
@@ -86,7 +86,7 @@
         </div>
         
         <!-- PLATFORM DESCRIPTION -->
-        <div class="mr-3" fxFlex="48">
+        <div class="mr-md-3" fxFlex="48">
           <label item-width="100"><strong>Platform Description</strong></label>
           <mat-form-field class="form_in" style="width:100%;">
             <textarea matInput  [(ngModel)]="data.exeData.V_SERVER_DSC" name="PLF_DSC"></textarea>
