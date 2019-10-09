@@ -327,11 +327,16 @@ input {
 
 :host ::ng-deep .mat-tab-body-content {
     padding: 0 12px;
+    height: auto !important;
 }
 
 :host ::ng-deep .generalTabV {
     padding-top: 2px;
     padding-bottom: 0px;
+}
+
+:host ::ng-deep .mat-tab-body-wrapper {
+    height: 100%;
 }
 
 .m-t--10 {
@@ -461,7 +466,7 @@ input {
 
 :host ::ng-deep .mat-tab-body.mat-tab-body-active,
 :host ::ng-deep .mat-tab-body {
-    overflow: initial !important;
+    height: 570px;
 }
 
 :host ::ng-deep #side-nav-menu {
@@ -793,4 +798,8 @@ mat-header-row {
     -moz-transform: rotate(-90deg);
     -ms-transform: rotate(-90deg);
     -o-transform: rotate(-90deg);
+}
+
+:host ::ng-deep .mat-drawer-inner-container {
+    overflow: hidden !important;
 }
