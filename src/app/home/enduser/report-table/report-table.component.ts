@@ -52,9 +52,10 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }];
   dataPreferences = new MatTableDataSource(this.Element_Preferences);
   domain_name = this.globals.domain_name;
-  @ViewChild(MatSort, { static: false } as any) sort: MatSort;
+  @ViewChild(MatSort, { static: true } as any) sort: MatSort;
   @ViewChild(BaseChartDirective, { static: false } as any) chart: BaseChartDirective;
   roleObservable$: Subscription;
+  reportTableClickObservable$: Subscription;
   roleValues;
   hasMonitorPermission = false;
   isMonitorClicked = false;
@@ -84,10 +85,11 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
   Table_of_Data5: any;
   helpertext = {};
   tabledata = {};
-  dispchart: boolean;
-  disptable: boolean;
+  dispchart: boolean = true;
+  disptable: boolean = true;
+  dispPersonalTable = true;
   Select_show_option: any = ["Table", "Charts", "Both"];
-  show_choice = "Table";
+  show_choice = "Both";
   selectedchart = [];
   selectedcustomize = "";
   myobj = { mychartType: "", myxaxisdata: "", myyaxisdata: "", myUoM: "", mySoM: "" }
@@ -99,6 +101,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
   doughnutarray: any = [];
   APP_CD = '';
   PRCS_CD = '';
+  V_UPDATE = '';
   private viewer: any;
   ctrl_variables: any;
   private downloadUrl: string;
@@ -142,6 +145,15 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
     });
+    this.reportTableClickObservable$ = this.optionalService.reportTableMenuClickValue.subscribe(res => {
+      if (res != null) {
+        if (res.key != 'Properties') {
+          this.showhide(res.key);
+        } else {
+          this.dispPersonalTable = true;
+        }
+      }
+    })
   }
 
   chartposition: any = [{ x: 0, y: 0 }, { x: 0, y: 0 }, { x: 0, y: 0 }, { x: 0, y: 0 }];
@@ -160,14 +172,16 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.selectedchart, event.previousIndex, event.currentIndex);
   }
-
+  dataSource;
   ngAfterViewInit() {
     this.httpClient.get('../../../../assets/control-variable.json').subscribe((res: any) => {
       this.ctrl_variables = res;
       this.path = this.ctrl_variables.bpmn_file_path;
     });
+    this.dataSource = new MatTableDataSource(this.Table_of_Data4);
+
     this.dataSource.sort = this.sort;
-    console.log(this.Table_of_Data4);
+    // console.log(this.Table_of_Data4);
     this.cd.detectChanges();
   }
   ngOnDestroy() {
@@ -176,16 +190,18 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     this.roleObservable$.unsubscribe();
   }
-
+  onCancelPersonalizeTable() {
+    this.dispPersonalTable = false;
+  }
   getReportData() {
 
     this.Table_of_Data = this.dataStored.getCookies('report_table')['RESULT'];
-
+    this.V_UPDATE = this.dataStored.getCookies('report_table')['V_UPDATE'][0];
     this.SRVC_CD = this.dataStored.getCookies('report_table')['SRVC_CD'][0];
     // this.SRVC_ID = this.dataStored.getCookies('report_table')['SRVC_ID'][0];
     this.UNIQUE_ID = this.dataStored.getCookies('report_table')['TEMP_UNIQUE_ID'][0];
     this.Table_of_Data1 = this.dataStored.getCookies('report_table')['LOG_VAL'];
-    console.log(this.Table_of_Data1);
+    // console.log(this.Table_of_Data1);
     this.iddata.push(this.dataStored.getCookies('iddata'));
     this.PRCS_TXN_ID = this.dataStored.getCookies('executeresdata')['V_PRCS_TXN_ID'];
     this.APP_ID = this.dataStored.getCookies('report_table')['APP_ID'][0];
@@ -196,7 +212,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.table_help_text = this.dataStored.getCookies('report_table')['FLD_HLP_TXT'][0].split(",");;
     //(JSON.parse(this.Table_of_Data1[0]));
     this.columnsToDisplay = Object.keys(JSON.parse(this.Table_of_Data1[0]));
-    console.log(this.columnsToDisplay);
+    // console.log(this.columnsToDisplay);
     this.hiddencolsflag = this.dataStored.getCookies('report_table')['HIDDEN'];
     var a = this.hiddencolsflag[0];
     var outputstr = a.replace(/'/g, '');
@@ -210,8 +226,13 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.columnsToDisplay.splice(j, 1);
       }
     }
+    if (this.V_UPDATE == 'Y') {
+      this.optionalService.reportTableMenuViewValue.next(true);
+    } else {
+      this.optionalService.reportTableMenuViewValue.next(false);
+    }
   }
-  dataSource = new MatTableDataSource(this.Table_of_Data4);
+
   columnsToDisplay = [];
 
   showhide(abc) {
@@ -345,10 +366,10 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
   getpreferences() {
-    console.log("getpref");
+    // console.log("getpref");
     this.data.getchartstyling(this.UNIQUE_ID, this.SRC_ID).subscribe(
       res => {
-        console.log(res.json());
+        // console.log(res.json());
         var result = res.json();
 
         var name = result.PRF_NM;
@@ -359,7 +380,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
           this.userprefs[name[i]] = value[i];
         }
         if (name.length) {
-          console.log(this.userprefs);
+          // console.log(this.userprefs);
           this.gettablepreferences();
           this.getchartpreferences();
         } else {
@@ -535,7 +556,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.https.post(this.apiService.endPoints.secureProcessReport, body, this.apiService.setHeaders())
       .subscribe(
         res => {
-          console.log(res.json());
+          // console.log(res.json());
           this.dataStored.setCookies("report_table", res.json());
 
         }

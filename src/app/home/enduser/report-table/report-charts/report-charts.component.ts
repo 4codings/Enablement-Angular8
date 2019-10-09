@@ -227,7 +227,7 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
     Chart.pluginService.register(pluginAnnotations);
     this.subscription = this.data.chartPreferencesChange
       .subscribe(value => {
-        console.log(value);
+        // console.log(value);
         if (this.lastPrefernce.length < this.data.chartPreferences.length) {
           for (let i = 0; i < this.data.chartPreferences.length - this.lastPrefernce.length; i++) {
             this.chartData.push([]);
@@ -251,11 +251,11 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
 
     });
 
-    console.log(this.chartPreferences);
+    // console.log(this.chartPreferences);
     this.UNIQUE_ID = this.report.UNIQUE_ID;
     this.SRC_ID = this.report.SRC_ID;
     this.columnsToDisplay = this.report.columnsToDisplay;
-    console.log(this.data.ReportTable_data);
+    // console.log(this.data.ReportTable_data);
   }
 
   ngAfterViewInit() {
@@ -288,15 +288,15 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
         } else {
           var saveWidth = now.data.width[i] / 6.0;
           var saveHeight = now.data.height[i] / 4.0;
-          console.log("sending size = > " + saveWidth + "x" + saveHeight);
+          // console.log("sending size = > " + saveWidth + "x" + saveHeight);
 
           now.data.setchartstyling(now.report.UNIQUE_ID, now.report.SRC_ID, now.data.chartPreferences[i]['chartno'], 'chartwidth', saveWidth + "").subscribe(
             (res) => {
-              console.log(res.json());
+              // console.log(res.json());
             });
           now.data.setchartstyling(now.report.UNIQUE_ID, now.report.SRC_ID, now.data.chartPreferences[i]['chartno'], 'chartheight', saveHeight + "").subscribe(
             (res) => {
-              console.log(res.json());
+              // console.log(res.json());
             });
 
           now.timerStarted = false;
@@ -329,8 +329,8 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
           if ((<NodeList>document.querySelectorAll(".chart-box")).length > 0) {
             for (let i = 0; i < curr.data.chart_translate.length; i++) {
               if ((<HTMLElement>document.querySelectorAll(".chart-box")[i]).style.transform !== curr.data.chart_translate[i]) {
-                console.log('Chart-' + curr.data.chartPreferences[i]['chartno'] + ' position set at : ' + JSON.stringify(curr.data.chartposition[i]));
-                console.log((<HTMLElement>document.querySelectorAll(".chart-box")[i]));
+                // console.log('Chart-' + curr.data.chartPreferences[i]['chartno'] + ' position set at : ' + JSON.stringify(curr.data.chartposition[i]));
+                // console.log((<HTMLElement>document.querySelectorAll(".chart-box")[i]));
                 (<HTMLElement>document.querySelectorAll(".chart-box")[i]).style.transform = curr.data.chart_translate[i];
                 (<HTMLElement>document.querySelectorAll(".chart-wrapper")[i]).style.transform = 'translate3d(' + (curr.data.chartposition[i].x - 4) + 'px, ' + (curr.data.chartposition[i].y - 4) + 'px, 0px' + ')';
                 curr.data.width[i] = 6 * parseInt(curr.data.chartPreferences[i]['chartwidth']);
@@ -347,13 +347,13 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
     }
   }
   printcpref() {
-    console.log(this.data.chartPreferences);
+    // console.log(this.data.chartPreferences);
   }
 
   dragEndChart(event, i) {
     var offset = { ...(<any>event.source._dragRef)._passiveTransform };
     //this.data.chartposition[i] = offset;
-    console.log(event.source.element.nativeElement);
+    // console.log(event.source.element.nativeElement);
     var source = event.source.element.nativeElement;
     var rect = source.getBoundingClientRect();
     var parentRect = (<HTMLElement>document.querySelector('.chart-boundary')).getBoundingClientRect();
@@ -365,11 +365,11 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
     (<HTMLElement>document.querySelectorAll(".chart-box")[i]).style.border = "none";
     (<HTMLElement>document.querySelectorAll(".chart-wrapper")[i]).style.transform = 'translate3d(' + (this.data.chartposition[i].x - 4) + 'px, ' + (this.data.chartposition[i].y - 4) + 'px, 0px' + ')';
     this.data.chartPreferences[i]['chartposition'] = JSON.stringify(this.data.chartposition[i]);
-    console.log(JSON.parse(this.data.chartPreferences[i]['chartposition']));
+    // console.log(JSON.parse(this.data.chartPreferences[i]['chartposition']));
 
     this.data.setchartstyling(this.report.UNIQUE_ID, this.report.SRC_ID, this.data.chartPreferences[i]['chartno'], 'chartposition', this.data.chartPreferences[i]['chartposition']).subscribe(
       (res) => {
-        console.log(res.json());
+        // console.log(res.json());
       });
   }
 
@@ -445,12 +445,12 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
           yAxisID: "y-".concat((i + 1).toString())
         }
       }
-      console.log(this.chartData[chartNo]);
+      // console.log(this.chartData[chartNo]);
     }
     else {
       this.chartData[chartNo] = this.linedata;
     }
-    console.log(this.chartData[chartNo]);
+    // console.log(this.chartData[chartNo]);
     var xaxisname = xaxisdata;
     if (this.data.chartPreferences[chartNo]['xaxisname'] !== "") {
       xaxisname = this.data.chartPreferences[chartNo]['xaxisname'];
@@ -599,7 +599,7 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
     this.updatecustoms(chartNo);
     var unit = this.data.chartPreferences[chartNo]['UoM_y']
     var yaxis_data_bar = [];
-    console.log('inside bar chart update');
+    // console.log('inside bar chart update');
     if (this.yaxis_data[chartNo] != [] && this.yaxis_data[chartNo] != undefined && this.data.chartSelection['selection'] !== 'selectedchart') {
       for (let i = 0; i < this.yaxis_data[chartNo].length; i++) {
         yaxis_data_bar[i] = this.data.ReportTable_data[this.yaxis_data[chartNo][i]].map(Number);
@@ -610,7 +610,7 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
         this.chartData[chartNo][i].data = yaxis_data_bar[i];
         this.chartData[chartNo][i].label = this.yaxis_data[chartNo][i];
       }
-      console.log(this.yaxis_data[chartNo]);
+      // console.log(this.yaxis_data[chartNo]);
     }
     else {
       this.chartData[chartNo] = this.bardata;
@@ -760,8 +760,8 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
       for (let i = 0; i < this.yaxis_data[chartNo].length; i++) {
         yaxis_data_pie[i] = this.data.ReportTable_data[this.yaxis_data[chartNo][i]].map(Number);
         if (this.xaxis_data != undefined || this.xaxis_data.length > 0) {
-          console.log(this.data.ReportTable_data[this.yaxis_data[chartNo][i]]);
-          console.log(this.data.ReportTable_data[this.xaxis_data[chartNo]]);
+          // console.log(this.data.ReportTable_data[this.yaxis_data[chartNo][i]]);
+          // console.log(this.data.ReportTable_data[this.xaxis_data[chartNo]]);
           xaxis_data_pie = this.data.ReportTable_data[this.xaxis_data[chartNo]];
         } else {
           xaxis_data_pie[i] = 'Not provided';
@@ -777,7 +777,7 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
         data: [100]
       })
     }
-    console.log(this.chartData);
+    // console.log(this.chartData);
     this.xaxis_data[chartNo] != "" ? this.chartLabels[chartNo] = this.data.ReportTable_data[this.xaxis_data[chartNo]]
       : this.chartLabels[chartNo] = this.chartlabels;
   }
@@ -792,8 +792,8 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
       for (let i = 0; i < this.yaxis_data[chartNo].length; i++) {
         yaxis_data_doughnut[i] = this.data.ReportTable_data[this.yaxis_data[chartNo][i]].map(Number);
         if (this.xaxis_data != undefined || this.xaxis_data.length > 0) {
-          console.log(this.data.ReportTable_data[this.yaxis_data[chartNo][i]]);
-          console.log(this.data.ReportTable_data[this.xaxis_data[chartNo]]);
+          // console.log(this.data.ReportTable_data[this.yaxis_data[chartNo][i]]);
+          // console.log(this.data.ReportTable_data[this.xaxis_data[chartNo]]);
           xaxis_data_doughnut = this.data.ReportTable_data[this.xaxis_data[chartNo]];
         } else {
           xaxis_data_doughnut[i] = 'Not provided';
@@ -809,14 +809,14 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
         data: [100]
       })
     }
-    console.log(this.chartData);
+    // console.log(this.chartData);
     this.xaxis_data[chartNo] != "" ? this.chartLabels[chartNo] = this.data.ReportTable_data[this.xaxis_data[chartNo]]
       : this.chartLabels[chartNo] = this.chartlabels;
   }
 
   updatechart(chartNo, chart_type) {
-    console.log(chartNo);
-    console.log(chart_type);
+    // console.log(chartNo);
+    // console.log(chart_type);
     if (chart_type === 'linechart_sel') {
       this.updateLineChart(chartNo);
     }
@@ -852,8 +852,8 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
       this.chartarray[chartNo] = [];
       this.chartarray[chartNo].push(obj);
 
-      console.log(this.yaxis_data);
-      console.log(this.xaxis_data);
+      // console.log(this.yaxis_data);
+      // console.log(this.xaxis_data);
     }
     else {
       /*this._snackBar.open("Data already exist in table", 'Ok', {

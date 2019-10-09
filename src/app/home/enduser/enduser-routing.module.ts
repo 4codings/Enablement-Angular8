@@ -28,13 +28,14 @@ const routes: Routes = [{
       path: 'Dashboard',
       loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
     },
+    { path: 'InputArtForm', component: ArtifactFormComponent, runGuardsAndResolvers: 'always' },
+    { path: 'RepeatForm', component: RepeatableFormComponent, runGuardsAndResolvers: 'always' },
+    { path: 'NonRepeatForm', component: NonRepeatableFormComponent, runGuardsAndResolvers: 'always' },
+    { path: 'ReportTable', component: ReportTableComponent },
+    { path: 'ptable', component: PersonalizationTableComponent },
   ]
 },
-{ path: 'InputArtForm', component: ArtifactFormComponent, runGuardsAndResolvers: 'always' },
-{ path: 'RepeatForm', component: RepeatableFormComponent, runGuardsAndResolvers: 'always' },
-{ path: 'NonRepeatForm', component: NonRepeatableFormComponent, runGuardsAndResolvers: 'always' },
-{ path: 'ReportTable', component: ReportTableComponent },
-{ path: 'ptable', component: PersonalizationTableComponent },
+
 
   // { path: 'InputArtForm', loadChildren: () => ArtifactFormModule, runGuardsAndResolvers: 'always' },
   // { path: 'RepeatForm', loadChildren: () => RepeatableFormModule, runGuardsAndResolvers: 'always' },

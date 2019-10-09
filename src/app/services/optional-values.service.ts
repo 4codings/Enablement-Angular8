@@ -14,6 +14,8 @@ export class OptionalValuesService implements OnDestroy {
   applicationProcessValue: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   selectedAppPrcoessValue: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   selecetedProcessTxnValue: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  reportTableMenuViewValue: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  reportTableMenuClickValue: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   V_SRC_CD: string;
   V_USR_NM: string;
   application_id: any;
@@ -31,6 +33,8 @@ export class OptionalValuesService implements OnDestroy {
     this.applicationOptionalValue.unsubscribe();
     this.processOptionalValue.unsubscribe();
     this.serviceOptionalValue.unsubscribe();
+    this.reportTableMenuViewValue.unsubscribe();
+    this.reportTableMenuClickValue.unsubscribe();
   }
 
   getApplicationOptionalValue() {
