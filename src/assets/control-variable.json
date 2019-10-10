@@ -35,6 +35,8 @@
   "delay_timeout": 2000,
   "report_table_timeout": 5000,
   "bpmn_file_path": "/opt/tomcat/webapps/bpmn/",
-  "success_string":"Reduced Job Instance",
-  "intermediate_string":"txn.status.waitingUserAuth"
+  "success_string": "Reduced Job Instance",
+  "intermediate_string": "txn.status.waitingUserAuth",
+  "system_admin_header": "System Admin",
+  "user_admin_header": "User Admin"
 }

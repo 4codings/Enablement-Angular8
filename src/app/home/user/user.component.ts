@@ -14,7 +14,10 @@ import { RollserviceService } from '../../services/rollservice.service';
 import { ToastrService } from 'ngx-toastr';
 import { UseradminService } from '../../services/useradmin.service2';
 import { filter, take } from 'rxjs/operators';
-import {Location} from '@angular/common';
+import { Location } from '@angular/common';
+import { OptionalValuesService } from 'src/app/services/optional-values.service';
+import { ApiService } from 'src/app/service/api/api.service';
+import { UserService } from 'src/app/core/user.service';
 
 
 @Component({
@@ -27,6 +30,9 @@ export class UserComponent implements OnInit {
   constructor(
     private router: Router,
     private StorageSessionService: StorageSessionService,
+    private userService: UserService,
+    private optionalService: OptionalValuesService,
+    private apiService: ApiService,
     private rollserviceService: RollserviceService,
     private location: Location,
     public toastr: ToastrService,
@@ -51,10 +57,26 @@ export class UserComponent implements OnInit {
         } else if (this.hasRole('IT Asset Role', res)) {
           this.router.navigateByUrl('Assets', { skipLocationChange: true });
         } else {
+          this.logout();
           this.toastr.info(this.userAdmin.controlVariables['noRole'], 'No Role');
         }
       }
     });
+  }
+
+  logout() {
+    this.apiService.logout('LOGOUT');
+    this.optionalService.applicationOptionalValue.next(null);
+    this.optionalService.processOptionalValue.next(null);
+    this.optionalService.serviceOptionalValue.next(null);
+    this.optionalService.applicationProcessValue.next(null);
+    this.optionalService.applicationArray = [];
+    this.optionalService.serviceArray = [];
+    this.optionalService.processArray = [];
+    this.optionalService.applicationProcessArray = [];
+    this.userService.clear();
+    this.rollserviceService.clear();
+    this.router.navigateByUrl('/login', { skipLocationChange: true });
   }
 
   hasRole(roleName: string, allroles: string[]): boolean {

@@ -23,6 +23,7 @@ export class DeploymentsnavbarComponent implements OnInit {
   imageUrl;
   V_SRC_CD;
   V_USR_NM;
+  headerTxt = '';
 
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private rollserviceService: RollserviceService,
     private httpClient: HttpClient) {
@@ -39,6 +40,7 @@ export class DeploymentsnavbarComponent implements OnInit {
     this.rollserviceService.getRollCd().then((res) => {
       this.httpClient.get('../../../../assets/control-variable.json').subscribe(cvres => {
         this.ctrl_variables = cvres;
+        this.headerTxt = this.ctrl_variables.system_admin_header;
         res.map((role) => {
           switch (role) {
             case 'Enablement System Admin Status Role':

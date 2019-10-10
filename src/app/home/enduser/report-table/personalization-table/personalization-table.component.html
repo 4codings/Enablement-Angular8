@@ -2,7 +2,8 @@
   <div fxLayout="column" id="chartno" class="table-column">
     <div class="table-title">Chart Name</div>
     <div class="table-cell-chartno" *ngFor="let cno of chartno; let i=index; trackBy:indexTracker">
-      <input matInput style="font-weight: bold;" (ngModelChange)="setchartpreferences('chartno',$event,i);" [(ngModel)]="cno">
+      <input matInput style="font-weight: bold;" (ngModelChange)="setchartpreferences('chartno',$event,i);"
+        [(ngModel)]="cno">
     </div>
   </div>
   <div fxLayout="column" id="selectedchart" class="table-column">
@@ -10,7 +11,8 @@
     <div class="table-cell" *ngFor="let selectedchart$ of _selectedchart; let i=index; trackBy:indexTracker">
       <mat-form-field>
         <mat-label>Select chart type</mat-label>
-        <mat-select [(value)]="selectedchart$" [(ngModel)]="selectedchart$" (selectionChange)="setchartpreferences('selectedchart',$event.value,i);set_domProperty($event);">
+        <mat-select [(value)]="selectedchart$" [(ngModel)]="selectedchart$"
+          (selectionChange)="setchartpreferences('selectedchart',$event.value,i);set_domProperty($event);">
           <mat-option value="linechart_sel">Line Chart</mat-option>
           <mat-option value="barchart_sel">Bar Chart</mat-option>
           <mat-option value="piechart_sel">Pie Chart</mat-option>
@@ -20,63 +22,33 @@
       </mat-form-field>
     </div>
   </div>
-  
+
+  <div fxLayout="column" id="xaxisname" class="table-column">
+    <div class="table-title">X-Axis Name</div>
+    <div class="table-cell" *ngFor="let xaxisname of xaxisnames; let i=index; trackBy:indexTracker">
+      <input matInput style="font-weight: bold;" (ngModelChange)="setchartpreferences('xaxisname',$event,i);"
+        [(ngModel)]="xaxisname">
+    </div>
+  </div>
+
   <div fxLayout="column" id="xaxisdata" class="table-column">
-    <div class="table-title">X-Axis Dataset</div>
+    <div class="table-title" matTooltipPosition="above" matTooltip="X-Axis Dataset">Dataset</div>
     <div class="table-cell" *ngFor="let xaxis of xaxisdata; let i=index; trackBy:indexTracker">
       <mat-form-field style="width:100%">
-        <mat-select placeholder="Select X-axis Dataset" (selectionChange)="setchartpreferences('xaxisdata',$event.value,i);"
-          [(value)]="xaxis">
+        <mat-select placeholder="Select X-axis Dataset"
+          (selectionChange)="setchartpreferences('xaxisdata',$event.value,i);" [(value)]="xaxis">
           <mat-option style="text-align:center;" *ngFor="let items of xaxis_datasets" value="{{items}}">
             {{items}} </mat-option>
         </mat-select>
       </mat-form-field>
     </div>
   </div>
-  <div fxLayout="column" id="xaxisname" class="table-column">
-    <div class="table-title">X-Axis Name</div>
-    <div class="table-cell" *ngFor="let xaxisname of xaxisnames; let i=index; trackBy:indexTracker">
-      <input matInput style="font-weight: bold;" (ngModelChange)="setchartpreferences('xaxisname',$event,i);" [(ngModel)]="xaxisname">
-    </div>
-  </div>
-  
-
-  <div fxLayout="column" id="yaxisdata" class="table-column">
-    <div class="table-title">Y-Axis Dataset</div>
-    <div class="table-cell" *ngFor="let yaxis of yaxisdata; let i=index; trackBy:indexTracker">
-      <mat-form-field style="width:100%">
-        <mat-select placeholder="Select Y-axis Dataset" (selectionChange)="setchartpreferences('yaxisdata',$event.value,i);"
-          [(value)]="yaxis">
-          <mat-option style="text-align:center;" *ngFor="let items of yaxis_datasets" [value]="items">
-            {{items}} </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-  </div>
-  <div fxLayout="column" id="yaxisname" class="table-column">
-    <div class="table-title">Y-Axis Name</div>
-    <div class="table-cell" *ngFor="let yaxisname of yaxisnames; let i=index; trackBy:indexTracker">
-        <input matInput style="font-weight: bold;" (ngModelChange)="setchartpreferences('yaxisname',$event,i);" [(ngModel)]="yaxisname">
-    </div>
-  </div>
   <div fxLayout="column" id="UoM_x" class="table-column">
-    <div class="table-title">Unit of Measure (x-axis)</div>
+    <div class="table-title" matTooltipPosition="above" matTooltip="Unit of Measure (x-axis)">UoM</div>
     <div class="table-cell" *ngFor="let unitx of UoM_x; let i=index; trackBy:indexTracker">
       <mat-form-field style="width:100%">
-        <mat-select placeholder="Select Unit of measure " (selectionChange)="setchartpreferences('UoM_x',$event.value,i);" [(value)]="unitx">
-          <mat-option *ngFor="let option of yaxiscallbacks" value="{{option}}">
-            {{option}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-  </div>
-
-  <div fxLayout="column" id="UoM_y" class="table-column">
-    <div class="table-title">Unit of Measure (y-axis)</div>
-    <div class="table-cell" *ngFor="let unity of UoM_y; let i=index; trackBy:indexTracker">
-      <mat-form-field style="width:100%">
-        <mat-select placeholder="Select Unit of measure" (selectionChange)="setchartpreferences('UoM_y',$event.value,i);" [(value)]="unity">
+        <mat-select placeholder="Select Unit of measure "
+          (selectionChange)="setchartpreferences('UoM_x',$event.value,i);" [(value)]="unitx">
           <mat-option *ngFor="let option of yaxiscallbacks" value="{{option}}">
             {{option}}
           </mat-option>
@@ -86,7 +58,7 @@
   </div>
 
   <div fxLayout="column" id="SoM_x" class="table-column">
-    <div class="table-title">Scale of Measure (x-axis)</div>
+    <div class="table-title" matTooltipPosition="above" matTooltip="Scale of Measure (x-axis)">SoM</div>
     <div class="table-cell" *ngFor="let scalex of SoM_x; let i = index; trackBy:indexTracker">
       <mat-form-field style="width:100%">
         <input type="text" placeholder="Select Scale of measure" matInput [matAutocomplete]="auto1"
@@ -102,9 +74,52 @@
       </mat-form-field>
     </div>
   </div>
+  <div fxLayout="column" id="xaxisstepsize" class="table-column">
+    <div class="table-title" matTooltipPosition="above" matTooltip="X-step size">Step</div>
+    <div class="table-cell" *ngFor="let xstep of xaxisstepSize; let i=index; trackBy:indexTracker">
+      <mat-form-field>
+        <input matInput type="number" (ngModelChange)="setchartpreferences('xaxisstepsize',$event,i);"
+          placeholder="Select X-Step Size" min=0 [(ngModel)]="xstep">
+      </mat-form-field>
+    </div>
+  </div>
+  <div fxLayout="column" id="yaxisname" class="table-column">
+    <div class="table-title">Y-Axis Name</div>
+    <div class="table-cell" *ngFor="let yaxisname of yaxisnames; let i=index; trackBy:indexTracker">
+      <input matInput style="font-weight: bold;" (ngModelChange)="setchartpreferences('yaxisname',$event,i);"
+        [(ngModel)]="yaxisname">
+    </div>
+  </div>
+
+  <div fxLayout="column" id="yaxisdata" class="table-column">
+    <div class="table-title" matTooltipPosition="above" matTooltip="Y-Axis Dataset">Dataset</div>
+    <div class="table-cell" *ngFor="let yaxis of yaxisdata; let i=index; trackBy:indexTracker">
+      <mat-form-field style="width:100%">
+        <mat-select placeholder="Select Y-axis Dataset"
+          (selectionChange)="setchartpreferences('yaxisdata',$event.value,i);" [(value)]="yaxis">
+          <mat-option style="text-align:center;" *ngFor="let items of yaxis_datasets" [value]="items">
+            {{items}} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div fxLayout="column" id="UoM_y" class="table-column">
+    <div class="table-title" matTooltipPosition="above" matTooltip="Unit of Measure (y-axis)">UoM </div>
+    <div class="table-cell" *ngFor="let unity of UoM_y; let i=index; trackBy:indexTracker">
+      <mat-form-field style="width:100%">
+        <mat-select placeholder="Select Unit of measure"
+          (selectionChange)="setchartpreferences('UoM_y',$event.value,i);" [(value)]="unity">
+          <mat-option *ngFor="let option of yaxiscallbacks" value="{{option}}">
+            {{option}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
 
   <div fxLayout="column" id="SoM_y" class="table-column">
-    <div class="table-title">Scale of Measure (y-axis)</div>
+    <div class="table-title" matTooltipPosition="above" matTooltip="Scale of Measure (y-axis)">SoM</div>
     <div class="table-cell" *ngFor="let scaley of SoM_y; let i = index; trackBy:indexTracker">
       <mat-form-field style="width:100%">
         <input type="text" placeholder="Select Scale of measure" matInput [matAutocomplete]="auto2"
@@ -121,20 +136,12 @@
     </div>
   </div>
 
-  <div fxLayout="column" id="xaxisstepsize" class="table-column">
-    <div class="table-title">X-step size</div>
-    <div class="table-cell" *ngFor="let xstep of xaxisstepSize; let i=index; trackBy:indexTracker">
-      <mat-form-field>
-        <input matInput type="number" (ngModelChange)="setchartpreferences('xaxisstepsize',$event,i);" placeholder="Select X-Step Size" min=0 [(ngModel)]="xstep">
-      </mat-form-field>
-    </div>
-  </div>
-
   <div fxLayout="column" id="yaxisstepsize" class="table-column">
-    <div class="table-title">Y-step size</div>
+    <div class="table-title" matTooltipPosition="above" matTooltip="Y-step size">Step</div>
     <div class="table-cell" *ngFor="let ystep of yaxisstepSize; let i=index; trackBy:indexTracker">
       <mat-form-field>
-        <input matInput type="number" (ngModelChange)="setchartpreferences('yaxisstepsize',$event,i)" placeholder="Select Y-Step Size" min=0 [(ngModel)]="ystep">
+        <input matInput type="number" (ngModelChange)="setchartpreferences('yaxisstepsize',$event,i)"
+          placeholder="Select Y-Step Size" min=0 [(ngModel)]="ystep">
       </mat-form-field>
     </div>
   </div>
@@ -142,7 +149,8 @@
   <div fxLayout="column" id="yaxisautoskip" class="table-column">
     <div class="table-title">Y-axis auto skip</div>
     <div class="table-cell" *ngFor="let yxs_askp of yaxisautoskip; let i=index; trackBy:indexTracker">
-      <mat-slide-toggle color="primary" [(ngModel)]="yxs_askp" (ngModelChange)="setchartpreferences('yaxisautoskip',$event,i);">Y-Autoskip</mat-slide-toggle>
+      <mat-slide-toggle color="primary" [(ngModel)]="yxs_askp"
+        (ngModelChange)="setchartpreferences('yaxisautoskip',$event,i);">Y-Autoskip</mat-slide-toggle>
     </div>
   </div>
 
@@ -150,7 +158,8 @@
     <div class="table-title">Annotations</div>
     <div class="table-cell" *ngFor="let ann of annotation; let i=index; trackBy:indexTracker">
       <mat-form-field style="width:100%">
-        <mat-select placeholder="Select Annotation" (selectionChange)="setchartpreferences('annotation',$event.value,i);" [(value)]="ann">
+        <mat-select placeholder="Select Annotation"
+          (selectionChange)="setchartpreferences('annotation',$event.value,i);" [(value)]="ann">
           <mat-option *ngFor="let option of yaxis_datasets" value="{{option}}">
             {{option}}
           </mat-option>
@@ -163,7 +172,8 @@
     <div class="table-title">Grid Line Width</div>
     <div class="table-cell" *ngFor="let gwidth of gridlinewidth; let i=index; trackBy:indexTracker">
       <mat-form-field>
-        <input matInput type="number" (ngModelChange)="setchartpreferences('gridlinewidth',$event,i);" placeholder="Select Grid line width" min=1 [(ngModel)]="gwidth">
+        <input matInput type="number" (ngModelChange)="setchartpreferences('gridlinewidth',$event,i);"
+          placeholder="Select Grid line width" min=1 [(ngModel)]="gwidth">
       </mat-form-field>
     </div>
   </div>
@@ -171,20 +181,22 @@
   <div fxLayout="column" id="gridborder" class="table-column">
     <div class="table-title">Grid Type</div>
     <div class="table-cell" *ngFor="let gborder of gridborder; let i=index; trackBy:indexTracker">
-      <mat-slide-toggle color="primary" [(ngModel)]="gborder" (ngModelChange)="setchartpreferences('gridborder',$event,i);">Dashed Grid</mat-slide-toggle>
+      <mat-slide-toggle color="primary" [(ngModel)]="gborder"
+        (ngModelChange)="setchartpreferences('gridborder',$event,i);">Dashed Grid</mat-slide-toggle>
     </div>
   </div>
-  
+
   <div fxLayout="column" id="backgroundcolor" class="table-column">
     <div class="table-title">Background Color</div>
     <div class="table-cell" *ngFor="let bgcolor of backgroundcolor; let i=index; trackBy:indexTracker">
       <div fxLayout="row" class="mat-cell-div">
         <div fxFlex="80">Background Color</div>
         <div fxFlex="20">
-          <input class="colorselector" [(value)]="bgcolor" (colorPickerChange)="setchartpreferences('backgroundcolor',$event,i);"
-           [style.background]="bgcolor" [(colorPicker)]="bgcolor" [cpAlphaChannel]="'always'"
-            [cpOutputFormat]="'rgba'" [cpOKButton]="true" [cpCancelButton]="true" [cpSaveClickOutside]="true"
-            [cpOKButtonClass]="'btn btn-primary btn-xs'" [cpCancelButtonClass]="'btn btn-primary btn-xs'" />
+          <input class="colorselector" [(value)]="bgcolor"
+            (colorPickerChange)="setchartpreferences('backgroundcolor',$event,i);" [style.background]="bgcolor"
+            [(colorPicker)]="bgcolor" [cpAlphaChannel]="'always'" [cpOutputFormat]="'rgba'" [cpOKButton]="true"
+            [cpCancelButton]="true" [cpSaveClickOutside]="true" [cpOKButtonClass]="'btn btn-primary btn-xs'"
+            [cpCancelButtonClass]="'btn btn-primary btn-xs'" />
         </div>
       </div>
     </div>
@@ -196,8 +208,9 @@
       <div fxLayout="row" class="mat-cell-div">
         <div fxFlex="80">Border Color</div>
         <div fxFlex="20">
-          <input class="colorselector" [(value)]="bdrcolor" [style.background]="bdrcolor" (colorPickerChange)="setchartpreferences('bordercolor',$event,i);" 
-          [(colorPicker)]="bdrcolor" [cpAlphaChannel]="'always'" [cpOutputFormat]="'rgba'" [cpOKButton]="true" [cpCancelButton]="true"
+          <input class="colorselector" [(value)]="bdrcolor" [style.background]="bdrcolor"
+            (colorPickerChange)="setchartpreferences('bordercolor',$event,i);" [(colorPicker)]="bdrcolor"
+            [cpAlphaChannel]="'always'" [cpOutputFormat]="'rgba'" [cpOKButton]="true" [cpCancelButton]="true"
             [cpSaveClickOutside]="true" [cpOKButtonClass]="'btn btn-primary btn-xs'"
             [cpCancelButtonClass]="'btn btn-primary btn-xs'" />
         </div>
@@ -211,7 +224,8 @@
       <div fxLayout="row" class="mat-cell-div">
         <div fxFlex="80">Fill Background</div>
         <div fxFlex="20">
-          <mat-slide-toggle class="example-margin" color="primary" (ngModelChange)="setchartpreferences('fillbackground',$event,i);" [(ngModel)]="fbg"></mat-slide-toggle>
+          <mat-slide-toggle class="example-margin" color="primary"
+            (ngModelChange)="setchartpreferences('fillbackground',$event,i);" [(ngModel)]="fbg"></mat-slide-toggle>
         </div>
       </div>
     </div>
@@ -223,13 +237,16 @@
       <div fxLayout="column" style="text-align:center" class="mat-cell-div">
         <div>
           <mat-button-toggle-group [value]="lten">
-            <mat-button-toggle (change)="setchartpreferences('linetension',$event.value,i);" value="none">None</mat-button-toggle>
-            <mat-button-toggle (change)="setchartpreferences('linetension',$event.value,i);" value="mild">Mild</mat-button-toggle>
-            <mat-button-toggle (change)="setchartpreferences('linetension',$event.value,i);" value="full">Full</mat-button-toggle>
+            <mat-button-toggle (change)="setchartpreferences('linetension',$event.value,i);" value="none">None
+            </mat-button-toggle>
+            <mat-button-toggle (change)="setchartpreferences('linetension',$event.value,i);" value="mild">Mild
+            </mat-button-toggle>
+            <mat-button-toggle (change)="setchartpreferences('linetension',$event.value,i);" value="full">Full
+            </mat-button-toggle>
           </mat-button-toggle-group>
         </div>
       </div>
-  </div>
+    </div>
   </div>
 
   <div fxLayout="column" id="pointsize" class="table-column">
@@ -238,9 +255,12 @@
       <div fxLayout="column" style="text-align:center" class="mat-cell-div">
         <div>
           <mat-button-toggle-group [value]="prad">
-            <mat-button-toggle (change)="setchartpreferences('pointsize',$event.value,i);" value="small">Small</mat-button-toggle>
-            <mat-button-toggle (change)="setchartpreferences('pointsize',$event.value,i);" value="normal">Normal</mat-button-toggle>
-            <mat-button-toggle (change)="setchartpreferences('pointsize',$event.value,i);" value="large">Large</mat-button-toggle>
+            <mat-button-toggle (change)="setchartpreferences('pointsize',$event.value,i);" value="small">Small
+            </mat-button-toggle>
+            <mat-button-toggle (change)="setchartpreferences('pointsize',$event.value,i);" value="normal">Normal
+            </mat-button-toggle>
+            <mat-button-toggle (change)="setchartpreferences('pointsize',$event.value,i);" value="large">Large
+            </mat-button-toggle>
           </mat-button-toggle-group>
         </div>
       </div>
@@ -251,7 +271,8 @@
     <div class="table-title">Animations</div>
     <div class="table-cell" *ngFor="let anim of animations; let i=index; trackBy:indexTracker">
       <mat-form-field style="width:100%">
-        <mat-select placeholder="Select Animations" (selectionChange)="setchartpreferences('animations',$event.value,i);" [(value)]="anim">
+        <mat-select placeholder="Select Animations"
+          (selectionChange)="setchartpreferences('animations',$event.value,i);" [(value)]="anim">
           <mat-option style="text-align:center;" value="linear"> linear </mat-option>
           <mat-option style="text-align:center;" value="easeInOutQuad"> easeInOutQuad </mat-option>
           <mat-option style="text-align:center;" value="easeInCubic"> easeInCubic </mat-option>
@@ -274,7 +295,8 @@
     <div class="table-title">Point Style</div>
     <div class="table-cell" *ngFor="let pstyle of pointstyle; let i=index; trackBy:indexTracker">
       <mat-form-field style="width:100%;cursor: pointer;">
-        <mat-select  placeholder="Select Point Style" [(value)]="pstyle" (selectionChange)="setchartpreferences('pointstyle',$event.value,i);" class="autosel">
+        <mat-select placeholder="Select Point Style" [(value)]="pstyle"
+          (selectionChange)="setchartpreferences('pointstyle',$event.value,i);" class="autosel">
           <mat-option style="text-align:center;" value="circle">
             <mat-icon>fiber_manual_record</mat-icon> Circle
           </mat-option>
@@ -308,7 +330,8 @@
     <div class="table-title">Line Style</div>
     <div class="table-cell" *ngFor="let lstyle of linestyle; let i=index; trackBy:indexTracker">
       <mat-form-field style="width:100%;cursor: pointer;">
-        <mat-select placeholder="Select Line Style" [(value)]="lstyle" (selectionChange)="setchartpreferences('linestyle',$event.value,i);" class="autosel">
+        <mat-select placeholder="Select Line Style" [(value)]="lstyle"
+          (selectionChange)="setchartpreferences('linestyle',$event.value,i);" class="autosel">
           <mat-option style="text-align:center;" value="solid">
             <mat-icon>remove</mat-icon>Solid
           </mat-option>
@@ -326,8 +349,7 @@
         add_circle</mat-icon>
     </div>
     <div class="table-cell" *ngFor="let indx of chartno; let i=index;">
-      <mat-icon aria-hidden="false" (click)="deleteRow_action(i);" aria-label="Delete a Row"
-        style="cursor: pointer;">
+      <mat-icon aria-hidden="false" (click)="deleteRow_action(i);" aria-label="Delete a Row" style="cursor: pointer;">
         delete</mat-icon>
     </div>
   </div>

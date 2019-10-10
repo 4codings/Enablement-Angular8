@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { RollserviceService } from '../../../services/rollservice.service';
+import { filter } from 'rxjs/operators';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-admin-nav',
@@ -22,24 +24,26 @@ export class UserAdminNavComponent implements OnInit {
   roll_assignRole: boolean = false;
   roll_auth: boolean = false;
   roll_authorization: boolean = false;
-
+  headerTxt = '';
   ctrl_variables: any;
   imageUrl;
-
+  navigationSubscription;
   constructor(
     private rollserviceService: RollserviceService,
     private httpClient: HttpClient,
+    private router: Router
   ) {
     this.isCollapsed = true;
   }
 
   ngOnInit() {
-    this.V_SRC_CD=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
-    this.V_USR_NM=JSON.parse(sessionStorage.getItem('u')).USR_NM;
-    this.imageUrl = " https://enablement.us/FileAPIs/api/file/v1/download/FileInfo?V_SRC_CD="+ this.V_SRC_CD +"&Type=Logo";
+    this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+    this.V_USR_NM = JSON.parse(sessionStorage.getItem('u')).USR_NM;
+    this.imageUrl = " https://enablement.us/FileAPIs/api/file/v1/download/FileInfo?V_SRC_CD=" + this.V_SRC_CD + "&Type=Logo";
     this.rollserviceService.getRollCd().then((res) => {
       this.httpClient.get('../../../../assets/control-variable.json').subscribe(cvres => {
         this.ctrl_variables = cvres;
+        this.headerTxt = this.ctrl_variables.user_admin_header;
         res.map((role) => {
           switch (role) {
             case 'Enablement User Admin Overview Role':
