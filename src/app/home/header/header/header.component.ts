@@ -79,7 +79,6 @@ export class HeaderComponent implements OnInit {
   optionSelecteds(e: any) {
    
     this.selectedProfile = e;
-    alert(this.selectedProfile);
     //if(e.split(" ") > 0)
     // this.toastr.info("your profile "+e+"profile");
     this.router.navigateByUrl(e.replace(" ", "_"), { skipLocationChange: true });

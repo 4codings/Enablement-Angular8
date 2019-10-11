@@ -31,7 +31,7 @@
 <div id='all-charts' [ngStyle]="{'display': dispchart == true ? 'block':'none'}">
   <app-charts></app-charts>
 </div>
-<div id='tableContainer' [ngStyle]="{'display':dispPersonalTable == true && dispchart == true ? 'block':'none'}">
+<div id='tableContainer' [ngStyle]="{'display':dispPersonalTable == true ? 'block':'none'}">
   <button type="button" (click)="onCancelPersonalizeTable()">
     <mat-icon>cancel</mat-icon>
   </button>
@@ -41,6 +41,7 @@
 <!-- ________________________________________________________________________ -->
 <div class="example-container mat-elevation-z8" fxShow="true" fxHide.xs="true"
   [ngStyle]="{'display': disptable == true ? 'block':'none'}">
+  11
   <mat-table #table [dataSource]="dataSource" matSort>
 
     <ng-container *ngFor="let a of columnsToDisplay" matColumnDef="{{a}}">
@@ -57,8 +58,9 @@
 
 </div>
 
-<div class="mat-elevation-z8" fxHide="true" fxShow.xs="true"
+<div class="example-container mat-elevation-z8" fxHide="true" fxShow.xs="true"
   [ngStyle]="{'display': disptable == true ? 'block':'none'}">
+  22
   <mat-table [dataSource]="dataSource" matSort>
     <ng-container *ngFor="let a of columnsToDisplay" matColumnDef="{{a}}">
       <mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="{{helpertext[a]}}" matTooltipPosition='above'>
