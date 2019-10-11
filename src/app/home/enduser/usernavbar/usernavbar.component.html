@@ -38,7 +38,7 @@
 
             <mat-menu #menu="matMenu" xPosition="before">
               <ng-container *ngFor="let opt of options">
-                <button mat-menu-item (click)="optionSelecteds(opt)">
+                <button [style.display]="!opt.flag ? 'none' : null" mat-menu-item (click)="optionSelecteds(opt)">
                   <mat-icon>bookmarks</mat-icon>
                   {{opt.value}}
                 </button>
@@ -92,7 +92,7 @@
 
           <mat-menu #menu="matMenu" xPosition="before">
             <ng-container *ngFor="let opt of options">
-              <button mat-menu-item (click)="optionSelecteds(opt)">
+              <button [style.display]="!opt.flag ? 'none' : null" mat-menu-item (click)="optionSelecteds(opt)">
                 <mat-icon>bookmarks</mat-icon>
                 {{opt.value}}
               </button>
@@ -146,7 +146,7 @@
 
           <mat-menu #menu="matMenu" xPosition="before">
             <ng-container *ngFor="let opt of options">
-              <button mat-menu-item (click)="optionSelecteds(opt)">
+              <button [style.display]="!opt.flag ? 'none' : null" mat-menu-item (click)="optionSelecteds(opt)">
                 <mat-icon>bookmarks</mat-icon>
                 {{opt.value}}
               </button>

@@ -39,8 +39,9 @@
 </div>
 
 <!-- ________________________________________________________________________ -->
-<div class="example-container mat-elevation-z8" fxShow="true" fxHide.xs="true"
-  [ngStyle]="{'display': disptable == true ? 'block':'none'}">
+<!-- [ngStyle]="{'display': disptable == true ? 'block':'none'}" -->
+<div class="example-container mat-elevation-z8" fxShow="true" fxHide.xs="true" *ngIf="disptable">
+  11
   <mat-table #table [dataSource]="dataSource" matSort>
 
     <ng-container *ngFor="let a of columnsToDisplay" matColumnDef="{{a}}">
@@ -57,8 +58,8 @@
 
 </div>
 
-<div class="example-container mat-elevation-z8" fxHide="true" fxShow.xs="true"
-  [ngStyle]="{'display': disptable == true ? 'block':'none'}">
+<div class="example-container mat-elevation-z8" fxHide="true" fxShow.xs="true" *ngIf="disptable">
+  22
   <mat-table [dataSource]="dataSource" matSort>
     <ng-container *ngFor="let a of columnsToDisplay" matColumnDef="{{a}}">
       <mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="{{helpertext[a]}}" matTooltipPosition='above'>

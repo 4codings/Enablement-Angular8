@@ -113,6 +113,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
   elementClick = false;
   endClicked = false;
   submitClicked = false;
+  selectedReportTableMenuOption;
   constructor(private dataStored: StorageSessionService,
     private https: Http,
     private route: Router,
@@ -147,10 +148,12 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     });
     this.reportTableClickObservable$ = this.optionalService.reportTableMenuClickValue.subscribe(res => {
       if (res != null) {
-        if (res.key != 'Properties') {
-          this.showhide(res.key);
-        } else {
-          this.dispPersonalTable = true;
+        if (!res.flag) {
+          if (res.value.key != 'Properties') {
+            this.showhide(res.value.key);
+          } else {
+            this.dispPersonalTable = true;
+          }
         }
       }
     })
@@ -183,6 +186,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dataSource.sort = this.sort;
     // console.log(this.Table_of_Data4);
     this.cd.detectChanges();
+    this.optionalService.defaultreportTableValue.next(this.show_choice);
   }
   ngOnDestroy() {
     if (this.viewer) {
@@ -192,6 +196,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   onCancelPersonalizeTable() {
     this.dispPersonalTable = false;
+    this.optionalService.reportTableMenuClickValue.next({ 'value': '', 'flag': true });
   }
   getReportData() {
 
@@ -348,6 +353,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
   gettablepreferences() {
     if (this.userprefs['displaychoice'] != undefined) {
       this.show_choice = this.userprefs['displaychoice'];
+      this.optionalService.defaultreportTableValue.next(this.show_choice);
       this.showhide(this.userprefs['displaychoice'])
     }
     if (this.userprefs['hiddencolname'] != undefined) {

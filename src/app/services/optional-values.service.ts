@@ -16,6 +16,7 @@ export class OptionalValuesService implements OnDestroy {
   selecetedProcessTxnValue: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   reportTableMenuViewValue: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   reportTableMenuClickValue: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  defaultreportTableValue: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   V_SRC_CD: string;
   V_USR_NM: string;
   application_id: any;

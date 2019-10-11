@@ -25,11 +25,13 @@ export class UsernavbarComponent implements OnInit {
   imageUrl;
   V_SRC_CD;
   V_USR_NM;
-  options = [{ 'value': 'Show Both', 'key': 'Both' }, { 'value': 'Show Table', 'key': 'Table' }, { 'value': 'Show Charts', 'key': 'Charts' }, { 'value': 'Show Properties Table', 'key': 'Properties' }];
+  options = [{ 'value': 'Show Only Charts', 'key': 'Charts', 'flag': true }, { 'value': 'Show Only Table', 'key': 'Table', 'flag': true }, { 'value': 'Show Charts and Tables', 'key': 'Both', 'flag': true }, { 'value': 'Configure Charts', 'key': 'Properties', 'flag': true }];
   ctrl_variables: any;
   showNewIcon: boolean = false;
   navigationSubscription;
   reportTableSubscription;
+  reportTableClickObservable$;
+  reportTableDefaultView$;
   constructor(
     private rollserviceService: RollserviceService,
     private httpClient: HttpClient, private router: Router, private optionalService: OptionalValuesService
@@ -51,6 +53,28 @@ export class UsernavbarComponent implements OnInit {
           this.showNewIcon = false;
         }
       });
+    this.reportTableClickObservable$ = this.optionalService.reportTableMenuClickValue.subscribe(res => {
+      if (res != null) {
+        if (res.flag) {
+
+          let i = this.options.findIndex(v => v.key == 'Properties');
+          this.options[i].flag = true;
+          console.log('this.options', this.options);
+        }
+      }
+    })
+    this.reportTableDefaultView$ = this.optionalService.defaultreportTableValue.subscribe(res => {
+      if (res != null) {
+        this.options.forEach(ele => {
+          if (ele.key == res) {
+            ele.flag = false;
+          } else {
+            ele.flag = true;
+          }
+        })
+        console.log('this.options initial', this.options);
+      }
+    })
   }
 
   ngOnInit() {
@@ -100,7 +124,20 @@ export class UsernavbarComponent implements OnInit {
     });
   }
   optionSelecteds(value) {
-    this.optionalService.reportTableMenuClickValue.next(value);
+    if (value.key == 'Properties') {
+      let i = this.options.findIndex(v => v.key == value.key);
+      this.options[i].flag = false;
+    } else {
+      this.options.forEach(ele => {
+        if (ele.key == value.key) {
+          ele.flag = false;
+        } else {
+          ele.flag = true;
+        }
+      })
+    }
+    console.log('this.options on change', this.options);
+    this.optionalService.reportTableMenuClickValue.next({ 'value': value, 'flag': false });
   }
 }
 
