@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 
 import { Router, ActivatedRoute } from "@angular/router";
@@ -20,10 +20,10 @@ export class HeaderComponent implements OnInit {
   public userName: string = '';
   public agency: string = '';
   public index: any;
-  public selectedProfile = '';
+  // public selectedProfile = '';
   optionSelected: string = "";
   imageUrl;
-
+  @Input() selectedProfile = '';
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -46,16 +46,16 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.userName = JSON.parse(sessionStorage.getItem('u')).USR_NM
     this.agency = JSON.parse(sessionStorage.getItem('u')).SRC_CD;;
-    this.imageUrl = "https://enablement.us/FileAPIs/api/file/v1/download/FileInfo?V_SRC_CD="+this.agency+"&V_USR_NM="+this.userName+"&Type=PIC"
+    this.imageUrl = "https://enablement.us/FileAPIs/api/file/v1/download/FileInfo?V_SRC_CD=" + this.agency + "&V_USR_NM=" + this.userName + "&Type=PIC"
 
     this.chooworkingProfile();
     // let url:string="user";
     // this.router.navigateByUrl(url);
-    if(this.router.url == "/End_User/Design") {
+    if (this.router.url == "/End_User/Design") {
       this.selectedProfile = "End_User";
-    } else if(this.router.url == "/User_Admin/Adminuser") {
+    } else if (this.router.url == "/User_Admin/Adminuser") {
       this.selectedProfile = "User_Admin";
-    } else if(this.router.url == "/System_Admin/AppDeploy") {
+    } else if (this.router.url == "/System_Admin/AppDeploy") {
       this.selectedProfile = "System_Admin";
     }
   }
@@ -77,7 +77,9 @@ export class HeaderComponent implements OnInit {
 
   //Selected option in the profile section
   optionSelecteds(e: any) {
-      this.selectedProfile = e;
+   
+    this.selectedProfile = e;
+    alert(this.selectedProfile);
     //if(e.split(" ") > 0)
     // this.toastr.info("your profile "+e+"profile");
     this.router.navigateByUrl(e.replace(" ", "_"), { skipLocationChange: true });
@@ -106,7 +108,7 @@ export class HeaderComponent implements OnInit {
     const dialogRef = this.dialog.open(ChangeImageComponent, {
       panelClass: 'app-dialog',
       width: '400px',
-      data: {heading:"Profile Image", name:'profile-pic'}
+      data: { heading: "Profile Image", name: 'profile-pic' }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -118,7 +120,7 @@ export class HeaderComponent implements OnInit {
     const dialogRef = this.dialog.open(ChangeImageComponent, {
       panelClass: 'app-dialog',
       width: '400px',
-      data: {heading:"Agency Image", name:'logo'}
+      data: { heading: "Agency Image", name: 'logo' }
     });
 
     dialogRef.afterClosed().subscribe(result => {

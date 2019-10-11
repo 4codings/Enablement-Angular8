@@ -44,7 +44,7 @@
                 </button>
               </ng-container>
             </mat-menu>
-            <app-header></app-header>
+            <app-header [selectedProfile]="'End_User'"></app-header>
             <!-- <button matTooltip="View profile" mat-mini-fab class="ml-5" [matMenuTriggerFor]="menu">
               <mat-icon>more_vert</mat-icon>
             </button> -->
@@ -99,7 +99,7 @@
             </ng-container>
           </mat-menu>
           <div class="profile-btn">
-            <app-header></app-header>
+            <app-header [selectedProfile]="'End_User'"></app-header>
           </div>
         </div>
 
@@ -152,7 +152,7 @@
               </button>
             </ng-container>
           </mat-menu>
-          <app-header></app-header>
+          <app-header [selectedProfile]="'End_User'"></app-header>
 
         </div>
       </mat-nav-list>

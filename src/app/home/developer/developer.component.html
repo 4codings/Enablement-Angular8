@@ -1,84 +1,88 @@
 <div>
-    <div fxLayout="row" fxLayout.lt-sm="column">
-        <div fxFlex="9" ></div>
-        <div fxFlex="82" >
-            <mat-card class="CustomeLayout">
+  <div fxLayout="row" fxLayout.lt-sm="column">
+    <div fxFlex="9"></div>
+    <div fxFlex="82">
+      <mat-card class="CustomeLayout">
 
-            <mat-card-title>
-                    <div flex fxLayout="column" fxLayout.lt-sm="column">
+        <mat-card-title>
+          <div flex fxLayout="column" fxLayout.lt-sm="column">
 
-                            <nav class="navbar ">
-                             <!-- Desktop View -->
-                            <div class="w-100" fxHide="true" fxShow.gt-sm="true">
-                            <mat-nav-list>
-                              <div class="list-wrapper" flex fxLayout="row" fxLayout.lt-sm="row">
-                                  <div class="nav-link pl-3 mb-2">
-                                  <img src="/assets/logo.png" class="logo-img" />
-                                  </div>
-                                  <div class="ml-auto pr-4">
-                                      <button matTooltip="View profile" mat-mini-fab class="ml-5" [matMenuTriggerFor]="menu">
-                                          <mat-icon>more_vert</mat-icon>
-                                      </button>
+            <nav class="navbar ">
+              <!-- Desktop View -->
+              <div class="w-100" fxHide="true" fxShow.gt-sm="true">
+                <mat-nav-list>
+                  <div class="list-wrapper" flex fxLayout="row" fxLayout.lt-sm="row">
+                    <div class="nav-link pl-3 mb-2">
+                      <img src="/assets/logo.png" class="logo-img" />
+                    </div>
+                    <div class="ml-auto pr-4">
+                      <button matTooltip="View profile" mat-mini-fab class="ml-5" [matMenuTriggerFor]="menu">
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
 
-                                      <mat-menu #menu="matMenu" xPosition="before">
-                                          <app-header></app-header>
-                                      </mat-menu>
+                      <mat-menu #menu="matMenu" xPosition="before">
+                        <app-header [selectedProfile]="''"></app-header>
+                      </mat-menu>
 
-                                  </div>
-                              </div>
-                            </mat-nav-list>
-                            </div>
+                    </div>
+                  </div>
+                </mat-nav-list>
+              </div>
 
-                            <div class="w-100" fxHide="true" fxShow.xs="true">
-                                <mat-nav-list>
+              <div class="w-100" fxHide="true" fxShow.xs="true">
+                <mat-nav-list>
 
-                                    <div class="" style="display:flex;">
-                                        <div class="pl-2">
-                                            <img src="/assets/logo.png" class="logo-img" />
-                                        </div>
-                                        <div class="ml-auto pr-2">
-                                            <button class="profile-btn" mat-mini-fab [matMenuTriggerFor]="menu">
-                                                <a class="nav-link"><mat-icon>more_vert</mat-icon></a>
-                                            </button>
-                                        </div>
-                                    </div>
+                  <div class="" style="display:flex;">
+                    <div class="pl-2">
+                      <img src="/assets/logo.png" class="logo-img" />
+                    </div>
+                    <div class="ml-auto pr-2">
+                      <button class="profile-btn" mat-mini-fab [matMenuTriggerFor]="menu">
+                        <a class="nav-link">
+                          <mat-icon>more_vert</mat-icon>
+                        </a>
+                      </button>
+                    </div>
+                  </div>
 
-                                    <mat-menu #menu="matMenu" xPosition="before">
-                                        <app-header></app-header>
-                                    </mat-menu>
+                  <mat-menu #menu="matMenu" xPosition="before">
+                    <app-header [selectedProfile]="''"></app-header>
+                  </mat-menu>
 
-                                </mat-nav-list>
-                            </div>
-                            <!-- For Tab Screen -->
-                            <div class="w-100" fxHide="true" fxShow.sm="true">
-                                <mat-nav-list>
-                                    <div class="" style="display:flex;">
-                                        <div class="pl-2">
-                                            <img src="/assets/logo.png" class="logo-img" />
-                                        </div>
-                                        <div class="ml-auto pr-2">
-                                            <button class="profile-btn" mat-mini-fab [matMenuTriggerFor]="menu">
-                                                <a class="nav-link"><mat-icon>more_vert</mat-icon></a>
-                                            </button>
-                                        </div>
-
-                                    <mat-menu #menu="matMenu" xPosition="before">
-                                        <app-header></app-header>
-                                    </mat-menu>
-                                    </div>
-
-                                </mat-nav-list>
-                            </div>
-                        </nav>
+                </mat-nav-list>
+              </div>
+              <!-- For Tab Screen -->
+              <div class="w-100" fxHide="true" fxShow.sm="true">
+                <mat-nav-list>
+                  <div class="" style="display:flex;">
+                    <div class="pl-2">
+                      <img src="/assets/logo.png" class="logo-img" />
+                    </div>
+                    <div class="ml-auto pr-2">
+                      <button class="profile-btn" mat-mini-fab [matMenuTriggerFor]="menu">
+                        <a class="nav-link">
+                          <mat-icon>more_vert</mat-icon>
+                        </a>
+                      </button>
                     </div>
 
-            </mat-card-title>
-            <mat-card-content>
-            <app-parameters></app-parameters>
-            </mat-card-content>
+                    <mat-menu #menu="matMenu" xPosition="before">
+                      <app-header [selectedProfile]="''"></app-header>
+                    </mat-menu>
+                  </div>
 
-            </mat-card>
-            </div>
-        <div fxFlex="9" ></div>
+                </mat-nav-list>
+              </div>
+            </nav>
+          </div>
+
+        </mat-card-title>
+        <mat-card-content>
+          <app-parameters></app-parameters>
+        </mat-card-content>
+
+      </mat-card>
     </div>
+    <div fxFlex="9"></div>
   </div>
+</div>

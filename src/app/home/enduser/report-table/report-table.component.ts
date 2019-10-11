@@ -87,7 +87,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
   tabledata = {};
   dispchart: boolean = true;
   disptable: boolean = true;
-  dispPersonalTable = true;
+  dispPersonalTable = false;
   Select_show_option: any = ["Table", "Charts", "Both"];
   show_choice = "Both";
   selectedchart = [];
