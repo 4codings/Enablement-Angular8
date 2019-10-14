@@ -1,6 +1,6 @@
-#properties {
+/*#properties {
     width: 250px;
-}
+}*/
 
 .errors {
     color: red;
@@ -802,4 +802,21 @@ mat-header-row {
 
 :host ::ng-deep .mat-drawer-inner-container {
     overflow: hidden !important;
+}
+
+@media screen and (max-width: 767px) {
+    :host ::ng-deep .mat-drawer-container, :host ::ng-deep .mat-drawer-inner-container {
+        overflow: visible !important;
+        height: 700px;
+    }
+    .properties-open, .application-open  {
+        height: 20px;
+        width: 88px;
+        background: #ededed;
+        opacity: 0.8;
+        padding: 0px 10px;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        border-top: none;
+        display: block;
+    }
 }
