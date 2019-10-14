@@ -46,7 +46,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.userName = JSON.parse(sessionStorage.getItem('u')).USR_NM
     this.agency = JSON.parse(sessionStorage.getItem('u')).SRC_CD;;
-    this.imageUrl = "https://enablement.us/FileAPIs/api/file/v1/download/FileInfo?V_SRC_CD=" + this.agency + "&V_USR_NM=" + this.userName + "&Type=PIC"
+    this.imageUrl = "https://enablement.us/" + this.userName + "/pic"; 
 
     this.chooworkingProfile();
     // let url:string="user";

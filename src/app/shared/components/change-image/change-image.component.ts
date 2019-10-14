@@ -31,8 +31,8 @@ export class ChangeImageComponent implements OnInit {
     if(this.data.name == 'profile-pic') {
       let fd = new FormData();
       let file: any = {};
-      file['File_Path'] =  '/opt/tomcat/webapps/'+ this.V_SRC_CD + '/' + this.V_USR_NM;
-      file['File_Name'] = 'user';
+      file['File_Path'] =  '/opt/tomcat/webapps/'+ this.V_USR_NM;
+      file['File_Name'] = 'pic';
       fd.append('Source_File', this.selectedFile.name);
       fd.append('FileInfo', JSON.stringify(file));
 
