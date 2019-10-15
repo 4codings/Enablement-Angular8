@@ -9,6 +9,11 @@ import * as pluginAnnotations from 'chartjs-plugin-annotation';
 import { ResizeEvent } from 'angular-resizable-element';
 import { CdkDragMove } from '@angular/cdk/drag-drop';
 import { Chart } from 'chart.js';
+import { MatDialog } from '@angular/material';
+import { Http } from '@angular/http';
+import { StorageSessionService } from 'src/app/services/storage-session.service';
+import { Globals } from 'src/app/services/globals';
+import { ApiService } from 'src/app/service/api/api.service';
 
 @Component({
   selector: 'app-charts',
@@ -25,7 +30,12 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
   constructor(public report: ReportTableComponent,
     public data: ConfigServiceService,
     public _snackBar: MatSnackBar,
-    private ngZone: NgZone) {
+    private dialog: MatDialog,
+    private ngZone: NgZone,
+    private http: Http,
+    private dataStored: StorageSessionService,
+    private globals: Globals,
+    private apiService:ApiService) {
 
   }
 
@@ -205,6 +215,10 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
   position_subs: any;
   chart_status: any;
   position_status: any;
+  chartMenuList = [{ 'key': 'save', 'value': 'Save on PC' }, { 'key': 'print', 'value': 'Print' }, { 'key': 'post', 'value': 'Post to Next Step' }]
+  private user: any;
+  APP_CD: any;
+  PRCS_CD: any;
 
   get resizeBoxElement(): HTMLElement {
     return this.resizeBox.nativeElement;
@@ -224,6 +238,9 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
 
 
   ngOnInit() {
+    this.user = JSON.parse(sessionStorage.getItem('u'));
+    this.APP_CD = this.dataStored.getCookies('report_table')['APP_CD'][0];
+    this.PRCS_CD = this.dataStored.getCookies('report_table')['PRCS_CD'][0];
     Chart.pluginService.register(pluginAnnotations);
     this.subscription = this.data.chartPreferencesChange
       .subscribe(value => {
@@ -923,6 +940,69 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
     //this.updatechart();
   }
 
+  onMenuItemClick(item, cpref, index, event, imageType?) {
+    console.log('item', item);
+    switch (item) {
+      case 'save': {
+        this.onImageDownload(index, event, imageType);
+      }
+      case 'print': {
+        // this.printCanvas(index, event);
+      }
+      case 'post': {
+        this.onImagePost(index, event, imageType);
+        console.log('index', index);
+      }
+    }
+  }
+  onImagePost(index, event, imageType) {
+    var anchor = event.target;
+    let canvas = document.getElementById(index) as HTMLCanvasElement;
+    let type = "image/" + imageType;
+    let name = "chart." + imageType;
+    // anchor.href = canvas.toDataURL(type);
+    // anchor.download = name;
+    const formData: FormData = new FormData();
+    console.log('this.report.ctrl_variables.bpmn_file_path', this.report.ctrl_variables.bpmn_file_path);
+    formData.append('FileInfo', JSON.stringify({
+      // File_Path: `${this.ctrl_variables.bpmn_file_path}${this.useradminService.reduceFilePath(this.user.SRC_CD)}/${vAppCd}/`,
+      // /SRC_CD/APP_CD/PRCS_CD/SRVC_DC/PRCS_TXN_ID
+      File_Path: `/${this.user.SRC_CD}/${this.APP_CD}/${this.PRCS_CD}/${this.report.SRVC_CD}/${this.report.PRCS_TXN_ID}`,
+      File_Name: `${this.PRCS_CD}.${imageType}`,
+      V_SRC_CD: this.user.SRC_CD,
+    }));
+    formData.append('Source_File', canvas.toDataURL(type));
+    this.http.post(`https://${this.globals.domain}/FileAPIs/api/file/v1/upload`, formData).subscribe(
+      res => {
+      }
+    );
+  }
+  onImageDownload(index, event, imageType) {
+    var anchor = event.target;
+    let canvas = document.getElementById(index) as HTMLCanvasElement;
+    let type = "image/" + imageType;
+    let name = "chart." + imageType;
+    anchor.href = canvas.toDataURL(type);
+    anchor.download = name;
+  }
+  printCanvas(index, event) {
+    let canvas = document.getElementById(index) as HTMLCanvasElement;
+    var dataUrl = canvas.toDataURL("image/png"); //attempt to save base64 string to server using this var  
+    var windowContent = '<!DOCTYPE html>';
+    windowContent += '<html>'
+    windowContent += '<head><title>Print canvas</title></head>';
+    windowContent += '<body>'
+    windowContent += '<img src="' + dataUrl + '">';
+    windowContent += '</body>';
+    windowContent += '</html>';
+    var printWin = window.open('', '', 'width=340,height=260');
+    printWin.document.open();
+    printWin.document.write(windowContent);
+    printWin.document.close();
+    printWin.focus();
+    printWin.print();
+    printWin.close();
+  }
   /*getpreferences() {
     console.log("getpref");
     this.data.getchartstyling(this.UNIQUE_ID, this.SRC_ID).subscribe(

@@ -114,6 +114,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
   endClicked = false;
   submitClicked = false;
   selectedReportTableMenuOption;
+  showPostChart = false;
   constructor(private dataStored: StorageSessionService,
     private https: Http,
     private route: Router,

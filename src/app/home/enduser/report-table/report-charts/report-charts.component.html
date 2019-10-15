@@ -1,27 +1,43 @@
 <div class="chart-boundary" fxLayoutGap="10" [ngStyle]="style">
 
-    <div *ngFor="let cpref of data.chartPreferences; let i=index;" class="chart-box" style="position: absolute;"
-        [style.width.px]="data.width[i]" [style.height.px]="data.height[i]" (cdkDragEnded)="dragEndChart($event,i)"
-        cdkDragBoundary=".chart-boundary" cdkDrag fxLayout="column" fxFlex="50%" (cdkDragStarted)="onDragStart($event,i);" fxFlex.lt-sm="100%">
+  <div *ngFor="let cpref of data.chartPreferences; let i=index;" class="chart-box" style="position: absolute;"
+    [style.width.px]="data.width[i]" [style.height.px]="data.height[i]" (cdkDragEnded)="dragEndChart($event,i)"
+    cdkDragBoundary=".chart-boundary" cdkDrag fxLayout="column" fxFlex="50%" (cdkDragStarted)="onDragStart($event,i);"
+    fxFlex.lt-sm="100%">
 
-        <h4>-: {{data.chartPreferences[i]['chartno']}} :-</h4>
-        <canvas baseChart *ngIf="cpref['selectedchart']==='linechart_sel'" [datasets]="chartData[i]"
-            [labels]="chartLabels[i]" [options]="chartOptions[i]" [colors]="lineChartColors"
-            [chartType]="lineChartType">
-        </canvas>
-        <canvas baseChart *ngIf="cpref['selectedchart']==='barchart_sel'" [datasets]="chartData[i]"
-            [labels]="chartLabels[i]" [options]="chartOptions[i]" [colors]="barChartColors" [chartType]="barChartType">
-        </canvas>
-        <canvas baseChart [datasets]="chartData[i]" [colors]="pieChartColors"
-            *ngIf="cpref['selectedchart']==='piechart_sel'" [labels]="chartLabels[i]" [chartType]="pieChartType">
-        </canvas>
-        <canvas baseChart [datasets]="chartData[i]" [colors]="pieChartColors"
-            *ngIf="cpref['selectedchart']==='doughnutchart_sel'" [labels]="chartLabels[i]"
-            [chartType]="doughnutChartType">
-        </canvas>
-    </div>
+    <!-- <h4 (click)="onChartClick(cpref)">-: {{data.chartPreferences[i]['chartno']}} :-</h4> -->
+    <h4 [matMenuTriggerFor]="menu">-: {{data.chartPreferences[i]['chartno']}} :-</h4>
+    <mat-menu #menu="matMenu">
+      <!-- <button mat-menu-item *ngFor="let item of chartMenuList"><a
+          (click)="onMenuItemClick(false,item.key,cpref,i,$event)">{{item.value}} </a>
+      </button> -->
+      <button mat-menu-item [matMenuTriggerFor]="saveonpc">Save As</button>
+      <button mat-menu-item (click)="onMenuItemClick('print',cpref,i,$event,'png')">Print</button>
+      <button mat-menu-item (click)="onMenuItemClick('print',cpref,i,$event,'png')">Post to Next Step</button>
+    </mat-menu>
+    <mat-menu #saveonpc="matMenu">
+      <button mat-menu-item><a (click)="onMenuItemClick('save',cpref,i,$event,'png')">PNG</a></button>
+      <button mat-menu-item><a (click)="onMenuItemClick('save',cpref,i,$event,'gif')">GIF</a></button>
+      <button mat-menu-item><a (click)="onMenuItemClick('save',cpref,i,$event,'jpeg')">JPEG</a></button>
+      <button mat-menu-item><a (click)="onMenuItemClick('save',cpref,i,$event,'jpg')">JPG</a></button>
+      <button mat-menu-item><a (click)="onMenuItemClick('save',cpref,i,$event,'png')">PNG</a></button>
+      <button mat-menu-item><a (click)="onMenuItemClick('save',cpref,i,$event,'svg')">SVG</a></button>
+    </mat-menu>
+    <canvas [id]="i" baseChart *ngIf="cpref['selectedchart']==='linechart_sel'" [datasets]="chartData[i]"
+      [labels]="chartLabels[i]" [options]="chartOptions[i]" [colors]="lineChartColors" [chartType]="lineChartType">
+    </canvas>
+    <canvas [id]="i" baseChart *ngIf="cpref['selectedchart']==='barchart_sel'" [datasets]="chartData[i]"
+      [labels]="chartLabels[i]" [options]="chartOptions[i]" [colors]="barChartColors" [chartType]="barChartType">
+    </canvas>
+    <canvas [id]="i" baseChart [datasets]="chartData[i]" [colors]="pieChartColors"
+      *ngIf="cpref['selectedchart']==='piechart_sel'" [labels]="chartLabels[i]" [chartType]="pieChartType">
+    </canvas>
+    <canvas [id]="i" baseChart [datasets]="chartData[i]" [colors]="pieChartColors"
+      *ngIf="cpref['selectedchart']==='doughnutchart_sel'" [labels]="chartLabels[i]" [chartType]="doughnutChartType">
+    </canvas>
+  </div>
 
-    <div *ngFor="let cpref of data.chartPreferences; let i=index;" class="chart-wrapper" (resized)="onResized($event,i)"
-        [style.width.px]="data.width[i]+8" [style.height.px]="data.height[i]+8">
-    </div>
+  <div *ngFor="let cpref of data.chartPreferences; let i=index;" class="chart-wrapper" (resized)="onResized($event,i)"
+    [style.width.px]="data.width[i]+8" [style.height.px]="data.height[i]+8">
+  </div>
 </div>
