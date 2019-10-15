@@ -16,7 +16,7 @@
     </div>
   </div>
 </ng-template>
-<div fxLayout="row" *ngIf="!expandPanel">
+<div fxLayout="row" *ngIf="isMobile">
     <div fxFlex="100px" class="toggle">
         <a href="javascript:void(0)" (click)="treesidenav.toggle();" class="application-open">
           Application

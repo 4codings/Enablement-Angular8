@@ -156,6 +156,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   ColorBar = [];
   ColorBar_border = [];
   V_OLD_PRCS_CD: string = '';
+  isMobile: any;
+  isTablet: any;
   isApp = false;
   isProcess = false;
   isService = false;
@@ -368,6 +370,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.expandPanel = this.deviceService.isDesktop();
+    this.isMobile = this.deviceService.isMobile();
+    this.isTablet = this.deviceService.isTablet();
     this.user = JSON.parse(sessionStorage.getItem('u'));
     if (this.user) {
       this.userEmail = this.user.USR_NM;
