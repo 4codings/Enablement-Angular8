@@ -805,6 +805,9 @@ mat-header-row {
 }
 
 @media screen and (max-width: 767px) {
+    .cdk-overlay-connected-position-bounding-box {
+        left: 80px !important;
+    }
     :host ::ng-deep .mat-drawer-container {
         overflow: visible !important;
         height: 600px;
