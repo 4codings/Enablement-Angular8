@@ -805,9 +805,12 @@ mat-header-row {
 }
 
 @media screen and (max-width: 767px) {
-    :host ::ng-deep .mat-drawer-container, :host ::ng-deep .mat-drawer-inner-container {
+    :host ::ng-deep .mat-drawer-container {
         overflow: visible !important;
         height: 600px;
+    }
+    :host ::ng-deep .mat-drawer-inner-container {
+        overflow: auto !important;
     }
     .application-open  {
         width: 128px !important;
