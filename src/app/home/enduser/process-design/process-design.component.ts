@@ -1318,6 +1318,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     //   this.treesidenav.opened = false;
     // }
     this.selectedItem = item;
+    if (this.isMobile || this.isTablet) {
+      this.opened = false;
+    }
   }
   onParentMenuItemClick(actionValue, parentValue, selectedItem?) {
     this.selectedApp = parentValue;
