@@ -33,7 +33,7 @@ export class ChangeImageComponent implements OnInit {
       let file: any = {};
       file['File_Path'] =  '/opt/tomcat/webapps/'+ this.V_USR_NM;
       file['File_Name'] = 'pic';
-      fd.append('Source_File', this.selectedFile.name);
+      fd.append('Source_File', this.selectedFile);
       fd.append('FileInfo', JSON.stringify(file));
 
       this.http.post(this.apiUrlPost, fd).subscribe(res => {
@@ -46,7 +46,7 @@ export class ChangeImageComponent implements OnInit {
       let file: any = {};
       file['File_Path'] =  '/opt/tomcat/webapps/'+ this.V_SRC_CD;
       file['File_Name'] = 'logo';
-      fd.append('Source_File', this.selectedFile.name);
+      fd.append('Source_File', this.selectedFile);
       fd.append('FileInfo', JSON.stringify(file));
       this.http.post(this.apiUrlPost, fd).subscribe(res => {
         this.dialogRef.close();
