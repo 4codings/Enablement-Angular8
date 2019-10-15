@@ -1319,7 +1319,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     // }
     this.selectedItem = item;
     if (this.isMobile || this.isTablet) {
-      this.opened = false;
       this.treesidenav.toggle();
     }
   }
