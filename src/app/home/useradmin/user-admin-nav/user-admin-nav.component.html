@@ -41,14 +41,14 @@
     <!-- For Mobile Screen -->
     <div class="w-100" fxHide="true" fxShow.xs="true">
       <mat-nav-list>
-
-        <div class="text-center">
+      <div fxLayout="row" fxLayoutAlign="center center">
+        <div >
           <img [src]="imageUrl" onerror="this.src='/assets/logo.png'" alt="" class="logo-img" />
         </div>
         <div flex fxLayout="row" class="text-center">
           <span>{{headerTxt}}</span>
         </div>
-        <div class="" style="display:flex;">
+        <div>
           <!-- <button matTooltip="User" matTooltipPosition='below' mat-icon-button *ngIf="roll_user"><a [routerLink]="['Adminuser']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">person</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" style="color:orange;">person</mat-icon></a></button>
       <button matTooltip="Group" matTooltipPosition='below' mat-icon-button *ngIf="roll_group"><a [routerLink]="['UserGroup']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">people</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" style="color: darkorchid;">people</mat-icon></a></button>
       <button matTooltip="Membership" matTooltipPosition='below' mat-icon-button *ngIf="roll_membership"><a [routerLink]="['Membership']" skipLocationChange routerLinkActive="active" class="nav-link"><mat-icon class="iconmod shwmaticon">credit_card</mat-icon><mat-icon class="iconmod shwsvgicon deskicon" svgIcon="membership"></mat-icon></a></button>
@@ -68,7 +68,7 @@
         <!-- <mat-menu #menu="matMenu" xPosition="before">
       <app-header></app-header>
     </mat-menu> -->
-
+    </div>
       </mat-nav-list>
     </div>
     <!-- For Tab Screen -->
