@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Globals2 } from '../globals';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { Globals } from '../../services/globals';
 import { Http, RequestOptions, Headers, ResponseContentType } from '@angular/http';
 
@@ -13,6 +13,7 @@ export class ApiService {
 	private apiURL: string = environment.apiURL
 	private endPoint: string
 	private authHeader: HttpHeaders;
+	imageLogoUrlSubject = new BehaviorSubject<any>('');
 	public insecureUrl = 'https://' + this.globalUrl.domain + this.globalUrl.suffix + this.globalUrl.Path;
 	public securedApiUrl = 'https://' + this.globalUrl.domain + this.globalUrl.suffix + this.globalUrl.Path + this.globalUrl.version;
 	public fileUrl = 'https://' + this.globalUrl.domain + '/FileAPIs/api/file' + this.globalUrl.version;

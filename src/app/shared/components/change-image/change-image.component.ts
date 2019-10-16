@@ -37,7 +37,7 @@ export class ChangeImageComponent implements OnInit {
       fd.append('FileInfo', JSON.stringify(file));
 
       this.http.post(this.apiUrlPost, fd).subscribe(res => {
-        this.dialogRef.close();
+        this.dialogRef.close(true);
       })
     }
 
@@ -49,7 +49,7 @@ export class ChangeImageComponent implements OnInit {
       fd.append('Source_File', this.selectedFile);
       fd.append('FileInfo', JSON.stringify(file));
       this.http.post(this.apiUrlPost, fd).subscribe(res => {
-        this.dialogRef.close();
+        this.dialogRef.close(true);
       })
     }
   }
