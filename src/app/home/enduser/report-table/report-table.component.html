@@ -32,10 +32,10 @@
   <app-charts></app-charts>
 </div>
 <div id='tableContainer' [ngStyle]="{'display':dispPersonalTable == true ? 'block':'none'}">
-  <button type="button" (click)="onCancelPersonalizeTable()">
+  <!-- <button type="button" (click)="onCancelPersonalizeTable($event)">
     <mat-icon>cancel</mat-icon>
-  </button>
-  <personalization-table></personalization-table>
+  </button> -->
+  <personalization-table (onCancelPersonalizeTable)="onCancelPersonalizeTable($event)"></personalization-table>
 </div>
 
 <!-- ________________________________________________________________________ -->

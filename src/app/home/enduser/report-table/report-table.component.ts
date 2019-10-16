@@ -195,9 +195,11 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     this.roleObservable$.unsubscribe();
   }
-  onCancelPersonalizeTable() {
-    this.dispPersonalTable = false;
-    this.optionalService.reportTableMenuClickValue.next({ 'value': '', 'flag': true });
+  onCancelPersonalizeTable(event) {
+    if (event) {
+      this.dispPersonalTable = false;
+      this.optionalService.reportTableMenuClickValue.next({ 'value': '', 'flag': true });
+    }
   }
   getReportData() {
 

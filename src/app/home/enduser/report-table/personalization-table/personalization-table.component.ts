@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewEncapsulation, EventEmitter, Output } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ReportTableComponent } from '../report-table.component';
 import { ConfigServiceService } from '../../../../services/config-service.service';
@@ -14,15 +14,16 @@ import { FormGroup, FormBuilder } from '@angular/forms';
   encapsulation: ViewEncapsulation.None
 })
 export class PersonalizationTableComponent implements OnInit, AfterViewInit {
+  @Output() onCancelPersonalizeTable: EventEmitter<any> = new EventEmitter();
   columnsPreferences: string[] = ['chartNo', 'chartType', 'xaxisData', 'yaxisData', 'unit',
     'scale', 'ystepSize', 'gridlineWidth', 'backgroundColor', 'borderColor', 'fillBackground',
-    'lineTension', 'pointSize', 'animations', 'pointStyle', 'lineStyle', 'addRow'];
+    'lineTension', 'pointSize', 'animations', 'pointStyle', 'lineStyle', 'addRow', "chartTransparency"];
   Element_Preferences = [];
 
   pref_rowData = {
     chartNo: "1", chartType: "", xaxisData: "", yaxisData: "", unit: "", scale: "", ystepSize: "", gridlineWidth: "",
     backgroundColor: "", borderColor: "", fillBackground: "", lineTension: "", pointSize: "", animations: "",
-    pointStyle: "", lineStyle: "", addRow: ""
+    pointStyle: "", lineStyle: "", addRow: "", chartTransparency: ""
   };
   dataPreferences = new MatTableDataSource(this.Element_Preferences);
   _yaxisstepSize = null;
@@ -68,6 +69,7 @@ export class PersonalizationTableComponent implements OnInit, AfterViewInit {
   chartno = [];
   annotation = [];
   gridlinewidth = [];
+  chartTransparency = [];
   backgroundcolor = [];
   bordercolor = [];
   fillbackground = [];
@@ -108,7 +110,7 @@ export class PersonalizationTableComponent implements OnInit, AfterViewInit {
     gridlinewidth: "", chartno: "",
     backgroundcolor: "", bordercolor: "", fillbackground: "", linetension: "", pointradius: "", animations: "", chartwidth: "100", chartheight: "100",
     pointstyle: "", linestyle: "", gridborder: "", yaxisautoskip: "", annotation: "", selectedchart: "", chartposition: "",
-    xaxisdata: "", yaxisdata: "", UoM_x: "", UoM_y: "", SoM_x: "", SoM_y: "", xaxisstepsize: "", yaxisstepsize: "", personalizationtable: {}
+    xaxisdata: "", yaxisdata: "", UoM_x: "", UoM_y: "", SoM_x: "", SoM_y: "", xaxisstepsize: "", yaxisstepsize: "", personalizationtable: {}, chartTransparency: "",
   };
   myobj = { mychartType: "", myxaxisdata: "", myyaxisdata: "", myUoM: "", mySoM: "" }
   preservedPreferences = [];
@@ -135,6 +137,9 @@ export class PersonalizationTableComponent implements OnInit, AfterViewInit {
     this.getChartPreferences();
   }
 
+  onCancelTable() {
+    this.onCancelPersonalizeTable.emit(true);
+  }
   indexTracker(index: number, value: any) {
     return index;
   }
@@ -269,6 +274,8 @@ export class PersonalizationTableComponent implements OnInit, AfterViewInit {
       this.chartPreferences[i]['yaxisstepSize'] = this.yaxisstepSize[i];
     if (pref === 'personalizationtable')
       this.chartPreferences[i]['personalizationtable'] = this._personalizationtable[i];
+    if (pref === 'chartTransparency')
+      this.chartPreferences[i]['chartTransparency'] = this.chartTransparency[i];
   }
 
   populateRow(index, foundIndex) {
@@ -299,6 +306,7 @@ export class PersonalizationTableComponent implements OnInit, AfterViewInit {
     this.SoM_y[index] = this.data.chartPreferences[foundIndex]['SoM_y']
     this.xaxisstepSize[index] = this.data.chartPreferences[foundIndex]['xaxisstepsize']
     this.yaxisstepSize[index] = this.data.chartPreferences[foundIndex]['yaxisstepsize']
+    this.chartTransparency[index] = this.data.chartPreferences[foundIndex]['chartTransparency'];
   }
 
   set_domProperty(event) {
@@ -405,13 +413,14 @@ export class PersonalizationTableComponent implements OnInit, AfterViewInit {
     this.xaxisstepSize.push("");
     this.yaxisstepSize.push("");
     this.annotation.push("");
+    this.chartTransparency.push("");
     this.data.width.push(600);
     this.data.height.push(400);
     this.chartPreferences.push({
       gridlinewidth: "", chartno: this.chartno[this.chartno.length - 1],
       backgroundcolor: "", bordercolor: "", fillbackground: false, linetension: "", pointradius: "", animations: "", chartwidth: "100", chartheight: "100",
-      pointstyle: "rectRot", linestyle: "", gridborder: "", yaxisautoskip: "", annotation: "", selectedchart: "", chartposition: "", xaxisname:"", yaxisname:"",
-      xaxisdata: "", yaxisdata: "", UoM_x: "", UoM_y: "", SoM_x: "", SoM_y: "", xaxisstepsize: "", yaxisstepsize: "", personalizationtable: {}
+      pointstyle: "rectRot", linestyle: "", gridborder: "", yaxisautoskip: "", annotation: "", selectedchart: "", chartposition: "", xaxisname: "", yaxisname: "",
+      xaxisdata: "", yaxisdata: "", UoM_x: "", UoM_y: "", SoM_x: "", SoM_y: "", xaxisstepsize: "", yaxisstepsize: "", personalizationtable: {}, chartTransparency: ""
     });
     this.data.chartposition.push({ x: 0, y: 0 });
 
@@ -475,6 +484,7 @@ export class PersonalizationTableComponent implements OnInit, AfterViewInit {
     this.SoM_x.splice(chartNo, 1);
     this.SoM_y.splice(chartNo, 1);
     this.annotation.splice(chartNo, 1);
+    this.chartPreferences.splice(chartNo, 1);
     this.xaxisstepSize.splice(chartNo, 1);
     this.yaxisstepSize.splice(chartNo, 1);
 

@@ -1,16 +1,29 @@
 <div fxLayout="row" id="p-table" class="mat-elevation-z8">
-  <div fxLayout="column" id="chartno" class="table-column">
-    <div class="table-title">Chart Name</div>
-    <div class="table-cell-chartno" *ngFor="let cno of chartno; let i=index; trackBy:indexTracker">
-      <input matInput style="font-weight: bold;" (ngModelChange)="setchartpreferences('chartno',$event,i);"
-        [(ngModel)]="cno">
+  <div fxLayout="column" id="chartno" style="min-width: 167px;">
+    <div class="table-title">
+      <button style="margin: -9px;margin-right: 33px;" mat-icon-button (click)="onCancelTable()">
+        <mat-icon>cancel</mat-icon>
+      </button>
+      <span style="margin-right: 70px;">Title</span></div>
+    <div class="table-cell" *ngFor="let cno of chartno; let i=index; trackBy:indexTracker">
+      <input matInput style="font-weight: bold;background: white;margin-top: 17px;"
+        (ngModelChange)="setchartpreferences('chartno',$event,i);" [(ngModel)]="cno">
     </div>
   </div>
   <div fxLayout="column" id="selectedchart" class="table-column">
     <div class="table-title">Chart Type</div>
     <div class="table-cell" *ngFor="let selectedchart$ of _selectedchart; let i=index; trackBy:indexTracker">
-      <mat-form-field>
-        <mat-label>Select chart type</mat-label>
+      <input type="text" matInput [(value)]="selectedchart$" [(ngModel)]="selectedchart$" [matAutocomplete]="chartType"
+        (change)="setchartpreferences('selectedchart',$event.value,i);set_domProperty($event);"
+        style="font-weight: bold;background: white;margin-top: 17px;" name="ctype{{i}}">
+      <mat-autocomplete #chartType="matAutocomplete">
+        <mat-option value="linechart_sel">Line Chart</mat-option>
+        <mat-option value="barchart_sel">Bar Chart</mat-option>
+        <mat-option value="piechart_sel">Pie Chart</mat-option>
+        <mat-option value="doughnutchart_sel">Doughnut Chart</mat-option>
+        <mat-option value="ganttchart_sel">Gantt Chart</mat-option>
+      </mat-autocomplete>
+      <!-- <mat-form-field>
         <mat-select [(value)]="selectedchart$" [(ngModel)]="selectedchart$"
           (selectionChange)="setchartpreferences('selectedchart',$event.value,i);set_domProperty($event);">
           <mat-option value="linechart_sel">Line Chart</mat-option>
@@ -19,222 +32,265 @@
           <mat-option value="doughnutchart_sel">Doughnut Chart</mat-option>
           <mat-option value="ganttchart_sel">Gantt Chart</mat-option>
         </mat-select>
-      </mat-form-field>
+      </mat-form-field> -->
     </div>
   </div>
 
-  <div fxLayout="column" id="xaxisname" class="table-column">
+  <div fxLayout="column" id="xaxisname" style="min-width: 167px;">
     <div class="table-title">X-Axis Name</div>
     <div class="table-cell" *ngFor="let xaxisname of xaxisnames; let i=index; trackBy:indexTracker">
-      <input matInput style="font-weight: bold;" (ngModelChange)="setchartpreferences('xaxisname',$event,i);"
-        [(ngModel)]="xaxisname">
+      <input matInput style="font-weight: bold;background: white;margin-top: 17px;"
+        (ngModelChange)="setchartpreferences('xaxisname',$event,i);" [(ngModel)]="xaxisname">
     </div>
   </div>
 
   <div fxLayout="column" id="xaxisdata" class="table-column">
-    <div class="table-title" matTooltipPosition="above" matTooltip="X-Axis Dataset">Dataset</div>
+    <div class="table-title" matTooltipPosition="above" matTooltip="X-Axis Dataset">Data Column</div>
     <div class="table-cell" *ngFor="let xaxis of xaxisdata; let i=index; trackBy:indexTracker">
-      <mat-form-field style="width:100%">
-        <mat-select placeholder="Select X-axis Dataset"
-          (selectionChange)="setchartpreferences('xaxisdata',$event.value,i);" [(value)]="xaxis">
+      <input type="text" matInput [matAutocomplete]="xdata" (change)="setchartpreferences('xaxisdata',$event.value,i);"
+        [(ngModel)]="xaxis" style="font-weight: bold;background: white;margin-top: 17px;" name="xData{{i}}">
+      <mat-autocomplete #xdata="matAutocomplete">
+        <mat-option style="text-align:center;" *ngFor="let items of xaxis_datasets" value="{{items}}">
+          {{items}} </mat-option>
+      </mat-autocomplete>
+      <!-- <mat-form-field style="width:100%">
+        <mat-select (selectionChange)="setchartpreferences('xaxisdata',$event.value,i);" [(value)]="xaxis">
           <mat-option style="text-align:center;" *ngFor="let items of xaxis_datasets" value="{{items}}">
             {{items}} </mat-option>
         </mat-select>
-      </mat-form-field>
+      </mat-form-field> -->
     </div>
   </div>
-  <div fxLayout="column" id="UoM_x" class="table-column">
-    <div class="table-title" matTooltipPosition="above" matTooltip="Unit of Measure (x-axis)">UoM</div>
+  <div fxLayout="column" id="UoM_x" style="min-width:100px">
+    <div class="table-title" matTooltipPosition="above" matTooltip="Unit of Measure (x-axis)">Unit</div>
     <div class="table-cell" *ngFor="let unitx of UoM_x; let i=index; trackBy:indexTracker">
-      <mat-form-field style="width:100%">
-        <mat-select placeholder="Select Unit of measure "
+      <input type="text" matInput [matAutocomplete]="xunit" (change)="setchartpreferences('UoM_x',$event.value,i);"
+        [(ngModel)]="unitx" style="font-weight: bold;background: white;margin-top: 17px;" name="xUnit{{i}}">
+      <mat-autocomplete #xunit="matAutocomplete">
+        <mat-option *ngFor="let option of yaxiscallbacks" value="{{option}}">
+          {{option}}
+        </mat-option>
+      </mat-autocomplete>
+      <!-- <mat-form-field style="width:100%">
+        <mat-select style="font-weight: bold;background: white;margin-top: 17px;"
           (selectionChange)="setchartpreferences('UoM_x',$event.value,i);" [(value)]="unitx">
           <mat-option *ngFor="let option of yaxiscallbacks" value="{{option}}">
             {{option}}
           </mat-option>
         </mat-select>
-      </mat-form-field>
+      </mat-form-field> -->
     </div>
   </div>
 
-  <div fxLayout="column" id="SoM_x" class="table-column">
-    <div class="table-title" matTooltipPosition="above" matTooltip="Scale of Measure (x-axis)">SoM</div>
+  <div fxLayout="column" id="SoM_x" style="min-width: 100px;">
+    <div class="table-title" matTooltipPosition="above" matTooltip="Scale of Measure (x-axis)">Scale</div>
     <div class="table-cell" *ngFor="let scalex of SoM_x; let i = index; trackBy:indexTracker">
-      <mat-form-field style="width:100%">
-        <input type="text" placeholder="Select Scale of measure" matInput [matAutocomplete]="auto1"
-          (ngModelChange)="setchartpreferences('SoM_x',$event,i);" [(ngModel)]="scalex" name="mySoM_x{{i}}">
-        <mat-autocomplete #auto1="matAutocomplete">
-          <mat-option value="10"> 10 </mat-option>
-          <mat-option value="100"> 100 </mat-option>
-          <mat-option value="1000"> 1000 </mat-option>
-          <mat-option value="10000"> 10000 </mat-option>
-          <mat-option value="100000"> 100000 </mat-option>
-          <mat-option value="1000000"> Millions </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
+      <!-- <mat-form-field style="width:100%"> -->
+      <input type="text" matInput [matAutocomplete]="auto1"
+        style="font-weight: bold;background: white;margin-top: 17px;"
+        (ngModelChange)="setchartpreferences('SoM_x',$event,i);" [(ngModel)]="scalex" name="mySoM_x{{i}}">
+      <mat-autocomplete #auto1="matAutocomplete">
+        <mat-option value="10"> 10 </mat-option>
+        <mat-option value="100"> 100 </mat-option>
+        <mat-option value="1000"> 1000 </mat-option>
+        <mat-option value="10000"> 10000 </mat-option>
+        <mat-option value="100000"> 100000 </mat-option>
+        <mat-option value="1000000"> Millions </mat-option>
+      </mat-autocomplete>
+      <!-- </mat-form-field> -->
     </div>
   </div>
-  <div fxLayout="column" id="xaxisstepsize" class="table-column">
+  <div fxLayout="column" id="xaxisstepsize" style="min-width: 100px;">
     <div class="table-title" matTooltipPosition="above" matTooltip="X-step size">Step</div>
     <div class="table-cell" *ngFor="let xstep of xaxisstepSize; let i=index; trackBy:indexTracker">
-      <mat-form-field>
-        <input matInput type="number" (ngModelChange)="setchartpreferences('xaxisstepsize',$event,i);"
-          placeholder="Select X-Step Size" min=0 [(ngModel)]="xstep">
-      </mat-form-field>
+      <!-- <mat-form-field> -->
+      <input matInput type="number" style="font-weight: bold;background: white;margin-top: 17px;"
+        (ngModelChange)="setchartpreferences('xaxisstepsize',$event,i);" min=0 [(ngModel)]="xstep">
+      <!-- </mat-form-field> -->
     </div>
   </div>
-  <div fxLayout="column" id="yaxisname" class="table-column">
+  <div fxLayout="column" id="yaxisname" style="min-width: 167px;">
     <div class="table-title">Y-Axis Name</div>
     <div class="table-cell" *ngFor="let yaxisname of yaxisnames; let i=index; trackBy:indexTracker">
-      <input matInput style="font-weight: bold;" (ngModelChange)="setchartpreferences('yaxisname',$event,i);"
-        [(ngModel)]="yaxisname">
+      <input matInput style="font-weight: bold;background: white;margin-top: 17px;"
+        (ngModelChange)="setchartpreferences('yaxisname',$event,i);" [(ngModel)]="yaxisname">
     </div>
   </div>
 
   <div fxLayout="column" id="yaxisdata" class="table-column">
-    <div class="table-title" matTooltipPosition="above" matTooltip="Y-Axis Dataset">Dataset</div>
+    <div class="table-title" matTooltipPosition="above" matTooltip="Y-Axis Dataset">Data Column</div>
     <div class="table-cell" *ngFor="let yaxis of yaxisdata; let i=index; trackBy:indexTracker">
-      <mat-form-field style="width:100%">
-        <mat-select placeholder="Select Y-axis Dataset"
-          (selectionChange)="setchartpreferences('yaxisdata',$event.value,i);" [(value)]="yaxis">
+      <input type="text" matInput [matAutocomplete]="xdata" (change)="setchartpreferences('yaxisdata',$event.value,i);"
+        [(ngModel)]="yaxis" style="font-weight: bold;background: white;margin-top: 17px;" name="xData{{i}}">
+      <mat-autocomplete #xdata="matAutocomplete">
+        <mat-option style="text-align:center;" *ngFor="let items of yaxis_datasets" [value]="items">
+          {{items}} </mat-option>
+      </mat-autocomplete>
+      <!-- <mat-form-field style="width:100%">
+        <mat-select (selectionChange)="setchartpreferences('yaxisdata',$event.value,i);" [(value)]="yaxis">
           <mat-option style="text-align:center;" *ngFor="let items of yaxis_datasets" [value]="items">
             {{items}} </mat-option>
         </mat-select>
-      </mat-form-field>
+      </mat-form-field> -->
     </div>
   </div>
 
-  <div fxLayout="column" id="UoM_y" class="table-column">
-    <div class="table-title" matTooltipPosition="above" matTooltip="Unit of Measure (y-axis)">UoM </div>
+  <div fxLayout="column" id="UoM_y" style="min-width:100px">
+    <div class="table-title" matTooltipPosition="above" matTooltip="Unit of Measure (y-axis)">Unit </div>
     <div class="table-cell" *ngFor="let unity of UoM_y; let i=index; trackBy:indexTracker">
-      <mat-form-field style="width:100%">
-        <mat-select placeholder="Select Unit of measure"
-          (selectionChange)="setchartpreferences('UoM_y',$event.value,i);" [(value)]="unity">
+      <input type="text" matInput [matAutocomplete]="yunit" (change)="setchartpreferences('UoM_y',$event.value,i);"
+        [(ngModel)]="unity" style="font-weight: bold;background: white;margin-top: 17px;" name="yUnit{{i}}">
+      <mat-autocomplete #yunit="matAutocomplete">
+        <mat-option *ngFor="let option of yaxiscallbacks" value="{{option}}">
+          {{option}}
+        </mat-option>
+      </mat-autocomplete>
+      <!-- <mat-form-field style="width:100%">
+        <mat-select (selectionChange)="setchartpreferences('UoM_y',$event.value,i);" [(value)]="unity">
           <mat-option *ngFor="let option of yaxiscallbacks" value="{{option}}">
             {{option}}
           </mat-option>
         </mat-select>
-      </mat-form-field>
+      </mat-form-field> -->
     </div>
   </div>
 
-  <div fxLayout="column" id="SoM_y" class="table-column">
-    <div class="table-title" matTooltipPosition="above" matTooltip="Scale of Measure (y-axis)">SoM</div>
+  <div fxLayout="column" id="SoM_y" style="min-width: 100px;">
+    <div class="table-title" matTooltipPosition="above" matTooltip="Scale of Measure (y-axis)">Scale</div>
     <div class="table-cell" *ngFor="let scaley of SoM_y; let i = index; trackBy:indexTracker">
-      <mat-form-field style="width:100%">
-        <input type="text" placeholder="Select Scale of measure" matInput [matAutocomplete]="auto2"
-          (ngModelChange)="setchartpreferences('SoM_y',$event,i);" [(ngModel)]="scaley" name="mySoM_y{{i}}">
-        <mat-autocomplete #auto2="matAutocomplete">
-          <mat-option value="10"> 10 </mat-option>
-          <mat-option value="100"> 100 </mat-option>
-          <mat-option value="1000"> 1000 </mat-option>
-          <mat-option value="10000"> 10000 </mat-option>
-          <mat-option value="100000"> 100000 </mat-option>
-          <mat-option value="1000000"> Millions </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
+      <!-- <mat-form-field style="width:100%"> -->
+      <input type="text" matInput [matAutocomplete]="auto2" (ngModelChange)="setchartpreferences('SoM_y',$event,i);"
+        [(ngModel)]="scaley" style="font-weight: bold;background: white;margin-top: 17px;" name="mySoM_y{{i}}">
+      <mat-autocomplete #auto2="matAutocomplete" style="min-width: 79px;">
+        <mat-option value="10"> 10 </mat-option>
+        <mat-option value="100"> 100 </mat-option>
+        <mat-option value="1000"> 1000 </mat-option>
+        <mat-option value="10000"> 10000 </mat-option>
+        <mat-option value="100000"> 100000 </mat-option>
+        <mat-option value="1000000"> Millions </mat-option>
+      </mat-autocomplete>
+      <!-- </mat-form-field> -->
     </div>
   </div>
 
-  <div fxLayout="column" id="yaxisstepsize" class="table-column">
+  <div fxLayout="column" id="yaxisstepsize" style="min-width: 100px;">
     <div class="table-title" matTooltipPosition="above" matTooltip="Y-step size">Step</div>
     <div class="table-cell" *ngFor="let ystep of yaxisstepSize; let i=index; trackBy:indexTracker">
-      <mat-form-field>
-        <input matInput type="number" (ngModelChange)="setchartpreferences('yaxisstepsize',$event,i)"
-          placeholder="Select Y-Step Size" min=0 [(ngModel)]="ystep">
-      </mat-form-field>
+      <!-- <mat-form-field> -->
+      <input matInput type="number" style="font-weight: bold;background: white;margin-top: 17px;"
+        (ngModelChange)="setchartpreferences('yaxisstepsize',$event,i)" min=0 [(ngModel)]="ystep">
+      <!-- </mat-form-field> -->
     </div>
   </div>
 
-  <div fxLayout="column" id="yaxisautoskip" class="table-column">
-    <div class="table-title">Y-axis auto skip</div>
+  <div fxLayout="column" id="yaxisautoskip" style="min-width:100px">
+    <div class="table-title"> Auto Skip</div>
     <div class="table-cell" *ngFor="let yxs_askp of yaxisautoskip; let i=index; trackBy:indexTracker">
-      <mat-slide-toggle color="primary" [(ngModel)]="yxs_askp"
-        (ngModelChange)="setchartpreferences('yaxisautoskip',$event,i);">Y-Autoskip</mat-slide-toggle>
+      <mat-slide-toggle style="margin-top: 9px;" color="primary" [(ngModel)]="yxs_askp"
+        (ngModelChange)="setchartpreferences('yaxisautoskip',$event,i);"></mat-slide-toggle>
     </div>
   </div>
 
   <div fxLayout="column" id="annotations" class="table-column">
     <div class="table-title">Annotations</div>
     <div class="table-cell" *ngFor="let ann of annotation; let i=index; trackBy:indexTracker">
-      <mat-form-field style="width:100%">
-        <mat-select placeholder="Select Annotation"
-          (selectionChange)="setchartpreferences('annotation',$event.value,i);" [(value)]="ann">
+      <input type="text" matInput [matAutocomplete]="annotation"
+        (change)="setchartpreferences('annotation',$event.value,i);" [(ngModel)]="ann"
+        style="font-weight: bold;background: white;margin-top: 17px;" name="Ann{{i}}">
+      <mat-autocomplete #annotation="matAutocomplete">
+        <mat-option *ngFor="let option of yaxis_datasets" value="{{option}}">
+          {{option}}
+        </mat-option>
+      </mat-autocomplete>
+      <!-- <mat-form-field style="width:100%">
+        <mat-select (selectionChange)="setchartpreferences('annotation',$event.value,i);" [(value)]="ann">
           <mat-option *ngFor="let option of yaxis_datasets" value="{{option}}">
             {{option}}
           </mat-option>
         </mat-select>
-      </mat-form-field>
+      </mat-form-field> -->
     </div>
   </div>
-
-  <div fxLayout="column" id="gridlinewidth" class="table-column">
-    <div class="table-title">Grid Line Width</div>
+  <div fxLayout="column" id="chartTransparency" style="min-width: 100px;">
+    <div class="table-title">Transparency</div>
+    <div class="table-cell" *ngFor="let tranparent of chartTransparency; let i=index; trackBy:indexTracker">
+      <!-- <mat-form-field> -->
+      <input matInput type="number" style="font-weight: bold;background: white;margin-top: 17px;"
+        (change)="setchartpreferences('chartTransparency',$event,i);" min=0 max=100 [(ngModel)]="tranparent">
+      <!-- </mat-form-field> -->
+    </div>
+  </div>
+  <div fxLayout="column" id="gridlinewidth" style="min-width: 100px;">
+    <div class="table-title">Grid Width</div>
     <div class="table-cell" *ngFor="let gwidth of gridlinewidth; let i=index; trackBy:indexTracker">
-      <mat-form-field>
-        <input matInput type="number" (ngModelChange)="setchartpreferences('gridlinewidth',$event,i);"
-          placeholder="Select Grid line width" min=1 [(ngModel)]="gwidth">
-      </mat-form-field>
+      <!-- <mat-form-field> -->
+      <input matInput type="number" style="font-weight: bold;background: white;margin-top: 17px;"
+        (ngModelChange)="setchartpreferences('gridlinewidth',$event,i);" min=1 [(ngModel)]="gwidth">
+      <!-- </mat-form-field> -->
     </div>
   </div>
 
-  <div fxLayout="column" id="gridborder" class="table-column">
+  <div fxLayout="column" id="gridborder" style="min-width:100px">
     <div class="table-title">Grid Type</div>
     <div class="table-cell" *ngFor="let gborder of gridborder; let i=index; trackBy:indexTracker">
-      <mat-slide-toggle color="primary" [(ngModel)]="gborder"
-        (ngModelChange)="setchartpreferences('gridborder',$event,i);">Dashed Grid</mat-slide-toggle>
+      <mat-slide-toggle style="margin-top: 9px;" color="primary" [(ngModel)]="gborder"
+        (ngModelChange)="setchartpreferences('gridborder',$event,i);"></mat-slide-toggle>
     </div>
   </div>
 
-  <div fxLayout="column" id="backgroundcolor" class="table-column">
-    <div class="table-title">Background Color</div>
+  <div fxLayout="column" id="backgroundcolor" style="min-width: 100px;">
+    <div class="table-title">BG Color</div>
     <div class="table-cell" *ngFor="let bgcolor of backgroundcolor; let i=index; trackBy:indexTracker">
-      <div fxLayout="row" class="mat-cell-div">
-        <div fxFlex="80">Background Color</div>
-        <div fxFlex="20">
-          <input class="colorselector" [(value)]="bgcolor"
-            (colorPickerChange)="setchartpreferences('backgroundcolor',$event,i);" [style.background]="bgcolor"
-            [(colorPicker)]="bgcolor" [cpAlphaChannel]="'always'" [cpOutputFormat]="'rgba'" [cpOKButton]="true"
-            [cpCancelButton]="true" [cpSaveClickOutside]="true" [cpOKButtonClass]="'btn btn-primary btn-xs'"
-            [cpCancelButtonClass]="'btn btn-primary btn-xs'" />
-        </div>
-      </div>
+      <!-- <div fxLayout="row" class="mat-cell-div"> -->
+      <!-- <div fxFlex="80">Background Color</div> -->
+      <!-- <div fxFlex="20"> -->
+      <input class="colorselector" [(value)]="bgcolor" style="margin-top: 9px;"
+        (colorPickerChange)="setchartpreferences('backgroundcolor',$event,i);" [style.background]="bgcolor"
+        [(colorPicker)]="bgcolor" [cpAlphaChannel]="'always'" [cpOutputFormat]="'rgba'" [cpOKButton]="true"
+        [cpCancelButton]="true" [cpSaveClickOutside]="true" [cpOKButtonClass]="'btn btn-primary btn-xs'"
+        [cpCancelButtonClass]="'btn btn-primary btn-xs'" />
+      <!-- </div> -->
+      <!-- </div> -->
     </div>
   </div>
 
-  <div fxLayout="column" id="bordercolor" class="table-column">
-    <div class="table-title">Border Color</div>
+  <div fxLayout="column" id="bordercolor" style="min-width:100px">
+    <div class="table-title">Border </div>
     <div class="table-cell" *ngFor="let bdrcolor of bordercolor; let i=index; trackBy:indexTracker">
-      <div fxLayout="row" class="mat-cell-div">
-        <div fxFlex="80">Border Color</div>
-        <div fxFlex="20">
-          <input class="colorselector" [(value)]="bdrcolor" [style.background]="bdrcolor"
-            (colorPickerChange)="setchartpreferences('bordercolor',$event,i);" [(colorPicker)]="bdrcolor"
-            [cpAlphaChannel]="'always'" [cpOutputFormat]="'rgba'" [cpOKButton]="true" [cpCancelButton]="true"
-            [cpSaveClickOutside]="true" [cpOKButtonClass]="'btn btn-primary btn-xs'"
-            [cpCancelButtonClass]="'btn btn-primary btn-xs'" />
-        </div>
-      </div>
+      <!-- <div fxLayout="row" class="mat-cell-div"> -->
+      <!-- <div fxFlex="80">Border Color</div> -->
+      <!-- <div fxFlex="20"> -->
+      <input class="colorselector" [(value)]="bdrcolor" style="margin-top: 9px;" [style.background]="bdrcolor"
+        (colorPickerChange)="setchartpreferences('bordercolor',$event,i);" [(colorPicker)]="bdrcolor"
+        [cpAlphaChannel]="'always'" [cpOutputFormat]="'rgba'" [cpOKButton]="true" [cpCancelButton]="true"
+        [cpSaveClickOutside]="true" [cpOKButtonClass]="'btn btn-primary btn-xs'"
+        [cpCancelButtonClass]="'btn btn-primary btn-xs'" />
+      <!-- </div> -->
+      <!-- </div> -->
     </div>
   </div>
 
-  <div fxLayout="column" id="fillbackground" class="table-column">
-    <div class="table-title">Fill Background</div>
+  <div fxLayout="column" id="fillbackground" style="min-width:100px">
+    <div class="table-title">Fill BG</div>
     <div class="table-cell" *ngFor="let fbg of fillbackground; let i=index; trackBy:indexTracker">
-      <div fxLayout="row" class="mat-cell-div">
-        <div fxFlex="80">Fill Background</div>
-        <div fxFlex="20">
-          <mat-slide-toggle class="example-margin" color="primary"
-            (ngModelChange)="setchartpreferences('fillbackground',$event,i);" [(ngModel)]="fbg"></mat-slide-toggle>
-        </div>
-      </div>
+      <!-- <div fxFlex="80">Fill Background</div> -->
+      <mat-slide-toggle style="margin-top: 9px;" class="example-margin" color="primary"
+        (ngModelChange)="setchartpreferences('fillbackground',$event,i);" [(ngModel)]="fbg"></mat-slide-toggle>
     </div>
   </div>
 
-  <div fxLayout="column" id="linetension" class="table-column">
+  <div fxLayout="column" id="linetension" style="min-width: 100px;">
     <div class="table-title">Line Tension</div>
     <div class="table-cell" *ngFor="let lten of linetension; let i=index; trackBy:indexTracker">
-      <div fxLayout="column" style="text-align:center" class="mat-cell-div">
+      <input type="text" matInput [matAutocomplete]="lineauto"
+        (change)="setchartpreferences('linetension',$event.value,i);" [(ngModel)]="lten"
+        style="font-weight: bold;background: white;margin-top: 17px;" name="lineauto{{i}}">
+      <mat-autocomplete #lineauto="matAutocomplete">
+        <mat-option value="none"> None </mat-option>
+        <mat-option value="mild"> Mild </mat-option>
+        <mat-option value="full"> Full </mat-option>
+      </mat-autocomplete>
+      <!-- <div fxLayout="column" style="text-align:center" class="mat-cell-div">
         <div>
           <mat-button-toggle-group [value]="lten">
             <mat-button-toggle (change)="setchartpreferences('linetension',$event.value,i);" value="none">None
@@ -245,14 +301,22 @@
             </mat-button-toggle>
           </mat-button-toggle-group>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 
-  <div fxLayout="column" id="pointsize" class="table-column">
+  <div fxLayout="column" id="pointsize" style="min-width:100px">
     <div class="table-title">Point Size</div>
     <div class="table-cell" *ngFor="let prad of pointradius; let i=index; trackBy:indexTracker">
-      <div fxLayout="column" style="text-align:center" class="mat-cell-div">
+      <input type="text" matInput [matAutocomplete]="pointauto"
+        (change)="setchartpreferences('pointsize',$event.value,i);" [(ngModel)]="prad"
+        style="font-weight: bold;background: white;margin-top: 17px;" name="pointauto{{i}}">
+      <mat-autocomplete #pointauto="matAutocomplete">
+        <mat-option value="small"> Small </mat-option>
+        <mat-option value="normal"> Normal </mat-option>
+        <mat-option value="large"> Large </mat-option>
+      </mat-autocomplete>
+      <!-- <div fxLayout="column" style="text-align:center" class="mat-cell-div">
         <div>
           <mat-button-toggle-group [value]="prad">
             <mat-button-toggle (change)="setchartpreferences('pointsize',$event.value,i);" value="small">Small
@@ -263,16 +327,33 @@
             </mat-button-toggle>
           </mat-button-toggle-group>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 
   <div fxLayout="column" id="animations" class="table-column">
     <div class="table-title">Animations</div>
     <div class="table-cell" *ngFor="let anim of animations; let i=index; trackBy:indexTracker">
-      <mat-form-field style="width:100%">
-        <mat-select placeholder="Select Animations"
-          (selectionChange)="setchartpreferences('animations',$event.value,i);" [(value)]="anim">
+      <input type="text" matInput [matAutocomplete]="animationauto"
+        (change)="setchartpreferences('animations',$event.value,i);" [(ngModel)]="anim"
+        style="font-weight: bold;background: white;margin-top: 17px;" name="animateauto{{i}}">
+      <mat-autocomplete #animationauto="matAutocomplete">
+        <mat-option style="text-align:center;" value="linear"> linear </mat-option>
+        <mat-option style="text-align:center;" value="easeInOutQuad"> easeInOutQuad </mat-option>
+        <mat-option style="text-align:center;" value="easeInCubic"> easeInCubic </mat-option>
+        <mat-option style="text-align:center;" value="easeOutCubic"> easeOutCubic </mat-option>
+        <mat-option style="text-align:center;" value="easeInQuad"> easeInQuad </mat-option>
+        <mat-option style="text-align:center;" value="easeOutQuad"> easeOutQuad </mat-option>
+        <mat-option style="text-align:center;" value="easeInQuart"> easeInQuart </mat-option>
+        <mat-option style="text-align:center;" value="easeOutQuart"> easeOutQuart </mat-option>
+        <mat-option style="text-align:center;" value="easeInSine"> easeInSine </mat-option>
+        <mat-option style="text-align:center;" value="easeOutSine"> easeOutSine </mat-option>
+        <mat-option style="text-align:center;" value="easeInElastic"> easeInElastic </mat-option>
+        <mat-option style="text-align:center;" value="easeInBack"> easeInBack </mat-option>
+        <mat-option style="text-align:center;" value="easeOutBack"> easeOutBack </mat-option>
+      </mat-autocomplete>
+      <!-- <mat-form-field style="width:100%">
+        <mat-select (selectionChange)="setchartpreferences('animations',$event.value,i);" [(value)]="anim">
           <mat-option style="text-align:center;" value="linear"> linear </mat-option>
           <mat-option style="text-align:center;" value="easeInOutQuad"> easeInOutQuad </mat-option>
           <mat-option style="text-align:center;" value="easeInCubic"> easeInCubic </mat-option>
@@ -287,16 +368,45 @@
           <mat-option style="text-align:center;" value="easeInBack"> easeInBack </mat-option>
           <mat-option style="text-align:center;" value="easeOutBack"> easeOutBack </mat-option>
         </mat-select>
-      </mat-form-field>
+      </mat-form-field> -->
     </div>
   </div>
 
-  <div fxLayout="column" id="pointstyle" class="table-column">
+  <div fxLayout="column" id="pointstyle" style="min-width:100px">
     <div class="table-title">Point Style</div>
     <div class="table-cell" *ngFor="let pstyle of pointstyle; let i=index; trackBy:indexTracker">
-      <mat-form-field style="width:100%;cursor: pointer;">
-        <mat-select placeholder="Select Point Style" [(value)]="pstyle"
-          (selectionChange)="setchartpreferences('pointstyle',$event.value,i);" class="autosel">
+      <input type="text" matInput [matAutocomplete]="pStyle"
+        (change)="setchartpreferences('pointstyle',$event.value,i);" [(ngModel)]="pstyle"
+        style="font-weight: bold;background: white;margin-top: 17px;" name="pointStyle{{i}}">
+      <mat-autocomplete #pStyle="matAutocomplete" class="autosel">
+        <mat-option style="text-align:center;" value="circle">
+          <mat-icon>fiber_manual_record</mat-icon> Circle
+        </mat-option>
+        <mat-option style="text-align:center;" value="triangle">
+          <mat-icon>change_history</mat-icon> Triangle
+        </mat-option>
+        <mat-option style="text-align:center;" value="rect">
+          <mat-icon>crop_7_5</mat-icon> Rectangle
+        </mat-option>
+        <mat-option style="text-align:center;" value="rectRounded">
+          <mat-icon>check_box_outline_blank</mat-icon> RectRounded
+        </mat-option>
+        <mat-option style="text-align:center;" value="rectRot">
+          <mat-icon>layers</mat-icon>RectRot
+        </mat-option>
+        <mat-option style="text-align:center;" value="cross">
+          <mat-icon>add</mat-icon> Cross
+        </mat-option>
+        <mat-option style="text-align:center;" value="crossRot">
+          <mat-icon>clear</mat-icon> CrossRot
+        </mat-option>
+        <mat-option style="text-align:center;" value="star">
+          <mat-icon>ac_unit</mat-icon> Star
+        </mat-option>
+      </mat-autocomplete>
+      <!-- <mat-form-field style="width:100%;cursor: pointer;">
+        <mat-select [(value)]="pstyle" (selectionChange)="setchartpreferences('pointstyle',$event.value,i);"
+          class="autosel">
           <mat-option style="text-align:center;" value="circle">
             <mat-icon>fiber_manual_record</mat-icon> Circle
           </mat-option>
@@ -322,16 +432,26 @@
             <mat-icon>ac_unit</mat-icon> Star
           </mat-option>
         </mat-select>
-      </mat-form-field>
+      </mat-form-field> -->
     </div>
   </div>
 
-  <div fxLayout="column" id="linestyle" class="table-column">
+  <div fxLayout="column" id="linestyle" style="min-width:100px">
     <div class="table-title">Line Style</div>
     <div class="table-cell" *ngFor="let lstyle of linestyle; let i=index; trackBy:indexTracker">
-      <mat-form-field style="width:100%;cursor: pointer;">
-        <mat-select placeholder="Select Line Style" [(value)]="lstyle"
-          (selectionChange)="setchartpreferences('linestyle',$event.value,i);" class="autosel">
+      <input type="text" matInput [matAutocomplete]="lStyle" (change)="setchartpreferences('linestyle',$event.value,i);"
+        [(ngModel)]="lstyle" style="font-weight: bold;background: white;margin-top: 17px;" name="linestyle{{i}}">
+      <mat-autocomplete #lStyle="matAutocomplete" class="autosel">
+        <mat-option style="text-align:center;" value="solid">
+          <mat-icon>remove</mat-icon>Solid
+        </mat-option>
+        <mat-option style="text-align:center;" value="dashed">
+          <mat-icon>more_horiz</mat-icon>Dashed
+        </mat-option>
+      </mat-autocomplete>
+      <!-- <mat-form-field style="width:100%;cursor: pointer;">
+        <mat-select [(value)]="lstyle" (selectionChange)="setchartpreferences('linestyle',$event.value,i);"
+          class="autosel">
           <mat-option style="text-align:center;" value="solid">
             <mat-icon>remove</mat-icon>Solid
           </mat-option>
@@ -339,7 +459,7 @@
             <mat-icon>more_horiz</mat-icon>Dashed
           </mat-option>
         </mat-select>
-      </mat-form-field>
+      </mat-form-field> -->
     </div>
   </div>
 
