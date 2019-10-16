@@ -25,3 +25,41 @@
 .tree-bg-color {
   background-color: #ededed;
 }
+.application-open {
+  height: 20px;
+  width: 145px;
+  position: absolute;
+  left: -63px;
+  top: 80px;
+  opacity: 0.8;
+  background: #ededed;
+  padding: 0px 18px;
+  border: 1px solid rgba(0,0,0,.12);
+  border-top: none;
+  display: block;
+  transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg); 
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  color: initial;
+  text-decoration: none;
+}
+
+@media screen and (max-width: 767px) {
+    .application-open  {
+      height: 20px;
+      width: 145px;
+      background: #ededed;
+      opacity: 0.8;
+      padding: 0px 18px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-top: none;
+      display: block;
+      position: relative;
+      transition: none;
+      -webkit-transform: none;
+      top: 0px;
+      left: 0px;
+  }
+}

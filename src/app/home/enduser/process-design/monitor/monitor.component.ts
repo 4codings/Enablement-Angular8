@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { MatDialog } from '@angular/material';
 import { InputOutputElementComponent } from 'src/app/shared/components/input-output-element/input-output-element.component';
+import { DeviceDetectorService } from 'ngx-device-detector';
 export interface Food {
   value: string;
   viewValue: string;
@@ -66,8 +67,13 @@ export class MonitorComponent implements OnInit, OnDestroy {
   selectedElementInput: any;
   selectedElementOutput: any;
   elementClick = false;
+  public expandPanel: boolean = true;
+  public isMobile: boolean = false;
+  public isTablet: boolean = false;
+  public opened: boolean = false;
   constructor(public http: Http, public toastrService: ToastrService, public optionalService: OptionalValuesService,
     public httpClient: HttpClient, public datePipe: DatePipe,
+    public deviceService: DeviceDetectorService,
     public apiService: ApiService, public dialog: MatDialog) {
     this.selectedAppProcess$ = this.optionalService.selectedAppPrcoessValue.subscribe(res => {
       if (res) {
@@ -79,6 +85,9 @@ export class MonitorComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.expandPanel = this.deviceService.isDesktop();
+    this.isMobile = this.deviceService.isMobile();
+    this.isTablet = this.deviceService.isTablet();
     this.optionalService.selecetedProcessTxnValue.next(null);
     this.apiUrl = this.apiService.endPoints.secure;
     this.apiJSONUrl = this.apiService.endPoints.securedJSON;
