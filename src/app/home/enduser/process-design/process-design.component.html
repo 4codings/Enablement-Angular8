@@ -5,11 +5,11 @@
       [class.fa-folder]="item.collapsed" [class.fa-folder-open]="!item.collapsed"></i>
     <div class="form-check" *ngIf="item.text!=='NULL'">
       <label *ngIf="item.children" class="form-check-label parent-color text-center"
-        [ngClass]="item.value == selectedApp?'active-menu':''" (click)="onTitleClick(item, true)">
+        [ngClass]="{'active-menu': item.value == selectedApp, 'text-center': expandPanel}" (click)="onTitleClick(item, true)">
         {{item.text}}
       </label>
       <label *ngIf="!item.children" class="form-check-label child-color text-center"
-        [ngClass]="(item.text == selectedProcess && item.value == selectedApp)?'active-menu':''"
+        [ngClass]="{'active-menu': (item.text == selectedProcess && item.value == selectedApp), 'text-center': expandPanel}"
         (click)="onTitleClick(item, true)">
         {{item.text}}
       </label>
