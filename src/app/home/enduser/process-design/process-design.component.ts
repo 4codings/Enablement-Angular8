@@ -283,7 +283,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   elementExistError = false;
   closePanelOnSchedule: boolean = true;
   selectedAppProcess$: Subscription;
-
+  showProcessMobile: boolean = false;
   constructor(
     private httpClient: HttpClient,
     private http: Http,
@@ -1320,6 +1320,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.selectedItem = item;
     if (this.isMobile || this.isTablet) {
       this.treesidenav.toggle();
+      this.showProcessMobile = true;
     }
   }
   onParentMenuItemClick(actionValue, parentValue, selectedItem?) {

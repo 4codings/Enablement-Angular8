@@ -17,7 +17,7 @@
   </div>
 </ng-template>
 <div fxLayout="row" *ngIf="isMobile">
-    <div fxFlex="130px" class="toggle">
+    <div fxFlex="130px" class="toggle" *ngIf="showProcessMobile">
         <a href="javascript:void(0)" (click)="treesidenav.toggle();" class="application-open">
           Select a Process
         </a>
