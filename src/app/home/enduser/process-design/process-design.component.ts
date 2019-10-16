@@ -283,7 +283,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   elementExistError = false;
   closePanelOnSchedule: boolean = true;
   selectedAppProcess$: Subscription;
-
+  showProcessMobile: boolean = false;
   constructor(
     private httpClient: HttpClient,
     private http: Http,
@@ -671,8 +671,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       let element = elementRegistry.get(this.oldStateId);
       let modeling = this.modeler.get('modeling');
       modeling.updateProperties(element, {
-          name: name,
-        }, error => this.handleError(error));
+        name: name,
+      }, error => this.handleError(error));
     }
     this.commonInputChangeFunction();
   }
@@ -714,7 +714,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.commonInputChangeFunction();
   }
 
-  commonInputChangeFunction(){
+  commonInputChangeFunction() {
     if (this.isApp) {
       if (this.appProcessList.length) {
         let i = this.appProcessList.findIndex(v => v.app === this.generalId);
@@ -1112,7 +1112,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.isApp = true;
     this.isProcess = false;
     this.isService = false;
-    this.showRightIcon = true;
+    // this.showRightIcon = true;
     this.opened = true;
     this.showAllTabFlag = false;
     this.showCondtionType = false;
@@ -1257,7 +1257,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.isProcess = true;
     this.isService = false;
     this.showRightIcon = false;
-    if(parentTitleClick)
+    if (parentTitleClick)
       this.opened = false;
     this.editProcessFlag = false;
     this.V_OLD_PRCS_CD = item.text;
@@ -1318,6 +1318,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     //   this.treesidenav.opened = false;
     // }
     this.selectedItem = item;
+    if (this.isMobile || this.isTablet) {
+      this.treesidenav.toggle();
+      this.showProcessMobile = true;
+    }
   }
   onParentMenuItemClick(actionValue, parentValue, selectedItem?) {
     this.selectedApp = parentValue;

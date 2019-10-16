@@ -5,11 +5,11 @@
       [class.fa-folder]="item.collapsed" [class.fa-folder-open]="!item.collapsed"></i>
     <div class="form-check" *ngIf="item.text!=='NULL'">
       <label *ngIf="item.children" class="form-check-label parent-color text-center"
-        [ngClass]="item.value == selectedApp?'active-menu':''" (click)="onTitleClick(item, true)">
+        [ngClass]="{'active-menu': item.value == selectedApp, 'text-center': expandPanel}" (click)="onTitleClick(item, true)">
         {{item.text}}
       </label>
       <label *ngIf="!item.children" class="form-check-label child-color text-center"
-        [ngClass]="(item.text == selectedProcess && item.value == selectedApp)?'active-menu':''"
+        [ngClass]="{'active-menu': (item.text == selectedProcess && item.value == selectedApp), 'text-center': expandPanel}"
         (click)="onTitleClick(item, true)">
         {{item.text}}
       </label>
@@ -17,15 +17,15 @@
   </div>
 </ng-template>
 <div fxLayout="row" *ngIf="isMobile">
-    <div fxFlex="100px" class="toggle">
+    <div fxFlex="130px" class="toggle" *ngIf="showProcessMobile">
         <a href="javascript:void(0)" (click)="treesidenav.toggle();" class="application-open">
-          Application
+          Select a Process
         </a>
     </div>
     <div fxFlex="100px" class="toggle">
         <a *ngIf="showRightIcon" class="properties-open" href="javascript:void(0)" (click)="changeTrigger(opened);sidenav.toggle()">
           <!--<mat-icon aria-hidden="false">{{opened ? 'arrow_right' : 'arrow_left'}}</mat-icon>matTooltip="{{opened ? 'Hide properties' : 'Show properties'}}"-->
-          Properties
+          Configure
         </a>
       </div>
 </div>
@@ -86,7 +86,7 @@
         <div fxLayout="row" style="padding-bottom: 2px;">
           <div fxFlex="20px" class="toggle" *ngIf="expandPanel">
               <a href="javascript:void(0)" (click)="treesidenav.toggle();" class="application-open">
-                Application
+                Select a Process
               </a>
           </div>
           <div fxFlex="100" fxLayout="column">
@@ -462,7 +462,7 @@
           <div fxFlex="2" class="toggle">
             <a *ngIf="showRightIcon && expandPanel" class="properties-open" href="javascript:void(0)" (click)="changeTrigger(opened);sidenav.toggle()">
               <!--<mat-icon aria-hidden="false">{{opened ? 'arrow_right' : 'arrow_left'}}</mat-icon>matTooltip="{{opened ? 'Hide properties' : 'Show properties'}}"-->
-              Properties
+              Configure
             </a>
           </div>
         </div>

@@ -60,10 +60,11 @@
     <!-- Mobile View -->
     <div class="w-100" fxHide="true" fxShow.xs="true">
       <mat-nav-list>
-        <div class="text-center">
+        <div fxLayout="row" fxLayoutAlign="center center">
+        <div>
           <img [src]="imageUrl" onerror="this.src='/assets/logo.png'" alt="" class="logo-img" />
         </div>
-        <div class="" style="display:flex;">
+        <div>
           <!-- <button mat-icon-button matTooltip="My Tasks" matTooltipPosition='above' *ngIf="roll_myTask"><a
               [routerLink]="['Mytask']" skipLocationChange routerLinkActive="active" class="nav-link">
               <mat-icon class="iconmod shwmaticon">work</mat-icon>
@@ -102,7 +103,7 @@
             <app-header [selectedProfile]="'End_User'"></app-header>
           </div>
         </div>
-
+        </div>
         <!-- <mat-menu #menu="matMenu" xPosition="before">
           <app-header></app-header>
         </mat-menu> -->

@@ -783,10 +783,10 @@ mat-header-row {
 }
 .application-open {
     height: 20px;
-    width: 88px;
+    width: 145px;
     position: absolute;
-    left: -35px;
-    top: 48px;
+    left: -63px;
+    top: 80px;
     opacity: 0.8;
     background: #ededed;
     padding: 0px 10px;
@@ -805,9 +805,18 @@ mat-header-row {
 }
 
 @media screen and (max-width: 767px) {
-    :host ::ng-deep .mat-drawer-container, :host ::ng-deep .mat-drawer-inner-container {
+    .cdk-overlay-connected-position-bounding-box {
+        left: 80px !important;
+    }
+    :host ::ng-deep .mat-drawer-container {
         overflow: visible !important;
-        height: 700px;
+        height: 600px;
+    }
+    :host ::ng-deep .mat-drawer-inner-container {
+        overflow: auto !important;
+    }
+    .application-open  {
+        width: 128px !important;
     }
     .properties-open, .application-open  {
         height: 20px;

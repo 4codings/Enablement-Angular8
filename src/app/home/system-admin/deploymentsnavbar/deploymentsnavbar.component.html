@@ -6,13 +6,14 @@
     <!-- For Mobile Screen -->
     <div class="w-100" fxHide="true" fxShow.xs="true">
       <mat-nav-list>
-        <div class="text-center">
+        <div fxLayout="row" fxLayoutAlign="center center">
+        <div>
           <img [src]="imageUrl" onerror="this.src='/assets/logo.png'" alt="" class="logo-img" />
         </div>
-        <div flex fxLayout="row" class="text-center">
+        <div flex fxLayout="row">
           <span>{{headerTxt}}</span>
         </div>
-        <div class="" style="display:flex;">
+        <div>
           <!-- <button matTooltip="Status" matTooltipPosition='below' mat-icon-button *ngIf="role_status">
                     <a [routerLink]="['AppDeploy']" routerLinkActive="active" skipLocationChange class="nav-link">
                         <mat-icon class="iconmod shwmaticon">search</mat-icon>
@@ -73,6 +74,7 @@
           <div class="profile-btn">
             <app-header [selectedProfile]="'System_Admin'"></app-header>
           </div>
+        </div>
         </div>
         <!-- <mat-menu #menu="matMenu" xPosition="before">
                 <app-header></app-header>
