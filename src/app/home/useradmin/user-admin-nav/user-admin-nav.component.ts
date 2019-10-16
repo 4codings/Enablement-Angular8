@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { RollserviceService } from '../../../services/rollservice.service';
-import { filter } from 'rxjs/operators';
 import { NavigationEnd, Router } from '@angular/router';
+import { ApiService } from '../../../service/api/api.service';
 
 @Component({
   selector: 'app-user-admin-nav',
@@ -31,7 +31,8 @@ export class UserAdminNavComponent implements OnInit {
   constructor(
     private rollserviceService: RollserviceService,
     private httpClient: HttpClient,
-    private router: Router
+    private router: Router,
+    private apiService:ApiService
   ) {
     this.isCollapsed = true;
   }
@@ -39,7 +40,13 @@ export class UserAdminNavComponent implements OnInit {
   ngOnInit() {
     this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
     this.V_USR_NM = JSON.parse(sessionStorage.getItem('u')).USR_NM;
-    this.imageUrl = " https://enablement.us/" + this.V_SRC_CD + "/logo";
+    this.apiService.imageLogoUrlSubject.subscribe(data => {
+      if(data == '') {
+        this.imageUrl = `https://enablement.us/${JSON.parse(sessionStorage.getItem('u')).SRC_CD}/logo`;
+      } else {
+        this.imageUrl = data;
+      }
+    });
     this.rollserviceService.getRollCd().then((res) => {
       this.httpClient.get('../../../../assets/control-variable.json').subscribe(cvres => {
         this.ctrl_variables = cvres;
