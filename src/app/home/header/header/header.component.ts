@@ -118,7 +118,7 @@ export class HeaderComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       if(result) {
-        this.imageUrlSubject.next("https://enablement.us/" + this.userName + "/pic"); 
+        this.imageUrlSubject.next("https://enablement.us/" + this.userName + "/pic" + "?" + (new Date()).getTime()); 
       }
     });
   }
@@ -133,7 +133,7 @@ export class HeaderComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       if(result) {
-        this.apiService.imageLogoUrlSubject.next("https://enablement.us/" + this.agency + "/logo"); 
+        this.apiService.imageLogoUrlSubject.next("https://enablement.us/" + this.agency + "/logo" + "?" + (new Date()).getTime()); 
       }
     });
   }
