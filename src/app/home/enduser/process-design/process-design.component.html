@@ -5,7 +5,8 @@
       [class.fa-folder]="item.collapsed" [class.fa-folder-open]="!item.collapsed"></i>
     <div class="form-check" *ngIf="item.text!=='NULL'">
       <label *ngIf="item.children" class="form-check-label parent-color text-center"
-        [ngClass]="{'active-menu': item.value == selectedApp, 'text-center': expandPanel}" (click)="onTitleClick(item, true)">
+        [ngClass]="{'active-menu': item.value == selectedApp, 'text-center': expandPanel}"
+        (click)="onTitleClick(item, true)">
         {{item.text}}
       </label>
       <label *ngIf="!item.children" class="form-check-label child-color text-center"
@@ -17,21 +18,23 @@
   </div>
 </ng-template>
 <div fxLayout="row" *ngIf="isMobile">
-    <div fxFlex="130px" class="toggle" *ngIf="showProcessMobile">
-        <a href="javascript:void(0)" (click)="treesidenav.toggle();" class="application-open">
-          Select a Process
-        </a>
-    </div>
-    <div fxFlex="100px" class="toggle">
-        <a *ngIf="showRightIcon" class="properties-open" href="javascript:void(0)" (click)="changeTrigger(opened);sidenav.toggle()">
-          <!--<mat-icon aria-hidden="false">{{opened ? 'arrow_right' : 'arrow_left'}}</mat-icon>matTooltip="{{opened ? 'Hide properties' : 'Show properties'}}"-->
-          Configure
-        </a>
-      </div>
+  <div fxFlex="130px" class="toggle" *ngIf="showProcessMobile">
+    <a href="javascript:void(0)" (click)="treesidenav.toggle();" class="application-open">
+      Select a Process
+    </a>
+  </div>
+  <div fxFlex="100px" class="toggle">
+    <a *ngIf="showRightIcon" class="properties-open" href="javascript:void(0)"
+      (click)="changeTrigger(opened);sidenav.toggle()">
+      <!--<mat-icon aria-hidden="false">{{opened ? 'arrow_right' : 'arrow_left'}}</mat-icon>matTooltip="{{opened ? 'Hide properties' : 'Show properties'}}"-->
+      Configure
+    </a>
+  </div>
 </div>
 <div fxLayout="row">
   <mat-sidenav-container fxFlex="100">
-    <mat-sidenav class="tree-bg-color" #treesidenav mode="side" [opened]="true" [ngStyle]="{'width': expandPanel ? '270px' : '100%' }">
+    <mat-sidenav class="tree-bg-color" #treesidenav mode="side" [opened]="true"
+      [ngStyle]="{'width': expandPanel ? '270px' : '100%' }">
       <div flex fxLayout="column">
         <div fxFlex="100">
           <ngx-treeview [config]="config" [items]="item" [itemTemplate]="itemTemplate">
@@ -85,9 +88,9 @@
       <section>
         <div fxLayout="row" style="padding-bottom: 2px;">
           <div fxFlex="20px" class="toggle" *ngIf="expandPanel">
-              <a href="javascript:void(0)" (click)="treesidenav.toggle();" class="application-open">
-                Select a Process
-              </a>
+            <a href="javascript:void(0)" (click)="treesidenav.toggle();" class="application-open">
+              Select a Process
+            </a>
           </div>
           <div fxFlex="100" fxLayout="column">
             <div fxFlex="100" [ngClass]="opened?'stage-show':'stage-hide'">
@@ -116,8 +119,8 @@
                 </mat-expansion-panel>
               </mat-accordion>
             </div>
-      
-      
+
+
             <div fxFlex="100">
               <mat-accordion>
                 <mat-expansion-panel [expanded]="expandPanel && closePanelOnSchedule">
@@ -262,7 +265,7 @@
                                       (value)="pr.value" [matAutocomplete]="auto"
                                       (key)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value"
                                       class="f_inp" #name="ngModel">
-      
+
                                     <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
                                       <mat-option style="text-align:center;"
                                         (click)="Update_value(pr.value ,pr.placeholder)"
@@ -284,7 +287,7 @@
                                       (change)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value"
                                       class="f_inp" #name="ngModel" email="true"
                                       pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}">
-      
+
                                     <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
                                       <mat-option style="text-align:center;"
                                         (click)="Update_value(pr.value ,pr.placeholder)"
@@ -324,13 +327,13 @@
                         </div>
                       </form>
                     </div>
-      
+
                   </div>
                 </mat-expansion-panel>
               </mat-accordion>
-      
+
             </div>
-      
+
             <div fxFlex="100" id="schedule" *ngIf="newScheduleView || Pause_btn || Resume_btn || Kill_btn">
               <!-- <h4 class="text-center">Schedule</h4>
                 <hr /> -->
@@ -348,7 +351,7 @@
                       </mat-form-field>
                       <img src="/assets/img/progress.gif" style="height:20px;width:20px;" *ngIf="progressImg" alt="" />
                       <mat-table #table [dataSource]="dataSource" matSort style="width:100%;">
-      
+
                         <!-- Checkbox Column -->
                         <ng-container matColumnDef="#">
                           <mat-header-cell *matHeaderCellDef>
@@ -366,31 +369,31 @@
                                     (click)="$event.stopPropagation();Check_process_id(dataSource.job_name)"></mat-checkbox> -->
                           </mat-cell>
                         </ng-container>
-      
+
                         <!-- Name Column -->
                         <ng-container matColumnDef="status">
                           <mat-header-cell *matHeaderCellDef style="color: white"> Status </mat-header-cell>
                           <mat-cell *matCellDef="let element" data-label="status"> {{element.status}} </mat-cell>
                         </ng-container>
-      
+
                         <!-- Weight Column -->
                         <ng-container matColumnDef="lastrun">
                           <mat-header-cell *matHeaderCellDef style="color: white"> Last Run </mat-header-cell>
                           <mat-cell *matCellDef="let element" data-label="lastrun"> {{element.lastrun}} </mat-cell>
                         </ng-container>
-      
+
                         <!-- Symbol Column -->
                         <ng-container matColumnDef="nextrun">
                           <mat-header-cell *matHeaderCellDef style="color: white"> Next Run </mat-header-cell>
                           <mat-cell *matCellDef="let element" data-label="nextrun"> {{element.nextrun}} </mat-cell>
                         </ng-container>
-      
+
                         <!-- Symbol Column -->
                         <ng-container matColumnDef="details">
                           <mat-header-cell *matHeaderCellDef style="color: white"> Details </mat-header-cell>
                           <mat-cell *matCellDef="let element" data-label="details"> {{element.details}} </mat-cell>
                         </ng-container>
-      
+
                         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                         <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)"
                           (click)="onRowClick(row)">
@@ -428,7 +431,7 @@
                   <canvas id="myGanttchart" *ngIf="gantt" fxFlex="100"></canvas>
                 </mat-expansion-panel>
               </mat-accordion>
-      
+
             </div>
             <div fxFlex="100" *ngIf="bar">
               <mat-accordion>
@@ -439,10 +442,10 @@
                     </mat-panel-title>
                   </mat-expansion-panel-header>
                   <canvas id="myBarchart" *ngIf="bar" fxFlex="100"></canvas>
-      
+
                 </mat-expansion-panel>
               </mat-accordion>
-      
+
             </div>
             <div fxFlex="100" *ngIf="pie">
               <mat-accordion>
@@ -453,14 +456,15 @@
                     </mat-panel-title>
                   </mat-expansion-panel-header>
                   <canvas id="myPie" *ngIf="pie" fxFlex="100"></canvas>
-      
+
                 </mat-expansion-panel>
               </mat-accordion>
-      
+
             </div>
           </div>
           <div fxFlex="2" class="toggle">
-            <a *ngIf="showRightIcon && expandPanel" class="properties-open" href="javascript:void(0)" (click)="changeTrigger(opened);sidenav.toggle()">
+            <a *ngIf="showRightIcon && expandPanel" class="properties-open" href="javascript:void(0)"
+              (click)="changeTrigger(opened);sidenav.toggle()">
               <!--<mat-icon aria-hidden="false">{{opened ? 'arrow_right' : 'arrow_left'}}</mat-icon>matTooltip="{{opened ? 'Hide properties' : 'Show properties'}}"-->
               Configure
             </a>
@@ -474,7 +478,8 @@
 
     </div>
     <!-- (isOutside)="hide($event)"  -->
-    <mat-sidenav [ngStyle]="{'width': expandPanel ? '250px' : '100%' }" class="properties-bg-color" #sidenav position="end" mode="side" [(opened)]="opened">
+    <mat-sidenav [ngStyle]="{'width': expandPanel ? '250px' : '100%' }" class="properties-bg-color" #sidenav
+      position="end" mode="side" [(opened)]="opened">
       <div id="properties">
 
         <label class="text-center"><b> {{ generalId }} </b></label>
@@ -489,13 +494,14 @@
                 </mat-expansion-panel-header>
                 <div class="generalTabV">
                   <!--<label class="m-t-10">{{Label['ID']}} </label>-->
-                  <input id="processId" tabindex="-1" onfocus="this.select();" (change)="onInputChange()"
+                  <input id="processId" tabindex="-1" onfocus="this.select();" (change)="onInputChange(true)"
                     [(ngModel)]="generalId">
                 </div>
                 <div class="oneSpace"></div>
                 <div class="generalTabV">
                   <label class="mt-3 tabTitle text-left">{{Label['NAME']}} </label>
-                  <input (change)="onInputNameChange()" [(ngModel)]="processName">
+                  <input (change)="onInputNameChange()" [ngClass]="isApp == true?'exe_disable':''" [disabled]="isApp"
+                    [(ngModel)]="processName">
                 </div>
               </mat-expansion-panel>
             </mat-accordion>
@@ -511,7 +517,7 @@
                 </mat-expansion-panel-header>
                 <div class="generalTabV">
                   <!--<label>{{Label['DOCUMENTATION']}}</label>-->
-                  <textarea (change)="onInputChange()" [(ngModel)]="documentation"></textarea>
+                  <textarea (change)="onInputDocumentChange()" [(ngModel)]="documentation"></textarea>
                 </div>
               </mat-expansion-panel>
             </mat-accordion>
@@ -537,7 +543,7 @@
                   <div>
                     <div class="oneSpace"></div>
                     <label class="tabTitle mt-3">{{Label['CONDITION']}}</label>
-                    <textarea type="text" name="condition" (change)="onInputChange()" [(ngModel)]="sequenceCondition"
+                    <textarea type="text" name="condition" (change)="onInputChange(false)" [(ngModel)]="sequenceCondition"
                       #seq_condition="ngModel" required></textarea>
                     <div *ngIf="seq_condition.invalid && (seq_condition.dirty || seq_condition.touched)" class="errors">
                       <div *ngIf="seq_condition.errors && seq_condition.errors.required">

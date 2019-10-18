@@ -676,7 +676,16 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     }
     this.commonInputChangeFunction();
   }
-  onInputChange() {
+  onInputDocumentChange() {
+    this.elementExistError = false;
+    if (!this.isApp) {
+      this.commonInputChangeFunction();
+    } else {
+      this.addApplicationOnBE();
+    }
+  }
+  // checkForIdFlag = to check for the flag if false than do not check for id exist error
+  onInputChange(checkForIdFlag) {
     this.elementExistError = false;
     // replace(new RegExp(' ', 'g'), '_')
     this.generalId = this.generalId;
@@ -693,7 +702,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     } else if (this.isSequenceFlow) {
       this.addUpdateSequenceFlag = true;
     }
-    if (!this.isApp && this.oldStateId) {
+    if (!this.isApp && this.oldStateId && checkForIdFlag) {
       this.old_srvc_cd = this.oldStateId;
       let elementRegistry = this.modeler.get('elementRegistry');
       let element = elementRegistry.get(this.oldStateId);
@@ -1351,6 +1360,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       }
       case 'Edit': {
         this.isEditApplicationFlag = true;
+        this.processName = '';
         this.oldAppId = this.selectedApp;
         this.editApplication(this.selectedApp);
         break;
@@ -1412,6 +1422,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         this.isProcess = true;
         this.isService = false;
         this.generalId = this.selectedProcess;
+        this.processName = '';
         this.getDocumentation('PRCS', this.generalId);
         break;
       }
@@ -1661,7 +1672,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
   updatesequenceConditionType(value: any) {
     this.selectedConditionType = value;
-    this.onInputChange();
+    this.onInputChange(false);
   }
   serviceActiveSelected(value: Boolean) {
     this.isServiceActive = value;
