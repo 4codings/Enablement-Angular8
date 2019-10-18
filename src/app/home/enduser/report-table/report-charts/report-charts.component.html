@@ -12,8 +12,8 @@
           (click)="onMenuItemClick(false,item.key,cpref,i,$event)">{{item.value}} </a>
       </button> -->
       <button mat-menu-item [matMenuTriggerFor]="saveonpc">Save As</button>
-      <button mat-menu-item (click)="onMenuItemClick('print',cpref,i,$event,'png')">Print</button>
-      <button mat-menu-item (click)="onMenuItemClick('print',cpref,i,$event,'png')">Post to Next Step</button>
+      <button mat-menu-item><a (click)="printCanvas(i,$event)">Print</a></button>
+      <button mat-menu-item><a (click)="onImagePost(i,$event,'png')"> Post to Next Step</a></button>
     </mat-menu>
     <mat-menu #saveonpc="matMenu">
       <button mat-menu-item><a (click)="onMenuItemClick('save',cpref,i,$event,'png')">PNG</a></button>

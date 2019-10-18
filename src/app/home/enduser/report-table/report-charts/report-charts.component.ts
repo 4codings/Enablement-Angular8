@@ -35,7 +35,7 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
     private http: Http,
     private dataStored: StorageSessionService,
     private globals: Globals,
-    private apiService:ApiService) {
+    private apiService: ApiService) {
 
   }
 
@@ -941,19 +941,7 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
   }
 
   onMenuItemClick(item, cpref, index, event, imageType?) {
-    console.log('item', item);
-    switch (item) {
-      case 'save': {
-        this.onImageDownload(index, event, imageType);
-      }
-      case 'print': {
-        // this.printCanvas(index, event);
-      }
-      case 'post': {
-        this.onImagePost(index, event, imageType);
-        console.log('index', index);
-      }
-    }
+    this.onImageDownload(index, event, imageType);
   }
   onImagePost(index, event, imageType) {
     var anchor = event.target;
@@ -982,6 +970,9 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
     let canvas = document.getElementById(index) as HTMLCanvasElement;
     let type = "image/" + imageType;
     let name = "chart." + imageType;
+    if (imageType == 'svg') {
+      type = "image/svg+xml";
+    }
     anchor.href = canvas.toDataURL(type);
     anchor.download = name;
   }
@@ -991,7 +982,7 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
     var windowContent = '<!DOCTYPE html>';
     windowContent += '<html>'
     windowContent += '<head><title>Print canvas</title></head>';
-    windowContent += '<body>'
+    windowContent += '<body onload="window.print();window.close()">'
     windowContent += '<img src="' + dataUrl + '">';
     windowContent += '</body>';
     windowContent += '</html>';
@@ -999,9 +990,9 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
     printWin.document.open();
     printWin.document.write(windowContent);
     printWin.document.close();
-    printWin.focus();
-    printWin.print();
-    printWin.close();
+    // printWin.focus();
+    // printWin.print();
+    // printWin.close();
   }
   /*getpreferences() {
     console.log("getpref");
