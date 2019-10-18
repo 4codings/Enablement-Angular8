@@ -944,22 +944,18 @@ export class ReportChartsComponent implements OnInit, AfterViewInit {
     this.onImageDownload(index, event, imageType);
   }
   onImagePost(index, event, imageType) {
-    var anchor = event.target;
     let canvas = document.getElementById(index) as HTMLCanvasElement;
     let type = "image/" + imageType;
-    let name = "chart." + imageType;
-    // anchor.href = canvas.toDataURL(type);
-    // anchor.download = name;
     const formData: FormData = new FormData();
-    console.log('this.report.ctrl_variables.bpmn_file_path', this.report.ctrl_variables.bpmn_file_path);
     formData.append('FileInfo', JSON.stringify({
-      // File_Path: `${this.ctrl_variables.bpmn_file_path}${this.useradminService.reduceFilePath(this.user.SRC_CD)}/${vAppCd}/`,
-      // /SRC_CD/APP_CD/PRCS_CD/SRVC_DC/PRCS_TXN_ID
       File_Path: `/${this.user.SRC_CD}/${this.APP_CD}/${this.PRCS_CD}/${this.report.SRVC_CD}/${this.report.PRCS_TXN_ID}`,
       File_Name: `${this.PRCS_CD}.${imageType}`,
       V_SRC_CD: this.user.SRC_CD,
     }));
-    formData.append('Source_File', canvas.toDataURL(type));
+    var image64 = canvas.toDataURL(type).split(',')[1];
+    var imageFile = new Blob([window.atob(image64)], { type: 'image/png' });
+
+    formData.append('Source_File', imageFile);
     this.http.post(`https://${this.globals.domain}/FileAPIs/api/file/v1/upload`, formData).subscribe(
       res => {
       }
