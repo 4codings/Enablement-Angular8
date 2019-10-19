@@ -20,7 +20,7 @@
   <mat-icon>more_vert</mat-icon>
 </button> -->
 <button class="profile-pic ml-md-4" [matMenuTriggerFor]="menu">
-  <img [src]="imageUrl" onerror="this.src='/assets/user.jpg'" width="32" height="32" alt="" />
+  <img [src]="getLinkPicture()" onerror="this.src='/assets/user.jpg'" width="32" height="32" alt="" />
 </button>
 
 <mat-menu #menu="matMenu" xPosition="before">

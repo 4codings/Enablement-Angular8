@@ -24,6 +24,7 @@ export class UsernavbarComponent implements OnInit {
   roll_dashboard: boolean = false;
   roll_process: boolean = false;
   imageUrl;
+  timeStamp;
   V_SRC_CD;
   V_USR_NM;
   options = [{ 'value': 'Show Only Charts', 'key': 'Charts', 'flag': true }, { 'value': 'Show Only Table', 'key': 'Table', 'flag': true }, { 'value': 'Show Charts and Tables', 'key': 'Both', 'flag': true }, { 'value': 'Configure Charts', 'key': 'Properties', 'flag': true }];
@@ -87,6 +88,7 @@ export class UsernavbarComponent implements OnInit {
         this.imageUrl = `https://enablement.us/${JSON.parse(sessionStorage.getItem('u')).SRC_CD}/logo`;
       } else {
         this.imageUrl = data;
+        this.timeStamp = (new Date()).getTime();
       }
     });
     this.rollserviceService.getRollCd().then((res) => {
@@ -146,6 +148,13 @@ export class UsernavbarComponent implements OnInit {
     }
     console.log('this.options on change', this.options);
     this.optionalService.reportTableMenuClickValue.next({ 'value': value, 'flag': false });
+  }
+
+  public getLinkPicture() {
+    if(this.timeStamp) {
+      return this.imageUrl + '?' + this.timeStamp;
+    }
+    return this.imageUrl;
   }
 }
 
