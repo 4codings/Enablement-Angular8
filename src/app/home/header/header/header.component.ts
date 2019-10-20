@@ -8,7 +8,6 @@ import { ApiService } from '../../../service/api/api.service';
 import { RollserviceService } from '../../../services/rollservice.service';
 import { MatDialog } from '@angular/material';
 import { ChangeImageComponent } from '../../../shared/components/change-image/change-image.component';
-import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -23,8 +22,8 @@ export class HeaderComponent implements OnInit {
   public index: any;
   // public selectedProfile = '';
   optionSelected: string = "";
-  imageUrl;
-  imageUrlSubject = new BehaviorSubject<any>(`https://enablement.us/${JSON.parse(sessionStorage.getItem('u')).USR_NM}/pic`);
+  timeStamp;
+  imageUrl = `https://enablement.us/${JSON.parse(sessionStorage.getItem('u')).USR_NM}/pic`;
   @Input() selectedProfile = '';
   constructor(
     private route: ActivatedRoute,
@@ -48,10 +47,6 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.userName = JSON.parse(sessionStorage.getItem('u')).USR_NM;
     this.agency = JSON.parse(sessionStorage.getItem('u')).SRC_CD; 
-
-    this.imageUrlSubject.subscribe(data => {
-      this.imageUrl = data;
-    })
 
     this.chooworkingProfile();
     // let url:string="user";
@@ -90,6 +85,13 @@ export class HeaderComponent implements OnInit {
     //this.router.navigateByUrl(e);
   }
 
+  public getLinkPicture() {
+    if(this.timeStamp) {
+      return this.imageUrl + '?' + this.timeStamp;
+    }
+    return this.imageUrl;
+  } 
+
   chooworkingProfile() {
     this.rollserviceService.getRollCd().then((res) => {
       for (let i = 0; i < res.length; i++) {
@@ -118,7 +120,8 @@ export class HeaderComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       if(result) {
-        this.imageUrlSubject.next("https://enablement.us/" + this.userName + "/pic" + "?" + (new Date()).getTime()); 
+        this.imageUrl = "https://enablement.us/" + this.userName + "/pic" + "?" + (new Date()).getTime(); 
+        this.timeStamp = (new Date()).getTime();
       }
     });
   }
@@ -133,7 +136,7 @@ export class HeaderComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       if(result) {
-        this.apiService.imageLogoUrlSubject.next("https://enablement.us/" + this.agency + "/logo" + "?" + (new Date()).getTime()); 
+        this.apiService.imageLogoUrlSubject.next("https://enablement.us/" + this.agency + "/logo"); 
       }
     });
   }

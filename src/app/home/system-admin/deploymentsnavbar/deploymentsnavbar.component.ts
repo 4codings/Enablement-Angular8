@@ -22,6 +22,7 @@ export class DeploymentsnavbarComponent implements OnInit {
   role_platform:boolean=false;
   role_overview:boolean = true;
   imageUrl;
+  timeStamp;
   V_SRC_CD;
   V_USR_NM;
   headerTxt = '';
@@ -42,6 +43,7 @@ export class DeploymentsnavbarComponent implements OnInit {
         this.imageUrl = `https://enablement.us/${JSON.parse(sessionStorage.getItem('u')).SRC_CD}/logo`;
       } else {
         this.imageUrl = data;
+        this.timeStamp = (new Date()).getTime();
       }
     });
     this.rollserviceService.getRollCd().then((res) => {
@@ -102,5 +104,12 @@ export class DeploymentsnavbarComponent implements OnInit {
       });
     });
   }
+
+  public getLinkPicture() {
+    if(this.timeStamp) {
+      return this.imageUrl + '?' + this.timeStamp;
+    }
+    return this.imageUrl;
+  } 
 
 }

@@ -8,7 +8,7 @@
       <mat-nav-list>
         <div fxLayout="row" fxLayoutAlign="center center">
         <div>
-          <img [src]="imageUrl" onerror="this.src='/assets/logo.png'" alt="" class="logo-img" />
+          <img [src]="getLinkPicture()" onerror="this.src='/assets/logo.png'" alt="" class="logo-img" />
         </div>
         <div flex fxLayout="row">
           <span>{{headerTxt}}</span>
@@ -86,7 +86,7 @@
       <mat-nav-list>
         <div class="list-wrapper" flex fxLayout="row" fxLayout.lt-sm="row">
           <div class="nav-link pl-3 mb-2">
-            <img [src]="imageUrl" onerror="this.src='/assets/logo.png'" alt="" class="logo-img" />
+            <img [src]="getLinkPicture()" onerror="this.src='/assets/logo.png'" alt="" class="logo-img" />
           </div>
           <div flex fxLayout="row" class="text-center">
             <span>{{headerTxt}}</span>
@@ -155,7 +155,7 @@
     <div class="w-100" fxHide="true" fxShow.sm="true">
       <mat-nav-list>
         <div class="text-center">
-          <img [src]="imageUrl" onerror="this.src='/assets/logo.png'" alt="" class="logo-img" />
+          <img [src]="getLinkPicture()" onerror="this.src='/assets/logo.png'" alt="" class="logo-img" />
         </div>
         <div flex fxLayout="row" class="text-center">
           <span>{{headerTxt}}</span>

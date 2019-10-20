@@ -27,6 +27,7 @@ export class UserAdminNavComponent implements OnInit {
   headerTxt = '';
   ctrl_variables: any;
   imageUrl;
+  timeStamp;
   navigationSubscription;
   constructor(
     private rollserviceService: RollserviceService,
@@ -45,6 +46,7 @@ export class UserAdminNavComponent implements OnInit {
         this.imageUrl = `https://enablement.us/${JSON.parse(sessionStorage.getItem('u')).SRC_CD}/logo`;
       } else {
         this.imageUrl = data;
+        this.timeStamp = (new Date()).getTime();
       }
     });
     this.rollserviceService.getRollCd().then((res) => {
@@ -100,5 +102,12 @@ export class UserAdminNavComponent implements OnInit {
       });
     });
   }
+
+  public getLinkPicture() {
+    if(this.timeStamp) {
+      return this.imageUrl + '?' + this.timeStamp;
+    }
+    return this.imageUrl;
+  } 
 
 }
