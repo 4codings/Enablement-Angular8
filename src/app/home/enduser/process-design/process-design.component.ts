@@ -401,6 +401,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         // { [InjectionNames.propertiesProvider]: ['type', CustomPropsProvider] },
       ]
     });
+
     const eventBus = this.modeler.get('eventBus');
     if (eventBus) {
       eventBus.on('element.click', ($event) => {
@@ -1055,8 +1056,9 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.isService = false;
     this.generalId = this.autoGenerate();
     this.oldAppId = this.generalId;
-    let x = '<?xml version="1.0" encoding="UTF-8"?><bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="2.0.3"></bpmn:definitions>';
-    this.modeler.importXML(x);
+    this.modeler.clear();
+    // let x = '<?xml version="1.0" encoding="UTF-8"?><bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="2.0.3"></bpmn:definitions>';
+    // this.modeler.importXML(x);
     // setTimeout(() => {
     //   this.processID.nativeElement.focus();
     // }, 0);
@@ -1282,8 +1284,12 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         .subscribe(
           (res: any) => {
             if (res._body != "") {
-              this.modeler.importXML('');
+              // this.modeler.importXML('');
+              this.modeler.clear();
               this.modeler.importXML(res._body, this.handleError.bind(this));
+              var canvas = this.modeler.get('canvas');
+              canvas.zoom('fit-viewport');
+              canvas.viewbox({ x: 1, y: 1, width: 500, height: 500 })
               this.bpmnTemplate = res._body;
             } else {
               // let x = '<?xml version="1.0" encoding="UTF-8"?><bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="2.0.3"></bpmn:definitions>';
@@ -1293,8 +1299,13 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                 headers: { observe: 'response' }, responseType: 'text'
               }).subscribe(
                 (x: any) => {
-                  this.modeler.importXML('');
+                  // this.modeler.importXML('');
+                  this.modeler.clear();
                   this.modeler.importXML(x, this.handleError.bind(this));
+                  var canvas = this.modeler.get('canvas');
+                  canvas.zoom('fit-viewport');
+                  canvas.viewbox({ x: 1, y: 1, width: 500, height: 500 })
+                  this.resetCanvas();
                   this.bpmnTemplate = x;
                   setTimeout(() => {
                     let elementRegistry = this.modeler.get('elementRegistry');
@@ -1320,8 +1331,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     } else {
       this.selectedApp = item.value;
       this.selectedProcess = '';
-      let x = '<?xml version="1.0" encoding="UTF-8"?><bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="2.0.3"></bpmn:definitions>';
-      this.modeler.importXML(x);
+      // let x = '<?xml version="1.0" encoding="UTF-8"?><bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="2.0.3"></bpmn:definitions>';
+      // this.modeler.importXML(x);
+      this.modeler.clear();
+      this.resetCanvas();
     }
     // if (!parentTitleClick) {
     //   this.treesidenav.opened = false;
@@ -1332,14 +1345,21 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       this.showProcessMobile = true;
     }
   }
+  resetCanvas() {
+    // this.modeler.resetCanvas();
+  }
+
+
   onParentMenuItemClick(actionValue, parentValue, selectedItem?) {
     this.selectedApp = parentValue;
     switch (actionValue) {
       case 'Add': {
         this.isEditApplicationFlag = false;
         this.onTitleClickNoDelete = true;
-        let x = '<?xml version="1.0" encoding="UTF-8"?><bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="2.0.3"></bpmn:definitions>';
-        this.modeler.importXML(x);
+        // let x = '<?xml version="1.0" encoding="UTF-8"?><bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="2.0.3"></bpmn:definitions>';
+        // this.modeler.importXML(x);
+        this.modeler.clear();
+        this.resetCanvas();
         this.selectedProcess = '';
         this.selectedService = '';
         this.newBpmn();
@@ -1511,7 +1531,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.showRightIcon = false;
           this.opened = false;
           this.editProcessFlag = false;
-          this.modeler.importXML('<?xml version="1.0" encoding="UTF-8"?><bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="2.0.3"></bpmn:definitions>');
+          this.modeler.clear();
+          // this.modeler.importXML('<?xml version="1.0" encoding="UTF-8"?><bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="2.0.3"></bpmn:definitions>');
           this.getApplicationProcess();
         })
     }

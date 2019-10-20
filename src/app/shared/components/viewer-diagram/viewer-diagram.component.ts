@@ -172,8 +172,12 @@ export class ViewerDiagramComponent implements OnInit, OnDestroy {
       .subscribe(
         (res: any) => {
           if (res._body != "") {
-            this.viewer.importXML('');
+            // this.viewer.importXML('');
+            this.viewer.clear();
             this.viewer.importXML(res._body, this.handleError.bind(this));
+            var canvas = this.viewer.get('canvas');
+            canvas.zoom('fit-viewport');
+            canvas.viewbox({ x: 1, y: 1, width: 500, height: 500 })
             this.bpmnTemplate = res._body;
             this.setInitialColor();
           } else {
@@ -181,8 +185,12 @@ export class ViewerDiagramComponent implements OnInit, OnDestroy {
               headers: { observe: 'response' }, responseType: 'text'
             }).subscribe(
               (x: any) => {
-                this.viewer.importXML('');
+                // this.viewer.importXML('');
+                this.viewer.clear();
                 this.viewer.importXML(x, this.handleError.bind(this));
+                var canvas = this.viewer.get('canvas');
+                canvas.zoom('fit-viewport');
+                canvas.viewbox({ x: 1, y: 1, width: 500, height: 500 })
                 this.bpmnTemplate = x;
                 this.setInitialColor();
               },
