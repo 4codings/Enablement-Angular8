@@ -405,6 +405,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     const eventBus = this.modeler.get('eventBus');
     if (eventBus) {
       eventBus.on('element.click', ($event) => {
+        this.opened = true;
         this.onTitleClickNoDelete = false;
         this.processName = '';
         this.documentation = '';
@@ -1436,7 +1437,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         this.isMonitor = false;
         this.editProcessFlag = true;
         this.showRightIcon = true;
-        this.opened = true;
+        this.opened = false;
         this.showAllTabFlag = false;
         this.isApp = false;
         this.isProcess = true;

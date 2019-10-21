@@ -6,6 +6,7 @@ import { Store, select } from '@ngrx/store';
 import { AppState } from '../app.state';
 import * as usreLoginActions from '../store/auth/userlogin.action';
 import { Observable } from 'rxjs';
+import { AuthService } from '../services/auth.service';
 
 @Component({
     selector: 'app-auth',
@@ -18,6 +19,7 @@ export class AuthComponent implements OnInit, OnDestroy {
     didLoading$: Observable<boolean>;
     didLoaded$: Observable<boolean>;
     sub;
+    isLoginButton = true;
     public agcy: boolean = true;
     public msg: boolean = true;
     public loading: boolean = true;
@@ -41,6 +43,7 @@ export class AuthComponent implements OnInit, OnDestroy {
         private fb: FormBuilder,
         private router: Router,
         // private l: LoggerService,
+        private authService: AuthService,
         private toastr: ToastrService,
         private store: Store<AppState>
     ) {
@@ -67,7 +70,51 @@ export class AuthComponent implements OnInit, OnDestroy {
             V_PSWRD: form.value.pass,
             V_ACTN_NM: 'LOGIN'
         };
-
+        this.authService.userLogin(body).subscribe(
+            (data: any) => {
+                console.log(data)
+            }, err => {
+                if (err.status === 403) {
+                    this.srcBloc = true; //show src block
+                    this.agcy = false;
+                    this.isLoginButton = false;
+                    this.toastr.warning("Please enter your Organization name", "Agency");
+                }
+                // else if (data.resultUsrOnly == "TERMINATED") {
+                //     this.toastr.error('Your are Terminated..!', 'Login');
+                // } else if (data.resultUsrOnly == "TRUE") {
+                //     this.msg_alert = "";
+                //     if (data.resultLoginValidity == "FALSE") {
+                //         this.msg_alert = "Your Login Account is expired. Contact your Admin at " + data.resultSrcAdminEmailID + " to activate it.";
+                //     } else if (data.resultUsrPaymentValid == "FALSE") {
+                //         this.msg_alert = "You have utilized your Account balance. Contact your Admin at " + data.resultSrcAdminEmailID + " to process payment.";
+                //     }
+                // } if (data.resultUsrPwd == "INCORRECT" && data.resultLoginValidity == "") {
+                //     this.countAt++;
+                //     if (this.countAt == 3) {
+                //         this.toastr.warning("Please provide a new password that you want to reset", "Change password");
+                //         this.pass1 = false;
+                //         this.pass2 = true;
+                //         this.rstBnt = true;
+                //         this.logBtn = false;
+                //         this.captcha = true;
+                //         this.sendResetPassowrdEmail(form);
+                //     } else {
+                //         this.toastr.warning("Invalid password,Attempt=" + this.countAt, "Login");
+                //     }
+                // } else if (data.resultUsrPwd == "CORRECT" && data.resultLoginValidity == "TRUE") {
+                //     // put this parameter when payment option come in res "&& data.resultUsrPaymentValid == "TRUE""
+                //     // this.toastr.success("Success...!","Login In");
+                //     this.loading = true;
+                //     this.StorageSessionService.setSession('email', data.resultUsrname);
+                //     this.StorageSessionService.setSession('agency', data.resultSrc);
+                //     this.apiServiceService.getUserId(data.resultSrc).subscribe(data => {
+                //         this.StorageSessionService.setSession('userid', data.SRC_ID[0]);
+                //         this.router.navigate(['Profile'], { skipLocationChange: true });
+                //     });
+                // }
+                console.log('err', err);
+            });
         this.store.dispatch(new usreLoginActions.userLogin(body));
     }
 
