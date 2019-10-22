@@ -31,10 +31,10 @@
 
           <div *ngIf="pass2==true" class="parent">
             <div flex fxLayout="row" style="align-items: center;" fxLayout.lt-sm="column" style="padding-top: 30px;">
-              <span fxFlex="25" class="formLabel">{{Label['log_reset']}}</span>
+              <span fxFlex="25" class="formLabel">New Password</span>
               <div fxFlex="60" class="formGroup">
-                <input class="userinp" type="password" matInput placeholder=" " [(ngModel)]="passr" name="passr"
-                  value="">
+                <input class="userinp" type="password" matInput placeholder="Provide new password" [(ngModel)]="passr"
+                  name="passr" value="">
               </div>
             </div>
           </div>
@@ -42,12 +42,15 @@
             style="padding-top: 30px;">
             <span fxFlex="25" class="formLabel">Organization</span>
             <div fxFlex="60" class="formGroup">
-              <input type="text" class="userinp ulabel" matInput placeholder="Enter Agency" [(ngModel)]="agency"
-                name="agency" value="">
+              <input type="text" placeholder="Provide Organization" [(ngModel)]="agency" name="agency" value="">
             </div>
 
           </div>
           <br />
+          <div *ngIf="captcha">
+            <recaptcha [formControl]="myRecaptcha" (scriptLoad)="onScriptLoad()" (scriptError)="onScriptError()">
+            </recaptcha>
+          </div>
           <div *ngIf="logBtn==true" flex fxLayout="row" fxLayout.lt-sm="column">
 
             <div fxFlex="30"></div>

@@ -48,6 +48,7 @@ import { InputOutputElementComponent } from './components/input-output-element/i
 import { ViewerDiagramComponent } from './components/viewer-diagram/viewer-diagram.component';
 import { SortPipe } from './pipes/sort.pipe';
 import { ChangeImageComponent } from './components/change-image/change-image.component';
+import { RecaptchaModule } from 'angular-google-recaptcha';
 @NgModule({
   imports: [
     CommonModule,
@@ -91,6 +92,9 @@ import { ChangeImageComponent } from './components/change-image/change-image.com
     MatMenuModule,
     ScrollingModule,
     TreeviewModule.forRoot(),
+    RecaptchaModule.forRoot({
+      siteKey: '6LcD474UAAAAAK4iK-RtalVy4iODfJXRovehR6Bh',
+    })
   ],
   declarations: [
     FormErrorMsgComponent,
@@ -160,6 +164,7 @@ import { ChangeImageComponent } from './components/change-image/change-image.com
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
+    RecaptchaModule,
     ChangeImageComponent
   ]
 })

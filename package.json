@@ -31,6 +31,7 @@
         "@ngrx/entity": "^8.2.0",
         "@ngrx/store": "^8.2.0",
         "@ngrx/store-devtools": "^8.2.0",
+        "angular-google-recaptcha": "^1.0.3",
         "angular-resizable-element": "^3.2.4",
         "angular-resize-event": "^1.1.0",
         "angular-user-idle": "^2.1.4",

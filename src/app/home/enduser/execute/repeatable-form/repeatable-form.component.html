@@ -144,7 +144,7 @@
                             <textarea [required]="configService.isFieldMendatory(label)" matInput
                               [readonly]="isDisabled[iter] || configService.isFieldDisabled(label)"
                               [name]="'field_' + label + iter" [maxLength]="configService.getFieldMaxLength(label)"
-                              (value)="input[label][iter]" (click)="getDropDownListValue(label)"
+                              (value)="input[label][iter]" 
                               [(ngModel)]="input[label][iter]" class="f_inp" #name="ngModel"
                               (change)="Update_value($event.target.value,label,iter)">
 													  </textarea>
@@ -179,7 +179,7 @@
                               maxlength="5" matInput
                               [readonly]="isDisabled[iter] || configService.isFieldDisabled(label)"
                               [name]="'field_' + label + iter" (value)="input[label][iter]" [matAutocomplete]="auto"
-                              (click)="getDropDownListValue(label)" [(ngModel)]="input[label][iter]" class="f_inp"
+                               [(ngModel)]="input[label][iter]" class="f_inp"
                               #name="ngModel" (key)="Update_value($event.target.value,label,iter)">
 
                             <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">

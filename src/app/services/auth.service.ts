@@ -44,7 +44,7 @@ export class AuthService {
       "RESULT":"@RESULT"
     }
     var dt=JSON.stringify(body);
-    return this.http.post<data>(this.apiUrlPost+'/CheckSrc',body);
+    return this.http.post<data>('https://enablement.us/Enablement/rest/'+'CheckSrc',body);
   }
   //------------------------
   sendConfirmation(data){
@@ -55,7 +55,7 @@ export class AuthService {
       "message": "Please confirm your login..."
     };
     var aa = JSON.stringify(body);
-    return this.http.post(this.apiUrlPost + "SendEmail",aa);
+    return this.http.post('https://enablement.us/Enablement/rest/' + "SendEmail",aa);
   }
   //-------------
   CheckUsrPw(form){
