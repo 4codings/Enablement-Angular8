@@ -8,6 +8,9 @@
     font-size: 14px;
 }
 
+.error {
+    color: red;
+}
 mat-radio-group {
     display: flex;
     text-align: left;

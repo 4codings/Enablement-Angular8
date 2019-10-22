@@ -58,11 +58,11 @@
                         <input #name="ngModel" [required]="configService.isFieldMendatory(label)"
                           [disabled]="configService.isFieldDisabled()" [name]="label" [value]="input[label]"
                           [(ngModel)]="input[label]" matInput [matDatepicker]="picker" class="f_inp"
-                          (change)="Update_value(input[label],label)">
+                          (dateChange)="Update_value(input[label],label)">
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
                       </mat-form-field>
-                      <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
+                      <div class="error" [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
                         {{configService.getFieldInValidMsg(name, label)}}
                       </div>
                     </ng-container>
@@ -70,22 +70,24 @@
                       <mat-form-field class="form_input">
                         <input #name="ngModel" [required]="configService.isFieldMendatory(label)"
                           [disabled]="configService.isFieldDisabled()" matInput [type]="fieldType[label]" [name]="label"
-                          [value]="input[label]" [(ngModel)]="input[label]" class="f_inp"
-                          (change)="Update_value($event.target.value,label)">
+                          [(ngModel)]="input[label]" class="f_inp" (ngModelChange)="Update_value($event,label)"
+                          [owlDateTimeTrigger]="ftime" [owlDateTime]="ftime">
+                        <owl-date-time [pickerType]="'timer'" #ftime></owl-date-time>
                       </mat-form-field>
-                      <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
+                      <div class="error" [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
                         {{configService.getFieldInValidMsg(name, label)}}
                       </div>
                     </ng-container>
                     <ng-container *ngSwitchCase="'datetime'">
                       <mat-form-field class="form_input" style="background-color: #f4f6f7">
                         <input #name="ngModel" [required]="configService.isFieldMendatory(label)"
-                          [disabled]="configService.isFieldDisabled()" matInput [name]="label" [value]="input[label]"
+                          [disabled]="configService.isFieldDisabled()" matInput [name]="label"
                           [(ngModel)]="input[label]" [owlDateTimeTrigger]="fdate" [owlDateTime]="fdate"
-                          (change)="Update_value($event.target.value,label)">
-                        <owl-date-time [attr.id]="label"></owl-date-time>
+                          (ngModelChange)="Update_value($event,label)">
+                        <!-- [attr.id]="label" -->
+                        <owl-date-time #fdate></owl-date-time>
                       </mat-form-field>
-                      <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
+                      <div class="error" [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
                         {{configService.getFieldInValidMsg(name, label)}}
                       </div>
                     </ng-container>
@@ -96,7 +98,7 @@
                           [value]="input[label]" [(ngModel)]="input[label]" #name="ngModel" class="f_inp"
                           (change)="Update_value($event.target.value,label)">
                       </mat-form-field>
-                      <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
+                      <div class="error" [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
                         {{configService.getFieldInValidMsg(name, label)}}
                       </div>
                     </ng-container>
@@ -106,31 +108,32 @@
                         <mat-radio-group [name]="label" [(ngModel)]="input[label]"
                           [required]="configService.isFieldMendatory(label)" #name="ngModel"
                           [disabled]="configService.isFieldDisabled(label)"
-                          (ngModelChange)="Update_value($event.target.value,label)">
+                          (ngModelChange)="Update_value($event,label)">
                           <mat-radio-button style="background-color: #f4f6f7" [value]="listOption"
                             *ngFor="let listOption of options[label]">
                             {{listOption}}
                           </mat-radio-button>
                         </mat-radio-group>
                       </mat-form-field>
-                      <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
+                      <div class="error" [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
                         {{configService.getFieldInValidMsg(name, label)}}
                       </div>
                     </ng-container>
                     <ng-container *ngSwitchCase="'checkbox'">
-                      <mat-form-field class="form_input form_list">
+                      <mat-form-field class="form_input form_list" *ngIf="options[label] != undefined">
                         <input matInput style="display: none">
-                        <mat-selection-list [(ngModel)]="input[label]" [(ngModel)]="input[label]"
+                        <mat-selection-list [name]="label" [(ngModel)]="input[label]"
                           [required]="configService.isFieldMendatory(label)" #name="ngModel"
                           [disabled]="configService.isFieldDisabled(label)"
                           (ngModelChange)="Update_value($event,label)">
-                          <mat-list-option checkboxPosition="before" [value]="listOption"
-                            *ngFor="let listOption of options[label]">
+                          <mat-list-option checkboxPosition="before" *ngFor="let listOption of options[label]"
+                            [value]="listOption">
                             {{listOption}}
                           </mat-list-option>
                         </mat-selection-list>
                       </mat-form-field>
-                      <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
+                      <div *ngIf="options[label] != undefined" class="error"
+                        [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
                         {{configService.getFieldInValidMsg(name, label)}}
                       </div>
                     </ng-container>
@@ -139,10 +142,10 @@
                         <textarea [required]="configService.isFieldMendatory(label)" matInput
                           [readonly]="configService.isFieldDisabled(label)" [name]="label"
                           [maxLength]="configService.getFieldMaxLength(label)" [(ngModel)]="input[label]" class="f_inp"
-                          (change)="Update_value($event.target.value,label)" #name="ngModel">
+                          (change)="Update_value($event,label)" #name="ngModel">
 										  </textarea>
                       </mat-form-field>
-                      <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
+                      <div class="error" [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
                         {{configService.getFieldInValidMsg(name, label)}}
                       </div>
                     </ng-container>
@@ -161,7 +164,7 @@
                           </mat-option>
                         </mat-autocomplete>
                       </mat-form-field>
-                      <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
+                      <div class="error" [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
                         {{configService.getFieldInValidMsg(name, label)}}
                       </div>
                     </ng-container>
@@ -180,7 +183,7 @@
                           </mat-option>
                         </mat-autocomplete>
                       </mat-form-field>
-                      <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
+                      <div class="error" [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
                         {{configService.getFieldInValidMsg(name, label)}}
                       </div>
                     </ng-container>
@@ -201,7 +204,7 @@
                           </mat-option>
                         </mat-autocomplete>
                       </mat-form-field>
-                      <div [style.visibility]=" configService.isFieldInvalid(name) ? 'visible': 'hidden'">
+                      <div class="error" [style.visibility]=" configService.isFieldInvalid(name) ? 'visible': 'hidden'">
                         {{configService.getFieldInValidMsg(name, label)}}
                       </div>
                     </ng-container>
@@ -220,7 +223,7 @@
                           </mat-option>
                         </mat-autocomplete>
                       </mat-form-field>
-                      <div [style.visibility]=" configService.isFieldInvalid(name) ? 'visible': 'hidden'">
+                      <div class="error" [style.visibility]=" configService.isFieldInvalid(name) ? 'visible': 'hidden'">
                         {{configService.getFieldInValidMsg(name, label)}}
                       </div>
                     </ng-container>
@@ -268,11 +271,11 @@
                         <input #name="ngModel" [required]="configService.isFieldMendatory(label)"
                           [disabled]="configService.isFieldDisabled()" [name]="label" [value]="input[label]"
                           [(ngModel)]="input[label]" matInput [matDatepicker]="picker" class="f_inp"
-                          (keyup)="Update_value(input[label],label)">
+                          (dateChange)="Update_value(input[label],label)">
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
                       </mat-form-field>
-                      <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
+                      <div class="error" [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
                         {{configService.getFieldInValidMsg(name, label)}}
                       </div>
                     </ng-container>
@@ -281,9 +284,11 @@
                         <input #name="ngModel" [required]="configService.isFieldMendatory(label)"
                           [disabled]="configService.isFieldDisabled()" matInput [type]="fieldType[label]" [name]="label"
                           [value]="input[label]" [(ngModel)]="input[label]" class="f_inp"
-                          (change)="Update_value($event.target.value,label)">
+                          (ngModelChange)="Update_value($event,label)" [owlDateTimeTrigger]="ftime"
+                          [owlDateTime]="ftime">
+                        <owl-date-time [pickerType]="'timer'" #ftime></owl-date-time>
                       </mat-form-field>
-                      <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
+                      <div class="error" [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
                         {{configService.getFieldInValidMsg(name, label)}}
                       </div>
                     </ng-container>
@@ -292,10 +297,10 @@
                         <input #name="ngModel" [required]="configService.isFieldMendatory(label)"
                           [disabled]="configService.isFieldDisabled()" matInput [name]="label" [value]="input[label]"
                           [(ngModel)]="input[label]" [owlDateTimeTrigger]="fdate" [owlDateTime]="fdate"
-                          (change)="Update_value($event.target.value,label)">
-                        <owl-date-time [attr.id]="label"></owl-date-time>
+                          (ngModelChange)="Update_value($event,label)">
+                        <owl-date-time [attr.id]="label" #fdate></owl-date-time>
                       </mat-form-field>
-                      <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
+                      <div class="error" [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
                         {{configService.getFieldInValidMsg(name, label)}}
                       </div>
                     </ng-container>
@@ -306,7 +311,7 @@
                           [value]="input[label]" [(ngModel)]="input[label]" #name="ngModel" class="f_inp"
                           (change)="Update_value($event.target.value,label)">
                       </mat-form-field>
-                      <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
+                      <div class="error" [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
                         {{configService.getFieldInValidMsg(name, label)}}
                       </div>
                     </ng-container>
@@ -323,7 +328,7 @@
                           </mat-radio-button>
                         </mat-radio-group>
                       </mat-form-field>
-                      <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
+                      <div class="error" [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
                         {{configService.getFieldInValidMsg(name, label)}}
                       </div>
                     </ng-container>
@@ -340,7 +345,7 @@
                           </mat-list-option>
                         </mat-selection-list>
                       </mat-form-field>
-                      <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
+                      <div class="error" [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
                         {{configService.getFieldInValidMsg(name, label)}}
                       </div>
                     </ng-container>
@@ -353,7 +358,7 @@
                           (change)="Update_value($event.target.value,label)">
 											  </textarea>
                       </mat-form-field>
-                      <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
+                      <div class="error" [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
                         {{configService.getFieldInValidMsg(name, label)}}
                       </div>
                     </ng-container>
@@ -372,7 +377,7 @@
                           </mat-option>
                         </mat-autocomplete>
                       </mat-form-field>
-                      <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
+                      <div class="error" [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
                         {{configService.getFieldInValidMsg(name, label)}}
                       </div>
                     </ng-container>
@@ -391,7 +396,7 @@
                           </mat-option>
                         </mat-autocomplete>
                       </mat-form-field>
-                      <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
+                      <div class="error" [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
                         {{configService.getFieldInValidMsg(name, label)}}
                       </div>
                     </ng-container>
@@ -412,7 +417,7 @@
                           </mat-option>
                         </mat-autocomplete>
                       </mat-form-field>
-                      <div [style.visibility]=" configService.isFieldInvalid(name) ? 'visible': 'hidden'">
+                      <div class="error" [style.visibility]=" configService.isFieldInvalid(name) ? 'visible': 'hidden'">
                         {{configService.getFieldInValidMsg(name, label)}}
                       </div>
                     </ng-container>
@@ -423,13 +428,14 @@
                           #name="ngModel" [readonly]="configService.isFieldDisabled(label)"
                           [maxLength]="configService.getFieldMaxLength(label)"
                           (change)="Update_value(input[label] ,label)">
-                        <mat-autocomplete #auto="matAutocomplete" (click)="Update_value(input[label] ,label)">
-                          <mat-option style="text-align:center;" *ngFor="let option of options[label]" [value]="option">
+                        <mat-autocomplete #auto="matAutocomplete">
+                          <mat-option style="text-align:center;" (click)="Update_value(input[label] ,label)"
+                            *ngFor="let option of options[label]" [value]="option">
                             {{option}}
                           </mat-option>
                         </mat-autocomplete>
                       </mat-form-field>
-                      <div [style.visibility]=" configService.isFieldInvalid(name) ? 'visible': 'hidden'">
+                      <div class="error" [style.visibility]=" configService.isFieldInvalid(name) ? 'visible': 'hidden'">
                         {{configService.getFieldInValidMsg(name, label)}}
                       </div>
                     </ng-container>

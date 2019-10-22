@@ -75,7 +75,9 @@
                               [readonly]="configService.isFieldDisabled()" matInput [type]="fieldType[label]"
                               [name]="'field_' + label + iter" [value]="input[label][iter]"
                               [(ngModel)]="input[label][iter]" class="f_inp"
-                              (change)="Update_value($event.target.value,label,iter)">
+                              (ngModelChange)="Update_value($event,label,iter)" [owlDateTimeTrigger]="ftime"
+                              [owlDateTime]="ftime">
+                            <owl-date-time [pickerType]="'timer'" #ftime></owl-date-time>
                           </mat-form-field>
                           <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
                             {{configService.getFieldInValidMsg(name, label)}}
@@ -86,8 +88,8 @@
                             <input #name="ngModel" [required]="configService.isFieldMendatory()"
                               [disabled]="configService.isFieldDisabled()" matInput [name]="'field_' + label + iter"
                               [value]="input[label][iter]" [(ngModel)]="input[label][iter]" [owlDateTimeTrigger]="fdate"
-                              [owlDateTime]="fdate" (change)="Update_value($event.target.value,label,iter)">
-                            <owl-date-time [attr.id]="label"></owl-date-time>
+                              [owlDateTime]="fdate" (ngModelChange)="Update_value($event,label,iter)">
+                            <owl-date-time [attr.id]="label" #fdate></owl-date-time>
                           </mat-form-field>
                           <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
                             {{configService.getFieldInValidMsg(name, label)}}
@@ -144,9 +146,8 @@
                             <textarea [required]="configService.isFieldMendatory(label)" matInput
                               [readonly]="isDisabled[iter] || configService.isFieldDisabled(label)"
                               [name]="'field_' + label + iter" [maxLength]="configService.getFieldMaxLength(label)"
-                              (value)="input[label][iter]" 
-                              [(ngModel)]="input[label][iter]" class="f_inp" #name="ngModel"
-                              (change)="Update_value($event.target.value,label,iter)">
+                              (value)="input[label][iter]" [(ngModel)]="input[label][iter]" class="f_inp"
+                              #name="ngModel" (change)="Update_value($event.target.value,label,iter)">
 													  </textarea>
                           </mat-form-field>
                           <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
@@ -179,8 +180,8 @@
                               maxlength="5" matInput
                               [readonly]="isDisabled[iter] || configService.isFieldDisabled(label)"
                               [name]="'field_' + label + iter" (value)="input[label][iter]" [matAutocomplete]="auto"
-                               [(ngModel)]="input[label][iter]" class="f_inp"
-                              #name="ngModel" (key)="Update_value($event.target.value,label,iter)">
+                              [(ngModel)]="input[label][iter]" class="f_inp" #name="ngModel"
+                              (key)="Update_value($event.target.value,label,iter)">
 
                             <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
                               <mat-option style="text-align:center;"

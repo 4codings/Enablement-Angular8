@@ -113,12 +113,6 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     this.cdr.detectChanges();
     var row_present = this.RVP_DataObj[this.RVP_labels[0].split(" ").join("_")].length;
     this.totalRow += row_present;
-    for (let i = 1; i < this.totalRow; i++) {
-      this.rows.push(i);
-    }
-    for (let i = 0; i < this.RVP_labels.length; i++) {
-      this.input[this.RVP_labels[i]] = this.RVP_DataObj[this.RVP_labels[i].split(" ").join("_")] != undefined ? (this.RVP_DataObj[this.RVP_labels[i].split(" ").join("_")][0]) : this.RVP_DataObj[this.RVP_labels[i].split(" ").join("_")];
-    }
     console.log('this.input', this.input)
     this.cdr.detectChanges();
     var key_array = Object.keys(this.RVP_DataObj)
@@ -132,6 +126,19 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
       this.Field_Names += "\"" + key_array[i] + "\"";
       this.Field_Values += "\"" + this.RVP_DataObj[key_array[i]] + "\"";
     }
+    for (let i = 1; i < this.totalRow; i++) {
+      this.rows.push(i);
+    }
+    for (let i = 0; i < this.RVP_labels.length; i++) {
+      if (this.fieldType[this.RVP_labels[i]].toLowerCase() == 'checkbox') {
+        this.input[this.RVP_labels[i]] = [this.RVP_DataObj[this.RVP_labels[i].split(" ").join("_")] != undefined ? (this.RVP_DataObj[this.RVP_labels[i].split(" ").join("_")][0]) : this.RVP_DataObj[this.RVP_labels[i].split(" ").join("_")]];
+        // this.input[this.RVP_labels[i]] = this.input[this.RVP_labels[i]].push();
+        console.log('value in', this.input[this.RVP_labels[i]])
+      } else {
+        this.input[this.RVP_labels[i]] = this.RVP_DataObj[this.RVP_labels[i].split(" ").join("_")] != undefined ? (this.RVP_DataObj[this.RVP_labels[i].split(" ").join("_")][0]) : this.RVP_DataObj[this.RVP_labels[i].split(" ").join("_")];
+      }
+    }
+
   }
 
   Update_value(v: any, n: any) { //v=value and n=paramter name

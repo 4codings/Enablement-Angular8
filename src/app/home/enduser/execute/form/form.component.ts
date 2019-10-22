@@ -19,7 +19,7 @@ import { OptionalValuesService } from "src/app/services/optional-values.service"
 export class ReportData {
   public RESULT: string;
   public V_EXE_CD: string[];
-  constructor() {}
+  constructor() { }
 }
 @Component({
   selector: "app-form",
@@ -135,9 +135,9 @@ export class FormComponent implements OnInit {
     public toasterService: ToastrService,
     public dialog: MatDialog,
     public optionalService: OptionalValuesService
-  ) {}
+  ) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
   ngAfterViewInit() {
     this.http
       .get("../../../../../assets/control-variable.json")
@@ -214,17 +214,17 @@ export class FormComponent implements OnInit {
     this.http
       .get(
         this.apiService.endPoints.securedJSON +
-          "V_SRC_ID=" +
-          this.V_SRC_ID +
-          "&V_APP_ID=" +
-          this.V_APP_ID +
-          "&V_PRCS_ID=" +
-          this.V_PRCS_ID +
-          "&V_USR_NM=" +
-          this.V_USR_NM +
-          "&V_PRCS_TXN_ID=" +
-          this.V_PRCS_TXN_ID +
-          "&REST_Service=Service_Instances&Verb=GET"
+        "V_SRC_ID=" +
+        this.V_SRC_ID +
+        "&V_APP_ID=" +
+        this.V_APP_ID +
+        "&V_PRCS_ID=" +
+        this.V_PRCS_ID +
+        "&V_USR_NM=" +
+        this.V_USR_NM +
+        "&V_PRCS_TXN_ID=" +
+        this.V_PRCS_TXN_ID +
+        "&REST_Service=Service_Instances&Verb=GET"
       )
       .subscribe((res: any) => {
         if (res.length) {
@@ -245,6 +245,7 @@ export class FormComponent implements OnInit {
       }
       this.RVP_Values.push(this.RVP_DataObj[this.RVP_Keys[i]]);
       this.RVP_labels.push(this.RVP_Keys[i].replace(new RegExp("_", "g"), " "));
+      this.options[this.RVP_Keys[i].replace(new RegExp("_", "g"), " ")] = [];
       if (this.HAS_DSPLY[i] === "'Y'") {
         this.RVP_placeholder.push(
           this.DISPLAY_TXT[i].toString().replace(/'/g, "")
@@ -596,7 +597,7 @@ export class FormComponent implements OnInit {
       .subscribe(res => {
         res;
         const resData = res.json();
-        this.options[display_label] = resData[V_PARAM_NM];
+        this.options[display_label] = (resData[V_PARAM_NM]);
       });
   }
 

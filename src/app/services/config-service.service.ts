@@ -19,7 +19,7 @@ export class ConfigServiceService {
   domain_name = this.globals.domain_name;
   chartPreferences: any = [];
 
-  chartSelection: any = {chartNo:'',chartPreferences:[],update:false,selection:''};
+  chartSelection: any = { chartNo: '', chartPreferences: [], update: false, selection: '' };
   chartposition: any = [];
   ReportTable_data: any;
   chart_translate: any = [];
@@ -110,13 +110,15 @@ export class ConfigServiceService {
 
   public getFieldInValidMsg(modelReference: any, fieldName: string) {
     let msg = fieldName + " is not valid";
-    if (CommonUtils.isValidValue(modelReference.errors)) {
-      if (modelReference.errors.invalid) {
-        msg = "";
-      } else if (modelReference.errors.pattern) {
-        msg = fieldName + " is not valid";
-      } else if (modelReference.errors.maxLength) {
-        msg = fieldName + " should not be more then " + this.getFieldMaxLength(fieldName);
+    if (modelReference && modelReference.errors != undefined) {
+      if (CommonUtils.isValidValue(modelReference.errors)) {
+        if (modelReference.errors.invalid) {
+          msg = "";
+        } else if (modelReference.errors.pattern) {
+          msg = fieldName + " is not valid";
+        } else if (modelReference.errors.maxLength) {
+          msg = fieldName + " should not be more then " + this.getFieldMaxLength(fieldName);
+        }
       }
     }
     return msg;
@@ -752,16 +754,16 @@ export class ConfigServiceService {
     return this.http.get(this.apiUrlGetSecure + "V_USR_NM=" + this.V_USR_NM + "&V_ITM_ID=" + V_ITM_ID + "&V_PRF_NM=" + V_PRF_NM + "&V_PRF_VAL=" + V_PRF_VAL + "&V_SRC_ID=" + V_SRC_ID + "&V_UNIQUE_ID=" + UNIQUE_ID + "&REST_Service=User_Preference&Verb=PATCH", this.apiService.setHeaders());
   }
 
-  deletechartstyling(UNIQUE_ID, V_SRC_ID, V_PRF_NM, V_ITM_ID){
+  deletechartstyling(UNIQUE_ID, V_SRC_ID, V_PRF_NM, V_ITM_ID) {
     return this.http.get(this.apiUrlGetSecure + "V_USR_NM=" + this.V_USR_NM + "&V_PRF_NM=" + V_PRF_NM + "&V_UNIQUE_ID=" + UNIQUE_ID + "&V_ITM_ID=" + V_ITM_ID + "&V_SRC_ID=" + V_SRC_ID + "&REST_Service=User_Preference&Verb=DELETE", this.apiService.setHeaders());
     //enablement.us/Enablement/rest/v1/secured?V_USR_NM=VARCHAR&V_PRF_NM=VARCHAR&V_UNIQUE_ID=BIGINT&V_ITM_ID=INT&V_SRC_ID=INT&REST_Service=User_Preference&Verb=DELETE
   }
 
-  deletepreferencerow(UNIQUE_ID, V_SRC_ID, V_ITM_ID){
+  deletepreferencerow(UNIQUE_ID, V_SRC_ID, V_ITM_ID) {
     return this.http.get(this.apiUrlGetSecure + "V_USR_NM=" + this.V_USR_NM + "&V_UNIQUE_ID=" + UNIQUE_ID + "&V_ITM_ID=" + V_ITM_ID + "&V_SRC_ID=" + V_SRC_ID + "&REST_Service=User_Preference&Verb=DELETE", this.apiService.setHeaders());
   }
 
-  deleteallpreferences(V_SRC_ID){
+  deleteallpreferences(V_SRC_ID) {
     return this.http.get(this.apiUrlGetSecure + "V_USR_NM=" + this.V_USR_NM + "&V_SRC_ID=" + V_SRC_ID + "&REST_Service=User_Preference&Verb=DELETE", this.apiService.setHeaders());
   }
   //________________________________________________________________________________________
