@@ -24,11 +24,11 @@ export class AuthService {
 		this.userDetail = this.store.pipe(select('userInfo'));
     this.userDetail.subscribe(data => {
             // this.userServicve.clear();
-            if (data.userInfo.TOKEN != '') {
-              if (this.userService.getDetailFromStorage() == null) {
-                this.userService.setUser(data.userInfo);
-              }
-            }
+            // if (data.userInfo.TOKEN != '') {
+            //   if (this.userService.getDetailFromStorage() == null) {
+            //     this.userService.setUser(data.userInfo);
+            //   }
+            // }
 
 
         });
@@ -36,6 +36,10 @@ export class AuthService {
 
 	userLogin(data) {
 		return this.http.post<userInfo>('https://enablement.us/Enablement/rest/authentication', data);
+  }
+
+  userSignUp(data) {
+		return this.http.post<userInfo>('https://enablement.us/Enablement/rest/emailConfirmation/loginEmail', data);
   }
 
   CheckSrc(form){

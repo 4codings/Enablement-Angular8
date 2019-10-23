@@ -6,7 +6,15 @@ const userinfoData: userInfo = {
   SRC_ID: null,
   SRC_CD: '',
   TOKEN: '',
-  USR_NM: ''
+  USR_NM: '',
+  resultLoginValidity: "",
+  resultSrc: "",
+  resultSrcAdminEmailID: "",
+  resultSrcId: "",
+  resultUsrId: "",
+  resultUsrOnly: "",
+  resultUsrPwd: "",
+  resultUsrname: ""
 };
 
 export interface UserLoginState {
@@ -35,6 +43,13 @@ export function userLoginReducer(
         loaded: false
       };
 
+    case UserLoginActions.USER_SIGN_UP:
+      return {
+        ...state,
+        loading: true,
+        loaded: false
+      };  
+
     case UserLoginActions.USER_LOGIN_SUCCESS:
       return {
         ...state,
@@ -49,10 +64,10 @@ export function userLoginReducer(
         loading: false,
         error: action.payload
       };
-    
+      
       case UserLoginActions.CLEAR_USER_INFO:
       return {
-        userInfo: {'USR_ID': null, 'SRC_ID': null,'SRC_CD': '', 'TOKEN': '', 'USR_NM': ''},
+        userInfo: {'USR_ID': null, 'SRC_ID': null,'SRC_CD': '', 'TOKEN': '', 'USR_NM': '', 'resultLoginValidity': "", 'resultSrc': "", 'resultSrcAdminEmailID': "" , 'resultSrcId': "", 'resultUsrId': "", 'resultUsrOnly': "NO_SOURCE", 'resultUsrPwd': "", 'resultUsrname': ""},
         loading: false,
         loaded: false,
         error: ''

@@ -8,6 +8,8 @@ import * as usreLoginActions from '../store/auth/userlogin.action';
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { HttpClient } from '@angular/common/http';
+import { UserLoginState } from '../store/auth/userlogin.reducer';
+import { UserService } from '../core/user.service';
 
 @Component({
     selector: 'app-auth',
@@ -19,6 +21,7 @@ export class AuthComponent implements OnInit, OnDestroy {
     ui: any;
     didLoading$: Observable<boolean>;
     didLoaded$: Observable<boolean>;
+    userLoginState$: Observable<UserLoginState>;
     sub;
     isLoginButton = true;
     public agcy: boolean = true;
@@ -49,6 +52,7 @@ export class AuthComponent implements OnInit, OnDestroy {
         // private l: LoggerService,
         private authService: AuthService,
         private toastr: ToastrService,
+        public userService: UserService,
         private store: Store<AppState>
     ) {
     }
@@ -59,9 +63,46 @@ export class AuthComponent implements OnInit, OnDestroy {
         this.didLoading$ = this.store.pipe(select(state => state.userInfo.loading));
 
         this.didLoaded$ = this.store.pipe(select(state => state.userInfo && state.userInfo.loaded));
-        this.sub = this.didLoaded$.subscribe(loaded => {
-            if (loaded == true) {
-                this.router.navigateByUrl('/user', { skipLocationChange: true });
+        this.userLoginState$ = this.store.pipe(select(state => state.userInfo));
+        this.sub = this.userLoginState$.subscribe(userState => {
+            // if (userState.loaded == true) {
+            //     this.router.navigateByUrl('/user', { skipLocationChange: true });
+            // }
+            if (userState.loaded == true) {
+                if (userState.userInfo.resultUsrOnly === "NO_SOURCE") {
+                    this.srcBloc = true; //show src block
+                    this.agcy = false;
+                    this.isLoginButton = false;
+                    this.toastr.warning("Please enter your Organization name", "Agency");
+                }
+                else if (userState.userInfo.resultUsrOnly == "TERMINATED") {
+                    this.toastr.error('Your are Terminated..!', 'Login');
+                } else if (userState.userInfo.resultUsrOnly == "TRUE") {
+                    this.msg_alert = "";
+                    if (userState.userInfo.resultLoginValidity == "FALSE") {
+                        this.msg_alert = "Your Login Account is expired. Contact your Admin at " + userState.userInfo.resultSrcAdminEmailID + " to activate it.";
+                    }
+                } if (userState.userInfo.resultUsrPwd == "INCORRECT" && userState.userInfo.resultLoginValidity == "") {
+                    this.countAt++;
+                    if (this.countAt == 3) {
+                        this.toastr.warning("Please provide a new password that you want to reset", "Change password");
+                        this.pass1 = false;
+                        this.pass2 = true;
+                        this.rstBnt = true;
+                        this.logBtn = false;
+                        this.captcha = true;
+                        //this.sendResetPassowrdEmail(form);
+                    } else {
+                        this.toastr.warning("Invalid password,Attempt=" + this.countAt, "Login");
+                    }
+                } else if (userState.userInfo.resultUsrPwd == "CORRECT" && userState.userInfo.resultLoginValidity == "TRUE") {
+                    if (userState.userInfo.TOKEN != '') {
+                        if (this.userService.getDetailFromStorage() == null) {
+                            this.userService.setUser(userState.userInfo);
+                        }
+                        this.router.navigateByUrl('/user', { skipLocationChange: true });
+                    }
+                }
             }
         });
     }
@@ -79,7 +120,13 @@ export class AuthComponent implements OnInit, OnDestroy {
         // } else {
         //     this.CheckUsrPw(form);
         // }
-        this.store.dispatch(new usreLoginActions.userLogin(body));
+        console.log(form.value);
+        if (form.value.agency != undefined) {
+            let payload =  {"v_usr_nm":form.value.email, "V_PSWRD":form.value.pass, "SRC_CD":form.value.agency}
+            this.store.dispatch(new usreLoginActions.userSignUp(payload));
+        } else {
+            this.store.dispatch(new usreLoginActions.userLogin(body));
+        }
     }
     CheckUsrPw(form) {
         const body = {

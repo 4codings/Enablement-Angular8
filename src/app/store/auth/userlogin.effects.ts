@@ -21,4 +21,15 @@ export class UserLoginEffects {
       )
     )
   );
+
+  @Effect({ dispatch: true })
+  UserSignUp$: Observable<Action> = this.actions$.pipe(
+    ofType<userLoginActions.userSignUp>(userLoginActions.USER_SIGN_UP),
+    mergeMap((action: userLoginActions.userSignUp) =>
+      this.auth.userSignUp(action.payload).pipe(
+        map((user: userInfo) => new userLoginActions.userLoginSuccess(user)),
+        catchError(err => of(new userLoginActions.userLoginFail(err.error)))
+      )
+    )
+  );
 }
