@@ -17,7 +17,7 @@ export class UserLoginEffects {
     mergeMap((action: userLoginActions.userLogin) =>
       this.auth.userLogin(action.payload).pipe(
         map((user: userInfo) => new userLoginActions.userLoginSuccess(user)),
-        catchError(err => of(new userLoginActions.userLoginFail(err.error)))
+        catchError(err => of(new userLoginActions.userLoginFail('invalid-pwd')))
       )
     )
   );
@@ -27,8 +27,19 @@ export class UserLoginEffects {
     ofType<userLoginActions.userSignUp>(userLoginActions.USER_SIGN_UP),
     mergeMap((action: userLoginActions.userSignUp) =>
       this.auth.userSignUp(action.payload).pipe(
-        map((user: userInfo) => new userLoginActions.userLoginSuccess(user)),
-        catchError(err => of(new userLoginActions.userLoginFail(err.error)))
+        map((user: any) => new userLoginActions.userSignUpSuccess(user)),
+        catchError(err => of(new userLoginActions.userSignUpFail(err.error)))
+      )
+    )
+  );
+
+  @Effect({ dispatch: true })
+  ChangePassword$: Observable<Action> = this.actions$.pipe(
+    ofType<userLoginActions.changePassword>(userLoginActions.CHANGE_PASSWORD),
+    mergeMap((action: userLoginActions.changePassword) =>
+      this.auth.changePassword(action.payload).pipe(
+        map((res: any) => new userLoginActions.changePasswordSuccess(res)),
+        catchError(err => of(new userLoginActions.changePasswordFail(err.error)))
       )
     )
   );

@@ -20,6 +20,8 @@ export class AuthComponent implements OnInit, OnDestroy {
     form: FormGroup;
     ui: any;
     didLoading$: Observable<boolean>;
+    didError$: Observable<string>;
+    count$: Observable<number>;
     didLoaded$: Observable<boolean>;
     userLoginState$: Observable<UserLoginState>;
     sub;
@@ -61,6 +63,8 @@ export class AuthComponent implements OnInit, OnDestroy {
         this.initForm();
 
         this.didLoading$ = this.store.pipe(select(state => state.userInfo.loading));
+        this.didError$ = this.store.pipe(select(state => state.userInfo.error));
+        this.count$ = this.store.pipe(select(state => state.userInfo.count));
 
         this.didLoaded$ = this.store.pipe(select(state => state.userInfo && state.userInfo.loaded));
         this.userLoginState$ = this.store.pipe(select(state => state.userInfo));
@@ -73,7 +77,13 @@ export class AuthComponent implements OnInit, OnDestroy {
                     this.srcBloc = true; //show src block
                     this.agcy = false;
                     this.isLoginButton = false;
+                    this.form.reset();
                     this.toastr.warning("Please enter your Organization name", "Agency");
+                } else if (userState.userInfo.TOKEN != '') {
+                    if (this.userService.getDetailFromStorage() == null) {
+                        this.userService.setUser(userState.userInfo);
+                    }
+                    this.router.navigateByUrl('/user', { skipLocationChange: true });
                 }
                 else if (userState.userInfo.resultUsrOnly == "TERMINATED") {
                     this.toastr.error('Your are Terminated..!', 'Login');
@@ -82,50 +92,61 @@ export class AuthComponent implements OnInit, OnDestroy {
                     if (userState.userInfo.resultLoginValidity == "FALSE") {
                         this.msg_alert = "Your Login Account is expired. Contact your Admin at " + userState.userInfo.resultSrcAdminEmailID + " to activate it.";
                     }
-                } if (userState.userInfo.resultUsrPwd == "INCORRECT" && userState.userInfo.resultLoginValidity == "") {
-                    this.countAt++;
-                    if (this.countAt == 3) {
-                        this.toastr.warning("Please provide a new password that you want to reset", "Change password");
-                        this.pass1 = false;
-                        this.pass2 = true;
-                        this.rstBnt = true;
-                        this.logBtn = false;
-                        this.captcha = true;
-                        //this.sendResetPassowrdEmail(form);
-                    } else {
-                        this.toastr.warning("Invalid password,Attempt=" + this.countAt, "Login");
-                    }
-                } else if (userState.userInfo.resultUsrPwd == "CORRECT" && userState.userInfo.resultLoginValidity == "TRUE") {
-                    if (userState.userInfo.TOKEN != '') {
-                        if (this.userService.getDetailFromStorage() == null) {
-                            this.userService.setUser(userState.userInfo);
-                        }
-                        this.router.navigateByUrl('/user', { skipLocationChange: true });
-                    }
                 }
+
+            } else if(userState.isSignUp === true) {
+                this.srcBloc = false; //show src block
+                this.agcy = true;
+                this.isLoginButton = true;
+                this.toastr.success("Register Successfully");
             }
         });
+
+        this.count$.subscribe(count => {
+            if(count != 0) {
+                if (count == 3) {
+                    this.toastr.warning("Please provide a new password that you want to reset", "Change password");
+                    this.pass1 = false;
+                    this.pass2 = true;
+                    this.rstBnt = true;
+                    this.logBtn = false;
+                    this.captcha = true;
+                    this.store.dispatch(new usreLoginActions.resetCount());
+                } else {
+                    this.toastr.warning("Invalid password,Attempt=" + count, "Login");
+                }
+            }
+        })
     }
 
     login(form: NgForm) {
         if (form.invalid) { return; }
-        const body = {
-            V_USR_NM: form.value.email,
-            V_PSWRD: form.value.pass,
-            V_ACTN_NM: 'LOGIN'
-        };
         // console.log('form.value.agency', form.value.agency);
         // if (form.value.agency != undefined) {
         //     this.sendConfirmation(form);
         // } else {
         //     this.CheckUsrPw(form);
-        // }
-        console.log(form.value);
-        if (form.value.agency != undefined) {
-            let payload =  {"v_usr_nm":form.value.email, "V_PSWRD":form.value.pass, "SRC_CD":form.value.agency}
-            this.store.dispatch(new usreLoginActions.userSignUp(payload));
+        // } 
+        if(this.rstBnt) {
+            console.log(this.myRecaptcha.value);
+            if(this.myRecaptcha.value){
+                let json =  {"V_USR_NM":form.value.email, "V_PSWRD":form.value.passr}
+                this.store.dispatch(new usreLoginActions.changePassword(json));
+            } else {
+                return;
+            }
         } else {
-            this.store.dispatch(new usreLoginActions.userLogin(body));
+            const body = {
+                V_USR_NM: form.value.email,
+                V_PSWRD: form.value.pass,
+                V_ACTN_NM: 'LOGIN'
+            };
+            if (form.value.agency != undefined) {
+                let payload =  {"V_USR_NM":form.value.email, "V_PSWRD":form.value.pass, "SRC_CD":form.value.agency}
+                this.store.dispatch(new usreLoginActions.userSignUp(payload));
+            } else {
+                this.store.dispatch(new usreLoginActions.userLogin(body));
+            }
         }
     }
     CheckUsrPw(form) {

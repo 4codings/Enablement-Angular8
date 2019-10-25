@@ -42,6 +42,10 @@ export class AuthService {
 		return this.http.post<userInfo>('https://enablement.us/Enablement/rest/emailConfirmation/loginEmail', data);
   }
 
+  changePassword(data) {
+		return this.http.post<any>('https://enablement.us/Enablement/rest/emailConfirmation/resetPassword', data);
+  }
+
   CheckSrc(form){
     let body={
       "V_SRC_CD":form.value.agency,
