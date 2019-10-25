@@ -93,7 +93,7 @@ import { RecaptchaModule } from 'angular-google-recaptcha';
     ScrollingModule,
     TreeviewModule.forRoot(),
     RecaptchaModule.forRoot({
-      siteKey: '6LcD474UAAAAAK4iK-RtalVy4iODfJXRovehR6Bh',
+      siteKey: '6Lc5jr8UAAAAAPo33hRcesb__iI1-z2T6-I6ikb5',
     })
   ],
   declarations: [

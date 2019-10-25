@@ -47,7 +47,7 @@
 
           </div>
           <br />
-          <div *ngIf="captcha">
+          <div *ngIf="captcha" class="mb-3">
             <recaptcha [formControl]="myRecaptcha" (scriptLoad)="onScriptLoad()" (scriptError)="onScriptError()">
             </recaptcha>
           </div>
@@ -65,7 +65,7 @@
           <div *ngIf="rstBnt==true" flex fxLayout="row" fxLayout.lt-sm="column">
             <div fxFlex="27"></div>
             <div fxFlex="46" class="parent">
-              <button class="content" type="" mat-raised-button color="primary">Reset</button>
+              <button class="content" type="" mat-raised-button color="primary">Reset Password</button>
             </div>
             <div fxFlex="27"></div>
           </div>

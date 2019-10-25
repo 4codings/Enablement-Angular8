@@ -46,7 +46,9 @@ export function userLoginReducer(
       return {
         ...state,
         loading: true,
-        loaded: false
+        loaded: false,
+        isPasswordReset: false,
+        isSignUp: false
       }; 
 
     case UserLoginActions.USER_LOGIN_SUCCESS:

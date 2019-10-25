@@ -99,21 +99,27 @@ export class AuthComponent implements OnInit, OnDestroy {
                 this.agcy = true;
                 this.isLoginButton = true;
                 this.toastr.success("Register Successfully");
+            } else if(userState.isPasswordReset === true) {
+                this.pass1 = true;
+                this.pass2 = false;
+                this.rstBnt = false;
+                this.logBtn = true;
+                this.captcha = false;
+                this.form.reset();
+                this.toastr.success("Password Reset Successfully");
             }
         });
 
         this.count$.subscribe(count => {
             if(count != 0) {
                 if (count == 3) {
-                    this.toastr.warning("Please provide a new password that you want to reset", "Change password");
+                    //this.toastr.warning("Please provide a new password that you want to reset", "Change password");
                     this.pass1 = false;
                     this.pass2 = true;
                     this.rstBnt = true;
                     this.logBtn = false;
                     this.captcha = true;
                     this.store.dispatch(new usreLoginActions.resetCount());
-                } else {
-                    this.toastr.warning("Invalid password,Attempt=" + count, "Login");
                 }
             }
         })
@@ -128,7 +134,6 @@ export class AuthComponent implements OnInit, OnDestroy {
         //     this.CheckUsrPw(form);
         // } 
         if(this.rstBnt) {
-            console.log(this.myRecaptcha.value);
             if(this.myRecaptcha.value){
                 let json =  {"V_USR_NM":form.value.email, "V_PSWRD":form.value.passr}
                 this.store.dispatch(new usreLoginActions.changePassword(json));
