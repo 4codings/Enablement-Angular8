@@ -3,685 +3,699 @@
 }*/
 
 .errors {
-    color: red;
-    font-size: 13px;
+  color: red;
+  font-size: 13px;
 }
 
 .toggle {
-    text-align: end;
-    a {
-        color: inherit;
-    }
+  text-align: end;
+
+  a {
+    color: inherit;
+  }
 }
 
 :host ::ng-deep .treeview-text {
-    display: none;
+  display: none;
 }
 
 .parent {
-    text-align: center;
-    align-content: center;
-    display: inline;
+  text-align: center;
+  align-content: center;
+  display: inline;
 }
 
 .parent-color {
-    color: #000;
+  color: #000;
 }
 
 .parent-font {
-    font-size: 14px;
-    font-weight: bold;
+  font-size: 14px;
+  font-weight: bold;
 }
 
 .selected-process-font {
-    font-weight: normal;
+  font-weight: normal;
 }
 
 .child-color {
-    color: #000;
-    font-weight: normal;
+  color: #000;
+  font-weight: normal;
 }
 
 .tree-bg-color {
-    background-color: #ededed;
+  background-color: #ededed;
 }
 
 .properties-bg-color {
-    background-color: #ededed;
+  background-color: #ededed;
 }
 
 .add-btn {
-    font-size: 19px;
-    margin-left: -27px;
+  font-size: 19px;
+  margin-left: -27px;
 }
 
 .toggle,
 .import-export {
-    button {
-        min-width: 0;
-        padding: 0;
-    }
+  button {
+    min-width: 0;
+    padding: 0;
+  }
 }
 
 .import-export {
-    padding: 20px;
-    display: inline-flex;
-    .button-wrapper {
-        border-radius: 2px;
-        border: solid 1px #E0E0E0;
-        height: 40px;
-        margin-right: 20px;
-    }
-    .mat-divider {
-        height: 80%;
-    }
+  padding: 20px;
+  display: inline-flex;
+
+  .button-wrapper {
+    border-radius: 2px;
+    border: solid 1px #E0E0E0;
+    height: 40px;
+    margin-right: 20px;
+  }
+
+  .mat-divider {
+    height: 80%;
+  }
 }
 
 :host ::ng-deep .mat-tab-label {
-    padding: 0 10px;
-    min-width: 60px;
-    .mat-tab-label-content {
-        margin-bottom: -15px;
-    }
+  padding: 0 10px;
+  min-width: 60px;
+
+  .mat-tab-label-content {
+    margin-bottom: -15px;
+  }
 }
 
 :host ::ng-deep .mat-radio-button {
-    padding-bottom: 2px !important;
+  padding-bottom: 2px !important;
 }
 
 :host ::ng-deep .bjs-container .djs-container .djs-palette .two-open {
-    position: absolute;
-    left: 20px;
-    top: 20px;
-    box-sizing: border-box;
-    width: 48px;
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  box-sizing: border-box;
+  width: 48px;
 }
 
 :host ::ng-deep .bjs-container .djs-container .djs-palette .hide {
-    position: absolute;
-    left: 20px;
-    top: 20px;
-    box-sizing: border-box;
-    width: 48px;
-    display: none;
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  box-sizing: border-box;
+  width: 48px;
+  display: none;
 }
 
 :host ::ng-deep .bpmn-icon-hand-tool:before {
-    content: '\e868';
-    color: rgb(230, 218, 171);
+  content: '\e868';
+  color: rgb(230, 218, 171);
 }
 
 :host ::ng-deep .bpmn-icon-start-event-none:before {
-    content: '\e845';
-    color: green;
+  content: '\e845';
+  color: green;
 }
 
 :host ::ng-deep .bpmn-icon-intermediate-event-none:before {
-    content: '\e82d';
-    color: yellow;
+  content: '\e82d';
+  color: yellow;
 }
 
 :host ::ng-deep .bpmn-icon-connection-multi:before {
-    color: rgb(255, 116, 0);
+  color: rgb(255, 116, 0);
 }
 
 :host ::ng-deep .bpmn-icon-end-event-none:before {
-    content: '\e838';
-    color: red;
+  content: '\e838';
+  color: red;
 }
 
 :host ::ng-deep .bpmn-icon-gateway-none:before {
-    content: '\e834';
-    color: violet;
+  content: '\e834';
+  color: violet;
 }
 
 :host ::ng-deep .bpmn-icon-task:before {
-    content: '\e821';
-    color: blue;
+  content: '\e821';
+  color: blue;
 }
 
 :host ::ng-deep .bpmn-icon-subprocess-expanded:before {
-    content: '\e820';
-    color: rgb(0, 225, 255);
+  content: '\e820';
+  color: rgb(0, 225, 255);
 }
 
 :host ::ng-deep .bpmn-icon-data-store:before {
-    content: '\e84e';
-    color: orange;
+  content: '\e84e';
+  color: orange;
 }
 
 :host ::ng-deep .bpmn-icon-participant:before {
-    content: '\e85c';
-    color: pink;
+  content: '\e85c';
+  color: pink;
 }
 
 :host ::ng-deep .bpmn-icon-group:before {
-    content: '\e869';
-    color: rgb(202, 111, 51);
+  content: '\e869';
+  color: rgb(202, 111, 51);
 }
 
 :host ::ng-deep .bpmn-icon-data-object:before {
-    content: '\e84b';
-    color: rgb(146, 191, 250);
+  content: '\e84b';
+  color: rgb(146, 191, 250);
 }
 
 :host ::ng-deep .bpmn-icon-connection-multi:before {
-    color: rgb(255, 116, 0);
+  color: rgb(255, 116, 0);
 }
 
 :host ::ng-deep .bpmn-icon-space-tool:before {
-    color: #a366ff;
+  color: #a366ff;
 }
 
 :host ::ng-deep .bpmn-icon-lasso-tool:before {
-    color: #77ff33;
+  color: #77ff33;
 }
 
 :host ::ng-deep .bpmn-icon-screw-wrench:before {
-    color: #802b00;
+  color: #802b00;
 }
 
 :host ::ng-deep .bpmn-icon-trash:before {
-    color: #ff3300;
+  color: #ff3300;
 }
 
 :host ::ng-deep .bpmn-icon-text-annotation:before {
-    color: #99994d;
+  color: #99994d;
 }
 
 :host ::ng-deep .bpmn-icon-start-event-message:before {
-    color: #ff99ff;
+  color: #ff99ff;
 }
 
 :host ::ng-deep .bpmn-icon-start-event-timer:before {
-    color: #99bbff;
+  color: #99bbff;
 }
 
 :host ::ng-deep .bpmn-icon-start-event-condition:before {
-    color: #ff5c33;
+  color: #ff5c33;
 }
 
 :host ::ng-deep .bpmn-icon-start-event-signal:before {
-    color: #ffbf00;
+  color: #ffbf00;
 }
 
 :host ::ng-deep .bpmn-icon-service:before {
-    color: #0066ff;
+  color: #0066ff;
 }
 
 :host ::ng-deep .bpmn-icon-script:before {
-    color: #00ff00;
+  color: #00ff00;
 }
 
 :host ::ng-deep .bpmn-icon-call-activity:before {
-    color: #4d0026;
+  color: #4d0026;
 }
 
 :host ::ng-deep .bpmn-icon-subprocess-collapsed:before {
-    color: #884dff;
+  color: #884dff;
 }
 
 :host ::ng-deep .bpmn-icon-business-rule:before {
-    color: #66ccff;
+  color: #66ccff;
 }
 
 :host ::ng-deep .bpmn-icon-manual:before {
-    color: #339933;
+  color: #339933;
 }
 
 :host ::ng-deep .bpmn-icon-user:before {
-    color: #99cc00;
+  color: #99cc00;
 }
 
 :host ::ng-deep .bpmn-icon-receive:before {
-    color: #b35900;
+  color: #b35900;
 }
 
 :host ::ng-deep .bpmn-icon-send:before {
-    color: #993300;
+  color: #993300;
 }
 
 :host ::ng-deep .bpmn-icon-end-event-message:before {
-    color: #ff1a1a;
+  color: #ff1a1a;
 }
 
 :host ::ng-deep .bpmn-icon-end-event-escalation:before {
-    color: #800000;
+  color: #800000;
 }
 
 :host ::ng-deep .bpmn-icon-end-event-error:before {
-    color: #990099;
+  color: #990099;
 }
 
 :host ::ng-deep .bpmn-icon-end-event-compensation:before {
-    color: #1af7ff;
+  color: #1af7ff;
 }
 
 :host ::ng-deep .bpmn-icon-end-event-signal:before {
-    color: #00ff00;
+  color: #00ff00;
 }
 
 :host ::ng-deep .bpmn-icon-end-event-terminate:before {
-    color: #4d0026;
+  color: #4d0026;
 }
 
 :host ::ng-deep label {
-    text-align: left;
-    margin: 2px 2px
+  text-align: left;
+  margin: 2px 2px
 }
 
 :host ::ng-deep .treeview-header label {
-    text-align: center;
+  text-align: center;
 }
 
 :host ::ng-deep select {
-    width: 178px;
-    height: 26px;
+  width: 178px;
+  height: 26px;
 }
 
 :host ::ng-deep textarea {
-    width: 178px;
-    height: 80px;
+  width: 178px;
+  height: 80px;
 }
 
 :host ::ng-deep .oneSpace {
-    padding-top: 3px;
-    padding-bottom: 0px;
+  padding-top: 3px;
+  padding-bottom: 0px;
 }
 
 :host ::ng-deep .spaceDiv {
-    padding-top: 10px;
-    padding-bottom: 8px;
+  padding-top: 10px;
+  padding-bottom: 8px;
 }
 
 :host ::ng-deep #seconds {
-    width: 50px;
-    margin-left: 3px;
+  width: 50px;
+  margin-left: 3px;
 }
 
 :host ::ng-deep #seconds_label {
-    width: 60px;
+  width: 60px;
 }
 
 :host ::ng-deep #priority {
-    align-content: right;
-    width: 50px;
+  align-content: right;
+  width: 50px;
 }
 
 :host ::ng-deep #priority_label {
-    text-align: right;
-    width: 50px;
+  text-align: right;
+  width: 50px;
 }
 
 :host ::ng-deep .row1 {
-    margin-left: 0px;
+  margin-left: 0px;
 }
 
 :host ::ng-deep .mat-input-element,
 input {
-    text-align: center;
-    width: 100%;
-    height: 25px;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  text-align: center;
+  width: 100%;
+  height: 25px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 :host ::ng-deep .mat-tab-body-content {
-    padding: 0 12px;
-    height: auto !important;
+  padding: 0 12px;
+  height: auto !important;
 }
 
 :host ::ng-deep .generalTabV {
-    padding-top: 2px;
-    padding-bottom: 0px;
+  padding-top: 2px;
+  padding-bottom: 0px;
 }
 
 :host ::ng-deep .mat-tab-body-wrapper {
-    height: 100%;
+  height: 100%;
 }
 
 .m-t--10 {
-    margin-top: -10px !important;
+  margin-top: -10px !important;
 }
 
 :host ::ng-deep.chosen-container.chosen-container-single {
-    width: 300px !important;
-    /* or any value that fits your needs */
+  width: 300px !important;
+  /* or any value that fits your needs */
 }
 
 :host ::ng-deep .form_input .mat-form-field-infix {
-    padding: 0px;
-    border-top: none;
+  padding: 0px;
+  border-top: none;
 }
 
 :host ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-infix .mat-input-element {
-    border: 1px solid #000;
+  border: 1px solid #000;
 }
 
 .m-t-15 {
-    margin-top: 15px;
+  margin-top: 15px;
 }
 
 .caret-font {
-    font-size: 22px;
-    margin-left: 1.3rem;
+  font-size: 22px;
+  margin-left: 1.3rem;
 }
 
-.fa-folder, .fa-folder-open {
-    font-size: 14px;
-    margin-left: 1.3rem;
-    margin-right: 0.5rem !important;
+.fa-folder,
+.fa-folder-open {
+  font-size: 14px;
+  margin-left: 1.3rem;
+  margin-right: 0.5rem !important;
 }
 
 .more-vert-font {
-    font-size: 17px;
-    color: #fff;
+  font-size: 17px;
+  color: #fff;
 }
 
 .add-font {
-    margin-left: 0;
-    font-size: 22px;
+  margin-left: 0;
+  font-size: 22px;
 }
 
 .exe_disable {
-    background: lightgrey;
+  background: lightgrey;
 }
 
 ::ng-deep .mat-checkbox-inner-container {
-    background: #FFF;
+  background: #FFF;
 }
 
 .bg-white {
-    background: #FFF;
+  background: #FFF;
 }
 
 ::ng-deep .mat-radio-outer-circle {
-    background: #FFF;
+  background: #FFF;
 }
 
 .w-100-p {
-    width: 100px !important;
+  width: 100px !important;
 }
 
 .m-t-10 {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 .m-b-10 {
-    margin-bottom: 10px !important;
+  margin-bottom: 10px !important;
 }
 
 #Timeout_seconds_label {
-    width: 100px;
-    color: rgba(0, 0, 0, .38);
+  width: 100px;
+  color: rgba(0, 0, 0, .38);
 }
 
 #Timeout_seconds {
-    width: 50px;
+  width: 50px;
 }
 
 :host ::ng-deep .treeview-container .form-check .form-check-label.child-color {
-    margin-left: 1rem !important;
+  margin-left: 1rem !important;
 }
 
 :host ::ng-deep .treeview-container .form-check .form-check-label.child-color:hover {
-    background-color: #ccc !important;
+  background-color: #ccc !important;
 }
 
 :host ::ng-deep .treeview-container {
-    max-height: inherit !important;
-    overflow-y: inherit !important;
+  max-height: inherit !important;
+  overflow-y: inherit !important;
 }
 
 :host ::ng-deep .generalTabV label {
-    font-weight: 500;
+  font-weight: 500;
 }
 
 .tabTitle {
-    font-weight: bold !important;
+  font-weight: bold !important;
 }
 
 :host ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-wrapper {
-    padding-bottom: 1.2em !important;
+  padding-bottom: 1.2em !important;
 }
 
 :host ::ng-deep .treeview-container .row-item.parent-menu {
-    margin: 10px 0px !important;
+  margin: 10px 0px !important;
 }
 
 :host ::ng-deep .treeview-container .row-item {
-    margin-bottom: 0px !important;
+  margin-bottom: 0px !important;
 }
 
 :host ::ng-deep .form-check-label .mat-icon-button {
-    line-height: 35px !important;
+  line-height: 35px !important;
 }
 
 :host ::ng-deep .form-check-label .mat-icon-button:focus {
-    outline: none !important;
+  outline: none !important;
 }
 
 :host ::ng-deep .mat-tab-labels {
-    justify-content: center;
+  justify-content: center;
 }
 
 :host ::ng-deep .mat-tab-body.mat-tab-body-active,
 :host ::ng-deep .mat-tab-body {
-    height: 570px;
+  height: 570px;
 }
 
 :host ::ng-deep #side-nav-menu {
-    width: 24px;
-    height: 24px;
-    outline: none;
+  width: 24px;
+  height: 24px;
+  outline: none;
 }
 
 :host ::ng-deep #side-nav-menu .mat-button-wrapper {
-    vertical-align: top;
-    margin-top: 3px;
+  vertical-align: top;
+  margin-top: 3px;
 }
 
 :host ::ng-deep .mat-mini-fab .mat-button-wrapper {
-    padding: 0px !important;
+  padding: 0px !important;
 }
 
 mat-header-cell {
-    color: white;
-    font-weight: bold;
+  color: white;
+  font-weight: bold;
 }
 
 :host ::ng-deep .bpmn-icon-gateway-eventbased:before {
-    color: #4d0026;
+  color: #4d0026;
 }
 
 :host ::ng-deep .bpmn-icon-gateway-parallel:before {
-    color: #00ff00;
+  color: #00ff00;
 }
 
 :host ::ng-deep .bpmn-icon-gateway-or:before {
-    color: #ff1a1a;
+  color: #ff1a1a;
 }
 
 :host ::ng-deep .bpmn-icon-gateway-complex:before {
-    color: #ffbf00;
+  color: #ffbf00;
 }
 
 :host ::ng-deep .bpmn-icon-subprocess-collapsed:before {
-    color: #00ff00;
+  color: #00ff00;
 }
 
 :host ::ng-deep .bpmn-icon-event-subprocess-expanded:before {
-    color: #ff1a1a;
+  color: #ff1a1a;
 }
 
 :host ::ng-deep .bpmn-icon-transaction:before {
-    color: #ffbf00;
+  color: #ffbf00;
 }
 
 :host ::ng-deep .bpmn-icon-parallel-mi-marker:before {
-    color: #ff5c33;
+  color: #ff5c33;
 }
 
 :host ::ng-deep .bpmn-icon-sequential-mi-marker:before {
-    color: #ffbf00;
+  color: #ffbf00;
 }
 
 :host ::ng-deep .bpmn-icon-loop-marker:before {
-    color: #0066ff;
+  color: #0066ff;
 }
 
 :host ::ng-deep .bpmn-icon-ad-hoc-marker:before {
-    color: #00ff00;
+  color: #00ff00;
 }
 
 :host ::ng-deep .bpmn-icon-intermediate-event-catch-message:before {
-    color: #4d0026;
+  color: #4d0026;
 }
 
 :host ::ng-deep .bpmn-icon-intermediate-event-throw-message:before {
-    color: #76D7C4;
+  color: #76D7C4;
 }
 
 :host ::ng-deep .bpmn-icon-intermediate-event-catch-timer:before {
-    color: #B9770E;
+  color: #B9770E;
 }
 
 :host ::ng-deep .bpmn-icon-intermediate-event-throw-escalation:before {
-    color: #ffbf00;
+  color: #ffbf00;
 }
 
 :host ::ng-deep .bpmn-icon-intermediate-event-catch-condition:before {
-    color: #00ff00;
+  color: #00ff00;
 }
 
 :host ::ng-deep .bpmn-icon-intermediate-event-catch-link:before {
-    color: #ff1a1a;
+  color: #ff1a1a;
 }
 
 :host ::ng-deep .bpmn-icon-intermediate-event-throw-link:before {
-    color: #ffbf00;
+  color: #ffbf00;
 }
 
 :host ::ng-deep .bpmn-icon-intermediate-event-throw-compensation:before {
-    color: #ff5c33;
+  color: #ff5c33;
 }
 
 :host ::ng-deep .bpmn-icon-intermediate-event-catch-signal:before {
-    color: #ffbf00;
+  color: #ffbf00;
 }
 
 :host ::ng-deep .bpmn-icon-intermediate-event-throw-signal:before {
-    color: #0066ff;
+  color: #0066ff;
 }
 
 .active-menu {
-    color: #23629F;
-    // background-color: #fff;
-    padding: 0px 2px;
+  color: #23629F;
+  // background-color: #fff;
+  padding: 0px 2px;
 }
 
 :host ::ng-deep .parent-font button {
-    background: #7685D7;
-    color: #fff;
-    outline: none;
+  background: #7685D7;
+  color: #fff;
+  outline: none;
 }
 
-.fa-download, .fa-clock {
-    color: orange;
+.fa-download,
+.fa-clock {
+  color: orange;
 }
 
 .fa-desktop {
-    color: #ff1a1a;
+  color: #ff1a1a;
 }
 
 .fa-play-circle {
-    color: #ff0000;
+  color: #ff0000;
 }
 
-.fa-skull-crossbones, .fa-address-card {
-    color: #0066ff;
+.fa-skull-crossbones,
+.fa-address-card {
+  color: #0066ff;
 }
 
 .fa-pause-circle {
-    color: rgb(0, 225, 255);
+  color: rgb(0, 225, 255);
 }
 
 .fa-file-download {
-    color: rgb(0, 225, 255);
+  color: rgb(0, 225, 255);
 }
 
 .fa-thumbs-up {
-    color: #99cc00;
+  color: #99cc00;
 }
 
-.fa-pencil-square-o, .fa-plane {
-    color: rgb(255, 116, 0);
+.fa-pencil-square-o,
+.fa-plane {
+  color: rgb(255, 116, 0);
 }
 
 .fa-edit {
-    color: #a366ff;
+  color: #a366ff;
 }
 
 .fa-calendar {
-    color: rgb(255, 116, 0);
+  color: rgb(255, 116, 0);
 }
 
 .mat-menu-item .bpmn-icon-trash {
-    width: 22px;
-    height: 22px;
-    text-align: center;
-    display: inline-block;
-    font-size: 22px;
-    border-radius: 3px;
-    cursor: default;
-    box-shadow: 0 0 2px 1px #FEFEFE;
-    pointer-events: all;
-    color: red;
+  width: 22px;
+  height: 22px;
+  text-align: center;
+  display: inline-block;
+  font-size: 22px;
+  border-radius: 3px;
+  cursor: default;
+  box-shadow: 0 0 2px 1px #FEFEFE;
+  pointer-events: all;
+  color: red;
 }
 
 .mat-menu-item .bpmn-icon-screw-wrench {
-    width: 22px;
-    height: 22px;
-    text-align: center;
-    display: inline-block;
-    font-size: 22px;
-    border-radius: 3px;
-    cursor: default;
-    box-shadow: 0 0 2px 1px #FEFEFE;
-    pointer-events: all;
-    color: #152995;
-    vertical-align: middle;
+  width: 22px;
+  height: 22px;
+  text-align: center;
+  display: inline-block;
+  font-size: 22px;
+  border-radius: 3px;
+  cursor: default;
+  box-shadow: 0 0 2px 1px #FEFEFE;
+  pointer-events: all;
+  color: #152995;
+  vertical-align: middle;
 }
 
 .mat-menu-item .mat-icon:first-child {
-    color: #99cc00;
+  color: #99cc00;
 }
 
 .contact_phone .mat-menu-item .mat-icon {
-    color: #ff7400;
+  color: #ff7400;
 }
 
 .attach_file .mat-menu-item .mat-icon {
-    color: #ff7400;
+  color: #ff7400;
 }
 
 .delete_outline .mat-menu-item .mat-icon {
-    color: red;
+  color: red;
 }
 
 .mr-10 {
-    margin-right: 10px;
+  margin-right: 10px;
+}
+
+.mr-15 {
+  margin-right: 15px;
 }
 
 :host ::ng-deep .dynamicContent .f_label {
-    display: inline-block;
+  display: inline-block;
 }
 
 :host ::ng-deep .start_date .mat-form-field-infix {
-    border: none !important;
+  border: none !important;
 }
+
 :host ::ng-deep #properties .mat-expansion-panel-header {
-    height: 52px !important;
+  height: 52px !important;
 }
+
 /*mat-row {
     border-width: 1px;
     border-color: rgba(0,0,0,.12);
@@ -691,146 +705,162 @@ mat-header-cell {
     .mat-table .mat-row:nth-child(odd) {background: #FFF}
     */
 mat-header-row {
-    background-color: rgba(66, 63, 63, 0.78);
+  background-color: rgba(66, 63, 63, 0.78);
 }
+
 .mat-table {
-    min-width: 100% !important;
-    max-height: 100% !important;
+  min-width: 100% !important;
+  max-height: 100% !important;
 }
+
 @media screen and (max-width: 960px) {
-    .mat-table {
-      border: 0;
-      vertical-align: middle
-    }
-    mat-header-row {
-        background-color: #fff;
-    }
-    .mat-table caption {
-      font-size: 1em;
-    }
-    
-    /*  Enable this to hide header*/
-    .mat-table .mat-header-cell {
-      
-      border: 10px solid;
-      clip: rect(0 0 0 0);
-      height: 1px;
-      margin: -1px;
-      padding: 0;
-      position: absolute;
-      width: 1px;
-    }
-    
-    .mat-table .mat-row {
-      border-bottom: 5px solid #ddd;
-      display: block;
-    }
-    
-    .mat-table .mat-cell {
-      border-bottom: 1px solid #ddd;
-      display: block;
-      font-size: 1em;
-      text-align: right;
-      font-weight: bold;
-      height:30px;
-      margin-bottom: 3%;
-    }
-    .mat-cell {
-        border: none;
-    }
-    .mat-table .mat-cell:before {
-      /*
-      * aria-label has no advantage, it won't be read inside a table content: attr(aria-label);
-      */
-      content: attr(data-label);
-      float: left;
-      text-transform: uppercase;
-      font-weight: normal;  
-      font-size: .85em;
-      background-color: rgba(66, 63, 63, 0.78);
-      color: #fff;
-      padding: 5px;
-    }
-    .mat-table .mat-cell:last-child {
-      border-bottom: 0;
-    }
-      .mat-table .mat-cell:first-child {
-      margin-top: 4%;
-    }
+  .mat-table {
+    border: 0;
+    vertical-align: middle
   }
 
-.properties-open:hover, .application-open:hover {
-    text-decoration: none;
-    background: #c2c4c3;
+  mat-header-row {
+    background-color: #fff;
+  }
+
+  .mat-table caption {
+    font-size: 1em;
+  }
+
+  /*  Enable this to hide header*/
+  .mat-table .mat-header-cell {
+
+    border: 10px solid;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+
+  .mat-table .mat-row {
+    border-bottom: 5px solid #ddd;
+    display: block;
+  }
+
+  .mat-table .mat-cell {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    font-size: 1em;
+    text-align: right;
+    font-weight: bold;
+    height: 30px;
+    margin-bottom: 3%;
+  }
+
+  .mat-cell {
+    border: none;
+  }
+
+  .mat-table .mat-cell:before {
+    /*
+      * aria-label has no advantage, it won't be read inside a table content: attr(aria-label);
+      */
+    content: attr(data-label);
+    float: left;
+    text-transform: uppercase;
+    font-weight: normal;
+    font-size: .85em;
+    background-color: rgba(66, 63, 63, 0.78);
+    color: #fff;
+    padding: 5px;
+  }
+
+  .mat-table .mat-cell:last-child {
+    border-bottom: 0;
+  }
+
+  .mat-table .mat-cell:first-child {
+    margin-top: 4%;
+  }
 }
+
+.properties-open:hover,
+.application-open:hover {
+  text-decoration: none;
+  background: #c2c4c3;
+}
+
 .properties-open {
-    height: 23px;
-    width: 88px;
-    position: absolute;
-    right: -33px;
-    top: 46px;
-    background: #ededed;
-    opacity: 0.8;
-    padding: 0px 10px;
-    border: 1px solid rgba(0,0,0,.12);
-    border-top: none;
-    display: block;
-    transform: rotate(-90deg);
-    -webkit-transform: rotate(-90deg); 
-    -moz-transform: rotate(-90deg);
-    -ms-transform: rotate(-90deg);
-    -o-transform: rotate(-90deg);
+  height: 23px;
+  width: 88px;
+  position: absolute;
+  right: -33px;
+  top: 46px;
+  background: #ededed;
+  opacity: 0.8;
+  padding: 0px 10px;
+  border: 1px solid rgba(0, 0, 0, .12);
+  border-top: none;
+  display: block;
+  transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
 }
+
 .application-open {
-    height: 20px;
-    width: 145px;
-    position: absolute;
-    left: -63px;
-    top: 80px;
-    opacity: 0.8;
-    background: #ededed;
-    padding: 0px 10px;
-    border: 1px solid rgba(0,0,0,.12);
-    border-top: none;
-    display: block;
-    transform: rotate(-90deg);
-    -webkit-transform: rotate(-90deg); 
-    -moz-transform: rotate(-90deg);
-    -ms-transform: rotate(-90deg);
-    -o-transform: rotate(-90deg);
+  height: 20px;
+  width: 145px;
+  position: absolute;
+  left: -63px;
+  top: 80px;
+  opacity: 0.8;
+  background: #ededed;
+  padding: 0px 10px;
+  border: 1px solid rgba(0, 0, 0, .12);
+  border-top: none;
+  display: block;
+  transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
 }
 
 :host ::ng-deep .mat-drawer-inner-container {
-    overflow: hidden !important;
+  overflow: hidden !important;
 }
 
 @media screen and (max-width: 767px) {
-    .cdk-overlay-connected-position-bounding-box {
-        left: 80px !important;
-    }
-    :host ::ng-deep .mat-drawer-container {
-        overflow: visible !important;
-        height: 600px;
-    }
-    :host ::ng-deep .mat-drawer-inner-container {
-        overflow: auto !important;
-    }
-    .application-open  {
-        width: 128px !important;
-    }
-    .properties-open, .application-open  {
-        height: 20px;
-        width: 88px;
-        background: #ededed;
-        opacity: 0.8;
-        padding: 0px 10px;
-        border: 1px solid rgba(0, 0, 0, 0.12);
-        border-top: none;
-        display: block;
-        position: relative;
-        transition: none;
-        -webkit-transform: none;
-        top: 0px;
-        left: 0px;
-    }
+  .cdk-overlay-connected-position-bounding-box {
+    left: 80px !important;
+  }
+
+  :host ::ng-deep .mat-drawer-container {
+    overflow: visible !important;
+    height: 600px;
+  }
+
+  :host ::ng-deep .mat-drawer-inner-container {
+    overflow: auto !important;
+  }
+
+  .application-open {
+    width: 128px !important;
+  }
+
+  .properties-open,
+  .application-open {
+    height: 20px;
+    width: 88px;
+    background: #ededed;
+    opacity: 0.8;
+    padding: 0px 10px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-top: none;
+    display: block;
+    position: relative;
+    transition: none;
+    -webkit-transform: none;
+    top: 0px;
+    left: 0px;
+  }
 }

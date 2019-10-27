@@ -40,7 +40,8 @@
             <mat-icon class="iconmod">clear</mat-icon>End
           </button>
           <div flex fxFlex="5"></div>
-          <button mat-raised-button *ngIf="EXECUTE!=='N'" (click)="submitbtn_click();" id="submit">
+          <button mat-raised-button *ngIf="EXECUTE=='Y' && V_Hide_Submit == 'N'" (click)="submitbtn_click();"
+            id="submit">
             <mat-icon class="iconmod">done_all</mat-icon>Submit
           </button>
           <div flex fxFlex="5"></div>

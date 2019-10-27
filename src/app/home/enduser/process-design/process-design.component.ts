@@ -107,8 +107,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     maxHeight: 400,
   });
   parentMenuItems = [
-    { item: 'New Process', value: 'Add', havePermission: 0, icon: 'create', iconType: 'mat' },
-    { item: 'Open BPMN File', value: 'Import', havePermission: 0, icon: 'attach_file', iconType: 'mat' },
+    { item: 'New Process', value: 'Add', havePermission: 0, icon: 'add', iconType: 'mat' },
+    { item: 'Open BPMN File', value: 'Import', havePermission: 0, icon: 'cloud_upload  mr-15', iconType: 'mat' },
     { item: 'Edit Application', value: 'Edit', havePermission: 0, icon: 'entry bpmn-icon-screw-wrench mr-10', iconType: 'bpmn' },
     { item: 'Delete Application', value: 'Delete', havePermission: 0, icon: 'entry bpmn-icon-trash', iconType: 'bpmn' }];
   childrenMenuItems = [
@@ -934,6 +934,28 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     }, this.ctrl_variables.delay_timeout);
   }
 
+  addProcessOnBpmnUpload(){
+    const body = {
+      'V_APP_CD': this.selectedApp,
+      'V_PRCS_CD': this.selectedProcess,
+      'REST_Service': 'NewProcess',
+      'V_SRC_CD': this.user.SRC_CD,
+      'V_USR_NM': this.user.USR_NM,
+      "Verb": "POST"
+    };
+    this.http.post(this.apiService.endPoints.secure, body, this.apiService.setHeaders())
+      .subscribe(res => {
+        if (res) {
+          this.getApplicationProcess();
+          // this.oldStateId = this.selectedProcess.replace(new RegExp(' ', 'g'), '_');
+          // document.getElementById("processId").focus();
+        }
+      });
+    setTimeout(() => {
+      this.upload(this.selectedApp, this.selectedProcess);
+    }, this.ctrl_variables.delay_timeout);
+  }
+
   upload(vAppCd, vPrcsCd) {
     // if (!this.uploadLocked) {
     vPrcsCd = vPrcsCd.replace(new RegExp(' ', 'g'), '_')
@@ -978,10 +1000,19 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
 
   openBpmn($event) {
+    console.log('event', $event.target.files);
     if ($event && $event.target && $event.target.files) {
+      let filename = $event.target.files[0].name.split(".")[0];
+      console.log('filename', filename);
       const fr: FileReader = new FileReader();
       fr.onloadend = () => {
         this.modeler.importXML(fr.result, this.handleError.bind(this));
+        this.selectedProcess = filename;
+        this.V_OLD_PRCS_CD = this.selectedProcess;
+        this.documentation = '';
+        this.processName = '';
+        this.showAllTabFlag = false;
+        this.addProcessOnBpmnUpload();
         if (this.file && this.file.nativeElement) {
           this.file.nativeElement.value = '';
         }
@@ -1375,8 +1406,13 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         break;
       }
       case 'Import': {
-        let ele = document.getElementById('file');
-        ele.click();
+        let elem = document.getElementById('file');
+        if (elem && document.createEvent) {
+          var evt = document.createEvent("MouseEvents");
+          evt.initEvent("click", true, false);
+          elem.dispatchEvent(evt);
+        }
+        // elem.click();
         break;
       }
       case 'Edit': {
@@ -1664,21 +1700,24 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
 
   getInputOutputForSelctedExecutable() {
-    this.endUserService.getInputOutputForSelctedExecutable(this.selectedExecutableType, this.selectedExecutable)
-      .subscribe(res => {
-        if (res) {
-          const result = res.json();
-          if (result && Object.keys(result).length) {
-            this.executableOutput = result["EXE_OUT_PARAMS"] != undefined ? result["EXE_OUT_PARAMS"][0] : '';
-            this.executableDesc = result["EXE_DSC"] != undefined ? result["EXE_DSC"][0] : '';
-            this.executableInput = result["EXE_SIGN"] != undefined ? result["EXE_SIGN"][0] : '';
-            this.async_sync = result['SYNC_FLG'][0] === 'Y' ? 'sync' : 'async';
-            this.async_sync_seconds = result['TIME_OUT_SEC'] != undefined ? result["TIME_OUT_SEC"][0] : '';
-          } else {
-            this.toastrService.error(this.ctrl_variables.process_deployment_error)
+    console.log('selectedExecutable', this.selectedExecutable);
+    if (this.selectedExecutable && this.selectedExecutable != null && this.selectedExecutable != '') {
+      this.endUserService.getInputOutputForSelctedExecutable(this.selectedExecutableType, this.selectedExecutable)
+        .subscribe(res => {
+          if (res) {
+            const result = res.json();
+            if (result && Object.keys(result).length) {
+              this.executableOutput = result["EXE_OUT_PARAMS"] != undefined ? result["EXE_OUT_PARAMS"][0] : '';
+              this.executableDesc = result["EXE_DSC"] != undefined ? result["EXE_DSC"][0] : '';
+              this.executableInput = result["EXE_SIGN"] != undefined ? result["EXE_SIGN"][0] : '';
+              this.async_sync = result['SYNC_FLG'][0] === 'Y' ? 'sync' : 'async';
+              this.async_sync_seconds = result['TIME_OUT_SEC'] != undefined ? result["TIME_OUT_SEC"][0] : '';
+            } else {
+              this.toastrService.error(this.ctrl_variables.process_deployment_error)
+            }
           }
-        }
-      });
+        });
+    }
   }
 
   //selected executable type from UI

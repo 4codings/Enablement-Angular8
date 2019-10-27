@@ -1,3 +1,6 @@
+<!-- <div class="form-group">
+  <input type="file" id="file" style="display:none" (change)="openBpmn($event)">
+</div> -->
 <ng-template #itemTemplate let-item="item" let-index let-onCollapseExpand="onCollapseExpand"
   let-onCheckedChange="onCheckedChange">
   <div class="form-inline row-item" [ngClass]="item.children?'parent-menu':'child-menu'">
@@ -56,12 +59,17 @@
           </button>
           <mat-menu class="headerParentMenu" #parentMenu="matMenu">
             <span *ngFor="let pitem of parentobj[selectedApp]" [ngClass]="pitem.iconType=='mat' ? pitem.icon : ''">
-              <button (click)="onParentMenuItemClick(pitem.value,selectedApp)" *ngIf="pitem.havePermission"
-                mat-menu-item>
+              <a *ngIf="pitem.havePermission && pitem.value == 'Import'"
+                (click)="onParentMenuItemClick(pitem.value,selectedApp)">
+                <mat-icon *ngIf="pitem.iconType=='mat'" title="{{pitem.item}}">{{pitem.icon}}</mat-icon>
+              </a>
+              <button (click)="onParentMenuItemClick(pitem.value,selectedApp)"
+                *ngIf="pitem.havePermission && pitem.value !== 'Import'" mat-menu-item>
                 <mat-icon *ngIf="pitem.iconType=='mat'" title="{{pitem.item}}">{{pitem.icon}}</mat-icon>
                 <div *ngIf="pitem.iconType=='bpmn'" title="{{pitem.item}}" class="{{pitem.icon}}" draggable="true">
                 </div>
               </button>
+              <input type="file" id="file" style="display:none" (change)="openBpmn($event)">
             </span>
           </mat-menu>
           <span class="selected-process-font" *ngIf="selectedProcess!=''">
@@ -543,8 +551,8 @@
                   <div>
                     <div class="oneSpace"></div>
                     <label class="tabTitle mt-3">{{Label['CONDITION']}}</label>
-                    <textarea type="text" name="condition" (change)="onInputChange(false)" [(ngModel)]="sequenceCondition"
-                      #seq_condition="ngModel" required></textarea>
+                    <textarea type="text" name="condition" (change)="onInputChange(false)"
+                      [(ngModel)]="sequenceCondition" #seq_condition="ngModel" required></textarea>
                     <div *ngIf="seq_condition.invalid && (seq_condition.dirty || seq_condition.touched)" class="errors">
                       <div *ngIf="seq_condition.errors && seq_condition.errors.required">
                         {{selectedConditionType}} Condition is required.

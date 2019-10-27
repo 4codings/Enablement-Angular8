@@ -244,7 +244,7 @@
             <div flex fxFlex="5"></div>
 
             <button mat-raised-button [disabled]="submitClicked" (click)="onSubmit();" id="submit"
-              *ngIf="V_EXECUTE==='Y'">
+              *ngIf="V_EXECUTE==='Y' && V_Hide_Submit === 'N'">
               <mat-icon class="iconmod">done_all</mat-icon>Submit
             </button>
           </div>
@@ -450,7 +450,9 @@
               <mat-icon class="iconmod">clear</mat-icon>End
             </button>
             <br />
-            <button fxFlex="100" mat-raised-button (click)="onSubmit();" id="submit" *ngIf="V_EXECUTE==='Y'">
+            {{V_Hide_Submit}}
+            <button fxFlex="100" mat-raised-button (click)="onSubmit();" id="submit"
+              *ngIf="V_EXECUTE==='Y' && V_Hide_Submit === 'N'">
               <mat-icon class="iconmod">done_all</mat-icon>Submit
             </button>
           </div>

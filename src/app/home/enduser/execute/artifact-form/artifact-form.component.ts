@@ -50,6 +50,7 @@ export class ArtifactFormComponent implements OnInit, OnDestroy {
   READ: any;
   CREATE: any;
   UPDATE: any;
+  V_Hide_Submit: any;
   private dialogRef = null;
   APP_CD = '';
   PRCS_CD = '';
@@ -98,6 +99,7 @@ export class ArtifactFormComponent implements OnInit, OnDestroy {
     this.UPDATE = this.globals.Report.V_UPDATE[0];
     this.APP_CD = this.globals.Report.APP_CD[0];
     this.PRCS_CD = this.globals.Report.PRCS_CD[0];
+    this.V_Hide_Submit = this.globals.Report.V_Hide_Submit[0];
     this.oldfiles();
   }
 
@@ -124,7 +126,7 @@ export class ArtifactFormComponent implements OnInit, OnDestroy {
       this.viewer.destroy();
     }
   }
-  
+
   /*
   Get all old files that are exist in system on server
   */

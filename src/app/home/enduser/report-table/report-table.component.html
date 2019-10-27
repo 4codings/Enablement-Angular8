@@ -90,7 +90,7 @@
   </button>
   <div fxFlex="5"></div>
   <button mat-raised-button [disabled]="submitClicked" style="background-color: rgba(65, 204, 65, 0.700);"
-    (click)="ExecuteAgain()">
+    (click)="ExecuteAgain()" *ngIf="V_Hide_Submit !== 'Y'">
     <mat-icon style="vertical-align: middle;margin-right: 5px">done_all</mat-icon>Submit
   </button>
 </div>

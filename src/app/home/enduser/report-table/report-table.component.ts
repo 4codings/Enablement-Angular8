@@ -101,6 +101,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
   doughnutarray: any = [];
   APP_CD = '';
   PRCS_CD = '';
+  V_Hide_Submit: any;
   V_UPDATE = '';
   private viewer: any;
   ctrl_variables: any;
@@ -205,6 +206,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.Table_of_Data = this.dataStored.getCookies('report_table')['RESULT'];
     this.V_UPDATE = this.dataStored.getCookies('report_table')['V_UPDATE'][0];
+    this.V_Hide_Submit = this.dataStored.getCookies('report_table')['V_Hide_Submit'][0];
     this.SRVC_CD = this.dataStored.getCookies('report_table')['SRVC_CD'][0];
     // this.SRVC_ID = this.dataStored.getCookies('report_table')['SRVC_ID'][0];
     this.UNIQUE_ID = this.dataStored.getCookies('report_table')['TEMP_UNIQUE_ID'][0];

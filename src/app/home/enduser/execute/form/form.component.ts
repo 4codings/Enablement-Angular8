@@ -42,6 +42,7 @@ export class FormComponent implements OnInit {
   V_UPDATE: any;
   V_DELETE: any;
   V_EXECUTE: any;
+  V_Hide_Submit: any;
   HAS_OPTIONS: any;
   HAS_DSPLY: any;
   DISPLAY_TXT: any;
@@ -312,7 +313,7 @@ export class FormComponent implements OnInit {
     this.V_DELETE = this.Form_Data["V_DELETE"][0];
 
     this.V_EXECUTE = this.Form_Data["V_EXECUTE"][0];
-
+    this.V_Hide_Submit = this.Form_Data["V_Hide_Submit"][0];
     this.HAS_OPTIONS = this.Form_Data["HAS_OPTNS"][0].split(",");
     this.HAS_DSPLY = this.Form_Data["HAS_DSPLY"][0].split(",");
     this.DSPLY_FLD = this.Form_Data["DSPLY_FLD"][0].split(",");
