@@ -70,6 +70,7 @@ export class FormComponent implements OnInit {
   options: any = {};
   PVP: any;
   FLD_TYPE: any;
+  PARAM_NM: any;
   V_TABLE_NAME: any;
   V_SCHEMA_NAME: any;
   V_KEY_NAME: string;
@@ -174,18 +175,34 @@ export class FormComponent implements OnInit {
 
     this.RVP_Keys = Object.keys(this.RVP_DataObj);
     for (let i = 0; i < this.RVP_Keys.length; i++) {
-      this.FLD_TYPE[i] = this.FLD_TYPE[i].trim();
-      this.HAS_OPTIONS[i] = this.HAS_OPTIONS[i].trim();
-      this.HAS_DSPLY[i] = this.HAS_DSPLY[i].trim();
-      this.DSPLY_FLD[i] = this.DSPLY_FLD[i].trim();
-      this.DISPLAY_TXT[i] = this.DISPLAY_TXT[i].trim();
-      this.PARAM_DSC[i] = this.PARAM_DSC[i].trim();
-      this.FLD_HLP_TXT[i] = this.FLD_HLP_TXT[i].trim();
-      this.VLDTN[i] = this.VLDTN[i].trim();
-      this.VLDTN_ALERT_TXT[i] = this.VLDTN_ALERT_TXT[i].trim();
-      this.CNSLD_VLDTN_ALERT[i] = this.CNSLD_VLDTN_ALERT[i].trim();
+      this.PARAM_NM[i] = this.PARAM_NM[i].trim();
+      // this.FLD_TYPE[i] = this.FLD_TYPE[i].trim();
+      //   this.HAS_OPTIONS[i] = this.HAS_OPTIONS[i].trim();
+      //   this.HAS_DSPLY[i] = this.HAS_DSPLY[i].trim();
+      //   this.DSPLY_FLD[i] = this.DSPLY_FLD[i].trim();
+      //   this.DISPLAY_TXT[i] = this.DISPLAY_TXT[i].trim();
+      //   this.PARAM_DSC[i] = this.PARAM_DSC[i].trim();
+      //   this.FLD_HLP_TXT[i] = this.FLD_HLP_TXT[i].trim();
+      //   this.VLDTN[i] = this.VLDTN[i].trim();
+      //   this.VLDTN_ALERT_TXT[i] = this.VLDTN_ALERT_TXT[i].trim();
+      //   this.CNSLD_VLDTN_ALERT[i] = this.CNSLD_VLDTN_ALERT[i].trim();
     }
 
+    for (let i = 0; i < this.RVP_Keys.length; i++) {
+      let paramPosition = this.PARAM_NM.findIndex(v => v == "'" + this.RVP_Keys[i] + "'");
+      if (paramPosition > -1) {
+        this.FLD_TYPE[i] = this.FLD_TYPE[paramPosition].trim();
+        this.HAS_OPTIONS[i] = this.HAS_OPTIONS[paramPosition].trim();
+        this.HAS_DSPLY[i] = this.HAS_DSPLY[paramPosition].trim();
+        this.DSPLY_FLD[i] = this.DSPLY_FLD[paramPosition].trim();
+        this.DISPLAY_TXT[i] = this.DISPLAY_TXT[paramPosition].trim();
+        this.PARAM_DSC[i] = this.PARAM_DSC[paramPosition].trim();
+        this.FLD_HLP_TXT[i] = this.FLD_HLP_TXT[paramPosition].trim();
+        this.VLDTN[i] = this.VLDTN[paramPosition].trim();
+        this.VLDTN_ALERT_TXT[i] = this.VLDTN_ALERT_TXT[paramPosition].trim();
+        this.CNSLD_VLDTN_ALERT[i] = this.CNSLD_VLDTN_ALERT[paramPosition].trim();
+      }
+    }
     this.labels_toShow();
 
     for (let i = 0; i < this.RVP_Keys.length; i++) {
@@ -314,6 +331,7 @@ export class FormComponent implements OnInit {
 
     this.V_EXECUTE = this.Form_Data["V_EXECUTE"][0];
     this.V_Hide_Submit = this.Form_Data["V_Hide_Submit"][0];
+    this.PARAM_NM = this.Form_Data['PARAM_NM'][0].split(",");
     this.HAS_OPTIONS = this.Form_Data["HAS_OPTNS"][0].split(",");
     this.HAS_DSPLY = this.Form_Data["HAS_DSPLY"][0].split(",");
     this.DSPLY_FLD = this.Form_Data["DSPLY_FLD"][0].split(",");

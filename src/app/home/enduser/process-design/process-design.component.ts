@@ -369,6 +369,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    console.log('Timeout_seconds', this.async_sync_seconds);
     this.expandPanel = this.deviceService.isDesktop();
     this.isMobile = this.deviceService.isMobile();
     this.isTablet = this.deviceService.isTablet();
@@ -934,7 +935,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     }, this.ctrl_variables.delay_timeout);
   }
 
-  addProcessOnBpmnUpload(){
+  addProcessOnBpmnUpload() {
     const body = {
       'V_APP_CD': this.selectedApp,
       'V_PRCS_CD': this.selectedProcess,
@@ -1655,6 +1656,11 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             if (this.selectedExecutableType != null || this.selectedExecutableType != '') {
               this.getExecutablesForSelctedExecutableType();
             }
+            this.async_sync = this.propertyPanelAllTabsData[0]["V_SYNC_FLG"] === 'Y' ? 'sync' : 'async';
+            if (this.propertyPanelAllTabsData[0]["V_SYNC_FLG"] === 'Y') {
+              this.async_sync_seconds = this.propertyPanelAllTabsData[0]["V_TIME_OUT_SEC"];
+            }
+            console.log('Timeout_seconds', this.async_sync_seconds);
           }
         }
       });

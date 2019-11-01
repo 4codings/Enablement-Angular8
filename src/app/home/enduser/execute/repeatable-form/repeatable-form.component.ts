@@ -234,7 +234,7 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     }
     for (let i = 1; i < this.totalRow; i++) {
       for (let j = 0; j < this.RVP_labels.length; j++) {
-        if (this.fieldType[this.RVP_labels[i]].toLowerCase() == 'checkbox') {
+        if (this.fieldType[this.RVP_labels[i]] != undefined && this.fieldType[this.RVP_labels[i]].toLowerCase() == 'checkbox') {
           this.input[this.RVP_labels[j]][i] = [this.RVP_DataObj[this.RVP_labels[j].split(" ").join("_")][i - 1]]
         }
         else {
