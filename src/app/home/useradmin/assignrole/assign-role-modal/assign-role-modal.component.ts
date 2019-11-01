@@ -25,7 +25,9 @@ export class AssignRoleModalComponent implements OnInit, OnDestroy {
     this.group = data.group;
     this.roles = data.roles;
     this.controlVariables = data.controlVariables;
-    this.selectedRoles.select(...this.group.V_ROLE_ID);
+    if(this.group.V_ROLE_ID != null) {
+      this.selectedRoles.select(...this.group.V_ROLE_ID);
+    }
     this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
   }
 
