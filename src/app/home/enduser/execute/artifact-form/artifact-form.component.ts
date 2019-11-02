@@ -21,6 +21,8 @@ import { take } from 'rxjs/operators';
 import { InputOutputElementComponent } from '../../../../shared/components/input-output-element/input-output-element.component';
 import { InstanceElementList } from '../../process-design/monitor/monitor.component';
 import { OptionalValuesService } from 'src/app/services/optional-values.service';
+import { environment } from '../../../../../environments/environment';
+
 @Component({
   selector: 'app-input-art',
   templateUrl: './artifact-form.component.html',
@@ -180,7 +182,7 @@ export class ArtifactFormComponent implements OnInit, OnDestroy {
     }
     formData.append('Source_File', selectedFile);
     formData.append('FileInfo', JSON.stringify(files));
-    const obj = this.http.post('https://enablement.us/FileAPIs/api/file/v1/upload', formData).subscribe(
+    const obj = this.http.post('https://'+environment.apiURL+'/FileAPIs/api/file/v1/upload', formData).subscribe(
       res => {
         this.openModal(this.tempale)
       }

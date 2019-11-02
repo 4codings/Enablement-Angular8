@@ -289,7 +289,7 @@ export class UseradminService {
   }
 
   postSecuredJSON(json: any): Observable<any>{
-    return this.https.post('https://enablement.us/Enablement/rest/v1/securedJSON', json)
+    return this.https.post('https://'+this.domain_name+'/rest/v1/securedJSON', json)
   }
 
   //code by manav end

@@ -14,6 +14,7 @@ import { Observable } from 'rxjs';
 import * as authActions from '../../../../store/user-admin/user-authorization/authorization.actions';
 import { UseradminService } from '../../../../services/useradmin.service2';
 import { AuthorizationData } from '../../../../store/user-admin/user-authorization/authorization.model';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-add-edit-authorize',
@@ -22,6 +23,7 @@ import { AuthorizationData } from '../../../../store/user-admin/user-authorizati
 })
 export class AddEditAuthorizeComponent extends AuthorizeComponent implements OnInit {
   isEditMode = false;
+  domain_name = environment.domainName;
   selectedView: 'selectAuth' | 'addNewAuth' = 'selectAuth';
   selectedAuth: AuthorizationData;
 
@@ -85,7 +87,7 @@ export class AddEditAuthorizeComponent extends AuthorizeComponent implements OnI
           'REST_Service': 'Auth',
           'Verb': 'PUT'
         };
-        this.http.put('https://enablement.us/Enablement/rest/v1/securedJSON', body).subscribe(res => {
+        this.http.put('https://'+this.domain_name+'/rest/v1/securedJSON', body).subscribe(res => {
           this.addFlag = false;
           this.store.dispatch(new authActions.AddAuth(data));
           this.assignAuthToRole(this.data.roleId, res[0] ? res[0].id + '' : '');
@@ -115,7 +117,7 @@ export class AddEditAuthorizeComponent extends AuthorizeComponent implements OnI
     //     'REST_Service': 'Auth',
     //     'Verb': 'POST'
     //   };
-    //   this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', body).subscribe(res => {
+    //   this.http.post('https://'+this.domain_name+'/rest/v1/securedJSON', body).subscribe(res => {
     //     this.addFlag = false;
     //     this.assignAuthToRole(this.data.roleId, res[0] ? res[0].id + '' : '');
     //   },
@@ -146,7 +148,7 @@ export class AddEditAuthorizeComponent extends AuthorizeComponent implements OnI
       'REST_Service': ['Role_Auth'],
       'Verb': ['POST']
     };
-    this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', json).subscribe(res => {
+    this.http.post('https://'+this.domain_name+'/rest/v1/securedJSON', json).subscribe(res => {
       this.dialogRef.close(true);
     }, err => {
     });
@@ -173,7 +175,7 @@ export class AddEditAuthorizeComponent extends AuthorizeComponent implements OnI
       'REST_Service': 'Auth',
       'Verb': 'PUT'
     };
-    this.http.put('https://enablement.us/Enablement/rest/v1/securedJSON', body).subscribe(res => {
+    this.http.put('https://'+this.domain_name+'/rest/v1/securedJSON', body).subscribe(res => {
       this.store.dispatch(new authActions.UpdateAuth(data));
       this.dialogRef.close(true);
     },

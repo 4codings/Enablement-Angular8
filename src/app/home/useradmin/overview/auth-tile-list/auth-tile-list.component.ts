@@ -110,7 +110,7 @@ export class AuthTileListComponent implements OnInit {
       };
 
       //console.log('data', data);
-      this.http.put('https://enablement.us/Enablement/rest/v1/securedJSON', body).subscribe(res => {
+      this.http.put('https://'+this.environment.domainName+'/rest/v1/securedJSON', body).subscribe(res => {
         this.store.dispatch(new authActions.UpdateAuth(data));
 
         this.overviewService.afterEditAuth(true);
