@@ -123,7 +123,7 @@ export class ApiService {
 
 	// getUsers(): Observable<User[]> {
 	// 	this.setAuthHeader();
-	// 	return this.http.get<User[]>('https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=USER&V_SRC_CD=uttra.24&REST_Service=Masters&Verb=GET');
+	// 	return this.http.get<User[]>('https://'+this.globalUrl.domain_name+'/rest/v1/securedJSON?V_CD_TYP=USER&V_SRC_CD=uttra.24&REST_Service=Masters&Verb=GET');
 	// }
 
 	setHeaders() {

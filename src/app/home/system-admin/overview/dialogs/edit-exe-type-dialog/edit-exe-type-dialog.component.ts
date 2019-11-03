@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ConfigServiceService } from '../../../../../services/config-service.service';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../../../environments/environment';
 
 @Component({
   selector: 'app-edit-exe-type-dialog',
@@ -15,6 +16,7 @@ export class EditExeTypeDialogComponent implements OnInit {
   PLF_CD;
   PLF_Data;
   V_EXE_CD_DUP='';
+  domain_name = environment.domainName;
   isexeChange:boolean = false;
 
   constructor(public dialogRef: MatDialogRef<EditExeTypeDialogComponent>,  @Inject(MAT_DIALOG_DATA) public data: any, private config:ConfigServiceService, private http:HttpClient) { }
@@ -52,7 +54,7 @@ export class EditExeTypeDialogComponent implements OnInit {
       "REST_Service":["Exe"],
       "Verb":["PUT"]
     }  
-    this.http.put('https://enablement.us/Enablement/rest/v1/securedJSON?', data).subscribe(res => {
+    this.http.put('https://'+this.domain_name+'/rest/v1/securedJSON?', data).subscribe(res => {
       console.log("res",res);
       this.dialogRef.close(true);
     }, err => {

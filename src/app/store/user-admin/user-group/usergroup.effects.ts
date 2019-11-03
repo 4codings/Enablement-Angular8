@@ -7,9 +7,11 @@ import { mergeMap, map, catchError } from 'rxjs/operators';
 import { userGroup } from './usergroup.model';
 import { UserAdminService } from '../../../services/user-admin.service';
 import {HttpClient} from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 
 @Injectable()
 export class UserGroupEffects {
+  public domain_name = environment.domainName;
   constructor(private actions$: Actions, private useradmin: UserAdminService,
               private http: HttpClient) {}
 
@@ -17,7 +19,7 @@ export class UserGroupEffects {
   getUsersGroup$: Observable<Action> = this.actions$.pipe(
     ofType<userGroupActions.getUserGroup>(userGroupActions.GET_USER_GROUP),
     mergeMap((action: userGroupActions.getUserGroup) =>
-      this.http.get('https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=USR_GRP&V_SRC_CD='
+      this.http.get('https://'+this.domain_name+'/rest/v1/securedJSON?V_CD_TYP=USR_GRP&V_SRC_CD='
         + action.payload.V_SRC_CD + '&REST_Service=Masters&Verb=GET')
         .pipe(
           map(
@@ -32,7 +34,7 @@ export class UserGroupEffects {
   addGroup$: Observable<Action> = this.actions$.pipe(
     ofType<userGroupActions.addUserGroup>(userGroupActions.ADD_USER_GROUP),
     mergeMap((action: userGroupActions.addUserGroup) =>
-      this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', action.payload)
+      this.http.post('https://'+this.domain_name+'/rest/v1/securedJSON', action.payload)
         .pipe(
           map(
             (res) => new userGroupActions.addUserGroupSuccess(res)
@@ -46,7 +48,7 @@ export class UserGroupEffects {
   updateGroup$: Observable<Action> = this.actions$.pipe(
     ofType<userGroupActions.UpdateUserGroup>(userGroupActions.UPDATE_USER_GROUP),
     mergeMap((action: userGroupActions.UpdateUserGroup) =>
-      this.http.patch('https://enablement.us/Enablement/rest/v1/securedJSON', action.payload)
+      this.http.patch('https://'+this.domain_name+'/rest/v1/securedJSON', action.payload)
         .pipe(
           map(
             (res) => new userGroupActions.UpdateUserGroupSuccess(action.payload)
@@ -60,7 +62,7 @@ export class UserGroupEffects {
   deleteGroup$: Observable<Action> = this.actions$.pipe(
     ofType<userGroupActions.DeleteUserGroup>(userGroupActions.DELETE_USER_GROUP),
     mergeMap((action: userGroupActions.DeleteUserGroup) =>
-      this.http.get('https://enablement.us/Enablement/rest/v1/securedJSON?V_USR_GRP_CD='
+      this.http.get('https://'+this.domain_name+'/rest/v1/securedJSON?V_USR_GRP_CD='
       + action.payload.V_USR_GRP_CD + '&V_SRC_CD=' + action.payload.V_SRC_CD + '&REST_Service=Group&Verb=DELETE')
         .pipe(
           map(

@@ -7,9 +7,11 @@ import { mergeMap, map, catchError } from 'rxjs/operators';
 import { userRole } from './userrole.model';
 import { UserAdminService } from '../../../services/user-admin.service';
 import {HttpClient} from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 
 @Injectable()
 export class UserRoleEffects {
+  public domain_name = environment.domainName;
   constructor(private actions$: Actions, private useradmin: UserAdminService,
               private http: HttpClient) {}
 
@@ -17,7 +19,7 @@ export class UserRoleEffects {
   getUsersRoles$: Observable<Action> = this.actions$.pipe(
     ofType<userRoleActions.getUserRole>(userRoleActions.GET_USER_ROLE),
     mergeMap((action: userRoleActions.getUserRole) =>
-      this.http.get('https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=ROLE&V_SRC_CD='
+      this.http.get('https://'+this.domain_name+'/rest/v1/securedJSON?V_CD_TYP=ROLE&V_SRC_CD='
         + action.payload.V_SRC_CD + '&REST_Service=Masters&Verb=GET')
         .pipe(
           map(
@@ -32,7 +34,7 @@ export class UserRoleEffects {
   addUserRole$: Observable<Action> = this.actions$.pipe(
     ofType<userRoleActions.AddUserRole>(userRoleActions.ADD_USER_ROLE),
     mergeMap((action: userRoleActions.AddUserRole) =>
-      this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', action.payload)
+      this.http.post('https://'+this.domain_name+'/rest/v1/securedJSON', action.payload)
         .pipe(
           map(
             (res) => new userRoleActions.AddUserRoleSuccess(res)
@@ -46,7 +48,7 @@ export class UserRoleEffects {
   updateUserRole$: Observable<Action> = this.actions$.pipe(
     ofType<userRoleActions.UpdateUserRole>(userRoleActions.UPDATE_USER_ROLE),
     mergeMap((action: userRoleActions.UpdateUserRole) =>
-      this.http.patch('https://enablement.us/Enablement/rest/v1/securedJSON', action.payload)
+      this.http.patch('https://'+this.domain_name+'/rest/v1/securedJSON', action.payload)
         .pipe(
           map(
             (res) => new userRoleActions.UpdateUserRoleSuccess(action.payload)
@@ -60,7 +62,7 @@ export class UserRoleEffects {
   deleteUserRole$: Observable<Action> = this.actions$.pipe(
     ofType<userRoleActions.DeleteUserRole>(userRoleActions.DELETE_USER_ROLE),
     mergeMap((action: userRoleActions.DeleteUserRole) =>
-      this.http.get('https://enablement.us/Enablement/rest/v1/securedJSON?V_ROLE_CD='
+      this.http.get('https://'+this.domain_name+'/rest/v1/securedJSON?V_ROLE_CD='
       + action.payload.V_ROLE_CD + '&V_SRC_CD=' + action.payload.V_SRC_CD + '&REST_Service=Role&Verb=DELETE', action.payload)
         .pipe(
           map(
