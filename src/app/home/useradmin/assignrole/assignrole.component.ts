@@ -14,7 +14,7 @@ import { userRole } from '../../../store/user-admin/user-role/userrole.model';
 import * as userRoleSelectors from '../../../store/user-admin/user-role/userrole.selectors';
 import * as userRoleActions from '../../../store/user-admin/user-role/userrole.action';
 import {groupTypeConstant, groupTypeOptions} from '../useradmin.constants';
-
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-assignrole',
@@ -29,6 +29,7 @@ export class AssignroleComponent implements OnInit, OnDestroy {
   public roles$: Observable<userRole[]>;
   selectedOptions;
   RollR;
+  domain_name = environment.domainName;
 
   public addBtn = true;
   public updateBtn = false;
@@ -317,7 +318,7 @@ export class AssignroleComponent implements OnInit, OnDestroy {
         "Verb":["POST"]
       };
 
-      this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', json).subscribe(res => {
+      this.http.post('https://'+this.domain_name+'/rest/v1/securedJSON', json).subscribe(res => {
         this.updateGroupStateAdded(res[0]);
         this.updateGroupStateDeleted(deletedIds)
       }, err => {
@@ -353,7 +354,7 @@ export class AssignroleComponent implements OnInit, OnDestroy {
         "Verb":["POST"]
       };
 
-      this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', json).subscribe(res => {
+      this.http.post('https://'+this.domain_name+'/rest/v1/securedJSON', json).subscribe(res => {
         this.updateRoleStateAdded(res[0]);
         this.updateRoleStateDeleted(deletedIds)
       }, err => {

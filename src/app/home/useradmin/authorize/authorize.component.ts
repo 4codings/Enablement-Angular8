@@ -10,6 +10,7 @@ import { MatRadioChange } from '@angular/material/radio';
 import { OptionalValuesService, ProcessObservable, ServiceObservable } from '../../../services/optional-values.service';
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from '../../../service/api/api.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-authorize',
@@ -49,6 +50,7 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
   addFlag = false;
   radioSelected;
   oldRadioSelected;
+  domain_name = environment.domainName;
   enableAddButtonFlag = false;
   constructor(
     public noAuthData: NoAuthDataService,
@@ -294,7 +296,7 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
       "REST_Service": "Auth",
       "Verb": "POST"
     };
-    this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', body)
+    this.http.post('https://'+this.domain_name+'/rest/v1/securedJSON', body)
       .subscribe(res => {
         this.store.dispatch(new authActions.getAuth(this.V_SRC_CD_DATA));
       }, err => {
@@ -329,7 +331,7 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
       "REST_Service": "Auth",
       "Verb": "POST"
     };
-    let obs = this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', body)
+    let obs = this.http.post('https://'+this.domain_name+'/rest/v1/securedJSON', body)
     obs.subscribe(res => {
       this.addFlag = false;
       this.store.dispatch(new authActions.getAuth(this.V_SRC_CD_DATA));

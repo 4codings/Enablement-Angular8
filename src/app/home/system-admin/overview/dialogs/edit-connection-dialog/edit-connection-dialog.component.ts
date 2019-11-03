@@ -36,7 +36,7 @@ export class EditConnectionDialogComponent implements OnInit {
     });
     this.V_SRC_CD=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
     this.V_USR_NM=JSON.parse(sessionStorage.getItem('u')).USR_NM; 
-    this.http.get('https://enablement.us/Enablement/rest/v1/securedJSON?V_CXN_TYP='+ this.data.cnxData.V_CXN_TYP +'&V_CXN_CD='+ this.data.cnxData.V_CXN_CD +'&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=ConnectionMachine&Verb=GET').subscribe(res => {
+    this.http.get('https://'+this.domain_name+'/rest/v1/securedJSON?V_CXN_TYP='+ this.data.cnxData.V_CXN_TYP +'&V_CXN_CD='+ this.data.cnxData.V_CXN_CD +'&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=ConnectionMachine&Verb=GET').subscribe(res => {
       this.DATA = res;
     });
 

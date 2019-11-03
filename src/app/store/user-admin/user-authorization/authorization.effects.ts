@@ -7,10 +7,11 @@ import { mergeMap, map, catchError } from 'rxjs/operators';
 import { AuthorizationData } from './authorization.model';
 import { UserAdminService } from '../../../services/user-admin.service';
 import {HttpClient} from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 
 @Injectable()
 export class AuthEffects {
-
+    public domain_name = environment.domainName;
     constructor(private actions$: Actions, private userAdminService: UserAdminService, private http: HttpClient) {}
 
     @Effect({dispatch: true})
@@ -19,7 +20,7 @@ export class AuthEffects {
         authActions.GET_AUTH
     ),
     mergeMap((action: authActions.getAuth) =>
-    this.http.get('https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=AUTH&V_SRC_CD='
+    this.http.get('https://'+this.domain_name+'/rest/v1/securedJSON?V_CD_TYP=AUTH&V_SRC_CD='
     + action.payload.V_SRC_CD + '&REST_Service=Masters&Verb=GET').pipe(
         map(
           (userAuth: AuthorizationData[]) =>

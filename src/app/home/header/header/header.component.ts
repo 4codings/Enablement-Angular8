@@ -8,6 +8,7 @@ import { ApiService } from '../../../service/api/api.service';
 import { RollserviceService } from '../../../services/rollservice.service';
 import { MatDialog } from '@angular/material';
 import { ChangeImageComponent } from '../../../shared/components/change-image/change-image.component';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-header',
@@ -16,6 +17,7 @@ import { ChangeImageComponent } from '../../../shared/components/change-image/ch
 })
 export class HeaderComponent implements OnInit {
   options: any = [];
+  domain = environment.apiURL;
   showprofilebtn: boolean = true;
   public userName: string = '';
   public agency: string = '';
@@ -23,7 +25,7 @@ export class HeaderComponent implements OnInit {
   // public selectedProfile = '';
   optionSelected: string = "";
   timeStamp;
-  imageUrl = `https://enablement.us/${JSON.parse(sessionStorage.getItem('u')).USR_NM}/pic`;
+  imageUrl = `https://${this.domain}/${JSON.parse(sessionStorage.getItem('u')).USR_NM}/pic`;
   @Input() selectedProfile = '';
   constructor(
     private route: ActivatedRoute,
@@ -120,7 +122,7 @@ export class HeaderComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       if(result) {
-        this.imageUrl = "https://enablement.us/" + this.userName + "/pic" + "?" + (new Date()).getTime(); 
+        this.imageUrl = "https://"+this.domain+"/" + this.userName + "/pic" + "?" + (new Date()).getTime(); 
         this.timeStamp = (new Date()).getTime();
       }
     });
@@ -136,7 +138,7 @@ export class HeaderComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       if(result) {
-        this.apiService.imageLogoUrlSubject.next("https://enablement.us/" + this.agency + "/logo"); 
+        this.apiService.imageLogoUrlSubject.next("https://"+this.domain+"/" + this.agency + "/logo"); 
       }
     });
   }

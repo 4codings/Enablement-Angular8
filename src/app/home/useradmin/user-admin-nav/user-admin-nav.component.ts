@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { RollserviceService } from '../../../services/rollservice.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { ApiService } from '../../../service/api/api.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-user-admin-nav',
@@ -13,6 +14,7 @@ import { ApiService } from '../../../service/api/api.service';
 export class UserAdminNavComponent implements OnInit {
   isCollapsed: boolean;
   isNavbarCollapsed = true;
+  domain = environment.apiURL;
   V_SRC_CD: string = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
   V_USR_NM: string = JSON.parse(sessionStorage.getItem('u')).USR_NM;
 
@@ -43,7 +45,7 @@ export class UserAdminNavComponent implements OnInit {
     this.V_USR_NM = JSON.parse(sessionStorage.getItem('u')).USR_NM;
     this.apiService.imageLogoUrlSubject.subscribe(data => {
       if(data == '') {
-        this.imageUrl = `https://enablement.us/${JSON.parse(sessionStorage.getItem('u')).SRC_CD}/logo`;
+        this.imageUrl = `https://${this.domain}/${JSON.parse(sessionStorage.getItem('u')).SRC_CD}/logo`;
       } else {
         this.imageUrl = data;
         this.timeStamp = (new Date()).getTime();

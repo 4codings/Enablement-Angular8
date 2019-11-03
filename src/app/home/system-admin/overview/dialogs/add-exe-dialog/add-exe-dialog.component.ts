@@ -6,6 +6,7 @@ import { SystemAdminOverviewService } from '../../system-admin-overview.service'
 import { startWith, map } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../../../environments/environment';
 
 @Component({
   selector: 'app-add-exe-dialog',
@@ -16,6 +17,7 @@ export class AddExeDialogComponent implements OnInit {
   F_EXE_CD:string = '';
   F_EXE_DSC:string = '';
   F_EXE_SIGN:string = '';
+  domain_name = environment.domainName;
   V_SRC_CD=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
   V_USR_NM=JSON.parse(sessionStorage.getItem('u')).USR_NM;
   F_EXE_OUT_PARAM:string;
@@ -131,7 +133,7 @@ export class AddExeDialogComponent implements OnInit {
     "REST_Service":["Exe"],
     "Verb":["PUT"]
   }
-    this.http.put('https://enablement.us/Enablement/rest/v1/securedJSON?', data).subscribe(res => {
+    this.http.put('https://'+this.domain_name+'/rest/v1/securedJSON?', data).subscribe(res => {
       console.log("res",res);
       this.dialogRef.close(true);
     }, err => {

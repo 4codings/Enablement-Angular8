@@ -8,6 +8,7 @@ import { EditExeTypeDialogComponent } from '../dialogs/edit-exe-type-dialog/edit
 import { ConfirmationAlertComponent } from '../../../../shared/components/confirmation-alert/confirmation-alert.component';
 import { HttpClient } from '@angular/common/http';
 import { AssignConnectionExeComponent } from '../dialogs/assign-connection-exe/assign-connection-exe.component';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-exe-tile-list',
@@ -22,6 +23,7 @@ export class ExeTileListComponent implements OnInit {
   contextMenuActive: boolean = false;
   subscription: Subscription;
   public selectedTile;
+  domain_name = environment.domainName;
   @Input() selectedExe;
   public selectedCxn;
   public selectedCxnData = [];
@@ -245,7 +247,7 @@ export class ExeTileListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
-        this.http.get('https://enablement.us/Enablement/rest/v1/securedJSON?V_EXE_TYP='+ exe.EXE_TYP + '&V_EXE_CD='+ exe.exeData.V_EXE_CD + '&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=Exe&Verb=DELETE').subscribe(res => {
+        this.http.get('https://'+this.domain_name+'/rest/v1/securedJSON?V_EXE_TYP='+ exe.EXE_TYP + '&V_EXE_CD='+ exe.exeData.V_EXE_CD + '&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=Exe&Verb=DELETE').subscribe(res => {
           this.systemOverview.getAllExes();
         }, err => {
           console.log("err", err)
@@ -266,7 +268,7 @@ export class ExeTileListComponent implements OnInit {
     
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
-        this.http.get('https://enablement.us/Enablement/rest/v1/secured?V_EXE_CD='+exe.exeData.V_EXE_CD+'&V_USR_NM='+ this.V_USR_NM +'&V_EXE_TYP='+exe.EXE_TYP+'&V_SERVER_CD=&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=Exe_Server&Verb=DELETE').subscribe(res => {
+        this.http.get('https://'+this.domain_name+'/rest/v1/secured?V_EXE_CD='+exe.exeData.V_EXE_CD+'&V_USR_NM='+ this.V_USR_NM +'&V_EXE_TYP='+exe.EXE_TYP+'&V_SERVER_CD=&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=Exe_Server&Verb=DELETE').subscribe(res => {
           this.systemOverview.getAllExes();
         }, err => {
           console.log("err", err)
@@ -287,7 +289,7 @@ export class ExeTileListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
-        this.http.get('https://enablement.us/Enablement/rest/v1/secured?V_EXE_CD='+exe.exeData.V_EXE_CD+'&V_EXE_TYP='+exe.EXE_TYP+'&V_SERVER_CD='+ exe.platFormData.SERVER_CD +'&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=Exe_Server&Verb=DELETE').subscribe(res => {
+        this.http.get('https://'+this.domain_name+'/rest/v1/secured?V_EXE_CD='+exe.exeData.V_EXE_CD+'&V_EXE_TYP='+exe.EXE_TYP+'&V_SERVER_CD='+ exe.platFormData.SERVER_CD +'&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=Exe_Server&Verb=DELETE').subscribe(res => {
           this.systemOverview.getAllExes();
         }, err => {
           console.log("err", err)
