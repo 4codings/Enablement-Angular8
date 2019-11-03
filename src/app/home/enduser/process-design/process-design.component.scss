@@ -608,7 +608,7 @@ mat-header-cell {
   color: #0066ff;
 }
 
-.fa-pause-circle {
+.fa-pause-circle, .fa-cloud-upload {
   color: rgb(0, 225, 255);
 }
 
@@ -638,7 +638,7 @@ mat-header-cell {
   height: 22px;
   text-align: center;
   display: inline-block;
-  font-size: 22px;
+  font-size: 18px;
   border-radius: 3px;
   cursor: default;
   box-shadow: 0 0 2px 1px #FEFEFE;
