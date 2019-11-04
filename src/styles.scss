@@ -459,7 +459,7 @@
 }
 
 .headerChildMenu .mat-menu-content button.mat-menu-item {
-  width: 11% !important;
+  width: 15% !important;
   display: inline !important;
   text-overflow: inherit;
   outline: none;
@@ -490,6 +490,13 @@
 .mat-menu-panel.headerParentMenu {
   background: none !important;
   box-shadow: none;
+}
+
+.headerChildMenu{
+  width: 280px !important;
+}
+.headerParentMenu{
+  width: 170px !important;
 }
 
 .mat-form-field-appearance-legacy .mat-form-field-infix .mat-input-element {

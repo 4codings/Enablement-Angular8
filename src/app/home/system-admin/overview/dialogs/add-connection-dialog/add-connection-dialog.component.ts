@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { SystemAdminOverviewService } from '../../system-admin-overview.service';
 import { startWith, map } from 'rxjs/operators';
+import { environment } from '../../../../../../environments/environment';
 
 @Component({
   selector: 'app-add-connection-dialog',
@@ -18,6 +19,7 @@ export class AddConnectionDialogComponent implements OnInit {
   public V_SRC_CD:string;
   public V_USR_NM:string;
   public V_CXN_CD = '';
+  domain_name = environment.domainName;
   public V_CXN_DSC;
   public V_CXN_TYP;
   public DATA; 
@@ -40,10 +42,10 @@ export class AddConnectionDialogComponent implements OnInit {
     });
     this.V_SRC_CD=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
     this.V_USR_NM=JSON.parse(sessionStorage.getItem('u')).USR_NM;
-    // this.http.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=EXE&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe(res => {
+    // this.http.get("https://'+this.domain_name+'/rest/v1/securedJSON?V_CD_TYP=EXE&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe(res => {
     //   this.connectionTypes = res;
     // });
-    this.http.get('https://enablement.us/Enablement/rest/E_DB/SPJSON?V_SRC_CD='+ this.V_SRC_CD +'&V_CXN_TYP='+ this.data.selectedConnectionType +'&REST_Service=Params_of_CXN_Type&Verb=GET').subscribe(res => {
+    this.http.get('https://'+this.domain_name+'/rest/E_DB/SPJSON?V_SRC_CD='+ this.V_SRC_CD +'&V_CXN_TYP='+ this.data.selectedConnectionType +'&REST_Service=Params_of_CXN_Type&Verb=GET').subscribe(res => {
       this.DATA = res;
       this.tableshow = true;
       //console.log(this.DATA);
@@ -120,7 +122,7 @@ export class AddConnectionDialogComponent implements OnInit {
       "Verb":["PUT"]
     }
   
-    this.http.put('https://enablement.us/Enablement/rest/v1/securedJSON', data).subscribe(res => {
+    this.http.put('https://'+this.domain_name+'/rest/v1/securedJSON', data).subscribe(res => {
       console.log("res",res);
       this.dialogRef.close(true);
     }, err => {
@@ -129,7 +131,7 @@ export class AddConnectionDialogComponent implements OnInit {
   }
 
   getParams() {
-    this.http.get('https://enablement.us/Enablement/rest/E_DB/SPJSON?V_SRC_CD='+ this.V_SRC_CD +'&V_CXN_TYP='+ this.V_CXN_TYP +'&REST_Service=Params_of_CXN_Type&Verb=GET').subscribe(res => {
+    this.http.get('https://'+this.domain_name+'/rest/E_DB/SPJSON?V_SRC_CD='+ this.V_SRC_CD +'&V_CXN_TYP='+ this.V_CXN_TYP +'&REST_Service=Params_of_CXN_Type&Verb=GET').subscribe(res => {
       this.DATA = res;
       this.tableshow = true;
       //console.log(this.DATA);
@@ -138,4 +140,4 @@ export class AddConnectionDialogComponent implements OnInit {
 
 }
 
-//https://enablement.us/Enablement/rest/v1/securedJSON?V_CXN_TYP='+ this.data.selectedConnectionType +'&V_CXN_CD=undefined&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=ConnectionMachine&Verb=GET
+//https://'+this.domain_name+'/rest/v1/securedJSON?V_CXN_TYP='+ this.data.selectedConnectionType +'&V_CXN_CD=undefined&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=ConnectionMachine&Verb=GET

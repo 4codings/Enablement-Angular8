@@ -8,14 +8,14 @@ import { Store, select } from '@ngrx/store';
 import { AppState } from '../app.state';
 import { UserService } from '../core/user.service';
 import { UserLoginState } from '../store/auth/userlogin.reducer';
-import {Globals} from './globals';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   userDetail: Observable<UserLoginState>;
-  domain_name="enablement.us/Enablement";
+  domain_name= environment.domainName;
   private apiUrlGet = "https://"+this.domain_name+"/rest/v1/secured?";
   private apiUrlPost = "https://"+this.domain_name+"/";
 
@@ -35,15 +35,15 @@ export class AuthService {
 	}
 
 	userLogin(data) {
-		return this.http.post<userInfo>('https://enablement.us/Enablement/rest/authentication', data);
+		return this.http.post<userInfo>('https://'+this.domain_name+'/rest/authentication', data);
   }
 
   userSignUp(data) {
-		return this.http.post<userInfo>('https://enablement.us/Enablement/rest/emailConfirmation/loginEmail', data);
+		return this.http.post<userInfo>('https://'+this.domain_name+'/rest/emailConfirmation/loginEmail', data);
   }
 
   changePassword(data) {
-		return this.http.post<any>('https://enablement.us/Enablement/rest/emailConfirmation/resetPassword', data);
+		return this.http.post<any>('https://'+this.domain_name+'/rest/emailConfirmation/resetPassword', data);
   }
 
   CheckSrc(form){
@@ -52,7 +52,7 @@ export class AuthService {
       "RESULT":"@RESULT"
     }
     var dt=JSON.stringify(body);
-    return this.http.post<data>('https://enablement.us/Enablement/rest/'+'CheckSrc',body);
+    return this.http.post<data>('https://'+this.domain_name+'/rest/'+'CheckSrc',body);
   }
   //------------------------
   sendConfirmation(data){
@@ -63,7 +63,7 @@ export class AuthService {
       "message": "Please confirm your login..."
     };
     var aa = JSON.stringify(body);
-    return this.http.post('https://enablement.us/Enablement/rest/' + "SendEmail",aa);
+    return this.http.post('https://'+this.domain_name+'/rest/' + "SendEmail",aa);
   }
   //-------------
   CheckUsrPw(form){

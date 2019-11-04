@@ -105,7 +105,7 @@ export class ConfigServiceService {
   }
 
   public getICN() {
-    return this.https.get("https://enablement.us/Enablement/rest/v1/securedJSON?V_CD_TYP=ICN&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=Masters&Verb=GET");
+    return this.https.get("https://" + this.domain_name + "/rest/v1/securedJSON?V_CD_TYP=ICN&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=Masters&Verb=GET");
   }
 
   public getFieldInValidMsg(modelReference: any, fieldName: string) {
@@ -621,9 +621,6 @@ export class ConfigServiceService {
     return this.https.get<data>(this.apiUrlGet + "V_SRC_CD=" + this.V_SRC_CD + "&V_APP_CD=" + ApplicationCD + "&V_PRCS_CD=" + ProcessCD + "&V_USR_NM=" + this.V_USR_NM + "&V_TRIGGER_STATE=" + StatusCD + "&REST_Service=ScheduledJobs&Verb=GET"
     );
     // this.apiUrlGet + "V_SRC_CD=" + this.V_SRC_CD + "&V_APP_CD=" + ApplicationCD + "&V_PRCS_CD=" + ProcessCD + "&V_USR_NM=" + this.V_USR_NM + "&V_TRIGGER_STATE=" + StatusCD + "&REST_Service=ScheduledJobs&Verb=GET"
-
-
-    //  https://enablement.us/rest/v1/secured?V_SRC_CD=local&V_APP_CD=ALL&V_PRCS_CD=Contracts%20Opportunities&V_USR_NM=local@adventbusiness.com&V_TRIGGER_STATE=ALL&REST_Service=ScheduledJobs&Verb=GET
   }
   Execute_AP_PR(SL_APP_CD, SL_PRC_CD) {
     // return this.http.get(this.apiUrlGet + "V_APP_CD=" + SL_APP_CD + "&V_PRCS_CD=" + SL_PRC_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=PorcessParameters&Verb=GET" );
@@ -756,7 +753,6 @@ export class ConfigServiceService {
 
   deletechartstyling(UNIQUE_ID, V_SRC_ID, V_PRF_NM, V_ITM_ID) {
     return this.http.get(this.apiUrlGetSecure + "V_USR_NM=" + this.V_USR_NM + "&V_PRF_NM=" + V_PRF_NM + "&V_UNIQUE_ID=" + UNIQUE_ID + "&V_ITM_ID=" + V_ITM_ID + "&V_SRC_ID=" + V_SRC_ID + "&REST_Service=User_Preference&Verb=DELETE", this.apiService.setHeaders());
-    //enablement.us/Enablement/rest/v1/secured?V_USR_NM=VARCHAR&V_PRF_NM=VARCHAR&V_UNIQUE_ID=BIGINT&V_ITM_ID=INT&V_SRC_ID=INT&REST_Service=User_Preference&Verb=DELETE
   }
 
   deletepreferencerow(UNIQUE_ID, V_SRC_ID, V_ITM_ID) {

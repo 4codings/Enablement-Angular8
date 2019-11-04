@@ -4,6 +4,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { HttpClient } from '@angular/common/http';
 import { RollserviceService } from '../../../services/rollservice.service';
 import { ApiService } from '../../../service/api/api.service';
+import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'app-deploymentsnavbar',
   templateUrl: './deploymentsnavbar.component.html',
@@ -26,6 +27,7 @@ export class DeploymentsnavbarComponent implements OnInit {
   V_SRC_CD;
   V_USR_NM;
   headerTxt = '';
+  domain = environment.apiURL;
 
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private rollserviceService: RollserviceService,
     private httpClient: HttpClient, private apiService:ApiService) {
@@ -40,7 +42,7 @@ export class DeploymentsnavbarComponent implements OnInit {
     this.V_USR_NM=JSON.parse(sessionStorage.getItem('u')).USR_NM;
     this.apiService.imageLogoUrlSubject.subscribe(data => {
       if(data == '') {
-        this.imageUrl = `https://enablement.us/${JSON.parse(sessionStorage.getItem('u')).SRC_CD}/logo`;
+        this.imageUrl = `https://${this.domain}/${JSON.parse(sessionStorage.getItem('u')).SRC_CD}/logo`;
       } else {
         this.imageUrl = data;
         this.timeStamp = (new Date()).getTime();

@@ -7,6 +7,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { filter, take } from 'rxjs/operators';
 import { OptionalValuesService } from 'src/app/services/optional-values.service';
 import { ApiService } from '../../../service/api/api.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-usernavbar',
@@ -84,8 +85,8 @@ export class UsernavbarComponent implements OnInit {
     this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
     this.V_USR_NM = JSON.parse(sessionStorage.getItem('u')).USR_NM;
     this.apiService.imageLogoUrlSubject.subscribe(data => {
-      if (data == '') {
-        this.imageUrl = `https://enablement.us/${JSON.parse(sessionStorage.getItem('u')).SRC_CD}/logo`;
+      if(data == '') {
+        this.imageUrl = `https://${environment.apiURL}/${JSON.parse(sessionStorage.getItem('u')).SRC_CD}/logo`;
       } else {
         this.imageUrl = data;
         this.timeStamp = (new Date()).getTime();

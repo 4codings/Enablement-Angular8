@@ -108,7 +108,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   });
   parentMenuItems = [
     { item: 'New Process', value: 'Add', havePermission: 0, icon: 'add', iconType: 'mat' },
-    { item: 'Open BPMN File', value: 'Import', havePermission: 0, icon: 'cloud_upload  mr-15', iconType: 'mat' },
+    { item: 'Open BPMN File', value: 'Import', havePermission: 0, icon: 'cloud_upload  mr-1', iconType: 'mat' },
     { item: 'Edit Application', value: 'Edit', havePermission: 0, icon: 'entry bpmn-icon-screw-wrench mr-10', iconType: 'bpmn' },
     { item: 'Delete Application', value: 'Delete', havePermission: 0, icon: 'entry bpmn-icon-trash', iconType: 'bpmn' }];
   childrenMenuItems = [

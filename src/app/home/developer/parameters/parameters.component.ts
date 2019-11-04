@@ -8,6 +8,7 @@ import { ConfigServiceService } from '../../../services/config-service.service';
 import { NoAuthDataService } from '../../../services/no-auth-data.service';
 import { UseradminService } from '../../../services/useradmin.service2';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 // import { DefineDialogComponent} from './define-dialog/define-dialog.component';
 
 
@@ -18,6 +19,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ParametersComponent implements OnInit {
   Label: any[] = [];
+  domain_name = environment.domainName;
   constructor(private router:Router,
     private StorageSessionService:StorageSessionService,
     public dialog: MatDialog,
@@ -353,7 +355,7 @@ uploadData() {
 
 delete() {
   if(this.selectedExecutableType != undefined && this.selectedexecutable != undefined) {
-    this.https.get('https://enablement.us/Enablement/rest/v1/securedJSON?V_EXE_TYP='+ this.F_EXE_TYP + '&V_EXE_CD='+ this.F_EXE_CD + '&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=Exe&Verb=DELETE').subscribe(res => {
+    this.https.get('https://'+this.domain_name+'/rest/v1/securedJSON?V_EXE_TYP='+ this.F_EXE_TYP + '&V_EXE_CD='+ this.F_EXE_CD + '&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=Exe&Verb=DELETE').subscribe(res => {
       this.getExecutableTypeCode();
       this.clearSelectedexecutable();
     }, err => {
@@ -382,7 +384,7 @@ add() {
     "REST_Service":["Exe"],
     "Verb":["PUT"]
   }
-  this.https.put('https://enablement.us/Enablement/rest/v1/securedJSON?', data).subscribe(res => {
+  this.https.put('https://'+this.domain_name+ '/rest/v1/securedJSON?', data).subscribe(res => {
     this.getExecutableTypeCode();
     this.clearSelectedexecutable();
     this.showUpdateBtn = false;
@@ -412,7 +414,7 @@ update() {
     "REST_Service":["Exe"],
     "Verb":["PUT"]
   }
-  this.https.put('https://enablement.us/Enablement/rest/v1/securedJSON?', data).subscribe(res => {
+  this.https.put('https://'+this.domain_name +'/rest/v1/securedJSON?', data).subscribe(res => {
     this.getExecutableTypeCode();
     this.clearSelectedexecutable();
     this.showUpdateBtn = false;

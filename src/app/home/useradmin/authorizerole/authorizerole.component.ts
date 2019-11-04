@@ -11,6 +11,7 @@ import * as userRoleSelectors from '../../../store/user-admin/user-role/userrole
 import * as userRoleActions from '../../../store/user-admin/user-role/userrole.action';
 import { HttpClient } from '@angular/common/http';
 import {authorizationTypeOptions} from '../useradmin.constants';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-authorizerole',
@@ -44,6 +45,7 @@ export class AuthorizeroleComponent implements OnInit {
   public subRole;
   public subAuth;
   authorizationTypeOptions = authorizationTypeOptions;
+  domain_name = environment.domainName;
   constructor(public noAuthData: NoAuthDataService, private store: Store<AppState>, private http:HttpClient) { }
 
   ngOnInit() {
@@ -291,7 +293,7 @@ export class AuthorizeroleComponent implements OnInit {
         "REST_Service":["Role_Auth"],
         "Verb":["POST"]
       }
-      this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', json).subscribe(res => {
+      this.http.post('https://'+this.domain_name+'/rest/v1/securedJSON', json).subscribe(res => {
         this.updateAuthStateAdded(res[0]);
         this.updateAuthStateDeleted(deletedIds)
       }, err => {
@@ -327,7 +329,7 @@ export class AuthorizeroleComponent implements OnInit {
         "Verb":["POST"]
       }
 
-      this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', json).subscribe(res => {
+      this.http.post('https://'+this.domain_name+'/rest/v1/securedJSON', json).subscribe(res => {
         this.updateRoleStateAdded(res[0]);
         this.updateRoleStateDeleted(deletedIds)
       }, err => {

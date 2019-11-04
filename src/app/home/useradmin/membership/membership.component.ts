@@ -12,7 +12,7 @@ import * as userGroupActions from '../../../store/user-admin/user-group/usergrou
 import { userGroup } from '../../../store/user-admin/user-group/usergroup.model';
 import { HttpClient } from '@angular/common/http';
 import {groupTypeOptions} from '../useradmin.constants';
-
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-membership',
@@ -20,7 +20,7 @@ import {groupTypeOptions} from '../useradmin.constants';
   styleUrls: ['./membership.component.scss']
 })
 export class MembershipComponent implements OnInit, OnDestroy {
-
+  domain_name = environment.domainName;
   Label: any[] = [];
   user: any[] = [];
   public users$: Observable<User[]>;
@@ -300,7 +300,7 @@ export class MembershipComponent implements OnInit, OnDestroy {
         "Verb":["POST"]
       }
 
-      this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', json).subscribe(res => {
+      this.http.post('https://'+this.domain_name+'/rest/v1/securedJSON', json).subscribe(res => {
         this.updateGroupStateAdded(res[0]);
         this.updateGroupStateDeleted(deletedIds)
       }, err => {
@@ -336,7 +336,7 @@ export class MembershipComponent implements OnInit, OnDestroy {
         "Verb":["POST"]
       }
 
-      this.http.post('https://enablement.us/Enablement/rest/v1/securedJSON', json).subscribe(res => {
+      this.http.post('https://'+this.domain_name+'/rest/v1/securedJSON', json).subscribe(res => {
         this.updateUserStateAdded(res[0]);
         this.updateUserStateDeleted(deletedIds)
       }, err => {

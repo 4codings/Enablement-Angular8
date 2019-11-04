@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
-  domainName: 'https://enablement.us/Enablement/',
-  apiURL: 'https://enablement.us/',
-  idle: 780,
+  domainName: `${window.location.host}/Enablement`,
+  apiURL: `${window.location.host}`,
+  idle: 780,  
   timeout: 121
 };
