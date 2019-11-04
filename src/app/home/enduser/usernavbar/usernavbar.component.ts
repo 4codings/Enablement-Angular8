@@ -36,7 +36,7 @@ export class UsernavbarComponent implements OnInit {
   reportTableDefaultView$;
   constructor(
     private rollserviceService: RollserviceService,
-    private apiService:ApiService,
+    private apiService: ApiService,
     private httpClient: HttpClient, private router: Router, private optionalService: OptionalValuesService
   ) {
     this.reportTableSubscription = this.optionalService.reportTableMenuViewValue.subscribe(res => {
@@ -84,54 +84,54 @@ export class UsernavbarComponent implements OnInit {
     this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
     this.V_USR_NM = JSON.parse(sessionStorage.getItem('u')).USR_NM;
     this.apiService.imageLogoUrlSubject.subscribe(data => {
-      if(data == '') {
+      if (data == '') {
         this.imageUrl = `https://enablement.us/${JSON.parse(sessionStorage.getItem('u')).SRC_CD}/logo`;
       } else {
         this.imageUrl = data;
         this.timeStamp = (new Date()).getTime();
       }
     });
-    this.rollserviceService.getRollCd().then((res) => {
-      this.httpClient.get('../../../../assets/control-variable.json').subscribe(cvres => {
-        this.ctrl_variables = cvres;
-        res.map((role) => {
-          switch (role) {
-            case 'Enablement Workflow Execute Role':
-              if (this.ctrl_variables.show_EXE) {
-                this.roll_execute = true;
-              }
-              this.roll_design = true;
-              break;
-            case 'Enablement Workflow Schedule Role':
-              if (this.ctrl_variables.show_SCHE) {
-                this.roll_schedule = true;
-              }
-              break;
-            case 'Enablement Workflow Orchestrate Role':
-              if (this.ctrl_variables.show_ORCH) {
-                this.roll_orchestrate = true;
-              }
-              break;
-            case 'Enablement Workflow MyTask Role':
-              this.roll_myTask = true;
-              break;
-            case 'Enablement Workflow Exception Role':
-              this.roll_exeption = true;
-              break;
-            case 'Enablement Workflow Dashboard Role':
-              this.roll_dashboard = true;
-              break;
-            case 'Enablement Workflow Process Role':
-              if (this.ctrl_variables.show_PROC) {
-                this.roll_process = true;
-              }
-              break;
-            default:
-              break;
-          }
-        });
-      });
-    });
+    // this.rollserviceService.getRollCd().then((res) => {
+    //   this.httpClient.get('../../../../assets/control-variable.json').subscribe(cvres => {
+    //     this.ctrl_variables = cvres;
+    //     res.map((role) => {
+    //       switch (role) {
+    //         case 'Enablement Workflow Execute Role':
+    //           if (this.ctrl_variables.show_EXE) {
+    //             this.roll_execute = true;
+    //           }
+    //           this.roll_design = true;
+    //           break;
+    //         case 'Enablement Workflow Schedule Role':
+    //           if (this.ctrl_variables.show_SCHE) {
+    //             this.roll_schedule = true;
+    //           }
+    //           break;
+    //         case 'Enablement Workflow Orchestrate Role':
+    //           if (this.ctrl_variables.show_ORCH) {
+    //             this.roll_orchestrate = true;
+    //           }
+    //           break;
+    //         case 'Enablement Workflow MyTask Role':
+    //           this.roll_myTask = true;
+    //           break;
+    //         case 'Enablement Workflow Exception Role':
+    //           this.roll_exeption = true;
+    //           break;
+    //         case 'Enablement Workflow Dashboard Role':
+    //           this.roll_dashboard = true;
+    //           break;
+    //         case 'Enablement Workflow Process Role':
+    //           if (this.ctrl_variables.show_PROC) {
+    //             this.roll_process = true;
+    //           }
+    //           break;
+    //         default:
+    //           break;
+    //       }
+    //     });
+    //   });
+    // });
   }
   optionSelecteds(value) {
     if (value.key == 'Properties') {
@@ -151,7 +151,7 @@ export class UsernavbarComponent implements OnInit {
   }
 
   public getLinkPicture() {
-    if(this.timeStamp) {
+    if (this.timeStamp) {
       return this.imageUrl + '?' + this.timeStamp;
     }
     return this.imageUrl;
