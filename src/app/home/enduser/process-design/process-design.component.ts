@@ -327,23 +327,33 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         if (this.roleValues.length) {
           this.roleValues.forEach(ele => {
             switch (ele) {
+              case 'Enablement Workflow Service Role':
+                this.childrenMenuItems[10].havePermission = 1; // edit process
+                break;
               case 'Enablement Workflow Schedule Role':
-                this.childrenMenuItems[5].havePermission = 1;
-                break;
-              case 'Enablement Workflow Dashboard Role':
-                this.childrenMenuItems[3].havePermission = 1;
-                break;
-              case 'Enablement Workflow MyTask Role':
-                this.childrenMenuItems[2].havePermission = 1;
-                break;
-              case 'Enablement Workflow Exception Role':
-                this.childrenMenuItems[4].havePermission = 1;
+                this.childrenMenuItems[5].havePermission = 1; // schedule
                 break;
               case 'Enablement Workflow Process Role':
-                this.parentMenuItems[0].havePermission = 1;
-                this.parentMenuItems[1].havePermission = 1;
-                this.childrenMenuItems[9].havePermission = 1;
-                this.childrenMenuItems[10].havePermission = 1;
+                this.parentMenuItems[0].havePermission = 1; // add process
+                this.parentMenuItems[1].havePermission = 1; // import bpmn
+                this.childrenMenuItems[11].havePermission = 1; //delete process
+                // this.childrenMenuItems[9].havePermission = 1;
+                // this.childrenMenuItems[10].havePermission = 1;
+                break;
+              case 'Enablement Workflow MyTask Role':
+                this.childrenMenuItems[2].havePermission = 1; // approve
+                break;
+              case 'Enablement Workflow Execute Role':
+                this.childrenMenuItems[0].havePermission = 1; //run
+                this.childrenMenuItems[1].havePermission = 1; // run at
+                this.childrenMenuItems[8].havePermission = 1; // download bpmn
+                this.childrenMenuItems[9].havePermission = 1; // download svg
+                break;
+              case 'Enablement Workflow Exception Role':
+                this.childrenMenuItems[4].havePermission = 1; // resolve
+                break;
+              case 'Enablement Workflow Dashboard Role':
+                this.childrenMenuItems[3].havePermission = 1; // monitor
                 break;
               default:
                 break;

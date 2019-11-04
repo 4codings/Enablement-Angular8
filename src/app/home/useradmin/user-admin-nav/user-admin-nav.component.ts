@@ -51,58 +51,58 @@ export class UserAdminNavComponent implements OnInit {
         this.timeStamp = (new Date()).getTime();
       }
     });
-    this.rollserviceService.getRollCd().then((res) => {
-      this.httpClient.get('../../../../assets/control-variable.json').subscribe(cvres => {
-        this.ctrl_variables = cvres;
-        this.headerTxt = this.ctrl_variables.user_admin_header;
-        res.map((role) => {
-          switch (role) {
-            case 'Enablement User Admin Overview Role':
-              if (this.ctrl_variables.show_UserAdminOverviewTab) {
-                this.roll_overview = true;
-              }
-              break;
-            case 'Enablement User Admin User Role':
-              if (this.ctrl_variables.show_UserAdminUserTab) {
-                this.roll_user = true;
-              }
-              break;
-            case 'Enablement User Admin Group Role':
-              if (this.ctrl_variables.show_UserAdminGroupTab) {
-                this.roll_group = true;
-              }
-              break;
-            case 'Enablement User Admin Membership Role':
-              if (this.ctrl_variables.show_UserAdminMembershipTab) {
-                this.roll_membership = true;
-              }
-              break;
-            case 'Enablement User Admin Role Role':
-              if (this.ctrl_variables.show_UserAdminRoleTab) {
-                this.roll_role = true;
-              }
-              break;
-            case 'Enablement User Admin Assign Roles Role':
-              if (this.ctrl_variables.show_UserAdminAssignRoleTab) {
-                this.roll_assignRole = true;
-              }
-              break;
-            case 'Enablement User Admin Auth Role':
-              if (this.ctrl_variables.show_UserAdminAuthTab) {
-                this.roll_auth = true;
-              }
-              break;
-            case 'Enablement User Admin Authorize Roles Role':
-              if (this.ctrl_variables.show_UserAdminAuthorizationTab) {
-                this.roll_authorization = true;
-              }
-              break;
-            default:
-              break;
-          }
-        });
-      });
-    });
+    // this.rollserviceService.getRollCd().then((res) => {
+    //   this.httpClient.get('../../../../assets/control-variable.json').subscribe(cvres => {
+    //     this.ctrl_variables = cvres;
+    //     this.headerTxt = this.ctrl_variables.user_admin_header;
+    //     res.map((role) => {
+    //       switch (role) {
+    //         case 'Enablement User Admin Overview Role':
+    //           if (this.ctrl_variables.show_UserAdminOverviewTab) {
+    //             this.roll_overview = true;
+    //           }
+    //           break;
+    //         case 'Enablement User Admin User Role':
+    //           if (this.ctrl_variables.show_UserAdminUserTab) {
+    //             this.roll_user = true;
+    //           }
+    //           break;
+    //         case 'Enablement User Admin Group Role':
+    //           if (this.ctrl_variables.show_UserAdminGroupTab) {
+    //             this.roll_group = true;
+    //           }
+    //           break;
+    //         case 'Enablement User Admin Membership Role':
+    //           if (this.ctrl_variables.show_UserAdminMembershipTab) {
+    //             this.roll_membership = true;
+    //           }
+    //           break;
+    //         case 'Enablement User Admin Role Role':
+    //           if (this.ctrl_variables.show_UserAdminRoleTab) {
+    //             this.roll_role = true;
+    //           }
+    //           break;
+    //         case 'Enablement User Admin Assign Roles Role':
+    //           if (this.ctrl_variables.show_UserAdminAssignRoleTab) {
+    //             this.roll_assignRole = true;
+    //           }
+    //           break;
+    //         case 'Enablement User Admin Auth Role':
+    //           if (this.ctrl_variables.show_UserAdminAuthTab) {
+    //             this.roll_auth = true;
+    //           }
+    //           break;
+    //         case 'Enablement User Admin Authorize Roles Role':
+    //           if (this.ctrl_variables.show_UserAdminAuthorizationTab) {
+    //             this.roll_authorization = true;
+    //           }
+    //           break;
+    //         default:
+    //           break;
+    //       }
+    //     });
+    //   });
+    // });
   }
 
   public getLinkPicture() {
