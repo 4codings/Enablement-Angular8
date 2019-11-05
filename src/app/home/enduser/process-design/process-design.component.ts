@@ -416,60 +416,62 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     const eventBus = this.modeler.get('eventBus');
     if (eventBus) {
       eventBus.on('element.click', ($event) => {
-        this.opened = true;
-        this.onTitleClickNoDelete = false;
-        this.processName = '';
-        this.documentation = '';
-        this.iconType = '';
-        this.isApp = false;
-        this.isProcess = false;
-        this.isService = false;
-        this.isSequenceFlow = false;
-        this.oldStateId = $event.element.id;
-        this.generalId = $event.element.id.replace(new RegExp('_', 'g'), ' ');
-        const businessObject = $event.element.businessObject;
-        this.iconType = $event.element.type;
-        this.oldIconType = this.iconType;
-        this.processName = businessObject.name ? businessObject.name : '';
-        if (businessObject.documentation && businessObject.documentation.length) {
-          this.documentation = businessObject.documentation[0].text ? businessObject.documentation[0].text : '';
-        }
-        if ($event && $event.element && this.taskList.indexOf($event.element.type) > -1) {
-          this.isService = true;
-          this.selectedService = $event.element.id.replace(new RegExp('_', 'g'), ' ');
-          this.showAllTabFlag = true;
-          this.showCondtionType = false;
-          this.old_srvc_cd = this.generalId; // added latest
-          this.getAllTabs(this.generalId);
-        }
-        if ($event && $event.element && ['bpmn:Process'].indexOf($event.element.type) > -1) {
+        if (this.editProcessFlag) {
+          this.opened = true;
+          this.onTitleClickNoDelete = false;
+          this.processName = '';
+          this.documentation = '';
+          this.iconType = '';
           this.isApp = false;
-          this.isProcess = true;
+          this.isProcess = false;
           this.isService = false;
-          this.showAllTabFlag = false;
-          this.showCondtionType = false;
-          this.generalId = this.selectedProcess;
-          this.getDocumentation('PRCS', this.generalId);
-          // this.selectedProcess = $event.element.id.replace(new RegExp('_', 'g'), ' ')
-          // this.generalId = $event.element.id.replace(new RegExp('_', 'g'), ' ');
-        }
-        if ($event && $event.element && ['bpmn:SequenceFlow'].indexOf($event.element.type) > -1) {
-          this.isSequenceFlow = true;
+          this.isSequenceFlow = false;
+          this.oldStateId = $event.element.id;
+          this.generalId = $event.element.id.replace(new RegExp('_', 'g'), ' ');
           const businessObject = $event.element.businessObject;
-          this.sequenceFlowobjectId = $event.element.id.replace(new RegExp('_', 'g'), ' ');
-          this.sequenceFlowsourceId = (businessObject && businessObject.sourceRef ? businessObject.sourceRef.id : '').replace(new RegExp('_', 'g'), ' ');
-          this.sequenceFlowtargetId = (businessObject && businessObject.targetRef ? businessObject.targetRef.id : '').replace(new RegExp('_', 'g'), ' ');
-          this.showAllTabFlag = false;
-          const isConditional = !!businessObject.conditionExpression;
-          this.getDocumentation('ORCH', this.generalId);
-          if (isConditional) {
-            this.showCondtionType = true;
-            this.getConditionType();
-          } else {
-            this.showCondtionType = false;
+          this.iconType = $event.element.type;
+          this.oldIconType = this.iconType;
+          this.processName = businessObject.name ? businessObject.name : '';
+          if (businessObject.documentation && businessObject.documentation.length) {
+            this.documentation = businessObject.documentation[0].text ? businessObject.documentation[0].text : '';
           }
+          if ($event && $event.element && this.taskList.indexOf($event.element.type) > -1) {
+            this.isService = true;
+            this.selectedService = $event.element.id.replace(new RegExp('_', 'g'), ' ');
+            this.showAllTabFlag = true;
+            this.showCondtionType = false;
+            this.old_srvc_cd = this.generalId; // added latest
+            this.getAllTabs(this.generalId);
+          }
+          if ($event && $event.element && ['bpmn:Process'].indexOf($event.element.type) > -1) {
+            this.isApp = false;
+            this.isProcess = true;
+            this.isService = false;
+            this.showAllTabFlag = false;
+            this.showCondtionType = false;
+            this.generalId = this.selectedProcess;
+            this.getDocumentation('PRCS', this.generalId);
+            // this.selectedProcess = $event.element.id.replace(new RegExp('_', 'g'), ' ')
+            // this.generalId = $event.element.id.replace(new RegExp('_', 'g'), ' ');
+          }
+          if ($event && $event.element && ['bpmn:SequenceFlow'].indexOf($event.element.type) > -1) {
+            this.isSequenceFlow = true;
+            const businessObject = $event.element.businessObject;
+            this.sequenceFlowobjectId = $event.element.id.replace(new RegExp('_', 'g'), ' ');
+            this.sequenceFlowsourceId = (businessObject && businessObject.sourceRef ? businessObject.sourceRef.id : '').replace(new RegExp('_', 'g'), ' ');
+            this.sequenceFlowtargetId = (businessObject && businessObject.targetRef ? businessObject.targetRef.id : '').replace(new RegExp('_', 'g'), ' ');
+            this.showAllTabFlag = false;
+            const isConditional = !!businessObject.conditionExpression;
+            this.getDocumentation('ORCH', this.generalId);
+            if (isConditional) {
+              this.showCondtionType = true;
+              this.getConditionType();
+            } else {
+              this.showCondtionType = false;
+            }
 
-          // this.getAllTabs(this.generalId);
+            // this.getAllTabs(this.generalId);
+          }
         }
         this.closeSchedulePanel();
       }),
@@ -1209,15 +1211,18 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                   let authSubStr = ele.split('-');
                   switch (authSubStr[0]) {
                     case 'EXECUTE': {
-                      copyChildrenMenuItems[0].havePermission = authSubStr[1] === 'Y' ? 1 : 0;
-                      copyChildrenMenuItems[1].havePermission = authSubStr[1] === 'Y' ? 1 : 0;
+                      copyChildrenMenuItems[2].havePermission = authSubStr[1] === 'Y' ? 1 : 0; // approve
+                      copyChildrenMenuItems[0].havePermission = authSubStr[1] === 'Y' ? 1 : 0;// run
+                      copyChildrenMenuItems[1].havePermission = authSubStr[1] === 'Y' ? 1 : 0;// run at
+                      copyChildrenMenuItems[4].havePermission = authSubStr[1] === 'Y' ? 1 : 0; // resolve
+                      copyChildrenMenuItems[5].havePermission = authSubStr[1] === 'Y' ? 1 : 0;// schedule
                       break;
                     }
                     case 'UPDATE': {
                       if (authSubStr[1] === 'Y') {
                         editCount++;
                       }
-                      copyChildrenMenuItems[11].havePermission = authSubStr[1] === 'Y' ? 1 : 0;
+                      copyChildrenMenuItems[10].havePermission = authSubStr[1] === 'Y' ? 1 : 0;
                       break;
                     }
                     case 'DELETE': {
