@@ -706,12 +706,13 @@
                     </mat-panel-title>
                   </mat-expansion-panel-header>
                   <!--<label class="tabTitle">{{Label['RESTORABILITY']}}</label>-->
+                  {{restorability}}
                   <mat-radio-group class="mb-2" [(ngModel)]="restorability">
                     <mat-radio-button value="NONE">{{Label['NONE']}}</mat-radio-button>
                     <mat-radio-button value="MANUAL">{{Label['MANUAL']}}</mat-radio-button>
                     <mat-radio-button value="AUTO">{{Label['AUTO']}}</mat-radio-button>
                   </mat-radio-group>
-                  <div *ngIf="restorability==='AUTO'">
+                  <div *ngIf="restorability ==='AUTO'">
                     <div class="row row1">
                       <input id="seconds" type="number" [(ngModel)]="attemps" min="1">
                       <label id="seconds_label">{{Label['ATTEMPS']}}</label>

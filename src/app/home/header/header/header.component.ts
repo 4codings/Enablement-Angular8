@@ -48,13 +48,13 @@ export class HeaderComponent implements OnInit {
   }
   ngOnInit() {
     this.userName = JSON.parse(sessionStorage.getItem('u')).USR_NM;
-    this.agency = JSON.parse(sessionStorage.getItem('u')).SRC_CD; 
+    this.agency = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
 
     this.chooworkingProfile();
     // let url:string="user";
     // this.router.navigateByUrl(url);
     if (this.router.url == "/End_User/Design") {
-      this.selectedProfile = "End_User";
+      this.selectedProfile = "Workflow";
     } else if (this.router.url == "/User_Admin/Adminuser") {
       this.selectedProfile = "User_Admin";
     } else if (this.router.url == "/System_Admin/AppDeploy") {
@@ -79,26 +79,29 @@ export class HeaderComponent implements OnInit {
 
   //Selected option in the profile section
   optionSelecteds(e: any) {
-   
+
     this.selectedProfile = e;
     //if(e.split(" ") > 0)
     // this.toastr.info("your profile "+e+"profile");
+    if (this.selectedProfile == 'Workflow') {
+      e = "End_User"
+    }
     this.router.navigateByUrl(e.replace(" ", "_"), { skipLocationChange: true });
     //this.router.navigateByUrl(e);
   }
 
   public getLinkPicture() {
-    if(this.timeStamp) {
+    if (this.timeStamp) {
       return this.imageUrl + '?' + this.timeStamp;
     }
     return this.imageUrl;
-  } 
+  }
 
   chooworkingProfile() {
     this.rollserviceService.getRollCd().then((res) => {
       for (let i = 0; i < res.length; i++) {
         if (res[i] == "End User Role") {
-          this.options.push("End_User");
+          this.options.push("Workflow");
         } else if (res[i] == 'System Admin Role') {
           this.options.push("System_Admin");
         } else if (res[i] == 'Finance Role') {
@@ -121,8 +124,8 @@ export class HeaderComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      if(result) {
-        this.imageUrl = "https://"+this.domain+"/" + this.userName + "/pic" + "?" + (new Date()).getTime(); 
+      if (result) {
+        this.imageUrl = "https://" + this.domain + "/" + this.userName + "/pic" + "?" + (new Date()).getTime();
         this.timeStamp = (new Date()).getTime();
       }
     });
@@ -137,8 +140,8 @@ export class HeaderComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      if(result) {
-        this.apiService.imageLogoUrlSubject.next("https://"+this.domain+"/" + this.agency + "/logo"); 
+      if (result) {
+        this.apiService.imageLogoUrlSubject.next("https://" + this.domain + "/" + this.agency + "/logo");
       }
     });
   }
