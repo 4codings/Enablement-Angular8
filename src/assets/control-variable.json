@@ -38,5 +38,6 @@
   "success_string": "Reduced Job Instance",
   "intermediate_string": "txn.status.waitingUserAuth",
   "system_admin_header": "System Admin",
-  "user_admin_header": "User Admin"
+  "user_admin_header": "User Admin",
+  "hide_ControlsofNonCustomGroup": true
 }

@@ -43,7 +43,7 @@ export const groupTypeConstant = {
 
 export const groupTypeOptions: {key: string, label: string}[] = [
   {key: '', label: 'ALL'},
-  {key: groupTypeConstant.SCREEN, label: 'Screen'},
+  {key: groupTypeConstant.SCREEN, label: 'Feature'},
   {key: groupTypeConstant.PROFILE, label: 'Profile'},
   {key: groupTypeConstant.CUSTOM, label: 'Custom'}
 ];

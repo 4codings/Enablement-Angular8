@@ -21,7 +21,7 @@ export class GroupListComponent implements OnInit, OnDestroy {
   @Input() userPermission: boolean;
   @Input() assignPermission: boolean;
   @Input() controlVariables: any;
-
+  onLoadGroupPermission: any;
   groups: userGroup[];
   groupTypeOptions = this.sortPipe.transform(groupTypeOptions, 'label');
   selectedGroupType;
@@ -29,7 +29,6 @@ export class GroupListComponent implements OnInit, OnDestroy {
   // selectedGroupType = this.groupTypeOptions[this.index];
   V_SRC_CD_DATA: any;
   unsubscribeAll: Subject<boolean> = new Subject<boolean>();
-
   constructor(
     private dialog: MatDialog,
     private userAdminService: UseradminService,
@@ -57,7 +56,9 @@ export class GroupListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // this.index = this.groupTypeOptions.findIndex(v => v.key == groupTypeConstant.CUSTOM);
     // this.selectedGroupType = this.groupTypeOptions[this.index];
+    this.onLoadGroupPermission = this.groupPermission;
     this.controlVariables = this.userAdminService.controlVariables;
+    this.changePermissionOnGroupTypeChange();
     this.V_SRC_CD_DATA = {
       V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
     };
@@ -68,6 +69,8 @@ export class GroupListComponent implements OnInit, OnDestroy {
   }
 
   changeGroupType(type): void {
+    this.selectedGroupType = type;
+    this.changePermissionOnGroupTypeChange();
     this.overviewService.selectGroupType(type);
   }
 
@@ -76,4 +79,13 @@ export class GroupListComponent implements OnInit, OnDestroy {
     this.unsubscribeAll.complete();
   }
 
+  changePermissionOnGroupTypeChange() {
+    if (this.controlVariables['hide_ControlsofNonCustomGroup'] && this.selectedGroupType.key !== 'CUSTOM' && this.onLoadGroupPermission) {
+      this.groupPermission = false;
+      this.assignPermission = false;
+    } else if (this.onLoadGroupPermission) {
+      this.groupPermission = true;
+      this.assignPermission = true;
+    }
+  }
 }
