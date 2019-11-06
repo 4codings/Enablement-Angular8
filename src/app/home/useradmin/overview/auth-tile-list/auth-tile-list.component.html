@@ -1,34 +1,39 @@
 <div class="tiles-wrapper" fxLayout="row wrap" cdkDropList [cdkDropListDisabled]="!authorizationPermission"
   [cdkDropListData]="auths" (cdkDropListDropped)="authDropped($event)" cdkDropListOrientation="horizontal">
+  <!-- [matTooltip]="currAuth.V_AUTH_CD.split(';')[0]" -->
   <div class="tile" matRipple cdkDrag cdkDropListSortingDisabled [cdkDragData]="currAuth"
-    [matTooltip]="currAuth.V_AUTH_CD.split(';')[0]" *ngFor="let currAuth of auths | authType: selectedAuthType?.key"
-    [class.active]="currAuth == selectedAuth" [class.highlight]="highlightedAuths.isSelected(currAuth)"
-    (contextmenu)="openContextmenu($event, currAuth)" (mousedown)="onTileMouseDownEventHandler($event)"
-    (click)="onAuthTileClick(currAuth)">
+    *ngFor="let currAuth of auths | authType: selectedAuthType?.key" [class.active]="currAuth == selectedAuth"
+    [class.highlight]="highlightedAuths.isSelected(currAuth)" (contextmenu)="openContextmenu($event, currAuth)"
+    (mousedown)="onTileMouseDownEventHandler($event)" (click)="onAuthTileClick(currAuth)">
     <div class="tile-icons-wrapper" fxLayout="row wrap" fxLayoutAlign="space-around">
       <!-- *ngIf="currAuth.V_CREATE==='Y'" -->
       <mat-icon [ngClass]="{'disable-icon': currAuth.V_CREATE==='N' , 'tile-icon' :currAuth.V_CREATE==='Y'}"
-        (dblclick)="method2CallForDblClick('add',currAuth)">
+        (dblclick)="method2CallForDblClick('add',currAuth)"
+        [matTooltip]="currAuth.V_CREATE==='N'? 'Enable Create':'Disable Create'">
         add
       </mat-icon>
       <!-- *ngIf="currAuth.V_UPDATE==='Y'" -->
       <mat-icon [ngClass]="{ 'disable-icon': currAuth.V_UPDATE==='N' , 'tile-icon' : currAuth.V_UPDATE==='Y'}"
-        (dblclick)="method2CallForDblClick('update',currAuth)">
+        (dblclick)="method2CallForDblClick('update',currAuth)"
+        [matTooltip]="currAuth.V_UPDATE==='N'? 'Enable Update':'Disable Update'">
         create
       </mat-icon>
       <!-- *ngIf="currAuth.V_READ==='Y'" -->
       <mat-icon [ngClass]="{'disable-icon':  currAuth.V_READ==='N', 'tile-icon' : currAuth.V_READ==='Y'}"
-        (dblclick)="method2CallForDblClick('read',currAuth)">
+        (dblclick)="method2CallForDblClick('read',currAuth)"
+        [matTooltip]="currAuth.V_READ==='N'? 'Enable Read':'Disable Read'">
         remove_red_eye
       </mat-icon>
       <!-- *ngIf="currAuth.V_DELETE==='Y'" -->
       <mat-icon [ngClass]="{'disable-icon':  currAuth.V_DELETE==='N', 'tile-icon' :currAuth.V_DELETE==='Y'}"
-        (dblclick)="method2CallForDblClick('delete',currAuth)">
+        (dblclick)="method2CallForDblClick('delete',currAuth)"
+        [matTooltip]="currAuth.V_DELETE==='N'? 'Enable Delete':'Disable Delete'">
         delete
       </mat-icon>
       <!-- *ngIf="currAuth.V_EXECUTE==='Y'" -->
       <mat-icon [ngClass]="{'disable-icon':  currAuth.V_EXECUTE==='N' , 'tile-icon' :currAuth.V_EXECUTE==='Y'}"
-        (dblclick)="method2CallForDblClick('execute',currAuth)">
+        (dblclick)="method2CallForDblClick('execute',currAuth)"
+        [matTooltip]="currAuth.V_EXECUTE==='N'? 'Enable Execute':'Disable Execute'">
         launch
       </mat-icon>
     </div>

@@ -16,8 +16,8 @@ import { environment } from '../../../../../environments/environment';
   styleUrls: ['./exe-tile-list.component.scss']
 })
 export class ExeTileListComponent implements OnInit {
-  V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
-  V_USR_NM:string=JSON.parse(sessionStorage.getItem('u')).USR_NM;
+  V_SRC_CD: string = '';
+  V_USR_NM: string = '';
   contextMenuData: any;
   contextMenuStyle: any;
   contextMenuActive: boolean = false;
@@ -40,12 +40,14 @@ export class ExeTileListComponent implements OnInit {
       menu.addEventListener('mousedown', ev => ev.stopImmediatePropagation());
     }
   }
-  constructor(private systemOverview:SystemAdminOverviewService, public dialog: MatDialog, private http:HttpClient) { }
+  constructor(private systemOverview: SystemAdminOverviewService, public dialog: MatDialog, private http: HttpClient) { }
 
   ngOnInit() {
+    this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+    this.V_USR_NM = JSON.parse(sessionStorage.getItem('u')).USR_NM;
     //console.log(this.exes);
     this.subscription = this.systemOverview.selectedCxn$.subscribe(data => {
-      if(data) {
+      if (data) {
         this.selectedTile = null;
         this.selectedExeTile.emit("connectionSelect");
         this.selectedCxn = data.V_EXE_ID;
@@ -53,19 +55,19 @@ export class ExeTileListComponent implements OnInit {
         this.selectedCxn = [];
       }
     });
-  
+
     document.addEventListener('mousedown', event => {
       this.contextMenuActive = false;
       this.contextMenuData = null;
     });
   }
 
-  isHighLightTile(exeData) { 
-    if(this.selectedCxn != null) {
-      for(let i=0; i<this.selectedCxn.length; i++) {
-          if(exeData.V_EXE_ID == this.selectedCxn[i]) {
-            return true;
-          }
+  isHighLightTile(exeData) {
+    if (this.selectedCxn != null) {
+      for (let i = 0; i < this.selectedCxn.length; i++) {
+        if (exeData.V_EXE_ID == this.selectedCxn[i]) {
+          return true;
+        }
       }
       return false;
     }
@@ -75,13 +77,13 @@ export class ExeTileListComponent implements OnInit {
     const dialogRef = this.dialog.open(AddExeDialogComponent, {
       panelClass: 'app-dialog',
       width: '400px',
-      data: {EXE_TYP:exeType, platformData: this.platData}
+      data: { EXE_TYP: exeType, platformData: this.platData }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      if(result) {
-        if(result) {
+      if (result) {
+        if (result) {
           this.systemOverview.getAllExes();
         }
       }
@@ -96,49 +98,49 @@ export class ExeTileListComponent implements OnInit {
         event.container.data,
         event.previousIndex,
         event.currentIndex);
-        // console.log("event.previousContainer.data",event.previousContainer.data);
-        // console.log("event.container.data", event.container.data[event.currentIndex]);
-        let eventData = event.container.data[event.currentIndex]; 
-        
-        let data = {
-          // "V_EXE_CD": eventData.V_EXE_CD,
-          // "V_SRC_CD": this.V_SRC_CD,
-          // "V_EXE_SIGN": eventData.V_EXE_SIGN,
-          // "V_PARAM_DLMTR_STRT": eventData.V_PARAM_DLMTR_STRT,
-          // "V_PARAM_DLMTR_END":eventData.V_PARAM_DLMTR_END,
-          // "V_EXE_VRSN": eventData.V_EXE_VRSN,
-          // "V_EXE_TYP": eventData.V_EXE_TYP,
-          // "V_SYNC_FLG": eventData.V_SYNC_FLG,
-          // "V_EXE_DSC": eventData.V_EXE_DSC,
-          // "V_EXE_OUT_PARAMS": eventData.V_EXE_OUT_PARAMS,
-          // "V_USR_NM": this.V_USR_NM,
-          // "V_EXE_IN_ARTFCTS": eventData.V_EXE_IN_ARTFCTS,
-          // "V_EXE_OUT_ARTFCTS":eventData.V_EXE_OUT_ARTFCTS,
-          // "V_SERVER_CD":this.exes.SERVER_TYP.SERVER_CD,
-          // "V_COMMNT": '',
-          // "V_ICN_TYP":eventData.V_ICN_TYP,
-          // "REST_Service":["Exe"],
-          // "Verb":["PUT"]
-          "V_SERVER_CD":this.exes.SERVER_TYP.SERVER_CD,
-          "V_SRC_CD":this.V_SRC_CD,
-          "V_EXE_CD":eventData.V_EXE_CD,
-          "V_EXE_TYP":eventData.V_EXE_TYP,
-          "V_USR_NM":this.V_USR_NM,
-          "V_COMMNT":"",
-          "REST_Service":"Exe_Server",
-          "Verb":"PUT"
-        }
-        this.systemOverview.addExe(data).subscribe(res => {
-          this.systemOverview.getAllExes();
-        }, err => {
-           
-        })
+      // console.log("event.previousContainer.data",event.previousContainer.data);
+      // console.log("event.container.data", event.container.data[event.currentIndex]);
+      let eventData = event.container.data[event.currentIndex];
+
+      let data = {
+        // "V_EXE_CD": eventData.V_EXE_CD,
+        // "V_SRC_CD": this.V_SRC_CD,
+        // "V_EXE_SIGN": eventData.V_EXE_SIGN,
+        // "V_PARAM_DLMTR_STRT": eventData.V_PARAM_DLMTR_STRT,
+        // "V_PARAM_DLMTR_END":eventData.V_PARAM_DLMTR_END,
+        // "V_EXE_VRSN": eventData.V_EXE_VRSN,
+        // "V_EXE_TYP": eventData.V_EXE_TYP,
+        // "V_SYNC_FLG": eventData.V_SYNC_FLG,
+        // "V_EXE_DSC": eventData.V_EXE_DSC,
+        // "V_EXE_OUT_PARAMS": eventData.V_EXE_OUT_PARAMS,
+        // "V_USR_NM": this.V_USR_NM,
+        // "V_EXE_IN_ARTFCTS": eventData.V_EXE_IN_ARTFCTS,
+        // "V_EXE_OUT_ARTFCTS":eventData.V_EXE_OUT_ARTFCTS,
+        // "V_SERVER_CD":this.exes.SERVER_TYP.SERVER_CD,
+        // "V_COMMNT": '',
+        // "V_ICN_TYP":eventData.V_ICN_TYP,
+        // "REST_Service":["Exe"],
+        // "Verb":["PUT"]
+        "V_SERVER_CD": this.exes.SERVER_TYP.SERVER_CD,
+        "V_SRC_CD": this.V_SRC_CD,
+        "V_EXE_CD": eventData.V_EXE_CD,
+        "V_EXE_TYP": eventData.V_EXE_TYP,
+        "V_USR_NM": this.V_USR_NM,
+        "V_COMMNT": "",
+        "REST_Service": "Exe_Server",
+        "Verb": "PUT"
+      }
+      this.systemOverview.addExe(data).subscribe(res => {
+        this.systemOverview.getAllExes();
+      }, err => {
+
+      })
     }
   }
 
   onExeTileClick(exe) {
-    
-    if(this.selectedTile === exe) {
+
+    if (this.selectedTile === exe) {
       this.selectedTile = null;
       this.selectedExeTile.emit(this.selectedTile);
     } else {
@@ -153,13 +155,13 @@ export class ExeTileListComponent implements OnInit {
     document.dispatchEvent(new MouseEvent('mousedown', ev));
   }
 
-  openContextmenu(event: MouseEvent, data?: any, exeType?:any, index?:any) {
+  openContextmenu(event: MouseEvent, data?: any, exeType?: any, index?: any) {
     event.preventDefault();
     if (data) {
       this.contextMenuData = {
         EXE_TYP: exeType,
-        exeData:data,
-        index:index,
+        exeData: data,
+        index: index,
         platFormData: this.platData
       }
     }
@@ -207,7 +209,7 @@ export class ExeTileListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      if(result) {
+      if (result) {
         this.systemOverview.getAllExes();
       }
     });
@@ -223,12 +225,12 @@ export class ExeTileListComponent implements OnInit {
     const dialogRef = this.dialog.open(AssignConnectionExeComponent, {
       panelClass: 'app-dialog',
       width: '300px',
-      data: {exe:exe, isSelectedEntity:'EXE', type:'Connections'}
+      data: { exe: exe, isSelectedEntity: 'EXE', type: 'Connections' }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      if(result) {
+      if (result) {
         this.systemOverview.getAllExes();
         this.systemOverview.getAllMachineConnections();
       }
@@ -246,12 +248,12 @@ export class ExeTileListComponent implements OnInit {
     dialogRef.componentInstance.message = `Are you sure, you want to delete Exe <strong>${exe.exeData.V_EXE_CD}</strong>?`;
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result) {
-        this.http.get('https://'+this.domain_name+'/rest/v1/securedJSON?V_EXE_TYP='+ exe.EXE_TYP + '&V_EXE_CD='+ exe.exeData.V_EXE_CD + '&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=Exe&Verb=DELETE').subscribe(res => {
+      if (result) {
+        this.http.get('https://' + this.domain_name + '/rest/v1/securedJSON?V_EXE_TYP=' + exe.EXE_TYP + '&V_EXE_CD=' + exe.exeData.V_EXE_CD + '&V_SRC_CD=' + this.V_SRC_CD + '&REST_Service=Exe&Verb=DELETE').subscribe(res => {
           this.systemOverview.getAllExes();
         }, err => {
           console.log("err", err)
-        }); 
+        });
       }
     });
   }
@@ -265,14 +267,14 @@ export class ExeTileListComponent implements OnInit {
 
     dialogRef.componentInstance.title = `Remove Exe- ${exe.EXE_TYP}`;
     dialogRef.componentInstance.message = `Are you sure, you want to remove Exe <strong>${exe.exeData.V_EXE_CD}</strong> from all platforms?`;
-    
+
     dialogRef.afterClosed().subscribe(result => {
-      if(result) {
-        this.http.get('https://'+this.domain_name+'/rest/v1/secured?V_EXE_CD='+exe.exeData.V_EXE_CD+'&V_USR_NM='+ this.V_USR_NM +'&V_EXE_TYP='+exe.EXE_TYP+'&V_SERVER_CD=&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=Exe_Server&Verb=DELETE').subscribe(res => {
+      if (result) {
+        this.http.get('https://' + this.domain_name + '/rest/v1/secured?V_EXE_CD=' + exe.exeData.V_EXE_CD + '&V_USR_NM=' + this.V_USR_NM + '&V_EXE_TYP=' + exe.EXE_TYP + '&V_SERVER_CD=&V_SRC_CD=' + this.V_SRC_CD + '&REST_Service=Exe_Server&Verb=DELETE').subscribe(res => {
           this.systemOverview.getAllExes();
         }, err => {
           console.log("err", err)
-        }); 
+        });
       }
     });
   }
@@ -288,12 +290,12 @@ export class ExeTileListComponent implements OnInit {
     dialogRef.componentInstance.message = `Are you sure, you want to remove Exe <strong>${exe.exeData.V_EXE_CD}</strong> from the platform?`;
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result) {
-        this.http.get('https://'+this.domain_name+'/rest/v1/secured?V_EXE_CD='+exe.exeData.V_EXE_CD+'&V_EXE_TYP='+exe.EXE_TYP+'&V_SERVER_CD='+ exe.platFormData.SERVER_CD +'&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=Exe_Server&Verb=DELETE').subscribe(res => {
+      if (result) {
+        this.http.get('https://' + this.domain_name + '/rest/v1/secured?V_EXE_CD=' + exe.exeData.V_EXE_CD + '&V_EXE_TYP=' + exe.EXE_TYP + '&V_SERVER_CD=' + exe.platFormData.SERVER_CD + '&V_SRC_CD=' + this.V_SRC_CD + '&REST_Service=Exe_Server&Verb=DELETE').subscribe(res => {
           this.systemOverview.getAllExes();
         }, err => {
           console.log("err", err)
-        }); 
+        });
       }
     });
   }

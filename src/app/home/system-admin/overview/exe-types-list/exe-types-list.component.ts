@@ -17,7 +17,7 @@ import { FormControl } from '@angular/forms';
 })
 export class ExeTypesListComponent implements OnInit, OnDestroy {
 
-  V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+  V_SRC_CD: string = '';
   public exes;
   public plat;
   public allExes = [];
@@ -34,34 +34,35 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
   myControl = new FormControl();
   filteredOptions: Observable<string[]>;
 
-  domain_name=this.globals.domain_name; private apiUrlGet = "https://"+this.domain_name+"/rest/v1/securedJSON?";
-  private apiUrlPost = "https://"+this.domain_name+"/rest/v1/secured";
-  private apiUrlPut = "https://"+this.domain_name+"/rest/v1/secured";
-  private apiUrldelete = "https://"+this.domain_name+"/rest/v1/secured";
+  domain_name = this.globals.domain_name; private apiUrlGet = "https://" + this.domain_name + "/rest/v1/securedJSON?";
+  private apiUrlPost = "https://" + this.domain_name + "/rest/v1/secured";
+  private apiUrlPut = "https://" + this.domain_name + "/rest/v1/secured";
+  private apiUrldelete = "https://" + this.domain_name + "/rest/v1/secured";
 
-  constructor(public dialog: MatDialog, private http:HttpClient, private systemOverview:SystemAdminOverviewService, private globals:Globals) { }
+  constructor(public dialog: MatDialog, private http: HttpClient, private systemOverview: SystemAdminOverviewService, private globals: Globals) { }
 
   ngOnInit() {
+    this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
     this.systemOverview.getExe();
     //this.systemOverview.getTypes();
     this.systemOverview.typeOptions$.subscribe(types => {
       this.exeTypeOptions = types;
     });
-    
+
     this.systemOverview.platformOptions$.subscribe(platform => {
       this.platformOptions = platform;
       this.filteredOptions = this.myControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(value => this._filter(value))
-      );
+        .pipe(
+          startWith(''),
+          map(value => this._filter(value))
+        );
     });
 
     this.systemOverview.getExe$.subscribe(res => {
       this.sortedAllExes = res;
     })
     //this.getPlatforms();
-    
+
   }
 
   private _filter(value: string): string[] {
@@ -96,7 +97,7 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(AddPlatformDialogComponent, {
       panelClass: 'app-dialog',
       width: '300px',
-      data: {platform_cd: "platform_cd", platform_des: "platform_des"}
+      data: { platform_cd: "platform_cd", platform_des: "platform_des" }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -108,7 +109,7 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(AssignMcnPlfComponent, {
       panelClass: 'app-dialog',
       width: '300px',
-      data: {isSelectedEntity: "PLATFORM"}
+      data: { isSelectedEntity: "PLATFORM" }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -149,7 +150,7 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
   selectedExeTileData(exe) {
     this.selectedExetile.emit(exe);
   }
-  
+
   ngOnDestroy(): void {
     this.unsubscribeAll.next(true);
     this.unsubscribeAll.complete();

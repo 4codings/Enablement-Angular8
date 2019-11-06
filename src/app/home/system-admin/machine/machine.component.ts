@@ -25,18 +25,18 @@ import { ConfigServiceService } from '../../../services/config-service.service';
 })
 export class MachineComponent implements OnInit {
 
-  V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
-  V_USR_NM:string=JSON.parse(sessionStorage.getItem('u')).USR_NM;
+  V_SRC_CD: string = '';
+  V_USR_NM: string = '';
   V_BASE_ID: string[] = null;
 
   constructor(private http: HttpClient,
-    private data2:UseradminService,private globals:Globals,
+    private data2: UseradminService, private globals: Globals,
     private StorageSessionService: StorageSessionService,
     private data: ConfigServiceService) { }
 
-  domain_name=this.globals.domain_name; private apiUrlGet = "https://"+this.domain_name+"/rest/v1/secured?";
-  private apiUrlAdd = "https://"+this.domain_name+"/rest/v1/secured";
-  private apiUrldelete = "https://"+this.domain_name+"/rest/v1/secured";
+  domain_name = this.globals.domain_name; private apiUrlGet = "https://" + this.domain_name + "/rest/v1/secured?";
+  private apiUrlAdd = "https://" + this.domain_name + "/rest/v1/secured";
+  private apiUrldelete = "https://" + this.domain_name + "/rest/v1/secured";
 
 
   PLF_DATA = [];
@@ -56,7 +56,7 @@ export class MachineComponent implements OnInit {
 
   PLF = "";
 
-  Label:any[]=[];
+  Label: any[] = [];
   MachineCode() {
     ("Machine List!");
     this.data.getMachineCode().subscribe(res => {
@@ -90,10 +90,12 @@ export class MachineComponent implements OnInit {
     });
   }
   ngOnInit() {
+    this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+    this.V_USR_NM = JSON.parse(sessionStorage.getItem('u')).USR_NM;
     this.MachineCode();
     this.data2.getJSON().subscribe(data2 => {
-    this.Label=data2.json();
-        })
+      this.Label = data2.json();
+    })
   }
 
 }

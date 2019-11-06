@@ -65,6 +65,7 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.apiService.logout('LOGOUT');
+    // sessionStorage.removeItem('u');
     this.optionalService.applicationOptionalValue.next(null);
     this.optionalService.processOptionalValue.next(null);
     this.optionalService.serviceOptionalValue.next(null);

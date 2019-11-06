@@ -98,6 +98,8 @@ export class DialogScheduleComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+		this.V_USR_NM = JSON.parse(sessionStorage.getItem('u')).USR_NM;
 		this.start_date = new Date();
 	}
 

@@ -27,8 +27,8 @@ import { OptionalValuesService } from '../../../services/optional-values.service
 
 export class DashboardComponent extends dboard_secondary implements OnInit, AfterViewInit, OnDestroy {
 
-  V_SRC_CD: string = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
-  V_USR_NM: string = JSON.parse(sessionStorage.getItem('u')).USR_NM;
+  V_SRC_CD: string = '';
+  V_USR_NM: string = '';
   dataSource_Inp = new MatTableDataSource<{ Input_name: string; Input_value: string; }>();
   dataSource_Oup = new MatTableDataSource<{ Output_name: string; Output_value: string; }>();
   user_list = [this.V_USR_NM];
@@ -54,7 +54,8 @@ export class DashboardComponent extends dboard_secondary implements OnInit, Afte
     }
   }
   ngOnInit(): void {
-
+    this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+    this.V_USR_NM = JSON.parse(sessionStorage.getItem('u')).USR_NM;
     this.start_date = new Date();
     this.end_date = new Date();
     this.start_date.setHours(0, 0, 0);

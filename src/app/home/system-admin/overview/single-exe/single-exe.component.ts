@@ -22,17 +22,19 @@ export class SingleExeComponent implements OnInit {
   @Input() userRoleAccess;
 
   @Output() selectedExetile = new EventEmitter();
-  
-  V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
-  V_USR_NM:string=JSON.parse(sessionStorage.getItem('u')).USR_NM;
-  domain_name=this.globals.domain_name; private apiUrlGet = "https://"+this.domain_name+"/rest/v1/secured?";
-  private apiUrlPost = "https://"+this.domain_name+"/rest/v1/secured";
-  private apiUrlPut = "https://"+this.domain_name+"/rest/v1/secured";
-  private apiUrldelete = "https://"+this.domain_name+"/rest/v1/secured";
 
-  constructor(private http:HttpClient, public dialog: MatDialog, private systemOverview:SystemAdminOverviewService, private globals:Globals) { }
+  V_SRC_CD: string = '';
+  V_USR_NM: string = '';
+  domain_name = this.globals.domain_name; private apiUrlGet = "https://" + this.domain_name + "/rest/v1/secured?";
+  private apiUrlPost = "https://" + this.domain_name + "/rest/v1/secured";
+  private apiUrlPut = "https://" + this.domain_name + "/rest/v1/secured";
+  private apiUrldelete = "https://" + this.domain_name + "/rest/v1/secured";
+
+  constructor(private http: HttpClient, public dialog: MatDialog, private systemOverview: SystemAdminOverviewService, private globals: Globals) { }
 
   ngOnInit() {
+    this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+    this.V_USR_NM = JSON.parse(sessionStorage.getItem('u')).USR_NM;
     // this.exes = this.allExes.filter(item => {
     //     return item.V_EXE_TYP == this.exeType.EXE_TYP;
     // });
@@ -54,7 +56,7 @@ export class SingleExeComponent implements OnInit {
     const dialogRef = this.dialog.open(AssignMcnPlfComponent, {
       panelClass: 'app-dialog',
       width: '300px',
-      data: {isSelectedEntity: "PLATFORM", server:plat}
+      data: { isSelectedEntity: "PLATFORM", server: plat }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -72,9 +74,9 @@ export class SingleExeComponent implements OnInit {
     dialogRef.componentInstance.message = `Are you sure, you want to delete Server <strong>${p.SERVER_CD}</strong>?`;
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result) {
-        this.http.delete(this.apiUrlGet+"V_SERVER_CD="+p.SERVER_CD+"&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Platform_Master&Verb=DELETE").subscribe(
-          res=>{
+      if (result) {
+        this.http.delete(this.apiUrlGet + "V_SERVER_CD=" + p.SERVER_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=Platform_Master&Verb=DELETE").subscribe(
+          res => {
             (res);
             this.systemOverview.getExe();
           });
@@ -85,7 +87,7 @@ export class SingleExeComponent implements OnInit {
 
   selectedExeTile(exe) {
     //console.log("parent", exe);
-    if(exe === 'connectionSelect') {
+    if (exe === 'connectionSelect') {
       this.selectedExetile.emit(null);
     } else {
       this.systemOverview.selectExe(exe);

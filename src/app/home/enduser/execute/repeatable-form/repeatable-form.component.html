@@ -13,7 +13,7 @@
   <app-non-repeatable-form *ngIf="showRepForm"></app-non-repeatable-form>
   <app-report-table *ngIf="showReportTable"></app-report-table>
 </div>
-<div fxLayout="row" fxLayout.lt-sm="column">
+<div fxLayout="row" fxLayout.lt-sm="column" class="m-3">
   <div fxFlex="9">
   </div>
   <div fxFlex="82">
@@ -99,9 +99,9 @@
                           <mat-form-field class="form_input">
                             <input matInput #name="ngModel" [required]="configService.isFieldMendatory(label)"
                               [readonly]="isDisabled[iter] || configService.isFieldDisabled(label)"
-                              [type]="FLD_TYPE[i].toLowerCase()" [name]="'field_' + label + iter" [value]="input[label][iter]"
-                              [(ngModel)]="input[label][iter]" #name="ngModel" class="f_inp"
-                              (change)="Update_value($event.target.value,label,iter)">
+                              [type]="FLD_TYPE[i].toLowerCase()" [name]="'field_' + label + iter"
+                              [value]="input[label][iter]" [(ngModel)]="input[label][iter]" #name="ngModel"
+                              class="f_inp" (change)="Update_value($event.target.value,label,iter)">
                           </mat-form-field>
                           <div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
                             {{configService.getFieldInValidMsg(name, label)}}
