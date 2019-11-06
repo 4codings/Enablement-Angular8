@@ -53,7 +53,7 @@
                     </h4>
                     <br *ngIf="iter>0" />
                     <ng-container *ngIf="iter>0 && DSPLY_FLD[i]">
-                      <ng-container [ngSwitch]="fieldType[label].toLowerCase()">
+                      <ng-container [ngSwitch]="FLD_TYPE[i].toLowerCase()">
                         <ng-container *ngSwitchCase="'date'">
                           <mat-form-field class="form_input">
                             <input #name="ngModel" [required]="configService.isFieldMendatory()"
@@ -72,7 +72,7 @@
                         <ng-container *ngSwitchCase="'time'">
                           <mat-form-field class="form_input">
                             <input #name="ngModel" [required]="configService.isFieldMendatory()"
-                              [readonly]="configService.isFieldDisabled()" matInput [type]="fieldType[label]"
+                              [readonly]="configService.isFieldDisabled()" matInput [type]="FLD_TYPE[i].toLowerCase()"
                               [name]="'field_' + label + iter" [value]="input[label][iter]"
                               [(ngModel)]="input[label][iter]" class="f_inp"
                               (ngModelChange)="Update_value($event,label,iter)" [owlDateTimeTrigger]="ftime"
@@ -99,7 +99,7 @@
                           <mat-form-field class="form_input">
                             <input matInput #name="ngModel" [required]="configService.isFieldMendatory(label)"
                               [readonly]="isDisabled[iter] || configService.isFieldDisabled(label)"
-                              [type]="fieldType[label]" [name]="'field_' + label + iter" [value]="input[label][iter]"
+                              [type]="FLD_TYPE[i].toLowerCase()" [name]="'field_' + label + iter" [value]="input[label][iter]"
                               [(ngModel)]="input[label][iter]" #name="ngModel" class="f_inp"
                               (change)="Update_value($event.target.value,label,iter)">
                           </mat-form-field>
@@ -154,10 +154,10 @@
                             {{configService.getFieldInValidMsg(name, label)}}
                           </div>
                         </ng-container>
-                        <ng-container *ngSwitchCase="configService.getFieldTypeForChange(fieldType[label])">
+                        <ng-container *ngSwitchCase="configService.getFieldTypeForChange(FLD_TYPE[i].toLowerCase())">
                           <mat-form-field class="form_input">
                             <input matInput [required]="configService.isFieldMendatory(label)"
-                              maxlength="configService.getMaxLengthForField(fieldType[label])"
+                              maxlength="configService.getMaxLengthForField(FLD_TYPE[i].toLowerCase())"
                               [name]="'field_' + label + iter" (value)="input[label][iter]"
                               (change)="configService.transformFieldValueOnChange($event,label)"
                               (change)="Update_value($event.target.value,label,iter)" [(ngModel)]="input[label][iter]"

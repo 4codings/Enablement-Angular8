@@ -172,7 +172,16 @@ export class FormComponent implements OnInit {
     this.checkOLD_Table();
     this.getOther_records();
     this.setField_RVP();
-
+    let copy_FLD_TYPE = [...this.FLD_TYPE];
+    let copy_HAS_OPTIONS = [...this.HAS_OPTIONS];
+    let copy_HAS_DSPLY = [...this.HAS_DSPLY];
+    let copy_DSPLY_FLD = [...this.DSPLY_FLD];
+    let copy_DISPLAY_TXT = [...this.DISPLAY_TXT];
+    let copy_PARAM_DSC = [...this.PARAM_DSC];
+    let copy_FLD_HLP_TXT = [...this.FLD_HLP_TXT];
+    let copy_VLDTN = [...this.VLDTN];
+    let copy_VLDTN_ALERT_TXT = [...this.VLDTN_ALERT_TXT];
+    let copy_CNSLD_VLDTN_ALERT = [...this.CNSLD_VLDTN_ALERT];
     this.RVP_Keys = Object.keys(this.RVP_DataObj);
     for (let i = 0; i < this.RVP_Keys.length; i++) {
       this.PARAM_NM[i] = this.PARAM_NM[i].trim();
@@ -187,22 +196,26 @@ export class FormComponent implements OnInit {
       //   this.VLDTN_ALERT_TXT[i] = this.VLDTN_ALERT_TXT[i].trim();
       //   this.CNSLD_VLDTN_ALERT[i] = this.CNSLD_VLDTN_ALERT[i].trim();
     }
-
+    console.log('param', this.PARAM_NM)
+    console.log('keys', this.RVP_Keys)
+    console.log('FLD_TYPE', this.FLD_TYPE)
     for (let i = 0; i < this.RVP_Keys.length; i++) {
       let paramPosition = this.PARAM_NM.findIndex(v => v == "'" + this.RVP_Keys[i] + "'");
+      console.log('paramPosition', paramPosition)
       if (paramPosition > -1) {
-        this.FLD_TYPE[i] = this.FLD_TYPE[paramPosition].trim();
-        this.HAS_OPTIONS[i] = this.HAS_OPTIONS[paramPosition].trim();
-        this.HAS_DSPLY[i] = this.HAS_DSPLY[paramPosition].trim();
-        this.DSPLY_FLD[i] = this.DSPLY_FLD[paramPosition].trim();
-        this.DISPLAY_TXT[i] = this.DISPLAY_TXT[paramPosition].trim();
-        this.PARAM_DSC[i] = this.PARAM_DSC[paramPosition].trim();
-        this.FLD_HLP_TXT[i] = this.FLD_HLP_TXT[paramPosition].trim();
-        this.VLDTN[i] = this.VLDTN[paramPosition].trim();
-        this.VLDTN_ALERT_TXT[i] = this.VLDTN_ALERT_TXT[paramPosition].trim();
-        this.CNSLD_VLDTN_ALERT[i] = this.CNSLD_VLDTN_ALERT[paramPosition].trim();
+        this.FLD_TYPE[i] = copy_FLD_TYPE[paramPosition].trim().replace(/'/g, "");
+        this.HAS_OPTIONS[i] = copy_HAS_OPTIONS[paramPosition].trim();
+        this.HAS_DSPLY[i] = copy_HAS_DSPLY[paramPosition].trim();
+        this.DSPLY_FLD[i] = copy_DSPLY_FLD[paramPosition].trim();
+        this.DISPLAY_TXT[i] = copy_DISPLAY_TXT[paramPosition].trim();
+        this.PARAM_DSC[i] = copy_PARAM_DSC[paramPosition].trim();
+        this.FLD_HLP_TXT[i] = copy_FLD_HLP_TXT[paramPosition].trim();
+        this.VLDTN[i] = copy_VLDTN[paramPosition].trim();
+        this.VLDTN_ALERT_TXT[i] = copy_VLDTN_ALERT_TXT[paramPosition].trim();
+        this.CNSLD_VLDTN_ALERT[i] = copy_CNSLD_VLDTN_ALERT[paramPosition].trim();
       }
     }
+    console.log('FLD_TYPE', this.FLD_TYPE)
     this.labels_toShow();
 
     for (let i = 0; i < this.RVP_Keys.length; i++) {

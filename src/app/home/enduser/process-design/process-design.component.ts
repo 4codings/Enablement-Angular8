@@ -338,6 +338,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                 this.parentMenuItems[0].havePermission = 1; // add process
                 this.parentMenuItems[1].havePermission = 1; // import bpmn
                 this.childrenMenuItems[11].havePermission = 1; //delete process
+                console.log('this.childrenMenuItems', this.childrenMenuItems);
                 // this.childrenMenuItems[9].havePermission = 1;
                 // this.childrenMenuItems[10].havePermission = 1;
                 break;
@@ -1257,7 +1258,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                       if (authSubStr[1] === 'Y') {
                         deleteCount++;
                       }
-                      copyChildrenMenuItems[12].havePermission = authSubStr[1] === 'Y' ? 1 : 0;
+                      copyChildrenMenuItems[11].havePermission = authSubStr[1] === 'Y' ? 1 : 0;
                       break;
                     }
                     default: break;
