@@ -382,8 +382,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
-    this.V_USR_NM = JSON.parse(sessionStorage.getItem('u')).USR_NM;
+    this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')) != undefined ? JSON.parse(sessionStorage.getItem('u')).SRC_CD : '';
+    this.V_USR_NM = JSON.parse(sessionStorage.getItem('u')) != undefined ? JSON.parse(sessionStorage.getItem('u')).USR_NM : '';
     console.log('Timeout_seconds', this.async_sync_seconds);
     this.expandPanel = this.deviceService.isDesktop();
     this.isMobile = this.deviceService.isMobile();
