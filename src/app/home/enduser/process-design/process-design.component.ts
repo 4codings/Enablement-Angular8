@@ -328,10 +328,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.roleValues.forEach(ele => {
             console.log('role', ele);
             switch (ele) {
-              case 'Enablement Workflow Service Role':
-                console.log('Enablement Workflow Service Role')
-                this.childrenMenuItems[10].havePermission = 1; // edit process
-                break;
+              // case 'Enablement Workflow Service Role':
+              //   console.log('Enablement Workflow Service Role')
+              //   this.childrenMenuItems[10].havePermission = 1; // edit process
+              //   break;
               case 'Enablement Workflow Schedule Role':
                 this.childrenMenuItems[5].havePermission = 1; // schedule
                 break;
@@ -341,7 +341,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                 this.childrenMenuItems[11].havePermission = 1; //delete process
                 console.log('this.childrenMenuItems', this.childrenMenuItems);
                 // this.childrenMenuItems[9].havePermission = 1;
-                // this.childrenMenuItems[10].havePermission = 1;
+                this.childrenMenuItems[10].havePermission = 1; // edit process
                 break;
               case 'Enablement Workflow MyTask Role':
                 this.childrenMenuItems[2].havePermission = 1; // approve
@@ -349,14 +349,16 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
               case 'Enablement Workflow Execute Role':
                 this.childrenMenuItems[0].havePermission = 1; //run
                 this.childrenMenuItems[1].havePermission = 1; // run at
-                this.childrenMenuItems[8].havePermission = 1; // download bpmn
-                this.childrenMenuItems[9].havePermission = 1; // download svg
                 break;
               case 'Enablement Workflow Exception Role':
                 this.childrenMenuItems[4].havePermission = 1; // resolve
                 break;
               case 'Enablement Workflow Dashboard Role':
                 this.childrenMenuItems[3].havePermission = 1; // monitor
+                break;
+              case 'Enablement Workflow Download Role':
+                this.childrenMenuItems[8].havePermission = 1; // download bpmn
+                this.childrenMenuItems[9].havePermission = 1; // download svg
                 break;
               default:
                 break;
@@ -1243,22 +1245,27 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                   let authSubStr = ele.split('-');
                   switch (authSubStr[0]) {
                     case 'EXECUTE': {
-                      copyChildrenMenuItems[2].havePermission = (copyChildrenMenuItems[2].havePermission && authSubStr[1] === 'Y') ? 1 : 0; // approve
                       copyChildrenMenuItems[0].havePermission = (copyChildrenMenuItems[0].havePermission && authSubStr[1] === 'Y') ? 1 : 0;// run
                       copyChildrenMenuItems[1].havePermission = (copyChildrenMenuItems[1].havePermission && authSubStr[1] === 'Y') ? 1 : 0;// run at
+                      copyChildrenMenuItems[2].havePermission = (copyChildrenMenuItems[2].havePermission && authSubStr[1] === 'Y') ? 1 : 0; // approve
                       copyChildrenMenuItems[4].havePermission = (copyChildrenMenuItems[4].havePermission && authSubStr[1] === 'Y') ? 1 : 0; // resolve
                       copyChildrenMenuItems[5].havePermission = (copyChildrenMenuItems[5].havePermission && authSubStr[1] === 'Y') ? 1 : 0;// schedule
                       break;
                     }
+                    case 'READ': {
+                      copyChildrenMenuItems[8].havePermission = (copyChildrenMenuItems[8].havePermission && authSubStr[1] === 'Y') ? 1 : 0;// download bpmn
+                      copyChildrenMenuItems[9].havePermission = (copyChildrenMenuItems[9].havePermission && authSubStr[1] === 'Y') ? 1 : 0;// download svg
+                      break;
+                    }
                     case 'UPDATE': {
-                      if (authSubStr[1] === 'Y') {
+                      if (copyChildrenMenuItems[10].havePermission && authSubStr[1] === 'Y') {
                         editCount++;
                       }
                       copyChildrenMenuItems[10].havePermission = (copyChildrenMenuItems[10].havePermission && authSubStr[1] === 'Y') ? 1 : 0;
                       break;
                     }
                     case 'DELETE': {
-                      if (authSubStr[1] === 'Y') {
+                      if (copyChildrenMenuItems[11].havePermission && authSubStr[1] === 'Y') {
                         deleteCount++;
                       }
                       copyChildrenMenuItems[11].havePermission = (copyChildrenMenuItems[11].havePermission && authSubStr[1] === 'Y') ? 1 : 0;
