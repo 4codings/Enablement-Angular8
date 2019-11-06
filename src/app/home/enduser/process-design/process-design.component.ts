@@ -108,7 +108,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   });
   parentMenuItems = [
     { item: 'New Process', value: 'Add', havePermission: 0, icon: 'add', iconType: 'mat' },
-    { item: 'Open BPMN File', value: 'Import', havePermission: 0, icon: 'cloud_upload  mr-1', iconType: 'mat' },
+    { item: 'Import BPMN File', value: 'Import', havePermission: 0, icon: 'cloud_upload  mr-1', iconType: 'mat' },
     { item: 'Edit Application', value: 'Edit', havePermission: 0, icon: 'entry bpmn-icon-screw-wrench mr-10', iconType: 'bpmn' },
     { item: 'Delete Application', value: 'Delete', havePermission: 0, icon: 'entry bpmn-icon-trash', iconType: 'bpmn' }];
   childrenMenuItems = [
@@ -256,8 +256,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   //Schedule Properties
   domain_name = this.globals.domain_name;
   private apiUrlGet = 'https://' + this.domain_name + '/rest/v1/secured?';
-  V_SRC_CD: string = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
-  V_USR_NM: string = JSON.parse(sessionStorage.getItem('u')).USR_NM;
+  V_SRC_CD: string = '';
+  V_USR_NM: string = '';
 
   newScheduleView: boolean = false;
   Pause_btn: boolean = false;
@@ -329,6 +329,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             console.log('role', ele);
             switch (ele) {
               case 'Enablement Workflow Service Role':
+                console.log('Enablement Workflow Service Role')
                 this.childrenMenuItems[10].havePermission = 1; // edit process
                 break;
               case 'Enablement Workflow Schedule Role':
@@ -381,6 +382,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+    this.V_USR_NM = JSON.parse(sessionStorage.getItem('u')).USR_NM;
     console.log('Timeout_seconds', this.async_sync_seconds);
     this.expandPanel = this.deviceService.isDesktop();
     this.isMobile = this.deviceService.isMobile();
@@ -1240,25 +1243,25 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                   let authSubStr = ele.split('-');
                   switch (authSubStr[0]) {
                     case 'EXECUTE': {
-                      copyChildrenMenuItems[2].havePermission = authSubStr[1] === 'Y' ? 1 : 0; // approve
-                      copyChildrenMenuItems[0].havePermission = authSubStr[1] === 'Y' ? 1 : 0;// run
-                      copyChildrenMenuItems[1].havePermission = authSubStr[1] === 'Y' ? 1 : 0;// run at
-                      copyChildrenMenuItems[4].havePermission = authSubStr[1] === 'Y' ? 1 : 0; // resolve
-                      copyChildrenMenuItems[5].havePermission = authSubStr[1] === 'Y' ? 1 : 0;// schedule
+                      copyChildrenMenuItems[2].havePermission = (copyChildrenMenuItems[2].havePermission && authSubStr[1] === 'Y') ? 1 : 0; // approve
+                      copyChildrenMenuItems[0].havePermission = (copyChildrenMenuItems[0].havePermission && authSubStr[1] === 'Y') ? 1 : 0;// run
+                      copyChildrenMenuItems[1].havePermission = (copyChildrenMenuItems[1].havePermission && authSubStr[1] === 'Y') ? 1 : 0;// run at
+                      copyChildrenMenuItems[4].havePermission = (copyChildrenMenuItems[4].havePermission && authSubStr[1] === 'Y') ? 1 : 0; // resolve
+                      copyChildrenMenuItems[5].havePermission = (copyChildrenMenuItems[5].havePermission && authSubStr[1] === 'Y') ? 1 : 0;// schedule
                       break;
                     }
                     case 'UPDATE': {
                       if (authSubStr[1] === 'Y') {
                         editCount++;
                       }
-                      copyChildrenMenuItems[10].havePermission = authSubStr[1] === 'Y' ? 1 : 0;
+                      copyChildrenMenuItems[10].havePermission = (copyChildrenMenuItems[10].havePermission && authSubStr[1] === 'Y') ? 1 : 0;
                       break;
                     }
                     case 'DELETE': {
                       if (authSubStr[1] === 'Y') {
                         deleteCount++;
                       }
-                      copyChildrenMenuItems[11].havePermission = authSubStr[1] === 'Y' ? 1 : 0;
+                      copyChildrenMenuItems[11].havePermission = (copyChildrenMenuItems[11].havePermission && authSubStr[1] === 'Y') ? 1 : 0;
                       break;
                     }
                     default: break;

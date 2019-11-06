@@ -17,8 +17,8 @@ import { StorageSessionService } from '../../../services/storage-session.service
 })
 export class MytaskComponent implements OnInit {
 
-  V_SRC_CD: string = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
-  V_USR_NM: string = JSON.parse(sessionStorage.getItem('u')).USR_NM;
+  V_SRC_CD: string = '';
+  V_USR_NM: string = '';
   V_BASE_ID: string[] = null;
 
   constructor(private http: HttpClient, private router: Router,
@@ -270,6 +270,8 @@ export class MytaskComponent implements OnInit {
   // ------------------
 
   ngOnInit() {
+    this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+    this.V_USR_NM = JSON.parse(sessionStorage.getItem('u')).USR_NM;
     this.functionsrvcGetData();
     this.noAuthData.getJSON().subscribe(data => {
       this.Label = data;

@@ -13,18 +13,18 @@ import { ConfigServiceService } from '../../../../../services/config-service.ser
 })
 export class ManageMachinesComponent implements OnInit {
 
-  V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
-  V_USR_NM:string=JSON.parse(sessionStorage.getItem('u')).USR_NM;
+  V_SRC_CD: string = '';
+  V_USR_NM: string = '';
   V_BASE_ID: string[] = null;
 
-  constructor(private http: HttpClient, 
-    public dialogRef: MatDialogRef<ManageMachinesComponent>,  @Inject(MAT_DIALOG_DATA) public data: any,
-    private data2:UseradminService,private globals:Globals,
+  constructor(private http: HttpClient,
+    public dialogRef: MatDialogRef<ManageMachinesComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
+    private data2: UseradminService, private globals: Globals,
     private StorageSessionService: StorageSessionService,
     private data3: ConfigServiceService) { }
 
-  domain_name=this.globals.domain_name; private apiUrlGet = "https://"+this.domain_name+"/rest/v1/secured?";
-  private apiUrl = "https://"+this.domain_name+"/rest/v1/secured";
+  domain_name = this.globals.domain_name; private apiUrlGet = "https://" + this.domain_name + "/rest/v1/secured?";
+  private apiUrl = "https://" + this.domain_name + "/rest/v1/secured";
 
 
   PLF_DATA = [];
@@ -49,13 +49,13 @@ export class ManageMachinesComponent implements OnInit {
   MODESTATUS_DUP = "";
   STATE_FLG_DUP = "";
   // virtual: boolean = false;
-  isMachineChange:boolean = false;
-  isMachineDesChange:boolean = false;
+  isMachineChange: boolean = false;
+  isMachineDesChange: boolean = false;
 
 
   PLF = "";
 
-  Label:any[]=[];
+  Label: any[] = [];
   MachineCode() {
     ("Machine List!");
     this.data3.getMachineCode().subscribe(res => {
@@ -65,13 +65,13 @@ export class ManageMachinesComponent implements OnInit {
 
     });
   }
-  machineDetails(event:MatAutocompleteSelectedEvent) {
+  machineDetails(event: MatAutocompleteSelectedEvent) {
     ("Hello");
     ("Machine DETAILS");
     this.Selected = this.PLATFORM_CD;
     this.PLATFORM_CD_DUP = this.PLATFORM_CD;
     this.isMachineChange = false;
-    this.isMachineDesChange =false;
+    this.isMachineDesChange = false;
     this.data3.getMachineDetails(this.PLATFORM_CD).subscribe(res => {
       // ("Machine List!");
       this.PLF_DETAILS = res.json();
@@ -103,16 +103,18 @@ export class ManageMachinesComponent implements OnInit {
     });
   }
   ngOnInit() {
+    this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+    this.V_USR_NM = JSON.parse(sessionStorage.getItem('u')).USR_NM;
     this.MachineCode();
-    this.data2.getJSON().subscribe(data2 => { 
-      this.Label=data2.json();    
+    this.data2.getJSON().subscribe(data2 => {
+      this.Label = data2.json();
     });
-   
+
     this.PLATFORM_CD = this.data.PLATFORM_CD;
     this.Selected = this.data.PLATFORM_CD;
     this.PLATFORM_CD_DUP = this.data.PLATFORM_CD;
     this.isMachineChange = false;
-    this.isMachineDesChange =false;
+    this.isMachineDesChange = false;
     this.data3.getMachineDetails(this.PLATFORM_CD).subscribe(res => {
       // ("Machine List!");
       this.PLF_DETAILS = res.json();
@@ -144,73 +146,73 @@ export class ManageMachinesComponent implements OnInit {
   }
 
   addMachine() {
-    let body={
-      "V_PLATFORM_CD":this.PLATFORM_CD,
-      "V_SRC_CD":this.V_SRC_CD,
-      "V_PLATFORM_CAP":this.PLATFORM_CAP,
-      "V_RATING":this.RATING,
-      "V_EFF_STRT_DT_TM":this.EFF_STRT_DT_TM,
-      "V_EFF_END_DT_TM":this.EFF_END_DT_TM,
-      "V_USR_NM":this.V_USR_NM,
-      "V_PLATFORM_DSC":this.PLATFORM_DSC,
-      "VRTL_FLG":this.VRTL_FLG,
+    let body = {
+      "V_PLATFORM_CD": this.PLATFORM_CD,
+      "V_SRC_CD": this.V_SRC_CD,
+      "V_PLATFORM_CAP": this.PLATFORM_CAP,
+      "V_RATING": this.RATING,
+      "V_EFF_STRT_DT_TM": this.EFF_STRT_DT_TM,
+      "V_EFF_END_DT_TM": this.EFF_END_DT_TM,
+      "V_USR_NM": this.V_USR_NM,
+      "V_PLATFORM_DSC": this.PLATFORM_DSC,
+      "VRTL_FLG": this.VRTL_FLG,
       "MODESTATUS": this.MODESTATUS,
       "STATE_FLG": this.STATE_FLG,
-      "REST_Service":["Machine_Auths"],
-      "Verb":["PUT"]
+      "REST_Service": ["Machine_Auths"],
+      "Verb": ["PUT"]
     };
-  
-    this.http.put(this.apiUrl,body).subscribe(
-      res=>{
+
+    this.http.put(this.apiUrl, body).subscribe(
+      res => {
         (res);
         (body);
         this.dialogRef.close();
-    });
+      });
   }
 
   updateMachine() {
-    let body={
-      "V_PLATFORM_CD":this.PLATFORM_CD,
-      "V_SRC_CD":this.V_SRC_CD,
-      "V_PLATFORM_CAP":this.PLATFORM_CAP,
-      "V_RATING":this.RATING,
-      "V_EFF_STRT_DT_TM":this.EFF_STRT_DT_TM,
-      "V_EFF_END_DT_TM":this.EFF_END_DT_TM,
-      "V_USR_NM":this.V_USR_NM,
-      "V_PLATFORM_DSC":this.PLATFORM_DSC,
-      "VRTL_FLG":this.VRTL_FLG,
+    let body = {
+      "V_PLATFORM_CD": this.PLATFORM_CD,
+      "V_SRC_CD": this.V_SRC_CD,
+      "V_PLATFORM_CAP": this.PLATFORM_CAP,
+      "V_RATING": this.RATING,
+      "V_EFF_STRT_DT_TM": this.EFF_STRT_DT_TM,
+      "V_EFF_END_DT_TM": this.EFF_END_DT_TM,
+      "V_USR_NM": this.V_USR_NM,
+      "V_PLATFORM_DSC": this.PLATFORM_DSC,
+      "VRTL_FLG": this.VRTL_FLG,
       "MODESTATUS": this.MODESTATUS,
       "STATE_FLG": this.STATE_FLG,
-      "REST_Service":["Machine_Auths"],
-      "Verb":["PUT"]
+      "REST_Service": ["Machine_Auths"],
+      "Verb": ["PUT"]
     };
-  
-    this.http.put(this.apiUrl,body).subscribe(
-      res=>{
+
+    this.http.put(this.apiUrl, body).subscribe(
+      res => {
         (res);
         (body);
         this.dialogRef.close();
-    });
+      });
   }
 
   deleteMachine() {
-    this.http.delete(this.apiUrlGet+"V_PLATFORM_CD="+this.PLATFORM_CD+"&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Machine&Verb=DELETE").subscribe(
-    res=>{
-      (res);
-      this.dialogRef.close();
-    });
+    this.http.delete(this.apiUrlGet + "V_PLATFORM_CD=" + this.PLATFORM_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=Machine&Verb=DELETE").subscribe(
+      res => {
+        (res);
+        this.dialogRef.close();
+      });
   }
 
   machineChange() {
-    if(this.PLATFORM_CD.toLowerCase() != this.PLATFORM_CD_DUP.toLowerCase()) {
+    if (this.PLATFORM_CD.toLowerCase() != this.PLATFORM_CD_DUP.toLowerCase()) {
       this.isMachineChange = true;
     } else {
       this.isMachineChange = false;
     }
   }
-  
+
   machineDesChange() {
-    if(this.PLATFORM_DSC.toLowerCase() != this.PLATFORM_DSC_DUP.toLowerCase()) {
+    if (this.PLATFORM_DSC.toLowerCase() != this.PLATFORM_DSC_DUP.toLowerCase()) {
       this.isMachineDesChange = true;
     } else {
       this.isMachineDesChange = false;
@@ -218,23 +220,23 @@ export class ManageMachinesComponent implements OnInit {
   }
 
   isValid() {
-    if(this.PLATFORM_CD == '') {
+    if (this.PLATFORM_CD == '') {
       return true;
-    } else if(this.PLATFORM_DSC == '') {
+    } else if (this.PLATFORM_DSC == '') {
       return true;
-    } else if(this.PLATFORM_CAP == '') {
+    } else if (this.PLATFORM_CAP == '') {
       return true;
-    } else if(this.RATING == '') {
+    } else if (this.RATING == '') {
       return true;
-    } else if(this.EFF_STRT_DT_TM == '') {
+    } else if (this.EFF_STRT_DT_TM == '') {
       return true;
-    } else if(this.EFF_END_DT_TM == '') {
+    } else if (this.EFF_END_DT_TM == '') {
       return true;
-    } else if(this.VRTL_FLG == '') {
+    } else if (this.VRTL_FLG == '') {
       return true;
-    } else if(this.MODESTATUS == '') {
+    } else if (this.MODESTATUS == '') {
       return true;
-    } else if(this.STATE_FLG == '') {
+    } else if (this.STATE_FLG == '') {
       return true;
     } else {
       return false;

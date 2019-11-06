@@ -37,7 +37,8 @@ export class ConfigServiceService {
   V_USR_NM: string = JSON.parse(sessionStorage.getItem('u')).USR_NM;
   constructor(private http: Http, private https: HttpClient, private apiService: ApiService,
     private StorageSessionService: StorageSessionService, private globals: Globals) {
-
+    this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+    this.V_USR_NM = JSON.parse(sessionStorage.getItem('u')).USR_NM;
   }
 
   private apiUrlGet = this.apiService.endPoints.insecure;

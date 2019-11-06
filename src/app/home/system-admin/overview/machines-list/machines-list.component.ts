@@ -18,10 +18,10 @@ import { FormControl } from '@angular/forms';
 })
 export class MachinesListComponent implements OnInit {
 
-  V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
-  V_USR_NM=JSON.parse(sessionStorage.getItem('u')).USR_NM;
+  V_SRC_CD: string = '';
+  V_USR_NM = '';
   machines = [];
-  public connections=[];
+  public connections = [];
   public sortedAllConnections = [];
   public selectedMachineType = 'All';
   public machineTypeOptions;
@@ -30,24 +30,26 @@ export class MachinesListComponent implements OnInit {
   @Input() selectedConnTile;
   myControl = new FormControl();
   filteredOptions: Observable<string[]>;
-  
+
   unsubscribeAll: Subject<boolean> = new Subject<boolean>();
   connectionTypeOptions;
   @Output() selectedMachine: EventEmitter<any> = new EventEmitter();
   @Output() selectedConntile: EventEmitter<any> = new EventEmitter();
-  domain_name=this.globals.domain_name;
+  domain_name = this.globals.domain_name;
 
-  private apiUrlGet = "https://"+this.domain_name+"/rest/v1/securedJSON?";
-  private apiUrlPut = "https://"+this.domain_name+"/rest/v1/secured";
+  private apiUrlGet = "https://" + this.domain_name + "/rest/v1/securedJSON?";
+  private apiUrlPut = "https://" + this.domain_name + "/rest/v1/secured";
 
-  constructor(public dialog: MatDialog, private http:HttpClient, private systemOverview:SystemAdminOverviewService, private globals:Globals) { }
+  constructor(public dialog: MatDialog, private http: HttpClient, private systemOverview: SystemAdminOverviewService, private globals: Globals) { }
 
   ngOnInit() {
+    this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+    this.V_USR_NM = JSON.parse(sessionStorage.getItem('u')).USR_NM;
     //this.systemOverview.getAllMachineConnections();
     this.systemOverview.typeOptions$.subscribe(types => {
       this.connectionTypeOptions = types;
     })
-   
+
     this.systemOverview.getMachineConnection$.subscribe(res => {
       this.sortedAllConnections = res;
     });
@@ -55,10 +57,10 @@ export class MachinesListComponent implements OnInit {
     this.systemOverview.machineOptions$.subscribe(machine => {
       this.machineTypeOptions = machine;
       this.filteredOptions = this.myControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(value => this._filter(value))
-      );
+        .pipe(
+          startWith(''),
+          map(value => this._filter(value))
+        );
     });
 
     //this.MachineCode();
@@ -69,7 +71,7 @@ export class MachinesListComponent implements OnInit {
   //     this.machines=res;
   //   });
   // }
-  
+
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
 
@@ -88,12 +90,12 @@ export class MachinesListComponent implements OnInit {
   changeMachine(machine) {
     this.selectedMachineType = machine;
   }
-  
+
   onAddMachineBtnClick() {
     const dialogRef = this.dialog.open(AddPlatformDialogComponent, {
       panelClass: 'app-dialog',
       width: '300px',
-      data: {platform_cd: "platform_cd", platform_des: "platform_des"}
+      data: { platform_cd: "platform_cd", platform_des: "platform_des" }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -105,7 +107,7 @@ export class MachinesListComponent implements OnInit {
     const dialogRef = this.dialog.open(AssignMcnPlfComponent, {
       panelClass: 'app-dialog',
       width: '300px',
-      data: {isSelectedEntity: "MACHINE"}
+      data: { isSelectedEntity: "MACHINE" }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -118,7 +120,7 @@ export class MachinesListComponent implements OnInit {
     const dialogRef = this.dialog.open(ManageMachinesComponent, {
       panelClass: 'app-dialog',
       width: '350px',
-      data: {platform_cd: "platform_cd", platform_des: "platform_des"}
+      data: { platform_cd: "platform_cd", platform_des: "platform_des" }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -129,7 +131,7 @@ export class MachinesListComponent implements OnInit {
   selectedConnTileData(exe) {
     this.selectedConntile.emit(exe);
   }
-  
+
   ngOnDestroy(): void {
     this.unsubscribeAll.next(true);
     this.unsubscribeAll.complete();

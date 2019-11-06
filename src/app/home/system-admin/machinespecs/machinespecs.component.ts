@@ -25,44 +25,43 @@ import { Globals } from '../../../services/globals';
 })
 export class MachinespecsComponent implements OnInit {
 
-  V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
-  V_USR_NM:string=JSON.parse(sessionStorage.getItem('u')).USR_NM;
+  V_SRC_CD: string = '';
+  V_USR_NM: string = '';
   V_BASE_ID: string[] = null;
-  screenHeight=0;
-  screenWidth=0;
-  mobileView=false;
-  desktopView=true;
+  screenHeight = 0;
+  screenWidth = 0;
+  mobileView = false;
+  desktopView = true;
   @HostListener('window:resize', ['$event'])
-    onResize(event?) {
-      this.screenHeight = window.innerHeight;
-      this.screenWidth = window.innerWidth;
-      if(this.screenWidth<=767)
-      {
-        this.mobileView=true;
-        this.desktopView=false;
-      }else{
-        this.mobileView=false;
-        this.desktopView=true;
-      }
+  onResize(event?) {
+    this.screenHeight = window.innerHeight;
+    this.screenWidth = window.innerWidth;
+    if (this.screenWidth <= 767) {
+      this.mobileView = true;
+      this.desktopView = false;
+    } else {
+      this.mobileView = false;
+      this.desktopView = true;
+    }
   }
   constructor(private http: HttpClient,
-    private data2: UseradminService,private globals:Globals,
+    private data2: UseradminService, private globals: Globals,
     private StorageSessionService: StorageSessionService,
     private data: ConfigServiceService) {
-      this.onResize();
+    this.onResize();
     this.onpselect = function (index) {
       this.selectedplftyp = index;
       // this.selectedcon = ;
     }
   }
 
-  domain_name=this.globals.domain_name; private apiUrlGet = "https://"+this.domain_name+"/rest/v1/secured?";
-  private apiUrlAdd = "https://"+this.domain_name+"/rest/v1/secured";
-  private apiUrldelete = "https://"+this.domain_name+"/rest/v1/secured";
+  domain_name = this.globals.domain_name; private apiUrlGet = "https://" + this.domain_name + "/rest/v1/secured?";
+  private apiUrlAdd = "https://" + this.domain_name + "/rest/v1/secured";
+  private apiUrldelete = "https://" + this.domain_name + "/rest/v1/secured";
 
-  PLF_DATA=[];
+  PLF_DATA = [];
   ADDITIONAL_PLF_DATA = [];
-  ADDITIONAL_PLF_DATA_ARR= [];
+  ADDITIONAL_PLF_DATA_ARR = [];
   // PLF_DETAILS = [];
   // PLATFORM_CD = "";
   // PLATFORM_DSC = "";
@@ -98,14 +97,13 @@ export class MachinespecsComponent implements OnInit {
     ("Machine DETAILS");
     this.data.getAddMachineDetails(sel_mach).subscribe(res => {
       (res.json());
-      this.ADDITIONAL_PLF_DATA=res.json();
+      this.ADDITIONAL_PLF_DATA = res.json();
       (this.P.length);
       (this.ADDITIONAL_PLF_DATA[this.P[24]]);
 
 
-      for(var i=0; i<this.P.length; i++)
-      {
-        this.ADDITIONAL_PLF_DATA_ARR[i] = { name: this.ADDITIONAL_PLF_DATA[this.P[i]], title:this.Label[this.P[i]]};
+      for (var i = 0; i < this.P.length; i++) {
+        this.ADDITIONAL_PLF_DATA_ARR[i] = { name: this.ADDITIONAL_PLF_DATA[this.P[i]], title: this.Label[this.P[i]] };
       }
       (this.ADDITIONAL_PLF_DATA_ARR);
       // (this.ADDITIONAL_PLF_DATA_ARR);
@@ -130,7 +128,9 @@ export class MachinespecsComponent implements OnInit {
     });
   }
   ngOnInit() {
-      this.data2.getJSON().subscribe(data2 => {
+    this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+    this.V_USR_NM = JSON.parse(sessionStorage.getItem('u')).USR_NM;
+    this.data2.getJSON().subscribe(data2 => {
       this.Label = data2.json();
     })
     this.MachineCode();

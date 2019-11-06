@@ -13,40 +13,39 @@ import { UseradminService } from '../../../services/useradmin.service2';
 })
 export class ConnectionComponent implements OnInit {
 
-  V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
-  V_USR_NM:string=JSON.parse(sessionStorage.getItem('u')).USR_NM;
-  screenHeight=0;
-  screenWidth=0;
-  mobileView=false;
-  desktopView=true;
+  V_SRC_CD: string = '';
+  V_USR_NM: string = '';
+  screenHeight = 0;
+  screenWidth = 0;
+  mobileView = false;
+  desktopView = true;
   @HostListener('window:resize', ['$event'])
-    onResize(event?) {
-      this.screenHeight = window.innerHeight;
-      this.screenWidth = window.innerWidth;
-      if(this.screenWidth<=767)
-      {
-        this.mobileView=true;
-        this.desktopView=false;
-      }else{
-        this.mobileView=false;
-        this.desktopView=true;
-      }
+  onResize(event?) {
+    this.screenHeight = window.innerHeight;
+    this.screenWidth = window.innerWidth;
+    if (this.screenWidth <= 767) {
+      this.mobileView = true;
+      this.desktopView = false;
+    } else {
+      this.mobileView = false;
+      this.desktopView = true;
+    }
   }
   constructor(private http: HttpClient,
-    private data:UseradminService,private globals:Globals,
+    private data: UseradminService, private globals: Globals,
     private StorageSessionService: StorageSessionService) {
-      this.onResize();
-      this.onpselect = function(index){
-        this.selectedcontyp= index;
-        this.selectedcon=null;
-        }
-        this.onmselect = function(index){
-          this.selectedcon = index;
-          }
-     }
+    this.onResize();
+    this.onpselect = function (index) {
+      this.selectedcontyp = index;
+      this.selectedcon = null;
+    }
+    this.onmselect = function (index) {
+      this.selectedcon = index;
+    }
+  }
 
-  domain_name=this.globals.domain_name; private apiUrlGet = "https://"+this.domain_name+"/rest/v1/secured?";
-  private apiUrlPost = "https://"+this.domain_name+"/rest/v1/secured";
+  domain_name = this.globals.domain_name; private apiUrlGet = "https://" + this.domain_name + "/rest/v1/secured?";
+  private apiUrlPost = "https://" + this.domain_name + "/rest/v1/secured";
 
   conn_type: string[];
   conn: string[];
@@ -63,9 +62,9 @@ export class ConnectionComponent implements OnInit {
   i = 0;
   connectionshow: boolean = false;
   tableshow: boolean = false;
- onpselect:Function;
- onmselect:Function;
-  Label:any[]=[];
+  onpselect: Function;
+  onmselect: Function;
+  Label: any[] = [];
 
   //function to get connection types
   getconnectiontype() {
@@ -181,14 +180,17 @@ export class ConnectionComponent implements OnInit {
           (body);
         });
     }
-    this.Data1.length=0;
+    this.Data1.length = 0;
   }
   ngOnInit() {
+    this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+    this.V_USR_NM = JSON.parse(sessionStorage.getItem('u')).USR_NM;
     this.getconnectiontype();
     this.data.getJSON().subscribe(data => {
-           (data.json());
-             this.Label=data.json();
-              (this.Label);   })
+      (data.json());
+      this.Label = data.json();
+      (this.Label);
+    })
   }
 }
 

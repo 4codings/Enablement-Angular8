@@ -57,6 +57,8 @@ export class ViewerDiagramComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+    this.V_USR_NM = JSON.parse(sessionStorage.getItem('u')).USR_NM;
     // this.http.get('../../../../assets/control-variable.json').subscribe((res: any) => {
     //   this.file_path = res.bpmn_file_path;
     // });

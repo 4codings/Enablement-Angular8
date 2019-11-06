@@ -23,15 +23,17 @@ export class SingleMachineComponent implements OnInit {
   @Input() selectedConn;
   @Output() selectedConntile = new EventEmitter();
 
-  V_SRC_CD:string=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
-  V_USR_NM:string=JSON.parse(sessionStorage.getItem('u')).USR_NM;
-  domain_name=this.globals.domain_name; private apiUrlGet = "https://"+this.domain_name+"/rest/v1/secured?";
-  private apiUrl = "https://"+this.domain_name+"/rest/v1/secured";
+  V_SRC_CD: string = '';
+  V_USR_NM: string = '';
+  domain_name = this.globals.domain_name; private apiUrlGet = "https://" + this.domain_name + "/rest/v1/secured?";
+  private apiUrl = "https://" + this.domain_name + "/rest/v1/secured";
 
 
-  constructor(private systemOverview:SystemAdminOverviewService, public dialog: MatDialog, private globals:Globals, private http: HttpClient) { }
+  constructor(private systemOverview: SystemAdminOverviewService, public dialog: MatDialog, private globals: Globals, private http: HttpClient) { }
 
   ngOnInit() {
+    this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+    this.V_USR_NM = JSON.parse(sessionStorage.getItem('u')).USR_NM;
   }
 
   onBtnDeleteMachineClick(machine) {
@@ -44,9 +46,9 @@ export class SingleMachineComponent implements OnInit {
     dialogRef.componentInstance.message = `Are you sure, you want to delete Machine <strong>${machine.PLATFORM_CD}</strong>?`;
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result) {
-        this.http.delete(this.apiUrlGet+"V_PLATFORM_CD="+machine.PLATFORM_CD+"&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Machine&Verb=DELETE").subscribe(
-          res=>{
+      if (result) {
+        this.http.delete(this.apiUrlGet + "V_PLATFORM_CD=" + machine.PLATFORM_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=Machine&Verb=DELETE").subscribe(
+          res => {
             this.systemOverview.getExe();
             console.log('The dialog was closed');
           });
@@ -70,7 +72,7 @@ export class SingleMachineComponent implements OnInit {
     const dialogRef = this.dialog.open(AssignMcnPlfComponent, {
       panelClass: 'app-dialog',
       width: '300px',
-      data: {isSelectedEntity: "MACHINE", machine:machine}
+      data: { isSelectedEntity: "MACHINE", machine: machine }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -80,7 +82,7 @@ export class SingleMachineComponent implements OnInit {
 
   selectedMachineTile(connection) {
     //console.log("connection", connection);
-    if(connection === 'exeSelect') {
+    if (connection === 'exeSelect') {
       this.selectedConntile.emit(null);
     } else {
       this.systemOverview.selectCxn(connection);

@@ -62,8 +62,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedInstanceElementsList: InstanceElementList[] = [];
   selectedElement = new InstanceElementList();
   pointer = 0;
-  V_SRC_CD: string = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
-  V_USR_NM: string = JSON.parse(sessionStorage.getItem('u')).USR_NM;
+  V_SRC_CD: string = '';
+  V_USR_NM: string = '';
   Exe_data = this.dataStored.getCookies("executedata");
   iddata: any[] = [];
   table_help_text: any;
@@ -401,6 +401,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+    this.V_USR_NM = JSON.parse(sessionStorage.getItem('u')).USR_NM;
     this.user = JSON.parse(sessionStorage.getItem('u'));
     this.downloadUrl = this.apiService.endPoints.downloadFile;
     this.getReportData();

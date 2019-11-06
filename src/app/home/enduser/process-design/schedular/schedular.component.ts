@@ -93,8 +93,8 @@ export class SchedularComponent implements OnInit {
   }
   //----------------------------cron expression
   Exe_data = this.store.getSession("Exe_data");
-  V_SRC_CD: string = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
-  V_USR_NM: string = JSON.parse(sessionStorage.getItem('u')).USR_NM;
+  V_SRC_CD: string = '';
+  V_USR_NM: string = '';
   private Url = this.apiService.endPoints.securedScheduleProcess;
   cronEditForRepeat() {
 
@@ -263,6 +263,8 @@ export class SchedularComponent implements OnInit {
     alert();
   }
   ngOnInit() {
+    this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+    this.V_USR_NM = JSON.parse(sessionStorage.getItem('u')).USR_NM;
     this.start_date = new Date();
     this.Repeat_after = 1;
     this.getEndYear();

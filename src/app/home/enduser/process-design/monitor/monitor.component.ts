@@ -47,8 +47,8 @@ export class MonitorComponent implements OnInit, OnDestroy {
   apiUrl: any;
   apiJSONUrl: any;
   numbersOfTransactions = 3;
-  V_SRC_CD: string = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
-  V_USR_NM: string = JSON.parse(sessionStorage.getItem('u')).USR_NM;
+  V_SRC_CD: string = '';
+  V_USR_NM: string = '';
   PRCS_TXN_ID: any = [];
   StartDateTime: any = [];
   USR_NM: any = [];
@@ -85,6 +85,8 @@ export class MonitorComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
+    this.V_USR_NM = JSON.parse(sessionStorage.getItem('u')).USR_NM;
     this.expandPanel = this.deviceService.isDesktop();
     this.isMobile = this.deviceService.isMobile();
     this.isTablet = this.deviceService.isTablet();
