@@ -27,6 +27,7 @@ export class HeaderComponent implements OnInit {
   timeStamp;
   imageUrl = `https://${this.domain}/${JSON.parse(sessionStorage.getItem('u')).USR_NM}/pic`;
   @Input() selectedProfile = '';
+  changeLogoFlag = false;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -56,9 +57,9 @@ export class HeaderComponent implements OnInit {
     if (this.router.url == "/End_User/Design") {
       this.selectedProfile = "Workflow";
     } else if (this.router.url == "/User_Admin/Adminuser") {
-      this.selectedProfile = "User_Admin";
+      this.selectedProfile = "Administrator";
     } else if (this.router.url == "/System_Admin/AppDeploy") {
-      this.selectedProfile = "System_Admin";
+      this.selectedProfile = "System";
     }
   }
 
@@ -85,6 +86,10 @@ export class HeaderComponent implements OnInit {
     // this.toastr.info("your profile "+e+"profile");
     if (this.selectedProfile == 'Workflow') {
       e = "End_User"
+    } else if (this.selectedProfile == 'Administrator') {
+      e = "User_Admin"
+    } else if (this.selectedProfile == 'System') {
+      e = "System_Admin"
     }
     this.router.navigateByUrl(e.replace(" ", "_"), { skipLocationChange: true });
     //this.router.navigateByUrl(e);
@@ -103,13 +108,16 @@ export class HeaderComponent implements OnInit {
         if (res[i] == "End User Role") {
           this.options.push("Workflow");
         } else if (res[i] == 'System Admin Role') {
-          this.options.push("System_Admin");
+          this.options.push("System");
         } else if (res[i] == 'Finance Role') {
           this.options.push("Cost");
         } else if (res[i] == 'IT Asset Role') {
           this.options.push("Assets");
         } else if (res[i] == 'User Admin Role') {
-          this.options.push("User_Admin");
+          this.options.push("Administrator");
+        }
+        if (res[i] == 'Enablement User Admin Organization Role') {
+          this.changeLogoFlag = true;
         }
       }
     });

@@ -52,7 +52,7 @@
                   matTooltipPosition="after">help</mat-icon> -->
                 <br />
                 <div *ngIf="DSPLY_FLD[i]">
-                  <ng-container [ngSwitch]="fieldType[label].toLowerCase()">
+                  <ng-container [ngSwitch]="FLD_TYPE[i].toLowerCase()">
                     <ng-container *ngSwitchCase="'date'">
                       <mat-form-field class="form_input">
                         <input #name="ngModel" [required]="configService.isFieldMendatory(label)"
@@ -69,9 +69,10 @@
                     <ng-container *ngSwitchCase="'time'">
                       <mat-form-field class="form_input">
                         <input #name="ngModel" [required]="configService.isFieldMendatory(label)"
-                          [disabled]="configService.isFieldDisabled()" matInput [type]="fieldType[label]" [name]="label"
-                          [(ngModel)]="input[label]" class="f_inp" (ngModelChange)="Update_value($event,label)"
-                          [owlDateTimeTrigger]="ftime" [owlDateTime]="ftime">
+                          [disabled]="configService.isFieldDisabled()" matInput [type]="FLD_TYPE[i].toLowerCase()"
+                          [name]="label" [(ngModel)]="input[label]" class="f_inp"
+                          (ngModelChange)="Update_value($event,label)" [owlDateTimeTrigger]="ftime"
+                          [owlDateTime]="ftime">
                         <owl-date-time [pickerType]="'timer'" #ftime></owl-date-time>
                       </mat-form-field>
                       <div class="error" [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
@@ -94,8 +95,8 @@
                     <ng-container *ngSwitchCase="'password'">
                       <mat-form-field class="form_input">
                         <input matInput #name="ngModel" [required]="configService.isFieldMendatory(label)"
-                          [readonly]="configService.isFieldDisabled(label)" [type]="fieldType[label]" [name]="label"
-                          [value]="input[label]" [(ngModel)]="input[label]" #name="ngModel" class="f_inp"
+                          [readonly]="configService.isFieldDisabled(label)" [type]="FLD_TYPE[i].toLowerCase()"
+                          [name]="label" [value]="input[label]" [(ngModel)]="input[label]" #name="ngModel" class="f_inp"
                           (change)="Update_value($event.target.value,label)">
                       </mat-form-field>
                       <div class="error" [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
@@ -149,10 +150,10 @@
                         {{configService.getFieldInValidMsg(name, label)}}
                       </div>
                     </ng-container>
-                    <ng-container *ngSwitchCase="configService.getFieldTypeForChange(fieldType[label])">
+                    <ng-container *ngSwitchCase="configService.getFieldTypeForChange(FLD_TYPE[i].toLowerCase())">
                       <mat-form-field class="form_input">
                         <input matInput [required]="configService.isFieldMendatory(label)"
-                          maxlength="configService.getMaxLengthForField(fieldType[label])" [name]="label"
+                          maxlength="configService.getMaxLengthForField(FLD_TYPE[i].toLowerCase())" [name]="label"
                           (value)="input[label]" (change)="configService.transformFieldValueOnChange($event,label)"
                           [(ngModel)]="input[label]" class="f_inp" #name="ngModel"
                           (change)="Update_value($event.target.value,label)">
@@ -265,7 +266,7 @@
                   matTooltipPosition="after">help</mat-icon>
                 <br />
                 <div *ngIf="DSPLY_FLD[i]">
-                  <ng-container [ngSwitch]="fieldType[label]">
+                  <ng-container [ngSwitch]="FLD_TYPE[i].toLowerCase()">
                     <ng-container *ngSwitchCase="'date'">
                       <mat-form-field class="form_input">
                         <input #name="ngModel" [required]="configService.isFieldMendatory(label)"
@@ -282,8 +283,8 @@
                     <ng-container *ngSwitchCase="'time'">
                       <mat-form-field class="form_input">
                         <input #name="ngModel" [required]="configService.isFieldMendatory(label)"
-                          [disabled]="configService.isFieldDisabled()" matInput [type]="fieldType[label]" [name]="label"
-                          [value]="input[label]" [(ngModel)]="input[label]" class="f_inp"
+                          [disabled]="configService.isFieldDisabled()" matInput [type]="FLD_TYPE[i].toLowerCase()"
+                          [name]="label" [value]="input[label]" [(ngModel)]="input[label]" class="f_inp"
                           (ngModelChange)="Update_value($event,label)" [owlDateTimeTrigger]="ftime"
                           [owlDateTime]="ftime">
                         <owl-date-time [pickerType]="'timer'" #ftime></owl-date-time>
@@ -307,8 +308,8 @@
                     <ng-container *ngSwitchCase="'password'">
                       <mat-form-field class="form_input">
                         <input matInput #name="ngModel" [required]="configService.isFieldMendatory(label)"
-                          [readonly]="configService.isFieldDisabled(label)" [type]="fieldType[label]" [name]="label"
-                          [value]="input[label]" [(ngModel)]="input[label]" #name="ngModel" class="f_inp"
+                          [readonly]="configService.isFieldDisabled(label)" [type]="FLD_TYPE[i].toLowerCase()"
+                          [name]="label" [value]="input[label]" [(ngModel)]="input[label]" #name="ngModel" class="f_inp"
                           (change)="Update_value($event.target.value,label)">
                       </mat-form-field>
                       <div class="error" [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
@@ -362,10 +363,10 @@
                         {{configService.getFieldInValidMsg(name, label)}}
                       </div>
                     </ng-container>
-                    <ng-container *ngSwitchCase="configService.getFieldTypeForChange(fieldType[label])">
+                    <ng-container *ngSwitchCase="configService.getFieldTypeForChange(FLD_TYPE[i].toLowerCase())">
                       <mat-form-field class="form_input">
                         <input matInput [required]="configService.isFieldMendatory(label)"
-                          maxlength="configService.getMaxLengthForField(fieldType[label])" [name]="label"
+                          maxlength="configService.getMaxLengthForField(FLD_TYPE[i].toLowerCase())" [name]="label"
                           (value)="input[label]" (change)="configService.transformFieldValueOnChange($event,label)"
                           [(ngModel)]="input[label]" class="f_inp" #name="ngModel"
                           (change)="Update_value($event.target.value,label)">

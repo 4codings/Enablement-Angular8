@@ -492,10 +492,11 @@
   box-shadow: none;
 }
 
-.headerChildMenu{
+.headerChildMenu {
   width: 280px !important;
 }
-.headerParentMenu{
+
+.headerParentMenu {
   width: 170px !important;
 }
 
@@ -539,36 +540,61 @@ button:focus {
   min-height: 100%;
   padding: 0px !important;
 }
-.mat-card, body {
+
+.mat-card,
+body {
   background-color: #F2F2F2;
   min-height: 100% !important;
 }
+
 .mat-card-content {
   margin: 10px !important;
 }
 
 .profile-pic {
-  width:50px; 
-  height: 50px; 
-  border-radius: 50%; 
-  border: none; 
-  padding: 0; 
-  cursor:pointer; 
-  margin:0;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  margin: 0;
   background-color: #fff;
 }
 
-.mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+.image-cropper {
+  width: 45px;
+  height: 45px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.profile-pic-circle {
+  margin: 0 auto;
+  margin-left: -25%; //centers the image
+  height: 100%;
+  width: auto;
+}
+
+.mat-checkbox-checked.mat-accent .mat-checkbox-background,
+.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
   background-color: rgba(66, 63, 63, 0.78) !important;
 }
-.mat-radio-button.mat-accent .mat-radio-inner-circle, .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element:not(.mat-radio-persistent-ripple), .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-persistent-ripple, .mat-radio-button.mat-accent:active .mat-radio-persistent-ripple {
+
+.mat-radio-button.mat-accent .mat-radio-inner-circle,
+.mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element:not(.mat-radio-persistent-ripple),
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-persistent-ripple,
+.mat-radio-button.mat-accent:active .mat-radio-persistent-ripple {
   background-color: rgba(66, 63, 63, 0.78) !important;
 }
+
 .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
   border-color: rgba(66, 63, 63, 0.78) !important;
 }
 
-.add-user-admin .mat-tab-label, .add-auth .mat-tab-label {
+.add-user-admin .mat-tab-label,
+.add-auth .mat-tab-label {
   min-width: 100px !important;
   padding: 0px 4px !important;
 }
