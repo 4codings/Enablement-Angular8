@@ -28,8 +28,12 @@
     <mat-icon>account_circle</mat-icon>
     <span>{{userName}}</span>
   </button>
-  <button mat-menu-item (click)="changeLogoFlag ? changeAgencyLogo() : return;"
+  <button *ngIf="changeLogoFlag" mat-menu-item (click)="changeAgencyLogo()"
     [style.cursor]="changeLogoFlag?'pointer':'auto' ">
+    <mat-icon>home</mat-icon>
+    <span>{{agency}}</span>
+  </button>
+  <button *ngIf="!changeLogoFlag" mat-menu-item [style.cursor]="changeLogoFlag?'pointer':'auto' ">
     <mat-icon>home</mat-icon>
     <span>{{agency}}</span>
   </button>
