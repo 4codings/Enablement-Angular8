@@ -23,11 +23,13 @@ import { filter } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material';
 import { OptionalValuesService } from 'src/app/services/optional-values.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-non-repeatable-form',
   templateUrl: './non-repeatable-form.component.html',
-  styleUrls: ['./../../../../../assets/css/threepage.css']
+  styleUrls: ['./../../../../../assets/css/threepage.css'],
+  providers: [DatePipe]
 })
 
 export class NonRepeatableFormComponent extends FormComponent implements OnInit {
@@ -66,6 +68,7 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     public optionalService: OptionalValuesService,
     private endUserService: EndUserService,
     private activatedRoute: ActivatedRoute,
+    private datePipe: DatePipe
 
   ) {
     super(StorageSessionService, http, https, router, globals, app, cdr, apiService, globalUser, configService, toasterService, dialog, optionalService);
@@ -141,8 +144,11 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
 
   }
 
-  Update_value(v: any, n: any) { //v=value and n=paramter name
+  Update_value(v: any, n: any, isDate?: any) { //v=value and n=paramter name and isDate = true to convert value
 
+    if (isDate) {
+      v = this.datePipe.transform(v, 'yyyy-MM-dd');
+    }
     n = n.split(" ").join("_")
     var Field_Values_Ar = ('"' + v + '"');
 

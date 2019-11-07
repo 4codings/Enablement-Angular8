@@ -60,7 +60,7 @@
                               [disabled]="configService.isFieldDisabled()" [name]="'field_' + label + iter"
                               [value]="input[label][iter]" [(ngModel)]="input[label][iter]" matInput
                               [matDatepicker]="picker" class="f_inp"
-                              (keyup)="Update_value(input[label][iter],label,iter)">
+                              (dateChange)="Update_value(input[label][iter],label,iter,true)">
                             <mat-datepicker-toggle matSuffix [for]="picker">
                             </mat-datepicker-toggle>
                             <mat-datepicker #picker></mat-datepicker>
@@ -245,11 +245,11 @@
                     <mat-icon style="color:red;font-size: larger;font-weight: bold;">add</mat-icon>
                   </button>
                   <br />
-                  <button mat-icon-button (click)="editTick_click(iter)"
+                  <!-- <button mat-icon-button (click)="editTick_click(iter)"
                     *ngIf="iter>0 && V_UPDATE==='Y' && edit_or_done[iter] === 'done'">
                     <mat-icon style="color:blue;font-size: larger;">{{edit_or_done[iter]}}
                     </mat-icon>
-                  </button>
+                  </button> -->
                   <button mat-icon-button (click)="delete_click(iter)" *ngIf="iter>0 && V_DELETE==='Y'">
                     <mat-icon style="color:blue;font-size: larger;">delete</mat-icon>
                   </button>

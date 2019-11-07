@@ -18,11 +18,13 @@ import { filter } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { DeleteConfirmComponent } from '../../../../shared/components/delete-confirm/delete-confirm.component';
 import { OptionalValuesService } from 'src/app/services/optional-values.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-repeatable-form',
   templateUrl: './repeatable-form.component.html',
-  styleUrls: ['./../../../../../assets/css/threepage.css']
+  styleUrls: ['./../../../../../assets/css/threepage.css'],
+  providers: [DatePipe]
 })
 export class RepeatableFormComponent extends FormComponent implements OnInit {
   private apiUrlGetSecure = this.apiService.endPoints.secure;
@@ -56,6 +58,7 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     private endUserService: EndUserService,
     public dialog: MatDialog,
     public optionalService: OptionalValuesService,
+    private datePipe: DatePipe
   ) {
     super(StorageSessionService, http, https, router, globals, app, cdr, apiService, globalUser, configService, toasterService, dialog, optionalService);
     this.navigationSubscription = router.events
@@ -206,7 +209,10 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     this.navigationSubscription.unsubscribe();
   }
 
-  Update_value(v: any, n: any, iter) { //v=value and n=paramter name
+  Update_value(v: any, n: any, iter, isDate?: any) { //v=value and n=paramter name
+    if (isDate) {
+      v = this.datePipe.transform(v, 'yyyy-MM-dd');
+    }
     n = n.split(" ").join("_")
     var Field_Values_Ar = ('"' + v + '"');
     var Field_Names_Ar = n;

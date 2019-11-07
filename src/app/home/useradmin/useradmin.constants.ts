@@ -7,11 +7,11 @@ export const userStatusConstants = {
 };
 
 export const userStatusOptions: { key: string, label: string }[] = [
-  {key: userStatusConstants.ACTIVE, label: 'Active'},
-  {key: userStatusConstants.TERMINATED, label: 'Terminated'},
-  {key: userStatusConstants.VACATION, label: 'Vacation'},
-  {key: userStatusConstants.LEAVE, label: 'Leave'},
-  {key: userStatusConstants.UNAVAILABLE, label: 'Unavailable'},
+  { key: userStatusConstants.ACTIVE, label: 'Active' },
+  { key: userStatusConstants.TERMINATED, label: 'Terminated' },
+  { key: userStatusConstants.VACATION, label: 'Vacation' },
+  { key: userStatusConstants.LEAVE, label: 'Leave' },
+  { key: userStatusConstants.UNAVAILABLE, label: 'Unavailable' },
 ];
 
 export const authorizationTypeConstants = {
@@ -25,27 +25,33 @@ export const authorizationTypeConstants = {
 };
 
 export const authorizationTypeOptions: { key: string, label: string }[] = [
-  {key: '', label: 'ALL'},
-  {key: authorizationTypeConstants.PROCESS, label: 'Process'},
-  {key: authorizationTypeConstants.SERVICE, label: 'Service'},
-  {key: authorizationTypeConstants.EXE, label: 'Exe'},
-  {key: authorizationTypeConstants.ARTIFACT, label: 'Artifact'},
-  {key: authorizationTypeConstants.PLATFORM, label: 'Platform'},
-  {key: authorizationTypeConstants.SERVER, label: 'Server'},
-  {key: authorizationTypeConstants.SLA, label: 'SLA'},
+  { key: '', label: 'ALL' },
+  { key: authorizationTypeConstants.PROCESS, label: 'Process' },
+  { key: authorizationTypeConstants.SERVICE, label: 'Service' },
+  { key: authorizationTypeConstants.EXE, label: 'Exe' },
+  { key: authorizationTypeConstants.ARTIFACT, label: 'Artifact' },
+  { key: authorizationTypeConstants.PLATFORM, label: 'Platform' },
+  { key: authorizationTypeConstants.SERVER, label: 'Server' },
+  { key: authorizationTypeConstants.SLA, label: 'SLA' },
 ];
 
 export const groupTypeConstant = {
-  SCREEN: 'SCREEN',
-  PROFILE: 'PROFILE',
+  // SCREEN: 'SCREEN',
+  // PROFILE: 'PROFILE',
   CUSTOM: 'CUSTOM',
+  WORKFLOW: 'WORKFLOW',
+  ADMINISTRATOR: 'ADMINISTRATOR',
+  SYSTEM: 'SYSTEM'
 };
 
-export const groupTypeOptions: {key: string, label: string}[] = [
-  {key: '', label: 'ALL'},
-  {key: groupTypeConstant.SCREEN, label: 'Feature'},
-  {key: groupTypeConstant.PROFILE, label: 'Profile'},
-  {key: groupTypeConstant.CUSTOM, label: 'Custom'}
+export const groupTypeOptions: { key: string, label: string }[] = [
+  { key: '', label: 'ALL' },
+  // {key: groupTypeConstant.SCREEN, label: 'Feature'},
+  // {key: groupTypeConstant.PROFILE, label: 'Profile'},
+  { key: groupTypeConstant.CUSTOM, label: 'Custom' },
+  { key: groupTypeConstant.WORKFLOW, label: 'Workflow' },
+  { key: groupTypeConstant.ADMINISTRATOR, label: 'Adminstrator' },
+  { key: groupTypeConstant.SYSTEM, label: 'System' }
 ];
 
 

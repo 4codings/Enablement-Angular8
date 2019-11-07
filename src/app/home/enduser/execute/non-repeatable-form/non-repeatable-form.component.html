@@ -58,7 +58,7 @@
                         <input #name="ngModel" [required]="configService.isFieldMendatory(label)"
                           [disabled]="configService.isFieldDisabled()" [name]="label" [value]="input[label]"
                           [(ngModel)]="input[label]" matInput [matDatepicker]="picker" class="f_inp"
-                          (dateChange)="Update_value(input[label],label)">
+                          (dateChange)="Update_value(input[label],label,true)">
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
                       </mat-form-field>
@@ -143,7 +143,7 @@
                         <textarea [required]="configService.isFieldMendatory(label)" matInput
                           [readonly]="configService.isFieldDisabled(label)" [name]="label"
                           [maxLength]="configService.getFieldMaxLength(label)" [(ngModel)]="input[label]" class="f_inp"
-                          (change)="Update_value($event,label)" #name="ngModel">
+                          (change)="Update_value($event.target.value,label)" #name="ngModel">
 										  </textarea>
                       </mat-form-field>
                       <div class="error" [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
@@ -272,7 +272,7 @@
                         <input #name="ngModel" [required]="configService.isFieldMendatory(label)"
                           [disabled]="configService.isFieldDisabled()" [name]="label" [value]="input[label]"
                           [(ngModel)]="input[label]" matInput [matDatepicker]="picker" class="f_inp"
-                          (dateChange)="Update_value(input[label],label)">
+                          (dateChange)="Update_value(input[label],label,true)">
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
                       </mat-form-field>

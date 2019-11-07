@@ -19,7 +19,7 @@
   </div>
   <mat-divider></mat-divider>
   <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="16px" cdkDropListGroup>
-    <app-single-group *ngFor="let currGroup of groups | groupType:selectedGroupType.key"
+    <app-single-group *ngFor="let currGroup of groups | groupTypeProfile:selectedGroupType.key"
                       [group]="currGroup"
                       [groupPermission]="groupPermission"
                       [userPermission]="userPermission"
