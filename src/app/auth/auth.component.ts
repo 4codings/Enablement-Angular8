@@ -19,6 +19,7 @@ import { UserService } from '../core/user.service';
 export class AuthComponent implements OnInit, OnDestroy {
     form: FormGroup;
     ui: any;
+    isRecaptchaValid:boolean = false;
     didLoading$: Observable<boolean>;
     didError$: Observable<string>;
     count$: Observable<number>;
@@ -105,15 +106,15 @@ export class AuthComponent implements OnInit, OnDestroy {
                 this.rstBnt = false;
                 this.logBtn = true;
                 this.captcha = false;
+                this.toastr.success(`An confirmation link has been send at your email`);
                 this.form.reset();
-                this.toastr.success("Password Reset Successfully");
             }
         });
 
         this.count$.subscribe(count => {
             if(count != 0) {
                 if (count == 3) {
-                    //this.toastr.warning("Please provide a new password that you want to reset", "Change password");
+                    this.toastr.warning("Please provide a new password that you want to reset", "Change password");
                     this.pass1 = false;
                     this.pass2 = true;
                     this.rstBnt = true;
@@ -247,6 +248,7 @@ export class AuthComponent implements OnInit, OnDestroy {
         this.sub.unsubscribe();
     }
     onScriptLoad() {
+        this.isRecaptchaValid = true;
         console.log('Google reCAPTCHA loaded and is ready for use!')
     }
 

@@ -34,7 +34,7 @@
               <span fxFlex="25" class="formLabel">New Password</span>
               <div fxFlex="60" class="formGroup">
                 <input class="userinp" type="password" matInput placeholder="Provide new password" [(ngModel)]="passr"
-                  name="passr" value="" required>
+                  name="passr" minlength="6" value="" required>
               </div>
             </div>
           </div>
@@ -47,7 +47,7 @@
 
           </div>
           <br />
-          <div *ngIf="captcha" class="mb-3">
+          <div *ngIf="captcha" class="d-flex justify-content-center mb-3">
             <recaptcha [formControl]="myRecaptcha" (scriptLoad)="onScriptLoad()" (scriptError)="onScriptError()">
             </recaptcha>
           </div>
@@ -65,7 +65,7 @@
           <div *ngIf="rstBnt==true" flex fxLayout="row" fxLayout.lt-sm="column">
             <div fxFlex="27"></div>
             <div fxFlex="46" class="parent">
-              <button class="content" type="" mat-raised-button color="primary">Reset Password</button>
+              <button class="content" [disabled]="myRecaptcha.value === false || form.invalid" type="" mat-raised-button color="primary">Reset Password</button>
             </div>
             <div fxFlex="27"></div>
           </div>
