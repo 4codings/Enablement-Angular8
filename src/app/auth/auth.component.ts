@@ -19,7 +19,7 @@ import { UserService } from '../core/user.service';
 export class AuthComponent implements OnInit, OnDestroy {
     form: FormGroup;
     ui: any;
-    isRecaptchaValid:boolean = false;
+    isRecaptchaValid: boolean = false;
     didLoading$: Observable<boolean>;
     didError$: Observable<string>;
     count$: Observable<number>;
@@ -95,12 +95,12 @@ export class AuthComponent implements OnInit, OnDestroy {
                     }
                 }
 
-            } else if(userState.isSignUp === true) {
+            } else if (userState.isSignUp === true) {
                 this.srcBloc = false; //show src block
                 this.agcy = true;
                 this.isLoginButton = true;
                 this.toastr.success("Register Successfully");
-            } else if(userState.isPasswordReset === true) {
+            } else if (userState.isPasswordReset === true) {
                 this.pass1 = true;
                 this.pass2 = false;
                 this.rstBnt = false;
@@ -112,7 +112,7 @@ export class AuthComponent implements OnInit, OnDestroy {
         });
 
         this.count$.subscribe(count => {
-            if(count != 0) {
+            if (count != 0) {
                 if (count == 3) {
                     this.toastr.warning("Please provide a new password that you want to reset", "Change password");
                     this.pass1 = false;
@@ -127,6 +127,7 @@ export class AuthComponent implements OnInit, OnDestroy {
     }
 
     login(form: NgForm) {
+        console.log('login', form.value.email);
         if (form.invalid) { return; }
         // console.log('form.value.agency', form.value.agency);
         // if (form.value.agency != undefined) {
@@ -134,9 +135,9 @@ export class AuthComponent implements OnInit, OnDestroy {
         // } else {
         //     this.CheckUsrPw(form);
         // } 
-        if(this.rstBnt) {
-            if(this.myRecaptcha.value){
-                let json =  {"V_USR_NM":form.value.email, "V_PSWRD":form.value.passr}
+        if (this.rstBnt) {
+            if (this.myRecaptcha.value) {
+                let json = { "V_USR_NM": form.value.email, "V_PSWRD": form.value.passr }
                 this.store.dispatch(new usreLoginActions.changePassword(json));
             } else {
                 return;
@@ -148,9 +149,11 @@ export class AuthComponent implements OnInit, OnDestroy {
                 V_ACTN_NM: 'LOGIN'
             };
             if (form.value.agency != undefined) {
-                let payload =  {"V_USR_NM":form.value.email, "V_PSWRD":form.value.pass, "SRC_CD":form.value.agency}
+                console.log('body', body);
+                let payload = { "V_USR_NM": form.value.email, "V_PSWRD": form.value.pass, "SRC_CD": form.value.agency }
                 this.store.dispatch(new usreLoginActions.userSignUp(payload));
             } else {
+                console.log('body', body);
                 this.store.dispatch(new usreLoginActions.userLogin(body));
             }
         }
