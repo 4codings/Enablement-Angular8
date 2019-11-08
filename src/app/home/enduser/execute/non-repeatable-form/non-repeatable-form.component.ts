@@ -133,12 +133,13 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
       this.rows.push(i);
     }
     for (let i = 0; i < this.RVP_labels.length; i++) {
+      let value = this.RVP_DataObj[this.RVP_labels[i].split(" ").join("_")];
       if (this.fieldType[this.RVP_labels[i]].toLowerCase() == 'checkbox') {
-        this.input[this.RVP_labels[i]] = [this.RVP_DataObj[this.RVP_labels[i].split(" ").join("_")] != undefined ? (this.RVP_DataObj[this.RVP_labels[i].split(" ").join("_")][0]) : this.RVP_DataObj[this.RVP_labels[i].split(" ").join("_")]];
+        this.input[this.RVP_labels[i]] = [value != undefined ? (value[0]) : value];
         // this.input[this.RVP_labels[i]] = this.input[this.RVP_labels[i]].push();
         console.log('value in', this.input[this.RVP_labels[i]])
       } else {
-        this.input[this.RVP_labels[i]] = this.RVP_DataObj[this.RVP_labels[i].split(" ").join("_")] != undefined ? (this.RVP_DataObj[this.RVP_labels[i].split(" ").join("_")][0]) : this.RVP_DataObj[this.RVP_labels[i].split(" ").join("_")];
+        this.input[this.RVP_labels[i]] = value != undefined ? (value[0]) : value;
       }
     }
 

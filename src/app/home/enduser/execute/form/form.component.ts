@@ -237,6 +237,17 @@ export class FormComponent implements OnInit {
       V_SRC_ID: this.V_SRC_ID,
       USR_NM: this.V_USR_NM
     };
+    for (let i = 0; i < this.RVP_labels.length; i++) {
+      let value = this.RVP_DataObj[this.RVP_labels[i].split(" ").join("_")];
+      if (value != undefined && value.length > 1) {
+        if (this.options[this.RVP_labels[i]] == undefined) {
+          this.options[this.RVP_labels[i]] = [];
+        }
+        value.forEach(ele => {
+          this.options[this.RVP_labels[i]].push(ele);
+        })
+      }
+    }
     this.optionalService.selecetedProcessTxnValue.next(obj);
     // this.getInputOutput();
   }
@@ -628,8 +639,17 @@ export class FormComponent implements OnInit {
       .requestSecureApi(secure_encoded_url, "get")
       .subscribe(res => {
         res;
-        const resData = res.json();
-        this.options[display_label] = (resData[V_PARAM_NM]);
+        if (res._body !== '{}') {
+          const resData = res.json();
+          if (this.options[display_label].length) {
+            resData[V_PARAM_NM].forEach(ele => {
+              this.options[display_label].push(ele);
+            })
+          } else {
+            this.options[display_label] = (resData[V_PARAM_NM]);
+          }
+          this.options[display_label] = (resData[V_PARAM_NM]);
+        }
       });
   }
 
