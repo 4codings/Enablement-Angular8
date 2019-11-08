@@ -18,6 +18,7 @@ import { Location } from '@angular/common';
 import { OptionalValuesService } from 'src/app/services/optional-values.service';
 import { ApiService } from 'src/app/service/api/api.service';
 import { UserService } from 'src/app/core/user.service';
+import { roleTypeConstant } from 'src/app/shared/_models/role.constants';
 
 
 @Component({
@@ -46,16 +47,16 @@ export class UserComponent implements OnInit {
   chooseWorkingProfile() {
     this.rollserviceService.getRollCd().then((res) => {
       if (res) {
-        if (this.hasRole('End User Role', res)) {
+        if (this.hasRole(roleTypeConstant.WORKFLOW, res)) {
           this.router.navigateByUrl('End_User', { skipLocationChange: true });
-        } else if (this.hasRole('System Admin Role', res)) {
+        } else if (this.hasRole(roleTypeConstant.SYSTEM, res)) {
           this.router.navigateByUrl('System_Admin', { skipLocationChange: true });
-        } else if (this.hasRole('Developer Role', res)) {
-          this.router.navigateByUrl('Developer', { skipLocationChange: true });
-        } else if (this.hasRole('Finance Role', res)) {
+        } else if (this.hasRole(roleTypeConstant.FINANCE, res)) {
           this.router.navigateByUrl('Cost', { skipLocationChange: true });
-        } else if (this.hasRole('IT Asset Role', res)) {
+        } else if (this.hasRole(roleTypeConstant.ASSET, res)) {
           this.router.navigateByUrl('Assets', { skipLocationChange: true });
+        } else if (this.hasRole(roleTypeConstant.ADMINISTRATOR, res)) {
+          this.router.navigateByUrl('User_Admin', { skipLocationChange: true });
         } else {
           this.logout();
           this.toastr.info(this.userAdmin.controlVariables['noRole'], 'No Role');
@@ -80,7 +81,7 @@ export class UserComponent implements OnInit {
   }
 
   hasRole(roleName: string, allroles: string[]): boolean {
-    return !!(allroles && allroles.filter(role => role === roleName).length);
+    return !!(allroles && allroles.filter(role => role.includes(roleName)).length);
   }
 
   //Selected option in the profile section

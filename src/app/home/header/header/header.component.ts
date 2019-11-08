@@ -9,6 +9,7 @@ import { RollserviceService } from '../../../services/rollservice.service';
 import { MatDialog } from '@angular/material';
 import { ChangeImageComponent } from '../../../shared/components/change-image/change-image.component';
 import { environment } from '../../../../environments/environment';
+import { roleTypeConstant } from 'src/app/shared/_models/role.constants';
 
 @Component({
   selector: 'app-header',
@@ -106,16 +107,16 @@ export class HeaderComponent implements OnInit {
   chooworkingProfile() {
     this.rollserviceService.getRollCd().then((res) => {
       for (let i = 0; i < res.length; i++) {
-        if (res[i] == "End User Role") {
-          this.options.push("Workflow");
-        } else if (res[i] == 'System Admin Role') {
-          this.options.push("System");
-        } else if (res[i] == 'Finance Role') {
-          this.options.push("Cost");
-        } else if (res[i] == 'IT Asset Role') {
-          this.options.push("Assets");
-        } else if (res[i] == 'User Admin Role') {
-          this.options.push("Administrator");
+        if (res[i].includes(roleTypeConstant.WORKFLOW)) {
+          this.setOptions("Workflow");
+        } else if (res[i].includes(roleTypeConstant.SYSTEM)) {
+          this.setOptions("System");
+        } else if (res[i].includes(roleTypeConstant.FINANCE)) {
+          this.setOptions("Cost");
+        } else if (res[i].includes(roleTypeConstant.ASSET)) {
+          this.setOptions("Assets");
+        } else if (res[i].includes(roleTypeConstant.ADMINISTRATOR)) {
+          this.setOptions("Administrator");
         }
         if (res[i] == 'Enablement User Admin Organization Role') {
           this.changeLogoFlag = true;
@@ -124,6 +125,15 @@ export class HeaderComponent implements OnInit {
     });
   }
 
+  setOptions(roleName) {
+    if (this.options.length) {
+      if (this.options.findIndex(v => v == roleName) == -1) {
+        this.options.push(roleName);
+      }
+    } else {
+      this.options.push(roleName);
+    }
+  }
   changeProfileImg() {
     const dialogRef = this.dialog.open(ChangeImageComponent, {
       panelClass: 'app-dialog',

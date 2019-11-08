@@ -112,18 +112,19 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     { item: 'Edit Application', value: 'Edit', havePermission: 0, icon: 'entry bpmn-icon-screw-wrench mr-10', iconType: 'bpmn' },
     { item: 'Delete Application', value: 'Delete', havePermission: 0, icon: 'entry bpmn-icon-trash', iconType: 'bpmn' }];
   childrenMenuItems = [
-    { item: 'Run', value: 'Run', havePermission: 0, icon: 'fas fa-play-circle fa-lg', iconType: 'fa' },
-    { item: 'Run At', value: 'RunAt', havePermission: 0, icon: 'fas fa-clock fa-lg', iconType: 'fa' },
-    { item: 'Approve', value: 'Approve', havePermission: 0, icon: 'fas fa-thumbs-up fa-lg', iconType: 'fa' },
-    { item: 'Monitor', value: 'Monitor', havePermission: 0, icon: 'fas fa-desktop fa-lg', iconType: 'fa' },
-    { item: 'Resolve', value: 'Resolve', havePermission: 0, icon: 'fa fa-address-card fa-lg ml-1', iconType: 'fa' },
-    { item: 'Schedule', value: 'Schedule', havePermission: 0, icon: 'fa fa-calendar fa-lg ml-2', iconType: 'fa' },
-    { item: 'Pause Schedule', value: 'SchedulePause', havePermission: 0, icon: 'far fa-pause-circle fa-lg', iconType: 'fa' },
-    { item: 'Kill Schedule', value: 'ScheduleKill', havePermission: 0, icon: 'not_interested', iconType: 'mat' }, { item: 'Resume Schedule', value: 'ScheduleResume', havePermission: 0, icon: 'undo', iconType: 'mat' },
-    { item: 'Download BPNM', value: 'BPNM', havePermission: 0, icon: 'fa fa-file-download fa-lg ml-2', iconType: 'fa' },
-    { item: 'Download SVG', value: 'SVG', havePermission: 0, icon: 'insert_photo', iconType: 'mat' },
-    { item: 'Edit', value: 'Edit', havePermission: 0, icon: 'entry bpmn-icon-screw-wrench mr-2', iconType: 'bpmn' },
-    { item: 'Delete', value: 'Delete', havePermission: 0, icon: 'entry bpmn-icon-trash', iconType: 'bpmn' }];
+    { item: 'Run', position: 0, value: 'Run', havePermission: 0, icon: 'fas fa-play-circle fa-lg', iconType: 'fa' },
+    { item: 'Run At', position: 1, value: 'RunAt', havePermission: 0, icon: 'fas fa-clock fa-lg', iconType: 'fa' },
+    { item: 'Approve', position: 2, value: 'Approve', havePermission: 0, icon: 'fas fa-thumbs-up fa-lg', iconType: 'fa' },
+    { item: 'Monitor', position: 3, value: 'Monitor', havePermission: 0, icon: 'fas fa-desktop fa-lg', iconType: 'fa' },
+    { item: 'Resolve', position: 4, value: 'Resolve', havePermission: 0, icon: 'fa fa-address-card fa-lg ml-1', iconType: 'fa' },
+    { item: 'Schedule', position: 5, value: 'Schedule', havePermission: 0, icon: 'fa fa-calendar fa-lg ml-2', iconType: 'fa' },
+    { item: 'Pause Schedule', position: 6, value: 'SchedulePause', havePermission: 0, icon: 'far fa-pause-circle fa-lg', iconType: 'fa' },
+    { item: 'Kill Schedule', position: 7, value: 'ScheduleKill', havePermission: 0, icon: 'not_interested', iconType: 'mat' },
+    { item: 'Resume Schedule', position: 8, value: 'ScheduleResume', havePermission: 0, icon: 'undo', iconType: 'mat' },
+    { item: 'Download BPNM', position: 9, value: 'BPNM', havePermission: 0, icon: 'fa fa-file-download fa-lg ml-2', iconType: 'fa' },
+    { item: 'Download SVG', position: 10, value: 'SVG', havePermission: 0, icon: 'insert_photo', iconType: 'mat' },
+    { item: 'Edit', position: 11, value: 'Edit', havePermission: 0, icon: 'entry bpmn-icon-screw-wrench mr-2', iconType: 'bpmn' },
+    { item: 'Delete', position: 12, value: 'Delete', havePermission: 0, icon: 'entry bpmn-icon-trash', iconType: 'bpmn' }];
   roleObservable$: Subscription;
   roleValues;
   childobj = {};
@@ -284,6 +285,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   closePanelOnSchedule: boolean = true;
   selectedAppProcess$: Subscription;
   showProcessMobile: boolean = false;
+  itemClickCounter = 0;
+
   constructor(
     private httpClient: HttpClient,
     private http: Http,
@@ -338,10 +341,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
               case 'Enablement Workflow Process Role':
                 this.parentMenuItems[0].havePermission = 1; // add process
                 this.parentMenuItems[1].havePermission = 1; // import bpmn
-                this.childrenMenuItems[11].havePermission = 1; //delete process
+                this.childrenMenuItems[12].havePermission = 1; //delete process
                 console.log('this.childrenMenuItems', this.childrenMenuItems);
                 // this.childrenMenuItems[9].havePermission = 1;
-                this.childrenMenuItems[10].havePermission = 1; // edit process
+                this.childrenMenuItems[11].havePermission = 1; // edit process
                 break;
               case 'Enablement Workflow MyTask Role':
                 this.childrenMenuItems[2].havePermission = 1; // approve
@@ -357,8 +360,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                 this.childrenMenuItems[3].havePermission = 1; // monitor
                 break;
               case 'Enablement Workflow Download Role':
-                this.childrenMenuItems[8].havePermission = 1; // download bpmn
-                this.childrenMenuItems[9].havePermission = 1; // download svg
+                this.childrenMenuItems[9].havePermission = 1; // download bpmn
+                this.childrenMenuItems[10].havePermission = 1; // download svg
                 break;
               default:
                 break;
@@ -386,7 +389,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')) != undefined ? JSON.parse(sessionStorage.getItem('u')).SRC_CD : '';
     this.V_USR_NM = JSON.parse(sessionStorage.getItem('u')) != undefined ? JSON.parse(sessionStorage.getItem('u')).USR_NM : '';
-    console.log('Timeout_seconds', this.async_sync_seconds);
+    // console.log('Timeout_seconds', this.async_sync_seconds);
     this.expandPanel = this.deviceService.isDesktop();
     this.isMobile = this.deviceService.isMobile();
     this.isTablet = this.deviceService.isTablet();
@@ -1253,22 +1256,22 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                       break;
                     }
                     case 'READ': {
-                      copyChildrenMenuItems[8].havePermission = (copyChildrenMenuItems[8].havePermission && authSubStr[1] === 'Y') ? 1 : 0;// download bpmn
-                      copyChildrenMenuItems[9].havePermission = (copyChildrenMenuItems[9].havePermission && authSubStr[1] === 'Y') ? 1 : 0;// download svg
+                      copyChildrenMenuItems[9].havePermission = (copyChildrenMenuItems[9].havePermission && authSubStr[1] === 'Y') ? 1 : 0;// download bpmn
+                      copyChildrenMenuItems[10].havePermission = (copyChildrenMenuItems[10].havePermission && authSubStr[1] === 'Y') ? 1 : 0;// download svg
                       break;
                     }
                     case 'UPDATE': {
-                      if (copyChildrenMenuItems[10].havePermission && authSubStr[1] === 'Y') {
+                      if (copyChildrenMenuItems[11].havePermission && authSubStr[1] === 'Y') {
                         editCount++;
                       }
-                      copyChildrenMenuItems[10].havePermission = (copyChildrenMenuItems[10].havePermission && authSubStr[1] === 'Y') ? 1 : 0;
+                      copyChildrenMenuItems[11].havePermission = (copyChildrenMenuItems[11].havePermission && authSubStr[1] === 'Y') ? 1 : 0;
                       break;
                     }
                     case 'DELETE': {
-                      if (copyChildrenMenuItems[11].havePermission && authSubStr[1] === 'Y') {
+                      if (copyChildrenMenuItems[12].havePermission && authSubStr[1] === 'Y') {
                         deleteCount++;
                       }
-                      copyChildrenMenuItems[11].havePermission = (copyChildrenMenuItems[11].havePermission && authSubStr[1] === 'Y') ? 1 : 0;
+                      copyChildrenMenuItems[12].havePermission = (copyChildrenMenuItems[12].havePermission && authSubStr[1] === 'Y') ? 1 : 0;
                       break;
                     }
                     default: break;
@@ -1536,6 +1539,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         this.generalId = this.selectedProcess;
         this.processName = '';
         this.getDocumentation('PRCS', this.generalId);
+        // let elementRegistry = this.modeler.get('elementRegistry');
+        // let element = elementRegistry.get(this.selectedProcess.replace(new RegExp(' ', 'g'), '_'));
+        // element.click();
+        // console.log('element', element);
         break;
       }
       case 'Delete': {
@@ -1714,7 +1721,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             if (this.propertyPanelAllTabsData[0]["V_SYNC_FLG"] === 'Y') {
               this.async_sync_seconds = this.propertyPanelAllTabsData[0]["V_TIME_OUT_SEC"];
             }
-            console.log('Timeout_seconds', this.async_sync_seconds);
+            // console.log('Timeout_seconds', this.async_sync_seconds);
           }
         }
       });

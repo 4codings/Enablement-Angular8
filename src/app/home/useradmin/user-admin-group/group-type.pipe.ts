@@ -1,6 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { userGroup } from '../../../store/user-admin/user-group/usergroup.model';
 import { groupTypeConstant } from '../useradmin.constants';
+import { roleTypeConstant } from 'src/app/shared/_models/role.constants';
 
 @Pipe({
   name: 'groupType',
@@ -28,11 +29,11 @@ export class GroupTypeProfilePipe implements PipeTransform {
       if (type == groupTypeConstant.CUSTOM) {
         return values.filter(currVal => currVal.V_GRP_TYP == type);
       } else if (type == groupTypeConstant.WORKFLOW) {
-        return values.filter(currVal => currVal.V_USR_GRP_DSC.includes('Workflow'));
+        return values.filter(currVal => currVal.V_USR_GRP_DSC.includes(roleTypeConstant.WORKFLOW));
       } else if (type == groupTypeConstant.ADMINISTRATOR) {
-        return values.filter(currVal => currVal.V_USR_GRP_DSC.includes('User Admin'));
+        return values.filter(currVal => currVal.V_USR_GRP_DSC.includes(roleTypeConstant.ADMINISTRATOR));
       } else if (type == groupTypeConstant.SYSTEM) {
-        return values.filter(currVal => currVal.V_USR_GRP_DSC.includes('System Admin'));
+        return values.filter(currVal => currVal.V_USR_GRP_DSC.includes(roleTypeConstant.SYSTEM));
       }
     }
     return values;
