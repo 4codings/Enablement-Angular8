@@ -6,9 +6,9 @@
 
       </mat-card-title>
       <mat-card-content>
-        <div>
+        <h5 class="text-center">
           {{msg_alert}}
-        </div>
+        </h5>
 
         <form class="login-form parent" (ngSubmit)="login(form)" #form="ngForm">
           <div flex style="align-items: center;" fxLayout="row" fxLayout.lt-sm="column" style="padding-top: 30px;">
@@ -47,7 +47,7 @@
 
           </div>
           <br />
-          <div *ngIf="captcha" class="d-flex justify-content-center mb-3">
+          <div *ngIf="captcha" class="d-flex justify-content-center ml-5 mb-3">
             <recaptcha [formControl]="myRecaptcha" (scriptLoad)="onScriptLoad()" (scriptError)="onScriptError()">
             </recaptcha>
           </div>

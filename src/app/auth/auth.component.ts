@@ -114,7 +114,8 @@ export class AuthComponent implements OnInit, OnDestroy {
         this.count$.subscribe(count => {
             if (count != 0) {
                 if (count == 3) {
-                    this.toastr.warning("Please provide a new password that you want to reset", "Change password");
+                    //this.toastr.warning("Please provide a new password that you want to reset", "Change password");
+                    this.msg_alert = "Please provide a new password that you want to reset";
                     this.pass1 = false;
                     this.pass2 = true;
                     this.rstBnt = true;
