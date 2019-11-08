@@ -106,7 +106,7 @@ export class AuthComponent implements OnInit, OnDestroy {
                 this.rstBnt = false;
                 this.logBtn = true;
                 this.captcha = false;
-                this.toastr.success(`An confirmation link has been send at your email`);
+                this.msg_alert = `An confirmation link has been send at your email`;
                 this.form.reset();
             }
         });
@@ -128,7 +128,6 @@ export class AuthComponent implements OnInit, OnDestroy {
     }
 
     login(form: NgForm) {
-        console.log('login', form.value.email);
         if (form.invalid) { return; }
         // console.log('form.value.agency', form.value.agency);
         // if (form.value.agency != undefined) {
