@@ -14,9 +14,9 @@
   <app-report-table *ngIf="showReportTable"></app-report-table>
 </div>
 <div fxLayout="row" fxLayout.lt-sm="column" class="m-3">
-  <div fxFlex="9">
-  </div>
-  <div fxFlex="82">
+  <!-- <div fxFlex="9">
+  </div> -->
+  <div fxFlex="99">
     <mat-card class="CustomeLayout repeatable-form-background">
       <mat-card-title>
         <div fxLayout="row" fxLayout.lt-sm="column">
@@ -37,7 +37,7 @@
         <form name="form" #rpForm="ngForm" novalidate>
           <div style="overflow: auto;">
             <div *ngFor="let iter of rows">
-              <div class="row" style="flex-wrap:nowrap;" *ngIf="!deleted[iter]">
+              <div class="row" style="flex-wrap:nowrap;line-height: 13px;" *ngIf="!deleted[iter]">
                 <ng-container *ngFor="let label of RVP_labels;let i = index">
                   <div *ngIf="!configService.isFieldHidden(label)" style="display:inline-block;min-width:180px;"
                     [style.width.%]="formWidth[label]" [style.marginLeft.%]="margin"

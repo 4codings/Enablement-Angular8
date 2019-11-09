@@ -306,24 +306,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     private datePipe: DatePipe,
     public deviceService: DeviceDetectorService
   ) {
-    this.applicationProcessObservable$ = this.optionalService.applicationProcessValue.subscribe(data => {
-      if (data != null) {
-        this.applicationProcessValuesObservable = data;
-        if (this.applicationProcessValuesObservable.length) {
-          this.appProcessList = [];
-          this.appProcessList = data.sort((a, b) => {
-            if (a.app < b.app) {
-              return -1;
-            } else if (a.app > b.app) {
-              return 1;
-            } else {
-              return 0;
-            }
-          });
-          this.generateTreeItem();
-        }
-      }
-    });
     this.roleObservable$ = this.roleService.roleValue.subscribe(data => {
       if (data != null) {
         this.roleValues = data;
@@ -341,10 +323,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
               case 'Enablement Workflow Process Role':
                 this.parentMenuItems[0].havePermission = 1; // add process
                 this.parentMenuItems[1].havePermission = 1; // import bpmn
+                this.childrenMenuItems[11].havePermission = 1; // edit process
                 this.childrenMenuItems[12].havePermission = 1; //delete process
                 console.log('this.childrenMenuItems', this.childrenMenuItems);
                 // this.childrenMenuItems[9].havePermission = 1;
-                this.childrenMenuItems[11].havePermission = 1; // edit process
                 break;
               case 'Enablement Workflow MyTask Role':
                 this.childrenMenuItems[2].havePermission = 1; // approve
@@ -367,6 +349,24 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                 break;
             }
           })
+        }
+      }
+    });
+    this.applicationProcessObservable$ = this.optionalService.applicationProcessValue.subscribe(data => {
+      if (data != null) {
+        this.applicationProcessValuesObservable = data;
+        if (this.applicationProcessValuesObservable.length) {
+          this.appProcessList = [];
+          this.appProcessList = data.sort((a, b) => {
+            if (a.app < b.app) {
+              return -1;
+            } else if (a.app > b.app) {
+              return 1;
+            } else {
+              return 0;
+            }
+          });
+          this.generateTreeItem();
         }
       }
     });
@@ -1280,6 +1280,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
               }
               process = process.replace(/'/g, "");
               this.childobj[process] = copyChildrenMenuItems;
+              console.log('copyChildrenMenuItems', copyChildrenMenuItems);
+
             }
           })
           let copyParentrenMenuItems = [];

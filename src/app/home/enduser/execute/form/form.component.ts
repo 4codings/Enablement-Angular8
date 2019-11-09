@@ -166,6 +166,7 @@ export class FormComponent implements OnInit {
     this.RVP_Values = [];
     this.RVP_labels = [];
     this.RVP_placeholder = [];
+    // console.log('Form_Data', this.Form_Data);
     this.PVP = JSON.parse(this.Form_Data["PVP"][0]);
     this.srvc_cd_sl = this.Form_Data["SRVC_CD"][0];
     this.PVP;
@@ -196,12 +197,8 @@ export class FormComponent implements OnInit {
       //   this.VLDTN_ALERT_TXT[i] = this.VLDTN_ALERT_TXT[i].trim();
       //   this.CNSLD_VLDTN_ALERT[i] = this.CNSLD_VLDTN_ALERT[i].trim();
     }
-    console.log('param', this.PARAM_NM)
-    console.log('keys', this.RVP_Keys)
-    console.log('FLD_TYPE', this.FLD_TYPE)
     for (let i = 0; i < this.RVP_Keys.length; i++) {
       let paramPosition = this.PARAM_NM.findIndex(v => v == "'" + this.RVP_Keys[i] + "'");
-      console.log('paramPosition', paramPosition)
       if (paramPosition > -1) {
         this.FLD_TYPE[i] = copy_FLD_TYPE[paramPosition].trim().replace(/'/g, "");
         this.HAS_OPTIONS[i] = copy_HAS_OPTIONS[paramPosition].trim();
@@ -215,7 +212,6 @@ export class FormComponent implements OnInit {
         this.CNSLD_VLDTN_ALERT[i] = copy_CNSLD_VLDTN_ALERT[paramPosition].trim();
       }
     }
-    console.log('FLD_TYPE', this.FLD_TYPE)
     this.labels_toShow();
 
     for (let i = 0; i < this.RVP_Keys.length; i++) {
@@ -223,7 +219,8 @@ export class FormComponent implements OnInit {
         this.HAS_OPTIONS[i] = "'N'";
         this.setDropDownValues(this.RVP_Keys[i], this.RVP_labels[i], i);
       } else {
-        if (this.HAS_OPTIONS && this.HAS_OPTIONS[i] === "'Y'") {
+        if (this.HAS_OPTIONS && this.HAS_OPTIONS[i] === "'Y'" && this.DSPLY_FLD[i] != '' && this.DSPLY_FLD[i]) {
+          // console.log('w')
           this.getOptional_values(this.RVP_Keys[i], this.RVP_labels[i]);
         }
       }
@@ -237,17 +234,20 @@ export class FormComponent implements OnInit {
       V_SRC_ID: this.V_SRC_ID,
       USR_NM: this.V_USR_NM
     };
-    for (let i = 0; i < this.RVP_labels.length; i++) {
-      let value = this.RVP_DataObj[this.RVP_labels[i].split(" ").join("_")];
-      if (value != undefined && value.length > 1) {
-        if (this.options[this.RVP_labels[i]] == undefined) {
-          this.options[this.RVP_labels[i]] = [];
+    if (this.Form_Data["RESULT"][0] === 'NONREPEATABLE_MANUAL_TASK') {
+      for (let i = 0; i < this.RVP_labels.length; i++) {
+        let value = this.RVP_DataObj[this.RVP_labels[i].split(" ").join("_")];
+        if (value != undefined && value.length > 1) {
+          if (this.options[this.RVP_labels[i]] == undefined) {
+            this.options[this.RVP_labels[i]] = [];
+          }
+          value.forEach(ele => {
+            this.options[this.RVP_labels[i]].push(ele);
+          })
         }
-        value.forEach(ele => {
-          this.options[this.RVP_labels[i]].push(ele);
-        })
       }
     }
+
     this.optionalService.selecetedProcessTxnValue.next(obj);
     // this.getInputOutput();
   }
@@ -277,7 +277,7 @@ export class FormComponent implements OnInit {
   labels_toShow(): any {
     //----------------Lables to Show---------------//
     for (let i = 0; i < this.RVP_Keys.length; i++) {
-      console.log("keys", this.RVP_Keys[i]);
+      // console.log("keys", this.RVP_Keys[i]);
       if (this.RVP_Keys[i].toLowerCase() == "v_hold_bottom") {
         this.bottomFlag = true;
         this.topFlag = false;
@@ -315,7 +315,7 @@ export class FormComponent implements OnInit {
     this.RVP_Data = this.Form_Data["RVP"];
     this.RVP_DataObj = [];
     this.RVP_DataObj = JSON.parse(this.RVP_Data);
-    console.log("rvp", this.RVP_DataObj);
+    // console.log("rvp", this.RVP_DataObj);
     this.updateInitialFieldNameAndValues();
   }
 

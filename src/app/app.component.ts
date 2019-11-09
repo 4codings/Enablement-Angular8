@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { filter } from 'rxjs/operators';
 import { NavigationEnd, Router } from '@angular/router';
@@ -30,6 +30,9 @@ export class AppComponent implements OnInit, OnDestroy {
     private apiService: ApiService
   ) { }
 
+  @HostListener('window:beforeunload') goToPage() {
+    this.router.navigate(['/user'], { skipLocationChange: true });
+  }
   ngOnInit(): void {
     // this.api.http.apiUrl = environment.apiUrl;
     if (environment.production) {
