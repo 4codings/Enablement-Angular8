@@ -206,7 +206,7 @@ export class FormComponent implements OnInit {
         this.DSPLY_FLD[i] = copy_DSPLY_FLD[paramPosition].trim();
         this.DISPLAY_TXT[i] = copy_DISPLAY_TXT[paramPosition].trim();
         this.PARAM_DSC[i] = copy_PARAM_DSC[paramPosition].trim();
-        this.FLD_HLP_TXT[i] = copy_FLD_HLP_TXT[paramPosition].trim();
+        this.FLD_HLP_TXT[i] = copy_FLD_HLP_TXT[paramPosition].trim().replace(/'/g, "");
         this.VLDTN[i] = copy_VLDTN[paramPosition].trim();
         this.VLDTN_ALERT_TXT[i] = copy_VLDTN_ALERT_TXT[paramPosition].trim();
         this.CNSLD_VLDTN_ALERT[i] = copy_CNSLD_VLDTN_ALERT[paramPosition].trim();
