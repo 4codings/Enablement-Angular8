@@ -79,7 +79,8 @@ export class AuthComponent implements OnInit, OnDestroy {
                     this.agcy = false;
                     this.isLoginButton = false;
                     this.form.reset();
-                    this.toastr.warning("Please enter your Organization name", "Agency");
+                    //this.toastr.warning("Please enter your Organization name", "Agency");
+                    this.msg_alert = "Please enter your Organization name";
                 } else if (userState.userInfo.TOKEN != '') {
                     if (this.userService.getDetailFromStorage() == null) {
                         this.userService.setUser(userState.userInfo);
@@ -99,7 +100,8 @@ export class AuthComponent implements OnInit, OnDestroy {
                 this.srcBloc = false; //show src block
                 this.agcy = true;
                 this.isLoginButton = true;
-                this.toastr.success("Register Successfully");
+                //this.toastr.success("Register Successfully");
+                this.msg_alert = "Register Successfully";
             } else if (userState.isPasswordReset === true) {
                 this.pass1 = true;
                 this.pass2 = false;
