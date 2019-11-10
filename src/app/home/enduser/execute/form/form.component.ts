@@ -205,7 +205,8 @@ export class FormComponent implements OnInit {
         this.HAS_DSPLY[i] = copy_HAS_DSPLY[paramPosition].trim();
         this.DSPLY_FLD[i] = copy_DSPLY_FLD[paramPosition].trim();
         this.DISPLAY_TXT[i] = copy_DISPLAY_TXT[paramPosition].trim();
-        this.PARAM_DSC[i] = copy_PARAM_DSC[paramPosition].trim();
+        this.PARAM_DSC[i] = copy_PARAM_DSC[paramPosition]?copy_PARAM_DSC[paramPosition].trim():'';
+        
         this.FLD_HLP_TXT[i] = copy_FLD_HLP_TXT[paramPosition].trim().replace(/'/g, "");
         this.VLDTN[i] = copy_VLDTN[paramPosition].trim();
         this.VLDTN_ALERT_TXT[i] = copy_VLDTN_ALERT_TXT[paramPosition].trim();
@@ -363,7 +364,7 @@ export class FormComponent implements OnInit {
     this.VLDTN = this.Form_Data["VLDTN"][0].split(",");
     this.VLDTN_ALERT_TXT = this.Form_Data["VLDTN_ALERT_TXT"][0].split(",");
     this.CNSLD_VLDTN_ALERT = this.Form_Data["CNSLD_VLDTN_ALERT"][0].split(",");
-    this.PARAM_DSC = this.Form_Data["PARAM_DSC"][0].split(",");
+    this.PARAM_DSC = this.Form_Data["PARAM_DSC"]?this.Form_Data["PARAM_DSC"][0].split(","):[];
     this.FLD_HLP_TXT = this.Form_Data["FLD_HLP_TXT"][0].split(",");
 
     this.FLD_TYPE = this.Form_Data["FLD_TYPE"][0].split(",");
