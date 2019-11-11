@@ -40,7 +40,6 @@ export class AssignConnectionExeComponent implements OnInit {
   }
 
   getAssignedExe() {
-    console.log(this.data);
     this.http.get(this.apiUrlGet+'SELECTED_ENTITY=EXE&SELECTED_ENTITY_ID='+this.data.exe.exeData.V_EXE_ID+'&V_SRC_CD='+this.V_SRC_CD+'&V_TYP='+this.data.exe.EXE_TYP+'&REST_Service=EXE_CXN&Verb=GET').subscribe(res => {
       this.lists = res;
       this.clone_lists = this.deepClone(this.lists);
@@ -48,7 +47,6 @@ export class AssignConnectionExeComponent implements OnInit {
   }
 
   getAssignedCnx() {
-    console.log(this.data);
     this.http.get(this.apiUrlGet+'SELECTED_ENTITY=CXN&SELECTED_ENTITY_ID='+this.data.cxn.cnxData.V_CXN_ID+'&V_SRC_CD='+this.V_SRC_CD+'&V_TYP='+this.data.cxn.cnxData.V_CXN_TYP+'&REST_Service=EXE_CXN&Verb=GET').subscribe(res => {
       this.lists = res;
       this.clone_lists = this.deepClone(this.lists);
@@ -129,7 +127,6 @@ export class AssignConnectionExeComponent implements OnInit {
         })
       })
     }
-    //console.log(this.deleteList, this.addList);
     
     let json = {
       'V_DELETED_ID_ARRAY': this.deleteList.toString(),

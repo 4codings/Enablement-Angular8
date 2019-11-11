@@ -89,7 +89,7 @@ export class AuthTileListComponent implements OnInit {
       }
 
       let body = {
-        'V_AUTH_ID': parseInt(data.V_AUTH_ID), 
+        'V_AUTH_ID': parseInt(data.V_AUTH_ID),
         'V_AUTH_DSC': data.V_AUTH_DSC,
         'V_AUTH_CD': data.V_AUTH_CD,
         'V_AUTH_TYP': data.V_AUTH_TYP,
@@ -109,8 +109,7 @@ export class AuthTileListComponent implements OnInit {
         'Verb': 'PUT'
       };
 
-      //console.log('data', data);
-      this.http.put('https://'+this.environment.domainName+'/rest/v1/securedJSON', body).subscribe(res => {
+      this.http.put('https://' + this.environment.domainName + '/rest/v1/securedJSON', body).subscribe(res => {
         this.store.dispatch(new authActions.UpdateAuth(data));
 
         this.overviewService.afterEditAuth(true);
@@ -118,7 +117,6 @@ export class AuthTileListComponent implements OnInit {
         err => {
         });
     }
-    console.log('item', item)
   }
 
   authDropped(event: CdkDragDrop<AuthorizationData[]>) {

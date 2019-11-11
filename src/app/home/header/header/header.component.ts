@@ -142,7 +142,6 @@ export class HeaderComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       if (result) {
         this.imageUrl = "https://" + this.domain + "/" + this.userName + "/pic" + "?" + (new Date()).getTime();
         this.timeStamp = (new Date()).getTime();
@@ -158,7 +157,6 @@ export class HeaderComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       if (result) {
         this.apiService.imageLogoUrlSubject.next("https://" + this.domain + "/" + this.agency + "/logo");
       }

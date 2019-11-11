@@ -57,12 +57,10 @@ export class SystemAdminOverviewService {
     this.getPlatforms();
     this.getMachine();
     this.http.get(this.apiUrlGet + "V_CD_TYP=EXE&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=Masters&Verb=GET").subscribe((res) => {
-      //console.log("exe", res);
       this.exes = res;
       this.getAllExes();
       this.getAllMachineConnections();
       this.exeTypeOptions = res;
-      //this.exeTypeOptions.push({EXE_TYP:"All"});
       this.exeTypeOptions = this.exeTypeOptions.sort((a, b) => {
         if (a.EXE_TYP < b.EXE_TYP) //sort string ascending
           return -1;
@@ -98,9 +96,7 @@ export class SystemAdminOverviewService {
       });
       sortedAllExes = allExes.sort((a, b) => (a.EXES.length > b.EXES.length) ? -1 : ((b.EXES.length > a.EXES.length) ? 1 : 0));
       this.getExe$.next(sortedAllExes);
-      //console.log("sortedAllExes", sortedAllExes);
     }, err => {
-      console.log(err);
     })
   }
 
@@ -150,9 +146,7 @@ export class SystemAdminOverviewService {
       });
       sortedAllConnections = connections.sort((a, b) => (a.V_CXN.length > b.V_CXN.length) ? -1 : ((b.V_CXN.length > a.V_CXN.length) ? 1 : 0));
       this.getMachineConnection$.next(sortedAllConnections);
-      //console.log("connections", sortedAllConnections);
     }, err => {
-      console.log(err);
     })
   }
 
@@ -169,7 +163,6 @@ export class SystemAdminOverviewService {
       });
       this.typeOptions$.next(this.exeTypeOptions);
     }, err => {
-      console.log(err);
     });
   }
 

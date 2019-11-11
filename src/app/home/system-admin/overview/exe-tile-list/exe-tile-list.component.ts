@@ -45,7 +45,6 @@ export class ExeTileListComponent implements OnInit {
   ngOnInit() {
     this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')).SRC_CD;
     this.V_USR_NM = JSON.parse(sessionStorage.getItem('u')).USR_NM;
-    //console.log(this.exes);
     this.subscription = this.systemOverview.selectedCxn$.subscribe(data => {
       if (data) {
         this.selectedTile = null;
@@ -81,7 +80,6 @@ export class ExeTileListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       if (result) {
         if (result) {
           this.systemOverview.getAllExes();
@@ -98,8 +96,6 @@ export class ExeTileListComponent implements OnInit {
         event.container.data,
         event.previousIndex,
         event.currentIndex);
-      // console.log("event.previousContainer.data",event.previousContainer.data);
-      // console.log("event.container.data", event.container.data[event.currentIndex]);
       let eventData = event.container.data[event.currentIndex];
 
       let data = {
@@ -200,7 +196,6 @@ export class ExeTileListComponent implements OnInit {
   }
 
   onBtnEditExeClick(exeData) {
-    //console.log(exeData);
     const dialogRef = this.dialog.open(EditExeTypeDialogComponent, {
       panelClass: 'app-dialog',
       width: '400px',
@@ -208,7 +203,6 @@ export class ExeTileListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       if (result) {
         this.systemOverview.getAllExes();
       }
@@ -229,7 +223,6 @@ export class ExeTileListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       if (result) {
         this.systemOverview.getAllExes();
         this.systemOverview.getAllMachineConnections();
@@ -238,7 +231,6 @@ export class ExeTileListComponent implements OnInit {
   }
 
   onBtnDeleteExeClick(exe) {
-    //console.log(exe);
     const dialogRef = this.dialog.open(ConfirmationAlertComponent, {
       panelClass: 'app-dialog',
       width: '300px',
@@ -252,14 +244,12 @@ export class ExeTileListComponent implements OnInit {
         this.http.get('https://' + this.domain_name + '/rest/v1/securedJSON?V_EXE_TYP=' + exe.EXE_TYP + '&V_EXE_CD=' + exe.exeData.V_EXE_CD + '&V_SRC_CD=' + this.V_SRC_CD + '&REST_Service=Exe&Verb=DELETE').subscribe(res => {
           this.systemOverview.getAllExes();
         }, err => {
-          console.log("err", err)
         });
       }
     });
   }
 
   onBtnRemoveFromAllExeClick(exe) {
-    //console.log(exe);
     const dialogRef = this.dialog.open(ConfirmationAlertComponent, {
       panelClass: 'app-dialog',
       width: '300px',
@@ -273,14 +263,12 @@ export class ExeTileListComponent implements OnInit {
         this.http.get('https://' + this.domain_name + '/rest/v1/secured?V_EXE_CD=' + exe.exeData.V_EXE_CD + '&V_USR_NM=' + this.V_USR_NM + '&V_EXE_TYP=' + exe.EXE_TYP + '&V_SERVER_CD=&V_SRC_CD=' + this.V_SRC_CD + '&REST_Service=Exe_Server&Verb=DELETE').subscribe(res => {
           this.systemOverview.getAllExes();
         }, err => {
-          console.log("err", err)
         });
       }
     });
   }
 
   onBtnRemoveExeClick(exe) {
-    //console.log(exe);
     const dialogRef = this.dialog.open(ConfirmationAlertComponent, {
       panelClass: 'app-dialog',
       width: '300px',
@@ -294,7 +282,6 @@ export class ExeTileListComponent implements OnInit {
         this.http.get('https://' + this.domain_name + '/rest/v1/secured?V_EXE_CD=' + exe.exeData.V_EXE_CD + '&V_EXE_TYP=' + exe.EXE_TYP + '&V_SERVER_CD=' + exe.platFormData.SERVER_CD + '&V_SRC_CD=' + this.V_SRC_CD + '&REST_Service=Exe_Server&Verb=DELETE').subscribe(res => {
           this.systemOverview.getAllExes();
         }, err => {
-          console.log("err", err)
         });
       }
     });

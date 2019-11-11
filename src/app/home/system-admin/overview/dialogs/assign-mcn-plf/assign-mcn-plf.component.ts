@@ -135,7 +135,6 @@ export class AssignMcnPlfComponent implements OnInit {
         })
       })
     }
-    console.log(this.deleteList, this.addList);
     
     let json = {
       'V_DELETED_ID_ARRAY': this.deleteList.toString(),

@@ -116,7 +116,6 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     this.cdr.detectChanges();
     var row_present = this.RVP_DataObj[this.RVP_labels[0].split(" ").join("_")].length;
     this.totalRow += row_present;
-    console.log('this.input', this.input)
     this.cdr.detectChanges();
     var key_array = Object.keys(this.RVP_DataObj)
     this.Field_Names = '';
@@ -137,7 +136,6 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
       if (this.fieldType[this.RVP_labels[i]].toLowerCase() == 'checkbox') {
         this.input[this.RVP_labels[i]] = [value != undefined ? (value[0]) : value];
         // this.input[this.RVP_labels[i]] = this.input[this.RVP_labels[i]].push();
-        console.log('value in', this.input[this.RVP_labels[i]])
       } else {
         this.input[this.RVP_labels[i]] = value != undefined ? (value[0]) : value;
       }
@@ -154,7 +152,6 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     var Field_Values_Ar = ('"' + v + '"');
 
     var Field_Names_Ar = n;
-    console.log('V_ID', this.V_ID);
     if (this.V_TABLE_NAME.length && this.V_TABLE_NAME != '' && this.V_ID[0] != undefined) {
       {
         this.apiService.requestSecureApi(this.apiUrlGetSecure + 'V_ID=' + this.V_ID[0] + '&V_Table_Name=' + this.V_TABLE_NAME + '&V_Schema_Name=' + this.V_SCHEMA_NAME + '&V_SRVC_CD=' + this.V_SRVC_CD + '&V_PRCS_ID=' + this.V_PRCS_ID + '&V_SRC_CD=' + this.V_SRC_CD + '&V_USR_NM=' + this.V_USR_NM + '&Field_Names=' + Field_Names_Ar + '&Field_Values=' + Field_Values_Ar + '&REST_Service=Forms_Record&Verb=PATCH', 'get').subscribe(

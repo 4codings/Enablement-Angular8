@@ -24,7 +24,6 @@ export class InputOutputElementComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('this.cd', this.inputElement);
   }
 
   onBtnCancelClick(): void {

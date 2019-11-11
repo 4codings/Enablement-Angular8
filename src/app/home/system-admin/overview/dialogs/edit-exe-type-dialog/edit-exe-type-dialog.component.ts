@@ -58,7 +58,6 @@ export class EditExeTypeDialogComponent implements OnInit {
       "Verb": ["PUT"]
     }
     this.http.put('https://' + this.domain_name + '/rest/v1/securedJSON?', data).subscribe(res => {
-      console.log("res", res);
       this.dialogRef.close(true);
     }, err => {
 

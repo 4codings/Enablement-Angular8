@@ -186,7 +186,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dataSource = new MatTableDataSource(this.Table_of_Data4);
 
     this.dataSource.sort = this.sort;
-    // console.log(this.Table_of_Data4);
     this.cd.detectChanges();
     this.optionalService.defaultreportTableValue.next(this.show_choice);
   }
@@ -211,7 +210,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     // this.SRVC_ID = this.dataStored.getCookies('report_table')['SRVC_ID'][0];
     this.UNIQUE_ID = this.dataStored.getCookies('report_table')['TEMP_UNIQUE_ID'][0];
     this.Table_of_Data1 = this.dataStored.getCookies('report_table')['LOG_VAL'];
-    // console.log(this.Table_of_Data1);
     this.iddata.push(this.dataStored.getCookies('iddata'));
     this.PRCS_TXN_ID = this.dataStored.getCookies('executeresdata')['V_PRCS_TXN_ID'];
     this.APP_ID = this.dataStored.getCookies('report_table')['APP_ID'][0];
@@ -220,9 +218,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.APP_CD = this.dataStored.getCookies('report_table')['APP_CD'][0];
     this.PRCS_CD = this.dataStored.getCookies('report_table')['PRCS_CD'][0];
     this.table_help_text = this.dataStored.getCookies('report_table')['FLD_HLP_TXT'][0].split(",");;
-    //(JSON.parse(this.Table_of_Data1[0]));
     this.columnsToDisplay = Object.keys(JSON.parse(this.Table_of_Data1[0]));
-    // console.log(this.columnsToDisplay);
     this.hiddencolsflag = this.dataStored.getCookies('report_table')['HIDDEN'];
     var a = this.hiddencolsflag[0];
     var outputstr = a.replace(/'/g, '');
@@ -377,10 +373,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
   getpreferences() {
-    // console.log("getpref");
     this.data.getchartstyling(this.UNIQUE_ID, this.SRC_ID).subscribe(
       res => {
-        // console.log(res.json());
         var result = res.json();
 
         var name = result.PRF_NM;
@@ -391,7 +385,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
           this.userprefs[name[i]] = value[i];
         }
         if (name.length) {
-          // console.log(this.userprefs);
           this.gettablepreferences();
           this.getchartpreferences();
         } else {
@@ -554,22 +547,12 @@ export class ReportTableComponent implements OnInit, AfterViewInit, OnDestroy {
       REST_Service: 'Report',
       Verb: 'POST'
     }
-    // insecure
-    // this.https.post(this.apiService.endPoints.insecureProcessReport, body)
-    //   .subscribe(
-    //     res => {
-    //       //(res.json());
-    //       this.dataStored.setCookies("report_table", res.json());
-
-    //     }
-    //   );
 
     // secure
 
     this.https.post(this.apiService.endPoints.secureProcessReport, body, this.apiService.setHeaders())
       .subscribe(
         res => {
-          // console.log(res.json());
           this.dataStored.setCookies("report_table", res.json());
 
         }

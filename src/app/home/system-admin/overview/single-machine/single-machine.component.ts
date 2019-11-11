@@ -50,7 +50,6 @@ export class SingleMachineComponent implements OnInit {
         this.http.delete(this.apiUrlGet + "V_PLATFORM_CD=" + machine.PLATFORM_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=Machine&Verb=DELETE").subscribe(
           res => {
             this.systemOverview.getExe();
-            console.log('The dialog was closed');
           });
       }
     });
@@ -64,7 +63,6 @@ export class SingleMachineComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
     });
   }
 
@@ -76,12 +74,10 @@ export class SingleMachineComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
     });
   }
 
   selectedMachineTile(connection) {
-    //console.log("connection", connection);
     if (connection === 'exeSelect') {
       this.selectedConntile.emit(null);
     } else {

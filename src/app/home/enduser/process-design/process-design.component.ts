@@ -311,12 +311,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         this.roleValues = data;
         if (this.roleValues.length) {
           this.roleValues.forEach(ele => {
-            console.log('role', ele);
             switch (ele) {
-              // case 'Enablement Workflow Service Role':
-              //   console.log('Enablement Workflow Service Role')
-              //   this.childrenMenuItems[10].havePermission = 1; // edit process
-              //   break;
               case 'Enablement Workflow Schedule Role':
                 this.childrenMenuItems[5].havePermission = 1; // schedule
                 break;
@@ -325,8 +320,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
                 this.parentMenuItems[1].havePermission = 1; // import bpmn
                 this.childrenMenuItems[11].havePermission = 1; // edit process
                 this.childrenMenuItems[12].havePermission = 1; //delete process
-                console.log('this.childrenMenuItems', this.childrenMenuItems);
-                // this.childrenMenuItems[9].havePermission = 1;
                 break;
               case 'Enablement Workflow MyTask Role':
                 this.childrenMenuItems[2].havePermission = 1; // approve
@@ -372,7 +365,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     });
     this.selectedAppProcess$ = this.optionalService.selectedAppPrcoessValue.subscribe(res => {
       if (res) {
-        console.log('res', res);
         this.selectedApp = res.app;
         this.selectedProcess = res.process;
       }
@@ -389,7 +381,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.V_SRC_CD = JSON.parse(sessionStorage.getItem('u')) != undefined ? JSON.parse(sessionStorage.getItem('u')).SRC_CD : '';
     this.V_USR_NM = JSON.parse(sessionStorage.getItem('u')) != undefined ? JSON.parse(sessionStorage.getItem('u')).USR_NM : '';
-    // console.log('Timeout_seconds', this.async_sync_seconds);
     this.expandPanel = this.deviceService.isDesktop();
     this.isMobile = this.deviceService.isMobile();
     this.isTablet = this.deviceService.isTablet();
@@ -641,7 +632,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.closeSchedulePanel();
         }),
         eventBus.on("shape.remove", (event) => {
-          console.log('shape.remove', event)
           if (event && event.element && this.taskList.indexOf(event.element.type) >= 0) {
             if (!this.onTitleClickNoDelete && this.isService) {
               this.deleteService(event.element.id.replace(new RegExp('_', 'g'), ' '));
@@ -668,7 +658,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     }
   }
   idAssigned(id, businessObject) {
-    console.log('businessObject.$model.ids.assigned(id)', businessObject.$model.ids.assigned(id));
     // every business object has a reference to the model which has a reference to the ids
     return businessObject.$model.ids.assigned(id);
   }
@@ -754,13 +743,10 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
 
   checkSameProcessNameInList() {
-    console.log('selectedApp', this.selectedApp);
-    console.log('oldStateId', this.oldStateId);
     if (this.appProcessList.length) {
       let i = this.appProcessList.findIndex(v => v.app === this.selectedApp);
       if (i > -1 && this.appProcessList[i].process.length) {
         let processIndex = this.appProcessList[i].process.findIndex(v => v == "'" + this.generalId + "'");
-        console.log('processIndex', processIndex);
         if (processIndex > -1) {
           this.toastrService.info("Process Name Already exists");
           this.generalId = this.oldStateId;
@@ -1050,10 +1036,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
 
   openBpmn($event) {
-    console.log('event', $event.target.files);
     if ($event && $event.target && $event.target.files) {
       let filename = $event.target.files[0].name.split(".")[0];
-      console.log('filename', filename);
       const fr: FileReader = new FileReader();
       fr.onloadend = () => {
         this.modeler.importXML(fr.result, this.handleError.bind(this));
@@ -1280,8 +1264,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
               }
               process = process.replace(/'/g, "");
               this.childobj[process] = copyChildrenMenuItems;
-              console.log('copyChildrenMenuItems', copyChildrenMenuItems);
-
             }
           })
           let copyParentrenMenuItems = [];
@@ -1515,7 +1497,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     this.selectedProcess = childValue ? childValue.text : this.selectedProcess;
     this.selectedItem = childValue ? childValue : this.selectedItem;
     this.closeSchedulePanel();
-    console.log(actionValue, childValue);
     switch (actionValue) {
       case 'Run': {
         this.add();
@@ -1529,7 +1510,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         break;
       }
       case 'Edit': {
-        console.log('selected', this.selectedItem);
         this.isMonitor = false;
         this.editProcessFlag = true;
         this.showRightIcon = true;
@@ -1541,10 +1521,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
         this.generalId = this.selectedProcess;
         this.processName = '';
         this.getDocumentation('PRCS', this.generalId);
-        // let elementRegistry = this.modeler.get('elementRegistry');
-        // let element = elementRegistry.get(this.selectedProcess.replace(new RegExp(' ', 'g'), '_'));
-        // element.click();
-        // console.log('element', element);
         break;
       }
       case 'Delete': {
@@ -1657,10 +1633,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
 
       };
       Object.assign(body, this.ts);
-      console.log('execute now');
       this.http.post(this.apiService.endPoints.secureProcessStart, body, this.apiService.setHeaders())
         .subscribe(res => {
-          console.log(res.json());
           this.executedata = { SL_APP_CD: this.selectedApp, SL_PRC_CD: this.selectedProcess };
 
           this.StorageSessionService.setCookies('executedata', this.executedata);
@@ -1723,7 +1697,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             if (this.propertyPanelAllTabsData[0]["V_SYNC_FLG"] === 'Y') {
               this.async_sync_seconds = this.propertyPanelAllTabsData[0]["V_TIME_OUT_SEC"];
             }
-            // console.log('Timeout_seconds', this.async_sync_seconds);
           }
         }
       });
@@ -1769,7 +1742,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
 
   getInputOutputForSelctedExecutable() {
-    console.log('selectedExecutable', this.selectedExecutable);
     if (this.selectedExecutable && this.selectedExecutable != null && this.selectedExecutable != '') {
       this.endUserService.getInputOutputForSelctedExecutable(this.selectedExecutableType, this.selectedExecutable)
         .subscribe(res => {
@@ -1822,8 +1794,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       REST_Service: 'Report',
       Verb: 'POST'
     };
-    console.log('rpt table');
-    console.log(body);
     this.http.post(this.apiService.endPoints.secureProcessReport, body, this.apiService.setHeaders())
       .subscribe(
         (res: any) => {
@@ -1834,7 +1804,6 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
             this.app.loadingCharts = false;
             this.report = res.json();
             var timeout = res.json().RESULT.toString().substring(0, 7) == "TIMEOUT";
-            console.log(this.report.RESULT);
             if (timeout && this.ctrl_variables.call_repeat_on_TIMEOUT) {
               this.repeatCallTable(true);
             } else if (this.report.RESULT == 'TABLE') {

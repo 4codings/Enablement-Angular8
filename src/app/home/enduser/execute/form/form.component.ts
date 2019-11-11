@@ -166,7 +166,6 @@ export class FormComponent implements OnInit {
     this.RVP_Values = [];
     this.RVP_labels = [];
     this.RVP_placeholder = [];
-    // console.log('Form_Data', this.Form_Data);
     this.PVP = JSON.parse(this.Form_Data["PVP"][0]);
     this.srvc_cd_sl = this.Form_Data["SRVC_CD"][0];
     this.PVP;
@@ -221,7 +220,6 @@ export class FormComponent implements OnInit {
         this.setDropDownValues(this.RVP_Keys[i], this.RVP_labels[i], i);
       } else {
         if (this.HAS_OPTIONS && this.HAS_OPTIONS[i] === "'Y'" && this.DSPLY_FLD[i] != '' && this.DSPLY_FLD[i]) {
-          // console.log('w')
           this.getOptional_values(this.RVP_Keys[i], this.RVP_labels[i]);
         }
       }
@@ -278,7 +276,6 @@ export class FormComponent implements OnInit {
   labels_toShow(): any {
     //----------------Lables to Show---------------//
     for (let i = 0; i < this.RVP_Keys.length; i++) {
-      // console.log("keys", this.RVP_Keys[i]);
       if (this.RVP_Keys[i].toLowerCase() == "v_hold_bottom") {
         this.bottomFlag = true;
         this.topFlag = false;
@@ -316,7 +313,6 @@ export class FormComponent implements OnInit {
     this.RVP_Data = this.Form_Data["RVP"];
     this.RVP_DataObj = [];
     this.RVP_DataObj = JSON.parse(this.RVP_Data);
-    // console.log("rvp", this.RVP_DataObj);
     this.updateInitialFieldNameAndValues();
   }
 

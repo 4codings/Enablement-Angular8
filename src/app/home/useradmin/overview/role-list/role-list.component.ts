@@ -36,7 +36,6 @@ export class RoleListComponent implements OnInit {
     public sortPipe: SortPipe
   ) {
     this.overviewService.roles$.pipe(takeUntil(this.unsubscribeAll)).subscribe(roles => {
-      console.log('roles', roles);
       // this.roles = roles;
       this.defaultRoles = roles.length ? this.sortPipe.transform(roles, 'V_ROLE_CD') : [];
       if (this.defaultRoles.length) {
@@ -46,7 +45,6 @@ export class RoleListComponent implements OnInit {
         this.defaultRoles.unshift(role);
       }
       this.roles = [...this.defaultRoles];
-      console.log('this.roles', this.roles);
     });
     this.overviewService.selectedAuthType$.pipe(takeUntil(this.unsubscribeAll)).subscribe(type => this.selectedAuthType = type);
   }

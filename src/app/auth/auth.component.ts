@@ -131,12 +131,6 @@ export class AuthComponent implements OnInit, OnDestroy {
 
     login(form: NgForm) {
         if (form.invalid) { return; }
-        // console.log('form.value.agency', form.value.agency);
-        // if (form.value.agency != undefined) {
-        //     this.sendConfirmation(form);
-        // } else {
-        //     this.CheckUsrPw(form);
-        // } 
         if (this.rstBnt) {
             if (this.myRecaptcha.value) {
                 let json = { "V_USR_NM": form.value.email, "V_PSWRD": form.value.passr }
@@ -151,11 +145,9 @@ export class AuthComponent implements OnInit, OnDestroy {
                 V_ACTN_NM: 'LOGIN'
             };
             if (form.value.agency != undefined) {
-                console.log('body', body);
                 let payload = { "V_USR_NM": form.value.email, "V_PSWRD": form.value.pass, "SRC_CD": form.value.agency }
                 this.store.dispatch(new usreLoginActions.userSignUp(payload));
             } else {
-                console.log('body', body);
                 this.store.dispatch(new usreLoginActions.userLogin(body));
             }
         }
@@ -220,7 +212,6 @@ export class AuthComponent implements OnInit, OnDestroy {
                 } else {
                     // this.toastr.warning("Invalid password,Attempt=" + this.countAt, "Login");
                 }
-                console.log('err', err);
             });
     }
 
@@ -254,11 +245,9 @@ export class AuthComponent implements OnInit, OnDestroy {
     }
     onScriptLoad() {
         this.isRecaptchaValid = true;
-        console.log('Google reCAPTCHA loaded and is ready for use!')
     }
 
     onScriptError() {
-        console.log('Something went long when loading the Google reCAPTCHA')
     }
     onKey(event: any) {
         //alert(this.email);

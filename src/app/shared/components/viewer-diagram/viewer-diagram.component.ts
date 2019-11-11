@@ -83,10 +83,8 @@ export class ViewerDiagramComponent implements OnInit, OnDestroy {
     if (eventBus) {
       eventBus.on('element.click', ($event) => {
         this.elementClick = false;
-        console.log('element.click', $event);
         let i = this.selectedInstanceElementsList.findIndex(v => v.PRDCR_SRVC_CD.replace(new RegExp(' ', 'g'), '_') == $event.element.id);
         if (i > -1) {
-          console.log('ele', this.selectedInstanceElementsList[i]);
           this.selectedElement = this.selectedInstanceElementsList[i];
           this.selectedElementInput = this.selectedElement.SRVC_INPUT;
           this.selectedElementOutput = this.selectedElement.SRVC_OUTPUT;
@@ -102,7 +100,6 @@ export class ViewerDiagramComponent implements OnInit, OnDestroy {
               })
               this.selectedElementInput = [];
               this.selectedElementInput = keys;
-              console.log('eleinu', this.selectedElementInput);
             }
           }
           if (this.selectedElementOutput != null) {
@@ -117,7 +114,6 @@ export class ViewerDiagramComponent implements OnInit, OnDestroy {
               })
               this.selectedElementOutput = [];
               this.selectedElementOutput = keys;
-              console.log('selectedElementOutput', this.selectedElementOutput);
             }
           }
           let startx = $event.element.x;
@@ -210,7 +206,6 @@ export class ViewerDiagramComponent implements OnInit, OnDestroy {
       this.USR_NM + '&V_PRCS_TXN_ID=' + this.V_PRCS_TXN_ID +
       '&REST_Service=Service_Instances&Verb=GET').subscribe((res: any) => {
         if (res.length) {
-          console.log('res', res);
           this.selectedInstanceElementsList = res;
         }
       })
@@ -218,16 +213,13 @@ export class ViewerDiagramComponent implements OnInit, OnDestroy {
   setInitialColor() {
     setTimeout(ele => {
       var canvas = this.viewer.get('canvas');
-      console.log('this.viewer.get', this.viewer.get('elementRegistry'));
       canvas.addMarker('Start', 'success');
       if (this.selectedInstanceElementsList.length) {
         var canvas = this.viewer.get('canvas');
         let elements = this.viewer.get('elementRegistry');
-        console.log('elements', elements);
         canvas.addMarker('Start', 'highlight');
         this.selectedInstanceElementsList.forEach((ele, index) => {
           let eleReg = ele.PRDCR_SRVC_CD.replace(new RegExp(' ', 'g'), '_')
-          console.log('eleReg ', eleReg);
           if (elements.get(eleReg) != undefined) {
             if (ele.TXN_STS === "Reduced Job Instance") {
               canvas.addMarker(eleReg, 'success');

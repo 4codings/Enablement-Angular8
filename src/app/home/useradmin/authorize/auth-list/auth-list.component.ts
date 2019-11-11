@@ -20,7 +20,6 @@ export class AuthListComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('auths', this.auths);
     this.filteredOptions = this.myControl.valueChanges
       .pipe(
         startWith(''),

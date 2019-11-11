@@ -185,7 +185,6 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
         })
       }
     }
-    console.log('filteredProcessValues', this.filteredProcessValues);
   }
   onExistingProcessSelect(event) {
     this.filteredServiceValues = [];
@@ -205,7 +204,6 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
         })
       }
     }
-    console.log('filteredServiceValues', this.filteredServiceValues);
   }
   onAppSelect(event) {
     this.selectedApplication = event;

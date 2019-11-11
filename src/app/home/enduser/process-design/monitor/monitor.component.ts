@@ -110,7 +110,6 @@ export class MonitorComponent implements OnInit, OnDestroy {
       this.V_USR_NM + '&StartDatetime=' + this.datePipe.transform(this.fromDate, 'yyyy-MM-dd HH:mm:ss') + '&EndDatetime=' + this.datePipe.transform(this.toDate, 'yyyy-MM-dd HH:mm:ss') + '&NumbersOfTransactions=' + this.numbersOfTransactions +
       '&REST_Service=Process_Instances&Verb=GET').subscribe(res => {
         if (Object.keys(res).length) {
-          console.log('res', res);
           this.PRCS_TXN_ID = res['PRCS_TXN_ID'];
           this.StartDateTime = res['LST_UPD_DT_TM'];
           this.USR_NM = res['USR_NM'];

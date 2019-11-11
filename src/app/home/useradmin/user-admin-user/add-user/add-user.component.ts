@@ -69,7 +69,6 @@ export class AddUserComponent implements OnInit, OnDestroy {
     } else {
       this.selectedView = "addNewUser";
     }
-    console.log("event", event);
   }
   onBtnAddClick(): void {
     switch (this.selectedView) {

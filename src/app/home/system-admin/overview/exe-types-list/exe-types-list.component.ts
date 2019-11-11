@@ -83,13 +83,11 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
   }
 
   changeExeType(type): void {
-    //console.log(type);
     this.selectedExeType = type;
     this.selectedExe.emit(type);
   }
 
   changePlatform(platform): void {
-    //console.log(type);
     this.selectedPlatform = platform;
   }
 
@@ -101,7 +99,6 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
     });
   }
 
@@ -113,7 +110,6 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
     });
   }
 
@@ -128,7 +124,6 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.message = `Are you sure, you want to delete ExeType <strong>${exe.EXE_TYP}</strong>?`;
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
     });
     */
   }
@@ -142,7 +137,6 @@ export class ExeTypesListComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
     });
     */
   }

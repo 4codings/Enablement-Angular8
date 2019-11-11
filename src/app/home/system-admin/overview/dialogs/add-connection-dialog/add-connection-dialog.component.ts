@@ -38,17 +38,13 @@ export class AddConnectionDialogComponent implements OnInit {
   ngOnInit() {
     this.config.getMachineCode().subscribe(res=>{this.PLF_TYPE=res.json();
       (this.PLF_TYPE);
-      // this.PLF_CD=this.PLF_TYPE['SERVER_CD'];
     });
     this.V_SRC_CD=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
     this.V_USR_NM=JSON.parse(sessionStorage.getItem('u')).USR_NM;
-    // this.http.get("https://'+this.domain_name+'/rest/v1/securedJSON?V_CD_TYP=EXE&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Masters&Verb=GET").subscribe(res => {
-    //   this.connectionTypes = res;
-    // });
+    
     this.http.get('https://'+this.domain_name+'/rest/E_DB/SPJSON?V_SRC_CD='+ this.V_SRC_CD +'&V_CXN_TYP='+ this.data.selectedConnectionType +'&REST_Service=Params_of_CXN_Type&Verb=GET').subscribe(res => {
       this.DATA = res;
       this.tableshow = true;
-      //console.log(this.DATA);
     });
 
     this.PLF_CD = this.data.machineData.PLATFORM_CD;
@@ -123,7 +119,6 @@ export class AddConnectionDialogComponent implements OnInit {
     }
   
     this.http.put('https://'+this.domain_name+'/rest/v1/securedJSON', data).subscribe(res => {
-      console.log("res",res);
       this.dialogRef.close(true);
     }, err => {
   
@@ -134,7 +129,6 @@ export class AddConnectionDialogComponent implements OnInit {
     this.http.get('https://'+this.domain_name+'/rest/E_DB/SPJSON?V_SRC_CD='+ this.V_SRC_CD +'&V_CXN_TYP='+ this.V_CXN_TYP +'&REST_Service=Params_of_CXN_Type&Verb=GET').subscribe(res => {
       this.DATA = res;
       this.tableshow = true;
-      //console.log(this.DATA);
     })
   }
 

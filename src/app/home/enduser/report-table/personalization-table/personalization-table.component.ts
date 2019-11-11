@@ -147,8 +147,6 @@ export class PersonalizationTableComponent implements OnInit, AfterViewInit {
   getChartPreferences() {
     this.data.getchartstyling(this.report.UNIQUE_ID, this.report.SRC_ID).subscribe(
       res => {
-        console.log('chartpreferences = >');
-        console.log(res.json());
         var cpref = res.json();
         this.restore_styling(cpref);
       });
@@ -201,7 +199,6 @@ export class PersonalizationTableComponent implements OnInit, AfterViewInit {
         }
       }
       this.populateRow(i, i);
-      console.log(this.data.chartPreferences[i]);
     }
     this.restore_position(cpref);
   }
@@ -279,7 +276,6 @@ export class PersonalizationTableComponent implements OnInit, AfterViewInit {
   }
 
   populateRow(index, foundIndex) {
-    console.log('inside populaterow');
     if (this.data.chartPreferences[foundIndex]['chartposition'].length > 0) {
       this.data.chartposition[index] = this.data.chartPreferences[foundIndex]['chartposition'];
     }
@@ -310,20 +306,16 @@ export class PersonalizationTableComponent implements OnInit, AfterViewInit {
   }
 
   set_domProperty(event) {
-    console.log(event.source._elementRef.nativeElement);
   }
 
   setchartpreferences(pref, val, index?) {
-    console.log(val);
     this.chartPreferences[index][pref] = val;
     for (let i = 0; i < this.chartPreferences.length; i++) {
-      console.log(this.chartPreferences[i]);
     }
     this.data.chartPreferences = this.chartPreferences;
     if (this.chartPreferences[index]['chartno'] !== '' && this.chartPreferences[index]['chartno'] !== null) {
       var chartFound = false;
       var foundIndex = 0;
-      console.log(chartFound);
       var checkcno = this.data.chartPreferences[index]['chartno'];
       if (pref === 'chartno')
         checkcno = val;
@@ -335,10 +327,8 @@ export class PersonalizationTableComponent implements OnInit, AfterViewInit {
         }
       }
       for (let i = 0; i < this.chartPreferences.length; i++) {
-        console.log(this.chartPreferences[i]);
       }
       if (chartFound) {
-        console.log('match found');
 
         if (pref === 'chartno') {
           this.chartPreferences[index] = this.chartPreferences[foundIndex];
@@ -351,7 +341,6 @@ export class PersonalizationTableComponent implements OnInit, AfterViewInit {
 
       }
       for (let i = 0; i < this.chartPreferences.length; i++) {
-        console.log(this.chartPreferences[i]);
       }
     }
     this.data.chartPreferences = this.chartPreferences;
@@ -365,7 +354,6 @@ export class PersonalizationTableComponent implements OnInit, AfterViewInit {
 
     this.data.setchartstyling(this.report.UNIQUE_ID, this.report.SRC_ID, checkcno, pref, this.chartPreferences[index][pref]).subscribe(
       (res) => {
-        console.log(res.json());
       });
   }
 
@@ -450,10 +438,8 @@ export class PersonalizationTableComponent implements OnInit, AfterViewInit {
       this.chartPreferences[i] = this.chartPreferences[i-1];
     }*/
     this.data.deletepreferencerow(this.report.UNIQUE_ID, this.report.SRC_ID, this.chartPreferences[chartNo]['chartno']).subscribe((res) => {
-      console.log(res.json());
     });
     this.chartPreferences.splice(chartNo, 1);
-    console.log(chartNo);
     this.chartno.splice(chartNo, 1);
     this.gridlinewidth.splice(chartNo, 1);
     this.backgroundcolor.splice(chartNo, 1);

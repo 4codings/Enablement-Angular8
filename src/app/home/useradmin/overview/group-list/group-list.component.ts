@@ -49,7 +49,6 @@ export class GroupListComponent implements OnInit, OnDestroy {
         }
         return comparison;
       });
-      console.log('groups',this.groups)
     });
     this.overviewService.selectedGroupType$.pipe(takeUntil(this.unsubscribeAll)).subscribe(type => this.selectedGroupType = type);
   }

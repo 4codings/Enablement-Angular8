@@ -52,7 +52,6 @@ export class UsernavbarComponent implements OnInit {
     this.navigationSubscription = router.events
       .pipe(filter(e => e instanceof NavigationEnd))
       .subscribe((e: NavigationEnd) => {
-        console.log(e.url)
         if (e.url !== '/End_User/ReportTable') {
           this.showNewIcon = false;
         }
@@ -63,7 +62,6 @@ export class UsernavbarComponent implements OnInit {
 
           let i = this.options.findIndex(v => v.key == 'Properties');
           this.options[i].flag = true;
-          console.log('this.options', this.options);
         }
       }
     })
@@ -76,7 +74,6 @@ export class UsernavbarComponent implements OnInit {
             ele.flag = true;
           }
         })
-        console.log('this.options initial', this.options);
       }
     })
   }
@@ -147,7 +144,6 @@ export class UsernavbarComponent implements OnInit {
         }
       })
     }
-    console.log('this.options on change', this.options);
     this.optionalService.reportTableMenuClickValue.next({ 'value': value, 'flag': false });
   }
 

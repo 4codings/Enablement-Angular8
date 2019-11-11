@@ -45,9 +45,7 @@ export class MachineTileListComponent implements OnInit {
   ngOnInit() {
     this.V_SRC_CD=JSON.parse(sessionStorage.getItem('u')).SRC_CD;
     this.V_USR_NM=JSON.parse(sessionStorage.getItem('u')).USR_NM;
-    //console.log(this.connectionList);
     this.subscription = this.systemOverview.selectedExe$.subscribe(data => {
-      //console.log(data);
       if(data) {
         this.selectedMachine = null;
         this.selectedMachineTile.emit('exeSelect');
@@ -81,13 +79,11 @@ export class MachineTileListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       this.systemOverview.getAllMachineConnections();
     });
   }
 
   connectionDropped(event: CdkDragDrop<any[]>) {
-    // console.log(event.item.data);
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -151,7 +147,6 @@ export class MachineTileListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       if(result) {
         this.systemOverview.getAllMachineConnections();
         this.systemOverview.getAllExes();
@@ -207,7 +202,6 @@ export class MachineTileListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       if(result) {
         this.systemOverview.getAllMachineConnections();
       }
@@ -221,7 +215,6 @@ export class MachineTileListComponent implements OnInit {
   }
 
   onBtnDeleteConnectionClick(cnx) {
-    //console.log(cnx);
     const dialogRef = this.dialog.open(ConfirmationAlertComponent, {
       panelClass: 'app-dialog',
       width: '300px',
@@ -235,7 +228,6 @@ export class MachineTileListComponent implements OnInit {
         this.http.delete(this.apiUrlGet+'V_CXN_TYP='+ cnx.cnxData.V_CXN_TYP + '&V_CXN_CD='+ cnx.cnxData.V_CXN_CD + '&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=CXN&Verb=DELETE').subscribe(res => {
           this.systemOverview.getAllMachineConnections();
         }, err => {
-          console.log("err", err)
         }); 
       }
     });
@@ -248,7 +240,6 @@ export class MachineTileListComponent implements OnInit {
   }
 
   onBtnRemoveConnectionClick(cnx) {
-    //console.log(cnx);
     const dialogRef = this.dialog.open(ConfirmationAlertComponent, {
       panelClass: 'app-dialog',
       width: '300px',
@@ -263,7 +254,6 @@ export class MachineTileListComponent implements OnInit {
         this.http.delete(this.apiUrlGet+'V_PLATFORM_CD='+ cnx.machineData.PLATFORM_CD +'&V_CXN_TYP='+ cnx.cnxData.V_CXN_TYP +'&V_COMMNT="initial comment"&V_USR_NM='+ this.V_USR_NM +'&V_CXN_CD='+ cnx.cnxData.V_CXN_CD +'&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=Machine_Connection&Verb=DELETE').subscribe(res => {
           this.systemOverview.getAllMachineConnections();
         }, err => {
-          console.log("err", err)
         }); 
       }
     });
@@ -290,7 +280,6 @@ export class MachineTileListComponent implements OnInit {
         this.http.delete(this.apiUrlGet+'V_PLATFORM_CD=""&V_CXN_TYP='+ cnx.cnxData.V_CXN_TYP +'&V_COMMNT="initial comment"&V_USR_NM='+ this.V_USR_NM +'&V_CXN_CD='+ cnx.cnxData.V_CXN_CD +'&V_SRC_CD='+ this.V_SRC_CD +'&REST_Service=Machine_Connection&Verb=DELETE').subscribe(res => {
           this.systemOverview.getAllMachineConnections();
         }, err => {
-          console.log("err", err)
         }); 
       }
     });

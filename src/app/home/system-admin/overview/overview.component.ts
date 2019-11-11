@@ -50,7 +50,6 @@ export class OverviewComponent implements OnInit,OnDestroy {
   }
   
   selectedExe(type) {
-    //console.log(type);
     this.selectedExeType = type;
   }
 

@@ -10,8 +10,6 @@ export class GroupTypePipe implements PipeTransform {
 
   transform(values: userGroup[], type?: string): any {
     if (values && values.length && type) {
-      // console.log('values', values);
-      // console.log('type', type);
       return values.filter(currVal => currVal.V_GRP_TYP == type);
     }
     return values;
@@ -24,8 +22,6 @@ export class GroupTypeProfilePipe implements PipeTransform {
 
   transform(values: userGroup[], type?: string): any {
     if (values && values.length && type) {
-      // console.log('values', values);
-      // console.log('type', type);
       if (type == groupTypeConstant.CUSTOM) {
         return values.filter(currVal => currVal.V_GRP_TYP == type);
       } else if (type == groupTypeConstant.WORKFLOW) {

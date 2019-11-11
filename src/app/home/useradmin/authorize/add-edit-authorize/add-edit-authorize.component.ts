@@ -194,7 +194,6 @@ export class AddEditAuthorizeComponent extends AuthorizeComponent implements OnI
     } else {
       this.selectedView = 'addNewAuth';
     }
-    console.log('event', event);
   }
   onAuthSelect(auth: AuthorizationData): void {
     this.selectedAuth = auth;

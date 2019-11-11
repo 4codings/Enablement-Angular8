@@ -48,7 +48,6 @@ export class SingleExeComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
     });
   }
 
@@ -60,7 +59,6 @@ export class SingleExeComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
     });
   }
 
@@ -81,12 +79,10 @@ export class SingleExeComponent implements OnInit {
             this.systemOverview.getExe();
           });
       }
-      console.log('The dialog was closed');
     });
   }
 
   selectedExeTile(exe) {
-    //console.log("parent", exe);
     if (exe === 'connectionSelect') {
       this.selectedExetile.emit(null);
     } else {
