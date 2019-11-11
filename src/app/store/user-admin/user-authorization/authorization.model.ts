@@ -15,12 +15,17 @@ export interface AuthorizationData {
     'V_COMMNT': string;
     'V_AUTH_ID': string;
     'V_ROLE_ID': Array<any>;
-
+    'V_SRVC_CD': string | null;
+    'V_SLA_CD': string | null;
     'AUTH_ID': number;
     'APP_ID': number;
     'ROLE_ID': string;
     'V_AUTH_DSC': string;
     'V_ARTFCT_TYP': string | null;
+    'V_ARTFCT_NM': string | null;
+    'V_PLATFORM_CD': string | null;
+    'V_SERVER_CD': string | null;
+    'V_EXE_CD': string | null;
     'id': number;
     'V_AUTH_FLD': number;
     'is_selected': boolean;

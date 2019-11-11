@@ -582,6 +582,10 @@ body {
   background-color: rgba(66, 63, 63, 0.78) !important;
 }
 
+.mat-checkbox-disabled.mat-checkbox-checked .mat-checkbox-background {
+  background-color: lightgrey !important;
+}
+
 .mat-radio-button.mat-accent .mat-radio-inner-circle,
 .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element:not(.mat-radio-persistent-ripple),
 .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-persistent-ripple,

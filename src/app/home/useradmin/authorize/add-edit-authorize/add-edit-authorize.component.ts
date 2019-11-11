@@ -50,6 +50,7 @@ export class AddEditAuthorizeComponent extends AuthorizeComponent implements OnI
 
   ngOnInit() {
     super.ngOnInit();
+    this.authValueObj.V_READ = 'Y';
     this.radioSelected = this.data.authType;
     this.oldRadioSelected = this.radioSelected;
     if (this.oldRadioSelected === '') {
@@ -87,7 +88,7 @@ export class AddEditAuthorizeComponent extends AuthorizeComponent implements OnI
           'REST_Service': 'Auth',
           'Verb': 'PUT'
         };
-        this.http.put('https://'+this.domain_name+'/rest/v1/securedJSON', body).subscribe(res => {
+        this.http.put('https://' + this.domain_name + '/rest/v1/securedJSON', body).subscribe(res => {
           this.addFlag = false;
           this.store.dispatch(new authActions.AddAuth(data));
           this.assignAuthToRole(this.data.roleId, res[0] ? res[0].id + '' : '');
@@ -148,7 +149,7 @@ export class AddEditAuthorizeComponent extends AuthorizeComponent implements OnI
       'REST_Service': ['Role_Auth'],
       'Verb': ['POST']
     };
-    this.http.post('https://'+this.domain_name+'/rest/v1/securedJSON', json).subscribe(res => {
+    this.http.post('https://' + this.domain_name + '/rest/v1/securedJSON', json).subscribe(res => {
       this.dialogRef.close(true);
     }, err => {
     });
@@ -175,7 +176,7 @@ export class AddEditAuthorizeComponent extends AuthorizeComponent implements OnI
       'REST_Service': 'Auth',
       'Verb': 'PUT'
     };
-    this.http.put('https://'+this.domain_name+'/rest/v1/securedJSON', body).subscribe(res => {
+    this.http.put('https://' + this.domain_name + '/rest/v1/securedJSON', body).subscribe(res => {
       this.store.dispatch(new authActions.UpdateAuth(data));
       this.dialogRef.close(true);
     },

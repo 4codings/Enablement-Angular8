@@ -39,6 +39,9 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
   processValues$: Subscription;
   serviceValues$: Subscription;
   applicationValues = [];
+  filteredApplicationValues = [];
+  filteredProcessValues = [];
+  filteredServiceValues = [];
   applicationValuesObservable = [];
   processValues = [];
   processValuesObservable: ProcessObservable[] = [];
@@ -134,7 +137,76 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
   selected(index) {
     this.selecteduser = index;
   }
-
+  onExistingAppSelect(event) {
+    this.filteredProcessValues = [];
+    if (this.radioSelected === 'SERVICE' || this.radioSelected === 'PROCESS') {
+      if (this.filteredAuthValues.length) {
+        this.filteredAuthValues.forEach(ele => {
+          if (ele.V_APP_CD == event.V_APP_CD) {
+            if (this.filteredProcessValues.length) {
+              let i = this.filteredProcessValues.findIndex(v => v.V_PRCS_CD == ele.V_PRCS_CD);
+              if (i == -1) {
+                this.filteredProcessValues.push(ele);
+              }
+            } else {
+              this.filteredProcessValues.push(ele);
+            }
+          }
+        })
+      }
+    } else if (this.radioSelected === 'ARTIFACT') {
+      if (this.filteredAuthValues.length) {
+        this.filteredAuthValues.forEach(ele => {
+          if (ele.V_ARTFCT_TYP == event.V_ARTFCT_TYP) {
+            if (this.filteredProcessValues.length) {
+              let i = this.filteredProcessValues.findIndex(v => v.V_ARTFCT_NM == ele.V_ARTFCT_NM);
+              if (i == -1) {
+                this.filteredProcessValues.push(ele);
+              }
+            } else {
+              this.filteredProcessValues.push(ele);
+            }
+          }
+        })
+      }
+    } else if (this.radioSelected === 'EXE') {
+      if (this.filteredAuthValues.length) {
+        this.filteredAuthValues.forEach(ele => {
+          if (ele.V_EXE_TYP == event.V_EXE_TYP) {
+            if (this.filteredProcessValues.length) {
+              let i = this.filteredProcessValues.findIndex(v => v.V_EXE_CD == ele.V_EXE_CD);
+              if (i == -1) {
+                this.filteredProcessValues.push(ele);
+              }
+            } else {
+              this.filteredProcessValues.push(ele);
+            }
+          }
+        })
+      }
+    }
+    console.log('filteredProcessValues', this.filteredProcessValues);
+  }
+  onExistingProcessSelect(event) {
+    this.filteredServiceValues = [];
+    if (this.radioSelected === 'SERVICE') {
+      if (this.filteredAuthValues.length) {
+        this.filteredAuthValues.forEach(ele => {
+          if (ele.V_APP_CD == event.V_APP_CD && ele.V_PRCS_CD == event.V_PRCS_CD) {
+            if (this.filteredServiceValues.length) {
+              let i = this.filteredServiceValues.findIndex(v => v.V_SRVC_CD == ele.V_SRVC_CD);
+              if (i == -1) {
+                this.filteredServiceValues.push(ele);
+              }
+            } else {
+              this.filteredServiceValues.push(ele);
+            }
+          }
+        })
+      }
+    }
+    console.log('filteredServiceValues', this.filteredServiceValues);
+  }
   onAppSelect(event) {
     this.selectedApplication = event;
     if (this.radioSelected === 'SERVICE' || this.radioSelected === 'PROCESS') {
@@ -222,7 +294,89 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
     this.filteredAuthValues = [];
     this.applicationValues = [];
     this.processValues = [];
+    this.filteredApplicationValues = [];
+    this.filteredProcessValues = [];
+    this.filteredServiceValues = [];
     this.filteredAuthValues = this.authValues.filter(v => v['V_AUTH_TYP'] === data);
+    if (this.radioSelected == 'PROCESS' || this.radioSelected == 'SERVICE') {
+      if (this.filteredAuthValues.length) {
+        this.filteredAuthValues.forEach(ele => {
+          if (this.filteredApplicationValues.length) {
+            let i = this.filteredApplicationValues.findIndex(v => v.V_APP_CD == ele.V_APP_CD);
+            if (i == -1) {
+              this.filteredApplicationValues.push(ele);
+            }
+          } else {
+            this.filteredApplicationValues.push(ele);
+          }
+        })
+      }
+    } else if (this.radioSelected == 'ARTIFACT') {
+      if (this.filteredAuthValues.length) {
+        this.filteredAuthValues.forEach(ele => {
+          if (this.filteredApplicationValues.length) {
+            let i = this.filteredApplicationValues.findIndex(v => v.V_ARTFCT_TYP == ele.V_ARTFCT_TYP);
+            if (i == -1) {
+              this.filteredApplicationValues.push(ele);
+            }
+          } else {
+            this.filteredApplicationValues.push(ele);
+          }
+        })
+      }
+    } else if (this.radioSelected == 'EXE') {
+      if (this.filteredAuthValues.length) {
+        this.filteredAuthValues.forEach(ele => {
+          if (this.filteredApplicationValues.length) {
+            let i = this.filteredApplicationValues.findIndex(v => v.V_EXE_TYP == ele.V_EXE_TYP);
+            if (i == -1) {
+              this.filteredApplicationValues.push(ele);
+            }
+          } else {
+            this.filteredApplicationValues.push(ele);
+          }
+        })
+      }
+    } else if (this.radioSelected == 'PLATFORM') {
+      if (this.filteredAuthValues.length) {
+        this.filteredAuthValues.forEach(ele => {
+          if (this.filteredApplicationValues.length) {
+            let i = this.filteredApplicationValues.findIndex(v => v.V_PLATFORM_CD == ele.V_PLATFORM_CD);
+            if (i == -1) {
+              this.filteredApplicationValues.push(ele);
+            }
+          } else {
+            this.filteredApplicationValues.push(ele);
+          }
+        })
+      }
+    } else if (this.radioSelected == 'SLA') {
+      if (this.filteredAuthValues.length) {
+        this.filteredAuthValues.forEach(ele => {
+          if (this.filteredApplicationValues.length) {
+            let i = this.filteredApplicationValues.findIndex(v => v.V_SLA_CD == ele.V_SLA_CD);
+            if (i == -1) {
+              this.filteredApplicationValues.push(ele);
+            }
+          } else {
+            this.filteredApplicationValues.push(ele);
+          }
+        })
+      }
+    } else if (this.radioSelected == 'SERVER') {
+      if (this.filteredAuthValues.length) {
+        this.filteredAuthValues.forEach(ele => {
+          if (this.filteredApplicationValues.length) {
+            let i = this.filteredApplicationValues.findIndex(v => v.V_SERVER_CD == ele.V_SERVER_CD);
+            if (i == -1) {
+              this.filteredApplicationValues.push(ele);
+            }
+          } else {
+            this.filteredApplicationValues.push(ele);
+          }
+        })
+      }
+    }
     if (this.radioSelected === 'ARTIFACT' || this.radioSelected === 'PLATFORM' || this.radioSelected === 'SERVER' || this.radioSelected === 'SLA') {
       if (this.filteredAuthValues.length) {
         this.applicationValues = [];
@@ -296,7 +450,7 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
       "REST_Service": "Auth",
       "Verb": "POST"
     };
-    this.http.post('https://'+this.domain_name+'/rest/v1/securedJSON', body)
+    this.http.post('https://' + this.domain_name + '/rest/v1/securedJSON', body)
       .subscribe(res => {
         this.store.dispatch(new authActions.getAuth(this.V_SRC_CD_DATA));
       }, err => {
@@ -331,7 +485,7 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
       "REST_Service": "Auth",
       "Verb": "POST"
     };
-    let obs = this.http.post('https://'+this.domain_name+'/rest/v1/securedJSON', body)
+    let obs = this.http.post('https://' + this.domain_name + '/rest/v1/securedJSON', body)
     obs.subscribe(res => {
       this.addFlag = false;
       this.store.dispatch(new authActions.getAuth(this.V_SRC_CD_DATA));
