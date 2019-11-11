@@ -90,7 +90,7 @@ export class HeaderComponent implements OnInit {
       e = "End_User"
     } else if (this.selectedProfile == 'Administrator') {
       e = "User_Admin"
-    } else if (this.selectedProfile == 'System') {
+    } else if (this.selectedProfile == 'IT Infrastructure') {
       e = "System_Admin"
     }
     this.router.navigateByUrl(e.replace(" ", "_"), { skipLocationChange: true });
@@ -110,7 +110,7 @@ export class HeaderComponent implements OnInit {
         if (res[i].includes(roleTypeConstant.WORKFLOW)) {
           this.setOptions("Workflow");
         } else if (res[i].includes(roleTypeConstant.SYSTEM)) {
-          this.setOptions("System");
+          this.setOptions("IT Infrastructure");
         } else if (res[i].includes(roleTypeConstant.FINANCE)) {
           this.setOptions("Cost");
         } else if (res[i].includes(roleTypeConstant.ASSET)) {

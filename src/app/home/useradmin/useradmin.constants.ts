@@ -45,13 +45,13 @@ export const groupTypeConstant = {
 };
 
 export const groupTypeOptions: { key: string, label: string }[] = [
-  { key: '', label: 'ALL' },
+  { key: '', label: 'All Groups' },
   // {key: groupTypeConstant.SCREEN, label: 'Feature'},
   // {key: groupTypeConstant.PROFILE, label: 'Profile'},
-  { key: groupTypeConstant.CUSTOM, label: 'Custom' },
-  { key: groupTypeConstant.WORKFLOW, label: 'Workflow' },
-  { key: groupTypeConstant.ADMINISTRATOR, label: 'Adminstrator' },
-  { key: groupTypeConstant.SYSTEM, label: 'System' }
+  { key: groupTypeConstant.CUSTOM, label: 'Customer Specific Administration' },
+  { key: groupTypeConstant.WORKFLOW, label: 'Workflow Administration' },
+  { key: groupTypeConstant.ADMINISTRATOR, label: 'User Administration' },
+  { key: groupTypeConstant.SYSTEM, label: 'IT Infrastructure Administration' }
 ];
 
 
