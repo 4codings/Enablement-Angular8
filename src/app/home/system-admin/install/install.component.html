@@ -4,15 +4,15 @@
       <strong>{{Label['SERVER_CD']}}</strong>
     </label>
     <mat-list *ngIf="desktopView" class="scroll">
-      <mat-list-item class="list_item" *ngFor="let a of platforms ; let i = index;" (click)="getplatformdesc(a);onpselect(i);getinstallmachines();"
-        [class.active]="i == selectedplat">
+      <mat-list-item class="list_item" *ngFor="let a of platforms ; let i = index;"
+        (click)="getplatformdesc(a);onpselect(i);getinstallmachines();" [class.active]="i == selectedplat">
         <div>{{a}}</div>
       </mat-list-item>
     </mat-list>
     <mat-form-field *ngIf="mobileView" style="width:100%;text-align: center;" [floatLabel]="'never'">
       <mat-select style="margin-top:10px;" placeholder="--Select--">
-        <mat-option style="text-align:center;" (click)="getplatformdesc(a);onpselect(i);getinstallmachines();" *ngFor="let a of platforms ; let i = index;"
-          [value]="a">{{a}}</mat-option>
+        <mat-option style="text-align:center;" (click)="getplatformdesc(a);onpselect(i);getinstallmachines();"
+          *ngFor="let a of platforms ; let i = index;" [value]="a">{{a}}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
@@ -21,24 +21,28 @@
       <strong>{{Label['PLATFORM_CD']}}</strong>
     </label>
     <mat-list *ngIf="desktopView" class="scroll">
-      <mat-list-item class="list_item" *ngFor="let b of machines; let j = index" (click)="getmachinedesc(b);onmselect(j);" [class.active]="j == selectedmach">
+      <mat-list-item class="list_item" *ngFor="let b of machines; let j = index"
+        (click)="getmachinedesc(b);onmselect(j);" [class.active]="j == selectedmach">
         <div>{{b}}</div>
       </mat-list-item>
     </mat-list>
     <mat-form-field *ngIf="mobileView" style="width:100%;text-align: center;" [floatLabel]="'never'">
       <mat-select style="margin-top:10px;" placeholder="--Select--">
-        <mat-option style="text-align:center;" (click)="getmachinedesc(b);onmselect(j);" *ngFor="let b of machines; let j = index;"
-          [value]="b">{{b}}</mat-option>
+        <mat-option style="text-align:center;" (click)="getmachinedesc(b);onmselect(j);"
+          *ngFor="let b of machines; let j = index;" [value]="b">{{b}}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
   <div flex fxFlex="30" fxLayoutGap="20px" fxLayout="column" fxLayout.lt-sm="column" fxLayout.sm="column">
 
-    <div flex fxLayout="row" fxLayout.lt-sm="row" fxLayout.sm="row" fxLayout.gt-sm="row" fxLayoutAlign="space-around center">
+    <div flex fxLayout="row" fxLayout.lt-sm="row" fxLayout.sm="row" fxLayout.gt-sm="row"
+      fxLayoutAlign="space-around center">
       <button mat-raised-button color="primary" (click)="install()">
-        <mat-icon>get_app</mat-icon>Install</button>
+        <mat-icon>get_app</mat-icon>Install
+      </button>
       <button mat-raised-button color="warn" (click)="uninstall()">
-        <mat-icon>delete</mat-icon>Uninstall</button>
+        <mat-icon>delete</mat-icon>Uninstall
+      </button>
     </div>
   </div>
 </div>

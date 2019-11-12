@@ -7,78 +7,18 @@
     <div class="w-100" fxHide="true" fxShow.xs="true">
       <mat-nav-list>
         <div fxLayout="row" fxLayoutAlign="center center">
-        <div>
-          <img [src]="getLinkPicture()" onerror="this.src='/assets/logo.png'" alt="" class="logo-img" />
-        </div>
-        <div flex fxLayout="row">
-          <span>{{headerTxt}}</span>
-        </div>
-        <div>
-          <!-- <button matTooltip="Status" matTooltipPosition='below' mat-icon-button *ngIf="role_status">
-                    <a [routerLink]="['AppDeploy']" routerLinkActive="active" skipLocationChange class="nav-link">
-                        <mat-icon class="iconmod shwmaticon">search</mat-icon>
-                        <mat-icon class="iconmod shwsvgicon" svgIcon="search"></mat-icon>
-                    </a>
-                </button>
-                <button matTooltip="Install" matTooltipPosition='below' mat-icon-button *ngIf="role_install">
-                    <a [routerLink]="['Install']" routerLinkActive="active" skipLocationChange class="nav-link">
-                        <mat-icon class="iconmod shwmaticon">refresh</mat-icon>
-                        <mat-icon class="iconmod shwsvgicon" svgIcon="refresh"></mat-icon>
-                    </a>
-                </button> -->
-          <!-- <button matTooltip="Machine Connection" matTooltipPosition='below' mat-icon-button *ngIf="role_machineConnection">
-                    <a [routerLink]="['Machineconnection']" routerLinkActive="active" skipLocationChange class="nav-link">
-                        <mat-icon class="iconmod shwmaticon">swap_horiz</mat-icon>
-                        <mat-icon class="iconmod shwsvgicon" svgIcon="swap_horiz"></mat-icon>
-                    </a>
-                </button>
-                <button matTooltip="Deployment" matTooltipPosition='below' mat-icon-button *ngIf="role_deployment">
-                    <a [routerLink]="['Deployment']" routerLinkActive="active" skipLocationChange class="nav-link">
-                        <mat-icon class="iconmod shwmaticon">cloud_upload</mat-icon>
-                        <mat-icon class="iconmod shwsvgicon" svgIcon="cloud_upload"></mat-icon>
-                    </a>
-                </button>
-                <button matTooltip="Connection" matTooltipPosition='below' mat-icon-button *ngIf="role_connection">
-                    <a [routerLink]="['Connection']" routerLinkActive="active" skipLocationChange class="nav-link">
-                        <mat-icon class="iconmod shwmaticon">insert_link</mat-icon>
-                        <mat-icon class="iconmod shwsvgicon" svgIcon="insert_link"></mat-icon>
-                    </a>
-                </button>
-                <button matTooltip="Machine" matTooltipPosition='below' mat-icon-button *ngIf="role_machine">
-                    <a [routerLink]="['Machine']" routerLinkActive="active" skipLocationChange class="nav-link">
-                        <mat-icon class="iconmod shwmaticon" svgIcon="machines"></mat-icon>
-                        <mat-icon class="iconmod shwsvgicon" svgIcon="machines2"></mat-icon>
-                    </a>
-                </button>
-                <button matTooltip="Machine Specs" matTooltipPosition='below' mat-icon-button *ngIf="role_machineSpec">
-                    <a [routerLink]="['Machinespecs']" routerLinkActive="active" skipLocationChange class="nav-link">
-                        <mat-icon class="iconmod shwmaticon">build</mat-icon>
-                        <mat-icon class="iconmod shwsvgicon" svgIcon="build"></mat-icon>
-                    </a>
-                </button>
-                <button matTooltip="Platform" matTooltipPosition='below' mat-icon-button *ngIf="role_platform">
-                    <a [routerLink]="['Platform']" routerLinkActive="active" skipLocationChange class="nav-link">
-                        <mat-icon class="iconmod shwmaticon">developer_mode</mat-icon>
-                        <mat-icon class="iconmod shwsvgicon" svgIcon="developer_mode"></mat-icon>
-                    </a>
-                </button> -->
-          <!-- <button matTooltip="Overview" matTooltipPosition='below' mat-icon-button *ngIf="role_overview">
-                    <a [routerLink]="['SystemOverView']" skipLocationChange routerLinkActive="active" class="nav-link">
-                        <mat-icon class="iconmod shwmaticon">remove_red_eye</mat-icon>
-                        <mat-icon class="iconmod shwsvgicon deskicon deskicon" style="color:orange;">remove_red_eye</mat-icon>
-                    </a>
-                </button> -->
-          <!-- <button class="profile-btn" mat-mini-fab [matMenuTriggerFor]="menu">
-                    <a class="nav-link"><mat-icon>more_vert</mat-icon></a>
-                </button> -->
-          <div class="profile-btn">
-            <app-header [selectedProfile]="'System'"></app-header>
+          <div>
+            <img [src]="getLinkPicture()" onerror="this.src='/assets/logo.png'" alt="" class="logo-img" />
+          </div>
+          <div flex fxLayout="row">
+            <span>{{headerTxt}}</span>
+          </div>
+          <div>
+            <div class="profile-btn">
+              <app-header [selectedProfile]="'System'"></app-header>
+            </div>
           </div>
         </div>
-        </div>
-        <!-- <mat-menu #menu="matMenu" xPosition="before">
-                <app-header></app-header>
-            </mat-menu> -->
       </mat-nav-list>
     </div>
     <!-- For Desktop Screen -->
@@ -92,61 +32,7 @@
             <span>{{headerTxt}}</span>
           </div>
           <div class="ml-auto pr-4">
-            <!-- <button mat-raised-button *ngIf="role_status">
-                        <a [routerLink]="['AppDeploy']" routerLinkActive="active" skipLocationChange class="nav-link">
-                            <mat-icon class="iconmod shwmaticon">search</mat-icon>
-                            <mat-icon class="iconmod shwsvgicon deskicon" svgIcon="search"></mat-icon>Status</a>
-                    </button>
-                    <button mat-raised-button *ngIf="role_install">
-                        <a [routerLink]="['Install']" routerLinkActive="active" skipLocationChange class="nav-link">
-                            <mat-icon class="iconmod shwmaticon">refresh</mat-icon>
-                            <mat-icon class="iconmod shwsvgicon deskicon" svgIcon="refresh"></mat-icon>Install</a>
-                    </button> -->
-            <!-- <button mat-raised-button *ngIf="role_machineConnection">
-                        <a [routerLink]="['Machineconnection']" routerLinkActive="active" skipLocationChange class="nav-link">
-                            <mat-icon class="iconmod shwmaticon">swap_horiz</mat-icon>
-                            <mat-icon class="iconmod shwsvgicon deskicon" svgIcon="swap_horiz"></mat-icon>Machine Connection</a>
-                    </button>
-                    <button mat-raised-button *ngIf="role_deployment">
-                        <a [routerLink]="['Deployment']" routerLinkActive="active" skipLocationChange class="nav-link">
-                            <mat-icon class="iconmod shwmaticon">cloud_upload</mat-icon>
-                            <mat-icon class="iconmod shwsvgicon deskicon" svgIcon="cloud_upload"></mat-icon>Deployment</a>
-                    </button>
-                    <button mat-raised-button *ngIf="role_connection">
-                        <a [routerLink]="['Connection']" routerLinkActive="active" skipLocationChange class="nav-link">
-                            <mat-icon class="iconmod shwmaticon">insert_link</mat-icon>
-                            <mat-icon class="iconmod shwsvgicon deskicon" svgIcon="insert_link"></mat-icon>Connection</a>
-                    </button>
-                    <button mat-raised-button *ngIf="role_machine">
-                        <a [routerLink]="['Machine']" routerLinkActive="active" skipLocationChange class="nav-link">
-                            <mat-icon class="iconmod shwmaticon" svgIcon="machines"></mat-icon>
-                            <mat-icon class="iconmod shwsvgicon deskicon" svgIcon="machines2"></mat-icon>Machine</a>
-                    </button>
-                    <button mat-raised-button *ngIf="role_machineSpec">
-                        <a [routerLink]="['Machinespecs']" routerLinkActive="active" skipLocationChange class="nav-link">
-                            <mat-icon class="iconmod shwmaticon">build</mat-icon>
-                            <mat-icon class="iconmod shwsvgicon deskicon" svgIcon="build"></mat-icon>Machine Specs</a>
-                    </button>
-                    <button mat-raised-button *ngIf="role_platform">
-                        <a [routerLink]="['Platform']" routerLinkActive="active" skipLocationChange class="nav-link">
-                            <mat-icon class="iconmod shwmaticon">developer_mode</mat-icon>
-                            <mat-icon class="iconmod shwsvgicon deskicon" svgIcon="developer_mode"></mat-icon>Platform</a>
-                    </button> -->
-            <!-- <button mat-raised-button *ngIf="role_overview">
-                        <a [routerLink]="['SystemOverView']" skipLocationChange routerLinkActive="active" class="nav-link">
-                            <mat-icon class="iconmod shwmaticon">remove_red_eye</mat-icon>
-                            <mat-icon class="iconmod shwsvgicon deskicon deskicon" style="color:orange;">remove_red_eye</mat-icon>
-                            <span class="link-content">Overview</span>
-                        </a>
-                    </button> -->
-            <!-- <button matTooltip="View profile" mat-mini-fab class="ml-5" [matMenuTriggerFor]="menu">
-                        <mat-icon>more_vert</mat-icon>
-                    </button> -->
             <app-header [selectedProfile]="'System'"></app-header>
-
-            <!-- <mat-menu #menu="matMenu" xPosition="before">
-                        <app-header></app-header>
-                    </mat-menu> -->
           </div>
         </div>
       </mat-nav-list>
@@ -161,68 +47,7 @@
           <span>{{headerTxt}}</span>
         </div>
         <div class="" style="display:flex;">
-          <!-- <button matTooltip="Status" matTooltipPosition='below' mat-mini-fab *ngIf="role_status">
-                    <a [routerLink]="['AppDeploy']" routerLinkActive="active" skipLocationChange class="nav-link">
-                        <mat-icon class="iconmod shwmaticon">search</mat-icon>
-                        <mat-icon class="iconmod shwsvgicon" svgIcon="search"></mat-icon>
-                    </a>
-                </button>
-                <button  matTooltipPosition='below' mat-mini-fab *ngIf="role_install">
-                    <a [routerLink]="['Install']" routerLinkActive="active" skipLocationChange class="nav-link">
-                        <mat-icon class="iconmod shwmaticon">refresh</mat-icon>
-                        <mat-icon class="iconmod shwsvgicon" svgIcon="refresh"></mat-icon>
-                    </a>
-                </button> -->
-          <!-- <button  matTooltipPosition='below' mat-mini-fab *ngIf="role_machineConnection">
-                    <a [routerLink]="['Machineconnection']" routerLinkActive="active" skipLocationChange class="nav-link">
-                        <mat-icon class="iconmod shwmaticon">swap_horiz</mat-icon>
-                        <mat-icon class="iconmod shwsvgicon" svgIcon="swap_horiz"></mat-icon>
-                    </a>
-                </button>
-                <button matTooltip="Deployment" matTooltipPosition='below' mat-mini-fab *ngIf="role_deployment">
-                    <a [routerLink]="['Deployment']" routerLinkActive="active" skipLocationChange class="nav-link">
-                        <mat-icon class="iconmod shwmaticon">cloud_upload</mat-icon>
-                        <mat-icon class="iconmod shwsvgicon" svgIcon="cloud_upload"></mat-icon>
-                    </a>
-                </button>
-                <button [routerLink]="['Connection']" matTooltipPosition='below' mat-mini-fab *ngIf="role_connection">
-                    <a routerLink="/connection" routerLinkActive="active" skipLocationChange class="nav-link">
-                        <mat-icon class="iconmod shwmaticon">insert_link</mat-icon>
-                        <mat-icon class="iconmod shwsvgicon" svgIcon="insert_link"></mat-icon>
-                    </a>
-                </button>
-                <button matTooltip="Machine" matTooltipPosition='below' mat-mini-fab *ngIf="role_machine">
-                    <a [routerLink]="['Machine']" routerLinkActive="active" skipLocationChange class="nav-link">
-                        <mat-icon class="iconmod shwmaticon" svgIcon="machines"></mat-icon>
-                        <mat-icon class="iconmod shwsvgicon" svgIcon="machines2"></mat-icon>
-                    </a>
-                </button>
-                <button matTooltip="Machine Specs" matTooltipPosition='below' mat-mini-fab *ngIf="role_machineSpec">
-                    <a [routerLink]="['Machinespecs']" routerLinkActive="active" skipLocationChange class="nav-link">
-                        <mat-icon class="iconmod shwmaticon">build</mat-icon>
-                        <mat-icon class="iconmod shwsvgicon" svgIcon="build"></mat-icon>
-                    </a>
-                </button>
-                <button matTooltip="Platform" matTooltipPosition='below' mat-mini-fab *ngIf="role_platform">
-                    <a [routerLink]="['Platform']" routerLinkActive="active" skipLocationChange class="nav-link">
-                        <mat-icon class="iconmod shwmaticon">developer_mode</mat-icon>
-                        <mat-icon class="iconmod shwsvgicon" svgIcon="developer_mode"></mat-icon>
-                    </a>
-                </button> -->
-          <!-- <button matTooltip="Overview" matTooltipPosition='below' mat-mini-fab *ngIf="role_overview">
-                    <a [routerLink]="['SystemOverView']" skipLocationChange routerLinkActive="active" class="nav-link">
-                        <mat-icon class="iconmod shwmaticon">remove_red_eye</mat-icon>
-                        <mat-icon class="iconmod shwsvgicon deskicon" style="color:orange;">remove_red_eye</mat-icon>
-                    </a>
-                </button> -->
           <app-header [selectedProfile]="'IT Infrastructure'"></app-header>
-          <!-- <button class="profile-btn" mat-mini-fab [matMenuTriggerFor]="menu">
-                    <a class="nav-link"><mat-icon>more_vert</mat-icon></a>
-                </button> -->
-
-          <!-- <mat-menu #menu="matMenu" xPosition="before">
-                    <app-header></app-header>
-                </mat-menu> -->
         </div>
       </mat-nav-list>
     </div>

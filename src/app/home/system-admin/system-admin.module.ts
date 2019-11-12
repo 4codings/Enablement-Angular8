@@ -1,18 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {DragDropModule} from '@angular/cdk/drag-drop';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { SystemAdminComponent } from './system-admin.component';
-import { PlatformComponent } from './platform/platform.component';
+// import { PlatformComponent } from './platform/platform.component';
 import { SystemAdminRoutingModule } from './system-admin-routing.module';
-import { ConnectionComponent } from './connection/connection.component';
-import { DeployStatusComponent } from './deploy-status/deploy-status.component';
-import { DeploymentComponent } from './deployment/deployment.component';
+// import { ConnectionComponent } from './connection/connection.component';
+// import { DeploymentComponent } from './deployment/deployment.component';
 import { SharedModule } from '../../shared/shared.module';
 import { DeploymentsnavbarComponent } from './deploymentsnavbar/deploymentsnavbar.component';
-import { InstallComponent } from './install/install.component';
-import { MachineComponent } from './machine/machine.component';
-import { MachineconnectionComponent } from './machineconnection/machineconnection.component';
-import { MachinespecsComponent } from './machinespecs/machinespecs.component';
+// import { MachineComponent } from './machine/machine.component';
+// import { MachineconnectionComponent } from './machineconnection/machineconnection.component';
+// import { MachinespecsComponent } from './machinespecs/machinespecs.component';
 import { HeaderModule } from '../header/header.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { OverviewComponent } from './overview/overview.component';
@@ -33,9 +31,11 @@ import { ManageMachinesComponent } from './overview/dialogs/manage-machines/mana
 import { AssignConnectionExeComponent } from './overview/dialogs/assign-connection-exe/assign-connection-exe.component';
 import { AssignMcnPlfComponent } from './overview/dialogs/assign-mcn-plf/assign-mcn-plf.component';
 import { FilterPlfExesPipe } from './overview/pipes/filter-plf-exes.pipe';
+import { InstallComponent } from './install/install.component';
+import { DeployStatusComponent } from './deploy-status/deploy-status.component';
 
 @NgModule({
-  declarations: [SystemAdminComponent, PlatformComponent, ConnectionComponent, DeployStatusComponent, DeploymentComponent, DeploymentsnavbarComponent, InstallComponent, MachineComponent, MachineconnectionComponent, MachinespecsComponent, OverviewComponent, MachinesListComponent, SingleExeComponent, ExeTileListComponent, AddPlatformDialogComponent, EditExeTypeDialogComponent, ExeTypesListComponent, SingleMachineComponent, MachineTileListComponent, FilterExetypePipe, FilterMachinesPipe, AddExeDialogComponent, AddConnectionDialogComponent, EditConnectionDialogComponent, ManageMachinesComponent,AssignConnectionExeComponent, AssignMcnPlfComponent, FilterPlfExesPipe],
+  declarations: [SystemAdminComponent, DeploymentsnavbarComponent, OverviewComponent, MachinesListComponent, SingleExeComponent, ExeTileListComponent, AddPlatformDialogComponent, EditExeTypeDialogComponent, ExeTypesListComponent, SingleMachineComponent, MachineTileListComponent, FilterExetypePipe, FilterMachinesPipe, AddExeDialogComponent, AddConnectionDialogComponent, EditConnectionDialogComponent, ManageMachinesComponent, AssignConnectionExeComponent, AssignMcnPlfComponent, FilterPlfExesPipe, DeployStatusComponent, InstallComponent],
   imports: [
     CommonModule,
     SystemAdminRoutingModule,
@@ -48,6 +48,6 @@ import { FilterPlfExesPipe } from './overview/pipes/filter-plf-exes.pipe';
   entryComponents: [AddPlatformDialogComponent, AssignConnectionExeComponent, EditExeTypeDialogComponent, AddExeDialogComponent, AddConnectionDialogComponent, EditConnectionDialogComponent, ManageMachinesComponent, AssignMcnPlfComponent]
 })
 export class SystemAdminModule {
-  constructor(){
+  constructor() {
   }
 }

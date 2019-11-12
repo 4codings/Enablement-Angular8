@@ -1,8 +1,6 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
-import { Http, Response, Headers } from '@angular/http';
-import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { HostListener } from "@angular/core";
 import { Globals } from '../../../services/globals';
 import { StorageSessionService } from '../../../services/storage-session.service';
 import { UseradminService } from '../../../services/useradmin.service2';

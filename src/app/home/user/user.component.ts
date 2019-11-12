@@ -1,24 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import * as usreActions from '../../store/user-admin/user/user.action';
-import { Store, select } from '@ngrx/store';
-import { AppState } from 'src/app/app.state';
-import { User } from '../../store/user-admin/user/user.model';
-import * as userSelectors from '../../store/user-admin/user/user.selectors';
-import * as userGroupSelectors from '../../store/user-admin/user-group/usergroup.selectors';
-import * as userGroupActions from '../../store/user-admin/user-group/usergroup.action';
-import { Observable } from 'rxjs';
-import { userGroup } from 'src/app/store/user-admin/user-group/usergroup.model';
-import { Router, NavigationEnd } from '@angular/router';
-import { StorageSessionService } from '../../services/storage-session.service';
-import { RollserviceService } from '../../services/rollservice.service';
-import { ToastrService } from 'ngx-toastr';
-import { UseradminService } from '../../services/useradmin.service2';
-import { filter, take } from 'rxjs/operators';
 import { Location } from '@angular/common';
-import { OptionalValuesService } from 'src/app/services/optional-values.service';
-import { ApiService } from 'src/app/service/api/api.service';
+import { Component, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { filter, take } from 'rxjs/operators';
 import { UserService } from 'src/app/core/user.service';
+import { ApiService } from 'src/app/service/api/api.service';
+import { OptionalValuesService } from 'src/app/services/optional-values.service';
 import { roleTypeConstant } from 'src/app/shared/_models/role.constants';
+import { RollserviceService } from '../../services/rollservice.service';
+import { StorageSessionService } from '../../services/storage-session.service';
+import { UseradminService } from '../../services/useradmin.service2';
 
 
 @Component({
