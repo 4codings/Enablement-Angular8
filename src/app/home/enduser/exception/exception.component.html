@@ -1,17 +1,11 @@
-
+<!-- 
 
         <div flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="row">
           <div fxFlex="30">
             <label style="text-align:center;width:100%;">
               <strong>{{Label['SRVC_CD']}}</strong>
             </label>
-            <!-- <mat-form-field class="input_control">
-        <mat-select [(value)]="exc_sl">
-          <mat-option style="text-align:center;"  (click)="functionATIDGetData();functionOTIDGetData();" *ngFor="let exc of srvcd" [value]="exc">
-            {{exc}}
-          </mat-option>
-        </mat-select>
-          </mat-form-field> -->
+            
             <mat-list *ngIf="desktopView" class="scroll">
               <mat-list-item class="list_item" *ngFor="let exc of srvcd ; let i = index;" (click)="functionATIDGetData(exc);functionOTIDGetData(exc);onpselect(i);"
                 [class.active]="i == selectedplat">
@@ -29,13 +23,7 @@
             <label style="text-align:center;width:100%;">
               <strong>Open {{Label['TXN_ID']}}</strong>
             </label>
-            <!-- <mat-form-field class="input_control">
-            <mat-select [(value)]="txn_id">
-              <mat-option style="text-align:center;"  *ngFor="let o of otxnid" [value]="o" (click)="functionacqire();functionservicedetails();functiondetailshow()">
-                {{o}} 
-              </mat-option>
-            </mat-select>
-              </mat-form-field> -->
+           
             <mat-list *ngIf="desktopView" class="scroll">
               <mat-list-item class="list_item" *ngFor="let o of otxnid; let j = index;" (click)="functionacqire();functionservicedetails(o);functiondetailshow();onqselect(j);"
                 [class.active]="j == selectedot">
@@ -54,13 +42,7 @@
             <label style="text-align:center;width:100%;">
               <strong>Acquired {{Label['TXN_ID']}}</strong>
             </label>
-            <!-- <mat-form-field class="input_control">
-                <mat-select  [(value)]="txn_id"> 
-                  <mat-option style="text-align:center;"  *ngFor="let a of atxnid" [value]="a" (click)="functionoperations();functionownedservicedetails();functiondetailshow()">  
-                    {{a}}                  
-                  </mat-option>
-                </mat-select>
-              </mat-form-field> -->
+           
             <mat-list *ngIf="desktopView" class="scroll">
               <mat-list-item class="list_item" *ngFor="let a of atxnid; let k = index;" (click)="functionoperations();functionownedservicedetails(a);functiondetailshow();onrselect(k);"
                 [class.active]="k == selectedat">
@@ -76,7 +58,7 @@
           </div>
           <div fxFlex="5"></div>
 
-          <!--radio buttons-->
+          
           <div fxLayout="column" style="padding-top: 40px">
           <div fxFlexAlign="center">
             <mat-radio-group *ngIf="operationshow" [(ngModel)]="selectedradiobtn">
@@ -240,7 +222,6 @@
 
 
 
-            <!-- <div fxLayoutGap="10px" fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="row" fxLayout.gt-sm="row" *ngIf="showLogout()">
-</div> -->
+           
           </div>
-        </div>
+        </div> -->

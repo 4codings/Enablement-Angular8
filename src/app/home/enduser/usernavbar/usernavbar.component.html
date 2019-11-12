@@ -9,27 +9,6 @@
             <img [src]="getLinkPicture()" onerror="this.src='/assets/logo.png'" alt="" class="logo-img" />
           </div>
           <div class="ml-auto pr-4">
-            <!-- <button mat-raised-button color="primary" *ngIf="roll_myTask"><a [routerLink]="['Mytask']"
-                skipLocationChange routerLinkActive="active" class="nav-link">
-                <mat-icon class="iconmod shwmaticon">work</mat-icon>
-                <mat-icon class="iconmod shwsvgicon deskicon" svgIcon="task"></mat-icon>My Tasks
-              </a></button>
-            <button mat-raised-button color="primary" *ngIf="roll_exeption"><a [routerLink]="['Exception']"
-                skipLocationChange routerLinkActive="active" class="nav-link">
-                <mat-icon class="iconmod shwmaticon">error</mat-icon>
-                <mat-icon class="iconmod shwsvgicon deskicon" svgIcon="error"></mat-icon>Exception
-              </a></button>
-            <button mat-raised-button color="primary" *ngIf='roll_design'><a [routerLink]="['Design']"
-                skipLocationChange routerLinkActive="active" class="nav-link">
-                <mat-icon class="iconmod shwmaticon">work</mat-icon>
-                <mat-icon class="iconmod shwsvgicon deskicon" svgIcon="task"></mat-icon>Process Design
-              </a></button>
-            <button mat-raised-button color="primary" *ngIf='roll_dashboard'><a [routerLink]="['Dashboard']"
-                skipLocationChange routerLinkActive="active" class="nav-link">
-                <mat-icon class="iconmod shwmaticon">dashboard</mat-icon>
-                <mat-icon class="iconmod shwsvgicon deskicon" svgIcon="dashboard"></mat-icon>Dashboard
-              </a></button>
-             -->
             <button *ngIf="showNewIcon" class="profile-btn" mat-mini-fab [matMenuTriggerFor]="menu">
               <a class="nav-link">
                 <mat-icon>more_vert</mat-icon>
@@ -45,13 +24,6 @@
               </ng-container>
             </mat-menu>
             <app-header [selectedProfile]="'Workflow'"></app-header>
-            <!-- <button matTooltip="View profile" mat-mini-fab class="ml-5" [matMenuTriggerFor]="menu">
-              <mat-icon>more_vert</mat-icon>
-            </button> -->
-
-            <!-- <mat-menu #menu="matMenu" xPosition="before">
-              <app-header></app-header>
-            </mat-menu> -->
 
           </div>
         </div>
@@ -61,52 +33,29 @@
     <div class="w-100" fxHide="true" fxShow.xs="true">
       <mat-nav-list>
         <div flex fxLayout="row">
-        <div class="mx-2 mt-1">
-          <img [src]="getLinkPicture()" onerror="this.src='/assets/logo.png'" alt="" class="logo-img" />
-        </div>
-        <div class="ml-auto pr-4">
-          <!-- <button mat-icon-button matTooltip="My Tasks" matTooltipPosition='above' *ngIf="roll_myTask"><a
-              [routerLink]="['Mytask']" skipLocationChange routerLinkActive="active" class="nav-link">
-              <mat-icon class="iconmod shwmaticon">work</mat-icon>
-              <mat-icon class="iconmod shwsvgicon" svgIcon="task"></mat-icon>
-            </a></button>
-          <button mat-icon-button matTooltip="Exception" matTooltipPosition='above' *ngIf="roll_exeption"><a
-              [routerLink]="['Exception']" skipLocationChange routerLinkActive="active" class="nav-link">
-              <mat-icon class="iconmod shwmaticon">error</mat-icon>
-              <mat-icon class="iconmod shwsvgicon" svgIcon="error"></mat-icon>
-            </a></button>
-          <button mat-icon-button matTooltip="Process Design" matTooltipPosition='above' *ngIf='roll_process'><a
-              [routerLink]="['Design']" skipLocationChange routerLinkActive="active" class="nav-link">
-              <mat-icon class="iconmod shwmaticon">work</mat-icon>
-              <mat-icon class="iconmod shwsvgicon" svgIcon="task"></mat-icon>
-            </a></button>
-          <button mat-icon-button matTooltip="Dashboard" matTooltipPosition='above' *ngIf='roll_dashboard'><a
-              [routerLink]="['Dashboard']" skipLocationChange routerLinkActive="active" class="nav-link">
-              <mat-icon class="iconmod shwmaticon">dashboard</mat-icon>
-              <mat-icon class="iconmod shwsvgicon" svgIcon="dashboard"></mat-icon>
-            </a></button> -->
-          <button *ngIf="showNewIcon" class="profile-btn" mat-mini-fab [matMenuTriggerFor]="menu">
-            <a class="nav-link">
-              <mat-icon>more_vert</mat-icon>
-            </a>
-          </button>
+          <div class="mx-2 mt-1">
+            <img [src]="getLinkPicture()" onerror="this.src='/assets/logo.png'" alt="" class="logo-img" />
+          </div>
+          <div class="ml-auto pr-4">
+            <button *ngIf="showNewIcon" class="profile-btn" mat-mini-fab [matMenuTriggerFor]="menu">
+              <a class="nav-link">
+                <mat-icon>more_vert</mat-icon>
+              </a>
+            </button>
 
-          <mat-menu #menu="matMenu" xPosition="before">
-            <ng-container *ngFor="let opt of options">
-              <button [style.display]="!opt.flag ? 'none' : null" mat-menu-item (click)="optionSelecteds(opt)">
-                <mat-icon>bookmarks</mat-icon>
-                {{opt.value}}
-              </button>
-            </ng-container>
-          </mat-menu>
-          <div class="profile-btn">
-            <app-header [selectedProfile]="'Workflow'"></app-header>
+            <mat-menu #menu="matMenu" xPosition="before">
+              <ng-container *ngFor="let opt of options">
+                <button [style.display]="!opt.flag ? 'none' : null" mat-menu-item (click)="optionSelecteds(opt)">
+                  <mat-icon>bookmarks</mat-icon>
+                  {{opt.value}}
+                </button>
+              </ng-container>
+            </mat-menu>
+            <div class="profile-btn">
+              <app-header [selectedProfile]="'Workflow'"></app-header>
+            </div>
           </div>
         </div>
-        </div>
-        <!-- <mat-menu #menu="matMenu" xPosition="before">
-          <app-header></app-header>
-        </mat-menu> -->
       </mat-nav-list>
     </div>
     <!-- Tab View -->
@@ -116,29 +65,7 @@
           <img [src]="getLinkPicture()" onerror="this.src='/assets/logo.png'" alt="" class="logo-img" />
         </div>
         <div class="" style="display:flex;">
-          <!-- <button mat-mini-fab color="primary" matTooltip="My Tasks" matTooltipPosition='above' *ngIf="roll_myTask"><a
-              [routerLink]="['Mytask']" skipLocationChange routerLinkActive="active" class="nav-link">
-              <mat-icon class="iconmod shwmaticon">work</mat-icon>
-              <mat-icon class="iconmod shwsvgicon" svgIcon="task"></mat-icon>
-            </a></button>
-          <button mat-mini-fab color="primary" matTooltip="Exception" matTooltipPosition='above'
-            *ngIf="roll_exeption"><a [routerLink]="['Exception']" skipLocationChange routerLinkActive="active"
-              class="nav-link">
-              <mat-icon class="iconmod shwmaticon">error</mat-icon>
-              <mat-icon class="iconmod shwsvgicon" svgIcon="error"></mat-icon>
-            </a></button>
-          <button mat-mini-fab color="primary" matTooltip="Process Design" matTooltipPosition='above'
-            *ngIf='roll_process'><a [routerLink]="['Design']" skipLocationChange routerLinkActive="active"
-              class="nav-link">
-              <mat-icon class="iconmod shwmaticon">work</mat-icon>
-              <mat-icon class="iconmod shwsvgicon" svgIcon="task"></mat-icon>
-            </a></button>
-          <button mat-mini-fab color="primary" matTooltip="Dashboard" matTooltipPosition='above'
-            *ngIf='roll_dashboard'><a [routerLink]="['Dashboard']" skipLocationChange routerLinkActive="active"
-              class="nav-link">
-              <mat-icon class="iconmod shwmaticon">dashboard</mat-icon>
-              <mat-icon class="iconmod shwsvgicon" svgIcon="dashboard"></mat-icon>
-            </a></button> -->{{showNewIcon}}
+          {{showNewIcon}}
           <button *ngIf="showNewIcon" class="profile-btn" mat-mini-fab [matMenuTriggerFor]="menu">
             <a class="nav-link">
               <mat-icon>more_vert</mat-icon>

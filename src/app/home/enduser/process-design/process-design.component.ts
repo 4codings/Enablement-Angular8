@@ -2426,45 +2426,6 @@ this.find_process(this.ApplicationCD, this.ProcessCD, 'Paused');
     }, 5000);
   }
 
-  // onPause() {
-
-  //   this.innerTableDT = [];
-  //   // // Pause
-  //   for (let i = 0; i < this.Process_key.length; i++) {
-  //     this.Process_operation(this.Process_key[i], 'Pause');
-  //   }
-  //   setTimeout(() => {
-  //     this.find_process(this.ApplicationCD, this.ProcessCD, 'All');
-  //   }, 5000);
-
-  // }
-
-
-  // onResume() {
-  //   this.innerTableDT = [];
-  //   // // Resume
-  //   for (let i = 0; i < this.Process_key.length; i++) {
-  //     this.Process_operation(this.Process_key[i], 'Resume');
-  //   }
-  //   // await delay(2000);
-  //   setTimeout(() => {
-  //     this.find_process(this.ApplicationCD, this.ProcessCD, 'All');
-  //   }, 5000);
-  //   // // this.find_process(this.ApplicationCD,this.ProcessCD,"All");
-  // }
-
-  // onKill() {
-  //   this.innerTableDT = [];
-  //   for (let i = 0; i < this.Process_key.length; i++) {
-  //     this.Process_operation(this.Process_key[i], 'Kill');
-  //     ('Process id' + this.Process_key[i]);
-  //   }
-  //   setTimeout(() => {
-  //     this.find_process(this.ApplicationCD, this.ProcessCD, 'All');
-  //   }, 5000);
-  // }
-
-
   applyFilter(filterValue: string) {
     filterValue = filterValue.trim(); // Remove whitespace
     filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches

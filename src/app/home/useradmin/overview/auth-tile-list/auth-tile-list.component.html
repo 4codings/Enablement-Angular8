@@ -20,7 +20,6 @@
       </mat-icon>
       <!-- *ngIf="currAuth.V_READ==='Y'" -->
       <mat-icon [ngClass]="{'disable-icon':  currAuth.V_READ==='N', 'tile-icon' : currAuth.V_READ==='Y'}"
-        (dblclick)="method2CallForDblClick('read',currAuth)"
         [matTooltip]="currAuth.V_READ==='N'? 'Enable Read':'Disable Read'">
         remove_red_eye
       </mat-icon>

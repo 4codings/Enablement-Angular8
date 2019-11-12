@@ -1,13 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-
-import { RollserviceService } from '../../../services/rollservice.service';
-import { UseradminService } from 'src/app/services/useradmin.service2';
 import { HttpClient } from '@angular/common/http';
-import { Router, NavigationEnd } from '@angular/router';
-import { filter, take } from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { OptionalValuesService } from 'src/app/services/optional-values.service';
-import { ApiService } from '../../../service/api/api.service';
 import { environment } from '../../../../environments/environment';
+import { ApiService } from '../../../service/api/api.service';
+import { RollserviceService } from '../../../services/rollservice.service';
+
 
 @Component({
   selector: 'app-usernavbar',
@@ -89,47 +88,6 @@ export class UsernavbarComponent implements OnInit {
         this.timeStamp = (new Date()).getTime();
       }
     });
-    // this.rollserviceService.getRollCd().then((res) => {
-    //   this.httpClient.get('../../../../assets/control-variable.json').subscribe(cvres => {
-    //     this.ctrl_variables = cvres;
-    //     res.map((role) => {
-    //       switch (role) {
-    //         case 'Enablement Workflow Execute Role':
-    //           if (this.ctrl_variables.show_EXE) {
-    //             this.roll_execute = true;
-    //           }
-    //           this.roll_design = true;
-    //           break;
-    //         case 'Enablement Workflow Schedule Role':
-    //           if (this.ctrl_variables.show_SCHE) {
-    //             this.roll_schedule = true;
-    //           }
-    //           break;
-    //         case 'Enablement Workflow Orchestrate Role':
-    //           if (this.ctrl_variables.show_ORCH) {
-    //             this.roll_orchestrate = true;
-    //           }
-    //           break;
-    //         case 'Enablement Workflow MyTask Role':
-    //           this.roll_myTask = true;
-    //           break;
-    //         case 'Enablement Workflow Exception Role':
-    //           this.roll_exeption = true;
-    //           break;
-    //         case 'Enablement Workflow Dashboard Role':
-    //           this.roll_dashboard = true;
-    //           break;
-    //         case 'Enablement Workflow Process Role':
-    //           if (this.ctrl_variables.show_PROC) {
-    //             this.roll_process = true;
-    //           }
-    //           break;
-    //         default:
-    //           break;
-    //       }
-    //     });
-    //   });
-    // });
   }
   optionSelecteds(value) {
     if (value.key == 'Properties') {

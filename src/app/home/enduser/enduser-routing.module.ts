@@ -13,20 +13,8 @@ const routes: Routes = [{
   children: [
     { path: '', redirectTo: 'Design', pathMatch: 'full' },
     {
-      path: 'Mytask',
-      loadChildren: () => import('./mytask/mytask.module').then(m => m.MytaskModule)
-    },
-    {
-      path: 'Exception',
-      loadChildren: () => import('./exception/exception.module').then(m => m.ExceptionModule)
-    },
-    {
       path: 'Design',
       loadChildren: () => import('./process-design/process-design.module').then(m => m.ProcessDesignModule)
-    },
-    {
-      path: 'Dashboard',
-      loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
     },
     { path: 'InputArtForm', component: ArtifactFormComponent, runGuardsAndResolvers: 'always' },
     { path: 'RepeatForm', component: RepeatableFormComponent, runGuardsAndResolvers: 'always' },
@@ -35,16 +23,6 @@ const routes: Routes = [{
     { path: 'ptable', component: PersonalizationTableComponent },
   ]
 },
-
-
-  // { path: 'InputArtForm', loadChildren: () => ArtifactFormModule, runGuardsAndResolvers: 'always' },
-  // { path: 'RepeatForm', loadChildren: () => RepeatableFormModule, runGuardsAndResolvers: 'always' },
-  // { path: 'NonRepeatForm', loadChildren: () => NonRepeatableFormModule, runGuardsAndResolvers: 'always' },
-  // {
-  //   path: 'ReportTable',
-  //   loadChildren: () => ReportTableModule,
-  // },
-
 ];
 
 @NgModule({

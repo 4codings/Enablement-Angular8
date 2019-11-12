@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  domainName: 'enablement.cc/Enablement',
-  apiURL: 'enablement.cc',
+  domainName: 'enablement.us/Enablement',
+  apiURL: 'enablement.us',
   idle: 780,
   timeout: 120
 };

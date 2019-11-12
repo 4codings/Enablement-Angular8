@@ -35,11 +35,6 @@ export class MonitorComponent implements OnInit, OnDestroy {
   ctrl_variables: any;
   private viewer: any;
   private downloadUrl: string;
-  // dateTimeList: Food[] = [
-  //   { value: 'steak-0', viewValue: 'Steak' },
-  //   { value: 'pizza-1', viewValue: 'Pizza' },
-  //   { value: 'tacos-2', viewValue: 'Tacos' }
-  // ];
   is_more = false;
   currentDate: any = new Date();
   fromDate = new Date(this.currentDate.setDate(this.currentDate.getDate() - 1));

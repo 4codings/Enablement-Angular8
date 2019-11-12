@@ -3,8 +3,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ReportTableComponent } from '../report-table.component';
 import { ConfigServiceService } from '../../../../services/config-service.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { isFulfilled } from 'q';
-import { data } from 'src/app/home/useradmin/authorize/authorize.component';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
