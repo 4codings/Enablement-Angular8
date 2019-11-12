@@ -19,8 +19,7 @@
         create
       </mat-icon>
       <!-- *ngIf="currAuth.V_READ==='Y'" -->
-      <mat-icon [ngClass]="{'disable-icon':  currAuth.V_READ==='N', 'tile-icon' : currAuth.V_READ==='Y'}"
-        [matTooltip]="currAuth.V_READ==='N'? 'Enable Read':'Disable Read'">
+      <mat-icon [ngClass]="{'disable-icon':  currAuth.V_READ==='N', 'tile-icon' : currAuth.V_READ==='Y'}">
         remove_red_eye
       </mat-icon>
       <!-- *ngIf="currAuth.V_DELETE==='Y'" -->

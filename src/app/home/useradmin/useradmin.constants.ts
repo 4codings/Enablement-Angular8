@@ -21,18 +21,18 @@ export const authorizationTypeConstants = {
   ARTIFACT: 'ARTIFACT',
   PLATFORM: 'PLATFORM',
   SERVER: 'SERVER',
-  SLA: 'SLA'
+  // SLA: 'SLA'
 };
 
 export const authorizationTypeOptions: { key: string, label: string }[] = [
-  { key: '', label: 'ALL' },
+  // { key: '', label: 'ALL' },
   { key: authorizationTypeConstants.PROCESS, label: 'Process' },
   { key: authorizationTypeConstants.SERVICE, label: 'Service' },
   { key: authorizationTypeConstants.EXE, label: 'Exe' },
   { key: authorizationTypeConstants.ARTIFACT, label: 'Artifact' },
   { key: authorizationTypeConstants.PLATFORM, label: 'Platform' },
   { key: authorizationTypeConstants.SERVER, label: 'Server' },
-  { key: authorizationTypeConstants.SLA, label: 'SLA' },
+  // { key: authorizationTypeConstants.SLA, label: 'SLA' },
 ];
 
 export const groupTypeConstant = {

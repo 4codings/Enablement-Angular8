@@ -7,24 +7,69 @@
       </button>
       <mat-menu #groupTypeMenu="matMenu">
         <button mat-menu-item *ngFor="let item of authorizationTypeOptions"
-                (click)="selectAuthType(item)">{{item.label}}</button>
+          (click)="selectAuthType(item)">{{item.label}}</button>
       </mat-menu>
     </div>
-    <button mat-icon-button class="add-btn"
-            matTooltip="Add Role"
-            *ngIf="rolePermission"
-            (click)="onAddRoleBtnClick()">
+    <div>
+      <mat-form-field class="form-width" *ngIf="selectedAuthType.label.toLowerCase() == 'process'">
+        <input matInput name="app" [matAutocomplete]="auto" cdkFocusInitial placeholder="Select an Application">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option style="text-align:center;" (click)="onAuthSelect(app)"
+            *ngFor="let app of filteredApplicationValues" [value]="app.V_APP_CD">
+            {{app.V_APP_CD}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <mat-form-field class="form-width" *ngIf="selectedAuthType.label.toLowerCase() == 'service'">
+        <input matInput name="app" [(ngModel)]="selectedApp" [matAutocomplete]="auto" cdkFocusInitial
+          placeholder="Select an Application">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option style="text-align:center;" *ngFor="let app of filteredApplicationValues"
+            (click)="onProcessSelect(app)" [value]="app.V_APP_CD">
+            {{app.V_APP_CD}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <mat-form-field class="form-width" *ngIf="selectedAuthType.label.toLowerCase() == 'artifact'">
+        <input matInput name="app" [(ngModel)]="selectedApp" placeholder="Select an Artifact Type"
+          [matAutocomplete]="auto" cdkFocusInitial>
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option style="text-align:center;" (click)="onAuthSelect(app)"
+            *ngFor="let app of filteredApplicationValues" [value]="app.V_ARTFCT_TYP">
+            {{app.V_ARTFCT_TYP}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <mat-form-field class="form-width" *ngIf="selectedAuthType.label.toLowerCase() == 'exe'">
+        <input matInput name="app" [(ngModel)]="selectedApp" placeholder="Select an Executable Type"
+          [matAutocomplete]="auto" cdkFocusInitial>
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option style="text-align:center;" (click)="onAuthSelect(app)"
+            *ngFor="let app of filteredApplicationValues" [value]="app.V_EXE_TYP">
+            {{app.V_EXE_TYP}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+    <div *ngIf="selectedApp !='' &&selectedAuthType.label.toLowerCase() == 'service' ">
+      <mat-form-field class="form-width">
+        <input matInput name="app" [matAutocomplete]="auto" cdkFocusInitial placeholder="Select a Process">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option style="text-align:center;" *ngFor="let process of filteredProcessValues"
+            (click)="onAuthSelect(process)" [value]="process.V_PRCS_CD">
+            {{process.V_PRCS_CD}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+    <button mat-icon-button class="add-btn" matTooltip="Add Role" *ngIf="rolePermission" (click)="onAddRoleBtnClick()">
       <mat-icon>add_circle</mat-icon>
     </button>
   </div>
   <mat-divider></mat-divider>
   <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="16px" cdkDropListGroup>
-    <app-single-role *ngFor="let currRole of roles"
-                      [role]="currRole"
-                      [rolePermission]="rolePermission"
-                      [authPermission]="authPermission"
-                      [authorizationPermission]="authorizationPermission"
-                      [assignPermission]="assignPermission"
-                      [controlVariables]="controlVariables"></app-single-role>
+    <app-single-role *ngFor="let currRole of roles" [role]="currRole" [rolePermission]="rolePermission"
+      [authPermission]="authPermission" [authorizationPermission]="authorizationPermission"
+      [assignPermission]="assignPermission" [controlVariables]="controlVariables"></app-single-role>
   </div>
 </div>

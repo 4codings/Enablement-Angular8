@@ -31,11 +31,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss",
-              "node_modules/bpmn-js/dist/assets/diagram-js.css",
-              "node_modules/bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css",
-              "node_modules/bpmn-js-properties-panel/styles/properties.less",
-              "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
+              "src/styles.scss"
             ],
             "scripts": [],
             "es5BrowserSupport": true
@@ -88,11 +84,7 @@
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
-              "src/styles.scss",
-              "node_modules/bpmn-js/dist/assets/diagram-js.css",
-              "node_modules/bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css",
-              "node_modules/bpmn-js-properties-panel/styles/properties.less",
-              "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
+              "src/styles.scss"
             ],
             "scripts": [],
             "assets": [
