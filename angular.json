@@ -34,7 +34,8 @@
               "src/styles.scss",
               "node_modules/bpmn-js/dist/assets/diagram-js.css",
               "node_modules/bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css",
-              "node_modules/bpmn-js-properties-panel/styles/properties.less"
+              "node_modules/bpmn-js-properties-panel/styles/properties.less",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
             ],
             "scripts": [],
             "es5BrowserSupport": true
@@ -90,7 +91,8 @@
               "src/styles.scss",
               "node_modules/bpmn-js/dist/assets/diagram-js.css",
               "node_modules/bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css",
-              "node_modules/bpmn-js-properties-panel/styles/properties.less"
+              "node_modules/bpmn-js-properties-panel/styles/properties.less",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
             ],
             "scripts": [],
             "assets": [
