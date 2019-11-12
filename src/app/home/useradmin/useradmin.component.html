@@ -1,60 +1,12 @@
-<!-- <div>
+<div>
 
-  <div fxLayout="row" fxLayout.lt-sm="column">
-    <div fxFlex="9">
-    </div>
-    <div fxFlex="82">
+  <div fxLayout="column" fxLayout.lt-sm="column">
+    <div fxFlex="100">
       <mat-card class="CustomeLayout">
 
         <mat-card-title>
-          <app-header></app-header>
-          <div flex fxLayout="column" fxLayout.lt-sm="column">
-
-            <nav class="navbar ">
-
-              <div fxHide="true" fxShow.gt-sm="true">
-                <mat-nav-list>
-
-                  <button mat-raised-button><a [routerLink]="['Adminuser']" routerLinkActive="active" class="nav-link">
-                      <mat-icon class="iconmod shwmaticon">person</mat-icon>
-                      <mat-icon class="iconmod shwsvgicon deskicon deskicon" svgIcon="user" style="color:orange;"></mat-icon>User
-                    </a></button>
-                  <button mat-raised-button><a [routerLink]="['UserGroup']" routerLinkActive="active" class="nav-link">
-                      <mat-icon class="iconmod shwmaticon">people</mat-icon>
-                      <mat-icon class="iconmod shwsvgicon deskicon deskicon" svgIcon="group"></mat-icon>Group
-                    </a></button>
-                  <button mat-raised-button><a [routerLink]="['UserRole']" routerLinkActive="active" class="nav-link">
-                      <mat-icon class="iconmod shwmaticon">playlist_add_check</mat-icon>
-                      <mat-icon class="iconmod shwsvgicon deskicon deskicon" svgIcon="playlist_add_check"></mat-icon>
-                      Role
-                    </a></button>
-                  <button mat-raised-button><a [routerLink]="['UserAuthorize']" routerLinkActive="active"
-                      class="nav-link">
-                      <mat-icon class="iconmod shwmaticon">account_balance</mat-icon>
-                      <mat-icon class="iconmod shwsvgicon deskicon deskicon" svgIcon="home"></mat-icon>Authorize
-                    </a></button>
-                  <button mat-raised-button><a [routerLink]="['Membership']" routerLinkActive="active" class="nav-link">
-                      <mat-icon class="iconmod shwmaticon">credit_card</mat-icon>
-                      <mat-icon class="iconmod shwsvgicon deskicon deskicon" svgIcon="membership"></mat-icon>Membership
-                    </a></button>
-                  <button mat-raised-button><a [routerLink]="['Assignrole']" routerLinkActive="active" class="nav-link">
-                      <mat-icon class="iconmod shwmaticon">assignment_returned</mat-icon>
-                      <mat-icon class="iconmod shwsvgicon deskicon deskicon" svgIcon="assignment_ret"></mat-icon>Assign
-                      Role
-                    </a></button>
-                  <button mat-raised-button><a [routerLink]="['Authorizerole']" routerLinkActive="active"
-                      class="nav-link">
-                      <mat-icon class="iconmod shwmaticon">lock</mat-icon>
-                      <mat-icon class="iconmod shwsvgicon deskicon deskicon" svgIcon="lock_red"></mat-icon>Authorize
-                      Role
-                    </a></button>
-
-                </mat-nav-list>
-              </div>
-           
-            </nav>
-          </div>
-
+          <!-- <app-header></app-header> -->
+          <app-user-admin-nav></app-user-admin-nav>
         </mat-card-title>
         <mat-card-content>
           <router-outlet></router-outlet>
@@ -62,27 +14,5 @@
 
       </mat-card>
     </div>
-    <div fxFlex="9">
-    </div>
-
-  </div>
-</div> -->
-
-<div>
-	 
-  <div fxLayout="column" fxLayout.lt-sm="column">                
-    <div fxFlex="100" >
-      <mat-card class="CustomeLayout">
-
-      <mat-card-title>
-      <!-- <app-header></app-header> -->
-      <app-user-admin-nav></app-user-admin-nav>
-      </mat-card-title>
-      <mat-card-content>
-          <router-outlet></router-outlet>
-      </mat-card-content>
-
-       </mat-card>
-      </div>
   </div>
 </div>

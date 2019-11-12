@@ -97,38 +97,6 @@ export class AddEditAuthorizeComponent extends AuthorizeComponent implements OnI
           });
         break;
     }
-    // if (this.selectedView == 'addNewAuth') {
-    //   const data = this.authValueObj;
-    //   let body = {
-    //     'V_AUTH_DSC': data.V_AUTH_DSC,
-    //     'V_AUTH_CD': data.V_AUTH_CD,
-    //     'V_AUTH_TYP': this.radioSelected,
-    //     'V_SRC_CD': this.V_SRC_CD_DATA.V_SRC_CD,
-    //     'V_APP_CD': data.V_APP_CD,
-    //     'V_PRCS_CD': data.V_PRCS_CD,
-    //     'V_ARTFCT_TYP': data.V_ARTFCT_TYP,
-    //     'V_EXE_TYP': data.V_EXE_TYP,
-    //     'V_READ': data.V_READ,
-    //     'V_UPDATE': data.V_UPDATE,
-    //     'V_DELETE': data.V_DELETE,
-    //     'V_CREATE': data.V_CREATE,
-    //     'V_EXECUTE': data.V_EXECUTE,
-    //     'V_USR_NM': this.optionalService.V_USR_NM,
-    //     'V_COMMNT': '',
-    //     'REST_Service': 'Auth',
-    //     'Verb': 'POST'
-    //   };
-    //   this.http.post('https://'+this.domain_name+'/rest/v1/securedJSON', body).subscribe(res => {
-    //     this.addFlag = false;
-    //     this.assignAuthToRole(this.data.roleId, res[0] ? res[0].id + '' : '');
-    //   },
-    //     err => {
-    //     });
-    // } else if (this.selectedView == 'selectAuth') {
-    //   if (this.selectedAuth) {
-    //     this.assignAuthToRole(this.data.roleId, this.selectedAuth.V_AUTH_ID);
-    //   }
-    // }
   }
 
   onBtnCancelClick() {

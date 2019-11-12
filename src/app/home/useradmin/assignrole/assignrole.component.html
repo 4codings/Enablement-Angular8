@@ -1,170 +1,60 @@
-<!-- <div class="container-fluid">
-  <div class="row">
-    <div class="col">
-        <strong>{{Label['role']}}</strong>
-                     
-        <mat-selection-list class="scroll" #rl>
-            <mat-list-option class="sd list_item" (click)="selectedRole(r,j);" *ngFor=" let r of roles$ | async;let j = index;"
-                [(selected)]="r.selected" [value]="r.name" [class.active]="j == selectedrole || is_selected_role == true">
-                {{r.V_ROLE_CD}}                {{r.V_ROLE_ID}}
+<div fxLayout="row" fxLayout.lt-sm="column">
+  <div fxFlex="10"></div>
 
-            </mat-list-option>
-        </mat-selection-list>
-        <br/>
-        <strong>{{Label['user_description']}}</strong>
-        <strong>{{Label['role_descripton']}}</strong>
-        <mat-form-field style="width:100%;">
-            <textarea matInput [(ngModel)]="roledesc">
+  <div fxFlex="30" style="text-align: center;">
+    <strong>{{Label['Group']}}</strong>
+    <mat-list class="scroll">
+      <mat-list-item class="sd list_item"
+        *ngFor="let g of groups$ | async | groupType:groupTypeConstant.CUSTOM let j = index;"
+        [class.active]="j == selectedgroup || g.is_selected_user == true">
+        <div fxLayout="row">
+          <div fxFlex="90" (click)="selectGroup(g,j);">{{g.V_USR_GRP_CD}}</div>
+          <div fxFlex="10">
+            <mat-checkbox [disabled]="selectCurrentGroup != undefined" [(ngModel)]="g.is_selected"
+              (change)="checkboxGroupSelect($event, g)"></mat-checkbox>
+          </div>
+        </div>
+      </mat-list-item>
+    </mat-list>
+    <br />
+    <strong>{{Label['Grp_dscr']}}</strong>
+    <mat-form-field style="width:100%;">
+      <textarea matInput [(ngModel)]="USR_GRP_DSCR">
 
-</textarea>
-        </mat-form-field>
-   </div>
-   <div class="col">
-      <strong>{{Label['Group']}}</strong>
+              </textarea>
+    </mat-form-field>
 
-      <mat-selection-list  class="scroll" #gp [(ngModel)]="selectedOptions">
-          <mat-list-option class="sd list_item" (click)="selectedGroup(g,i);" *ngFor="let g of userGroup$ | async;let i = index;"
-              [value]="g.name" [class.active]="i == selectedgroup">
-              {{g.V_USR_GRP_CD}}
-          </mat-list-option>
-      </mat-selection-list>
-    <br/>
-      <strong>{{Label['Grp_dscr']}}</strong>
-      <mat-form-field style="width:100%;">
-        <textarea matInput [(ngModel)]="RollR" (keyup)="addBothfield();" >
-          </textarea>
-      </mat-form-field>
-   </div>
-    
+  </div>
+
+  <div fxFlex="3"></div>
+  <div fxFlex="30" style="text-align: center;">
+    <strong>{{Label['role']}}</strong>
+    <mat-list class="scroll">
+      <mat-list-item class="sd list_item" *ngFor="let r of roles$ | async; let i = index;"
+        [class.active]="i == selectedrole || r.is_selected_usr_grp == true">
+        <div fxLayout="row">
+          <div fxFlex="90" (click)="selectedRole(r,i);">{{r.V_ROLE_CD}}</div>
+          <div fxFlex="10">
+            <mat-checkbox [disabled]="selectCurrentRole != undefined" [(ngModel)]="r.is_selected"
+              (change)="checkboxRoleSelect($event, r)"></mat-checkbox>
+          </div>
+        </div>
+      </mat-list-item>
+    </mat-list>
+    <br />
+    <strong>{{Label['role_descripton']}}</strong>
+    <mat-form-field style="width:100%;">
+      <textarea matInput [(ngModel)]="USR_ROLE_DSR">
+
+              </textarea>
+    </mat-form-field>
+  </div>
+  <div fxFlex="3"></div>
+  <div fxFlex="30">
+    <br /> <br /> <br />
+    <!-- <button mat-raised-button (click)="AddGroupTL()" color="primary"><mat-icon>play_arrow</mat-icon> {{Label['execute_btn']}}</button> -->
+    <button mat-raised-button color="primary" [disabled]="enableSubmitButton()" (click)="submitAssignRole()">
+      <mat-icon>move_to_inbox</mat-icon>{{Label['submit_btn']}}
+    </button>
   </div>
 </div>
- -->
-<!-- <div fxLayout="row" fxLayout.lt-sm="column">
-    <div fxFlex="10"></div>
-    
-    <div fxFlex="30" style="text-align: center;">
-        <strong>{{Label['Group']}}</strong>
-        
-        <mat-selection-list *ngIf="desktopView" class="scroll" #gp [(ngModel)]="selectedOptions">
-            <mat-list-option class="sd list_item" (click)="selectedGroup(g,i);" *ngFor="let g of userGroup$ | async;let i = index;"
-            [class.active]="i == selectedgroup">
-            {{g.V_USR_GRP_CD}}
-            </mat-list-option>
-        </mat-selection-list>
-        <mat-form-field *ngIf="mobileView" style="width:100%;text-align: center;" [floatLabel]="'never'">
-            <mat-select multiple="true" style="margin-top:10px;" placeholder="--Select--">
-                <mat-option style="text-align:center;" (click)="selectedGroup(g,i);" *ngFor="let g of userGroup$ | async;let i = index;"
-                 [class.active]="i == selectedgroup">{{g.V_USR_GRP_CD}}</mat-option>
-            </mat-select>
-        </mat-form-field>
-        <br />
-        <strong>{{Label['Grp_dscr']}}</strong>
-            <mat-form-field style="width:100%;">
-                <textarea matInput [(ngModel)]="groupdesc"></textarea>
-            </mat-form-field>
-
-    </div>
-
-    <div fxFlex="3"></div>
-
-    <div fxFlex="30" style="text-align: center;">
-        <strong>{{Label['Role']}}</strong>
-        <strong>Role</strong>
-        
-        <mat-selection-list class="scroll" #rl>
-            <mat-list-option class="sd list_item" (click)="selectedRole(r,j);" *ngFor=" let r of roles$ | async;let j = index;"
-            [(selected)]="r.selected" [class.active]="j == selectedrole || is_selected_role == true">
-                {{r.V_ROLE_CD}}
-            </mat-list-option>
-        </mat-selection-list>
-        <br/>
-        <strong>{{Label['user_description']}}</strong> 
-        <strong>Role Description</strong>
-        <mat-form-field style="width:100%;">
-            <textarea matInput [(ngModel)]="roledesc"></textarea>
-            </mat-form-field>
-    </div>
-
-    <div fxFlex="3"></div>
-    <div fxFlex="30">
-        <br /><br /><br />
-        <button mat-raised-button color="primary" (click)="deleterole()">
-            <mat-icon>play_arrow</mat-icon> {{Label['execute_btn']}}
-        </button>
-        <button mat-raised-button color="primary" (click)="addrole()">
-            <mat-icon>move_to_inbox</mat-icon> {{Label['include_btn']}}
-        </button>
-    </div>
-</div> -->
-
-<div fxLayout="row" fxLayout.lt-sm="column">                
-    <div fxFlex="10" ></div>
-    
-    <div fxFlex="30" style="text-align: center;">
-        <strong>{{Label['Group']}}</strong>
-        <mat-list  class="scroll">
-          <mat-list-item  class="sd list_item"  *ngFor="let g of groups$ | async | groupType:groupTypeConstant.CUSTOM let j = index;"  [class.active]="j == selectedgroup || g.is_selected_user == true">
-              <div fxLayout="row">
-                <div fxFlex="90" (click)="selectGroup(g,j);">{{g.V_USR_GRP_CD}}</div>
-                <div fxFlex="10"><mat-checkbox [disabled]="selectCurrentGroup != undefined" [(ngModel)]="g.is_selected" (change)="checkboxGroupSelect($event, g)"></mat-checkbox></div>
-              </div> 
-          </mat-list-item>
-        </mat-list>
-        <!----
-        <mat-form-field *ngIf="mobileView" style="width:100%;text-align: center;" [floatLabel]="'never'">
-            <mat-select style="margin-top:10px;" placeholder="--Select--">
-              <mat-option style="text-align:center;" (click)="selectGroup(g,j);"  *ngFor="let g of groupData; let j = index;"  [class.active]="j == selectedgroup">
-                <div fxLayout="row" fxLayout.lt-xs="column">
-                  <div fxFlex="90" (click)="selectGroup(g,j);">{{g.V_USR_GRP_CD}}</div>
-                </div>
-                <div fxFlex="10"><mat-checkbox [(ngModel)]="g.is_selected" (change)="checkboxGroupSelect($event, g)"></mat-checkbox></div>
-              </mat-option>
-            </mat-select>
-        </mat-form-field>
-        -->
-        <br />
-        <strong>{{Label['Grp_dscr']}}</strong>
-        <mat-form-field style="width:100%;">
-              <textarea  matInput [(ngModel)]="USR_GRP_DSCR" >
-  
-              </textarea>
-        </mat-form-field>
-  
-    </div>
-
-    <div fxFlex="3" ></div>
-    <div fxFlex="30" style="text-align: center;">
-        <strong>{{Label['role']}}</strong>
-        <mat-list class="scroll">
-          <mat-list-item  class="sd list_item"  *ngFor="let r of roles$ | async; let i = index;"  [class.active]="i == selectedrole || r.is_selected_usr_grp == true">
-            <div fxLayout="row">
-              <div fxFlex="90" (click)="selectedRole(r,i);">{{r.V_ROLE_CD}}</div>
-              <div fxFlex="10"><mat-checkbox [disabled]="selectCurrentRole != undefined" [(ngModel)]="r.is_selected" (change)="checkboxRoleSelect($event, r)"></mat-checkbox></div>
-            </div>    
-          </mat-list-item>
-        </mat-list>
-        <!---
-        <mat-form-field *ngIf="mobileView" style="width:100%;text-align: center;" [floatLabel]="'never'">
-          <mat-select style="margin-top:10px;" placeholder="--Select--">
-            <mat-option style="text-align:center;" (click)="selectedUser(r,i);" *ngFor="let r of roles$; let i = index;"  [class.active]="i == selecteduser">{{r.V_ROLE_CD}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-        --><br />
-        <strong>{{Label['role_descripton']}}</strong>
-        <mat-form-field style="width:100%;">
-              <textarea matInput [(ngModel)]="USR_ROLE_DSR" >
-  
-              </textarea>
-        </mat-form-field>
-    </div>
-    <div  fxFlex="3"></div>
-    <div  fxFlex="30">
-    <br /> <br /> <br />
-      <!-- <button mat-raised-button (click)="AddGroupTL()" color="primary"><mat-icon>play_arrow</mat-icon> {{Label['execute_btn']}}</button> -->
-      <button mat-raised-button color="primary" [disabled]="enableSubmitButton()" (click)="submitAssignRole()"><mat-icon>move_to_inbox</mat-icon>{{Label['submit_btn']}}</button>
-    </div>
-  </div>
-
-
-
-

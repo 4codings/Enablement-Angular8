@@ -48,16 +48,6 @@
     <mat-icon>add_circle</mat-icon>
   </div>
 </div>
-<!--<div fxLayout="column" fxLayoutAlign="start stretch" class="context-menu" #contextMenu
-  *ngIf="contextMenuActive && (authPermission || authorizationPermission)" [ngStyle]="contextMenuStyle">
-  <button mat-button class="menu-item" *ngIf="authPermission" (click)="onContextMenuEditAuthBtnClick()">Edit</button>
-  <button mat-button class="many-item" *ngIf="authPermission || authorizationPermission"
-    (click)="onContextMenuRemoveAuthBtnClick('')">Delete Auth</button>
-  <button mat-button class="many-item" *ngIf="authPermission || authorizationPermission"
-    (click)="onContextMenuRemoveAuthBtnClick(true)">Remove from all Roles</button>
-  <button mat-button class="many-item" *ngIf="authPermission || authorizationPermission"
-    (click)="onContextMenuRemoveAuthBtnClick(false)">Remove from the Role</button>
-</div>-->
 <div fxLayout="column" fxLayoutAlign="start stretch" class="mat-menu-content context-menu" #contextMenu
   *ngIf="contextMenuActive && (authPermission || authorizationPermission)" [ngStyle]="contextMenuStyle">
   <!-- <button mat-menu-item class="menu-item" *ngIf="authPermission" (click)="onContextMenuEditAuthBtnClick()"><span

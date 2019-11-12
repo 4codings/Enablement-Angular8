@@ -1,15 +1,13 @@
 
-import { map } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpEvent, HttpEventType, HttpHeaders } from '@angular/common/http';
-import { Http, Response, Headers } from '@angular/http';
-import { StorageSessionService } from './storage-session.service';
-import { Observable } from 'rxjs';
-import { Globals } from './globals';
+import { Headers, Http, Response } from '@angular/http';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { CommonUtils } from '../common/utils';
 import { ApiService } from '../service/api/api.service';
-import { BehaviorSubject } from 'rxjs';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { Globals } from './globals';
+import { StorageSessionService } from './storage-session.service';
 
 @Injectable({
   providedIn: 'root'
