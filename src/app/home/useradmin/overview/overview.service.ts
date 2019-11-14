@@ -59,8 +59,13 @@ export class OverviewService implements OnDestroy {
 
   selectedUser: User;
   selectedAuth: AuthorizationData;
+  selectedApp: any;
+  selectedProcess: any;
   selectedUser$: BehaviorSubject<User> = new BehaviorSubject<User>(this.selectedUser);
   selectedAuth$: BehaviorSubject<AuthorizationData> = new BehaviorSubject<AuthorizationData>(this.selectedAuth);
+  selectedApp$: BehaviorSubject<any> = new BehaviorSubject<any>(this.selectedApp);
+  selectedProcess$: BehaviorSubject<any> = new BehaviorSubject<any>(this.selectedProcess);
+
 
   userGroupMapStream: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   authRoleMapStream: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -71,7 +76,7 @@ export class OverviewService implements OnDestroy {
   selectedAuthType = authorizationTypeOptions[1];
   selectedAuthType$: BehaviorSubject<{ key: string, label: string }> = new BehaviorSubject<{ key: string, label: string }>(this.selectedAuthType);
 
-  selectedGroupType = groupTypeOptions[3];
+  selectedGroupType = groupTypeOptions[1];
   selectedGroupType$: BehaviorSubject<{ key: string, label: string }> = new BehaviorSubject<{ key: string, label: string }>(this.selectedGroupType);
 
   unsubscribeAll: Subject<boolean> = new Subject<boolean>();
@@ -145,6 +150,14 @@ export class OverviewService implements OnDestroy {
     this.selectedAuthType$.next(this.selectedAuthType);
   }
 
+  selectApp(app): void {
+    this.selectedApp = app;
+    this.selectedApp$.next(this.selectedApp);
+  }
+  selectProcess(app): void {
+    this.selectedProcess = app;
+    this.selectedProcess$.next(this.selectedProcess);
+  }
   updateSelectedDataObjRef(): void {
     if (this.selectedUser) {
       const newUser = this.allUsers.filter(currUser => currUser.id == this.selectedUser.id)[0];
@@ -265,10 +278,14 @@ export class OverviewService implements OnDestroy {
   resetSelection() {
     this.selectedAuth = null;
     this.selectedUser = null;
+    this.selectedApp = null;
+    this.selectedProcess = null;
     this.highlightedUsers.clear();
     this.highlightedAuths.clear();
     this.selectedUser$.next(this.selectedUser);
     this.selectedAuth$.next(this.selectedAuth);
+    this.selectedProcess$.next(this.selectedProcess);
+    this.selectedApp$.next(this.selectedApp);
     this.highlightedUsers$.next(this.highlightedUsers);
     this.highlightedAuths$.next(this.highlightedAuths);
   }
@@ -486,11 +503,12 @@ export class OverviewService implements OnDestroy {
   }
 
   openAddAuthDialog(roleId: string): void {
+    let data = { roleId: roleId, authType: this.selectedAuthType.key, selectedApp: this.selectedApp, selectedProcess: this.selectedProcess };
     const dialogRef = this.dialog.open(AddEditAuthorizeComponent,
       {
         width: '300px',
         panelClass: 'app-dialog',
-        data: { roleId: roleId, authType: this.selectedAuthType.key }
+        data: data
       });
     dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
       if (flag) {

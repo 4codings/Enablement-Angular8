@@ -11,6 +11,7 @@ import { OptionalValuesService, ProcessObservable, ServiceObservable } from '../
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from '../../../service/api/api.service';
 import { environment } from '../../../../environments/environment';
+import { OverviewService } from '../overview/overview.service';
 
 @Component({
   selector: 'app-authorize',
@@ -137,12 +138,12 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
   selected(index) {
     this.selecteduser = index;
   }
-  onExistingAppSelect(event) {
+  onExistingAppSelect(event, isFromSelectedRoleType?) {
     this.filteredProcessValues = [];
     if (this.radioSelected === 'SERVICE' || this.radioSelected === 'PROCESS') {
       if (this.filteredAuthValues.length) {
         this.filteredAuthValues.forEach(ele => {
-          if (ele.V_APP_CD == event.V_APP_CD) {
+          if (ele.V_APP_CD == (isFromSelectedRoleType ? event.app : event.V_APP_CD)) {
             if (this.filteredProcessValues.length) {
               let i = this.filteredProcessValues.findIndex(v => v.V_PRCS_CD == ele.V_PRCS_CD);
               if (i == -1) {
@@ -157,7 +158,7 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
     } else if (this.radioSelected === 'ARTIFACT') {
       if (this.filteredAuthValues.length) {
         this.filteredAuthValues.forEach(ele => {
-          if (ele.V_ARTFCT_TYP == event.V_ARTFCT_TYP) {
+          if (ele.V_ARTFCT_TYP == (isFromSelectedRoleType ? event.app : event.V_ARTFCT_TYP)) {
             if (this.filteredProcessValues.length) {
               let i = this.filteredProcessValues.findIndex(v => v.V_ARTFCT_NM == ele.V_ARTFCT_NM);
               if (i == -1) {
@@ -172,7 +173,7 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
     } else if (this.radioSelected === 'EXE') {
       if (this.filteredAuthValues.length) {
         this.filteredAuthValues.forEach(ele => {
-          if (ele.V_EXE_TYP == event.V_EXE_TYP) {
+          if (ele.V_EXE_TYP == (isFromSelectedRoleType ? event.app : event.V_EXE_TYP)) {
             if (this.filteredProcessValues.length) {
               let i = this.filteredProcessValues.findIndex(v => v.V_EXE_CD == ele.V_EXE_CD);
               if (i == -1) {
@@ -185,6 +186,7 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
         })
       }
     }
+    console.log('filteredProcessValues', this.filteredProcessValues);
   }
   onExistingProcessSelect(event) {
     this.filteredServiceValues = [];

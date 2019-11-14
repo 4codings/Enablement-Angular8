@@ -49,9 +49,10 @@
               <div>
                 <!-- PROCESS AND SERVICE -->
                 <mat-form-field class="form-width" *ngIf="radioSelected == 'PROCESS' || radioSelected == 'SERVICE'">
-                  <input matInput name="app" [disabled]="isEditMode" [matAutocomplete]="auto" cdkFocusInitial>
+                  <input matInput name="app" [(ngModel)]='selectedApp.app' [disabled]="selectedApp.app != ''"
+                    [matAutocomplete]="auto" cdkFocusInitial>
                   <mat-autocomplete #auto="matAutocomplete">
-                    <mat-option style="text-align:center;" (click)="onExistingAppSelect(app)"
+                    <mat-option style="text-align:center;" (click)="onExistingAppSelect(app,false)"
                       *ngFor="let app of filteredApplicationValues" [value]="app.V_APP_CD">
                       {{app.V_APP_CD}}
                     </mat-option>
@@ -59,9 +60,10 @@
                 </mat-form-field>
                 <!-- EXE -->
                 <mat-form-field class="form-width" *ngIf="radioSelected === 'EXE'">
-                  <input matInput name="app" [disabled]="isEditMode" [matAutocomplete]="auto">
+                  <input matInput name="app" [(ngModel)]='selectedApp.app' [disabled]="selectedApp.app != ''"
+                    [matAutocomplete]="auto">
                   <mat-autocomplete #auto="matAutocomplete">
-                    <mat-option style="text-align:center;" (click)="onExistingAppSelect(process)"
+                    <mat-option style="text-align:center;" (click)="onExistingAppSelect(process,false)"
                       *ngFor="let process of filteredApplicationValues" [value]="process.V_EXE_TYP">
                       {{process.V_EXE_TYP}}
                     </mat-option>
@@ -69,9 +71,10 @@
                 </mat-form-field>
                 <!-- ARTIFACT -->
                 <mat-form-field class="form-width" *ngIf="radioSelected === 'ARTIFACT'">
-                  <input matInput name="app" [disabled]="isEditMode" [matAutocomplete]="auto">
+                  <input matInput name="app" [(ngModel)]='selectedApp.app' [disabled]="selectedApp.app != ''"
+                    [matAutocomplete]="auto">
                   <mat-autocomplete #auto="matAutocomplete">
-                    <mat-option style="text-align:center;" (click)="onExistingAppSelect(process)"
+                    <mat-option style="text-align:center;" (click)="onExistingAppSelect(process,false)"
                       *ngFor="let process of filteredApplicationValues" [value]="process.V_ARTFCT_TYP">
                       {{process.V_ARTFCT_TYP}}
                     </mat-option>
@@ -138,7 +141,8 @@
                 </mat-form-field>
                 <!-- SERVICE -->
                 <mat-form-field class="form-width" *ngIf="radioSelected == 'SERVICE'">
-                  <input matInput name="app" [disabled]="isEditMode" [matAutocomplete]="auto">
+                  <input matInput [(ngModel)]='selectedProcess.process' name="app"
+                    [disabled]="selectedProcess.processs != ''" [matAutocomplete]="auto">
                   <mat-autocomplete #auto="matAutocomplete">
                     <mat-option style="text-align:center;" (click)="onExistingProcessSelect(process)"
                       *ngFor="let process of filteredProcessValues" [value]="process.V_PRCS_CD">

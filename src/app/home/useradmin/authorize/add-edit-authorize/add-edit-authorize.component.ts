@@ -15,6 +15,7 @@ import * as authActions from '../../../../store/user-admin/user-authorization/au
 import { UseradminService } from '../../../../services/useradmin.service2';
 import { AuthorizationData } from '../../../../store/user-admin/user-authorization/authorization.model';
 import { environment } from '../../../../../environments/environment';
+import { OverviewService } from '../../overview/overview.service';
 
 @Component({
   selector: 'app-add-edit-authorize',
@@ -26,7 +27,8 @@ export class AddEditAuthorizeComponent extends AuthorizeComponent implements OnI
   domain_name = environment.domainName;
   selectedView: 'selectAuth' | 'addNewAuth' = 'selectAuth';
   selectedAuth: AuthorizationData;
-
+  selectedApp: any;
+  selectedProcess: any;
   constructor(public noAuthData: NoAuthDataService,
     private userAdminService: UseradminService,
     protected store: Store<AppState>,
@@ -36,6 +38,7 @@ export class AddEditAuthorizeComponent extends AuthorizeComponent implements OnI
     private dialogRef: MatDialogRef<AddEditAuthorizeComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
     super(noAuthData, store, optionalService, http, apiServcie);
+    console.log('data', data);
     if (data.auth) {
       this.isEditMode = true;
       this.selectedView = 'addNewAuth';
@@ -45,6 +48,9 @@ export class AddEditAuthorizeComponent extends AuthorizeComponent implements OnI
       if (this.oldRadioSelected === '') {
         this.radioSelected = this.radioList[0];
       }
+    } else {
+      this.selectedApp = data.selectedApp;
+      this.selectedProcess = data.selectedProcess;
     }
   }
 
@@ -58,6 +64,13 @@ export class AddEditAuthorizeComponent extends AuthorizeComponent implements OnI
     }
     this.getFilterData(this.radioSelected);
     this.userAdminService.getControlVariables();
+    setTimeout(ele => {
+      if (this.data.selectedApp.app != '') {
+        // this.radioSelected = this.selectedApp.authType.toUpperCase();
+        console.log('radioSelected', this.radioSelected)
+        this.onExistingAppSelect(this.selectedApp, true)
+      }
+    }, 1000);
   }
 
   onAddSubmit() {

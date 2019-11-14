@@ -28,6 +28,10 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { DialogScheduleComponent } from '../../../shared/components/dialog-schedule/dialog-schedule.component';
 import { DatePipe } from '@angular/common';
 import { DeviceDetectorService } from 'ngx-device-detector';
+// declare var Modeler: any;
+// declare var PropertiesPanelModule: any;
+// declare var OriginalPropertiesProvider:any;
+// declare var InjectionNames:any;
 
 export class ReportData {
   public RESULT: string;

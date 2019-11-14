@@ -38,7 +38,8 @@ export class RoleListComponent implements OnInit {
   filteredAuthValues: AuthorizationData[] = [];
   filteredApplicationValues = [];
   filteredProcessValues = [];
-  selectedApp = '';
+  selectedApp: any = { 'app': '', 'authType': '' };
+  selectedProcess: any = { 'process': '', 'authType': '' };
 
   constructor(
     private dialog: MatDialog,
@@ -59,6 +60,8 @@ export class RoleListComponent implements OnInit {
       this.roles = [...this.defaultRoles];
     });
     this.overviewService.selectedAuthType$.pipe(takeUntil(this.unsubscribeAll)).subscribe(type => this.selectedAuthType = type);
+    this.overviewService.selectedApp$.pipe(takeUntil(this.unsubscribeAll)).subscribe(type => this.selectedApp = type);
+    this.overviewService.selectedProcess$.pipe(takeUntil(this.unsubscribeAll)).subscribe(type => this.selectedProcess = type);
   }
 
   ngOnInit() {
@@ -73,13 +76,17 @@ export class RoleListComponent implements OnInit {
     this.store.dispatch(new authActions.getAuth(this.V_SRC_CD_DATA));
     this.authValues$.subscribe(data => {
       this.authValues = data;
-      console.log('auth', this.authValues);
-      this.getFilterData(this.selectedAuthType.label);
     });
+    setTimeout(() => {
+      this.getFilterData(this.selectedAuthType.label);
+    }, 1000);
   }
 
   selectAuthType(authType): void {
-    this.selectedApp = '';
+    this.selectedApp = { 'app': '', 'authType': '' };
+    this.selectedProcess = { 'process': '', 'authType': '' };
+    this.selectedAuthType = authType;
+    this.getFilterData(authType.key);
     this.overviewService.selectAuthType(authType);
   }
 
@@ -96,9 +103,9 @@ export class RoleListComponent implements OnInit {
     this.filteredAuthValues = [];
     this.filteredApplicationValues = [];
     this.filteredProcessValues = [];
-    console.log('data', data);
     this.filteredAuthValues = this.authValues.filter(v => v['V_AUTH_TYP'].toLowerCase() === data.toLowerCase());
     if (this.selectedAuthType.label.toUpperCase() == 'PROCESS' || this.selectedAuthType.label.toUpperCase() == 'SERVICE') {
+      this.overviewService.selectProcess({ 'process': '', 'authType': '' });
       if (this.filteredAuthValues.length) {
         this.filteredAuthValues.forEach(ele => {
           if (this.filteredApplicationValues.length) {
@@ -110,8 +117,19 @@ export class RoleListComponent implements OnInit {
             this.filteredApplicationValues.push(ele);
           }
         })
+        this.selectedApp.app = this.filteredApplicationValues[0].V_APP_CD;
+        this.selectedApp.authType = this.selectedAuthType.label;
+        this.overviewService.selectApp(this.selectedApp);
+        if (this.selectedAuthType.label.toUpperCase() == 'SERVICE') {
+          this.onProcessSelect(this.filteredApplicationValues[0])
+        }
+      } else {
+        this.selectedApp.app = '';
+        this.selectedApp.authType = this.selectedAuthType.label;
+        this.overviewService.selectApp(this.selectedApp);
       }
     } else if (this.selectedAuthType.label.toUpperCase() == 'ARTIFACT') {
+      this.overviewService.selectProcess({ 'process': '', 'authType': '' });
       if (this.filteredAuthValues.length) {
         this.filteredAuthValues.forEach(ele => {
           if (this.filteredApplicationValues.length) {
@@ -123,8 +141,16 @@ export class RoleListComponent implements OnInit {
             this.filteredApplicationValues.push(ele);
           }
         })
+        this.selectedApp.app = this.filteredApplicationValues[0].V_ARTFCT_TYP;
+        this.selectedApp.authType = this.selectedAuthType.label;
+        this.overviewService.selectApp(this.selectedApp);
+      } else {
+        this.selectedApp.app = '';
+        this.selectedApp.authType = this.selectedAuthType.label;
+        this.overviewService.selectApp(this.selectedApp);
       }
     } else if (this.selectedAuthType.label.toUpperCase() == 'EXE') {
+      this.overviewService.selectProcess({ 'process': '', 'authType': '' });
       if (this.filteredAuthValues.length) {
         this.filteredAuthValues.forEach(ele => {
           if (this.filteredApplicationValues.length) {
@@ -136,26 +162,54 @@ export class RoleListComponent implements OnInit {
             this.filteredApplicationValues.push(ele);
           }
         })
+        this.selectedApp.app = this.filteredApplicationValues[0].V_EXE_TYP;
+        this.selectedApp.authType = this.selectedAuthType.label;
+        this.overviewService.selectApp(this.selectedApp);
+      } else {
+        this.selectedApp.app = '';
+        this.selectedApp.authType = this.selectedAuthType.label;
+        this.overviewService.selectApp(this.selectedApp);
       }
     }
   }
   onProcessSelect(authData) {
+    this.selectedApp.app = authData.V_APP_CD;
+    this.selectedApp.authType = this.selectedAuthType.label;
+    this.overviewService.selectApp(this.selectedApp);
+    this.filteredProcessValues = [];
     if (this.selectedAuthType.label.toUpperCase() == 'SERVICE') {
       if (this.filteredAuthValues.length) {
         this.filteredAuthValues.forEach(ele => {
-          if (this.filteredProcessValues.length) {
-            let i = this.filteredProcessValues.findIndex(v => v.V_PRCS_CD == ele.V_PRCS_CD);
-            if (i == -1) {
+          if (ele.V_APP_CD == authData.V_APP_CD) {
+            if (this.filteredProcessValues.length) {
+              let i = this.filteredProcessValues.findIndex(v => v.V_PRCS_CD == ele.V_PRCS_CD);
+              if (i == -1) {
+                this.filteredProcessValues.push(ele);
+              }
+            } else {
               this.filteredProcessValues.push(ele);
             }
-          } else {
-            this.filteredProcessValues.push(ele);
           }
-        })
+        });
+        this.selectedProcess.process = this.filteredProcessValues[0].V_PRCS_CD;
+        this.selectedProcess.authType = this.selectedAuthType.label;
+        this.overviewService.selectProcess(this.selectedProcess);
+      } else {
+        this.selectedProcess.process = '';
+        this.selectedProcess.authType = this.selectedAuthType.label;
+        this.overviewService.selectProcess(this.selectedProcess);
       }
     }
   }
-  onAuthSelect(data) {
-    console.log('app/process', data);
+  onAuthSelect(data, isService) {
+    if (isService) {
+      this.selectedProcess.process = data;
+      this.selectedProcess.authType = this.selectedAuthType.label;
+      this.overviewService.selectProcess(this.selectedProcess);
+    } else {
+      this.selectedApp.authType = this.selectedAuthType.label;
+      this.selectedApp.app = data;
+      this.overviewService.selectApp(this.selectedApp);
+    }
   }
 }
