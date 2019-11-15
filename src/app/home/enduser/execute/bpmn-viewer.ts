@@ -1,14 +1,14 @@
-// import * as _Viewer from 'bpmn-js/dist/bpmn-viewer.production.min.js';
-// import _PropertiesPanelModule from 'bpmn-js-properties-panel';
-// import _BpmnPropertiesProvider from 'bpmn-js-properties-panel/lib/provider/bpmn';
-// import _EntryFactory from 'bpmn-js-properties-panel/lib/factory/EntryFactory';
-// import _PaletteProvider from 'bpmn-js/lib/features/palette/PaletteProvider';
+import * as _Viewer from 'bpmn-js/dist/bpmn-viewer.production.min.js';
+import _PropertiesPanelModule from 'bpmn-js-properties-panel';
+import _BpmnPropertiesProvider from 'bpmn-js-properties-panel/lib/provider/bpmn';
+import _EntryFactory from 'bpmn-js-properties-panel/lib/factory/EntryFactory';
+import _PaletteProvider from 'bpmn-js/lib/features/palette/PaletteProvider';
 
-declare var _Viewer;
-declare var _PropertiesPanelModule;
-declare var _BpmnPropertiesProvider;
-declare var _EntryFactory;
-declare var _PaletteProvider;
+// declare var _Viewer;
+// declare var _PropertiesPanelModule;
+// declare var _BpmnPropertiesProvider;
+// declare var _EntryFactory;
+// declare var _PaletteProvider;
 
 
 export const InjectionNames = {

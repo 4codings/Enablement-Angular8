@@ -1,32 +1,26 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ChangeDetectorRef, ViewEncapsulation, OnDestroy } from '@angular/core';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { HttpClient } from '@angular/common/http';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Http } from '@angular/http';
-import { Router } from '@angular/router'
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { DialogChartsComponent } from './dialog-charts/dialog-charts.component';
-import { PersonalizationTableComponent } from './personalization-table/personalization-table.component';
-import { ConfigServiceService } from '../../../services/config-service.service';
-import { Globals } from '../../../services/globals';
-import { Globals2 } from '../../../service/globals';
-import { EndUserService } from '../../../services/EndUser-service';
-import { ApiService } from '../../../service/api/api.service';
-import { StorageSessionService } from '../../../services/storage-session.service';
-import * as pluginAnnotations from 'chartjs-plugin-annotation';
-import { BaseChartDirective } from 'ng2-charts-x';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import 'chartjs-plugin-zoom';
+import { BaseChartDirective } from 'ng2-charts-x';
 import { ToastrService } from 'ngx-toastr';
-import { HttpClient } from '@angular/common/http';
-import { Viewer } from '../execute/bpmn-viewer';
-import { RollserviceService } from '../../../services/rollservice.service';
 import { Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
-import { InputOutputElementComponent } from 'src/app/shared/components/input-output-element/input-output-element.component';
-import { InstanceElementList } from '../process-design/monitor/monitor.component';
 import { OptionalValuesService } from 'src/app/services/optional-values.service';
-// import { Viewer } from '../execute/bpmn-viewer-js';
+import { ApiService } from '../../../service/api/api.service';
+import { Globals2 } from '../../../service/globals';
+import { ConfigServiceService } from '../../../services/config-service.service';
+import { EndUserService } from '../../../services/EndUser-service';
+import { Globals } from '../../../services/globals';
+import { RollserviceService } from '../../../services/rollservice.service';
+import { StorageSessionService } from '../../../services/storage-session.service';
+import { InstanceElementList } from '../process-design/monitor/monitor.component';
+import { DialogChartsComponent } from './dialog-charts/dialog-charts.component';
 
 @Component({
   selector: 'app-report-table',

@@ -1,27 +1,23 @@
-import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
-import { Component, OnInit, TemplateRef, OnDestroy } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Location } from '@angular/common';
-import { Router } from '@angular/router';
-import { StorageSessionService } from '../../../../services/storage-session.service';
-import { Globals2 } from '../../../../service/globals';
-import { ReportData, ScopeLimiting } from './Classes';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ApiService } from '../../../../service/api/api.service';
-import { Http, Headers, RequestOptions, RequestMethod } from '@angular/http';
-import { Globals } from '../../../../services/globals';
-import { EndUserService } from '../../../../services/EndUser-service';
-import { CommonUtils } from '../../../../common/utils';
+import { Http } from '@angular/http';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
-import { Viewer } from '../bpmn-viewer';
-import { DeleteConfirmComponent } from '../../../../shared/components/delete-confirm/delete-confirm.component';
-import { take } from 'rxjs/operators';
-import { InputOutputElementComponent } from '../../../../shared/components/input-output-element/input-output-element.component';
-import { InstanceElementList } from '../../process-design/monitor/monitor.component';
 import { OptionalValuesService } from 'src/app/services/optional-values.service';
 import { environment } from '../../../../../environments/environment';
+import { CommonUtils } from '../../../../common/utils';
+import { ApiService } from '../../../../service/api/api.service';
+import { Globals2 } from '../../../../service/globals';
+import { EndUserService } from '../../../../services/EndUser-service';
+import { Globals } from '../../../../services/globals';
+import { StorageSessionService } from '../../../../services/storage-session.service';
+import { DeleteConfirmComponent } from '../../../../shared/components/delete-confirm/delete-confirm.component';
+import { InstanceElementList } from '../../process-design/monitor/monitor.component';
+import { ReportData, ScopeLimiting } from './Classes';
 
 @Component({
   selector: 'app-input-art',

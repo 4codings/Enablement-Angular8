@@ -1,19 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { StorageSessionService } from '../../../../services/storage-session.service';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Globals } from '../../../../services/globals';
-import { ApiService } from '../../../../service/api/api.service';
-import { HttpClient } from '@angular/common/http';
-import { ToastrService } from 'ngx-toastr';
-import { Viewer } from '../../execute/bpmn-viewer';
-import { Http } from '@angular/http';
 import { DatePipe } from '@angular/common';
-import { OptionalValuesService } from 'src/app/services/optional-values.service';
-import { Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Http } from '@angular/http';
 import { MatDialog } from '@angular/material';
-import { InputOutputElementComponent } from 'src/app/shared/components/input-output-element/input-output-element.component';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { ToastrService } from 'ngx-toastr';
+import { Subscription } from 'rxjs';
+import { OptionalValuesService } from 'src/app/services/optional-values.service';
+import { ApiService } from '../../../../service/api/api.service';
 export interface Food {
   value: string;
   viewValue: string;

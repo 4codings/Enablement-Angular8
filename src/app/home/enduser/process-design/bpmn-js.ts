@@ -1,14 +1,14 @@
-// import * as _Modeler from 'bpmn-js/dist/bpmn-modeler.production.min.js';
-// import _PropertiesPanelModule from 'bpmn-js-properties-panel';
-// import _BpmnPropertiesProvider from 'bpmn-js-properties-panel/lib/provider/bpmn';
-// import _EntryFactory from 'bpmn-js-properties-panel/lib/factory/EntryFactory';
-// import _PaletteProvider from 'bpmn-js/lib/features/palette/PaletteProvider';
+import * as _Modeler from 'bpmn-js/dist/bpmn-modeler.production.min.js';
+import _PropertiesPanelModule from 'bpmn-js-properties-panel';
+import _BpmnPropertiesProvider from 'bpmn-js-properties-panel/lib/provider/bpmn';
+import _EntryFactory from 'bpmn-js-properties-panel/lib/factory/EntryFactory';
+import _PaletteProvider from 'bpmn-js/lib/features/palette/PaletteProvider';
 
-declare var _Modeler;
-declare var _PropertiesPanelModule;
-declare var _BpmnPropertiesProvider;
-declare var _EntryFactory;
-declare var _PaletteProvider;
+// declare var _Modeler;
+// declare var _PropertiesPanelModule;
+// declare var _BpmnPropertiesProvider;
+// declare var _EntryFactory;
+// declare var _PaletteProvider;
 
 export const InjectionNames = {
   eventBus: 'eventBus',
