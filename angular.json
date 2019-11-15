@@ -56,7 +56,10 @@
                 "maximumWarning": "2mb",
                 "maximumError": "5mb"
               }]
-            }
+            },
+            "es5": {
+              "tsConfig": "./tsconfig.es5.json"
+            }            
           }
         },
         "serve": {
@@ -67,6 +70,9 @@
           "configurations": {
             "production": {
               "browserTarget": "enablement:build:production"
+            },
+            "es5": {
+              "browserTarget": "enablement:build:es5"
             }
           }
         },

@@ -35,6 +35,8 @@
         "angular-resizable-element": "^3.2.4",
         "angular-resize-event": "^1.1.0",
         "angular-user-idle": "^2.1.4",
+        "bpmn-js": "^5.1.2",
+        "bpmn-js-properties-panel": "^0.32.2",
         "chart.js": "^2.8.0",
         "chartjs-plugin-annotation": "^0.5.7",
         "chartjs-plugin-zoom": "^0.7.3",
