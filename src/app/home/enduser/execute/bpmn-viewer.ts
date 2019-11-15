@@ -1,4 +1,5 @@
 import * as _Viewer from 'bpmn-js/dist/bpmn-viewer.production.min.js';
+// import * as _Viewer from 'bpmn-js/dist/bpmn-navigated-viewer.development.js';
 import _PropertiesPanelModule from 'bpmn-js-properties-panel';
 import _BpmnPropertiesProvider from 'bpmn-js-properties-panel/lib/provider/bpmn';
 import _EntryFactory from 'bpmn-js-properties-panel/lib/factory/EntryFactory';
