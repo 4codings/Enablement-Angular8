@@ -1,30 +1,26 @@
 <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="100" fxLayoutGap="8px">
   <div fxLayoutAlign="space-between center">
     <div style="padding-left: 8px">
-      <span>Group Types : </span>
-      <button mat-button [matMenuTriggerFor]="groupTypeMenu">{{selectedGroupType.label}}
-        <mat-icon matSuffix>arrow_drop_down</mat-icon>
-      </button>
-      <mat-menu #groupTypeMenu="matMenu">
+      <span>Groups </span>
+      <!-- [matMenuTriggerFor]="groupTypeMenu" -->
+      <!-- <button mat-button>{{selectedGroupType.label}} -->
+      <!-- <mat-icon matSuffix>arrow_drop_down</mat-icon> -->
+      <!-- </button> -->
+      <!-- <mat-menu #groupTypeMenu="matMenu">
         <button mat-menu-item *ngFor="let item of groupTypeOptions"
                 (click)="changeGroupType(item)">{{item.label}}</button>
-      </mat-menu>
+      </mat-menu> -->
     </div>
-    <button mat-icon-button class="add-btn"
-            matTooltip="Add Group"
-            *ngIf="groupPermission"
-            (click)="onAddGroupBtnClick()">
+    <button mat-icon-button class="add-btn" matTooltip="Add Group" *ngIf="groupPermission"
+      (click)="onAddGroupBtnClick()">
       <mat-icon>add_circle</mat-icon>
     </button>
   </div>
   <mat-divider></mat-divider>
   <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="16px" cdkDropListGroup>
-    <app-single-group *ngFor="let currGroup of groups | groupTypeProfile:selectedGroupType.key"
-                      [group]="currGroup"
-                      [groupPermission]="groupPermission"
-                      [userPermission]="userPermission"
-                      [assignPermission]="assignPermission"
-                      [membershipPermission]="membershipPermission"
-                      [controlVariables]="controlVariables"></app-single-group>
+    <app-single-group *ngFor="let currGroup of groups | groupTypeProfile:selectedGroupType.key" [group]="currGroup"
+      [groupPermission]="groupPermission" [groups]="groups" [userPermission]="userPermission"
+      [assignPermission]="assignPermission" [membershipPermission]="membershipPermission"
+      [controlVariables]="controlVariables"></app-single-group>
   </div>
 </div>

@@ -76,7 +76,7 @@ export class OverviewService implements OnDestroy {
   selectedAuthType = authorizationTypeOptions[1];
   selectedAuthType$: BehaviorSubject<{ key: string, label: string }> = new BehaviorSubject<{ key: string, label: string }>(this.selectedAuthType);
 
-  selectedGroupType = groupTypeOptions[1];
+  selectedGroupType = groupTypeOptions[0];
   selectedGroupType$: BehaviorSubject<{ key: string, label: string }> = new BehaviorSubject<{ key: string, label: string }>(this.selectedGroupType);
 
   unsubscribeAll: Subject<boolean> = new Subject<boolean>();
@@ -278,14 +278,14 @@ export class OverviewService implements OnDestroy {
   resetSelection() {
     this.selectedAuth = null;
     this.selectedUser = null;
-    this.selectedApp = null;
-    this.selectedProcess = null;
+    // this.selectedApp = null;
+    // this.selectedProcess = null;
     this.highlightedUsers.clear();
     this.highlightedAuths.clear();
     this.selectedUser$.next(this.selectedUser);
     this.selectedAuth$.next(this.selectedAuth);
-    this.selectedProcess$.next(this.selectedProcess);
-    this.selectedApp$.next(this.selectedApp);
+    // this.selectedProcess$.next(this.selectedProcess);
+    // this.selectedApp$.next(this.selectedApp);
     this.highlightedUsers$.next(this.highlightedUsers);
     this.highlightedAuths$.next(this.highlightedAuths);
   }
@@ -332,7 +332,7 @@ export class OverviewService implements OnDestroy {
       {
         panelClass: 'app-dialog',
         width: '300px',
-        data: { groupId: groupId, allUsers: this.allUsers }
+        data: { groupId: groupId, allUsers: this.allUsers, allGroups: this.allGroups }
       });
     dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
       if (flag) {

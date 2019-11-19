@@ -1,13 +1,53 @@
 <div class="app-form-wrapper">
   <form [formGroup]="userForm" fxLayoutGap="8px" fxLayout="column">
     <mat-form-field>
-      <input type="text" (change)="onChange()" matInput placeholder="Name" #htmlInputElement formControlName="V_USR_NM" cdkFocusInitial>
+      <input type="text" (change)="onChange()" matInput placeholder="Name" #htmlInputElement formControlName="V_USR_NM"
+        cdkFocusInitial>
       <mat-error *ngIf="userForm.get('V_USR_NM').errors?.userError">User already exist.</mat-error>
       <mat-error *ngIf="f.V_USR_NM.errors?.email">Provide a valid email.</mat-error>
       <mat-error *ngIf="userForm.get('V_USR_NM').errors?.domainError">{{domainErrorMessage}}</mat-error>
     </mat-form-field>
     <mat-form-field>
       <textarea type="text" matInput placeholder="Description" formControlName="V_USR_DSC"></textarea>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select formControlName="V_GROUP_TYPE" placeholder="Group Type">
+        <mat-option disabled value="">Select Group Type</mat-option>
+        <mat-option *ngFor="let group of groupTypeOptions" [value]="group.key">{{group.label}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <!-- WORKFLOW -->
+    <mat-form-field
+      *ngIf="userForm.get('V_GROUP_TYPE').value !='' && userForm.get('V_GROUP_TYPE').value == groupTypeConstant.WORKFLOW ">
+      <mat-label>Assign To</mat-label>
+      <mat-select formControlName="V_GROUP_NAME_WORKFLOW" multiple>
+        <mat-option (click)="onGroupAdded($event)"
+          *ngFor="let group of groupNameList|groupNameType: groupTypeConstant.WORKFLOW" [value]="group">
+          {{group.key}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <!-- SYSTEM -->
+    <mat-form-field
+      *ngIf="userForm.get('V_GROUP_TYPE').value !='' && userForm.get('V_GROUP_TYPE').value == groupTypeConstant.SYSTEM ">
+      <mat-label>Assign To</mat-label>
+      <mat-select formControlName="V_GROUP_NAME_SYSTEM" multiple>
+        <mat-option (click)="onGroupAdded($event)"
+          *ngFor="let group of groupNameList|groupNameType: groupTypeConstant.SYSTEM" [value]="group">
+          {{group.key}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <!-- ADMINISTRATOR  -->
+    <mat-form-field
+      *ngIf="userForm.get('V_GROUP_TYPE').value !='' && userForm.get('V_GROUP_TYPE').value == groupTypeConstant.ADMINISTRATOR ">
+      <mat-label>Assign To</mat-label>
+      <mat-select multiple formControlName="V_GROUP_NAME_ADMINISTRATOR">
+        <mat-option (click)="onGroupAdded($event)"
+          *ngFor="let group of groupNameList| groupNameType:groupTypeConstant.ADMINISTRATOR" [value]="group">
+          {{group.key}}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
     <mat-form-field>
       <mat-select formControlName="V_STS" placeholder="Status">

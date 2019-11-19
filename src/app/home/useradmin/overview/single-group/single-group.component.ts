@@ -23,6 +23,7 @@ export class SingleGroupComponent implements OnInit, OnDestroy {
   @Input() assignPermission: boolean;
   @Input() group: userGroup;
   users: User[];
+  @Input() groups: userGroup[];
   @Input() controlVariables: any;
   unsubscribeAll: Subject<boolean> = new Subject<boolean>();
 
@@ -33,6 +34,7 @@ export class SingleGroupComponent implements OnInit, OnDestroy {
     this.overviewService.userGroupMap$.pipe(takeUntil(this.unsubscribeAll)).subscribe(flag => {
       if (flag) {
         this.users = this.overviewService.userGroupMap.get(this.group.id);
+        console.log('this.users', this.users);
       }
     });
   }

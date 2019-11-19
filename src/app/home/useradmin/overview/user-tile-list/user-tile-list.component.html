@@ -1,10 +1,42 @@
 <div class="tiles-wrapper" fxLayout="row wrap" cdkDropList [cdkDropListDisabled]="!membershipPermission"
   [cdkDropListData]="users" (cdkDropListDropped)="userDropped($event)" cdkDropListOrientation="horizontal">
-  <div class="tile" matRipple cdkDrag [cdkDragData]="currUser" [matTooltip]="currUser.V_USR_NM"
-    *ngFor="let currUser of users" [class.active]="currUser == selectedUser"
-    [class.highlight]="highlightedUsers.isSelected(currUser)" (contextmenu)="openContextmenu($event, currUser)"
-    (mousedown)="onTileMouseDownEventHandler($event)" (click)="onUserTileClick(currUser)">
-    <mat-icon class="tile-icon">person</mat-icon>
+  <!-- [matTooltip]="currUser.V_USR_NM" -->
+  <div class="tile" matRipple cdkDrag [cdkDragData]="currUser" *ngFor="let currUser of users"
+    [class.active]="currUser == selectedUser" [class.highlight]="highlightedUsers.isSelected(currUser)"
+    (contextmenu)="openContextmenu($event, currUser)" (mousedown)="onTileMouseDownEventHandler($event)"
+    (click)="onUserTileClick(currUser)">
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-icon [matTooltip]="groupTypeConstant.WORKFLOW"
+              [ngClass]="{'disable-icon': selectedUserProfile !==groupTypeConstant.WORKFLOW , 'tile-icon' : selectedUserProfile===groupTypeConstant.WORKFLOW}"
+              (click)="onProfileClick(groupTypeConstant.WORKFLOW)">
+              person</mat-icon>
+            &nbsp;&nbsp;&nbsp;
+            <mat-icon [matTooltip]="groupTypeConstant.ADMINISTRATOR"
+              [ngClass]="{'disable-icon': selectedUserProfile !==groupTypeConstant.ADMINISTRATOR , 'tile-icon' : selectedUserProfile===groupTypeConstant.ADMINISTRATOR}"
+              (click)="onProfileClick(groupTypeConstant.ADMINISTRATOR)">person</mat-icon>
+            &nbsp;&nbsp;
+            <mat-icon [matTooltip]="groupTypeConstant.SYSTEM"
+              [ngClass]="{'disable-icon': selectedUserProfile !==groupTypeConstant.SYSTEM , 'tile-icon' : selectedUserProfile===groupTypeConstant.SYSTEM}"
+              (click)="onProfileClick(groupTypeConstant.SYSTEM)">
+              person</mat-icon>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-icon *ngFor="let group of groupNameList| groupNameType:selectedUserProfile " 
+        [matTooltip]="currUser.V_USR_GRP_ID.indexOf(group.groupId) == -1? 'Activate User':'Terminate User'"  
+        [ngClass]="{'disable-icon':currUser.V_USR_GRP_ID.indexOf(group.groupId) == -1, 'tile-icon' : currUser.V_USR_GRP_ID.indexOf(group.groupId) !== -1}">
+          person
+        </mat-icon>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <mat-icon
+      [ngClass]="{'disable-icon': currUser.V_STS.toUpperCase() !=='ACTIVE' , 'tile-icon' : currUser.V_STS.toUpperCase()==='ACTIVE'}"
+      (dblclick)="ondblclick(currUser,'Status')"
+      [matTooltip]="currUser.V_STS.toUpperCase() !=='ACTIVE'? 'Activate User':'Terminate User'">
+      person
+    </mat-icon>
     <!--    <div *ngIf="!environment.production">{{currUser.V_USR_ID}}</div>-->
     <div class="ellipsis-text"><span>{{currUser.V_USR_NM?.split('@')[0]}}</span></div>
   </div>
@@ -15,10 +47,13 @@
 </div>
 <div fxLayout="column" fxLayoutAlign="start stretch" class="mat-menu-content context-menu" #contextMenu
   *ngIf="contextMenuActive && (userPermission || membershipPermission)" [ngStyle]="contextMenuStyle">
-  <button mat-menu-item class="menu-item" *ngIf="userPermission" (click)="onContextMenuEditUserBtnClick()"><span class="entry bpmn-icon-screw-wrench fa-lg mr-4" draggable="true">
-  </span><span>Edit</span></button>
+  <!-- <button mat-menu-item class="menu-item" *ngIf="userPermission" (click)="onContextMenuEditUserBtnClick()"><span class="entry bpmn-icon-screw-wrench fa-lg mr-4" draggable="true">
+  </span><span>Edit</span></button> -->
   <button mat-menu-item class="many-item" *ngIf="userPermission || membershipPermission"
-    (click)="onContextMenuDeleteUserBtnClick(false)"><span><i class="fa fa-times fa-lg ml-1 mr-4"></i></span> <span>Remove from the Group</span></button>
+    (click)="onContextMenuDeleteUserBtnClick(false)"><span><i class="fa fa-times fa-lg ml-1 mr-4"></i></span>
+    <span>Remove from the Group</span></button>
   <button mat-menu-item class="many-item" *ngIf="userPermission || membershipPermission"
-    (click)="onContextMenuDeleteUserBtnClick(true)"><mat-icon>remove_circle_outline</mat-icon> <span>Remove from all Groups</span></button>
+    (click)="onContextMenuDeleteUserBtnClick(true)">
+    <mat-icon>remove_circle_outline</mat-icon> <span>Remove from all Groups</span>
+  </button>
 </div>

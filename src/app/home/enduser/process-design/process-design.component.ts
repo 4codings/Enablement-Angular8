@@ -90,6 +90,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   public isConditionalFlow = false;
   public isDefaultFlow = false;
   public isNoneFlow = false;
+  public deleteServiceId = '';
   @ViewChild('file', { static: false } as any)
   private file: any;
   @ViewChild('processForm', { static: false } as any) processForm: any;
@@ -471,7 +472,8 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.sequenceFlowtargetId = (businessObject && businessObject.targetRef ? businessObject.targetRef.id : '').replace(new RegExp('_', 'g'), ' ');
           this.showAllTabFlag = false;
           const isConditional = !!businessObject.conditionExpression;
-          this.getDocumentation('ORCH', this.generalId);
+          let str = 'V_APP_CD=' + this.selectedApp + '&V_PRDCR_APP_CD=' + this.selectedApp + '&V_PRCS_CD=' + this.selectedProcess + '&V_PRDCR_PRCS_CD=' + this.selectedProcess + '&V_PRDCR_SRC_CD=' + this.V_SRC_CD + '&V_PRDCR_SRVC_CD=' + this.sequenceFlowsourceId + '&V_SRVC_CD=' + this.sequenceFlowtargetId + '&V_USR_NM=' + this.V_USR_NM + '&V_SRC_CD=' + this.V_SRC_CD + '&REST_Service=SequenceFlow&Verb=GET'
+          this.getSequenceDocumentation(str);
           if (isConditional) {
             this.showCondtionType = true;
             this.getConditionType();
@@ -671,6 +673,15 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
       if (res) {
         let result = res.json();
         this.documentation = result["DSC"][0];
+      }
+    })
+  }
+  getSequenceDocumentation(url) {
+    this.endUserService.getSeqDocumentation(url).subscribe(res => {
+      if (res) {
+        let result = res.json();
+        console.log('result', result);
+        // this.documentation = result["DSC"][0];
       }
     })
   }
@@ -888,6 +899,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     // }, this.ctrl_variables.delay_timeout);
   }
   deleteService(id) {
+    this.deleteServiceId = id;
     if (id !== '' || id !== null) {
       this.httpClient.delete(this.apiService.endPoints.securedJSON + 'V_APP_CD=' + this.selectedApp + '&V_PRCS_CD=' + this.selectedProcess + '&V_SRVC_CD=' + id + '&V_SRC_CD=' + this.user.SRC_CD + '&V_USR_NM=' + this.user.USR_NM + '&REST_Service=Service&Verb=DELETE')
         .subscribe(res => {
@@ -905,7 +917,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
   }
   deleteSequence(id) {
     if (id !== '' || id !== null) {
-      this.httpClient.get(this.apiService.endPoints.secure + "V_ORCH_CD=" + id + '&V_SRC_CD=' + this.user.SRC_CD + '&V_USR_NM=' + this.user.USR_NM + "&REST_Service=Orchetration&Verb=DELETE").subscribe(
+      this.httpClient.get(this.apiService.endPoints.secure + 'V_APP_CD=' + this.selectedApp + '&V_PRDCR_APP_CD=' + this.selectedApp + '&V_PRCS_CD=' + this.selectedProcess + '&V_PRDCR_PRCS_CD=' + this.selectedProcess + '&V_PRDCR_SRC_CD=' + this.V_SRC_CD + '&V_PRDCR_SRVC_CD=' + this.sequenceFlowsourceId + '&V_SRVC_CD=' + this.deleteServiceId + '&V_USR_NM=' + this.user.USR_NM + '&V_SRC_CD=' + this.user.SRC_CD + '&REST_Service=SequenceFlow&Verb=DELETE').subscribe(
         res => {
           this.generalId = this.selectedProcess;
           this.isApp = false;
@@ -915,6 +927,7 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
           this.showAllTabFlag = false;
           this.showCondtionType = false;
           this.showRightIcon = true;
+          this.deleteServiceId = '';
         }
       );
     }

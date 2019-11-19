@@ -35,3 +35,16 @@ export class GroupTypeProfilePipe implements PipeTransform {
     return values;
   }
 }
+@Pipe({
+  name: 'groupNameType',
+})
+export class GroupNameTypePipe implements PipeTransform {
+  transform(values: any[], type?: any): any {
+    console.log('values',values);
+    console.log('type',type);
+    if (values && values.length && type) {
+      return values.filter(currVal => currVal.group == type);
+    }
+    return values;
+  }
+}

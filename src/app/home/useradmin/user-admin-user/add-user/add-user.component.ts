@@ -1,23 +1,18 @@
 import { Component, Inject, OnDestroy, OnInit, ViewChild } from "@angular/core";
-import { UserFormComponent } from "../user-form/user-form.component";
-import { select, Store } from "@ngrx/store";
-import { AppState } from "../../../../app.state";
-import * as userActions from "../../../../store/user-admin/user/user.action";
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA
-} from "@angular/material/dialog";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { Actions, ofType } from "@ngrx/effects";
-import { AddUser } from "../../../../store/user-admin/user/user.action";
-import { UseradminService } from "../../../../services/useradmin.service2";
-import { User } from "../../../../store/user-admin/user/user.model";
-import * as userGroupActions from "../../../../store/user-admin/user-group/usergroup.action";
-import { take } from "rxjs/operators";
-import * as userSelectors from "../../../../store/user-admin/user/user.selectors";
-import * as usreActions from "../../../../store/user-admin/user/user.action";
-import { UserListComponent } from "../user-list/user-list.component";
+import { Store } from "@ngrx/store";
 import { Subscription } from "rxjs";
+import { take } from "rxjs/operators";
+import { userGroup } from 'src/app/store/user-admin/user-group/usergroup.model';
+import { AppState } from "../../../../app.state";
+import { UseradminService } from "../../../../services/useradmin.service2";
+import * as userGroupActions from "../../../../store/user-admin/user-group/usergroup.action";
+import * as userActions from "../../../../store/user-admin/user/user.action";
+import { User } from "../../../../store/user-admin/user/user.model";
+import { UserFormComponent } from "../user-form/user-form.component";
+import { UserListComponent } from "../user-list/user-list.component";
+import { AddUser } from '../../../../store/user-admin/user/user.action';
 
 @Component({
   selector: "app-add-user",
@@ -35,28 +30,33 @@ export class AddUserComponent implements OnInit, OnDestroy {
   @ViewChild(UserListComponent, { static: false } as any)
   userList: UserListComponent;
   userFormValid = false;
-
+  groups: userGroup[];
+  selectedGroupId = [];
   constructor(
     private store: Store<AppState>,
     private userAdminService: UseradminService,
     private actions$: Actions,
     private dialogRef: MatDialogRef<AddUserComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
+    this.selectedGroupId = [];
+    this.selectedGroupId.push(this.data.groupId);
     this.userAdminService.getControlVariables();
     const V_SRC_CD_DATA = {
       V_SRC_CD: JSON.parse(sessionStorage.getItem("u")).SRC_CD
     };
     this.allUsers = this.data.allUsers;
+    this.groups = this.data.allGroups;
     this.actionSubscription = this.actions$
       .pipe(
         ofType(userActions.ADD_USER_SUCCESS),
         take(1)
       )
       .subscribe((result: any) => {
-        this.addUserInGroup(this.data.groupId, result.payload[0]);
+        this.addUserInGroup(this.selectedGroupId, result.payload[0]);
       });
   }
 
@@ -80,17 +80,48 @@ export class AddUserComponent implements OnInit, OnDestroy {
       case "addNewUser":
         if (this.userForm.isValid()) {
           const userData = this.userForm.getValue();
+          if (this.groups.length) {
+            if (userData.V_GROUP_NAME_WORKFLOW.length) {
+              userData.V_GROUP_NAME_WORKFLOW.forEach(ele => {
+                let i = this.groups.findIndex(v => v.V_USR_GRP_DSC == ele.label);
+                if (i > -1) {
+                  this.selectedGroupId.push(this.groups[i].V_USR_GRP_ID);
+                }
+              });
+            }
+            if (userData.V_GROUP_NAME_SYSTEM.length) {
+              userData.V_GROUP_NAME_SYSTEM.forEach(ele => {
+                let i = this.groups.findIndex(v => v.V_USR_GRP_DSC == ele.label);
+                if (i > -1) {
+                  this.selectedGroupId.push(this.groups[i].V_USR_GRP_ID);
+                }
+              });
+            }
+            if (userData.V_GROUP_NAME_ADMINISTRATOR.length) {
+              userData.V_GROUP_NAME_ADMINISTRATOR.forEach(ele => {
+                let i = this.groups.findIndex(v => v.V_USR_GRP_DSC == ele.label);
+                if (i > -1) {
+                  this.selectedGroupId.push(this.groups[i].V_USR_GRP_ID);
+                }
+              });
+            }
+          }
+          console.log('selected id', this.selectedGroupId);
+          delete userData['V_GROUP_NAME_ADMINISTRATOR']
+          delete userData['V_GROUP_NAME_SYSTEM']
+          delete userData['V_GROUP_NAME_WORKFLOW']
           this.userAlreadyExist = this.userForm.hasUser(userData.V_USR_NM);
           if (this.userAlreadyExist) {
             return;
           }
+          console.log('userdata', userData);
           this.store.dispatch(new AddUser(userData));
         }
         break;
     }
   }
 
-  addUserInGroup(groupId: string, user: User): void {
+  addUserInGroup(groupId: any, user: User): void {
     let json = {
       V_DELETED_ID_ARRAY: "",
       V_ADDED_ID_ARRAY: groupId + "",
@@ -106,6 +137,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
       Verb: ["POST"],
       V_IS_PRIMARY: user.V_IS_PRIMARY ? "Y" : "N"
     };
+    console.log('json', json);
     this.userAdminService.postSecuredJSON(json).subscribe(
       res => {
         const V_SRC_CD_DATA = {
@@ -114,7 +146,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
         this.store.dispatch(new userGroupActions.getUserGroup(V_SRC_CD_DATA));
         this.dialogRef.close();
       },
-      err => {}
+      err => { }
     );
   }
 

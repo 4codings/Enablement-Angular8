@@ -45,7 +45,7 @@ import { RoleComponent } from './role/role.component';
 import { AddGroupComponent } from './user-admin-group/add-group/add-group.component';
 import { EditGroupComponent } from './user-admin-group/edit-group/edit-group.component';
 import { GroupFormComponent } from './user-admin-group/group-form/group-form.component';
-import { GroupTypePipe, GroupTypeProfilePipe } from './user-admin-group/group-type.pipe';
+import { GroupTypePipe, GroupTypeProfilePipe, GroupNameTypePipe } from './user-admin-group/group-type.pipe';
 import { UserAdminGroupComponent } from './user-admin-group/user-admin-group.component';
 import { UserAdminNavComponent } from './user-admin-nav/user-admin-nav.component';
 import { AddEditUserComponent } from './user-admin-user/add-edit-user/add-edit-user.component';
@@ -78,6 +78,7 @@ import { UseradminComponent } from './useradmin.component';
     AddEditAuthorizeComponent,
     GroupTypePipe,
     GroupTypeProfilePipe,
+    GroupNameTypePipe,
     UserListComponent,
     RoleFormComponent,
     AddRoleComponent,

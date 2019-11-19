@@ -119,6 +119,13 @@ export class EndUserService {
     }
 
     /*
+       To GET DOCUMENTATION OF SEQUENCE FLOW
+   */
+    getSeqDocumentation(url) {
+        return this.http.get(this.baseSecureUrl + url, this.apiService.setHeaders());
+    }
+
+    /*
           To GET SERVICES NAME LIST
       */
     getServices(v_app_cd, v_prcs_cd) {

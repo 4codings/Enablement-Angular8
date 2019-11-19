@@ -1,30 +1,10 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges
-} from "@angular/core";
-import {
-  AbstractControl,
-  FormControl,
-  FormGroup,
-  ValidatorFn,
-  Validators,
-  EmailValidator
-} from "@angular/forms";
-import { User } from "../../../../store/user-admin/user/user.model";
-import {
-  userStatusConstants,
-  userStatusOptions
-} from "../../useradmin.constants";
-import { Observable } from "rxjs";
-import { Store, select } from "@ngrx/store";
-import { AppState } from "../../../../app.state";
-import * as userSelectors from "../../../../store/user-admin/user/user.selectors";
 import { HttpClient } from "@angular/common/http";
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from "@angular/core";
+import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from "@angular/forms";
+import { Store } from "@ngrx/store";
+import { AppState } from "../../../../app.state";
+import { User } from "../../../../store/user-admin/user/user.model";
+import { userStatusConstants, userStatusOptions, groupList, groupNameList, groupTypeConstant } from "../../useradmin.constants";
 
 @Component({
   selector: "app-user-form",
@@ -38,6 +18,10 @@ export class UserFormComponent implements OnInit, OnChanges {
   @Output() userFormValidation: EventEmitter<any> = new EventEmitter<any>();
   userForm: FormGroup;
   userStatusOptions = userStatusOptions;
+  groupTypeConstant = groupTypeConstant;
+  groupTypeOptions = groupList;
+  groupNameList = groupNameList;
+  groupAddedList = [];
   protected emailIds: string[] = [];
   initial_setup: any;
   domainErrorMessage = "";
@@ -57,6 +41,10 @@ export class UserFormComponent implements OnInit, OnChanges {
         [Validators.required]
       ),
       V_USR_DSC: new FormControl(""),
+      V_GROUP_TYPE: new FormControl(""),
+      V_GROUP_NAME_WORKFLOW: new FormControl([]),
+      V_GROUP_NAME_ADMINISTRATOR: new FormControl([]),
+      V_GROUP_NAME_SYSTEM: new FormControl([]),
       V_STS: new FormControl(userStatusConstants.ACTIVE, Validators.required),
       V_IS_PRIMARY: new FormControl(false)
     });
@@ -68,12 +56,13 @@ export class UserFormComponent implements OnInit, OnChanges {
     }
   }
 
-  onChange(){
+  onChange() {
     if (this.isValid()) {
       this.userFormValidation.emit(true);
     }
   }
   ngOnChanges(changes: SimpleChanges): void {
+    console.log('chanhes', changes);
     if (changes.hasOwnProperty("user") && changes.hasOwnProperty("groupId")) {
       this.setFormValue(this.user, this.groupId);
     }
@@ -95,7 +84,11 @@ export class UserFormComponent implements OnInit, OnChanges {
   get f() {
     return this.userForm.controls;
   }
-
+  onGroupAdded(event) {
+    console.log('onGroupAdded', this.userForm.get('V_GROUP_NAME_ADMINISTRATOR').value);
+    console.log('onGroupAdded', this.userForm.get('V_GROUP_NAME_SYSTEM').value);
+    console.log('groupAddedList', this.userForm.get('V_GROUP_NAME_WORKFLOW').value);
+  }
   setFormValue(user: User, groupId: string): void {
     const groupIndex = user.V_USR_GRP_ID
       ? user.V_USR_GRP_ID.indexOf(Number(groupId))
@@ -124,6 +117,9 @@ export class UserFormComponent implements OnInit, OnChanges {
       V_USR_DSC: formValue.V_USR_DSC,
       V_STS:
         formValue.V_STS != "" ? formValue.V_STS : userStatusConstants.ACTIVE,
+      V_GROUP_NAME_WORKFLOW: formValue.V_GROUP_NAME_WORKFLOW,
+      V_GROUP_NAME_SYSTEM: formValue.V_GROUP_NAME_SYSTEM,
+      V_GROUP_NAME_ADMINISTRATOR: formValue.V_GROUP_NAME_ADMINISTRATOR,
       V_IS_PRIMARY: formValue.V_IS_PRIMARY ? "Y" : "N"
     };
   }
