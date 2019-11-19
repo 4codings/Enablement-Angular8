@@ -112,24 +112,24 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     maxHeight: 400,
   });
   parentMenuItems = [
-    { item: 'New Process', value: 'Add', havePermission: 0, icon: 'add', iconType: 'mat' },
-    { item: 'Import BPMN File', value: 'Import', havePermission: 0, icon: 'cloud_upload  mr-1', iconType: 'mat' },
-    { item: 'Edit Application', value: 'Edit', havePermission: 0, icon: 'entry bpmn-icon-screw-wrench mr-10', iconType: 'bpmn' },
-    { item: 'Delete Application', value: 'Delete', havePermission: 0, icon: 'entry bpmn-icon-trash', iconType: 'bpmn' }];
+    { item: 'New Process', value: 'Add', havePermission: 0, icon: 'playlist_add', iconType: 'mat' },
+    { item: 'Import BPMN File', value: 'Import', havePermission: 0, icon: 'cloud_upload', iconType: 'mat' },
+    { item: 'Edit Application', value: 'Edit', havePermission: 0, icon: 'build', iconType: 'mat' },
+    { item: 'Delete Application', value: 'Delete', havePermission: 0, icon: 'delete', iconType: 'mat' }];
   childrenMenuItems = [
-    { item: 'Run', position: 0, value: 'Run', havePermission: 0, icon: 'fas fa-play-circle fa-lg', iconType: 'fa' },
-    { item: 'Run At', position: 1, value: 'RunAt', havePermission: 0, icon: 'fas fa-clock fa-lg', iconType: 'fa' },
-    { item: 'Approve', position: 2, value: 'Approve', havePermission: 0, icon: 'fas fa-thumbs-up fa-lg', iconType: 'fa' },
-    { item: 'Monitor', position: 3, value: 'Monitor', havePermission: 0, icon: 'fas fa-desktop fa-lg', iconType: 'fa' },
-    { item: 'Resolve', position: 4, value: 'Resolve', havePermission: 0, icon: 'fa fa-address-card fa-lg ml-1', iconType: 'fa' },
-    { item: 'Schedule', position: 5, value: 'Schedule', havePermission: 0, icon: 'fa fa-calendar fa-lg ml-2', iconType: 'fa' },
-    { item: 'Pause Schedule', position: 6, value: 'SchedulePause', havePermission: 0, icon: 'far fa-pause-circle fa-lg', iconType: 'fa' },
-    { item: 'Kill Schedule', position: 7, value: 'ScheduleKill', havePermission: 0, icon: 'not_interested', iconType: 'mat' },
-    { item: 'Resume Schedule', position: 8, value: 'ScheduleResume', havePermission: 0, icon: 'undo', iconType: 'mat' },
-    { item: 'Download BPNM', position: 9, value: 'BPNM', havePermission: 0, icon: 'fa fa-file-download fa-lg ml-2', iconType: 'fa' },
-    { item: 'Download SVG', position: 10, value: 'SVG', havePermission: 0, icon: 'insert_photo', iconType: 'mat' },
-    { item: 'Edit', position: 11, value: 'Edit', havePermission: 0, icon: 'entry bpmn-icon-screw-wrench mr-2', iconType: 'bpmn' },
-    { item: 'Delete', position: 12, value: 'Delete', havePermission: 0, icon: 'entry bpmn-icon-trash', iconType: 'bpmn' }];
+    { item: 'Run', position: 0, value: 'Run', havePermission: 0, icon: 'play_circle_filled', iconType: 'mat' },
+    { item: 'Run At', position: 1, value: 'RunAt', havePermission: 0, icon: 'schedule', iconType: 'mat' },
+    { item: 'Approve', position: 2, value: 'Approve', havePermission: 0, icon: 'check_circle', iconType: 'mat' },
+    { item: 'Monitor', position: 3, value: 'Monitor', havePermission: 0, icon: 'dashboard', iconType: 'mat' },
+    { item: 'Resolve', position: 4, value: 'Resolve', havePermission: 0, icon: 'contact_phone', iconType: 'mat' },
+    { item: 'Schedule', position: 5, value: 'Schedule', havePermission: 0, icon: 'calendar_today', iconType: 'mat' },
+    { item: 'Pause Schedule', position: 6, value: 'SchedulePause', havePermission: 0, icon: 'pause_circle_filled', iconType: 'mat' },
+    { item: 'Kill Schedule', position: 7, value: 'ScheduleKill', havePermission: 0, icon: 'cancel', iconType: 'mat' },
+    { item: 'Resume Schedule', position: 8, value: 'ScheduleResume', havePermission: 0, icon: 'replay', iconType: 'mat' },
+    { item: 'Download BPNM', position: 9, value: 'BPNM', havePermission: 0, icon: 'library_books', iconType: 'mat' },
+    { item: 'Download SVG', position: 10, value: 'SVG', havePermission: 0, icon: 'photo_library', iconType: 'mat' },
+    { item: 'Edit', position: 11, value: 'Edit', havePermission: 0, icon: 'build', iconType: 'mat' },
+    { item: 'Delete', position: 12, value: 'Delete', havePermission: 0, icon: 'delete', iconType: 'mat' }];
   roleObservable$: Subscription;
   roleValues;
   childobj = {};

@@ -27,6 +27,7 @@ export class UserTileListComponent implements OnInit, OnDestroy {
   @Input() controlVariables: any;
   @Input() groupList: userGroup[];
   environment = environment;
+  user: any;
   @Output() addUserEvent: EventEmitter<User> = new EventEmitter<User>();
   @Output() deleteUserEvent: EventEmitter<any> = new EventEmitter<any>();
 
@@ -50,6 +51,7 @@ export class UserTileListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.user = JSON.parse(sessionStorage.getItem('u'));
     this.setGroupId();
     document.addEventListener('mousedown', event => {
       this.contextMenuActive = false;
@@ -117,7 +119,8 @@ export class UserTileListComponent implements OnInit, OnDestroy {
     }
     const data = {
       ...currentUser,
-      V_USR_NM: currentUser.V_USR_NM,
+      V_USR_NM: this.user.USR_NM,
+      V_SRC_ID: this.user.SRC_CD,
       REST_Service: 'User',
       Verb: 'PATCH',
       id: currentUser.id,

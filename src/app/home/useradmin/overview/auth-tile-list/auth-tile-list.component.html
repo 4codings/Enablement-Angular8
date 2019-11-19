@@ -10,13 +10,13 @@
       <mat-icon [ngClass]="{'disable-icon': currAuth.V_CREATE==='N' , 'tile-icon' :currAuth.V_CREATE==='Y'}"
         (dblclick)="method2CallForDblClick('add',currAuth)"
         [matTooltip]="currAuth.V_CREATE==='N'? 'Enable Create':'Disable Create'">
-        add
+        playlist_add
       </mat-icon>
       <!-- *ngIf="currAuth.V_UPDATE==='Y'" -->
       <mat-icon [ngClass]="{ 'disable-icon': currAuth.V_UPDATE==='N' , 'tile-icon' : currAuth.V_UPDATE==='Y'}"
         (dblclick)="method2CallForDblClick('update',currAuth)"
         [matTooltip]="currAuth.V_UPDATE==='N'? 'Enable Update':'Disable Update'">
-        create
+        build
       </mat-icon>
       <!-- *ngIf="currAuth.V_READ==='Y'" -->
       <mat-icon [ngClass]="{'disable-icon':  currAuth.V_READ==='N', 'tile-icon' : currAuth.V_READ==='Y'}">
@@ -32,7 +32,7 @@
       <mat-icon [ngClass]="{'disable-icon':  currAuth.V_EXECUTE==='N' , 'tile-icon' :currAuth.V_EXECUTE==='Y'}"
         (dblclick)="method2CallForDblClick('execute',currAuth)"
         [matTooltip]="currAuth.V_EXECUTE==='N'? 'Enable Execute':'Disable Execute'">
-        launch
+        play_circle_filled
       </mat-icon>
     </div>
     <!--    <div *ngIf="!environment.production">{{currAuth.V_AUTH_ID}}</div>-->
