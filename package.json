@@ -4,7 +4,7 @@
     "scripts": {
         "ng": "ng",
         "start": "ng serve",
-        "build": "ng build --base-href . --prod",
+        "build": "ng build --base-href . --prod && gzipper --verbose ./dist",
         "build:stats": "ng build --base-href . --prod --stats-json",
         "analyze-es5": "webpack-bundle-analyzer dist/enablement/stats-es5.json",
         "analyze-es2015": "webpack-bundle-analyzer dist/enablement/stats-es2015.json",
@@ -44,6 +44,7 @@
         "crypto-js": "^3.1.9-1",
         "dateformat": "^3.0.3",
         "file-saver": "^2.0.1",
+        "gzipper": "^3.4.1",
         "hammerjs": "^2.0.8",
         "install": "^0.13.0",
         "ng-pick-datetime": "^7.0.0",
