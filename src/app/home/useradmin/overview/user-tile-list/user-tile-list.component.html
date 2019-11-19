@@ -13,10 +13,11 @@
               [ngClass]="{'disable-icon': selectedUserProfile !==groupTypeConstant.WORKFLOW , 'tile-icon' : selectedUserProfile===groupTypeConstant.WORKFLOW}"
               (click)="onProfileClick(groupTypeConstant.WORKFLOW)">
               person</mat-icon>
+
             &nbsp;&nbsp;&nbsp;
             <mat-icon [matTooltip]="groupTypeConstant.ADMINISTRATOR"
               [ngClass]="{'disable-icon': selectedUserProfile !==groupTypeConstant.ADMINISTRATOR , 'tile-icon' : selectedUserProfile===groupTypeConstant.ADMINISTRATOR}"
-              (click)="onProfileClick(groupTypeConstant.ADMINISTRATOR)">person</mat-icon>
+              (click)="onProfileClick(groupTypeConstant.ADMINISTRATOR)">persons</mat-icon>
             &nbsp;&nbsp;
             <mat-icon [matTooltip]="groupTypeConstant.SYSTEM"
               [ngClass]="{'disable-icon': selectedUserProfile !==groupTypeConstant.SYSTEM , 'tile-icon' : selectedUserProfile===groupTypeConstant.SYSTEM}"
@@ -24,10 +25,11 @@
               person</mat-icon>
           </mat-panel-title>
         </mat-expansion-panel-header>
+        <!-- currUser.V_USR_GRP_ID.indexOf(group.groupId) == -1? 'Activate User':'Terminate User' -->
         <mat-icon *ngFor="let group of groupNameList| groupNameType:selectedUserProfile " 
-        [matTooltip]="currUser.V_USR_GRP_ID.indexOf(group.groupId) == -1? 'Activate User':'Terminate User'"  
+        [matTooltip]="group.key"  
         [ngClass]="{'disable-icon':currUser.V_USR_GRP_ID.indexOf(group.groupId) == -1, 'tile-icon' : currUser.V_USR_GRP_ID.indexOf(group.groupId) !== -1}">
-          person
+          {{group.icon}}
         </mat-icon>
       </mat-expansion-panel>
     </mat-accordion>

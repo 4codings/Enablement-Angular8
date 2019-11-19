@@ -12,7 +12,7 @@
     </div>
     <div>
       <mat-form-field *ngIf="selectedAuthType.label.toLowerCase() == 'process'">
-        <input matInput class="f_inp" name="app" [(ngModel)]="selectedApp.app" [matAutocomplete]="auto" cdkFocusInitial
+        <input matInput name="app" [(ngModel)]="selectedApp.app" [matAutocomplete]="auto" cdkFocusInitial
           placeholder="Select an Application">
         <mat-autocomplete #auto="matAutocomplete">
           <mat-option style="text-align:center;" (click)="onAuthSelect(app.V_APP_CD,false)"
@@ -21,8 +21,8 @@
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
-      <mat-form-field class="form-width" *ngIf="selectedAuthType.label.toLowerCase() == 'service'">
-        <input class="f_inp" matInput name="app" [(ngModel)]="selectedApp.app" [matAutocomplete]="auto" cdkFocusInitial
+      <mat-form-field *ngIf="selectedAuthType.label.toLowerCase() == 'service'">
+        <input matInput name="app" [(ngModel)]="selectedApp.app" [matAutocomplete]="auto" cdkFocusInitial
           placeholder="Select an Application">
         <mat-autocomplete #auto="matAutocomplete">
           <mat-option style="text-align:center;" *ngFor="let app of filteredApplicationValues"
@@ -31,8 +31,8 @@
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
-      <mat-form-field class="form-width" *ngIf="selectedAuthType.label.toLowerCase() == 'artifact'">
-        <input class="f_inp" matInput name="app" [(ngModel)]="selectedApp.app" placeholder="Select an Artifact Type"
+      <mat-form-field *ngIf="selectedAuthType.label.toLowerCase() == 'artifact'">
+        <input matInput name="app" [(ngModel)]="selectedApp.app" placeholder="Select an Artifact Type"
           [matAutocomplete]="auto" cdkFocusInitial>
         <mat-autocomplete #auto="matAutocomplete">
           <mat-option style="text-align:center;" (click)="onAuthSelect(app.V_ARTFCT_TYP,false)"
@@ -41,8 +41,8 @@
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
-      <mat-form-field class="form-width" *ngIf="selectedAuthType.label.toLowerCase() == 'exe'">
-        <input class="f_inp" matInput name="app" [(ngModel)]="selectedApp.app" placeholder="Select an Executable Type"
+      <mat-form-field *ngIf="selectedAuthType.label.toLowerCase() == 'exe'">
+        <input matInput name="app" [(ngModel)]="selectedApp.app" placeholder="Select an Executable Type"
           [matAutocomplete]="auto" cdkFocusInitial>
         <mat-autocomplete #auto="matAutocomplete">
           <mat-option style="text-align:center;" (click)="onAuthSelect(app.V_EXE_TYP,false)"
@@ -53,8 +53,8 @@
       </mat-form-field>
     </div>
     <div *ngIf="selectedApp.app !='' &&selectedAuthType.label.toLowerCase() == 'service' ">
-      <mat-form-field class="form-width">
-        <input class="f_inp" matInput name="app" [(ngModel)]="selectedProcess.process" [matAutocomplete]="auto" cdkFocusInitial
+      <mat-form-field>
+        <input matInput name="app" [(ngModel)]="selectedProcess.process" [matAutocomplete]="auto" cdkFocusInitial
           placeholder="Select a Process">
         <mat-autocomplete #auto="matAutocomplete">
           <mat-option style="text-align:center;" *ngFor="let process of filteredProcessValues"
