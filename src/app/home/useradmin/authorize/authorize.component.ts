@@ -56,6 +56,7 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
   oldRadioSelected;
   domain_name = environment.domainName;
   enableAddButtonFlag = false;
+  selectedRoleId: any;
   constructor(
     public noAuthData: NoAuthDataService,
     protected store: Store<AppState>,
@@ -86,7 +87,24 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
           if (this.selectedApplication !== '') {
             this.processValuesObservable.forEach(ele => {
               if (ele.app === this.selectedApplication) {
-                this.processValues = ele.process;
+                if (this.radioSelected == 'PROCESS') {
+                  let copyProcessValues = ele.process;
+                  if (this.filteredAuthValues && this.filteredAuthValues.length) {
+                    if (copyProcessValues.length) {
+                      copyProcessValues.forEach(processEle => {
+                        console.log('processEle', processEle)
+                        let i = this.filteredAuthValues.findIndex(v => v.V_APP_CD == this.selectedApplication && v.V_PRCS_CD == processEle && (v.V_ROLE_ID.findIndex(v => v == this.selectedRoleId) > -1))
+                        console.log('i', i);
+                        if (i == -1) {
+                          this.processValues.push(processEle);
+                        }
+                      })
+                    }
+                  }
+                } else {
+                  this.processValues = ele.process;
+                }
+
               }
             });
           }
@@ -102,7 +120,19 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
           if (this.selectedApplication !== '' && this.selectedProcess !== '') {
             this.serviceValuesObservable.forEach(ele => {
               if (ele.app === this.selectedApplication && ele.process === this.selectedProcess) {
-                this.serviceValues = ele.service;
+                let copyServiceValues = ele.service;
+                if (this.filteredAuthValues && this.filteredAuthValues.length) {
+                  if (copyServiceValues.length) {
+                    copyServiceValues.forEach(serviceEle => {
+                      console.log('serviceEle', serviceEle)
+                      let i = this.filteredAuthValues.findIndex(v => v.V_APP_CD == this.selectedApplication && v.V_PRCS_CD == this.selectedProcess && v.V_SRVC_CD == serviceEle && (v.V_ROLE_ID.findIndex(v => v == this.selectedRoleId) > -1))
+                      console.log('i', i)
+                      if (i == -1) {
+                        this.serviceValues.push(serviceEle);
+                      }
+                    })
+                  }
+                }
               }
             });
           }
@@ -207,9 +237,43 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
       }
     }
   }
-  onAppSelect(event) {
+  onAppSelect(event, roleId) {
+    console.log('filteredAuthValues', this.filteredAuthValues)
+    console.log('roleId', roleId);
+    this.selectedRoleId = roleId;
     this.selectedApplication = event;
-    if (this.radioSelected === 'SERVICE' || this.radioSelected === 'PROCESS') {
+    if (this.radioSelected === 'PROCESS') {
+      this.authValueObj.V_APP_CD = event;
+      if (!this.processValuesObservable.length) {
+        this.optionalService.getProcessOptionalValue(event);
+      } else {
+        let flag = 0;
+        this.processValuesObservable.forEach(ele => {
+          if (ele.app === this.selectedApplication) {
+            this.processValues = [];
+            let copyProcessValues = ele.process;
+            if (this.filteredAuthValues && this.filteredAuthValues.length) {
+              if (copyProcessValues.length) {
+                copyProcessValues.forEach(processEle => {
+                  console.log('processEle', processEle)
+                  let i = this.filteredAuthValues.findIndex(v => v.V_APP_CD == this.selectedApplication && v.V_PRCS_CD == processEle && (v.V_ROLE_ID.findIndex(v => v == roleId) > -1))
+                  console.log('i', i);
+                  if (i == -1) {
+                    this.processValues.push(processEle);
+                  }
+                })
+              }
+            }
+            console.log('process', this.processValues)
+            // this.processValues = ele.process;
+            flag = 1;
+          }
+        });
+        if (!flag) {
+          this.optionalService.getProcessOptionalValue(event);
+        }
+      }
+    } else if (this.radioSelected === 'SERVICE') {
       this.authValueObj.V_APP_CD = event;
       if (!this.processValuesObservable.length) {
         this.optionalService.getProcessOptionalValue(event);
@@ -219,6 +283,8 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
           if (ele.app === this.selectedApplication) {
             this.processValues = [];
             this.processValues = ele.process;
+            console.log('process', this.processValues)
+            // this.processValues = ele.process;
             flag = 1;
           }
         });
@@ -226,7 +292,8 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
           this.optionalService.getProcessOptionalValue(event);
         }
       }
-    } else if (this.radioSelected === 'ARTIFACT' || this.radioSelected === 'PLATFORM' || this.radioSelected === 'SERVER' || this.radioSelected === 'SLA') {
+    }
+    else if (this.radioSelected === 'ARTIFACT' || this.radioSelected === 'PLATFORM' || this.radioSelected === 'SERVER' || this.radioSelected === 'SLA') {
       this.authValueObj.V_AUTH_DSC = event;
       this.authValueObj.V_AUTH_CD = event;
     } else {
@@ -235,7 +302,10 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
     this.enableAddButtonFlag = this.checkEnableButtonFlag();
   }
 
-  onProcessSelect(event) {
+  onProcessSelect(event, roleId) {
+    this.selectedRoleId = roleId;
+    console.log('filteredAuthValues', this.filteredAuthValues)
+    console.log('roleId', roleId);
     // this.selectedProcess.push({ 'index': index, 'process': event.value });
     this.selectedProcess = event;
     if (this.radioSelected === 'SERVICE') {
@@ -247,7 +317,20 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
         this.serviceValuesObservable.forEach(ele => {
           if (ele.app === this.selectedApplication && ele.process === this.selectedProcess) {
             this.serviceValues = [];
-            this.serviceValues = ele.service;
+            let copyServiceValues = ele.service;
+            if (this.filteredAuthValues && this.filteredAuthValues.length) {
+              if (copyServiceValues.length) {
+                copyServiceValues.forEach(serviceEle => {
+                  console.log('serviceEle', serviceEle)
+                  let i = this.filteredAuthValues.findIndex(v => v.V_APP_CD == this.selectedApplication && v.V_PRCS_CD == this.selectedProcess && v.V_SRVC_CD == serviceEle && (v.V_ROLE_ID.findIndex(v => v == roleId) > -1))
+                  console.log('i', i)
+                  if (i == -1) {
+                    this.serviceValues.push(serviceEle);
+                  }
+                })
+              }
+            }
+            console.log('serviceValues', this.serviceValues)
             flag = 1;
           }
         });

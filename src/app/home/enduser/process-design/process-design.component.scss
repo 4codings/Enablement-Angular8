@@ -608,7 +608,8 @@ mat-header-cell {
   color: #0066ff;
 }
 
-.fa-pause-circle, .fa-cloud-upload {
+.fa-pause-circle,
+.fa-cloud-upload {
   color: rgb(0, 225, 255);
 }
 
@@ -660,9 +661,9 @@ mat-header-cell {
   vertical-align: middle;
 }
 
-.mat-menu-item .mat-icon:first-child {
-  color: #99cc00;
-}
+// .mat-menu-item .mat-icon:first-child {
+//   color: #99cc00;
+// }
 
 .contact_phone .mat-menu-item .mat-icon {
   color: #ff7400;
@@ -863,4 +864,8 @@ mat-header-row {
     top: 0px;
     left: 0px;
   }
+}
+
+i.icon_blue {
+  color: blue;
 }

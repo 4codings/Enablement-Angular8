@@ -117,19 +117,19 @@ export class ProcessDesignComponent implements OnInit, OnDestroy {
     { item: 'Edit Application', value: 'Edit', havePermission: 0, icon: 'build', iconType: 'mat' },
     { item: 'Delete Application', value: 'Delete', havePermission: 0, icon: 'delete', iconType: 'mat' }];
   childrenMenuItems = [
-    { item: 'Run', position: 0, value: 'Run', havePermission: 0, icon: 'play_circle_filled', iconType: 'mat' },
-    { item: 'Run At', position: 1, value: 'RunAt', havePermission: 0, icon: 'schedule', iconType: 'mat' },
-    { item: 'Approve', position: 2, value: 'Approve', havePermission: 0, icon: 'check_circle', iconType: 'mat' },
-    { item: 'Monitor', position: 3, value: 'Monitor', havePermission: 0, icon: 'dashboard', iconType: 'mat' },
-    { item: 'Resolve', position: 4, value: 'Resolve', havePermission: 0, icon: 'contact_phone', iconType: 'mat' },
-    { item: 'Schedule', position: 5, value: 'Schedule', havePermission: 0, icon: 'calendar_today', iconType: 'mat' },
-    { item: 'Pause Schedule', position: 6, value: 'SchedulePause', havePermission: 0, icon: 'pause_circle_filled', iconType: 'mat' },
-    { item: 'Kill Schedule', position: 7, value: 'ScheduleKill', havePermission: 0, icon: 'cancel', iconType: 'mat' },
-    { item: 'Resume Schedule', position: 8, value: 'ScheduleResume', havePermission: 0, icon: 'replay', iconType: 'mat' },
-    { item: 'Download BPNM', position: 9, value: 'BPNM', havePermission: 0, icon: 'library_books', iconType: 'mat' },
-    { item: 'Download SVG', position: 10, value: 'SVG', havePermission: 0, icon: 'photo_library', iconType: 'mat' },
-    { item: 'Edit', position: 11, value: 'Edit', havePermission: 0, icon: 'build', iconType: 'mat' },
-    { item: 'Delete', position: 12, value: 'Delete', havePermission: 0, icon: 'delete', iconType: 'mat' }];
+    { item: 'Run', position: 0, value: 'Run', havePermission: 0, icon: 'play_circle_filled', iconType: 'mat' ,class:'icon_blue'},
+    { item: 'Run At', position: 1, value: 'RunAt', havePermission: 0, icon: 'schedule', iconType: 'mat',class:'icon_blue' },
+    { item: 'Approve', position: 2, value: 'Approve', havePermission: 0, icon: 'check_circle', iconType: 'mat',class:'icon_blue' },
+    { item: 'Monitor', position: 3, value: 'Monitor', havePermission: 0, icon: 'dashboard', iconType: 'mat' ,class:'icon_blue'},
+    { item: 'Resolve', position: 4, value: 'Resolve', havePermission: 0, icon: 'contact_phone', iconType: 'mat',class:'icon_blue' },
+    { item: 'Schedule', position: 5, value: 'Schedule', havePermission: 0, icon: 'calendar_today', iconType: 'mat',class:'icon_blue' },
+    { item: 'Pause Schedule', position: 6, value: 'SchedulePause', havePermission: 0, icon: 'pause_circle_filled', iconType: 'mat' ,class:'icon_blue'},
+    { item: 'Kill Schedule', position: 7, value: 'ScheduleKill', havePermission: 0, icon: 'cancel', iconType: 'mat',class:'icon_blue' },
+    { item: 'Resume Schedule', position: 8, value: 'ScheduleResume', havePermission: 0, icon: 'replay', iconType: 'mat',class:'icon_blue' },
+    { item: 'Download BPNM', position: 9, value: 'BPNM', havePermission: 0, icon: 'library_books', iconType: 'mat',class:'icon_blue' },
+    { item: 'Download SVG', position: 10, value: 'SVG', havePermission: 0, icon: 'photo_library', iconType: 'mat',class:'icon_blue' },
+    { item: 'Edit', position: 11, value: 'Edit', havePermission: 0, icon: 'build', iconType: 'mat',class:'icon_blue' },
+    { item: 'Delete', position: 12, value: 'Delete', havePermission: 0, icon: 'delete', iconType: 'mat',class:'icon_blue' }];
   roleObservable$: Subscription;
   roleValues;
   childobj = {};
