@@ -23,7 +23,8 @@ export class ReportData {
   templateUrl: "./form.component.html"
 })
 export class FormComponent implements OnInit {
-  V_ID: any;
+  V_ID_Key_Name: any;
+  V_ID_Key_Value: any;
   formWidth: any = {};
   fieldType: any = {};
   plainInput: string;
@@ -158,6 +159,7 @@ export class FormComponent implements OnInit {
   getFormData(): any {
     this.Form_Data = [];
     this.Form_Data = this.StorageSessionService.getCookies("report_table");
+    console.log('this.formdata', this.Form_Data);
     this.configService.prepareAndGetFieldConfigurations(this.Form_Data, true);
     this.RVP_Keys = [];
     this.RVP_Values = [];
@@ -201,8 +203,8 @@ export class FormComponent implements OnInit {
         this.HAS_DSPLY[i] = copy_HAS_DSPLY[paramPosition].trim();
         this.DSPLY_FLD[i] = copy_DSPLY_FLD[paramPosition].trim();
         this.DISPLAY_TXT[i] = copy_DISPLAY_TXT[paramPosition].trim();
-        this.PARAM_DSC[i] = copy_PARAM_DSC[paramPosition]?copy_PARAM_DSC[paramPosition].trim():'';
-        
+        this.PARAM_DSC[i] = copy_PARAM_DSC[paramPosition] ? copy_PARAM_DSC[paramPosition].trim() : '';
+
         this.FLD_HLP_TXT[i] = copy_FLD_HLP_TXT[paramPosition].trim().replace(/'/g, "");
         this.VLDTN[i] = copy_VLDTN[paramPosition].trim();
         this.VLDTN_ALERT_TXT[i] = copy_VLDTN_ALERT_TXT[paramPosition].trim();
@@ -357,7 +359,7 @@ export class FormComponent implements OnInit {
     this.VLDTN = this.Form_Data["VLDTN"][0].split(",");
     this.VLDTN_ALERT_TXT = this.Form_Data["VLDTN_ALERT_TXT"][0].split(",");
     this.CNSLD_VLDTN_ALERT = this.Form_Data["CNSLD_VLDTN_ALERT"][0].split(",");
-    this.PARAM_DSC = this.Form_Data["PARAM_DSC"]?this.Form_Data["PARAM_DSC"][0].split(","):[];
+    this.PARAM_DSC = this.Form_Data["PARAM_DSC"] ? this.Form_Data["PARAM_DSC"][0].split(",") : [];
     this.FLD_HLP_TXT = this.Form_Data["FLD_HLP_TXT"][0].split(",");
 
     this.FLD_TYPE = this.Form_Data["FLD_TYPE"][0].split(",");
@@ -377,21 +379,24 @@ export class FormComponent implements OnInit {
       if (this.V_TABLE_NAME == null) {
         this.V_TABLE_NAME = "";
       }
-    } else {
-      this.V_TABLE_NAME = "";
-    }
-    if ("V_ID" in this.PVP) {
-      this.V_ID = this.PVP["V_ID"];
-    }
-    if ("V_Schema_Name" in this.PVP) {
-      this.V_SCHEMA_NAME = this.PVP["V_Schema_Name"][0];
-      if (this.V_SCHEMA_NAME == null) {
+      // if ("V_Key_Values" in this.PVP) {
+      //   this.V_ID_Key_Value = this.PVP["V_Key_Values"];
+      // }
+      if ("V_Schema_Name" in this.PVP) {
+        this.V_SCHEMA_NAME = this.PVP["V_Schema_Name"][0];
+        if (this.V_SCHEMA_NAME == null) {
+          this.V_SCHEMA_NAME = "";
+        }
+        this.V_SCHEMA_NAME;
+      } else {
         this.V_SCHEMA_NAME = "";
       }
-      this.V_SCHEMA_NAME;
     } else {
+      this.V_TABLE_NAME = "";
       this.V_SCHEMA_NAME = "";
     }
+
+
     const key_name_ar = [];
     const key_val_ar = [];
     if ("V_Key_Names" in this.PVP) {
@@ -410,8 +415,13 @@ export class FormComponent implements OnInit {
         }
       }
     }
+    this.V_ID_Key_Name = this.PVP["V_Key_Names"];
+    this.V_ID_Key_Value = this.PVP["V_Key_Values"];
     this.V_KEY_NAME = key_name_ar.join("|");
     this.V_KEY_VALUE = key_val_ar.join("|");
+    console.log('V_KEY_NAME', this.V_KEY_NAME);
+    console.log('V_KEY_VALUE', this.V_KEY_VALUE);
+    console.log('PVP', this.PVP);
   }
 
   invoke_router(res) {
