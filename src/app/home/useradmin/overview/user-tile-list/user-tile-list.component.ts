@@ -11,6 +11,8 @@ import { UpdateUser } from '../../../../store/user-admin/user/user.action';
 import { User } from '../../../../store/user-admin/user/user.model';
 import { groupNameList, groupTypeConstant } from '../../useradmin.constants';
 import { OverviewService } from '../overview.service';
+import * as userGroupActions from '../../../../store/user-admin/user-group/usergroup.action';
+import { UseradminService } from '../../../../services/useradmin.service2';
 
 @Component({
   selector: 'app-user-tile-list',
@@ -28,8 +30,10 @@ export class UserTileListComponent implements OnInit, OnDestroy {
   @Input() groupList: userGroup[];
   environment = environment;
   user: any;
-  @Output() addUserEvent: EventEmitter<User> = new EventEmitter<User>();
-  @Output() deleteUserEvent: EventEmitter<any> = new EventEmitter<any>();
+  @Output() addCustomUserEvent: EventEmitter<User> = new EventEmitter<User>();
+  @Output() addOtherUserEvent: EventEmitter<any> = new EventEmitter<any>();
+  @Output() deleteCustomUserEvent: EventEmitter<any> = new EventEmitter<any>();
+  @Output() deleteOtherUserEvent: EventEmitter<any> = new EventEmitter<any>();
 
   @ViewChild('contextMenu', { static: false } as any) set contextMenu(value: ElementRef) {
     if (value) {
@@ -45,7 +49,7 @@ export class UserTileListComponent implements OnInit, OnDestroy {
   groupNameList = groupNameList;
   groupTypeConstant = groupTypeConstant;
   selectedUserProfile = groupTypeConstant.WORKFLOW;
-  constructor(public overviewService: OverviewService, private store: Store<AppState>) {
+  constructor(public overviewService: OverviewService, private store: Store<AppState>, private userAdminService: UseradminService) {
     this.overviewService.selectedUser$.pipe(takeUntil(this.unsubscribeAll)).subscribe(user => this.selectedUser = user);
     this.overviewService.highlightedUsers$.pipe(takeUntil(this.unsubscribeAll)).subscribe(users => this.highlightedUsers = users);
   }
@@ -74,12 +78,12 @@ export class UserTileListComponent implements OnInit, OnDestroy {
         event.container.data,
         event.previousIndex,
         event.currentIndex);
-      this.addUserEvent.emit(event.item.data);
+      this.addCustomUserEvent.emit(event.item.data);
     }
   }
 
   onAddUserTileClick(): void {
-    this.addUserEvent.emit(null);
+    this.addCustomUserEvent.emit(null);
   }
 
   onTileMouseDownEventHandler(ev: MouseEvent): void {
@@ -106,7 +110,7 @@ export class UserTileListComponent implements OnInit, OnDestroy {
 
   onContextMenuDeleteUserBtnClick(deleteFromAllGroups): void {
     this.contextMenuActive = false;
-    this.deleteUserEvent.emit({ 'userData': this.contextMenuData, 'deleteFromAllGroups': deleteFromAllGroups });
+    this.deleteCustomUserEvent.emit({ 'userData': this.contextMenuData, 'deleteFromAllGroups': deleteFromAllGroups });
     this.contextMenuData = null;
   }
   ondblclick(currentUser: User, action: string) {
@@ -128,6 +132,37 @@ export class UserTileListComponent implements OnInit, OnDestroy {
     console.log('data', data);
     this.store.dispatch(new UpdateUser(data));
   }
+  ondblclickGroup(currentUser, group) {
+    console.log('currentUser', currentUser);
+    console.log('group', group);
+    let index = this.checkIndex(currentUser.V_USR_GRP_ID, group.groupId)
+    // add user in group
+    if (!index) {
+      this.addOtherUserEvent.emit({ 'userData': currentUser, 'group': group });
+    } else { // delete user from group
+      this.deleteOtherUserEvent.emit({ 'group': group, 'userData': currentUser, 'deleteFromAllGroups': false });
+    }
+
+  }
+  addUserInGroup(groupId: string, user: User): void {
+    let json = {
+      'V_DELETED_ID_ARRAY': '',
+      'V_ADDED_ID_ARRAY': groupId + '',
+      'SELECTED_ENTITY': ['USER'],
+      'SELECTED_ENTITY_ID': user.id.split(' '),
+      'V_EFF_STRT_DT_TM': [new Date(Date.now())],
+      'V_EFF_END_DT_TM': [new Date(Date.now() + this.userAdminService.controlVariables.effectiveEndDate)],
+      'REST_Service': ['User_Group'],
+      'Verb': ['POST']
+    };
+    this.userAdminService.postSecuredJSON(json).subscribe(res => {
+      const V_SRC_CD_DATA = {
+        V_SRC_CD: JSON.parse(sessionStorage.getItem('u')).SRC_CD,
+      };
+      this.store.dispatch(new userGroupActions.getUserGroup(V_SRC_CD_DATA));
+    }, err => {
+    });
+  }
   onUserTileClick(user: User): void {
     if (this.selectedUser == user) {
       this.overviewService.resetSelection();
@@ -137,7 +172,15 @@ export class UserTileListComponent implements OnInit, OnDestroy {
       this.overviewService.highlightAuthorizations(user);
     }
   }
-
+  checkIndex(groupIdList, groupId) {
+    // console.log('groupIdList', groupIdList)
+    // console.log('groupId', groupId)
+    if (groupIdList.findIndex(v => v == groupId) > -1) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
   ngOnDestroy(): void {
     this.unsubscribeAll.next(true);
     this.unsubscribeAll.complete();

@@ -24,7 +24,9 @@
                       [groupList]="groups"
                       [userPermission]="userPermission"
                       [membershipPermission]="membershipPermission"
-                      (addUserEvent)="onAddUserEventHandler($event)"
-                      (deleteUserEvent)="onDeleteUserEventHandler($event)">
+                      (addCustomUserEvent)="onAddUserInCustomEventHandler($event)"
+                      (addOtherUserEvent)="onAddUserInGroupEventHandler($event)"
+                      (deleteCustomUserEvent)="onDeleteCustomUserEventHandler($event)"
+                      (deleteOtherUserEvent)="onDeleteOtherUserEventHandler($event)">
   </app-user-tile-list>
 </div>

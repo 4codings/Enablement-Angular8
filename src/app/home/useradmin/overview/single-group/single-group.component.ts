@@ -47,16 +47,22 @@ export class SingleGroupComponent implements OnInit, OnDestroy {
     this.overviewService.openEditGroupDialog(group);
   }
 
-  onAddUserEventHandler(user: User): void {
+  onAddUserInCustomEventHandler(user: User): void {
     if (user) {
-      this.overviewService.addUserInGroup(this.group, user);
+      this.overviewService.addUserInCustomGroup(this.group, user);
     } else {
       this.overviewService.openAddUserDialog(this.group.id);
     }
   }
+  onAddUserInGroupEventHandler(user): void {
+    this.overviewService.addUserInOtherGroup(user['group'], user['userData']);
+  }
 
-  onDeleteUserEventHandler(user): void {
-    this.overviewService.deleteUserFromGroup(this.group, user['userData'], user['deleteFromAllGroups']);
+  onDeleteCustomUserEventHandler(user): void {
+    this.overviewService.deleteUserFromCustomGroup(this.group, user['userData'], user['deleteFromAllGroups']);
+  }
+  onDeleteOtherUserEventHandler(user): void {
+    this.overviewService.deleteUserFromDifferentGroup(user['group'], user['userData'], user['deleteFromAllGroups']);
   }
 
   onBtnAssignRoleClick(group: userGroup): void {

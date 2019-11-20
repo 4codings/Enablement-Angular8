@@ -355,10 +355,11 @@ export class OverviewService implements OnDestroy {
     });
   }
 
-  deleteUserFromGroup(group: userGroup, user: User, deleteFromAllGroups): void {
+  deleteUserFromCustomGroup(group: userGroup, user: User, deleteFromAllGroups): void {
     let title = '';
     let message = '';
     let V_DELETED_ID_ARRAY = '';
+
     if (deleteFromAllGroups === true) {
       title = 'Remove User from Group';
       message = `Are you sure, you want to remove user <strong>${user.V_USR_NM}</strong> from all groups?`;
@@ -390,11 +391,60 @@ export class OverviewService implements OnDestroy {
       }
     });
   }
+  deleteUserFromDifferentGroup(group, user: User, deleteFromAllGroups): void {
+    let title = '';
+    let message = '';
+    let V_DELETED_ID_ARRAY = '';
 
-  addUserInGroup(group: userGroup, user: User): void {
+    if (deleteFromAllGroups === true) {
+      title = 'Remove User from Group';
+      message = `Are you sure, you want to remove user <strong>${user.V_USR_NM}</strong> from all groups?`;
+    } else if (deleteFromAllGroups === false) {
+      title = 'Remove User from Group';
+      message = `Are you sure, you want to remove user <strong>${user.V_USR_NM}</strong> from group <strong>${group.key}</strong>?`;
+      V_DELETED_ID_ARRAY = group.groupId;
+    }
+    const dialogRef = this.dialog.open(ConfirmationAlertComponent,
+      {
+        panelClass: 'app-dialog',
+        width: '300px',
+      });
+    dialogRef.componentInstance.title = title;
+    dialogRef.componentInstance.message = message;
+    dialogRef.afterClosed().pipe(take(1)).subscribe((flag) => {
+      if (flag) {
+        let json = {
+          'V_DELETED_ID_ARRAY': V_DELETED_ID_ARRAY,
+          'V_ADDED_ID_ARRAY': '',
+          'SELECTED_ENTITY': ['USER'],
+          'SELECTED_ENTITY_ID': user.id.split(' '),
+          'V_EFF_STRT_DT_TM': [new Date(Date.now())],
+          'V_EFF_END_DT_TM': [new Date(Date.now() + this.userAdminService.controlVariables.effectiveEndDate)],
+          'REST_Service': ['User_Group'],
+          'Verb': ['POST']
+        };
+        this.store.dispatch(new fromUserMembership.addUserMembership(json));
+      }
+    });
+  }
+
+  addUserInCustomGroup(group: userGroup, user: User): void {
     let json = {
       'V_DELETED_ID_ARRAY': '',
       'V_ADDED_ID_ARRAY': group.id + '',
+      'SELECTED_ENTITY': ['USER'],
+      'SELECTED_ENTITY_ID': user.id.split(' '),
+      'V_EFF_STRT_DT_TM': [new Date(Date.now())],
+      'V_EFF_END_DT_TM': [new Date(Date.now() + this.userAdminService.controlVariables.effectiveEndDate)],
+      'REST_Service': ['User_Group'],
+      'Verb': ['POST']
+    };
+    this.store.dispatch(new fromUserMembership.addUserMembership(json));
+  }
+  addUserInOtherGroup(group: any, user: User): void {
+    let json = {
+      'V_DELETED_ID_ARRAY': '',
+      'V_ADDED_ID_ARRAY': group.groupId + '',
       'SELECTED_ENTITY': ['USER'],
       'SELECTED_ENTITY_ID': user.id.split(' '),
       'V_EFF_STRT_DT_TM': [new Date(Date.now())],
