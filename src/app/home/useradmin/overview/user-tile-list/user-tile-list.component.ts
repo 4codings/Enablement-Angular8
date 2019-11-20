@@ -34,6 +34,7 @@ export class UserTileListComponent implements OnInit, OnDestroy {
   @Output() addOtherUserEvent: EventEmitter<any> = new EventEmitter<any>();
   @Output() deleteCustomUserEvent: EventEmitter<any> = new EventEmitter<any>();
   @Output() deleteOtherUserEvent: EventEmitter<any> = new EventEmitter<any>();
+  isPrimary: any = false;
 
   @ViewChild('contextMenu', { static: false } as any) set contextMenu(value: ElementRef) {
     if (value) {
@@ -56,11 +57,28 @@ export class UserTileListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.user = JSON.parse(sessionStorage.getItem('u'));
+    console.log('groupId', this.groupId);
+    this.setPrimaryValue();
     this.setGroupId();
+    console.log('users', this.users);
     document.addEventListener('mousedown', event => {
       this.contextMenuActive = false;
       this.contextMenuData = null;
     });
+  }
+  setPrimaryValue() {
+    if (this.users.length) {
+      this.users.forEach(ele => {
+        if (ele.V_USR_GRP_ID.length) {
+          let index = ele.V_USR_GRP_ID.findIndex(v => v == this.groupId);
+          if (index > -1) {
+            ele['isPrimary'] = ele.V_IS_PRIMARY[index];
+          } else {
+            ele['isPrimary'] = 'N';
+          }
+        }
+      })
+    }
   }
   setGroupId() {
     this.groupNameList.forEach(ele => {
@@ -118,6 +136,18 @@ export class UserTileListComponent implements OnInit, OnDestroy {
     switch (action) {
       case 'Status': {
         currentUser.V_STS = currentUser.V_STS.toUpperCase() === 'ACTIVE' ? 'TERMINATED' : 'ACTIVE'
+        break;
+      }
+      case 'Primary': {
+        let index = currentUser.V_USR_GRP_ID.findIndex(v => v == this.groupId);
+        if (index > -1) {
+          if (currentUser['isPrimary'] == 'N') {
+            currentUser.V_IS_PRIMARY[index] = 'Y';
+          } else {
+            currentUser.V_IS_PRIMARY[index] = 'N';
+          }
+        }
+        delete currentUser['isPrimary'];
         break;
       }
     }

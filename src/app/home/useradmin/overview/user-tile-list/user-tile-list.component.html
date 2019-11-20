@@ -35,12 +35,19 @@
 
       </mat-expansion-panel>
     </mat-accordion>
-    <mat-icon
-      [ngClass]="{'disable-icon': currUser.V_STS.toUpperCase() !=='ACTIVE' , 'tile-icon' : currUser.V_STS.toUpperCase()==='ACTIVE'}"
-      (dblclick)="ondblclick(currUser,'Status')"
-      [matTooltip]="currUser.V_STS.toUpperCase() !=='ACTIVE'? 'Activate User':'Terminate User'">
-      person
-    </mat-icon>
+    <div>
+      <mat-icon
+        [ngClass]="{'disable-icon': currUser.V_STS.toUpperCase() !=='ACTIVE' , 'tile-icon' : currUser.V_STS.toUpperCase()==='ACTIVE'}"
+        (dblclick)="ondblclick(currUser,'Status')"
+        [matTooltip]="currUser.V_STS.toUpperCase() !=='ACTIVE'? 'Activate User':'Terminate User'">
+        person
+      </mat-icon>
+      <mat-icon [ngClass]="{'disable-icon': currUser.isPrimary !=='Y' , 'tile-icon' : currUser.isPrimary==='Y'}"
+        (dblclick)="ondblclick(currUser,'Primary')"
+        [matTooltip]="currUser.isPrimary !=='Y'? 'Enable Primary':'Disable Primary'">
+        done
+      </mat-icon>
+    </div>
     <!--    <div *ngIf="!environment.production">{{currUser.V_USR_ID}}</div>-->
     <div class="ellipsis-text"><span>{{currUser.V_USR_NM?.split('@')[0]}}</span></div>
   </div>
