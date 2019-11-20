@@ -102,7 +102,7 @@
             </a>
           </div>
           <div fxFlex="100" fxLayout="column">
-            <div fxFlex="100" [ngClass]="opened?'stage-show':'stage-hide'">
+            <div fxFlex="100" [ngClass]="editProcessFlag?'stage-show':'stage-hide'">
               <mat-accordion>
                 <mat-expansion-panel [expanded]="expandPanel && closePanelOnSchedule">
                   <mat-expansion-panel-header>

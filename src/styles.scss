@@ -181,9 +181,14 @@
   &show {
     .bjs-container .djs-container {
 
-      .djs-palette,
+      // .djs-palette,  uncomment to enable pallete again
       .djs-hit {
         display: inherit;
+      }
+
+      // comment  to disable pallete 
+      .djs-palette {
+        display: none;
       }
     }
   }
