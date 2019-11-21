@@ -154,7 +154,7 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     var Field_Names_Ar = n;
     if (this.V_TABLE_NAME.length && this.V_TABLE_NAME != '' && this.V_ID_Key_Value[0] != undefined) {
       {
-        this.apiService.requestSecureApi(this.apiUrlGetSecure + '' + this.V_ID_Key_Name[0] + '=' + this.V_ID_Key_Value[0] + '&V_Table_Name=' + this.V_TABLE_NAME + '&V_Schema_Name=' + this.V_SCHEMA_NAME + '&V_SRVC_CD=' + this.V_SRVC_CD + '&V_PRCS_ID=' + this.V_PRCS_ID + '&V_SRC_CD=' + this.V_SRC_CD + '&V_USR_NM=' + this.V_USR_NM + '&Field_Names=' + Field_Names_Ar + '&Field_Values=' + Field_Values_Ar + '&REST_Service=Forms_Record&Verb=PATCH', 'get').subscribe(
+        this.apiService.requestSecureApi(this.apiUrlGetSecure + '' + 'V_Key_Names=' + this.V_ID_Key_Name[0] + '&V_Key_Values=' + this.V_ID_Key_Value[0] + '&V_Table_Name=' + this.V_TABLE_NAME + '&V_Schema_Name=' + this.V_SCHEMA_NAME + '&V_SRVC_CD=' + this.V_SRVC_CD + '&V_PRCS_ID=' + this.V_PRCS_ID + '&V_SRC_CD=' + this.V_SRC_CD + '&V_USR_NM=' + this.V_USR_NM + '&Field_Names=' + Field_Names_Ar + '&Field_Values=' + Field_Values_Ar + '&REST_Service=Forms_Record&Verb=PATCH', 'get').subscribe(
           res => {
           }
         );

@@ -122,7 +122,7 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     this.dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         if (this.V_TABLE_NAME.length && this.V_TABLE_NAME != '') {
-          var secure_del_URL = this.apiService.endPoints.secure + "V_Table_Name=" + this.V_TABLE_NAME + "&V_Schema_Name=" + this.V_SCHEMA_NAME + "&" + this.V_ID_Key_Name[index - 1] + "=" + this.V_ID_Key_Value[index - 1] + "&V_SRVC_CD=" + this.V_SRVC_CD + "&V_USR_NM=" + this.V_USR_NM + "&V_SRC_CD=" + this.V_SRC_CD + "&V_PRCS_ID=" + this.V_PRCS_ID + "&REST_Service=Forms_Record&Verb=DELETE";
+          var secure_del_URL = this.apiService.endPoints.secure + "V_Table_Name=" + this.V_TABLE_NAME + "&V_Schema_Name=" + this.V_SCHEMA_NAME + "&" + 'V_Key_Names=' + this.V_ID_Key_Name[index - 1] + '&V_Key_Values=' + this.V_ID_Key_Value[index - 1] + "&V_SRVC_CD=" + this.V_SRVC_CD + "&V_USR_NM=" + this.V_USR_NM + "&V_SRC_CD=" + this.V_SRC_CD + "&V_PRCS_ID=" + this.V_PRCS_ID + "&REST_Service=Forms_Record&Verb=DELETE";
           secure_del_URL = encodeURI(secure_del_URL);
           this.https.delete(secure_del_URL, this.apiService.setHeaders()).subscribe(
             res => {
@@ -217,9 +217,9 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     var Field_Values_Ar = ('"' + v + '"');
     var Field_Names_Ar = n;
 
-    if (this.V_TABLE_NAME.length && this.V_TABLE_NAME != '' && this.V_ID_Key_Value[iter - 1] != undefined) {
+    if (this.V_TABLE_NAME.length && this.V_TABLE_NAME != '' && this.V_ID_Key_Value && this.V_ID_Key_Value.length && this.V_ID_Key_Value[iter - 1] != undefined) {
       {
-        this.apiService.requestSecureApi(this.apiUrlGetSecure + '' + this.V_ID_Key_Name[iter - 1] + '=' + this.V_ID_Key_Value[iter - 1] + '&V_Table_Name=' + this.V_TABLE_NAME + '&V_Schema_Name=' + this.V_SCHEMA_NAME + '&V_SRVC_CD=' + this.V_SRVC_CD + '&V_PRCS_ID=' + this.V_PRCS_ID + '&V_SRC_CD=' + this.V_SRC_CD + '&V_USR_NM=' + this.V_USR_NM + '&Field_Names=' + Field_Names_Ar + '&Field_Values=' + Field_Values_Ar + '&REST_Service=Forms_Record&Verb=PATCH', 'get').subscribe(
+        this.apiService.requestSecureApi(this.apiUrlGetSecure + '' + 'V_Key_Names=' + this.V_ID_Key_Name[iter - 1] + '&V_Key_Values=' + this.V_ID_Key_Value[iter - 1] + '&V_Table_Name=' + this.V_TABLE_NAME + '&V_Schema_Name=' + this.V_SCHEMA_NAME + '&V_SRVC_CD=' + this.V_SRVC_CD + '&V_PRCS_ID=' + this.V_PRCS_ID + '&V_SRC_CD=' + this.V_SRC_CD + '&V_USR_NM=' + this.V_USR_NM + '&Field_Names=' + Field_Names_Ar + '&Field_Values=' + Field_Values_Ar + '&REST_Service=Forms_Record&Verb=PATCH', 'get').subscribe(
           res => {
           }
         );
