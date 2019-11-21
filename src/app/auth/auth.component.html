@@ -2,70 +2,154 @@
   <div fxFlex="30"></div>
   <div fxFlex="40">
     <mat-card class="profileCard">
-      <mat-card-title>
-
-      </mat-card-title>
+      <mat-card-title> </mat-card-title>
       <mat-card-content>
         <h5 class="text-center">
-          {{msg_alert}}
+          {{ msg_alert }}
         </h5>
 
         <form class="login-form parent" (ngSubmit)="login(form)" #form="ngForm">
-          <div flex style="align-items: center;" fxLayout="row" fxLayout.lt-sm="column" style="padding-top: 30px;">
+          <div
+            flex
+            style="align-items: center;"
+            fxLayout="row"
+            fxLayout.lt-sm="column"
+            style="padding-top: 30px;"
+          >
             <span fxFlex="25" class="formLabel">Username</span>
             <div fxFlex="60" class="formGroup">
-              <input type="email" placeholder="Provide Your Email id" (keyup)="onKey($event)" autocomplete="off"
-                [(ngModel)]="email" name="email" value="">
+              <input
+                type="email"
+                placeholder="Provide Your Email id"
+                (keyup)="onKey($event)"
+                autocomplete="off"
+                [(ngModel)]="email"
+                name="email"
+                value=""
+              />
             </div>
           </div>
 
-          <div *ngIf="pass1==true" class="parent">
-            <div flex fxLayout="row" style="align-items: center;" fxLayout.lt-sm="column" style="padding-top: 30px;">
+          <div *ngIf="pass1 == true" class="parent">
+            <div
+              flex
+              fxLayout="row"
+              style="align-items: center;"
+              fxLayout.lt-sm="column"
+              style="padding-top: 30px;"
+            >
               <span fxFlex="25" class="formLabel">Password</span>
               <div fxFlex="60" class="formGroup">
-                <input type="password" placeholder="Provide Your Password " [(ngModel)]="pass" autocomplete="off"
-                  name="pass" value="">
+                <input
+                  type="password"
+                  placeholder="Provide Your Password "
+                  [(ngModel)]="pass"
+                  autocomplete="off"
+                  name="pass"
+                  value=""
+                />
               </div>
             </div>
           </div>
 
-          <div *ngIf="pass2==true" class="parent">
-            <div flex fxLayout="row" style="align-items: center;" fxLayout.lt-sm="column" style="padding-top: 30px;">
+          <div *ngIf="pass2 == true" class="parent">
+            <div
+              flex
+              fxLayout="row"
+              style="align-items: center;"
+              fxLayout.lt-sm="column"
+              style="padding-top: 30px;"
+            >
               <span fxFlex="25" class="formLabel">New Password</span>
               <div fxFlex="60" class="formGroup">
-                <input class="userinp" type="password" matInput placeholder="Provide new password" [(ngModel)]="passr"
-                  name="passr" minlength="6" value="" required>
+                <input
+                  class="userinp"
+                  type="password"
+                  matInput
+                  placeholder="Provide new password"
+                  [(ngModel)]="passr"
+                  name="passr"
+                  minlength="6"
+                  value=""
+                  required
+                />
               </div>
             </div>
           </div>
-          <div flex style="align-items: center;" fxLayout="row" *ngIf="agcy == false" fxLayout.lt-sm="column"
-            style="padding-top: 30px;">
+          <div
+            flex
+            style="align-items: center;"
+            fxLayout="row"
+            *ngIf="agcy == false"
+            fxLayout.lt-sm="column"
+            style="padding-top: 30px;"
+          >
             <span fxFlex="25" class="formLabel">Organization</span>
             <div fxFlex="60" class="formGroup">
-              <input type="text" placeholder="Provide Organization" [(ngModel)]="agency" name="agency" value="">
+              <input
+                type="text"
+                placeholder="Provide Organization"
+                [(ngModel)]="agency"
+                name="agency"
+                value=""
+              />
             </div>
-
           </div>
           <br />
           <div *ngIf="captcha" class="d-flex justify-content-center ml-5 mb-3">
-            <recaptcha [formControl]="myRecaptcha" (scriptLoad)="onScriptLoad()" (scriptError)="onScriptError()">
+            <recaptcha
+              [formControl]="myRecaptcha"
+              (scriptLoad)="onScriptLoad()"
+              (scriptError)="onScriptError()"
+            >
             </recaptcha>
           </div>
-          <div *ngIf="logBtn==true" flex fxLayout="row" fxLayout.lt-sm="column">
-
+          <div
+            *ngIf="logBtn == true"
+            flex
+            fxLayout="row"
+            fxLayout.lt-sm="column"
+          >
             <div fxFlex="30"></div>
             <div fxFlex="40" class="parent" *ngIf="isLoginButton">
-              <button type="" [disabled]="btn_disabled" mat-raised-button color="primary">Login</button>
+              <button
+                type="submit"
+                [disabled]="btn_disabled"
+                mat-raised-button
+                color="primary"
+              >
+                Login
+              </button>
             </div>
             <div fxFlex="40" class="parent" *ngIf="!isLoginButton">
-              <button type="" [disabled]="btn_disabled" mat-raised-button color="primary">Sign-up</button>
+              <button
+                type="submit"
+                [disabled]="btn_disabled"
+                mat-raised-button
+                color="primary"
+              >
+                Sign-up
+              </button>
             </div>
             <div fxFlex="30"></div>
           </div>
-          <div *ngIf="rstBnt==true" flex fxLayout="row" fxLayout.lt-sm="column">
+          <div
+            *ngIf="rstBnt == true"
+            flex
+            fxLayout="row"
+            fxLayout.lt-sm="column"
+          >
             <div fxFlex="27"></div>
             <div fxFlex="46" class="parent">
-              <button class="content" [disabled]="myRecaptcha.value === false || form.invalid" type="" mat-raised-button color="primary">Reset Password</button>
+              <button
+                class="content"
+                [disabled]="myRecaptcha.value === false || form.invalid"
+                type=""
+                mat-raised-button
+                color="primary"
+              >
+                Reset Password
+              </button>
             </div>
             <div fxFlex="27"></div>
           </div>
@@ -76,9 +160,7 @@
             </div>
             <div fxFlex="40"></div>
           </div>
-
         </form>
-
       </mat-card-content>
     </mat-card>
   </div>
